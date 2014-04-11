@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineExtensionListResponse;
@@ -39,7 +40,6 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -132,7 +132,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/resourceextensions";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -222,21 +222,21 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
                     Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
                     Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
+                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
                     }
                     
@@ -362,7 +362,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/resourceextensions/" + publisherName + "/" + extensionName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -452,21 +452,21 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
                     Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
                     Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
+                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
                     }
                     

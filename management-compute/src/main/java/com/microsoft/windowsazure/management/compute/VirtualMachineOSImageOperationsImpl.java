@@ -178,7 +178,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -544,7 +544,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -658,7 +658,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -913,7 +913,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1200,7 +1200,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

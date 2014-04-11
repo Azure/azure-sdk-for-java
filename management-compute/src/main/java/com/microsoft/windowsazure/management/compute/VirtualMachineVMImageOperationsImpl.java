@@ -127,7 +127,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/vmimages/" + vmImageName + "?" + "comp=media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages/" + vmImageName.trim() + "?" + "comp=media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -335,7 +335,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/vmimages";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

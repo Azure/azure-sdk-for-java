@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
@@ -64,7 +65,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -192,7 +192,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -223,7 +223,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         createStorageServiceInputElement.appendChild(serviceNameElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         createStorageServiceInputElement.appendChild(labelElement);
         
         if (parameters.getDescription() != null) {
@@ -379,7 +379,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/operations/isavailable/" + accountName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/operations/isavailable/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -630,7 +630,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -741,7 +741,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -841,7 +841,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     Element labelElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                         storageServicePropertiesInstance.setLabel(labelInstance);
                     }
                     
@@ -987,7 +987,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName + "/keys";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim() + "/keys";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1126,7 +1126,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1228,7 +1228,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Element labelElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement != null) {
                             String labelInstance;
-                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                             storageServicePropertiesInstance.setLabel(labelInstance);
                         }
                         
@@ -1382,7 +1382,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getName() + "/keys" + "?" + "action=regenerate";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + parameters.getName().trim() + "/keys" + "?" + "action=regenerate";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1579,7 +1579,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1619,7 +1619,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         if (parameters.getLabel() != null) {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-            labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+            labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
             updateStorageServiceInputElement.appendChild(labelElement);
         }
         

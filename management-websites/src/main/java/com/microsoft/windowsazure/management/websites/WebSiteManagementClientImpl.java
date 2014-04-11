@@ -285,7 +285,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Construct URL
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + siteName + "/operations/" + operationId;
+        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + siteName.trim() + "/operations/" + operationId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -561,7 +561,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Construct URL
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=register";
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -659,7 +659,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Construct URL
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=unregister";
         // Trim '/' character from the end of baseUrl and beginning of url.

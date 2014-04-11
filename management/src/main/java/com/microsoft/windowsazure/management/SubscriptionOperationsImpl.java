@@ -132,7 +132,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -378,17 +378,17 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/operations" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/operations" + "?";
         url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
         url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
         if (parameters.getObjectIdFilter() != null) {
-            url = url + "&" + "ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter(), "UTF-8");
+            url = url + "&" + "ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter().trim(), "UTF-8");
         }
         if (parameters.getOperationStatus() != null) {
             url = url + "&" + "OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8");
         }
         if (parameters.getContinuationToken() != null) {
-            url = url + "&" + "ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken(), "UTF-8");
+            url = url + "&" + "ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken().trim(), "UTF-8");
         }
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -602,8 +602,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?";
-        url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services" + "?";
+        url = url + "service=" + URLEncoder.encode(resourceName.trim(), "UTF-8");
         url = url + "&" + "action=register";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -706,8 +706,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?";
-        url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services" + "?";
+        url = url + "service=" + URLEncoder.encode(resourceName.trim(), "UTF-8");
         url = url + "&" + "action=unregister";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {

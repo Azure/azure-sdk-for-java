@@ -156,7 +156,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "?" + "op=ResetPassword";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "?" + "op=ResetPassword";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -299,7 +299,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -449,7 +449,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -550,7 +550,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
