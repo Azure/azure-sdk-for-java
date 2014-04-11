@@ -40,28 +40,28 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     public static void setup() throws Exception {
         createService();
     }
-	
-	@Test
+
+    @Test
     public void getConfiguration() throws Exception {
         //act
         NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
-        
+
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
         Assert.assertNotNull(operationResponse.getConfiguration());
     }
-	
-	@Test
+
+    @Test
     public void setConfiguration() throws Exception {
         //act
         NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
-        
+
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
         Assert.assertNotNull(operationResponse.getConfiguration());
-        
+
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -73,21 +73,21 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
-        
+
         NetworkSetConfigurationParameters parameters = new NetworkSetConfigurationParameters();
         parameters.setConfiguration(stringWriter.toString());
         OperationResponse response = networkManagementClient.getNetworksOperations().setConfiguration(parameters);
-        
+
         //Assert
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertNotNull(response.getRequestId());
-	}
-	
-	@Test
+    }
+
+    @Test
     public void list() throws Exception {
         //act
         NetworkListResponse operationResponse = networkManagementClient.getNetworksOperations().list();
-        
+
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
