@@ -147,14 +147,14 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Type", "text/plain");
+        httpRequest.setHeader("Content-Type", "application/octet-stream");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
         String requestContent = parameters.getConfiguration();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "text/plain");
+        httpRequest.setHeader("Content-Type", "application/octet-stream");
         
         // Send Request
         HttpResponse httpResponse = null;
