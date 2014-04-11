@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.core.utils;
 
+import java.security.InvalidParameterException;
+
 /**
  * The Enum representing the type of the KeyStore.
  */
@@ -25,5 +27,20 @@ public enum KeyStoreType {
     /** The jks. */
     jks,
     /** The pkcs12. */
-    pkcs12
+    pkcs12;
+    
+    public static KeyStoreType fromString(String keyStoreTypeString)
+    {
+        switch (keyStoreTypeString) {
+        case "jceks":
+            return KeyStoreType.jceks;
+        case "jks":
+            return KeyStoreType.jks;
+        case "pkcs12":
+            return KeyStoreType.pkcs12;
+        default :
+            throw new InvalidParameterException(String.format("keyStoreTypeString value %s cannot be recognized.", keyStoreTypeString));
+            
+        }
+    }
 }

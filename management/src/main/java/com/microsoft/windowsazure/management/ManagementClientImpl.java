@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -176,17 +177,26 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * allowed.
     * @param baseUri Required. The URI used as the base for all Service
     * Management requests.
+     * @throws URISyntaxException 
     */
-    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
+    @Inject
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         if (baseUri == null) {
-            throw new NullPointerException("baseUri");
+            try {
+                this.baseUri = new URI("https://management.core.windows.net");
+            } catch (URISyntaxException e) {
+                // because the URI is hard code, this exception is unlikely to be thrown. 
+            }
+        }else 
+        {
+            this.baseUri = baseUri;
         }
         this.credentials = credentials;
-        this.baseUri = baseUri;
+        // this.baseUri = baseUri;
     }
     
     /**
@@ -204,7 +214,6 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
-    @Inject
     public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {

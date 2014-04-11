@@ -177,8 +177,8 @@ public final class ManagementConfiguration {
      * @param keyStorePassword
      *            A <code>String</code> object that represents the password of
      *            the keystore.
-     * @param type
-     *            Type of key store.
+     * @param keyStoreType
+     *            The type of key store.
      * @return A <code>Configuration</code> object that can be used when
      *         creating an instance of the <code>ManagementContract</code>
      *         class.
@@ -187,7 +187,7 @@ public final class ManagementConfiguration {
      */
     public static Configuration configure(String profile,
             Configuration configuration, URI uri, String subscriptionId,
-            String keyStoreLocation, String keyStorePassword, KeyStoreType type)
+            String keyStoreLocation, String keyStorePassword, KeyStoreType keyStoreType)
             throws IOException {
 
         if (profile == null) {
@@ -196,13 +196,14 @@ public final class ManagementConfiguration {
             profile = profile + ".";
         }
 
-        configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
-        configuration.setProperty(profile + KEYSTORE_PATH, keyStoreLocation);
-        configuration
-                .setProperty(profile + KEYSTORE_PASSWORD, keyStorePassword);
+        configuration.setProperty(profile + ManagementConfiguration.URI, uri);
+        configuration.setProperty(profile + ManagementConfiguration.SUBSCRIPTION_ID, subscriptionId);
+        configuration.setProperty(profile + ManagementConfiguration.KEYSTORE_PATH, keyStoreLocation);
+        configuration.setProperty(profile + ManagementConfiguration.KEYSTORE_PASSWORD, keyStorePassword);
+        configuration.setProperty(profile + ManagementConfiguration.KEYSTORE_TYPE, keyStoreType);
 
         KeyStoreCredential keyStoreCredential = new KeyStoreCredential(
-                keyStoreLocation, keyStorePassword, type);
+                keyStoreLocation, keyStorePassword, keyStoreType);
         CertificateCloudCredentials cloudCredentials = new CertificateCloudCredentials(uri,
                 subscriptionId, keyStoreCredential);
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
