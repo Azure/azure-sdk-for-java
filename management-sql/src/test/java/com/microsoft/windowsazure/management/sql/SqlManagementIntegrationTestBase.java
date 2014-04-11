@@ -107,8 +107,7 @@ public abstract class SqlManagementIntegrationTestBase {
     }
 
     
-    protected String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    protected String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
         serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
         serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
@@ -148,11 +147,9 @@ public abstract class SqlManagementIntegrationTestBase {
     protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++)
-        {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
-
 }

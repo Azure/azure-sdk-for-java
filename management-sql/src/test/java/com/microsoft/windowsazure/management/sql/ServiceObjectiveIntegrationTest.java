@@ -47,12 +47,24 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
     public static void cleanup() throws Exception {
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
-            databaseOperations.delete(serverName, databaseName);
+            try {
+                databaseOperations.delete(serverName, databaseName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
         databaseToBeRemoved.clear();
         
         for (String serverName : serverToBeRemoved) {
-            serverOperations.delete(serverName);
+            try {
+                serverOperations.delete(serverName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
     }
 
