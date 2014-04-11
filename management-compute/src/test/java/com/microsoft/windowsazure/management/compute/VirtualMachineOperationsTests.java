@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +35,6 @@ import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.management.storage.models.*;
 import com.microsoft.windowsazure.storage.*;
 import com.microsoft.windowsazure.storage.blob.*;
-
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -240,6 +240,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         for (HostedServiceListResponse.HostedService hostedService : hostedServicelist) {
             if (hostedService.getServiceName().contains(testVMPrefix)) {
                 HostedServiceGetDetailedResponse hostedServiceGetDetailedResponse = computeManagementClient.getHostedServicesOperations().getDetailed(hostedService.getServiceName());
+
+                int year = hostedServiceGetDetailedResponse.getProperties().getDateLastModified().get(Calendar.YEAR);
+                Assert.assertTrue(year > 2000);
+                
                 ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentlist = hostedServiceGetDetailedResponse.getDeployments();
                 Assert.assertNotNull(deploymentlist);
 
