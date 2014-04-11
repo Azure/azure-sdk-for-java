@@ -49,11 +49,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     public static void cleanup() throws Exception {
         String webSpaceName = "northcentraluswebspace"; 
         try {
-            ServerFarmListResponse ServerFarmListResponse = webSiteManagementClient.getServerFarmsOperations().list(webSpaceName);
-            ArrayList<ServerFarmListResponse.ServerFarm> serverFarmlist = ServerFarmListResponse.getServerFarms();        	
-            for (ServerFarmListResponse.ServerFarm  serverFarm : serverFarmlist) {
-            	webSiteManagementClient.getServerFarmsOperations().delete(serverFarm.getName());
-            }
+            webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
         }
         catch (ServiceException e) {
             e.printStackTrace();
