@@ -35,7 +35,7 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
 
     @Test
     public void check() throws Exception {
-        InetAddress ipAddress = InetAddress.getLocalHost();
+        InetAddress ipAddress = InetAddress.getByName("10.0.0.1");
 
         // Act
         NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(virtualNetworkName, ipAddress);
@@ -43,6 +43,6 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
         // Assert
         Assert.assertEquals(200, networkStaticIPAvailabilityResponse.getStatusCode());
         Assert.assertNotNull(networkStaticIPAvailabilityResponse.getRequestId());
-        Assert.assertEquals(false, networkStaticIPAvailabilityResponse.isAvailable()); 
+        Assert.assertNotNull(networkStaticIPAvailabilityResponse.isAvailable()); 
     }
 }
