@@ -16,9 +16,7 @@ Scenario: Create Server Farm
 Scenario: List Server Farm
     When I invoke "management.ServerFarmsOperations.List" with parameter value "eastuswebspace" of type "System.String" I get the result into "operationResponse" 
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200" 
-    And property with type "System.String" and path "operationResponse.RequestId" should not equal "null" 
-    And set "element1" with value from list "operationResponse.ServerFarms" where "Name" of type "System.String" equals "Default1" 
-    And property with type "System.String" and path "element1.Name" should equal "Default1"
+    And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
 
 Scenario: Delete Server Farm
     When I invoke "management.ServerFarmsOperations.Delete" with parameter value "eastuswebspace" of type "System.String" I get the result into "operationResponse"
