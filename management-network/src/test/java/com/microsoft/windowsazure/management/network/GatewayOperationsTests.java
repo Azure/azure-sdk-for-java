@@ -16,8 +16,6 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import java.util.ArrayList;
-
 import com.microsoft.windowsazure.management.network.models.*;
 
 import org.junit.Assert;
@@ -34,19 +32,12 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     }
 
     @Test
-    public void listReservedIPSuccess() throws Exception {
-        String virtualNetworkName = "";
-
+    public void gatewayListSupportedDevicesResponse() throws Exception {
         // Arrange  
-        GatewayListConnectionsResponse gatewayListConnectionsResponse =networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
-        ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-        for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist) { 
-            Assert.assertNotNull(gatewayConnection.getLocalNetworkSiteName());
-            
-            GatewayGetResponse networkReservedIPGetResponse = networkManagementClient.getGatewaysOperations().get(gatewayConnection.getLocalNetworkSiteName());
-            // Assert
-            Assert.assertEquals(200, networkReservedIPGetResponse.getStatusCode());
-            Assert.assertNotNull(networkReservedIPGetResponse.getRequestId());
-        }
+        GatewayListSupportedDevicesResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listSupportedDevices();
+
+        // Assert
+        Assert.assertEquals(200, gatewayListConnectionsResponse.getStatusCode());
+        Assert.assertNotNull(gatewayListConnectionsResponse.getRequestId());
     }
 }
