@@ -50,9 +50,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
             try {
                 databaseOperations.delete(serverName, databaseName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
         databaseToBeRemoved.clear();
@@ -61,9 +59,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
             try {
                 serverOperations.delete(serverName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
     }
