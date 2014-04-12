@@ -14,8 +14,8 @@
  */
 package com.microsoft.windowsazure.exception;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -200,7 +200,7 @@ public class ServiceException extends Exception {
             DocumentBuilder documentBuilder = documentBuilderFactory
                     .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(new InputSource(
-                    new StringReader(content)));
+                    new ByteArrayInputStream(content.getBytes("UTF-8"))));
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
 
