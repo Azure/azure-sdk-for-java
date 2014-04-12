@@ -33,18 +33,14 @@ public enum KeyStoreType {
     	if (keyStoreTypeString != null) {
 	        if (keyStoreTypeString.equals("jceks")) {
 	            return KeyStoreType.jceks;
-	        }
-	        else if (keyStoreTypeString.equals("jks")) {
+	        } else if (keyStoreTypeString.equals("jks")) {
 	            return KeyStoreType.jks;
-	        }
-	        else if (keyStoreTypeString.equals("pkcs12")) {
+	        } else if (keyStoreTypeString.equals("pkcs12")) {
 	            return KeyStoreType.pkcs12;
-	        }
-	        else {
+	        } else {
 	            throw new InvalidParameterException(String.format("keyStoreTypeString value %s cannot be recognized.", keyStoreTypeString));
 	        }
-    	}
-    	else {
+    	} else {
             return KeyStoreType.jks;
     	}
     }

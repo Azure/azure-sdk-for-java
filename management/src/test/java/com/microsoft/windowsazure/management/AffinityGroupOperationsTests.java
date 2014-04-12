@@ -56,14 +56,11 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
 
     @AfterClass
     public static void cleanup() throws Exception {
-        try
-        {
+        try {
         	 AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
         	 ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
-        	 for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist)
-        	 { 
-            	 if (affinitygroup.getName().contains("testAffinityGroup"))
-            	 {
+        	 for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist) { 
+            	 if (affinitygroup.getName().contains("testAffinityGroup")) {
                     managementClient.getAffinityGroupsOperations().delete(affinitygroup.getName());
             	 }
         	 }
