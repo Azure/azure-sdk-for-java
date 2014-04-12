@@ -34,8 +34,7 @@ public class Exports implements Builder.Exports {
                 URI uri = null;
                 try {
                     String urlString = (String) properties.get(ManagementConfiguration.URI);
-                    if ((urlString != null) && (!urlString.isEmpty()))
-                    {
+                    if ((urlString != null) && (!urlString.isEmpty())) {
                         uri = new URI((String) properties.get(ManagementConfiguration.URI));
                     }
                 } catch (URISyntaxException e) {

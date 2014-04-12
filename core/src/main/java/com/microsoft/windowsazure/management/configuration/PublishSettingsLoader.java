@@ -85,22 +85,19 @@ public class PublishSettingsLoader {
     public static Configuration createManagementConfiguration(
             String publishSettingsFileName, String subscriptionId)
             throws IOException {
-        if (publishSettingsFileName == null)
-        {
+        if (publishSettingsFileName == null) {
             throw new IllegalArgumentException("The publish settings file cannot be null.");
         }
         
-        if (subscriptionId == null){
+        if (subscriptionId == null) {
             throw new IllegalArgumentException("The subscription ID cannot be null.");
         }
         
-        if (publishSettingsFileName.isEmpty())
-        {
+        if (publishSettingsFileName.isEmpty()) {
             throw new IllegalArgumentException("The publish settings file cannot be empty.");
         }
         
-        if (subscriptionId.isEmpty())
-        {
+        if (subscriptionId.isEmpty()) {
             throw new IllegalArgumentException("The subscription ID cannot be empty.");
         }
         
@@ -113,7 +110,7 @@ public class PublishSettingsLoader {
                 KeyStoreType.pkcs12);
     }
 
-    private static KeyStore createKeyStoreFromCertifcate(String certificate, String keyStoreFileName ) throws IOException {
+    private static KeyStore createKeyStoreFromCertifcate(String certificate, String keyStoreFileName) throws IOException {
         KeyStore keyStore = null;
         try {
             if (Float.valueOf(System.getProperty("java.specification.version")) < 1.7) {
