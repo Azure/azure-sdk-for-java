@@ -14,16 +14,18 @@
  */
 package com.microsoft.windowsazure.exception;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -198,7 +200,7 @@ public class ServiceException extends Exception {
             DocumentBuilder documentBuilder = documentBuilderFactory
                     .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(new InputSource(
-                    new ByteArrayInputStream(content.getBytes("utf-8"))));
+                    new StringReader(content)));
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
 
