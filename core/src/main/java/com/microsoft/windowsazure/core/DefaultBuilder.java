@@ -120,12 +120,10 @@ public class DefaultBuilder implements Builder, Builder.Registry {
                             if (parameterTypes[i] == String.class) {
                                 initializationArguments[i] = properties
                                     .get(nameProbe);
-                            }
-                            else {
+                            } else {
                                 initializationArguments[i] = builder.build(fullName,
                                         service, parameterTypes[i], properties);
                             }
-                            
                         } else {
                             startingIndex = fullName
                                     .indexOf('.', startingIndex) + 1;
