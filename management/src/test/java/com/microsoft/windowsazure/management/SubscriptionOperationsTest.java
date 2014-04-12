@@ -39,12 +39,14 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	    public void listSubscriptionsSuccess() throws Exception {
 	    	 // Arrange  
 	    	 SubscriptionListOperationsParameters parameters = new  SubscriptionListOperationsParameters();
+
+	    	 Calendar now = Calendar.getInstance();
 	    	 Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-	    	 startTime.set(2014, 1, 1);	    	
-	    	 Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-	    	 endTime.set(2014, 2, 1); 
+	    	 startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));
+	         Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+	         endTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 1));
 	         parameters.setStartTime(startTime);
-	    	 parameters.setEndTime(endTime);
+	         parameters.setEndTime(endTime);
 	    	
 	    	 SubscriptionListOperationsResponse subscriptionListOperationsResponse = managementClient.getSubscriptionsOperations().listOperations(parameters);
 	    	
