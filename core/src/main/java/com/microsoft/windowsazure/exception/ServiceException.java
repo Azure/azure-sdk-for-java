@@ -267,8 +267,19 @@ public class ServiceException extends Exception {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(content);
 
-            String code = responseDoc.get("Code").getTextValue();
-            String message = responseDoc.get("Message").getTextValue();
+            String code;
+            if (responseDoc.get("Code") != null) {
+                code = responseDoc.get("Code").getTextValue();
+            } else {
+                code = Integer.toString(httpResponse.getStatusLine().getStatusCode());
+            }
+            
+            String message;
+            if (responseDoc.get("Message") != null) {
+                message = responseDoc.get("Message").getTextValue();
+            } else {
+                message = httpResponse.getStatusLine().getReasonPhrase();
+            }
 
             serviceException = new ServiceException(buildExceptionMessage(code,
                     message, content, httpResponse));
