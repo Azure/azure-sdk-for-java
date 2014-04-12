@@ -56,7 +56,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * </ul>
  * 
  */
-public class PublishSettingsLoader {
+public abstract class PublishSettingsLoader {
 
     /**
      * Create a service management configuration using specified publish settings
