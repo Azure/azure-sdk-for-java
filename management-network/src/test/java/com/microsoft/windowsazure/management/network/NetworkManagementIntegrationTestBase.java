@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.management.network;
 
 import java.net.URI;
 
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.*;
 
@@ -35,7 +36,8 @@ public abstract class NetworkManagementIntegrationTestBase {
             baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-        );      
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+        );   
     }
 }

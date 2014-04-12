@@ -36,8 +36,7 @@ public class OperationSystemOperationsTests extends ComputeManagementIntegration
         Assert.assertNotNull(operatingSystemListResponse);
         
         ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemlist = operatingSystemListResponse.getOperatingSystems();
-        for (OperatingSystemListResponse.OperatingSystem os: operatingSystemlist)
-        {
+        for (OperatingSystemListResponse.OperatingSystem os: operatingSystemlist) {
             if (os.getFamilyLabel().contains("R2 SP1")==true){
                 Assert.assertEquals(2, os.getFamily());
                 Assert.assertFalse(os.isActive());
@@ -53,8 +52,7 @@ public class OperationSystemOperationsTests extends ComputeManagementIntegration
         ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamilylist = operatingSystemListFamiliesResponse.getOperatingSystemFamilies();
         Assert.assertNotNull(operatingSystemFamilylist);
 
-        for (OperatingSystemListFamiliesResponse.OperatingSystemFamily osf: operatingSystemFamilylist)
-        {
+        for (OperatingSystemListFamiliesResponse.OperatingSystemFamily osf: operatingSystemFamilylist) {
             if (osf.getName() == 1){
                 Assert.assertEquals("Windows Server 2008 SP2", osf.getLabel()); 
             }

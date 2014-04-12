@@ -44,6 +44,7 @@ import org.xml.sax.SAXException;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.Configuration;
 import com.sun.jersey.api.client.Client;
@@ -142,7 +143,8 @@ public abstract class SqlManagementIntegrationTestBase {
             baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
     }
     

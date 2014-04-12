@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.management.storage;
 import java.net.URI;
 import java.util.Random;
 
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.Configuration;
 
@@ -38,8 +39,9 @@ public abstract class StorageManagementIntegrationTestBase {
             baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-        ); 
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+        );
     }
     
     protected static String randomString(int length)
