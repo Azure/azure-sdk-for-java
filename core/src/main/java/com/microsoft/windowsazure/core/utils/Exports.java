@@ -33,11 +33,10 @@ public class Exports implements Builder.Exports {
                 KeyStoreType keyStoreType = null;
                 
                 Object keyStoreTypeObject = properties.get(ManagementConfiguration.KEYSTORE_TYPE);
-                if (keyStoreTypeObject.getClass() == KeyStoreType.class)
-                {
+                if (keyStoreTypeObject.getClass() == KeyStoreType.class) {
                     keyStoreType = (KeyStoreType) keyStoreTypeObject;
-                }else if (keyStoreTypeObject.getClass() == String.class)
-                {
+                }
+                else if (keyStoreTypeObject.getClass() == String.class) {
                     keyStoreType = KeyStoreType.fromString((String) properties.get(ManagementConfiguration.KEYSTORE_TYPE));
                 }
                 

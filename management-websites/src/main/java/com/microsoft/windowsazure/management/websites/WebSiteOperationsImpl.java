@@ -3630,7 +3630,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3897,7 +3898,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
                     thumbprintElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getThumbprint()));
                     webSiteHostNameSslStateElement.appendChild(thumbprintElement);
-                } else {
+                }
+                else {
                     Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
                     Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     nilAttribute.setValue("true");

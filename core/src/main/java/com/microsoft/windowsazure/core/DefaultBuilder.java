@@ -117,15 +117,13 @@ public class DefaultBuilder implements Builder, Builder.Registry {
                         if (!located && named != null
                                 && properties.containsKey(nameProbe)) {
                             located = true;
-                            if (parameterTypes[i] == String.class)
-                            {
+                            if (parameterTypes[i] == String.class) {
                                 initializationArguments[i] = properties
                                     .get(nameProbe);
-                            } else {
+                            }
+                            else {
                                 initializationArguments[i] = builder.build(fullName,
                                         service, parameterTypes[i], properties);
-                                //initializationArguments[i] = properties
-                                //        .get(nameProbe);
                             }
                             
                         } else {

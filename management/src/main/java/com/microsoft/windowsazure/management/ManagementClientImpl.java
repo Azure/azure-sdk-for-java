@@ -177,7 +177,6 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * allowed.
     * @param baseUri Required. The URI used as the base for all Service
     * Management requests.
-     * @throws URISyntaxException 
     */
     @Inject
     public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -185,36 +184,37 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         if (credentials == null) {
             throw new NullPointerException("credentials");
         }
+        else {
+            this.credentials = credentials;
+        }
         if (baseUri == null) {
             try {
                 this.baseUri = new URI("https://management.core.windows.net");
-            } catch (URISyntaxException e) {
-                // because the URI is hard code, this exception is unlikely to be thrown. 
             }
-        }else 
-        {
+            catch (URISyntaxException ex) {
+            }
+        }
+        else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
-        // this.baseUri = baseUri;
     }
     
     /**
     * Initializes a new instance of the ManagementClientImpl class.
-    * Initializes a new instance of the ManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
-    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials) throws URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -224,6 +224,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     }
     
     /**
+    * Initializes a new instance of the ManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.

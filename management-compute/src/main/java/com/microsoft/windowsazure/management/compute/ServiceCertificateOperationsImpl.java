@@ -493,7 +493,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -614,7 +615,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);

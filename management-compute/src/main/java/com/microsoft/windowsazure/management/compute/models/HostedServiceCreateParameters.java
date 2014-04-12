@@ -124,7 +124,8 @@ public class HostedServiceCreateParameters {
     public String getLabel() {
         if (this.label == null) {
             return this.getServiceName();
-        } else {
+        }
+        else {
             return this.label;
         }
     }

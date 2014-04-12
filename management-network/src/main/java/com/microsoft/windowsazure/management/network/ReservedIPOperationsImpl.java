@@ -467,7 +467,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -580,7 +581,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);

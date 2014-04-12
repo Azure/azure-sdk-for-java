@@ -29,18 +29,23 @@ public enum KeyStoreType {
     /** The pkcs12. */
     pkcs12;
     
-    public static KeyStoreType fromString(String keyStoreTypeString)
-    {
-        switch (keyStoreTypeString) {
-        case "jceks":
-            return KeyStoreType.jceks;
-        case "jks":
+    public static KeyStoreType fromString(String keyStoreTypeString) {
+    	if (keyStoreTypeString != null) {
+	        if (keyStoreTypeString.equals("jceks")) {
+	            return KeyStoreType.jceks;
+	        }
+	        else if (keyStoreTypeString.equals("jks")) {
+	            return KeyStoreType.jks;
+	        }
+	        else if (keyStoreTypeString.equals("pkcs12")) {
+	            return KeyStoreType.pkcs12;
+	        }
+	        else {
+	            throw new InvalidParameterException(String.format("keyStoreTypeString value %s cannot be recognized.", keyStoreTypeString));
+	        }
+    	}
+    	else {
             return KeyStoreType.jks;
-        case "pkcs12":
-            return KeyStoreType.pkcs12;
-        default :
-            throw new InvalidParameterException(String.format("keyStoreTypeString value %s cannot be recognized.", keyStoreTypeString));
-            
-        }
+    	}
     }
 }
