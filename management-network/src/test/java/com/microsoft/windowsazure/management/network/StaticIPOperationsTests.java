@@ -25,25 +25,24 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBase {
-    
-	   @BeforeClass
-	    public static void setup() throws Exception {
-	        createService();
-	        //cleanup();       
-	    }
+    private static String virtualNetworkName = "network123";
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        createService();
+        createNetwork(virtualNetworkName);
+    }
 
     @Test
     public void check() throws Exception {
-    	String virtualNetworkName = "testsdkVirtualNetwork01";
-    	InetAddress ipAddress = InetAddress.getLocalHost();
-    	
+        InetAddress ipAddress = InetAddress.getLocalHost();
+
         // Act
-    	System.out.println("ipAddress = "  + ipAddress.getHostAddress());
-    	NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(virtualNetworkName, ipAddress);
+        NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(virtualNetworkName, ipAddress);
 
         // Assert
         Assert.assertEquals(200, networkStaticIPAvailabilityResponse.getStatusCode());
         Assert.assertNotNull(networkStaticIPAvailabilityResponse.getRequestId());
         Assert.assertEquals(false, networkStaticIPAvailabilityResponse.isAvailable()); 
-    }  
+    }
 }

@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.management.network;
 
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -28,14 +27,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
+    private static String virtualNetworkName = "network123";
+
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createNetwork(virtualNetworkName);
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        String virtualNetworkName ="";
         try {
              ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
              ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
@@ -47,39 +48,24 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
             e.printStackTrace();
         }  
     }
-    
-    @Test
-    public void createClientRootCertificatesSuccess() throws Exception {
-         String virtualNetworkName = "testsdkVirtualNetwork01";      
-         String certificateValue ="";
-        // Arrange
-        ClientRootCertificateCreateParameters createParameters = new ClientRootCertificateCreateParameters();
-        createParameters.setCertificate(certificateValue); 
-        
-        // Act
-        OperationResponse operationResponse = networkManagementClient.getClientRootCertificatesOperations().create(virtualNetworkName, createParameters);
-        
-        // Assert
-        Assert.assertEquals(201, operationResponse.getStatusCode());
-        Assert.assertNotNull(operationResponse.getRequestId());
-    }
-    
+
     @Test
     public void getClientRootCertificates() throws Exception {
-        String certificateThumbprint = "testsdkClientRootCertificate";
-        String virtualNetworkName = "testsdkVirtualNetwork01";
-        // Act
-        ClientRootCertificateGetResponse clientRootCertificateGetResponse = networkManagementClient.getClientRootCertificatesOperations().get(virtualNetworkName, certificateThumbprint);
+        ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
+        ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
+        for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) { 
+            // Act
+            ClientRootCertificateGetResponse clientRootCertificateGetResponse = networkManagementClient.getClientRootCertificatesOperations().get(virtualNetworkName, clientRootCertificate.getThumbprint());
 
-        // Assert
-        Assert.assertEquals(200, clientRootCertificateGetResponse.getStatusCode());
-        Assert.assertNotNull(clientRootCertificateGetResponse.getRequestId());
-        Assert.assertNotNull(clientRootCertificateGetResponse.getCertificate());  
+            // Assert
+            Assert.assertEquals(200, clientRootCertificateGetResponse.getStatusCode());
+            Assert.assertNotNull(clientRootCertificateGetResponse.getRequestId());
+            Assert.assertNotNull(clientRootCertificateGetResponse.getCertificate());  
+        }
     }
     
     @Test
     public void listClientRootCertificatesSuccess() throws Exception {
-        String virtualNetworkName ="testsdkVirtualNetwork01";
         try {
              ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
              ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
