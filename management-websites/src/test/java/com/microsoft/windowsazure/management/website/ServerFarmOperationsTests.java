@@ -123,13 +123,12 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
         Assert.assertNotNull(serverFarmListResponse.getRequestId());
         
          ArrayList<ServerFarmListResponse.ServerFarm> serverFarmslist = serverFarmListResponse.getServerFarms(); 
-           for (ServerFarmListResponse.ServerFarm serverFarm : serverFarmslist)
-           { 
+           for (ServerFarmListResponse.ServerFarm serverFarm : serverFarmslist) { 
                 // Assert               
-             Assert.assertEquals(ServerFarmWorkerSize.Large, serverFarm.getCurrentWorkerSize());
+             Assert.assertNotNull(serverFarm.getCurrentWorkerSize());
              Assert.assertEquals("Default1", serverFarm.getName());  
-             Assert.assertEquals(ServerFarmStatus.Ready, serverFarm.getStatus());
-             Assert.assertEquals(ServerFarmWorkerSize.Large, serverFarm.getWorkerSize());             
+             Assert.assertNotNull(serverFarm.getStatus());
+             Assert.assertNotNull(serverFarm.getWorkerSize());             
            }
     }
    
