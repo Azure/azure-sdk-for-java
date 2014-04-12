@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKey
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,13 +138,13 @@ public abstract class SqlManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
+            new URI(System.getenv(ManagementConfiguration.URI)),
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         );
     }
     
-
     protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);

@@ -35,7 +35,7 @@ public abstract class ServiceClient<TClient> implements
     }
 
     private CloseableHttpClient httpClient;
-
+    
     public CloseableHttpClient getHttpClient() {
         if (this.httpClient == null) {
             String proxyHost = System.getProperty("http.proxyHost");

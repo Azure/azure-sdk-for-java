@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management.website;
 
+import java.net.URI;
 import java.util.Map;
 
 import com.microsoft.windowsazure.Configuration;
@@ -49,6 +50,7 @@ public abstract class WebSiteManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
+                new URI(ManagementConfiguration.URI),
                 System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
                 System.getenv(ManagementConfiguration.KEYSTORE_PATH),
                 System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD));

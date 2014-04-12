@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -54,26 +56,26 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * </ul>
  * 
  */
-public abstract class PublishSettingsLoader {
+public class PublishSettingsLoader {
 
     /**
-     * Create a service management configuration using the given publishsettings
+     * Create a service management configuration using specified publish settings
      * file and subscription ID.
      * <p>
      * <b>Please note:</b>
      * <ul>
      * <li>Will use the first PublishProfile present in the file.</li>
-     * <li>The unprotected keystore file <code>keystore.out</code> will be left
-     * in the working directory (contains the management certificate).</li>
+     * <li>An unprotected keystore file <code>keystore.out</code> will be left
+     * in the working directory containing the management certificate.</li>
      * </ul>
      * </p>
      * 
-     * @param publishSettingsFile
-     *            publish settings file with a valid certificate obtained from
-     *            the Windows Azure website
+     * @param publishSettingsFileName
+     *            The name of the publish settings file with a valid certificate obtained from
+     *            Microsoft Azure portal.
      * @param subscriptionId
      *            subscription ID
-     * @return a valid service management configuration
+     * @return a management configuration instance
      * @throws IOException
      *             if any error occurs when handling the specified file or the
      *             keystore
@@ -81,35 +83,115 @@ public abstract class PublishSettingsLoader {
      *             if the file is not of the expected format
      */
     public static Configuration createManagementConfiguration(
-            String publishSettingsFile, String subscriptionId)
+            String publishSettingsFileName, String subscriptionId)
             throws IOException {
-        File file = new File(publishSettingsFile);
-        // By default creating keystore outfile in user home
-        String outStore = System.getProperty("user.home") + File.separator
+        if (publishSettingsFileName == null)
+        {
+            throw new IllegalArgumentException("The publish settings file cannot be null.");
+        }
+        
+        if (subscriptionId == null){
+            throw new IllegalArgumentException("The subscription ID cannot be null.");
+        }
+        
+        if (publishSettingsFileName.isEmpty())
+        {
+            throw new IllegalArgumentException("The publish settings file cannot be empty.");
+        }
+        
+        if (subscriptionId.isEmpty())
+        {
+            throw new IllegalArgumentException("The subscription ID cannot be empty.");
+        }
+        
+        File publishSettingsFile = new File(publishSettingsFileName);
+        // By default creating keystore output file in user home
+        String outputKeyStore = System.getProperty("user.home") + File.separator
                 + ".azure" + File.separator + subscriptionId + ".out";
-        String certificate = null;
+        URI managementUrl = createCertficateFromPublishSettingsFile(publishSettingsFile, subscriptionId, outputKeyStore);
+        return ManagementConfiguration.configure(managementUrl, subscriptionId, outputKeyStore, "",
+                KeyStoreType.pkcs12);
+    }
+
+    private static KeyStore createKeyStoreFromCertifcate(String certificate, String keyStoreFileName ) throws IOException {
+        KeyStore keyStore = null;
         try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance()
+            if (Float.valueOf(System.getProperty("java.specification.version")) < 1.7) {
+                // Use Bouncy Castle Provider for java versions less than 1.7
+                keyStore = getBCProviderKeyStore();
+            } else {
+                keyStore = KeyStore.getInstance("PKCS12");
+            }
+            
+            keyStore.load(null, "".toCharArray());
+            
+            InputStream sslInputStream = new ByteArrayInputStream(
+                    Base64.decodeBase64(certificate));
+
+            keyStore.load(sslInputStream, "".toCharArray());
+
+            // create directories if does not exists
+            File outStoreFile = new File(keyStoreFileName);
+            if (!outStoreFile.getParentFile().exists()) {
+                outStoreFile.getParentFile().mkdirs();
+            }
+
+            OutputStream outputStream;
+            outputStream = new FileOutputStream(keyStoreFileName);
+            keyStore.store(outputStream, "".toCharArray());
+            outputStream.close();
+            
+        } catch (KeyStoreException e) {
+            throw new IllegalArgumentException(
+                    "Cannot create keystore from the publish settings file", e);
+        } catch (CertificateException e) {
+            throw new IllegalArgumentException(
+                    "Cannot create keystore from the publish settings file", e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(
+                    "Cannot create keystore from the publish settings file", e);
+        }
+
+        return keyStore;
+    }
+
+    private static URI createCertficateFromPublishSettingsFile(
+            File publishSettingsFile, String subscriptionId, String outputKeyStore) throws IOException {
+        String certificate = null;
+        URI managementUri = null;
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder();
-            Document doc = db.parse(file);
-            doc.getDocumentElement().normalize();
-            NodeList ndPublishProfile = doc
+            Document document = documentBuilder.parse(publishSettingsFile);
+            document.getDocumentElement().normalize();
+            NodeList publishProfileNodeList = document
                     .getElementsByTagName("PublishProfile");
-            Element ppElement = (Element) ndPublishProfile.item(0);
-            if (ppElement.hasAttribute("SchemaVersion")
-                    && ppElement.getAttribute("SchemaVersion").equals("2.0")) {
-                NodeList subs = ppElement.getElementsByTagName("Subscription");
-                for (int i = 0; i < subs.getLength(); i++) {
-                    Element subscription = (Element) subs.item(i);
+            Element publishProfileElement = (Element) publishProfileNodeList.item(0);
+            if (publishProfileElement.hasAttribute("SchemaVersion")
+                    && publishProfileElement.getAttribute("SchemaVersion").equals("2.0")) {
+                NodeList subscriptionNodeList = publishProfileElement.getElementsByTagName("Subscription");
+                for (int i = 0; i < subscriptionNodeList.getLength(); i++) {
+                    Element subscription = (Element) subscriptionNodeList.item(i);
                     String id = subscription.getAttribute("Id");
                     if (id.equals(subscriptionId)) {
-                        certificate = subscription
-                                .getAttribute("ManagementCertificate");
+                        certificate = subscription.getAttribute("ManagementCertificate");
+                        String serviceManagementUrl = subscription.getAttribute("ServiceManagementUrl");
+                        try {
+                            managementUri = new URI(serviceManagementUrl);
+                        } catch (URISyntaxException e) {
+                            throw new IllegalArgumentException("The syntax of the Url in the publish settings file is incorrect.", e);
+                        }
                         break;
                     }
                 }
             } else {
-                certificate = ppElement.getAttribute("ManagementCertificate");
+                certificate = publishProfileElement.getAttribute("ManagementCertificate");
+                String url = publishProfileElement.getAttribute("Url");
+                try {
+                    managementUri = new URI(url);
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException("The syntax of the Url in the publish settings file is incorrect.", e);
+                }
             }
         } catch (ParserConfigurationException e) {
             throw new IllegalArgumentException(
@@ -121,42 +203,9 @@ public abstract class PublishSettingsLoader {
             throw new IllegalArgumentException(
                     "could not parse publishsettings file", e);
         }
-
-        KeyStore store = null;
-        try {
-            if (Float.valueOf(System.getProperty("java.specification.version")) < 1.7) {
-                // Use Bouncy Castle Provider for java versions less than 1.7
-                store = getBCProviderKeyStore();
-            } else {
-                store = KeyStore.getInstance("PKCS12");
-            }
-            store.load(null, "".toCharArray());
-            InputStream sslInputStream = new ByteArrayInputStream(
-                    Base64.decodeBase64(certificate));
-
-            store.load(sslInputStream, "".toCharArray());
-
-            // create directories if doesnot exists
-            File outStoreFile = new File(outStore);
-            if (!outStoreFile.getParentFile().exists()) {
-                outStoreFile.getParentFile().mkdirs();
-            }
-            OutputStream out = new FileOutputStream(outStore);
-            store.store(out, "".toCharArray());
-            out.close();
-        } catch (KeyStoreException e) {
-            throw new IllegalArgumentException(
-                    "could not create keystore from publishsettings file", e);
-        } catch (CertificateException e) {
-            throw new IllegalArgumentException(
-                    "could not create keystore from publishsettings file", e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(
-                    "could not create keystore from publishsettings file", e);
-        }
-
-        return ManagementConfiguration.configure(subscriptionId, outStore, "",
-                KeyStoreType.pkcs12);
+        
+        createKeyStoreFromCertifcate(certificate, outputKeyStore);
+        return managementUri;
     }
 
     /**
@@ -182,9 +231,9 @@ public abstract class PublishSettingsLoader {
             // Using catch all exception class to avoid repeated code in
             // different catch blocks
             throw new RuntimeException(
-                    "Could not create keystore from publishsettings file."
-                            + "Make sure java versions less than 1.7 has bouncycastle jar in classpath",
-                    e);
+                "Could not create keystore from publishsettings file."
+                + "Make sure java versions less than 1.7 has bouncycastle jar in classpath",
+                e);
         }
         return keyStore;
     }

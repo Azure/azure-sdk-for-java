@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management.compute;
 
+import java.net.URI;
 import java.util.Random;
 
 import com.microsoft.windowsazure.management.configuration.*;
@@ -48,6 +49,7 @@ public abstract class ComputeManagementIntegrationTestBase {
    
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
+            new URI(System.getenv(ManagementConfiguration.URI)),
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)

@@ -78,8 +78,8 @@ public class Configuration {
                 instance = Configuration.load();
             } catch (IOException e) {
                 log.error(
-                        "Unable to load META-INF/com.microsoft.windowsazure.properties",
-                        e);
+                    "Unable to load META-INF/com.microsoft.windowsazure.properties",
+                    e);
                 instance = new Configuration();
             }
         }

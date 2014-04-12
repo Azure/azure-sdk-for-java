@@ -14,8 +14,10 @@
  */
 package com.microsoft.windowsazure.management;
 
+import java.net.URI;
 import java.util.Map;
 
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
@@ -47,9 +49,11 @@ public abstract class ManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
+                null,
                 System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
                 System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
     }
 }

@@ -18,6 +18,7 @@ package com.microsoft.windowsazure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -700,6 +701,7 @@ public class ManagementResourceStepdefs
     protected static Configuration createConfiguration() throws Exception
     {
         return ManagementConfiguration.configure(
+            new URI(System.getenv(ManagementConfiguration.URI)),
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
