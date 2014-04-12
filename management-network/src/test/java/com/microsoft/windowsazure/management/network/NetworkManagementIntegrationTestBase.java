@@ -15,23 +15,20 @@
 package com.microsoft.windowsazure.management.network;
 
 import java.net.URI;
-import java.util.Random;
 
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.configuration.*;
+import com.microsoft.windowsazure.*;
 
 public abstract class NetworkManagementIntegrationTestBase {
 
-    protected static String testStorageAccountPrefix = "aztst";
-
-    protected static NetworkManagementClient networkManagementClient;
+    protected static NetworkManagementClient networkManagementClient;	
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
-        Configuration config = createConfiguration();
+        Configuration config = createConfiguration();      
         networkManagementClient = NetworkManagementService.create(config);
     }
-  
+
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(
@@ -39,15 +36,6 @@ public abstract class NetworkManagementIntegrationTestBase {
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-        ); 
-    }
-    
-    protected static String randomString(int length) {
-        Random random = new Random();
-        StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++) {
-            stringBuilder.append((char)('a' + random.nextInt(26)));
-        }
-        return stringBuilder.toString();
+        );      
     }
 }
