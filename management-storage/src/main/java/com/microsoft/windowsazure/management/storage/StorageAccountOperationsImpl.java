@@ -230,7 +230,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             createStorageServiceInputElement.appendChild(descriptionElement);
-        } else {
+        }
+        else {
             Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");
@@ -560,7 +561,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -1609,7 +1611,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             updateStorageServiceInputElement.appendChild(descriptionElement);
-        } else {
+        }
+        else {
             Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");

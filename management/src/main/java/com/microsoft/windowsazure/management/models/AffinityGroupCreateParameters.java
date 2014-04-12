@@ -58,7 +58,8 @@ public class AffinityGroupCreateParameters {
     public String getLabel() {
         if (this.label == null) {
             return this.getName();
-        } else {
+        }
+        else {
             return this.label;
         }
     }

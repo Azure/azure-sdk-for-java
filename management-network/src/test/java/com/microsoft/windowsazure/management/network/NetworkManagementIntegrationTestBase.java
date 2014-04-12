@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management.network;
 
+import java.net.URI;
 import java.util.Random;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -32,20 +33,20 @@ public abstract class NetworkManagementIntegrationTestBase {
     }
   
     protected static Configuration createConfiguration() throws Exception {
+        String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            baseUri != null ? new URI(baseUri) : null,
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         ); 
     }
     
-    protected static String randomString(int length)
-    {
+    protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++)
-        {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }

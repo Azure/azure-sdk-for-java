@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -150,35 +151,43 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param baseUri Required. The URI used as the base for all Service
     * Management requests.
     */
-    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
+    @Inject
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null) {
-            throw new NullPointerException("baseUri");
+        else {
+            this.credentials = credentials;
         }
-        this.credentials = credentials;
-        this.baseUri = baseUri;
+        if (baseUri == null) {
+            try {
+                this.baseUri = new URI("https://management.core.windows.net");
+            }
+            catch (URISyntaxException ex) {
+            }
+        }
+        else {
+            this.baseUri = baseUri;
+        }
     }
     
     /**
     * Initializes a new instance of the WebSiteManagementClientImpl class.
-    * Initializes a new instance of the WebSiteManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
-    @Inject
-    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials) throws URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -188,6 +197,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
+    * Initializes a new instance of the WebSiteManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
