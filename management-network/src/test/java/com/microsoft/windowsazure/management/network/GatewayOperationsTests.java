@@ -19,9 +19,7 @@ package com.microsoft.windowsazure.management.network;
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.management.network.models.*;
-import com.microsoft.windowsazure.exception.ServiceException;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,21 +31,6 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     public static void setup() throws Exception {
         createService();
         createNetwork(virtualNetworkName);
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        try {
-            // Arrange  
-            GatewayListConnectionsResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
-            ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-            for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist) {
-                Assert.assertNotNull(gatewayConnection.getLocalNetworkSiteName());
-            }
-        }
-        catch (ServiceException e) {
-            e.printStackTrace();
-        }  
     }
 
     @Test
