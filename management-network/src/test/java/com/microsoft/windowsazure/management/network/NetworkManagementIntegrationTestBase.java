@@ -25,12 +25,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
@@ -43,7 +45,9 @@ public abstract class NetworkManagementIntegrationTestBase {
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
-        Configuration config = createConfiguration();      
+        Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
+
         networkManagementClient = NetworkManagementService.create(config);
     }
 

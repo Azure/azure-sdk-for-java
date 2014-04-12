@@ -17,6 +17,9 @@ package com.microsoft.windowsazure.management.compute;
 import java.net.URI;
 import java.util.Random;
 
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.management.*;
@@ -45,6 +48,8 @@ public abstract class ComputeManagementIntegrationTestBase {
     
     protected static void createManagementClient() throws Exception {
         Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
+
         managementClient = ManagementService.create(config);
     }
    
