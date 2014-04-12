@@ -63,11 +63,11 @@ import javax.xml.bind.annotation.XmlType;
 class StatusLeaseInfo {
 
     @XmlElement(name = "Acquire")
-    protected AcquireLeaseInfo acquire;
+    private AcquireLeaseInfo acquire;
     @XmlElement(name = "Release")
-    protected StatusLeaseInfo.Release release;
+    private StatusLeaseInfo.Release release;
     @XmlAttribute(name = "ClientId", required = true)
-    protected String clientId;
+    private String clientId;
 
     /**
      * Gets the value of the acquire property.

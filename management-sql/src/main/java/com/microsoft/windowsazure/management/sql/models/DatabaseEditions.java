@@ -26,13 +26,13 @@ package com.microsoft.windowsazure.management.sql.models;
 /**
 * Specifies the edition of the SQL database.
 */
-public class DatabaseEditions {
+public abstract class DatabaseEditions {
     /**
     * The Web Edition Database is best suited for small Web applications and
     * workgroup or departmental applications. This edition supports a database
     * with a maximum size of 1 or 5 GB of data.
     */
-    public static final String Web = "Web";
+    public static final String WEB = "Web";
     
     /**
     * The Business Edition Database is best suited for independent software
@@ -40,5 +40,5 @@ public class DatabaseEditions {
     * applications. This edition supports a database of up to 150 GB of data,
     * in 10GB increments up to 50GB, and then 50 GB increments.
     */
-    public static final String Business = "Business";
+    public static final String BUSINESS = "Business";
 }

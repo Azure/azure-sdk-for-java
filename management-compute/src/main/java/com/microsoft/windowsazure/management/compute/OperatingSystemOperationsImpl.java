@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
@@ -39,7 +40,6 @@ import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -137,7 +137,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/operatingsystems";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/operatingsystems";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -199,7 +199,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                         operatingSystemInstance.setLabel(labelInstance);
                     }
                     
@@ -227,7 +227,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     Element familyLabelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "FamilyLabel");
                     if (familyLabelElement != null) {
                         String familyLabelInstance;
-                        familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decodeBase64(familyLabelElement.getTextContent().getBytes())) : null;
+                        familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decode(familyLabelElement.getTextContent())) : null;
                         operatingSystemInstance.setFamilyLabel(familyLabelInstance);
                     }
                 }
@@ -308,7 +308,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/operatingsystemfamilies";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/operatingsystemfamilies";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -370,7 +370,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                         operatingSystemFamilyInstance.setLabel(labelInstance);
                     }
                     
@@ -391,7 +391,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             Element labelElement2 = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                             if (labelElement2 != null) {
                                 String labelInstance2;
-                                labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decodeBase64(labelElement2.getTextContent().getBytes())) : null;
+                                labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decode(labelElement2.getTextContent())) : null;
                                 operatingSystemInstance.setLabel(labelInstance2);
                             }
                             

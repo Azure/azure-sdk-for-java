@@ -22,17 +22,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.ContainerACLDateAdapter;
 
 /**
  * Represents the public access properties and the container-level access
  * policies of a container in the Blob storage service. This is returned by
- * calls to implementations of {@link BlobContract#getContainerACL(String)} and
- * {@link BlobContract#getContainerACL(String, BlobServiceOptions)}, and passed
+ * calls to implementations of {@link com.microsoft.windowsazure.services.blob.BlobContract#getContainerACL(String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getContainerACL(String, BlobServiceOptions)}, and passed
  * as a parameter to calls to implementations of
- * {@link BlobContract#setContainerACL(String, ContainerACL)} and
- * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}
  * .
  * <p>
  * See the <a
@@ -67,8 +66,8 @@ public class ContainerACL {
      * <p>
      * This value is only set on a container when this {@link ContainerACL}
      * instance is passed as a parameter to a call to an implementation of
-     * {@link BlobContract#setContainerACL(String, ContainerACL)} or
-     * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      * 
      * @param etag
      *            A {@link String} containing the <strong>Etag</strong> value to
@@ -100,8 +99,8 @@ public class ContainerACL {
      * <p>
      * This value is only set on a container when this {@link ContainerACL}
      * instance is passed as a parameter to a call to an implementation of
-     * {@link BlobContract#setContainerACL(String, ContainerACL)} or
-     * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      * 
      * @param lastModified
      *            A {@link java.util.Date} containing the last modified time to
@@ -132,8 +131,8 @@ public class ContainerACL {
      * <p>
      * This value is only set on a container when this {@link ContainerACL}
      * instance is passed as a parameter to a call to an implementation of
-     * {@link BlobContract#setContainerACL(String, ContainerACL)} or
-     * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      * 
      * @param publicAccess
      *            A {@link PublicAccessType} value representing the public
@@ -166,8 +165,8 @@ public class ContainerACL {
      * <p>
      * This value is only set on a container when this {@link ContainerACL}
      * instance is passed as a parameter to a call to an implementation of
-     * {@link BlobContract#setContainerACL(String, ContainerACL)} or
-     * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      * 
      * @param signedIdentifiers
      *            A {@link List} of {@link SignedIdentifier} instances
@@ -211,8 +210,8 @@ public class ContainerACL {
      * <p>
      * This value is only set on a container when this {@link ContainerACL}
      * instance is passed as a parameter to a call to an implementation of
-     * {@link BlobContract#setContainerACL(String, ContainerACL)} or
-     * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      * 
      * @param id
      *            A {@link String} containing the name for the access policy.

@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -87,7 +88,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -205,12 +205,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             throw new NullPointerException("parameters");
         }
         if (parameters.getProvisioningConfiguration() != null) {
-            if (parameters.getProvisioningConfiguration().getAdminPassword() == null) {
-                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminPassword");
-            }
-            if (parameters.getProvisioningConfiguration().getAdminUserName() == null) {
-                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminUserName");
-            }
             if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
                 if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
                     if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null) {
@@ -294,7 +288,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -480,9 +474,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(computerNameElement);
             }
             
-            Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-            adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
-            provisioningConfigurationElement.appendChild(adminPasswordElement);
+            if (parameters.getProvisioningConfiguration().getAdminPassword() != null) {
+                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
+                provisioningConfigurationElement.appendChild(adminPasswordElement);
+            }
             
             if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null) {
                 Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -594,9 +590,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-            adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
-            provisioningConfigurationElement.appendChild(adminUsernameElement);
+            if (parameters.getProvisioningConfiguration().getAdminUserName() != null) {
+                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
+                provisioningConfigurationElement.appendChild(adminUsernameElement);
+            }
             
             if (parameters.getProvisioningConfiguration().getHostName() != null) {
                 Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -794,7 +792,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -969,12 +967,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
-                if (configurationSetsParameterItem.getAdminPassword() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
-                }
-                if (configurationSetsParameterItem.getAdminUserName() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
-                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -1055,7 +1047,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1243,9 +1235,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                configurationSetElement.appendChild(adminPasswordElement);
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -1357,9 +1351,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                configurationSetElement.appendChild(adminUsernameElement);
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -1477,7 +1473,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         if (resourceExtensionParameterValuesItem.getValue() != null) {
                             Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                            valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                            valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
                             resourceExtensionParameterValueElement.appendChild(valueElement);
                         }
                         
@@ -1737,12 +1733,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             for (Role rolesParameterItem : parameters.getRoles()) {
                 if (rolesParameterItem.getConfigurationSets() != null) {
                     for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets()) {
-                        if (configurationSetsParameterItem.getAdminPassword() == null) {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminPassword");
-                        }
-                        if (configurationSetsParameterItem.getAdminUserName() == null) {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminUserName");
-                        }
                         if (configurationSetsParameterItem.getDomainJoin() != null) {
                             if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                                 if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -1821,7 +1811,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1856,7 +1846,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         deploymentElement.appendChild(deploymentSlotElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         deploymentElement.appendChild(labelElement);
         
         Element roleListSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleList");
@@ -2036,9 +2026,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(computerNameElement);
                     }
                     
-                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                    configurationSetElement.appendChild(adminPasswordElement);
+                    if (configurationSetsItem.getAdminPassword() != null) {
+                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                        configurationSetElement.appendChild(adminPasswordElement);
+                    }
                     
                     if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -2150,9 +2142,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                    configurationSetElement.appendChild(adminUsernameElement);
+                    if (configurationSetsItem.getAdminUserName() != null) {
+                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                        configurationSetElement.appendChild(adminUsernameElement);
+                    }
                     
                     if (configurationSetsItem.getHostName() != null) {
                         Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -2264,7 +2258,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             if (resourceExtensionParameterValuesItem.getValue() != null) {
                                 Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                                valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
                                 resourceExtensionParameterValueElement.appendChild(valueElement);
                             }
                             
@@ -2573,7 +2567,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + virtualMachineName.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -2695,7 +2689,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2833,7 +2827,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2983,7 +2977,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/Roles/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/Roles/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3143,7 +3137,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3269,7 +3263,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/Roles/Operations";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/Roles/Operations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3423,12 +3417,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
-                if (configurationSetsParameterItem.getAdminPassword() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
-                }
-                if (configurationSetsParameterItem.getAdminUserName() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
-                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -3513,7 +3501,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + virtualMachineName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3701,9 +3689,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                configurationSetElement.appendChild(adminPasswordElement);
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -3815,9 +3805,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                configurationSetElement.appendChild(adminUsernameElement);
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -3935,7 +3927,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         if (resourceExtensionParameterValuesItem.getValue() != null) {
                             Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                            valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                            valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
                             resourceExtensionParameterValueElement.appendChild(valueElement);
                         }
                         
@@ -4188,7 +4180,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?" + "comp=UpdateLbSet";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "?" + "comp=UpdateLbSet";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -4498,7 +4490,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4509,8 +4502,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -4616,7 +4609,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4627,8 +4621,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -4723,7 +4717,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4762,7 +4756,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4773,8 +4768,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -4888,7 +4883,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4899,8 +4895,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -4972,7 +4968,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5012,7 +5008,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -5023,8 +5020,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -5098,7 +5095,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + virtualMachineName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -5784,7 +5781,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/ModelFile" + "?" + "FileType=RDP";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + virtualMachineName.trim() + "/ModelFile" + "?" + "FileType=RDP";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -5942,7 +5939,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -5953,8 +5951,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6062,7 +6060,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6073,8 +6072,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6175,7 +6174,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6186,8 +6186,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6292,7 +6292,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6303,8 +6304,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6403,7 +6404,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6414,8 +6416,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6495,7 +6497,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
+    public OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6535,7 +6537,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6546,8 +6549,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -6654,7 +6657,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6665,8 +6669,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

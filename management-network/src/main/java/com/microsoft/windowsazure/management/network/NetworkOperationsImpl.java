@@ -133,7 +133,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -239,7 +239,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -346,7 +346,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/virtualnetwork";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/virtualnetwork";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -688,7 +688,8 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -699,8 +700,8 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

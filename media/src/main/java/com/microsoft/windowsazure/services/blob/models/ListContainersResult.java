@@ -24,15 +24,14 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
 import com.microsoft.windowsazure.core.RFC1123DateAdapter;
+import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API List
  * Containers operation. This is returned by calls to implementations of
- * {@link BlobContract#listContainers} and
- * {@link BlobContract#listContainers(ListContainersOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179352.aspx"
@@ -148,7 +147,7 @@ public class ListContainersResult {
      * to get the marker value to set on a {@link ListContainersOptions}
      * instance using a call to {@link ListContainersOptions#setMarker(String)}.
      * Pass the {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(ListContainersOptions)} call to get
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)} call to get
      * the next portion of the container list.
      * 
      * @return A {@link String} containing the marker used to specify the
@@ -190,7 +189,7 @@ public class ListContainersResult {
      * to get the marker value to set on a {@link ListContainersOptions}
      * instance using a call to {@link ListContainersOptions#setMarker(String)}.
      * Pass the {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(ListContainersOptions)} call to get
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)} call to get
      * the next portion of the container list.
      * 
      * @return A {@link String} containing the next marker value needed to
@@ -232,7 +231,7 @@ public class ListContainersResult {
      * to get the marker value to set on a {@link ListContainersOptions}
      * instance using a call to {@link ListContainersOptions#setMarker(String)}.
      * Pass the {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(ListContainersOptions)} call to get
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)} call to get
      * the next portion of the container list.
      * 
      * @return The maximum number of container list items to return that was

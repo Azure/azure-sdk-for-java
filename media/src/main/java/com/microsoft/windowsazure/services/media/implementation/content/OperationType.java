@@ -29,23 +29,23 @@ public class OperationType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     /** The target entity id. */
     @XmlElement(name = "TargetEntityId", namespace = Constants.ODATA_DATA_NS)
-    protected String targetEntityId;
+    private String targetEntityId;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected String state;
+    private String state;
 
     /** The error code. */
     @XmlElement(name = "ErrorCode", namespace = Constants.ODATA_DATA_NS)
-    protected String errorCode;
+    private String errorCode;
 
     /** The error message. */
     @XmlElement(name = "ErrorMessage", namespace = Constants.ODATA_DATA_NS)
-    protected String errorMessage;
+    private String errorMessage;
 
     /**
      * Gets the id.

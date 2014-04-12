@@ -14,15 +14,11 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -35,68 +31,71 @@ import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveGetRespo
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResponse;
 
 public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTestBase {
-	
-    private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
+
     private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static ServiceObjectiveOperations serviceObjectivesOperations;
 
-    @Before
-    public void setup() throws Exception
-    {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
     }
 
-    @After
-    public void cleanup() throws Exception 
-    {
-        for (String databaseName : databaseToBeRemoved.keySet())
-        {
+    @AfterClass
+    public static void cleanup() throws Exception {
+        for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
-            databaseOperations.delete(serverName, databaseName);
+            try {
+                databaseOperations.delete(serverName, databaseName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
+        databaseToBeRemoved.clear();
         
-        for (String serverName : serverToBeRemoved)
-        {
-            serverOperations.delete(serverName);
+        for (String serverName : serverToBeRemoved) {
+            try {
+                serverOperations.delete(serverName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
     }
-	
+
     @Test
-    public void listServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String serverName = createServer();
-    	createDatabase(serverName);
-    	
-    	// act 
-    	ServiceObjectiveListResponse serviceObjectiveListResponse = serviceObjectivesOperations.list(serverName);
-    	
-    	// assert
-    	assertEquals(6, serviceObjectiveListResponse.getServiceObjectives().size());
-    	
+    public void listServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String serverName = createServer();
+        createDatabase(serverName);
+
+        // act 
+        ServiceObjectiveListResponse serviceObjectiveListResponse = serviceObjectivesOperations.list(serverName);
+
+        // assert
+        assertTrue(serviceObjectiveListResponse.getServiceObjectives().size() > 0);
     }
-    
+
     @Test
-    public void getServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String serverName = createServer();
-    	createDatabase(serverName);
-    	
-    	// act 
-    	ServiceObjectiveListResponse serviceObjectivesListResponse = serviceObjectivesOperations.list(serverName);
-    	ServiceObjective serviceObjective = serviceObjectivesListResponse.getServiceObjectives().get(0);
-    	ServiceObjectiveGetResponse serviceObjectiveGetResponse = serviceObjectivesOperations.get(serverName, serviceObjective.getId());
-    	ServiceObjective actualServiceObjective = serviceObjectiveGetResponse.getServiceObjective();
-    	
-    	
-    	// assert
-    	assertEquals(serviceObjective.getId(), actualServiceObjective.getId());
-    	assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
-    	assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
-    }   
-    
+    public void getServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String serverName = createServer();
+        createDatabase(serverName);
+
+        // act 
+        ServiceObjectiveListResponse serviceObjectivesListResponse = serviceObjectivesOperations.list(serverName);
+        ServiceObjective serviceObjective = serviceObjectivesListResponse.getServiceObjectives().get(0);
+        ServiceObjectiveGetResponse serviceObjectiveGetResponse = serviceObjectivesOperations.get(serverName, serviceObjective.getId());
+        ServiceObjective actualServiceObjective = serviceObjectiveGetResponse.getServiceObjective();
+
+        // assert
+        assertEquals(serviceObjective.getId(), actualServiceObjective.getId());
+        assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
+        assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
+    }
 }

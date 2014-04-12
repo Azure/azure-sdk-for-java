@@ -14,13 +14,11 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#setBlobProperties(String, String, SetBlobPropertiesOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setBlobProperties(String, String, SetBlobPropertiesOptions)
  * setBlobProperties} request. These options include an optional server timeout
  * for the operation, the MIME content type and content encoding for the blob,
  * the content length, the content language, the MD5 hash, a cache control
@@ -103,7 +101,7 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * then all pages above the specified value are cleared.
      * <p>
      * This property cannot be used to change the size of a block blob. Setting
-     * this property for a block blob causes a {@link ServiceException} to be
+     * this property for a block blob causes a {@link com.microsoft.windowsazure.exception.ServiceException} to be
      * thrown.
      * <p>
      * Note that this value only affects calls made on methods where this
@@ -339,7 +337,7 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * with the request.</li>
      * <li><code>increment</code> - Increments the value of the sequence number
      * by 1. If specifying this option, do not set the sequence number value;
-     * doing so will cause a {@link ServiceException} to be thrown.</li>
+     * doing so will cause a {@link com.microsoft.windowsazure.exception.ServiceException} to be thrown.</li>
      * </ul>
      * <p>
      * Note that this value only affects calls made on methods where this

@@ -35,35 +35,35 @@ public class OriginType implements MediaServiceDTO {
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     /** The description. */
     @XmlElement(name = "Description", namespace = Constants.ODATA_DATA_NS)
-    protected String description;
+    private String description;
 
     /** The hostName. */
     @XmlElement(name = "HostName", namespace = Constants.ODATA_DATA_NS)
-    protected String hostName;
+    private String hostName;
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected String state;
+    private String state;
 
     /** The reserved units. */
     @XmlElement(name = "ReservedUnits", namespace = Constants.ODATA_DATA_NS)
-    protected int reservedUnits;
+    private int reservedUnits;
 
     /** The settings. */
     @XmlElement(name = "Settings", namespace = Constants.ODATA_DATA_NS)
-    protected String settings;
+    private String settings;
 
     /**
      * Gets the id.

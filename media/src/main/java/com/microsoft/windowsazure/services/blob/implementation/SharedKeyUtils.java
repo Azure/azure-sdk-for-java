@@ -21,7 +21,7 @@ import java.util.Locale;
 
 import com.sun.jersey.api.client.ClientRequest;
 
-public class SharedKeyUtils {
+public abstract class SharedKeyUtils {
     public static final String AUTHORIZATION_FILTER_MARKER = SharedKeyUtils.class
             .getName();
 

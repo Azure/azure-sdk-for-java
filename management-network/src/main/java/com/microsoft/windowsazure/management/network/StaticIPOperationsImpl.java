@@ -126,7 +126,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "?";
         url = url + "op=checkavailability";
         url = url + "&" + "address=" + URLEncoder.encode(ipAddress.getHostAddress(), "UTF-8");
         // Trim '/' character from the end of baseUrl and beginning of url.

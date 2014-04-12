@@ -31,31 +31,31 @@ public class ContentKeyRestType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     /** The content key type. */
     @XmlElement(name = "ContentKeyType", namespace = Constants.ODATA_DATA_NS)
-    protected Integer contentKeyType;
+    private Integer contentKeyType;
 
     /** The encrypted content key. */
     @XmlElement(name = "EncryptedContentKey", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptedContentKey;
+    private String encryptedContentKey;
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     /** The protection key id. */
     @XmlElement(name = "ProtectionKeyId", namespace = Constants.ODATA_DATA_NS)
-    protected String protectionKeyId;
+    private String protectionKeyId;
 
     /** The protection key type. */
     @XmlElement(name = "ProtectionKeyType", namespace = Constants.ODATA_DATA_NS)
@@ -63,7 +63,7 @@ public class ContentKeyRestType implements MediaServiceDTO {
 
     /** The checksum. */
     @XmlElement(name = "Checksum", namespace = Constants.ODATA_DATA_NS)
-    protected String checksum;
+    private String checksum;
 
     /**
      * Gets the id.

@@ -16,12 +16,10 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Copy
  * Blob operation. This is returned by calls to implementations of
- * {@link BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)}
  * .
  * <p>
  * See the <a

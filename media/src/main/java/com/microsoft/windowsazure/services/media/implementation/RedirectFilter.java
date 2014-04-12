@@ -15,10 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import com.microsoft.windowsazure.core.pipeline.jersey.IdempotentClientFilter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.microsoft.windowsazure.core.pipeline.jersey.IdempotentClientFilter;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

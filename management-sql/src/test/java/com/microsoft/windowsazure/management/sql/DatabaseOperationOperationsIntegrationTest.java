@@ -14,13 +14,10 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,67 +32,57 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseOperationGetResp
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse;
 
 public class DatabaseOperationOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
-	
+
     private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
-    private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static DatabaseOperationOperations databaseOperationOperations;
 
-    @Before
-    public void setup() throws Exception
-    {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
     }
 
-    @After
-    public void cleanup() throws Exception 
-    {
-        for (String databaseName : databaseToBeRemoved.keySet())
-        {
+    @AfterClass
+    public static void cleanup() throws Exception {
+        for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             databaseOperations.delete(serverName, databaseName);
         }
-        
-        for (String serverName : serverToBeRemoved)
-        {
+
+        for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
     }
-	
+
     @Test
-    public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String serverName = createServer();
-    	createDatabase(serverName);
-    	
-    	// act 
-    	DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
-    	
-    	// assert
-    	assertEquals(1, databaseOperationOperationsListResponse.getDatabaseOperations().size());
-    	
+    public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String serverName = createServer();
+        createDatabase(serverName);
+        
+        // act 
+        DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
+        
+        // assert
+        assertEquals(1, databaseOperationOperationsListResponse.getDatabaseOperations().size());
     }
-    
+
     @Test
-    public void getDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String serverName = createServer();
-    	createDatabase(serverName);
-    	
-    	// act 
-    	DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
-    	DatabaseOperation databaseOperation = databaseOperationOperationsListResponse.getDatabaseOperations().get(0);
-    	DatabaseOperationGetResponse databaseOperationGetResponse = databaseOperationOperations.get(serverName, databaseOperation.getId());
-    	DatabaseOperation actualDatabaseOperation = databaseOperationGetResponse.getDatabaseOperation();
-    	
-    	
-    	// assert
-    	assertEquals(databaseOperation.getDatabaseName(), actualDatabaseOperation.getDatabaseName());
-    	assertEquals(databaseOperation.getId(), actualDatabaseOperation.getId());
-    }   
-    
+    public void getDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String serverName = createServer();
+        createDatabase(serverName);
+
+        // act 
+        DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
+        DatabaseOperation databaseOperation = databaseOperationOperationsListResponse.getDatabaseOperations().get(0);
+        DatabaseOperationGetResponse databaseOperationGetResponse = databaseOperationOperations.get(serverName, databaseOperation.getId());
+        DatabaseOperation actualDatabaseOperation = databaseOperationGetResponse.getDatabaseOperation();
+
+        // assert
+        assertEquals(databaseOperation.getDatabaseName(), actualDatabaseOperation.getDatabaseName());
+        assertEquals(databaseOperation.getId(), actualDatabaseOperation.getId());
+    }
 }

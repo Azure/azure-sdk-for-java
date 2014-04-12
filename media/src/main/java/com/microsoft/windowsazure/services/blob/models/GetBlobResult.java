@@ -17,12 +17,10 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Blob operation. This is returned by calls to implementations of
- * {@link BlobContract#getBlob(String, String, GetBlobOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getBlob(String, String, GetBlobOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179440.aspx">Get

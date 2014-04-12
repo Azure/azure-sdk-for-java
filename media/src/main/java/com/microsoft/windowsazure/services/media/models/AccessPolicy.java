@@ -31,7 +31,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Access Policy entities.
  * 
  */
-public class AccessPolicy {
+public final class AccessPolicy {
 
     private static final String ENTITY_SET = "AccessPolicies";
 

@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.windowsazure</groupId>
-    <version>0.4.6</version>
+    <version>0.5.0</version>
     <artifactId>microsoft-azure-api-bom</artifactId>
   </parent>
 
@@ -213,8 +213,8 @@
               <configLocation>src/config/checkstyle.xml</configLocation>
               <encoding>UTF-8</encoding>
               <consoleOutput>true</consoleOutput>
-              <failsOnError>false</failsOnError>
-              <failOnViolation>false</failOnViolation>
+              <failsOnError>true</failsOnError>
+              <failOnViolation>true</failOnViolation>
               <linkXRef>false</linkXRef>
             </configuration>
             <goals>
@@ -293,16 +293,11 @@
     <module>../core-test</module> 
     <module>../management</module>
     <module>../management-compute</module>
-    <module>../management-monitoring</module>
-    <module>../management-scheduler</module>
-    <module>../management-serviceBus</module>
     <module>../management-sql</module>
     <module>../management-storage</module>
-    <module>../management-store</module>
     <module>../management-network</module>
-    <module>../management-website</module>
+    <module>../management-websites</module>
     <module>../media</module>
-    <module>../scheduler</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>
     <module>../tracing-util</module>

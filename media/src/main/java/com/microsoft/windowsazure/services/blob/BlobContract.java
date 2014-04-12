@@ -14,8 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob;
 
-import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import java.io.InputStream;
+
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
@@ -32,7 +34,6 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * Defines the methods available on the Windows Azure blob storage service.
@@ -286,8 +287,8 @@ public interface BlobContract extends JerseyFilterableService<BlobContract> {
      * <p>
      * To create or update a block blob, the blocks that have been successfully
      * written to the server with this method must be committed using a call to
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList)} or
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}.
      * 
      * 
      * @param container
@@ -325,8 +326,8 @@ public interface BlobContract extends JerseyFilterableService<BlobContract> {
      * <p>
      * To create or update a block blob, the blocks that have been successfully
      * written to the server with this method must be committed using a call to
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList)} or
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}.
      * 
      * @param container
      *            A {@link String} containing the name of the blob's container.
@@ -363,9 +364,9 @@ public interface BlobContract extends JerseyFilterableService<BlobContract> {
      * <p>
      * In order to be written as part of a blob, each block in the list must
      * have been successfully written to the server with a call to
-     * {@link BlobContract#createBlobBlock(String, String, String, InputStream)}
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobBlock(String, String, String, InputStream)}
      * or
-     * {@link BlobContract#createBlobBlock(String, String, String, InputStream, CreateBlobBlockOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobBlock(String, String, String, InputStream, CreateBlobBlockOptions)}.
      * 
      * @param container
      *            A {@link String} containing the name of the blob's container.
@@ -399,9 +400,9 @@ public interface BlobContract extends JerseyFilterableService<BlobContract> {
      * <p>
      * In order to be written as part of a blob, each block in the list must
      * have been successfully written to the server with a call to
-     * {@link BlobContract#createBlobBlock(String, String, String, InputStream)}
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobBlock(String, String, String, InputStream)}
      * or
-     * {@link BlobContract#createBlobBlock(String, String, String, InputStream, CreateBlobBlockOptions)}.
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobBlock(String, String, String, InputStream, CreateBlobBlockOptions)}.
      * 
      * @param container
      *            A {@link String} containing the name of the blob's container.

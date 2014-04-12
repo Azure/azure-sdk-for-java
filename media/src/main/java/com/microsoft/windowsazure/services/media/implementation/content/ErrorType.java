@@ -32,11 +32,11 @@ public class ErrorType {
 
     /** The code. */
     @XmlElement(name = "code", namespace = Constants.ODATA_METADATA_NS)
-    protected String code;
+    private String code;
 
     /** The message. */
     @XmlElement(name = "message", namespace = Constants.ODATA_METADATA_NS)
-    protected String message;
+    private String message;
 
     /**
      * Gets the code.

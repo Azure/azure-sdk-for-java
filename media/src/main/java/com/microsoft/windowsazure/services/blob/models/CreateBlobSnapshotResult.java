@@ -16,13 +16,11 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API
  * Snapshot Blob operation. This is returned by calls to implementations of
- * {@link BlobContract#createBlobSnapshot(String, String)} and
- * {@link BlobContract#createBlobSnapshot(String, String, CreateBlobSnapshotOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobSnapshot(String, String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobSnapshot(String, String, CreateBlobSnapshotOptions)}
  * .
  * <p>
  * See the <a

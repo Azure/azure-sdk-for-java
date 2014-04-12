@@ -36,39 +36,39 @@ public class ChannelType implements MediaServiceDTO {
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     /** The description. */
     @XmlElement(name = "Description", namespace = Constants.ODATA_DATA_NS)
-    protected String description;
+    private String description;
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     /** The preview uri. */
     @XmlElement(name = "PreviewUri", namespace = Constants.ODATA_DATA_NS)
-    protected URI previewUri;
+    private URI previewUri;
 
     /** The ingest uri. */
     @XmlElement(name = "IngestUri", namespace = Constants.ODATA_DATA_NS)
-    protected URI ingestUri;
+    private URI ingestUri;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected String state;
+    private String state;
 
     /** The size. */
     @XmlElement(name = "Size", namespace = Constants.ODATA_DATA_NS)
-    protected String size;
+    private String size;
 
     /** The settings. */
     @XmlElement(name = "Settings", namespace = Constants.ODATA_DATA_NS)
-    protected String settings;
+    private String settings;
 
     /**
      * Gets the id.

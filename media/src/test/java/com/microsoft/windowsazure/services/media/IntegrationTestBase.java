@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -49,8 +51,10 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.media.models.NotificationEndPoint;
+import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -69,6 +73,8 @@ public abstract class IntegrationTestBase {
     protected static final String testQueuePrefix = "testqueueprefix";
     protected static final String testChannelPrefix = "testChannel";
     protected static final String testProgramPrefix = "testProgram";
+    protected static final String testNotificationEndPointPrefix = "testNotificationEndPointPrefix";
+
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -150,6 +156,24 @@ public abstract class IntegrationTestBase {
         removeAllTestJobs();
         removeAllTestContentKeys();
         removeAllTestQueues();
+        removeAllTestNotificationEndPoints();
+    }
+    
+    private static void removeAllTestNotificationEndPoints()
+    {
+        try {
+            ListResult<NotificationEndPointInfo> listNotificationEndPointResult = service.list(NotificationEndPoint.list());
+            for (NotificationEndPointInfo notificationEndPoint : listNotificationEndPointResult) {
+                if (notificationEndPoint.getName().startsWith(testNotificationEndPointPrefix));
+                try {
+                    service.delete(NotificationEndPoint.delete(notificationEndPoint.getId()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestQueues() {

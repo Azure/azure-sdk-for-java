@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
@@ -49,7 +50,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -162,7 +162,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -193,7 +193,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         createAffinityGroupElement.appendChild(nameElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         createAffinityGroupElement.appendChild(labelElement);
         
         if (parameters.getDescription() != null) {
@@ -308,7 +308,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -421,7 +421,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -478,7 +478,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                 Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                     result.setLabel(labelInstance);
                 }
                 
@@ -616,7 +616,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -678,7 +678,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                         affinityGroupInstance.setLabel(labelInstance);
                     }
                     
@@ -798,7 +798,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -825,7 +825,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         requestDoc.appendChild(updateAffinityGroupElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         updateAffinityGroupElement.appendChild(labelElement);
         
         if (parameters.getDescription() != null) {

@@ -14,12 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#listBlobs(String, ListBlobsOptions)} request. These
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions)} request. These
  * options include a server response timeout for the request, a prefix for blobs
  * to match, a marker to continue a list operation, a maximum number of results
  * to return with one list operation, a delimiter for structuring virtual blob
@@ -109,7 +107,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * {@link ListBlobsResult} instance to get the marker value to set on a
      * {@link ListBlobsOptions} instance using a call to this method. Pass the
      * {@link ListBlobsOptions} instance as a parameter to a
-     * {@link BlobContract#listBlobs(String, ListBlobsOptions)} call to get the
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions)} call to get the
      * next portion of the blob list.
      * <p>
      * The <em>marker</em> value only affects calls made on methods where this
@@ -154,7 +152,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * {@link ListBlobsOptions} instance using a call to
      * {@link ListBlobsOptions#setMarker(String)}. Pass the
      * {@link ListBlobsOptions} instance as a parameter to a
-     * {@link BlobContract#listBlobs(String, ListBlobsOptions)} call to get the
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions)} call to get the
      * next portion of the blob list.
      * <p>
      * The <em>maxResults</em> value only affects calls made on methods where
@@ -215,7 +213,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * <p>
      * Note that if a delimiter is set, you cannot include snapshots. A request
      * that includes both returns an InvalidQueryParameter error (HTTP status
-     * code 400 - Bad Request), which causes a {@link ServiceException} to be
+     * code 400 - Bad Request), which causes a {@link com.microsoft.windowsazure.exception.ServiceException} to be
      * thrown.
      * <p>
      * The <em>delimiter</em> value only affects calls made on methods where
@@ -273,7 +271,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * <p>
      * Note that if this flag is set, you cannot set a delimiter. A request that
      * includes both returns an InvalidQueryParameter error (HTTP status code
-     * 400 - Bad Request), which causes a {@link ServiceException} to be thrown.
+     * 400 - Bad Request), which causes a {@link com.microsoft.windowsazure.exception.ServiceException} to be thrown.
      * 
      * @param includeSnapshots
      *            Set a value of <code>true</code> to include blob metadata with
@@ -301,8 +299,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * uncommitted blobs with a response. Uncommitted blobs are blobs for which
      * blocks have been uploaded, but which have not been committed with a
      * request to
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList)} or
-     * {@link BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList)} or
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#commitBlobBlocks(String, String, BlockList, CommitBlobBlocksOptions)}
      * .
      * 
      * @param includeUncommittedBlobs

@@ -59,13 +59,13 @@ import javax.xml.bind.annotation.XmlType;
 class RoleInstanceInfo {
 
     @XmlElement(name = "Endpoints", required = true)
-    protected EndpointsInfo endpoints;
+    private EndpointsInfo endpoints;
     @XmlAttribute(required = true)
-    protected String id;
+    private String id;
     @XmlAttribute(required = true)
-    protected int faultDomain;
+    private int faultDomain;
     @XmlAttribute(required = true)
-    protected int updateDomain;
+    private int updateDomain;
 
     /**
      * Gets the value of the endpoints property.

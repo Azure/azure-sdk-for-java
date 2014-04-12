@@ -31,15 +31,15 @@ public class TaskHistoricalEventType implements MediaServiceDTO {
 
     /** The code. */
     @XmlElement(name = "Code", namespace = Constants.ODATA_DATA_NS)
-    protected String code;
+    private String code;
 
     /** The message. */
     @XmlElement(name = "Message", namespace = Constants.ODATA_DATA_NS)
-    protected String message;
+    private String message;
 
     /** The time stamp. */
     @XmlElement(name = "TimeStamp", namespace = Constants.ODATA_DATA_NS)
-    protected Date timeStamp;
+    private Date timeStamp;
 
     /**
      * Gets the code.

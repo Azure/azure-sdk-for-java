@@ -20,8 +20,8 @@ package com.microsoft.windowsazure.services.queue;
  * <p>
  * These values must not be altered.
  */
-public class QueueConfiguration {
-    public final static String ACCOUNT_NAME = "queue.accountName";
-    public final static String ACCOUNT_KEY = "queue.accountKey";
-    public final static String URI = "queue.uri";
+public abstract class QueueConfiguration {
+    public static final String ACCOUNT_NAME = "queue.accountName";
+    public static final String ACCOUNT_KEY = "queue.accountKey";
+    public static final String URI = "queue.uri";
 }

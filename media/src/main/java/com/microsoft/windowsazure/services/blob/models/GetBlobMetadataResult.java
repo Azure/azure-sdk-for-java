@@ -17,13 +17,11 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Blob Metadata operation. This is returned by calls to implementations of
- * {@link BlobContract#getBlobMetadata(String, String)} and
- * {@link BlobContract#getBlobMetadata(String, String, GetBlobMetadataOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getBlobMetadata(String, String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getBlobMetadata(String, String, GetBlobMetadataOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179350.aspx">Get

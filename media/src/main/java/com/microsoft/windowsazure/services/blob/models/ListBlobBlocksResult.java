@@ -23,14 +23,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Block List operation. This is returned by calls to implementations of
- * {@link BlobContract#listBlobBlocks(String, String)} and
- * {@link BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobBlocks(String, String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179400.aspx">Get

@@ -34,7 +34,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOp
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.sun.jersey.api.client.GenericType;
 
-public class AssetFile {
+public final class AssetFile {
     private static final String ENTITY_SET = "Files";
 
     // Prevent instantiation
@@ -45,7 +45,7 @@ public class AssetFile {
         return new Creator(parentAssetId, name);
     }
 
-    public static class Creator extends
+    public static final class Creator extends
             EntityOperationSingleResultBase<AssetFileInfo> implements
             EntityCreateOperation<AssetFileInfo> {
         private final String parentAssetId;
@@ -226,7 +226,7 @@ public class AssetFile {
         return new Updater(assetFileId);
     }
 
-    public static class Updater extends EntityOperationBase implements
+    public static final class Updater extends EntityOperationBase implements
             EntityUpdateOperation {
         private String contentChecksum;
         private Long contentFileSize;

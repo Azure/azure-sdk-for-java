@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
@@ -49,7 +50,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -153,7 +153,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/certificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -181,7 +181,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         if (parameters.getPublicKey() != null) {
             Element subscriptionCertificatePublicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
-            subscriptionCertificatePublicKeyElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPublicKey()))));
+            subscriptionCertificatePublicKeyElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getPublicKey())));
             subscriptionCertificateElement.appendChild(subscriptionCertificatePublicKeyElement);
         }
         
@@ -193,7 +193,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         if (parameters.getData() != null) {
             Element subscriptionCertificateDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
-            subscriptionCertificateDataElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getData()))));
+            subscriptionCertificateDataElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getData())));
             subscriptionCertificateElement.appendChild(subscriptionCertificateDataElement);
         }
         
@@ -305,7 +305,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates/" + thumbprint;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/certificates/" + thumbprint.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -424,7 +424,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates/" + thumbprint;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/certificates/" + thumbprint.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -474,7 +474,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
                 if (subscriptionCertificatePublicKeyElement != null) {
                     byte[] subscriptionCertificatePublicKeyInstance;
-                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
+                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
                     result.setPublicKey(subscriptionCertificatePublicKeyInstance);
                 }
                 
@@ -488,7 +488,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
                 if (subscriptionCertificateDataElement != null) {
                     byte[] subscriptionCertificateDataInstance;
-                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
+                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
                     result.setData(subscriptionCertificateDataInstance);
                 }
                 
@@ -571,7 +571,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/certificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -626,7 +626,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
                     if (subscriptionCertificatePublicKeyElement != null) {
                         byte[] subscriptionCertificatePublicKeyInstance;
-                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
+                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
                         subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
                     }
                     
@@ -640,7 +640,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
                     if (subscriptionCertificateDataElement != null) {
                         byte[] subscriptionCertificateDataInstance;
-                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
+                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
                         subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
                     }
                     

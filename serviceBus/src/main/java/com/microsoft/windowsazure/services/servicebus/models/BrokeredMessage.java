@@ -27,11 +27,11 @@ import com.microsoft.windowsazure.services.servicebus.implementation.BrokerPrope
  * Represents a service bus message.
  */
 public class BrokeredMessage {
-    BrokerProperties brokerProperties;
-    InputStream body;
-    String contentType;
-    Date date;
-    Map<String, Object> customProperties;
+    private BrokerProperties brokerProperties;
+    private InputStream body;
+    private String contentType;
+    private Date date;
+    private Map<String, Object> customProperties;
 
     /**
      * Creates an instance of the <code>Message</code> class.

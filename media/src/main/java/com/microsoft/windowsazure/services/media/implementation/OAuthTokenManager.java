@@ -22,8 +22,8 @@ import java.util.Date;
 import javax.inject.Named;
 import javax.management.timer.Timer;
 
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.utils.DateFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
 /**

@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
@@ -54,7 +55,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -165,7 +165,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/certificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/certificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -192,7 +192,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         requestDoc.appendChild(certificateFileElement);
         
         Element dataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Data");
-        dataElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getData()))));
+        dataElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getData())));
         certificateFileElement.appendChild(dataElement);
         
         Element certificateFormatElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateFormat");
@@ -325,7 +325,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + parameters.getServiceName() + "/certificates/" + parameters.getThumbprintAlgorithm() + "-" + parameters.getThumbprint();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + parameters.getServiceName().trim() + "/certificates/" + parameters.getThumbprintAlgorithm().trim() + "-" + parameters.getThumbprint().trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -455,7 +455,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -493,7 +493,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -504,8 +505,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -577,7 +578,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -614,7 +615,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -625,8 +627,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -700,7 +702,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + parameters.getServiceName() + "/certificates/" + parameters.getThumbprintAlgorithm() + "-" + parameters.getThumbprint();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + parameters.getServiceName().trim() + "/certificates/" + parameters.getThumbprintAlgorithm().trim() + "-" + parameters.getThumbprint().trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -750,7 +752,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 Element dataElement = XmlUtility.getElementByTagNameNS(certificateElement, "http://schemas.microsoft.com/windowsazure", "Data");
                 if (dataElement != null) {
                     byte[] dataInstance;
-                    dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                    dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
                     result.setData(dataInstance);
                 }
             }
@@ -829,7 +831,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/certificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/certificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -905,7 +907,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                     Element dataElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Data");
                     if (dataElement != null) {
                         byte[] dataInstance;
-                        dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                        dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
                         certificateInstance.setData(dataInstance);
                     }
                 }

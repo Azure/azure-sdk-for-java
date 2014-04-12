@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -204,7 +206,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         for (TaskInfo taskInfo : taskInfos) {
             verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId,
                     TaskOption.None, taskBody, configuration, name, 3,
-                    new Date(), null, 0.0, 0.0, null, TaskState.Canceled,
+                    null, null, 0.0, 0.0, null, TaskState.Canceled,
                     taskInfo);
         }
     }

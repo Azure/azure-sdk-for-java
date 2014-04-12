@@ -27,6 +27,6 @@ public interface RoleEnvironmentStoppingListener {
      * shut down in an orderly fashion.
      */
 
-    public void roleEnvironmentStopping();
+    void roleEnvironmentStopping();
 
 }

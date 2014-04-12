@@ -41,9 +41,9 @@ class XmlGoalStateDeserializer {
             GoalStateInfo goalStateInfo = ((JAXBElement<GoalStateInfo>) unmarshaller
                     .unmarshal(source)).getValue();
 
-            return new GoalState(goalStateInfo.incarnation,
+            return new GoalState(goalStateInfo.getIncarnation(),
                     Enum.valueOf(ExpectedState.class,
-                            goalStateInfo.expectedState.toString()),
+                            goalStateInfo.getExpectedState().toString()),
                     goalStateInfo.getRoleEnvironmentPath(),
                     goalStateInfo.getDeadline(),
                     goalStateInfo.getCurrentStateEndpoint());

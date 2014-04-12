@@ -153,7 +153,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -311,7 +311,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -427,7 +427,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * failure.
     */
     @Override
-    public OperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -467,7 +467,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -478,8 +479,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -543,7 +544,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -580,7 +581,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -591,8 +593,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -648,7 +650,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -820,7 +822,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

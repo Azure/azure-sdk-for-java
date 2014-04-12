@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
@@ -29,11 +28,13 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKey
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -43,6 +44,7 @@ import org.xml.sax.SAXException;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.Configuration;
 import com.sun.jersey.api.client.Client;
@@ -50,6 +52,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class SqlManagementIntegrationTestBase {
 
+    protected static String testStorageAccountPrefix = "azsql";
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static DatabaseOperations databaseOperations;
@@ -58,7 +61,7 @@ public abstract class SqlManagementIntegrationTestBase {
     protected static Map<String, String> firewallRuleToBeRemoved = new HashMap<String, String>();
     protected static List<String> serverToBeRemoved = new ArrayList<String>();
     protected static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
-	
+    
     protected static String testAdministratorPasswordValue = "testAdminPassword!8";
     protected static String testAdministratorUserNameValue = "testadminuser";
     protected static String testLocationValue = "West US";
@@ -88,58 +91,69 @@ public abstract class SqlManagementIntegrationTestBase {
     }
     
     protected static StorageAccount createStorageAccount(String storageAccountName) throws Exception { 
-        String storageAccountLabel =  "Label";               
-                
+        String storageAccountLabel =  "Label";
+
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
-        createParameters.setLocation(GeoRegionNames.SouthCentralUS);
+        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
         return storageAccount;
      }
     
     protected static String getStorageKey(String storageAccountName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
-    	StorageAccountGetKeysResponse storageAccountGetKeyResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);
-    	return storageAccountGetKeyResponse.getPrimaryKey();
+        StorageAccountGetKeysResponse storageAccountGetKeyResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);
+        return storageAccountGetKeyResponse.getPrimaryKey();
     }
 
     
-    protected String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-	{
-		ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-		serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
-		serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
-		serverCreateParameters.setLocation(testLocationValue);
-		ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
-		String serverName = serverCreateResponse.getServerName();
-		serverToBeRemoved.add(serverName);
-		return serverName; 
-	
-	}
-	
-	protected String createDatabase(String serverName) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-	{
-    	String expectedCollationName = "SQL_Latin1_General_CP1_CI_AS";
-    	String expectedEdition = "Web";
-    	String expectedDatabaseName = "expecteddatabasename";
-    	int expectedMaxSizeInGB = 5; 
-    	
-    	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
-    	databaseCreateParameters.setName(expectedDatabaseName);
-    	databaseCreateParameters.setCollationName(expectedCollationName);
-    	databaseCreateParameters.setEdition(expectedEdition);
-    	databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
-    	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
-    	databaseToBeRemoved.put(databaseCreateResponse.getDatabase().getName(), serverName);
-    	return databaseCreateResponse.getDatabase().getName();
-	}
+    protected String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+        serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
+        serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
+        serverCreateParameters.setLocation(testLocationValue);
+        ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
+        String serverName = serverCreateResponse.getServerName();
+        serverToBeRemoved.add(serverName);
+        return serverName; 
+    
+    }
+    
+    protected String createDatabase(String serverName) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        String expectedCollationName = "SQL_Latin1_General_CP1_CI_AS";
+        String expectedEdition = "Web";
+        String expectedDatabaseName = "expecteddatabasename";
+        int expectedMaxSizeInGB = 5; 
+        
+        DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
+        databaseCreateParameters.setName(expectedDatabaseName);
+        databaseCreateParameters.setCollationName(expectedCollationName);
+        databaseCreateParameters.setEdition(expectedEdition);
+        databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
+        DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
+        databaseToBeRemoved.put(databaseCreateResponse.getDatabase().getName(), serverName);
+        return databaseCreateResponse.getDatabase().getName();
+    }
 
     protected static Configuration createConfiguration() throws Exception {
+        String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            baseUri != null ? new URI(baseUri) : null,
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
+    }
+    
+    protected static String randomString(int length) {
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
+        }
+        return stringBuilder.toString();
     }
 }

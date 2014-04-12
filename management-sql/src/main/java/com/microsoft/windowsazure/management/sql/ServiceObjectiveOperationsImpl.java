@@ -130,7 +130,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/serviceobjectives/" + serviceObjectiveId;
+        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/serviceobjectives/" + serviceObjectiveId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -390,7 +390,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/serviceobjectives";
+        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/serviceobjectives";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

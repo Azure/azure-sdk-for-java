@@ -127,7 +127,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/vmimages/" + vmImageName + "?" + "comp=media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages/" + vmImageName.trim() + "?" + "comp=media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -234,7 +234,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -271,7 +271,8 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -282,8 +283,8 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -335,7 +336,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/vmimages";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

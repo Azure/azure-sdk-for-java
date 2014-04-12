@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +35,6 @@ import java.util.Random;
 import java.util.UUID;
 
 import javax.crypto.Cipher;
-
-import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -88,7 +86,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
         if (!EncryptionHelper.canUseStrongCrypto()) {
-            Assert.fail("JVM does not support the required encryption");
+            throw new UnsupportedOperationException("JVM does not support the required encryption. Please download unlimited strength jurisdiction policy files.");
         }
 
         // Media Services requires 256-bit (32-byte) keys and

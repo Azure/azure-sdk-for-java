@@ -53,11 +53,11 @@ import javax.xml.bind.annotation.XmlType;
 class LocalResourceInfo {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
     @XmlAttribute(required = true)
-    protected String path;
+    private String path;
     @XmlAttribute(required = true)
-    protected int sizeInMB;
+    private int sizeInMB;
 
     /**
      * Gets the value of the name property.

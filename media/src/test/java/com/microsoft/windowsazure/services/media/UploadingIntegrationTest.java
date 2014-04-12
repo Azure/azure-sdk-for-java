@@ -22,12 +22,12 @@ import java.util.EnumSet;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
-import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
-import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;

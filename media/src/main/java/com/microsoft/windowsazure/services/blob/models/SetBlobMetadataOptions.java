@@ -14,12 +14,11 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)
  * setBlobMetadata} request. These options include an optional server timeout
  * for the operation, a blob lease ID, and any access conditions for the
  * operation.

@@ -14,12 +14,11 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream, CreateBlobPagesOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream, CreateBlobPagesOptions)}
  * request. These options include an optional server timeout for the operation,
  * a blob lease ID to create pages in a blob with an active lease, an optional
  * MD5 hash for the content, and any access conditions to satisfy.

@@ -52,9 +52,9 @@ import javax.xml.bind.annotation.XmlType;
 class ConfigurationSettingInfo {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
     @XmlAttribute(required = true)
-    protected String value;
+    private String value;
 
     /**
      * Gets the value of the name property.

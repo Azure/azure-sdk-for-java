@@ -148,7 +148,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * operation.
     */
     @Override
-    public VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -178,7 +178,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -525,7 +525,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -544,7 +544,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -658,7 +658,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -913,7 +913,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1175,7 +1175,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * operation.
     */
     @Override
-    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
+    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -1200,7 +1200,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

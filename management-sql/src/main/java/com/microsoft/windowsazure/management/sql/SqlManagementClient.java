@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+import java.io.Closeable;
 import java.net.URI;
 
 /**
@@ -33,7 +34,7 @@ import java.net.URI;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
 * information)
 */
-public interface SqlManagementClient extends FilterableService<SqlManagementClient> {
+public interface SqlManagementClient extends Closeable, FilterableService<SqlManagementClient> {
     /**
     * The URI used as the base for all SQL requests.
     * @return The BaseUri value.

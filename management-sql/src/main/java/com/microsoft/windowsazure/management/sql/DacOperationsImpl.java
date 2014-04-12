@@ -164,7 +164,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Export";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Export";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -368,11 +368,11 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Status" + "?";
-        url = url + "servername=" + URLEncoder.encode(fullyQualifiedServerName, "UTF-8");
-        url = url + "&" + "username=" + URLEncoder.encode(username, "UTF-8");
-        url = url + "&" + "password=" + URLEncoder.encode(password, "UTF-8");
-        url = url + "&" + "reqId=" + URLEncoder.encode(requestId, "UTF-8");
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Status" + "?";
+        url = url + "servername=" + URLEncoder.encode(fullyQualifiedServerName.trim(), "UTF-8");
+        url = url + "&" + "username=" + URLEncoder.encode(username.trim(), "UTF-8");
+        url = url + "&" + "password=" + URLEncoder.encode(password.trim(), "UTF-8");
+        url = url + "&" + "reqId=" + URLEncoder.encode(requestId.trim(), "UTF-8");
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -592,7 +592,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Import";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Import";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

@@ -114,7 +114,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/rolesizes";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/rolesizes";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

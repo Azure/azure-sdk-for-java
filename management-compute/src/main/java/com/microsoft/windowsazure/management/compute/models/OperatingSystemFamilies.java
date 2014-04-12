@@ -26,10 +26,10 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Describes an operating system family.
 */
-public class OperatingSystemFamilies {
-    public static final int WindowsServer2008SP2 = 1;
+public abstract class OperatingSystemFamilies {
+    public static final int WINDOWSSERVER2008SP2 = 1;
     
-    public static final int WindowsServer2008R2 = 2;
+    public static final int WINDOWSSERVER2008R2 = 2;
     
-    public static final int WindowsServer2012 = 3;
+    public static final int WINDOWSSERVER2012 = 3;
 }

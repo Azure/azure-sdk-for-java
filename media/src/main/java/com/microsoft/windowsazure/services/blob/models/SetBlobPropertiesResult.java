@@ -16,12 +16,10 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Set
  * Blob Properties operation. This is returned by calls to implementations of
- * {@link BlobContract#setBlobProperties(String, String, SetBlobPropertiesOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setBlobProperties(String, String, SetBlobPropertiesOptions)}
  * .
  * <p>
  * See the <a

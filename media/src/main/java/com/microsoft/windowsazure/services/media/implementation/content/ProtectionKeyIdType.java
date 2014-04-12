@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "GetProtectionKeyId", namespace = Constants.ODATA_DATA_NS)
 public class ProtectionKeyIdType implements MediaServiceDTO {
     @XmlValue
-    String protectionKeyId;
+    private String protectionKeyId;
 
     /**
      * @return the protection key id

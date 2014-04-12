@@ -23,13 +23,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.core.RFC1123DateAdapter;
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * A wrapper class for the result returned from a Queue Service REST API
  * operation to get a list of messages. This is returned by calls to
- * implementations of {@link QueueContract#listMessages(String)} and
- * {@link QueueContract#listMessages(String, ListMessagesOptions)}.
+ * implementations of {@link com.microsoft.windowsazure.services.queue.QueueContract#listMessages(String)} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#listMessages(String, ListMessagesOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179474.aspx">Get
@@ -41,7 +40,7 @@ public class ListMessagesResult {
     private List<QueueMessage> queueMessages = new ArrayList<QueueMessage>();
 
     /**
-     * Gets the list of queue messages returned by a {@link QueueContract}
+     * Gets the list of queue messages returned by a {@link com.microsoft.windowsazure.services.queue.QueueContract}
      * <em>.listMessages</em> request. The queue messages returned have their
      * visibility timeout set to allow for processing by the client. The client
      * must delete the messages once processing is complete, or they will become
@@ -57,7 +56,7 @@ public class ListMessagesResult {
 
     /**
      * Reserved for internal use. Sets the list of queue messages returned by a
-     * {@link QueueContract} <em>.listMessages</em> request. This method is
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract} <em>.listMessages</em> request. This method is
      * invoked by the API as part of the response generation from the Queue
      * Service REST API operation to set the value from the queue message list
      * returned by the server.

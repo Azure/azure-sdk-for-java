@@ -15,19 +15,18 @@
 
 package com.microsoft.windowsazure.services.scenarios;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 
-@SuppressWarnings("deprecation")
 public abstract class ScenarioTestBase {
     protected static Configuration config;
 

@@ -15,9 +15,9 @@
 package com.microsoft.windowsazure.services.servicebus.models;
 
 public abstract class AbstractListOptions<T> {
-    Integer skip;
-    Integer top;
-    String filter;
+    private Integer skip;
+    private Integer top;
+    private String filter;
 
     public Integer getSkip() {
         return skip;

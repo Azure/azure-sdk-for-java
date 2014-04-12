@@ -172,7 +172,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -341,7 +341,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -522,7 +522,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -825,7 +825,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -836,8 +837,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -900,7 +901,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -1029,7 +1030,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1192,7 +1193,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1404,7 +1405,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1656,7 +1657,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1834,7 +1835,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

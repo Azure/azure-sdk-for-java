@@ -54,13 +54,13 @@ import javax.xml.bind.annotation.XmlType;
 class EndpointInfo {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
     @XmlAttribute(required = true)
-    protected String address;
+    private String address;
     @XmlAttribute(required = true)
-    protected int port;
+    private int port;
     @XmlAttribute(required = true)
-    protected ProtocolEnum protocol;
+    private ProtocolEnum protocol;
 
     /**
      * Gets the value of the name property.

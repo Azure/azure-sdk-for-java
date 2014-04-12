@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -71,6 +72,26 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     * An extension available to add to your cloud service.
     */
     public static class ExtensionImage {
+        private Boolean blockRoleUponFailure;
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * blocks the role upon failure.
+        * @return The BlockRoleUponFailure value.
+        */
+        public Boolean isBlockRoleUponFailure() {
+            return this.blockRoleUponFailure;
+        }
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * blocks the role upon failure.
+        * @param blockRoleUponFailureValue The BlockRoleUponFailure value.
+        */
+        public void setBlockRoleUponFailure(final Boolean blockRoleUponFailureValue) {
+            this.blockRoleUponFailure = blockRoleUponFailureValue;
+        }
+        
         private String description;
         
         /**
@@ -87,6 +108,54 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         */
         public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
+        }
+        
+        private URI eula;
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Windows Azure, at the time of extension creation or update.
+        * @return The Eula value.
+        */
+        public URI getEula() {
+            return this.eula;
+        }
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Windows Azure, at the time of extension creation or update.
+        * @param eulaValue The Eula value.
+        */
+        public void setEula(final URI eulaValue) {
+            this.eula = eulaValue;
+        }
+        
+        private URI homepageUri;
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @return The HomepageUri value.
+        */
+        public URI getHomepageUri() {
+            return this.homepageUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @param homepageUriValue The HomepageUri value.
+        */
+        public void setHomepageUri(final URI homepageUriValue) {
+            this.homepageUri = homepageUriValue;
         }
         
         private String hostingResources;
@@ -109,6 +178,30 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
             this.hostingResources = hostingResourcesValue;
         }
         
+        private Boolean isJsonExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based confihuration.
+        * @return The IsJsonExtension value.
+        */
+        public Boolean isJsonExtension() {
+            return this.isJsonExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based confihuration.
+        * @param isJsonExtensionValue The IsJsonExtension value.
+        */
+        public void setIsJsonExtension(final Boolean isJsonExtensionValue) {
+            this.isJsonExtension = isJsonExtensionValue;
+        }
+        
         private String label;
         
         /**
@@ -125,6 +218,30 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         */
         public void setLabel(final String labelValue) {
             this.label = labelValue;
+        }
+        
+        private URI privacyUri;
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @return The PrivacyUri value.
+        */
+        public URI getPrivacyUri() {
+            return this.privacyUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @param privacyUriValue The PrivacyUri value.
+        */
+        public void setPrivacyUri(final URI privacyUriValue) {
+            this.privacyUri = privacyUriValue;
         }
         
         private String privateConfigurationSchema;
@@ -185,6 +302,54 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         */
         public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue) {
             this.publicConfigurationSchema = publicConfigurationSchemaValue;
+        }
+        
+        private Boolean replicationCompleted;
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * has been replicated to all regions or not. If true, then the given
+        * extension version can be used in creating or updating deployments.
+        * Otherwise, the given extension version might cause failure in
+        * creating or updating deployments. The typical time is 20 minutes for
+        * a newly-registered or newly-updated extension to replicate
+        * completely by Windows Azure.
+        * @return The ReplicationCompleted value.
+        */
+        public Boolean isReplicationCompleted() {
+            return this.replicationCompleted;
+        }
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * has been replicated to all regions or not. If true, then the given
+        * extension version can be used in creating or updating deployments.
+        * Otherwise, the given extension version might cause failure in
+        * creating or updating deployments. The typical time is 20 minutes for
+        * a newly-registered or newly-updated extension to replicate
+        * completely by Windows Azure.
+        * @param replicationCompletedValue The ReplicationCompleted value.
+        */
+        public void setReplicationCompleted(final Boolean replicationCompletedValue) {
+            this.replicationCompleted = replicationCompletedValue;
+        }
+        
+        private String sampleConfig;
+        
+        /**
+        * Optional. A sample configuration file for the resource extension.
+        * @return The SampleConfig value.
+        */
+        public String getSampleConfig() {
+            return this.sampleConfig;
+        }
+        
+        /**
+        * Optional. A sample configuration file for the resource extension.
+        * @param sampleConfigValue The SampleConfig value.
+        */
+        public void setSampleConfig(final String sampleConfigValue) {
+            this.sampleConfig = sampleConfigValue;
         }
         
         private String thumbprintAlgorithm;

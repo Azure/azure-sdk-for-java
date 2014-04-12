@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.Configuration;
  * Access media services functionality. This class cannot be instantiated.
  * 
  */
-public class MediaService {
+public final class MediaService {
 
     private MediaService() {
     }

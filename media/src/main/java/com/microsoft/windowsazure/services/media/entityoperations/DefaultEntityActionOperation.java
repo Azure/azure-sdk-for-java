@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -44,7 +44,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
     /** The query parameters. */
-    protected MultivaluedMap<String, String> queryParameters;
+    private MultivaluedMap<String, String> queryParameters;
 
     /** The entity name. */
     private final String entityName;
@@ -56,7 +56,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     private final String actionName;
 
     /** The body parameters. */
-    protected Map<String, Object> bodyParameters;
+    private Map<String, Object> bodyParameters;
 
     /**
      * The default action operation.

@@ -14,8 +14,6 @@
  */
 package com.microsoft.windowsazure.services.media.implementation;
 
-import com.microsoft.windowsazure.core.UserAgentFilter;
-import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import java.io.IOException;
 import java.net.URI;
 
@@ -29,6 +27,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
@@ -41,11 +41,11 @@ import com.sun.jersey.api.representation.Form;
  * 
  */
 public class OAuthRestProxy implements OAuthContract {
-    Client channel;
+    private Client channel;
 
     private final String grantType = "client_credentials";
 
-    static Log log = LogFactory.getLog(OAuthContract.class);
+    private static Log log = LogFactory.getLog(OAuthContract.class);
 
     @Inject
     public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter) {

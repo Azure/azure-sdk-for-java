@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * Represents the options that may be set on the Queue service for
- * {@link QueueContract#listQueues(ListQueuesOptions)} requests. These options
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions)} requests. These options
  * include a server response timeout for the request, a prefix to match queue
  * names to return, a marker to specify where to resume a list queues query, the
  * maximum number of queues to return in a single response, and whether to
@@ -49,10 +48,10 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Gets the prefix {@link String} used to match queue names to return in a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
      * @return The prefix {@link String} used to match queue names to return in
-     *         a {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     *         a {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      *         request.
      */
     public String getPrefix() {
@@ -61,7 +60,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Sets the prefix {@link String} to use to match queue names to return in a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
      * The prefix value only affects calls made on methods where this
      * {@link ListQueuesOptions} instance is passed as a parameter.
@@ -69,7 +68,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
      * @param prefix
      *            The prefix {@link String} to use to match queue names to
      *            return in a
-     *            {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     *            {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      *            request.
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
@@ -81,15 +80,15 @@ public class ListQueuesOptions extends QueueServiceOptions {
     /**
      * Gets a {@link String} value that identifies the beginning of the list of
      * queues to be returned with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
-     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method
+     * The {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} method
      * returns a <strong>NextMarker</strong> element within the response if the
      * list returned was not complete, which can be accessed with the
      * {@link ListQueuesResult#getNextMarker()} method. This opaque value may
      * then be set on a {@link ListQueuesOptions} instance with a call to
      * {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a
-     * subsequent {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * subsequent {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * call to request the next portion of the list of queues.
      * 
      * @return The marker value that identifies the beginning of the list of
@@ -102,15 +101,15 @@ public class ListQueuesOptions extends QueueServiceOptions {
     /**
      * Sets a {@link String} marker value that identifies the beginning of the
      * list of queues to be returned with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
-     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method
+     * The {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} method
      * returns a <strong>NextMarker</strong> element within the response if the
      * list returned was not complete, which can be accessed with the
      * {@link ListQueuesResult#getNextMarker()} method. This opaque value may
      * then be set on a {@link ListQueuesOptions} instance with a call to
      * {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a
-     * subsequent {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * subsequent {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * call to request the next portion of the list of queues.
      * 
      * @param marker
@@ -124,7 +123,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Gets the maximum number of queues to return with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * If the value is not specified, the server will return up to 5,000 items.
      * 
      * @return The maximum number of queues to return.
@@ -135,7 +134,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Sets the maximum number of queues to return with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * If the value is not specified, by default the server will return up to
      * 5,000 items.
      * <p>
@@ -153,7 +152,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Gets a flag indicating whether to return metadata with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
      * @return <code>true</code> to return metadata.
      */
@@ -163,7 +162,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
 
     /**
      * Sets a flag indicating whether to return metadata with a
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
      * @param includeMetadata
      *            <code>true</code> to return metadata.

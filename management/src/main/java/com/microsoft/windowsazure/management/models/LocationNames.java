@@ -28,20 +28,20 @@ package com.microsoft.windowsazure.management.models;
 * the latest locations available to your subscription from the List Locations
 * Operation.
 */
-public class LocationNames {
-    public static final String WestEurope = "West Europe";
+public abstract class LocationNames {
+    public static final String WESTEUROPE = "West Europe";
     
-    public static final String SoutheastAsia = "Southeast Asia";
+    public static final String SOUTHEASTASIA = "Southeast Asia";
     
-    public static final String EastAsia = "East Asia";
+    public static final String EASTASIA = "East Asia";
     
-    public static final String NorthCentralUS = "North Central US";
+    public static final String NORTHCENTRALUS = "North Central US";
     
-    public static final String NorthEurope = "North Europe";
+    public static final String NORTHEUROPE = "North Europe";
     
-    public static final String SouthCentralUS = "South Central US";
+    public static final String SOUTHCENTRALUS = "South Central US";
     
-    public static final String WestUS = "West US";
+    public static final String WESTUS = "West US";
     
-    public static final String EastUS = "East US";
+    public static final String EASTUS = "East US";
 }

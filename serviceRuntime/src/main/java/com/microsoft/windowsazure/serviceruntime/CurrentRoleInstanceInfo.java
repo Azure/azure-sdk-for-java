@@ -62,19 +62,19 @@ import javax.xml.bind.annotation.XmlType;
 class CurrentRoleInstanceInfo {
 
     @XmlElement(name = "ConfigurationSettings")
-    protected ConfigurationSettingsInfo configurationSettings;
+    private ConfigurationSettingsInfo configurationSettings;
     @XmlElement(name = "LocalResources")
-    protected LocalResourcesInfo localResources;
+    private LocalResourcesInfo localResources;
     @XmlElement(name = "Endpoints")
-    protected EndpointsInfo endpoints;
+    private EndpointsInfo endpoints;
     @XmlAttribute(required = true)
-    protected String id;
+    private String id;
     @XmlAttribute(required = true)
-    protected String roleName;
+    private String roleName;
     @XmlAttribute(required = true)
-    protected int faultDomain;
+    private int faultDomain;
     @XmlAttribute(required = true)
-    protected int updateDomain;
+    private int updateDomain;
 
     /**
      * Gets the value of the configurationSettings property.

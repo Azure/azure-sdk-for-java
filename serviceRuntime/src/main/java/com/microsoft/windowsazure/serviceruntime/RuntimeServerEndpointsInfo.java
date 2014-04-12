@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 class RuntimeServerEndpointsInfo {
 
     @XmlElement(name = "RuntimeServerEndpoint")
-    protected List<RuntimeServerEndpointInfo> runtimeServerEndpoint;
+    private List<RuntimeServerEndpointInfo> runtimeServerEndpoint;
 
     /**
      * Gets the value of the runtimeServerEndpoint property.
@@ -86,5 +86,4 @@ class RuntimeServerEndpointsInfo {
         }
         return this.runtimeServerEndpoint;
     }
-
 }

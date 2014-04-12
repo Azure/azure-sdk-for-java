@@ -20,10 +20,7 @@ import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -35,39 +32,49 @@ import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
-    private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static ServerOperations serverOperations;
-	
-    @Before
-    public void setup() throws Exception
-    {
+
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
-	serverOperations = sqlManagementClient.getServersOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
     }
-	
-    @After
-    public void cleanup() throws Exception 
-    {
-        for (String serverName : serverToBeRemoved)
-        {
-            serverOperations.delete(serverName);
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        for (String serverName : serverToBeRemoved) {
+            try {
+                serverOperations.delete(serverName);
+            }
+            catch (Exception e) {
+                Thread.sleep(100);
+            }
         }
+
         serverToBeRemoved.clear();
+        ServerListResponse listserverresult = serverOperations.list();
+        for (Server  servers: listserverresult) {
+            try {
+                serverOperations.delete(servers.getName());
+            }
+            catch (Exception e) {
+                Thread.sleep(100);
+            }
+        }
     }
-	
+
     @Test
-    public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	//arrange 
-    	String testAdministratorUserName = "testadminname";
-    	String testPassword = "testpassword8!";
-    	String testLocation = "West US";
-    	
-    	// act
-    	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
-    	serverCreateParameters.setAdministratorPassword(testPassword);
-    	serverCreateParameters.setLocation(testLocation);
+    public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        //arrange 
+        String testAdministratorUserName = "testadminname";
+        String testPassword = "testpassword8!";
+        String testLocation = "West US";
+        
+        // act
+        ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+        serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+        serverCreateParameters.setAdministratorPassword(testPassword);
+        serverCreateParameters.setLocation(testLocation);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
@@ -77,51 +84,43 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         ServerListResponse serverListResponse = serverOperations.list();
         Iterator<Server> serverList = serverListResponse.iterator();
         Server createdServer = null;
-        while (serverList.hasNext())
-        {
+        while (serverList.hasNext()) {
             Server nextServer = serverList.next();
-            if (nextServer.getName().equals(serverName))
-            {
-            	createdServer = nextServer;
+            if (nextServer.getName().equals(serverName)) {
+                createdServer = nextServer;
             }
         }
         assertNotNull(createdServer);
         assertEquals(testAdministratorUserName, createdServer.getAdministratorUserName());
         assertEquals(testLocation, createdServer.getLocation());
-        
     }
-    
+
     @Test
-    public void deleteServerSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
-    	//arrange 
-    	String testAdministratorUserName = "testadminname";
-    	String testPassword = "testpassword8!";
-    	String testLocation = "West US";
-    	
-    	// act
-    	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
-    	serverCreateParameters.setAdministratorPassword(testPassword);
-    	serverCreateParameters.setLocation(testLocation);
+    public void deleteServerSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        //arrange 
+        String testAdministratorUserName = "testadminname";
+        String testPassword = "testpassword8!";
+        String testLocation = "West US";
+
+        // act
+        ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+        serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+        serverCreateParameters.setAdministratorPassword(testPassword);
+        serverCreateParameters.setLocation(testLocation);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverOperations.delete(serverName);
-        
+
         // assert
         ServerListResponse serverListResponse = serverOperations.list();
         Iterator<Server> serverList = serverListResponse.iterator();
         Server createdServer = null;
-        while (serverList.hasNext())
-        {
+        while (serverList.hasNext()) {
             Server nextServer = serverList.next();
-            if (nextServer.getName().equals(serverName))
-            {
-            	createdServer = nextServer;
+            if (nextServer.getName().equals(serverName)) {
+                createdServer = nextServer;
             }
         }
         assertNull(createdServer);
-        
     }
-    
 }

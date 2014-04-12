@@ -24,11 +24,10 @@ import javax.inject.Named;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.blob.BlobConfiguration;
-import com.microsoft.windowsazure.services.blob.implementation.SharedKeyUtils.QueryParam;
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.core.pipeline.jersey.EntityStreamingListener;
-import com.sun.jersey.api.client.ClientHandlerException;
+import com.microsoft.windowsazure.services.blob.BlobConfiguration;
+import com.microsoft.windowsazure.services.blob.implementation.SharedKeyUtils.QueryParam;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
@@ -60,8 +59,7 @@ public class SharedKeyFilter extends ClientFilter implements
     }
 
     @Override
-    public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr) {
         // Only sign if no other filter is handling authorization
         if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null) {
             cr.getProperties().put(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER,

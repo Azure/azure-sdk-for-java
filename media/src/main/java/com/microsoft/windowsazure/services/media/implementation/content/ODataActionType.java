@@ -27,13 +27,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class ODataActionType {
 
     @XmlAttribute(required = true)
-    protected String metadata;
+    private String metadata;
 
     @XmlAttribute(required = true)
-    protected String target;
+    private String target;
 
     @XmlAttribute(required = true)
-    protected String title;
+    private String title;
 
     /**
      * Get metadata

@@ -59,6 +59,8 @@ class XmlCurrentStateSerializer implements CurrentStateSerializer {
                 case STOPPED:
                     acquire.setStatus(CurrentStatusEnum.STOPPED);
                     break;
+                default:
+                    throw new IllegalArgumentException();
                 }
 
                 leaseInfo.setAcquire(acquire);

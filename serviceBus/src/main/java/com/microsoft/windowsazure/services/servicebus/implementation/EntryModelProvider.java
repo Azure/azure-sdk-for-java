@@ -21,7 +21,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -34,7 +33,7 @@ import com.sun.jersey.spi.MessageBodyWorkers;
 public class EntryModelProvider extends
         AbstractMessageReaderWriterProvider<EntryModel<?>> {
 
-    MessageBodyWorkers workers;
+    private MessageBodyWorkers workers;
 
     public EntryModelProvider(@Context MessageBodyWorkers workers) {
         this.workers = workers;
@@ -50,7 +49,7 @@ public class EntryModelProvider extends
     public EntryModel<?> readFrom(Class<EntryModel<?>> type, Type genericType,
             Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-            throws IOException, WebApplicationException {
+            throws IOException {
 
         MessageBodyReader<Entry> reader = workers.getMessageBodyReader(
                 Entry.class, Entry.class, annotations, mediaType);
@@ -83,8 +82,7 @@ public class EntryModelProvider extends
     public void writeTo(EntryModel<?> t, Class<?> type, Type genericType,
             Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, Object> httpHeaders,
-            OutputStream entityStream) throws IOException,
-            WebApplicationException {
+            OutputStream entityStream) throws IOException {
 
         Entry entry = t.getEntry();
 

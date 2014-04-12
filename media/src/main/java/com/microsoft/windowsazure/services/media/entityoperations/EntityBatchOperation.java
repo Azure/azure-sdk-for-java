@@ -25,8 +25,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.Constant
 
 public class EntityBatchOperation {
 
-    protected String verb;
-    protected EntryType entryType;
+    private String verb;
+    private EntryType entryType;
 
     public EntityBatchOperation() {
         this.entryType = new EntryType();

@@ -176,7 +176,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/connection/" + localNetworkSiteName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkSiteName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -347,7 +347,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -500,7 +500,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -629,7 +629,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -784,7 +784,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/connection/" + localNetworkName + "/sharedkey";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkName.trim() + "/sharedkey";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -988,7 +988,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -999,8 +1000,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1074,7 +1075,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1112,7 +1113,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -1123,8 +1125,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1192,7 +1194,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1229,7 +1231,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -1240,8 +1243,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1340,7 +1343,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -1351,8 +1355,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1426,7 +1430,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/vpnclientpackage";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/vpnclientpackage";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1581,7 +1585,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1763,15 +1767,15 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/vpndeviceconfigurationscript" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/vpndeviceconfigurationscript" + "?";
         if (parameters.getVendor() != null) {
-            url = url + "vendor=" + URLEncoder.encode(parameters.getVendor(), "UTF-8");
+            url = url + "vendor=" + URLEncoder.encode(parameters.getVendor().trim(), "UTF-8");
         }
         if (parameters.getPlatform() != null) {
-            url = url + "&" + "platform=" + URLEncoder.encode(parameters.getPlatform(), "UTF-8");
+            url = url + "&" + "platform=" + URLEncoder.encode(parameters.getPlatform().trim(), "UTF-8");
         }
         if (parameters.getOSFamily() != null) {
-            url = url + "&" + "OSfamily=" + URLEncoder.encode(parameters.getOSFamily(), "UTF-8");
+            url = url + "&" + "OSfamily=" + URLEncoder.encode(parameters.getOSFamily().trim(), "UTF-8");
         }
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1901,7 +1905,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/operation/" + operationId;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/operation/" + operationId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2071,7 +2075,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/connection/" + localNetworkName + "/sharedkey";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkName.trim() + "/sharedkey";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2201,7 +2205,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/connections";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/connections";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2397,7 +2401,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/supporteddevices";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/supporteddevices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2611,7 +2615,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -2622,8 +2627,8 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

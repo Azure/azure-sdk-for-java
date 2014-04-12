@@ -57,7 +57,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 public class ServiceBusExceptionProcessor implements ServiceBusContract {
 
     private final ServiceBusContract next;
-    static Log log = LogFactory.getLog(ServiceBusContract.class);
+    private static Log log = LogFactory.getLog(ServiceBusContract.class);
 
     public ServiceBusExceptionProcessor(ServiceBusContract next) {
         this.next = next;

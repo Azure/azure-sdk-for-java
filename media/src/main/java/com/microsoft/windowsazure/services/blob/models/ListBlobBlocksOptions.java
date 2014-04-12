@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions)
  * listBlobBlocks} request. These options include an optional server timeout for
  * the operation, the lease ID if the blob has an active lease, the snapshot
  * timestamp to get the committed blocks of a snapshot, whether to return the

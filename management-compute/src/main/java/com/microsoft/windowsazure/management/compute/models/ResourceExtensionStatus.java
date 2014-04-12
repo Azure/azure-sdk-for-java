@@ -27,13 +27,13 @@ package com.microsoft.windowsazure.management.compute.models;
 * Optional. The status information of a specific Resource Extension.
 */
 public class ResourceExtensionStatus {
-    private String code;
+    private Integer code;
     
     /**
     * Optional. Status code sent by the Resource Extension.
     * @return The Code value.
     */
-    public String getCode() {
+    public Integer getCode() {
         return this.code;
     }
     
@@ -41,18 +41,38 @@ public class ResourceExtensionStatus {
     * Optional. Status code sent by the Resource Extension.
     * @param codeValue The Code value.
     */
-    public void setCode(final String codeValue) {
+    public void setCode(final Integer codeValue) {
         this.code = codeValue;
     }
     
-    private FormattedMessage formattedMessage;
+    private ResourceExtensionConfigurationStatus extensionSettingStatus;
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Resource Extension.
+    * @return The ExtensionSettingStatus value.
+    */
+    public ResourceExtensionConfigurationStatus getExtensionSettingStatus() {
+        return this.extensionSettingStatus;
+    }
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Resource Extension.
+    * @param extensionSettingStatusValue The ExtensionSettingStatus value.
+    */
+    public void setExtensionSettingStatus(final ResourceExtensionConfigurationStatus extensionSettingStatusValue) {
+        this.extensionSettingStatus = extensionSettingStatusValue;
+    }
+    
+    private GuestAgentFormattedMessage formattedMessage;
     
     /**
     * Optional. This object encapsulates localized status message from the
     * Resource Extension.
     * @return The FormattedMessage value.
     */
-    public FormattedMessage getFormattedMessage() {
+    public GuestAgentFormattedMessage getFormattedMessage() {
         return this.formattedMessage;
     }
     
@@ -61,7 +81,7 @@ public class ResourceExtensionStatus {
     * Resource Extension.
     * @param formattedMessageValue The FormattedMessage value.
     */
-    public void setFormattedMessage(final FormattedMessage formattedMessageValue) {
+    public void setFormattedMessage(final GuestAgentFormattedMessage formattedMessageValue) {
         this.formattedMessage = formattedMessageValue;
     }
     
@@ -81,6 +101,26 @@ public class ResourceExtensionStatus {
     */
     public void setHandlerName(final String handlerNameValue) {
         this.handlerName = handlerNameValue;
+    }
+    
+    private GuestAgentMessage message;
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Guest Agent.
+    * @return The Message value.
+    */
+    public GuestAgentMessage getMessage() {
+        return this.message;
+    }
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Guest Agent.
+    * @param messageValue The Message value.
+    */
+    public void setMessage(final GuestAgentMessage messageValue) {
+        this.message = messageValue;
     }
     
     private String status;

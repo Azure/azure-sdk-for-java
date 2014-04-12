@@ -32,9 +32,9 @@ import javax.xml.bind.JAXBException;
  * running.
  */
 public final class RoleEnvironment {
-    private static final String VersionEndpointEnvironmentName = "WaRuntimeEndpoint";
-    private static final String VersionEndpointFixedPath = "\\\\.\\pipe\\WindowsAzureRuntime";
-    private static final String clientId;
+    private static final String VERSION_ENDPOINT_ENVIRONMENT_NAME = "WaRuntimeEndpoint";
+    private static final String VERSION_ENDPOINT_FIXED_PATH = "\\\\.\\pipe\\WindowsAzureRuntime";
+    private static final String CLIENT_ID;
 
     private static RuntimeClient runtimeClient;
     private static AtomicReference<GoalState> currentGoalState;
@@ -43,7 +43,7 @@ public final class RoleEnvironment {
     private static List<RoleEnvironmentChangedListener> changedListeners;
     private static List<RoleEnvironmentStoppingListener> stoppingListeners;
     private static AtomicReference<CurrentState> lastState;
-    private static final Calendar maxDateTime;
+    private static final Calendar MAX_DATE_TIME;
 
     static {
         try {
@@ -52,8 +52,8 @@ public final class RoleEnvironment {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        clientId = UUID.randomUUID().toString();
-        maxDateTime = javax.xml.bind.DatatypeConverter
+        CLIENT_ID = UUID.randomUUID().toString();
+        MAX_DATE_TIME = javax.xml.bind.DatatypeConverter
                 .parseDateTime("9999-12-31T23:59:59.9999999");
     }
 
@@ -62,10 +62,10 @@ public final class RoleEnvironment {
 
     private static synchronized void initialize() {
         if (runtimeClient == null) {
-            String endpoint = System.getenv(VersionEndpointEnvironmentName);
+            String endpoint = System.getenv(VERSION_ENDPOINT_ENVIRONMENT_NAME);
 
             if (endpoint == null) {
-                endpoint = VersionEndpointFixedPath;
+                endpoint = VERSION_ENDPOINT_FIXED_PATH;
             }
 
             RuntimeKernel kernel = RuntimeKernel.getKernel();
@@ -109,12 +109,14 @@ public final class RoleEnvironment {
                                 raiseStoppingEvent();
 
                                 CurrentState stoppedState = new AcquireCurrentState(
-                                        clientId,
+                                        CLIENT_ID,
                                         newGoalState.getIncarnation(),
-                                        CurrentStatus.STOPPED, maxDateTime);
+                                        CurrentStatus.STOPPED, MAX_DATE_TIME);
 
                                 runtimeClient.setCurrentState(stoppedState);
                                 break;
+                            default:
+                                throw new IllegalArgumentException();
                             }
                         }
                     });
@@ -149,9 +151,9 @@ public final class RoleEnvironment {
             }
 
             if (changingEvent.isCancelled()) {
-                CurrentState recycleState = new AcquireCurrentState(clientId,
+                CurrentState recycleState = new AcquireCurrentState(CLIENT_ID,
                         newGoalState.getIncarnation(), CurrentStatus.RECYCLE,
-                        maxDateTime);
+                        MAX_DATE_TIME);
 
                 runtimeClient.setCurrentState(recycleState);
 
@@ -183,7 +185,7 @@ public final class RoleEnvironment {
         if (last != null && last instanceof AcquireCurrentState) {
             AcquireCurrentState acquireState = (AcquireCurrentState) last;
 
-            CurrentState acceptState = new AcquireCurrentState(clientId,
+            CurrentState acceptState = new AcquireCurrentState(CLIENT_ID,
                     newGoalState.getIncarnation(), acquireState.getStatus(),
                     acquireState.getExpiration());
 
@@ -458,9 +460,9 @@ public final class RoleEnvironment {
     public static void requestRecycle() {
         initialize();
 
-        CurrentState recycleState = new AcquireCurrentState(clientId,
+        CurrentState recycleState = new AcquireCurrentState(CLIENT_ID,
                 currentGoalState.get().getIncarnation(), CurrentStatus.RECYCLE,
-                maxDateTime);
+                MAX_DATE_TIME);
 
         runtimeClient.setCurrentState(recycleState);
     }
@@ -476,12 +478,12 @@ public final class RoleEnvironment {
      * @param status
      *            A {@link RoleInstanceStatus} value that indicates whether the
      *            instance is ready or busy.
-     * @param expiration_utc
+     * @param expirationUtc
      *            A <code>java.util.Date</code> value that specifies the
      *            expiration date and time of the status.
      * 
      */
-    public static void setStatus(RoleInstanceStatus status, Date expiration_utc) {
+    public static void setStatus(RoleInstanceStatus status, Date expirationUtc) {
         initialize();
 
         CurrentStatus currentStatus = CurrentStatus.STARTED;
@@ -492,12 +494,14 @@ public final class RoleEnvironment {
             break;
         case Ready:
             currentStatus = CurrentStatus.STARTED;
+        default:
+            throw new IllegalArgumentException();
         }
 
         Calendar expiration = Calendar.getInstance();
-        expiration.setTime(expiration_utc);
+        expiration.setTime(expirationUtc);
 
-        CurrentState newState = new AcquireCurrentState(clientId,
+        CurrentState newState = new AcquireCurrentState(CLIENT_ID,
                 currentGoalState.get().getIncarnation(), currentStatus,
                 expiration);
 
@@ -516,7 +520,7 @@ public final class RoleEnvironment {
     public static void clearStatus() {
         initialize();
 
-        CurrentState newState = new ReleaseCurrentState(clientId);
+        CurrentState newState = new ReleaseCurrentState(CLIENT_ID);
 
         lastState.set(newState);
 

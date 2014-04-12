@@ -26,14 +26,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API List
  * Blobs operation. This is returned by calls to implementations of
- * {@link BlobContract#listBlobs(String)} and
- * {@link BlobContract#listBlobs(String, ListBlobsOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135734.aspx"
@@ -198,7 +197,7 @@ public class ListBlobsResult {
      * get the marker value to set on a {@link ListBlobsOptions} instance using
      * a call to {@link ListBlobsOptions#setMarker(String)}. Pass the
      * {@link ListBlobsOptions} instance as a parameter to a
-     * {@link BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
      * to get the next portion of the blob list.
      * 
      * @return A {@link String} containing the marker used to specify the
@@ -240,7 +239,7 @@ public class ListBlobsResult {
      * get the marker value to set on a {@link ListBlobsOptions} instance using
      * a call to {@link ListBlobsOptions#setMarker(String)}. Pass the
      * {@link ListBlobsOptions} instance as a parameter to a
-     * {@link BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
      * to get the next portion of the blob list.
      * 
      * @return A {@link String} containing the next marker value needed to
@@ -284,7 +283,7 @@ public class ListBlobsResult {
      * get the marker value to set on a {@link ListBlobsOptions} instance using
      * a call to {@link ListBlobsOptions#setMarker(String)}. Pass the
      * {@link ListBlobsOptions} instance as a parameter to a
-     * {@link BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobs(String, ListBlobsOptions) listBlobs} call
      * to get the next portion of the blob list.
      * 
      * @return The maximum results to return value in the response, if any.
@@ -371,7 +370,7 @@ public class ListBlobsResult {
      * The abstract base class for <code>Blob</code> and <code>BlobPrefix</code>
      * entries in the list of results returned in the response.
      */
-    public static abstract class ListBlobsEntry {
+    public abstract static class ListBlobsEntry {
 
     }
 

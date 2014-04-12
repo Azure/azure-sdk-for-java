@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * Represents the options that may be set on the Queue service for
- * {@link QueueContract#createMessage(String, String, CreateMessageOptions)
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#createMessage(String, String, CreateMessageOptions)
  * createMessage} requests. These options include a server response timeout for
  * the request, the visibility timeout to set on the created message, and the
  * time-to-live value to set on the message.
@@ -47,7 +46,7 @@ public class CreateMessageOptions extends QueueServiceOptions {
     /**
      * Gets the message visibility timeout in seconds value in this
      * {@link CreateMessageOptions} instance. to set on messages when making a
-     * {@link QueueContract#createMessage(String, String, CreateMessageOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#createMessage(String, String, CreateMessageOptions)
      * createMessage} request.
      * 
      * @return The message visibility timeout in seconds.
@@ -59,7 +58,7 @@ public class CreateMessageOptions extends QueueServiceOptions {
     /**
      * Sets the message visibility timeout in seconds value to set on messages
      * when making a
-     * {@link QueueContract#createMessage(String, String, CreateMessageOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#createMessage(String, String, CreateMessageOptions)
      * createMessage} request. This allows messages to be loaded into the queue
      * but not become visible until the visibility timeout has passed. Valid
      * visibility timeout values range from 0 to 604800 seconds (0 to 7 days),
@@ -96,7 +95,7 @@ public class CreateMessageOptions extends QueueServiceOptions {
     /**
      * Sets the message time-to-live timeout value to set on messages when
      * making a
-     * {@link QueueContract#createMessage(String, String, CreateMessageOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#createMessage(String, String, CreateMessageOptions)
      * createMessage} request. This is the maximum duration in seconds for the
      * message to remain in the queue after it is created. Valid
      * <em>timeToLiveInSeconds</em> values range from 0 to 604800 seconds (0 to
