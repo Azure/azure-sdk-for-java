@@ -457,9 +457,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         try {
             blobClient = createBlobClient(storageAccountName, storageAccountKey);
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
 
         // Retrieve reference to a previously created container
@@ -467,22 +465,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         try {
             container = blobClient.getContainerReference(storageContainer);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         } catch (StorageException e) {
-            e.printStackTrace();
         }           
         
         try {
             container.breakLease(300);
         } catch (StorageException e) {
-            e.printStackTrace();
         }
         try {
             container.delete();
         } catch (StorageException e) {
-            e.printStackTrace();
         }
-
     }
     
     private static void getLocation() throws Exception {
@@ -507,15 +500,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         try {
             storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
         } catch (ServiceException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
         } catch (SAXException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
         
         if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))) {
@@ -523,9 +511,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             try {
                 operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
             if (operationResponse != null) {
                 Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -538,17 +524,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         
         try {
             hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(hostedServiceName); 
-        } catch (ServiceException e)
-        {
-            e.printStackTrace();
+        } catch (ServiceException e) {
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
         } catch (SAXException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
         
         if ((hostedServiceGetResponse != null ) &&(hostedServiceGetResponse.getServiceName().contains(hostedServiceName)))
@@ -557,13 +537,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             try {
                 operationStatusResponse = computeManagementClient.getHostedServicesOperations().deleteAll(hostedServiceName);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
             } 
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
@@ -575,17 +551,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         DeploymentGetResponse  deploymentGetResponse = null;
         try {
                 deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
-        } catch (ServiceException e)
-        {
-            e.printStackTrace();
+        } catch (ServiceException e) {
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
         } catch (SAXException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
         
         if ((deploymentGetResponse != null) && (deploymentGetResponse.getName().contains(deploymentName) == true)) {
@@ -593,19 +563,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             try {
                 operationStatusResponse = computeManagementClient.getDeploymentsOperations().deleteByName(hostedServiceName, deploymentName, true);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
             }
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
             }
         }
-        
     }
-
 }
