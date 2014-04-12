@@ -36,9 +36,7 @@ import cucumber.api.java.en.When;
 /**
  * The Class ManagementResourceStepdefs.
  */
-public class ManagementResourceStepdefs
-{
-    
+public class ManagementResourceStepdefs {
     /** The objects. */
     private HashMap<String, Object> objects = new HashMap<String, Object>();
     
@@ -53,15 +51,13 @@ public class ManagementResourceStepdefs
      * @param prefix the prefix
      */
     @And("^I create a \"([^\"]*)\" character random String with name \"([^\"]*)\" and prefix \"([^\"]*)\"$")
-    public void i_create_a_character_random_string_with_name(int length, String name, String prefix)
-    {
-    	StringBuilder stringBuilder = new StringBuilder(length);
-    	for (int i=0; i<length; i++)
-    	{
-    		stringBuilder.append((char)('a' + random.nextInt(26)));
-    	}
-    	String randomString = prefix + stringBuilder.toString();
-    	objects.put(name, randomString);
+    public void i_create_a_character_random_string_with_name(int length, String name, String prefix) {
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
+        }
+        String randomString = prefix + stringBuilder.toString();
+        objects.put(name, randomString);
     }
     
     /**
@@ -72,40 +68,33 @@ public class ManagementResourceStepdefs
      * @throws Exception the exception
      */
     @Given("^I create a \"([^\"]*)\" with name \"([^\"]*)\"$")
-    public void i_create_a_with_name(String objectType, String name) throws Exception
-    {
-        if (objectType.equals("ManagementClient"))
-        {
+    public void i_create_a_with_name(String objectType, String name) throws Exception {
+        if (objectType.equals("ManagementClient")) {
             Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.ManagementService");
             Method method = serviceClass.getMethod("create", Configuration.class);
-            objects.put(name, method.invoke(null, createConfiguration()));   
+            objects.put(name, method.invoke(null, createConfiguration()));
         }
-        else if (objectType.equals("WebSiteManagementClient"))
-        {
+        else if (objectType.equals("WebSiteManagementClient")) {
             Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.websites.WebSiteManagementService");
             Method method = serviceClass.getMethod("create", Configuration.class);
-            objects.put(name, method.invoke(null, createConfiguration()));   
+            objects.put(name, method.invoke(null, createConfiguration()));
         }
-        else if (objectType.equals("StorageManagementClient"))
-        {
+        else if (objectType.equals("StorageManagementClient")) {
             Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.storage.StorageManagementService");
             Method method = serviceClass.getMethod("create", Configuration.class);
-            objects.put(name, method.invoke(null, createConfiguration()));   
+            objects.put(name, method.invoke(null, createConfiguration()));
         }
-        else if (objectType.equals("SqlManagementClient"))
-        {
+        else if (objectType.equals("SqlManagementClient")) {
             Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.sql.SqlManagementService");
             Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
-        else
-        {
+        else {
             Class<?> objectClass = TextUtility.getJavaType(objectType);
             objects.put(name, objectClass.newInstance());
         }
     }
-    
-    
+
     /**
      * Set_property_obj.
      *
@@ -118,17 +107,14 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      */
     @Given("^set \"([^\"]*)\" with \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public void set_property_obj(String propertyName, String propertyObj, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    public void set_property_obj(String propertyName, String propertyObj, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
-        if (parts.length > 1)
-        {
-	        Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
-	        method.invoke(object, objects.get(propertyObj));
+        if (parts.length > 1) {
+            Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
+            method.invoke(object, objects.get(propertyObj));
         }
-        else
-        {
+        else {
             objects.put(propertyName, objects.get(propertyObj));
         }
     }
@@ -145,17 +131,14 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      */
     @Given("^set \"([^\"]*)\" with value \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public void set_property(String propertyName, String propertyValue, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    public void set_property(String propertyName, String propertyValue, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
-        if (parts.length > 1)
-        {
-	        Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
-	        method.invoke(object, TextUtility.convertStringTo(propertyValue, propertyType));
+        if (parts.length > 1) {
+            Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
+            method.invoke(object, TextUtility.convertStringTo(propertyValue, propertyType));
         }
-        else
-        {
+        else {
             objects.put(propertyName, TextUtility.convertStringTo(propertyValue, propertyType));
         }
     }
@@ -172,8 +155,7 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      */
     @Given("^set \"([^\"]*)\" with value from path \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public void set_property_from_path(String propertyName, String valuePath, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    public void set_property_from_path(String propertyName, String valuePath, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String[] propertyParts = valuePath.split("\\.");
         Object propertyObject = getObject(propertyParts);
  
@@ -181,13 +163,11 @@ public class ManagementResourceStepdefs
 
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
-        if (parts.length > 1)
-        {
+        if (parts.length > 1) {
             Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
             method.invoke(object, propertyValue);
         }
-        else
-        {
+        else {
             objects.put(propertyName, propertyValue);
         }
     }
@@ -206,19 +186,16 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @And("^set \"([^\"]*)\" with value from list \"([^\"]*)\" where \"([^\"]*)\" of type \"([^\"]*)\" equals \"([^\"]*)\"$")
-    public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = path.split("\\.");
         Object parent = getObject(parts);
         ArrayList<?> arrayObject = (ArrayList<?>) getPropertyValue(parent, parts[parts.length - 1]);
         
-        for (int i = 0; i < arrayObject.size(); i++)
-        {
+        for (int i = 0; i < arrayObject.size(); i++) {
             String[] propertyParts = propertyPath.split("\\.");
             Object propertyParent = getObject(arrayObject.get(i), propertyParts);
             Object propertyValue = getPropertyValue(propertyParent, propertyParts[propertyParts.length - 1]);
-            if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType)))
-            {
+            if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType))) {
                 objects.put(objectName, arrayObject.get(i));
                 return;
             }
@@ -241,19 +218,16 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @And("^set \"([^\"]*)\" with value from list \"([^\"]*)\" where \"([^\"]*)\" of type \"([^\"]*)\" equals parameter \"([^\"]*)\"$")
-    public void set_value_where_equals_parameter(String objectName, String path, String propertyPath, String propertyType, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void set_value_where_equals_parameter(String objectName, String path, String propertyPath, String propertyType, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = path.split("\\.");
         Object parent = getObject(parts);
         ArrayList<?> arrayObject = (ArrayList<?>) getPropertyValue(parent, parts[parts.length - 1]);
         Object value = objects.get(parameterName);
-        for (int i = 0; i < arrayObject.size(); i++)
-        {
+        for (int i = 0; i < arrayObject.size(); i++) {
             String[] propertyParts = propertyPath.split("\\.");
             Object propertyParent = getObject(arrayObject.get(i), propertyParts);
             Object propertyValue = getPropertyValue(propertyParent, propertyParts[propertyParts.length - 1]);
-            if (propertyValue.equals(value))
-            {
+            if (propertyValue.equals(value)) {
                 objects.put(objectName, arrayObject.get(i));
                 return;
             }
@@ -272,15 +246,12 @@ public class ManagementResourceStepdefs
      * @throws InvocationTargetException the invocation target exception
      * @throws IllegalAccessException the illegal access exception
      */
-    private Object getPropertyValue(Object parent, String propertyName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    private Object getPropertyValue(Object parent, String propertyName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method;
-        if (propertyName.toLowerCase().equals("length"))
-        {
+        if (propertyName.toLowerCase().equals("length")) {
             method = parent.getClass().getMethod("size");
         }
-        else
-        {
+        else {
             method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
         }
         
@@ -299,8 +270,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should equal \"([^\"]*)\"$")
-    public void and_get_property_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void and_get_property_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
  
@@ -311,8 +281,7 @@ public class ManagementResourceStepdefs
     }
     
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should equal parameter \"([^\"]*)\"$")
-    public void and_get_property_equals_parameters(String propertyType, String propertyName, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void and_get_property_equals_parameters(String propertyType, String propertyName, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
  
@@ -335,8 +304,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should not equal \"([^\"]*)\"$")
-    public void and_get_property_not_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void and_get_property_not_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
  
@@ -360,8 +328,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
-    public void when_invoke_with_parameter_value_get_result(String methodName, String parameterValue, String parameterType, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void when_invoke_with_parameter_value_get_result(String methodName, String parameterValue, String parameterType, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType));
     }
 
@@ -377,8 +344,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameter \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
-    public void when_invoke_with_parameter_get_result(String methodName, String parameterName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void when_invoke_with_parameter_get_result(String methodName, String parameterName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         Object parameter = objects.get(parameterName);
         objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, parameter, parameter.getClass().getName()));
     }
@@ -393,8 +359,7 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      */
     @When("^I invoke \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
-    public void when_invoke_get_result(String methodName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    public void when_invoke_get_result(String methodName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         objects.put(resultName, when_invoke(methodName));
     }
 
@@ -408,8 +373,7 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      */
     @When("^I invoke \"([^\"]*)\"$")
-    public Object when_invoke(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    public Object when_invoke(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
 
@@ -431,8 +395,7 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      * @throws ClassNotFoundException the class not found exception
      */
-    public Object when_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object when_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
 
@@ -455,8 +418,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object when_invoke_with_parameter_values_string(String methodName, String parameter1, String parameter1Type, String parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object when_invoke_with_parameter_values_string(String methodName, String parameter1, String parameter1Type, String parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         return when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, TextUtility.convertStringTo(parameter2, parameter2Type), parameter2Type);
     }
 
@@ -473,9 +435,8 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object when_invoke_with_parameter_value(String methodName, String parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
-    	return when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType);
+    public Object when_invoke_with_parameter_value(String methodName, String parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+        return when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType);
     }
 
     /**
@@ -490,8 +451,7 @@ public class ManagementResourceStepdefs
      * @throws IllegalAccessException the illegal access exception
      * @throws ClassNotFoundException the class not found exception
      */
-    public Object when_invoke_with_parameter_converted_value(String methodName, Object parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object when_invoke_with_parameter_converted_value(String methodName, Object parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
         
@@ -511,8 +471,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameter \"([^\"]*)\"$")
-    public Object when_invoke_with_parameter(String methodName, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object when_invoke_with_parameter(String methodName, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         Object parameter = objects.get(parameterName);
         return when_invoke_with_parameter_converted_value(methodName, parameter, parameter.getClass().getName());
     }
@@ -530,8 +489,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\"$")
-    public Object when_invoke_with_parameter(String methodName, String parameter1Name, String parameter2Name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object when_invoke_with_parameter(String methodName, String parameter1Name, String parameter2Name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         String[] parts1 = parameter1Name.split("\\.");
         Object parameter1 = getObject(parts1);
 
@@ -554,8 +512,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
-    public void  when_invoke_with_parameters_get_result(String methodName, String parameter1Name, String parameter2Name, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public void  when_invoke_with_parameters_get_result(String methodName, String parameter1Name, String parameter2Name, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         objects.put(resultName, when_invoke_with_parameter(methodName, parameter1Name, parameter2Name));
     }
     
@@ -573,13 +530,12 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @Then("^invoke \"([^\"]*)\" with parameter \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object then_invoke_with_parameter_of_type(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, SecurityException, ClassNotFoundException
-    {
-    	String[] parts = methodName.split("\\.");
+    public Object then_invoke_with_parameter_of_type(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, SecurityException, ClassNotFoundException {
+        String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
         Object parameterObject = objects.get(parameter);
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameterType));
-        return method.invoke(object, parameterObject);    	
+        return method.invoke(object, parameterObject);        
     }
 
     /**
@@ -595,8 +551,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @Then("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         return when_invoke_with_parameter_converted_value(methodName, parameter, parameterType);
     }
 
@@ -631,8 +586,7 @@ public class ManagementResourceStepdefs
      * @throws ClassNotFoundException the class not found exception
      */
     @Then("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object then_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
-    {
+    public Object then_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1Type, parameter2, parameter2Type);
     }
 
@@ -645,10 +599,8 @@ public class ManagementResourceStepdefs
      * @throws InvocationTargetException the invocation target exception
      * @throws IllegalAccessException the illegal access exception
      */
-    private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
-        if (objects.containsKey(parts[0]))
-        {
+    private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (objects.containsKey(parts[0])) {
             Object object = objects.get(parts[0]);
 
             String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
@@ -668,12 +620,9 @@ public class ManagementResourceStepdefs
      * @throws InvocationTargetException the invocation target exception
      * @throws IllegalAccessException the illegal access exception
      */
-    private Object getObject(Object parent, String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
-        for (int i = 0; i < (parts.length - 1); i++)
-        {
-            if (parts[i].endsWith("]"))
-            {
+    private Object getObject(Object parent, String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        for (int i = 0; i < (parts.length - 1); i++) {
+            if (parts[i].endsWith("]")) {
                 String propertyName = parts[i].substring(0, parts[i].lastIndexOf("["));
                 Method method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
                 parent = method.invoke(parent);
@@ -682,8 +631,7 @@ public class ManagementResourceStepdefs
                 Method indexMethod = parent.getClass().getMethod("get", int.class);
                 parent = indexMethod.invoke(parent, index);
             }
-            else
-            {
+            else {
                 Method method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[i]));
                 parent = method.invoke(parent);   
             }
@@ -704,7 +652,8 @@ public class ManagementResourceStepdefs
             baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
     }
 }

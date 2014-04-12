@@ -181,7 +181,10 @@
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
+        <!-- Removed on 12/04/2014:
+            Justification: 1.x.x candidate. Not necessary for now.
+            <module name="EmptyBlock"/>
+        -->
         <module name="LeftCurly" />
         <module name="NeedBraces"/>
 
@@ -247,7 +250,10 @@
         <module name="FinalParameters"/>
         -->
 
+        <!-- Removed on 12/04/2014:
+             Justification: TODO comments are fine in a 0.x.x version
         <module name="TodoComment"/>
+        -->
         <module name="UpperEll"/>
 
     </module>

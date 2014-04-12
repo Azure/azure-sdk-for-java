@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.management.compute;
 import java.net.URI;
 import java.util.Random;
 
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.management.*;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
@@ -53,16 +54,15 @@ public abstract class ComputeManagementIntegrationTestBase {
             baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
     }
     
-    protected static String randomString(int length)
-    {
+    protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++)
-        {
+        for (int i=0; i<length; i++) {
                 stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
