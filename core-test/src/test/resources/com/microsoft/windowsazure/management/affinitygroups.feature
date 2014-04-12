@@ -12,7 +12,7 @@ Scenario: Create an AffinityGroup
     When I invoke "management.AffinityGroupsOperations.Create" with parameter "parameters" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "201"
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
-    Then invoke "management.AffinityGroupsOperations.Delete" with parameter value "testAffinityGroupName1" of type "System.String"
+    Then invoke "management.AffinityGroupsOperations.Delete" with parameter "testAffinityGroupName1" of type "System.String"
 
 Scenario: Get an AffinityGroup
     Given I create a "Microsoft.WindowsAzure.Management.Models.AffinityGroupCreateParameters" with name "parameters"
@@ -24,7 +24,7 @@ Scenario: Get an AffinityGroup
     When I invoke "management.AffinityGroupsOperations.Get" with parameter value "AF2" of type "System.String" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
-    Then invoke "management.AffinityGroupsOperations.Delete" with parameter value "testAffinityGroupName2" of type "System.String"
+    Then invoke "management.AffinityGroupsOperations.Delete" with parameter "testAffinityGroupName2" of type "System.String"
 
 Scenario: List AffinityGroups
     Given I create a "Microsoft.WindowsAzure.Management.Models.AffinityGroupCreateParameters" with name "parameters"
@@ -38,4 +38,4 @@ Scenario: List AffinityGroups
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
     And set "element" with value from list "operationResponse.AffinityGroups" where "Name" of type "System.String" equals "AF3"
     And property with type "System.String" and path "element.Name" should equal "AF3"
-    Then invoke "management.AffinityGroupsOperations.Delete" with parameter value "testAffinityGroupName3" of type "System.String"
+    Then invoke "management.AffinityGroupsOperations.Delete" with parameter "testAffinityGroupName3" of type "System.String"

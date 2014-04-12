@@ -404,6 +404,14 @@ public class ManagementResourceStepdefs {
         return method.invoke(object, parameter1, parameter2);
     }
 
+    public Object when_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type, Object parameter3, String parameter3Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+        String[] parts = methodName.split("\\.");
+        Object object = getObject(parts);
+
+        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameter1Type), TextUtility.getJavaType(parameter2Type), TextUtility.getJavaType(parameter3Type));
+        return method.invoke(object, parameter1, parameter2, parameter3);
+    }
+    
     /**
      * When_invoke_with_parameter_values_string.
      *
@@ -500,6 +508,32 @@ public class ManagementResourceStepdefs {
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName());
     }
 
+    /**
+     * When_invoke_with_parameter.
+     *
+     * @param methodName the method name
+     * @param parameter1Name the parameter1 name
+     * @param parameter2Name the parameter2 name
+     * @return the object
+     * @throws NoSuchMethodException the no such method exception
+     * @throws InvocationTargetException the invocation target exception
+     * @throws IllegalAccessException the illegal access exception
+     * @throws ClassNotFoundException the class not found exception
+     */
+    @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+    public Object when_invoke_with_parameter(String methodName, String parameter1Name, String parameter2Name, String parameter3Name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+        String[] parts1 = parameter1Name.split("\\.");
+        Object parameter1 = getObject(parts1);
+
+        String[] parts2 = parameter2Name.split("\\.");
+        Object parameter2 = getObject(parts2);
+        
+        String[] parts3 = parameter3Name.split("\\.");
+        Object parameter3 = getObject(parts3);
+
+        return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName(), parameter3, parameter3.getClass().getName());
+    }
+    
     /**
      * When_invoke_with_parameters_get_result.
      *
