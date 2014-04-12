@@ -5,6 +5,7 @@ Background:
 
 Scenario: Create WebSite
     Given I create a "Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteCreateParameters" with name "parameters"
+    And set "webspace" with value "eastuswebspace" of type "System.String"
     And I create a "10" character random String with name "testWebSiteName1" and prefix "azurejavatest"
     And set "parameters.Name" with value "testWebSiteName1" of type "System.String"
     And set "parameters.WebSpaceName" with value "eastuswebspace" of type "System.String"
@@ -18,8 +19,8 @@ Scenario: Create WebSite
     And I invoke "management.WebSitesOperations.Create" with parameters "param1" and "parameters" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
-    When I invoke "management.WebSitesOperations.Delete" with parameter value "testWebSiteName1" of type "System.String" I get the result into "operationResponse"
-    Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
+    And I create a "Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteDeleteParameters" with name "deleteParameters" 
+    When I invoke "management.WebSitesOperations.Delete" with parameters "webspace" and "testWebSiteName1" and "deleteParameters"
 
 Scenario: List websites
     When I invoke "management.WebSpacesOperations.ListWebSites" with parameter values "eastuswebspace" of type "System.String" and "null" of type "Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteListParameters" I get the result into "operationResponse"
