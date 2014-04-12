@@ -48,8 +48,9 @@ public abstract class ComputeManagementIntegrationTestBase {
     }
    
     protected static Configuration createConfiguration() throws Exception {
+        String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(
-            new URI(System.getenv(ManagementConfiguration.URI)),
+            baseUri != null ? new URI(baseUri) : null,
             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)

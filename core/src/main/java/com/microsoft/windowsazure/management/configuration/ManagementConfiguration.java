@@ -196,7 +196,7 @@ public final class ManagementConfiguration {
             profile = profile + ".";
         }
 
-        configuration.setProperty(profile + ManagementConfiguration.URI, uri);
+		configuration.setProperty(profile + ManagementConfiguration.URI, uri);
         configuration.setProperty(profile + ManagementConfiguration.SUBSCRIPTION_ID, subscriptionId);
         configuration.setProperty(profile + ManagementConfiguration.KEYSTORE_PATH, keyStoreLocation);
         configuration.setProperty(profile + ManagementConfiguration.KEYSTORE_PASSWORD, keyStorePassword);
