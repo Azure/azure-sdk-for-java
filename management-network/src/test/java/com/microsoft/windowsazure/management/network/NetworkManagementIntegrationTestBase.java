@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.management.network;
 
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 
@@ -62,7 +62,7 @@ public abstract class NetworkManagementIntegrationTestBase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new InputSource(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes("UTF-8"))));
+        Document responseDoc = documentBuilder.parse(new InputSource(new StringReader(operationResponse.getConfiguration())));
 
         NodeList list = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration", "VirtualNetworkSite");
         boolean exist = false;
