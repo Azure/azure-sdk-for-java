@@ -1,7 +1,6 @@
 package com.microsoft.windowsazure.management;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -37,14 +36,19 @@ public class ManagementCertificateOperationsTests extends ManagementIntegrationT
     public void getManagementCertificateSuccess() throws Exception {
     	
         // arrange
-    	String thumbprint = "78669C92859BC1CAE1FA6A90BDA7B015048B2B1E";
-    	ManagementCertificateGetResponse managementCertificateResponse = managementClient.getManagementCertificatesOperations().get(thumbprint);
+   	    ManagementCertificateListResponse managementCertificateListResponse = managementClient.getManagementCertificatesOperations().list();
+   	    ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> managementCertificatelist = managementCertificateListResponse.getSubscriptionCertificates();
+   	 
+   	    if (managementCertificatelist.size() > 0) {
+   	    	String thumbprint = managementCertificatelist.get(0).getThumbprint();
 
-        // Assert
-        Assert.assertEquals(200, managementCertificateResponse.getStatusCode());
-        Assert.assertNotNull(managementCertificateResponse.getRequestId()); 
-        Assert.assertEquals(thumbprint, managementCertificateResponse.getThumbprint());
-        Assert.assertEquals(GregorianCalendar.YEAR, managementCertificateResponse.getCreated().YEAR);        
+   	    	ManagementCertificateGetResponse managementCertificateResponse = managementClient.getManagementCertificatesOperations().get(thumbprint);
+
+   	        // Assert
+   	        Assert.assertEquals(200, managementCertificateResponse.getStatusCode());
+   	        Assert.assertNotNull(managementCertificateResponse.getRequestId()); 
+   	        Assert.assertEquals(thumbprint, managementCertificateResponse.getThumbprint());    
+   	    }
     }
     
     @Test
