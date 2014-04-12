@@ -26,6 +26,7 @@ import java.util.Random;
 
 import org.junit.Assert;
 
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import cucumber.api.java.en.And;
