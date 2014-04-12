@@ -6,7 +6,7 @@ Background:
 Scenario: Create, List and Delete a storage account 
 	Given I create a "Microsoft.WindowsAzure.Management.Storage.Models.StorageAccountCreateParameters" with name "parameters"
 	And I create a "10" character random String with name "testStorageAccountName1" and prefix "azurejavatest"
-	And set "parameters.Name" with parameter value "testStorageAccountName1" of type "System.String" 
+	And set "parameters.Name" with value "testStorageAccountName1" of type "System.String" 
 	And set "parameters.Location" with value "West US" of type "System.String" 
 	And set "parameters.Description" with value "Hi there" of type "System.String" 
 	And set "parameters.Label" with value "Great St account" of type "System.String" 
@@ -16,7 +16,7 @@ Scenario: Create, List and Delete a storage account
 Scenario: List a storage account
 	Given I create a "Microsoft.WindowsAzure.Management.Storage.Models.StorageAccountCreateParameters" with name "parameters"
 	And I create a "10" character random String with name "testStorageAccountName2" and prefix "azurejavatest"
-	And set "parameters.Name" with parameter value "testStorageAccountName2" of type "System.String" 
+	And set "parameters.Name" with value "testStorageAccountName2" of type "System.String" 
 	And set "parameters.Location" with value "West US" of type "System.String" 
 	And set "parameters.Description" with value "Hi there" of type "System.String" 
 	And set "parameters.Label" with value "Great St account" of type "System.String" 
@@ -30,7 +30,7 @@ Scenario: List a storage account
 Scenario: Delete storage account 
 	Given I create a "Microsoft.WindowsAzure.Management.Storage.Models.StorageAccountCreateParameters" with name "parameters"
 	And I create a "10" character random String with name "testStorageAccountName3" and prefix "azurejavatest"
-	And set "parameters.Name" with parameter value "testStorageAccountName3" of type "System.String" 
+	And set "parameters.Name" with value "testStorageAccountName3" of type "System.String" 
 	And set "parameters.Location" with value "West US" of type "System.String" 
 	And set "parameters.Description" with value "Hi there" of type "System.String" 
 	And set "parameters.Label" with value "Great St account" of type "System.String" 

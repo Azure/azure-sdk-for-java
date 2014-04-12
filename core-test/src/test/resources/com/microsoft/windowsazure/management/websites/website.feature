@@ -6,7 +6,7 @@ Background:
 Scenario: Create WebSite
     Given I create a "Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteCreateParameters" with name "parameters"
     And I create a "10" character random String with name "testWebSiteName1" and prefix "azurejavatest"
-    And set "parameters.Name" with parameter value "testWebSiteName1" of type "System.String"
+    And set "parameters.Name" with value "testWebSiteName1" of type "System.String"
     And set "parameters.WebSpaceName" with value "eastuswebspace" of type "System.String"
     And I create a "Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteCreateParameters.WebSpaceDetails" with name "webSpaceObj"
     And set "webSpaceObj.Name" with value "eastuswebspace" of type "System.String"
