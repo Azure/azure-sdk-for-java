@@ -17,6 +17,9 @@ package com.microsoft.windowsazure.management.storage;
 import java.net.URI;
 import java.util.Random;
 
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.Configuration;
@@ -30,6 +33,8 @@ public abstract class StorageManagementIntegrationTestBase {
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
+
         storageManagementClient = StorageManagementService.create(config);
     }
   
