@@ -53,7 +53,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         cc.getSingletons().add(new ODataEntityProvider());
         Client c = Client.create(cc);
 
-        c.addFilter(new LoggingFilter(System.out));
+        // c.addFilter(new LoggingFilter(System.out));
         c.addFilter(new RedirectFilter(createLocationManager()));
         c.addFilter(new OAuthFilter(createTokenManager()));
         c.addFilter(new VersionHeadersFilter());
