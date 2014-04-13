@@ -16,7 +16,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -65,7 +65,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new InputSource(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes("UTF-8"))));
+        Document responseDoc = documentBuilder.parse(new InputSource(new StringReader(operationResponse.getConfiguration().toString().replaceFirst("\ufeff",  ""))));
 
         DOMSource domSource = new DOMSource(responseDoc);
         StringWriter stringWriter = new StringWriter();
