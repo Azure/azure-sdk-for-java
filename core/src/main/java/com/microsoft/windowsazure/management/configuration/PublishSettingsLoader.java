@@ -34,13 +34,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 
 /**
@@ -123,7 +123,7 @@ public abstract class PublishSettingsLoader {
             keyStore.load(null, "".toCharArray());
             
             InputStream sslInputStream = new ByteArrayInputStream(
-                    Base64.decodeBase64(certificate));
+                    Base64.decode(certificate));
 
             keyStore.load(sslInputStream, "".toCharArray());
 
