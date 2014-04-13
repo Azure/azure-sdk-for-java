@@ -199,7 +199,7 @@ public class ServiceException extends Exception {
                     .newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory
                     .newDocumentBuilder();
-    		Document responseDoc = documentBuilder.parse(new InputSource(new StringReader(content.toString().replaceFirst("\ufeff",  ""))));
+            Document responseDoc = documentBuilder.parse(new InputSource(new StringReader(content.toString().replaceFirst("\ufeff",  ""))));
 
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();

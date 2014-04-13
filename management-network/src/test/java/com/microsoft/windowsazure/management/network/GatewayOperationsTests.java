@@ -25,7 +25,7 @@ import org.junit.Test;
 public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
     private static String virtualNetworkName = "network123";
 
-	@BeforeClass
+    @BeforeClass
     public static void setup() throws Exception {
         createService();
         createNetwork(virtualNetworkName);

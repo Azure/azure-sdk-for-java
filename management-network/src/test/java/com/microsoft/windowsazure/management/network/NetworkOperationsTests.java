@@ -16,7 +16,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,13 +27,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.management.network.models.*;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase {
     @BeforeClass
@@ -65,7 +65,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new InputSource(new StringReader(operationResponse.getConfiguration().toString().replaceFirst("\ufeff",  ""))));
+        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes("UTF-8"))));
 
         DOMSource domSource = new DOMSource(responseDoc);
         StringWriter stringWriter = new StringWriter();
