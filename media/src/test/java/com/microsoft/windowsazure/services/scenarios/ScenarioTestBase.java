@@ -97,7 +97,7 @@ public abstract class ScenarioTestBase {
                     next.evaluate();
                 } catch (Throwable e) {
                     if (shouldCapture) {
-                        e.printStackTrace();
+                        // e.printStackTrace();
                         fail("Error occured during setup: " + e.getMessage());
                     } else {
                         throw e;

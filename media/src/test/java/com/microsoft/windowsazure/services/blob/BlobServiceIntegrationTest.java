@@ -92,7 +92,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
             service.createContainer("$root");
             createdRoot = true;
         } catch (ServiceException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -111,7 +111,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 service.deleteContainer("$root");
                 createdRoot = false;
             } catch (ServiceException e) {
-                e.printStackTrace();
+                // e.printStackTrace();
             }
         }
     }
