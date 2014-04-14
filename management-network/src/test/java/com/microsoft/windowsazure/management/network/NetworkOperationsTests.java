@@ -16,81 +16,94 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import java.io.ByteArrayInputStream;
-import java.io.StringWriter;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import java.util.ArrayList;
 
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.management.network.models.*;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.w3c.dom.Document;
 
 public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase {
+    
     @BeforeClass
     public static void setup() throws Exception {
-        createService();
+        createService();         
     }
-
+   
+    
     @Test
-    public void getConfiguration() throws Exception {
-        //act
-        NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
-
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
+    public void setConfiguration() throws Exception {    	
+         String configurationValue = "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+"<NetworkConfiguration xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration\">"+
+  "<VirtualNetworkConfiguration> " +
+  "<Dns /> " +
+    "<VirtualNetworkSites>" +
+      "<VirtualNetworkSite name=\"testsdkVirtualNetwork03\" AffinityGroup=\"testsdkVirtualNetwork01AG\"> " +
+        "<AddressSpace> " +
+          "<AddressPrefix>172.16.0.0/28</AddressPrefix> " +
+        "</AddressSpace> " +
+        "<Subnets> " +
+          "<Subnet name=\"Subnet-2\"> " +
+            "<AddressPrefix>172.16.0.0/28</AddressPrefix> " +
+          "</Subnet> " +
+        "</Subnets> " +
+      "</VirtualNetworkSite> " +
+    "</VirtualNetworkSites>" +
+  "</VirtualNetworkConfiguration>" +
+"</NetworkConfiguration>";
+        // Arrange
+        NetworkSetConfigurationParameters createParameters = new NetworkSetConfigurationParameters();
+        createParameters.setConfiguration(configurationValue);      
+        
+        // Act
+        OperationResponse operationResponse = networkManagementClient.getNetworksOperations().setConfiguration(createParameters);
+        
+        // Assert
+        Assert.assertEquals(201, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertNotNull(operationResponse.getConfiguration());
     }
-
+    
     @Test
-    public void setConfiguration() throws Exception {
-        //act
-        NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
+    public void getNetworks() throws Exception {
+    	String NetworkName = "testsdkVirtualNetwork01";
+        // Act
+        NetworkGetConfigurationResponse networkGetConfigurationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
 
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
-        Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertNotNull(operationResponse.getConfiguration());
-
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilderFactory.setNamespaceAware(true);
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes())));
-
-        DOMSource domSource = new DOMSource(responseDoc);
-        StringWriter stringWriter = new StringWriter();
-        StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.transform(domSource, streamResult);
-
-        NetworkSetConfigurationParameters parameters = new NetworkSetConfigurationParameters();
-        parameters.setConfiguration(stringWriter.toString());
-        OperationResponse response = networkManagementClient.getNetworksOperations().setConfiguration(parameters);
-
-        //Assert
-        Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertNotNull(response.getRequestId());
+        // Assert
+        Assert.assertEquals(200, networkGetConfigurationResponse.getStatusCode());
+        Assert.assertNotNull(networkGetConfigurationResponse.getRequestId());
+        System.out.println("networksite.getConfiguration() = " + networkGetConfigurationResponse.getConfiguration());
+        //Assert.assertNotNull(NetworkResponse.getCapabilities());    
+        //Assert.assertEquals(NetworkName1, NetworkResponse.getName());  
+        //Assert.assertEquals(NetworkLocation1, NetworkResponse.getLocation());
+        //Assert.assertEquals(Networklabel1, NetworkResponse.getLabel());
     }
-
+    
     @Test
-    public void list() throws Exception {
-        //act
-        NetworkListResponse operationResponse = networkManagementClient.getNetworksOperations().list();
-
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
-        Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertNotNull(operationResponse.getVirtualNetworkSites());
+    public void listNetworksSuccess() throws Exception {
+        // Arrange  
+    	 NetworkListResponse NetworkListResponse = networkManagementClient.getNetworksOperations().list();
+    	 ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
+    	 for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist)
+    	 {
+    		 System.out.println("networksite.getName() = " + networksite.getName());
+    		 System.out.println("networksite.getAG() = " + networksite.getAffinityGroup());
+    		 System.out.println("networksite.getid() = " + networksite.getId());
+    		 System.out.println("networksite.getstate() = " + networksite.getState());
+    		 System.out.println("networksite.getlabel() = " + networksite.getLabel());
+    		 
+    		 System.out.println("networksite.getaddressspace = " + networksite.getAddressSpace());
+    		 System.out.println("networksite.getdnsserver() = " + networksite.getDnsServers());
+    		 System.out.println("networksite.getgetways() = " + networksite.getGateway());
+    		 System.out.println("networksite.getsubnet() = " + networksite.getSubnets());
+    		
+//        	 if (networksite.getName().contains("testsdkNetwork"))
+//        	 {
+//                //virtualnetworkManagementClient.getNetworksOperations().delete(networksite.getName(), true);
+//        	 }
+    	 }     
     }
 }

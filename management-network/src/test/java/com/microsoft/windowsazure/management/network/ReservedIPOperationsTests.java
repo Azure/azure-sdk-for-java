@@ -28,8 +28,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
-	
+public class ReservedIPOperationsTests extends NetworkManagementIntegrationTestBase {
+    
     @BeforeClass
     public static void setup() throws Exception {
         createService();
@@ -38,18 +38,17 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
 
     @AfterClass
     public static void cleanup() throws Exception {
-    	String virtualNetworkName = "";
         try
         {
         	// Arrange  
-	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
-	       	 ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-	       	 for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
+	       	 NetworkReservedIPListResponse networkReservedIPListResponse = networkManagementClient.getReservedIPsOperations().list();
+	       	 ArrayList<NetworkReservedIPListResponse.ReservedIP> networkReservedIPlist = networkReservedIPListResponse.getReservedIPs();
+	       	 for ( NetworkReservedIPListResponse.ReservedIP reservedip : networkReservedIPlist)
 	       	 { 
-//	           	 if (gatewayConnection.getAllocatedIPAddresses()().contains("testsdkGateway"))
-//	           	 {
-//	                   virtualnetworkManagementClient.getGatewaysOperations().delete(virtualNetworkName);
-//	           	 }
+	           	 if (reservedip.getName().contains("testsdkReservedIP"))
+	           	 {
+	                   networkManagementClient.getReservedIPsOperations().delete(reservedip.getName());
+	           	 }
 	       	 }    
         }
         catch (ServiceException e) {
@@ -59,14 +58,21 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     
     @Test
     public void createReservedIPSuccess() throws Exception {
-    	 String gatewayName = "testsdkGateway";
-         String gatewayDescription = "testsdkGatewayDescription";       
+    	 String reservedIPName = "testsdkReservedIP01";
+         String reservedIPLabel = "testsdkReservedIP01Label"; 
+         String reservedIPAG = "testsdkReservedIP01";
+         String reservedIPServiceName = "testsdkVirtualNetwork01"; 
+         String deploymentNameValue = "";
+         
         // Arrange
-        GatewayCreateParameters createParameters = new GatewayCreateParameters();
-        //createParameters.setConfiguration(configurationValue); 
+        NetworkReservedIPCreateParameters createParameters = new NetworkReservedIPCreateParameters();
+        createParameters.setName(reservedIPName);
+        createParameters.setAffinityGroup(reservedIPAG);
+        createParameters.setServiceName(reservedIPServiceName);
+        createParameters.setDeploymentName(deploymentNameValue);
         
         // Act
-        OperationResponse operationResponse = networkManagementClient.getGatewaysOperations().create(gatewayName, createParameters);
+        OperationResponse operationResponse = networkManagementClient.getReservedIPsOperations().create(createParameters);
         
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());
@@ -75,9 +81,9 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     
     @Test
     public void getReservedIPSuccess() throws Exception {
-    	String ipName = "testsdkNetwork";
+    	String ipName = "testsdkVirtualNetwork01";
         // Act
-    	GatewayGetResponse networkReservedIPGetResponse = networkManagementClient.getGatewaysOperations().get(ipName);
+    	NetworkReservedIPGetResponse networkReservedIPGetResponse = networkManagementClient.getReservedIPsOperations().get(ipName);
         // Assert
         Assert.assertEquals(200, networkReservedIPGetResponse.getStatusCode());
         Assert.assertNotNull(networkReservedIPGetResponse.getRequestId());
@@ -89,18 +95,16 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     
     @Test
     public void listReservedIPSuccess() throws Exception {
-    	String virtualNetworkName = "";
-       
-        	// Arrange  
-	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse =networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
-	       	 ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-	       	 for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
-	       	 { 
-//	           	 if (gatewayConnection.getAllocatedIPAddresses()().contains("testsdkGateway"))
-//	           	 {
-//	                   virtualnetworkManagementClient.getGatewaysOperations().delete(virtualNetworkName);
-//	           	 }
-	       	 }    
-       
+        // Arrange  
+    	 NetworkReservedIPListResponse networkReservedIPListResponse = networkManagementClient.getReservedIPsOperations().list();
+    	 ArrayList<NetworkReservedIPListResponse.ReservedIP> networkReservedIPlist = networkReservedIPListResponse.getReservedIPs();
+    	 for ( NetworkReservedIPListResponse.ReservedIP reservedIP : networkReservedIPlist)
+    	 { 
+    		 System.out.println("reservedIP.getName() = " + reservedIP.getName());
+//        	 if (reservedIP.getName().contains("testsdkReservedIP"))
+//        	 {
+//                virtualnetworkManagementClient.getReservedIPsOperations().delete(reservedIP.getName());
+//        	 }
+    	 }     
     }
 }
