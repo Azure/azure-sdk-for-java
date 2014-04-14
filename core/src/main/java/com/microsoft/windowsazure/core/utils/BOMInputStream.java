@@ -71,7 +71,7 @@ public class BOMInputStream extends InputStream {
         }
         
         if (this.bom != BOM.NONE) {
-        	pushbackInputStream.skip(this.bom.bytes.length);
+            pushbackInputStream.skip(this.bom.bytes.length);
         }
     }
 
