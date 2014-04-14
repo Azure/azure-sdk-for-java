@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkReservedIPCreateParameters;
@@ -467,8 +468,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -581,8 +581,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -693,7 +692,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element reservedIPElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ReservedIP");
             if (reservedIPElement != null) {
@@ -865,7 +864,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element reservedIPsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ReservedIPs");
             if (reservedIPsSequenceElement != null) {

@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.websites;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmCreateParameters;
@@ -264,7 +265,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element serverFarmElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement2 != null) {
@@ -568,7 +569,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element serverFarmElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement != null) {
@@ -743,7 +744,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element serverFarmsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarms");
             if (serverFarmsSequenceElement != null) {
@@ -987,7 +988,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element serverFarmElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement2 != null) {

@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -230,8 +231,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             createStorageServiceInputElement.appendChild(descriptionElement);
-        }
-        else {
+        } else {
             Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");
@@ -423,7 +423,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element availabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AvailabilityResponse");
             if (availabilityResponseElement != null) {
@@ -561,8 +561,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -786,7 +785,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
@@ -1032,7 +1031,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
@@ -1171,7 +1170,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element storageServicesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageServices");
             if (storageServicesSequenceElement != null) {
@@ -1452,7 +1451,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
@@ -1611,8 +1610,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             updateStorageServiceInputElement.appendChild(descriptionElement);
-        }
-        else {
+        } else {
             Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");

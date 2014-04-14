@@ -174,8 +174,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
-        }
-        else {
+        } else {
             this.credentials = credentials;
         }
         if (baseUri == null) {
@@ -184,8 +183,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
             }
             catch (URISyntaxException ex) {
             }
-        }
-        else {
+        } else {
             this.baseUri = baseUri;
         }
     }
