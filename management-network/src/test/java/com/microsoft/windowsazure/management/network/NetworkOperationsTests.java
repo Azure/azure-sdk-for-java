@@ -65,7 +65,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes("UTF-8"))));
+        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes())));
 
         DOMSource domSource = new DOMSource(responseDoc);
         StringWriter stringWriter = new StringWriter();

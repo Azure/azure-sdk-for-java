@@ -14,8 +14,10 @@
  */
 package com.microsoft.windowsazure.exception;
 
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,6 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -199,7 +200,7 @@ public class ServiceException extends Exception {
                     .newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory
                     .newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(content));
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(content.getBytes())));
             
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();

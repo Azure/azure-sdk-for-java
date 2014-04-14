@@ -62,7 +62,7 @@ public abstract class NetworkManagementIntegrationTestBase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes("UTF-8"))));
+        Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes())));
 
         NodeList list = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration", "VirtualNetworkSite");
         boolean exist = false;
