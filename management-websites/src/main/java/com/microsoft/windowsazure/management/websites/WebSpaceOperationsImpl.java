@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.websites;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
@@ -251,7 +252,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element userElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "User");
             if (userElement2 != null) {
@@ -393,7 +394,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element webSpacesElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "WebSpaces");
             if (webSpacesElement != null) {
@@ -584,7 +585,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element stringElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "string");
             if (stringElement != null) {
@@ -699,7 +700,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element webSpacesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "WebSpaces");
             if (webSpacesSequenceElement != null) {
@@ -896,7 +897,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element geoRegionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GeoRegions");
             if (geoRegionsSequenceElement != null) {
@@ -1037,7 +1038,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element arrayOfstringSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "ArrayOfstring");
             if (arrayOfstringSequenceElement != null) {
@@ -1174,7 +1175,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element sitesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Sites");
             if (sitesSequenceElement != null) {

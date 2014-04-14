@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -3350,8 +3351,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3482,8 +3482,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3619,8 +3618,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3745,8 +3743,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3866,8 +3863,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -3990,7 +3986,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element deploymentElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Deployment");
             if (deploymentElement != null) {
@@ -5516,7 +5512,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element deploymentElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Deployment");
             if (deploymentElement != null) {
@@ -7324,8 +7320,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -7450,8 +7445,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -7576,8 +7570,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -7702,8 +7695,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8164,8 +8156,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8294,8 +8285,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8424,8 +8414,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8594,8 +8583,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8764,8 +8752,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -8932,8 +8919,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -9100,8 +9086,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);

@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
@@ -4490,8 +4491,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4609,8 +4609,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4756,8 +4755,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -4883,8 +4881,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -5008,8 +5005,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -5138,7 +5134,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element persistentVMRoleElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "PersistentVMRole");
             if (persistentVMRoleElement != null) {
@@ -5939,8 +5935,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6060,8 +6055,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6174,8 +6168,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6292,8 +6285,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6404,8 +6396,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6537,8 +6528,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -6657,8 +6647,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);

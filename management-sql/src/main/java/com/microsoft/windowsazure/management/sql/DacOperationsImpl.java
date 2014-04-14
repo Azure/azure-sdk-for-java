@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DacExportParameters;
@@ -268,7 +269,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element guidElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "guid");
             if (guidElement != null) {
@@ -415,7 +416,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element arrayOfStatusInfoElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
             if (arrayOfStatusInfoElement != null) {
@@ -706,7 +707,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
             
             Element guidElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "guid");
             if (guidElement != null) {

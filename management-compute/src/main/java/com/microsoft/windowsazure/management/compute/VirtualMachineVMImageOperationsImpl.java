@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
@@ -271,8 +272,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else {
+                } else {
                     ServiceException ex = new ServiceException("");
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
@@ -379,7 +379,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element vMImagesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "VMImages");
             if (vMImagesSequenceElement != null) {

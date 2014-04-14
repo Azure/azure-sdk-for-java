@@ -49,36 +49,28 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         try {
             storageServiceListResponse = storageManagementClient.getStorageAccountsOperations().list();
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ServiceException e) {
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
         } catch (SAXException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
+
         if (storageServiceListResponse != null){
-        ArrayList<StorageAccount> storageAccountlist = storageServiceListResponse.getStorageAccounts();
-        for (StorageAccount storageAccount : storageAccountlist)
-        { 
-            if (storageAccount.getName().startsWith(testStorageAccountPrefix))
-            {
-                try {
-                    storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ServiceException e) {
-                    e.printStackTrace();
+            ArrayList<StorageAccount> storageAccountlist = storageServiceListResponse.getStorageAccounts();
+            for (StorageAccount storageAccount : storageAccountlist) { 
+                if (storageAccount.getName().startsWith(testStorageAccountPrefix)) {
+                    try {
+                        storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
+                    } catch (IOException e) {
+                    } catch (ServiceException e) {
+                    }
                 }
             }
         }
-        }
     }    
    
-    private static void createStorageAccount() throws Exception {    	
-        String storageAccountDescription = "Description1";       
+    private static void createStorageAccount() throws Exception {
+        String storageAccountDescription = "Description1";
         
         //Arrange
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
