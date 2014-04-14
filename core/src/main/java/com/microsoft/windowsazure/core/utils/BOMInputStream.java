@@ -65,9 +65,13 @@ public class BOMInputStream extends InputStream {
               break;
         }
 
-        if (read > 0 && this.bom == BOM.NONE) {
+        if (read > 0) {
             // If bytes read were not from a BOM, unread them.
             pushbackInputStream.unread(bom, 0, read);
+        }
+        
+        if (this.bom != BOM.NONE) {
+        	pushbackInputStream.skip(this.bom.bytes.length);
         }
     }
 
