@@ -168,11 +168,11 @@ public abstract class IntegrationTestBase {
                 try {
                     service.delete(NotificationEndPoint.delete(notificationEndPoint.getId()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -183,11 +183,11 @@ public abstract class IntegrationTestBase {
                 try {
                     queueService.deleteQueue(queue.getName());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -200,11 +200,11 @@ public abstract class IntegrationTestBase {
                 try {
                     service.delete(ContentKey.delete(contentKeyInfo.getId()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -218,7 +218,7 @@ public abstract class IntegrationTestBase {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -240,11 +240,11 @@ public abstract class IntegrationTestBase {
                         service.delete(Asset.delete(assetInfo.getId()));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -259,7 +259,7 @@ public abstract class IntegrationTestBase {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -289,12 +289,12 @@ public abstract class IntegrationTestBase {
                             // Not much to do so except wait.
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -366,7 +366,7 @@ public abstract class IntegrationTestBase {
             }
         } catch (Exception e) {
             // Don't worry about problems here.
-            e.printStackTrace();
+            // e.printStackTrace();
         }
 
         assertEquals(message

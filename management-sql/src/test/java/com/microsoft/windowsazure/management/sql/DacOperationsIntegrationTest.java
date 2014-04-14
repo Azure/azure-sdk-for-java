@@ -49,9 +49,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
             try {
                 databaseOperations.delete(serverName, databaseName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
 
@@ -61,9 +59,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
             try {
                 serverOperations.delete(serverName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
 
@@ -72,9 +68,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         try {
             storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ServiceException e) {
-            e.printStackTrace();
         }
     }
 

@@ -147,7 +147,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                     service.delete(Asset.delete(actualAsset.getId()));
                 }
             } catch (ServiceException ex) {
-                ex.printStackTrace();
+                // ex.printStackTrace();
             }
         }
     }

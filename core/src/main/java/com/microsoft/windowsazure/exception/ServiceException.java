@@ -14,16 +14,20 @@
  */
 package com.microsoft.windowsazure.exception;
 
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -31,7 +35,6 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -197,8 +200,8 @@ public class ServiceException extends Exception {
                     .newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory
                     .newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new InputSource(
-                    new ByteArrayInputStream(content.getBytes("utf-8"))));
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(content.getBytes())));
+            
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
 
@@ -265,8 +268,19 @@ public class ServiceException extends Exception {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(content);
 
-            String code = responseDoc.get("Code").getTextValue();
-            String message = responseDoc.get("Message").getTextValue();
+            String code;
+            if (responseDoc.get("Code") != null) {
+                code = responseDoc.get("Code").getTextValue();
+            } else {
+                code = Integer.toString(httpResponse.getStatusLine().getStatusCode());
+            }
+            
+            String message;
+            if (responseDoc.get("Message") != null) {
+                message = responseDoc.get("Message").getTextValue();
+            } else {
+                message = httpResponse.getStatusLine().getReasonPhrase();
+            }
 
             serviceException = new ServiceException(buildExceptionMessage(code,
                     message, content, httpResponse));

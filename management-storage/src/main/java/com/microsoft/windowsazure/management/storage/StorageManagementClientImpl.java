@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.storage;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -130,8 +131,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
-        }
-        else {
+        } else {
             this.credentials = credentials;
         }
         if (baseUri == null) {
@@ -140,8 +140,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             }
             catch (URISyntaxException ex) {
             }
-        }
-        else {
+        } else {
             this.baseUri = baseUri;
         }
     }
@@ -302,7 +301,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
             
             Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             if (operationElement != null) {

@@ -50,9 +50,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
             try {
                 firewallRuleOperations.delete(serverName, firewallRuleName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
 
@@ -62,9 +60,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
             try {
                 serverOperations.delete(serverName);
             } catch (IOException e) {
-                e.printStackTrace();
             } catch (ServiceException e) {
-                e.printStackTrace();
             }
         }
 

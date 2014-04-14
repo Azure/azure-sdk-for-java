@@ -39,11 +39,13 @@ import java.util.Random;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.xml.sax.SAXException;
 
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.Configuration;
@@ -69,6 +71,7 @@ public abstract class SqlManagementIntegrationTestBase {
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         sqlManagementClient = SqlManagementService.create(config);
     }
