@@ -271,6 +271,8 @@ public class ServiceException extends Exception {
             String code;
             if (responseDoc.get("Code") != null) {
                 code = responseDoc.get("Code").getTextValue();
+            } else if (responseDoc.get("code") != null) {
+                code = responseDoc.get("code").getTextValue();
             } else {
                 code = Integer.toString(httpResponse.getStatusLine().getStatusCode());
             }
@@ -278,6 +280,8 @@ public class ServiceException extends Exception {
             String message;
             if (responseDoc.get("Message") != null) {
                 message = responseDoc.get("Message").getTextValue();
+            } else if (responseDoc.get("message") != null) {
+                message = responseDoc.get("message").getTextValue();
             } else {
                 message = httpResponse.getStatusLine().getReasonPhrase();
             }
