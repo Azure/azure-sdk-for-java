@@ -33,23 +33,21 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        //cleanup();       
+
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-    	String virtualNetworkName = "";
         try
         {
-        	// Arrange  
-	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
+	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listConnections(testNetworkName);
 	       	 ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
 	       	 for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
 	       	 { 
-//	           	 if (gatewayConnection.getAllocatedIPAddresses()().contains("testsdkGateway"))
-//	           	 {
-//	                   virtualnetworkManagementClient.getGatewaysOperations().delete(virtualNetworkName);
-//	           	 }
+	           	 if (gatewayConnection.getAllocatedIPAddresses().contains("testsdkGateway"))
+	           	 {
+	                   networkManagementClient.getGatewaysOperations().delete(testNetworkName);
+             	 }
 	       	 }    
         }
         catch (ServiceException e) {

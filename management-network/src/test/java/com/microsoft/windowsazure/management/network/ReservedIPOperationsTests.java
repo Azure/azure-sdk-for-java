@@ -30,6 +30,7 @@ import org.junit.Test;
 
 public class ReservedIPOperationsTests extends NetworkManagementIntegrationTestBase {
     
+    
     @BeforeClass
     public static void setup() throws Exception {
         createService();
@@ -45,7 +46,7 @@ public class ReservedIPOperationsTests extends NetworkManagementIntegrationTestB
 	       	 ArrayList<NetworkReservedIPListResponse.ReservedIP> networkReservedIPlist = networkReservedIPListResponse.getReservedIPs();
 	       	 for ( NetworkReservedIPListResponse.ReservedIP reservedip : networkReservedIPlist)
 	       	 { 
-	           	 if (reservedip.getName().contains("testsdkReservedIP"))
+	           	 if (reservedip.getName().startsWith(testReservedIPPrefix))
 	           	 {
 	                   networkManagementClient.getReservedIPsOperations().delete(reservedip.getName());
 	           	 }
@@ -58,7 +59,7 @@ public class ReservedIPOperationsTests extends NetworkManagementIntegrationTestB
     
     @Test
     public void createReservedIPSuccess() throws Exception {
-    	 String reservedIPName = "testsdkReservedIP01";
+    	 String reservedIPName = testReservedIPPrefix + randomString(10);
          String reservedIPLabel = "testsdkReservedIP01Label"; 
          String reservedIPAG = "testsdkReservedIP01";
          String reservedIPServiceName = "testsdkVirtualNetwork01"; 

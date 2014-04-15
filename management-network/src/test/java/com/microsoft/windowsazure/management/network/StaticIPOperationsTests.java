@@ -16,16 +16,9 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import java.util.ArrayList;
-
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
-import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.net.InetAddress;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,17 +28,15 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
 	   @BeforeClass
 	    public static void setup() throws Exception {
 	        createService();
-	        //cleanup();       
+	        testNetworkName = testNetworkPrefix + randomString(10);
 	    }
 
     @Test
     public void check() throws Exception {
-    	String virtualNetworkName = "testsdkVirtualNetwork01";
     	InetAddress ipAddress = InetAddress.getLocalHost();
     	
         // Act
-    	System.out.println("ipAddress = "  + ipAddress.getHostAddress());
-    	NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(virtualNetworkName, ipAddress);
+    	NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(testNetworkName, ipAddress);
 
         // Assert
         Assert.assertEquals(200, networkStaticIPAvailabilityResponse.getStatusCode());

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.junit.AfterClass;
@@ -31,13 +30,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
-    private static String testNetworkName;
     private static ClientRootCertificateOperations  clientRootCertificateOperations; 
     
     @BeforeClass
     public static void setup() throws Exception {
-        testNetworkName =  testVirtualNetworkPrefix + randomString(10);;
+        testNetworkName =  testNetworkPrefix + randomString(10);;
         createService();
+        createNetwork(testNetworkName);
         clientRootCertificateOperations = networkManagementClient.getClientRootCertificatesOperations();
     }
 

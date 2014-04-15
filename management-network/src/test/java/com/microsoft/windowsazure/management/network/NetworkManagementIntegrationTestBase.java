@@ -41,8 +41,12 @@ import com.microsoft.windowsazure.*;
 public abstract class NetworkManagementIntegrationTestBase {
 
     protected static NetworkManagementClient networkManagementClient;	
+    protected static NetworkOperations networkOperations;
+    protected static ReservedIPOperations reservedIPOperations;
+    protected static String testNetworkPrefix = "javatestvn";
+    protected static String testReservedIPPrefix = "javareservedip";
+    protected static String testNetworkName;
 
-    protected static String testVirtualNetworkPrefix = "javatestvn";
     
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
