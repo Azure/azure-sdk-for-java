@@ -45,6 +45,5 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
 
         // Act
         staticIPOperations.check(testNetworkName, ipAddress);
-
-    }  
+    }
 }

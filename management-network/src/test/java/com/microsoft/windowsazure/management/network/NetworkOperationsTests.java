@@ -90,17 +90,15 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     @Test
     public void listNetworksSuccess() throws Exception {
         // Arrange  
-    	 NetworkListResponse NetworkListResponse = networkOperations.list();
-    	 ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
-    	 for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist)
-    	 {
-    		 assertNotNull(networksite.getName());
-    		 assertNotNull(networksite.getAffinityGroup());
-    		 assertNotNull(networksite.getId());
-    		 assertNotNull(networksite.getState());
-    		 assertNotNull(networksite.getAddressSpace());
-    		 assertNotNull(networksite.getSubnets());
-    		
-    	 }     
+        NetworkListResponse NetworkListResponse = networkOperations.list();
+        ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
+        for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist) {
+            assertNotNull(networksite.getName());
+            assertNotNull(networksite.getAffinityGroup());
+            assertNotNull(networksite.getId());
+            assertNotNull(networksite.getState());
+            assertNotNull(networksite.getAddressSpace());
+            assertNotNull(networksite.getSubnets());
+        }
     }
 }
