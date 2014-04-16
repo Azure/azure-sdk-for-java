@@ -16,8 +16,11 @@
 
 package com.microsoft.windowsazure.management.network;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -27,54 +30,74 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
-    private static String virtualNetworkName = "network123";
-
+    
     @BeforeClass
     public static void setup() throws Exception {
+        testNetworkName =  testNetworkPrefix + randomString(10);;
         createService();
-        createNetwork(virtualNetworkName);
+        networkOperations = networkManagementClient.getNetworksOperations();
+        createNetwork(testNetworkName);
+        clientRootCertificateOperations = networkManagementClient.getClientRootCertificatesOperations();
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        try {
-             ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
-             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
-             for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) { 
-                 Assert.assertNotNull(clientRootCertificate.getThumbprint());
-             }
+        try
+        {
+            ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
+            ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
+            for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
+            { 
+                clientRootCertificateOperations.delete(testNetworkName, clientRootCertificate.getThumbprint());
+            }
         }
         catch (ServiceException e) {
             e.printStackTrace();
-        }  
+        }
     }
-
+    
+    @Test(expected = ServiceException.class)
+    public void createClientInvalidRootCertificatesFailed() throws Exception {
+         String certificateValue = "InvalidRootCertificate";
+        // Arrange
+        ClientRootCertificateCreateParameters createParameters = new ClientRootCertificateCreateParameters();
+        createParameters.setCertificate(certificateValue); 
+        
+        // Act
+        OperationResponse operationResponse = clientRootCertificateOperations.create(testNetworkName, createParameters);
+        
+        // Assert
+        Assert.assertEquals(201, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+    }
+    
     @Test
     public void getClientRootCertificates() throws Exception {
-        ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
+        ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(testNetworkName);
         ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
         for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) { 
-            // Act
-            ClientRootCertificateGetResponse clientRootCertificateGetResponse = networkManagementClient.getClientRootCertificatesOperations().get(virtualNetworkName, clientRootCertificate.getThumbprint());
-
-            // Assert
+            ClientRootCertificateGetResponse clientRootCertificateGetResponse = networkManagementClient.getClientRootCertificatesOperations().get(testNetworkName, clientRootCertificate.getThumbprint());
             Assert.assertEquals(200, clientRootCertificateGetResponse.getStatusCode());
             Assert.assertNotNull(clientRootCertificateGetResponse.getRequestId());
-            Assert.assertNotNull(clientRootCertificateGetResponse.getCertificate());  
+            Assert.assertNotNull(clientRootCertificateGetResponse.getCertificate());
         }
     }
     
     @Test
     public void listClientRootCertificatesSuccess() throws Exception {
-        try {
-             ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(virtualNetworkName);
-             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
-             for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) { 
-                 Assert.assertNotNull(clientRootCertificate.getThumbprint());
-             }
+        try
+        {
+        	 ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(testNetworkName);
+        	 ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
+        	 for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
+        	 { 
+        		 assertNotNull(clientRootCertificate.getThumbprint());
+        		 assertNotNull(clientRootCertificate.getExpirationTime());
+        		 assertNotNull(clientRootCertificate.getSubject());
+        	 }
         }
         catch (ServiceException e) {
             e.printStackTrace();
-        }
+        }  
     }
 }
