@@ -48,7 +48,7 @@ import com.microsoft.windowsazure.*;
 
 public abstract class NetworkManagementIntegrationTestBase {
 
-    protected static NetworkManagementClient networkManagementClient;	
+    protected static NetworkManagementClient networkManagementClient;    
     protected static NetworkOperations networkOperations;
     protected static ReservedIPOperations reservedIPOperations;
     protected static GatewayOperations gatewayOperations;
@@ -68,13 +68,13 @@ public abstract class NetworkManagementIntegrationTestBase {
     }
 
     protected static Configuration createConfiguration() throws Exception {
-    	 String baseUri = System.getenv(ManagementConfiguration.URI);
-         return ManagementConfiguration.configure(
-         	 baseUri != null ? new URI(baseUri) : null,
-             System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-             System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-             KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE)));
+        String baseUri = System.getenv(ManagementConfiguration.URI);
+        return ManagementConfiguration.configure(
+            baseUri != null ? new URI(baseUri) : null,
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE)));
     }
     
     protected static void createNetwork(String networkName) throws Exception {
@@ -127,17 +127,14 @@ public abstract class NetworkManagementIntegrationTestBase {
          }
     }
     
-    protected static void deleteNetwork(String networkName) 
-    {
+    protected static void deleteNetwork(String networkName) {
         NetworkGetConfigurationResponse operationResponse = null ;
         boolean exist = false;
         
         try {
             operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
         } catch (IOException e) {
-            e.printStackTrace();
         } catch (ServiceException e) {
-            e.printStackTrace();
         }
 
         //Assert
@@ -155,11 +152,8 @@ public abstract class NetworkManagementIntegrationTestBase {
             try {
                 responseDoc = documentBuilder.parse(new BOMInputStream(new ByteArrayInputStream(operationResponse.getConfiguration().getBytes())));
             } catch (NullPointerException e) {
-                e.printStackTrace();
             } catch (SAXException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
             }
 
             NodeList virtualNetworkSitelist = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration", "VirtualNetworkSite");
@@ -197,13 +191,9 @@ public abstract class NetworkManagementIntegrationTestBase {
                 try {
                     networkOperations.setConfiguration(parameters);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
                 } catch (ServiceException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }

@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
-	
+    
     @BeforeClass
     public static void setup() throws Exception {
         createService();
@@ -84,7 +84,7 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     @Test
     public void getGatewaySuccess() throws Exception {
         // Act
-    	GatewayGetResponse gatewayGetResponse = gatewayOperations.get(testNetworkName);
+        GatewayGetResponse gatewayGetResponse = gatewayOperations.get(testNetworkName);
         // Assert
         Assert.assertEquals(200, gatewayGetResponse.getStatusCode());
         Assert.assertNotNull(gatewayGetResponse.getRequestId());
@@ -103,6 +103,6 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
             assertNotNull(gatewayConnection.getLastConnectionEstablished());
             assertNotNull(gatewayConnection.getLastEvent());
             assertNotNull(gatewayConnection.getLocalNetworkSiteName());
-        }    
+        }
     }
 }

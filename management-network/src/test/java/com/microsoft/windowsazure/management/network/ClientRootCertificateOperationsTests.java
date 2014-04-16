@@ -30,7 +30,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
-    
     @BeforeClass
     public static void setup() throws Exception {
         testNetworkName =  testNetworkPrefix + randomString(10);;
@@ -85,19 +84,15 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
     
     @Test
     public void listClientRootCertificatesSuccess() throws Exception {
-        try
-        {
-        	 ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(testNetworkName);
-        	 ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
-        	 for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
-        	 { 
-        		 assertNotNull(clientRootCertificate.getThumbprint());
-        		 assertNotNull(clientRootCertificate.getExpirationTime());
-        		 assertNotNull(clientRootCertificate.getSubject());
-        	 }
+        try {
+             ClientRootCertificateListResponse ClientRootCertificateListResponse = networkManagementClient.getClientRootCertificatesOperations().list(testNetworkName);
+             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
+             for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) {
+                assertNotNull(clientRootCertificate.getThumbprint());
+                assertNotNull(clientRootCertificate.getExpirationTime());
+                assertNotNull(clientRootCertificate.getSubject());
+             }
+        } catch (ServiceException e) {
         }
-        catch (ServiceException e) {
-            e.printStackTrace();
-        }  
     }
 }
