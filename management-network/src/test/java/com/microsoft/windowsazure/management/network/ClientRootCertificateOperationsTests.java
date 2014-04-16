@@ -30,12 +30,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
-    private static ClientRootCertificateOperations  clientRootCertificateOperations; 
     
     @BeforeClass
     public static void setup() throws Exception {
         testNetworkName =  testNetworkPrefix + randomString(10);;
         createService();
+        networkOperations = networkManagementClient.getNetworksOperations();
         createNetwork(testNetworkName);
         clientRootCertificateOperations = networkManagementClient.getClientRootCertificatesOperations();
     }
@@ -53,12 +53,12 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
         }
         catch (ServiceException e) {
             e.printStackTrace();
-        }  
+        }
     }
     
-    @Test
-    public void createClientRootCertificatesSuccess() throws Exception {
-         String certificateValue ="";
+    @Test(expected = ServiceException.class)
+    public void createClientInvalidRootCertificatesFailed() throws Exception {
+         String certificateValue = "InvalidRootCertificate";
         // Arrange
         ClientRootCertificateCreateParameters createParameters = new ClientRootCertificateCreateParameters();
         createParameters.setCertificate(certificateValue); 

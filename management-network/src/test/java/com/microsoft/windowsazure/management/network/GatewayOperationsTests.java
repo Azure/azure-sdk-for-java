@@ -16,55 +16,65 @@
 
 package com.microsoft.windowsazure.management.network;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
 import com.microsoft.windowsazure.exception.ServiceException;
+import java.util.concurrent.ExecutionException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
 	
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-
+        networkOperations = networkManagementClient.getNetworksOperations();
+        gatewayOperations = networkManagementClient.getGatewaysOperations();
+        testNetworkName = testNetworkPrefix + randomString(10);
+        testGatewayName = testGatewayPrefix + randomString(10);
+        createNetwork(testNetworkName);
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {
-        try
-        {
-	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listConnections(testNetworkName);
-	       	 ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-	       	 for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
-	       	 { 
-	           	 if (gatewayConnection.getAllocatedIPAddresses().contains("testsdkGateway"))
-	           	 {
-	                   networkManagementClient.getGatewaysOperations().delete(testNetworkName);
-             	 }
-	       	 }    
-        }
-        catch (ServiceException e) {
+    public static void cleanup() {
+        deleteNetwork(testNetworkName);
+        
+        try {
+            gatewayOperations.delete(testNetworkName);
+        } catch (IOException e) {
             e.printStackTrace();
-        }  
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
     
-    @Test
-    public void createReservedIPSuccess() throws Exception {
-    	 String gatewayName = "testsdkGateway";
-         String gatewayDescription = "testsdkGatewayDescription";       
+    @Test(expected = ExecutionException.class)
+    public void createGatewayOnEmptyNetworkFailed() throws Exception {     
         // Arrange
-        GatewayCreateParameters createParameters = new GatewayCreateParameters();
-        //createParameters.setConfiguration(configurationValue); 
+        GatewayCreateParameters gatewayCreateParameters = new GatewayCreateParameters();
+        gatewayCreateParameters.setGatewayType(GatewayType.StaticRouting);
         
         // Act
-        OperationResponse operationResponse = networkManagementClient.getGatewaysOperations().create(gatewayName, createParameters);
+        OperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);
         
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());
@@ -72,33 +82,30 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     }
     
     @Test
-    public void getReservedIPSuccess() throws Exception {
-    	String ipName = "testsdkNetwork";
+    public void getGatewaySuccess() throws Exception {
         // Act
-    	GatewayGetResponse networkReservedIPGetResponse = networkManagementClient.getGatewaysOperations().get(ipName);
+    	GatewayGetResponse gatewayGetResponse = gatewayOperations.get(testNetworkName);
         // Assert
-        Assert.assertEquals(200, networkReservedIPGetResponse.getStatusCode());
-        Assert.assertNotNull(networkReservedIPGetResponse.getRequestId());
-        //Assert.assertNotNull(NetworkResponse.getCapabilities());    
-        //Assert.assertEquals(NetworkName1, NetworkResponse.getName());  
-        //Assert.assertEquals(NetworkLocation1, NetworkResponse.getLocation());
-        //Assert.assertEquals(Networklabel1, NetworkResponse.getLabel());
+        Assert.assertEquals(200, gatewayGetResponse.getStatusCode());
+        Assert.assertNotNull(gatewayGetResponse.getRequestId());
     }
     
-    @Test
-    public void listReservedIPSuccess() throws Exception {
-    	String virtualNetworkName = "";
-       
-        	// Arrange  
-	       	 GatewayListConnectionsResponse gatewayListConnectionsResponse =networkManagementClient.getGatewaysOperations().listConnections(virtualNetworkName);
-	       	 ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-	       	 for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
-	       	 { 
-//	           	 if (gatewayConnection.getAllocatedIPAddresses()().contains("testsdkGateway"))
-//	           	 {
-//	                   virtualnetworkManagementClient.getGatewaysOperations().delete(virtualNetworkName);
-//	           	 }
-	       	 }    
+    @Test(expected = ServiceException.class)
+    public void listGatewayFailedWithInsufficientPermission() throws Exception {
+        // Arrange  
+	    GatewayListConnectionsResponse gatewayListConnectionsResponse = gatewayOperations.listConnections(testNetworkName);
+	    ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
+	    for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
+	    { 
+          	 assertNotNull(gatewayConnection.getAllocatedIPAddresses());
+          	 assertNotNull(gatewayConnection.getConnectivityState());
+          	 assertNotNull(gatewayConnection.getEgressBytesTransferred());
+          	 assertNotNull(gatewayConnection.getIngressBytesTransferred());
+          	 assertNotNull(gatewayConnection.getLastConnectionEstablished());
+          	 assertNotNull(gatewayConnection.getLastEvent());
+          	 assertNotNull(gatewayConnection.getLocalNetworkSiteName());
+          	 
+	    }    
        
     }
 }

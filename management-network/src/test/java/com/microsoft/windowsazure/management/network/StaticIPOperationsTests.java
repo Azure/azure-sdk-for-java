@@ -16,31 +16,36 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.management.network.models.*;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.net.InetAddress;
 
-import org.junit.Assert;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBase {
     
-	   @BeforeClass
-	    public static void setup() throws Exception {
-	        createService();
-	        testNetworkName = testNetworkPrefix + randomString(10);
-	    }
+	@BeforeClass
+	public static void setup() throws Exception {
+	    createService();
+	    networkOperations = networkManagementClient.getNetworksOperations();
+	    testNetworkName = testNetworkPrefix + randomString(10);
+	    createNetwork(testNetworkName);
+	    staticIPOperations = networkManagementClient.getStaticIPsOperations();
+	}
+	
+	@AfterClass
+	public static void cleanup() {
+	    deleteNetwork(testNetworkName);
+	}
 
-    @Test
-    public void check() throws Exception {
+    @Test(expected = ServiceException.class)
+    public void checkIllegalIPAddressFailed() throws Exception {
     	InetAddress ipAddress = InetAddress.getLocalHost();
     	
         // Act
-    	NetworkStaticIPAvailabilityResponse networkStaticIPAvailabilityResponse = networkManagementClient.getStaticIPsOperations().check(testNetworkName, ipAddress);
+    	staticIPOperations.check(testNetworkName, ipAddress);
 
         // Assert
-        Assert.assertEquals(200, networkStaticIPAvailabilityResponse.getStatusCode());
-        Assert.assertNotNull(networkStaticIPAvailabilityResponse.getRequestId());
-        Assert.assertEquals(false, networkStaticIPAvailabilityResponse.isAvailable()); 
     }  
 }

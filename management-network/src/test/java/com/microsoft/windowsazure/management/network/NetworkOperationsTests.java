@@ -33,7 +33,6 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.management.network.models.*;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +45,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         createService(); 
         networkOperations = networkManagementClient.getNetworksOperations();
     }
-   
+
     @Test
     public void getConfiguration() throws Exception {
         //act
@@ -91,7 +90,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     @Test
     public void listNetworksSuccess() throws Exception {
         // Arrange  
-    	 NetworkListResponse NetworkListResponse = networkManagementClient.getNetworksOperations().list();
+    	 NetworkListResponse NetworkListResponse = networkOperations.list();
     	 ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
     	 for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist)
     	 {
@@ -99,10 +98,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     		 assertNotNull(networksite.getAffinityGroup());
     		 assertNotNull(networksite.getId());
     		 assertNotNull(networksite.getState());
-    		 assertNotNull(networksite.getLabel());
     		 assertNotNull(networksite.getAddressSpace());
-    		 assertNotNull(networksite.getDnsServers());
-    		 assertNotNull(networksite.getGateway());
     		 assertNotNull(networksite.getSubnets());
     		
     	 }     
