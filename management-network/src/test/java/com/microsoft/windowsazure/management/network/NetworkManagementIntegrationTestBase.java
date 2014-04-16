@@ -161,7 +161,7 @@ public abstract class NetworkManagementIntegrationTestBase {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        
+
             NodeList virtualNetworkSitelist = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration", "VirtualNetworkSite");
 
             for (int i = 0; i < virtualNetworkSitelist.getLength(); i++) {
@@ -171,9 +171,9 @@ public abstract class NetworkManagementIntegrationTestBase {
                     
                 exist = true;
                 break;
+                }
             }
-            }
-        
+
             if (exist) {
                 DOMSource domSource = new DOMSource(responseDoc);
                 StringWriter stringWriter = new StringWriter();
@@ -185,13 +185,13 @@ public abstract class NetworkManagementIntegrationTestBase {
                 } catch (TransformerConfigurationException e) {
                     e.printStackTrace();
                 }
-            
+
                 try {
                     transformer.transform(domSource, streamResult);
                 } catch (TransformerException e) {
                     e.printStackTrace();
                 }
-            
+
                 NetworkSetConfigurationParameters parameters = new NetworkSetConfigurationParameters();
                 parameters.setConfiguration(stringWriter.toString());
                 try {
@@ -208,15 +208,14 @@ public abstract class NetworkManagementIntegrationTestBase {
             }
         }
     }
-    
-     
+
+
     protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++) {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+        for (int i = 0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
-    
 }

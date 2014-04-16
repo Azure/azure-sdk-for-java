@@ -44,12 +44,12 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
     public static void cleanup() throws Exception {
         try
         {
-        	 ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
-        	 ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
-        	 for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
-        	 { 
-            	 clientRootCertificateOperations.delete(testNetworkName, clientRootCertificate.getThumbprint());
-        	 }
+            ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
+            ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
+            for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
+            { 
+                clientRootCertificateOperations.delete(testNetworkName, clientRootCertificate.getThumbprint());
+            }
         }
         catch (ServiceException e) {
             e.printStackTrace();

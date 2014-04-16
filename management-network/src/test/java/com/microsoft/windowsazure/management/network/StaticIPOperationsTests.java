@@ -25,27 +25,26 @@ import org.junit.Test;
 
 public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBase {
     
-	@BeforeClass
-	public static void setup() throws Exception {
-	    createService();
-	    networkOperations = networkManagementClient.getNetworksOperations();
-	    testNetworkName = testNetworkPrefix + randomString(10);
-	    createNetwork(testNetworkName);
-	    staticIPOperations = networkManagementClient.getStaticIPsOperations();
-	}
-	
-	@AfterClass
-	public static void cleanup() {
-	    deleteNetwork(testNetworkName);
-	}
+    @BeforeClass
+    public static void setup() throws Exception {
+        createService();
+        networkOperations = networkManagementClient.getNetworksOperations();
+        testNetworkName = testNetworkPrefix + randomString(10);
+        createNetwork(testNetworkName);
+        staticIPOperations = networkManagementClient.getStaticIPsOperations();
+    }
+    
+    @AfterClass
+    public static void cleanup() {
+        deleteNetwork(testNetworkName);
+    }
 
     @Test(expected = ServiceException.class)
     public void checkIllegalIPAddressFailed() throws Exception {
-    	InetAddress ipAddress = InetAddress.getLocalHost();
-    	
-        // Act
-    	staticIPOperations.check(testNetworkName, ipAddress);
+        InetAddress ipAddress = InetAddress.getLocalHost();
 
-        // Assert
+        // Act
+        staticIPOperations.check(testNetworkName, ipAddress);
+
     }  
 }

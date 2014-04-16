@@ -93,19 +93,16 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     @Test(expected = ServiceException.class)
     public void listGatewayFailedWithInsufficientPermission() throws Exception {
         // Arrange  
-	    GatewayListConnectionsResponse gatewayListConnectionsResponse = gatewayOperations.listConnections(testNetworkName);
-	    ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
-	    for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )
-	    { 
-          	 assertNotNull(gatewayConnection.getAllocatedIPAddresses());
-          	 assertNotNull(gatewayConnection.getConnectivityState());
-          	 assertNotNull(gatewayConnection.getEgressBytesTransferred());
-          	 assertNotNull(gatewayConnection.getIngressBytesTransferred());
-          	 assertNotNull(gatewayConnection.getLastConnectionEstablished());
-          	 assertNotNull(gatewayConnection.getLastEvent());
-          	 assertNotNull(gatewayConnection.getLocalNetworkSiteName());
-          	 
-	    }    
-       
+        GatewayListConnectionsResponse gatewayListConnectionsResponse = gatewayOperations.listConnections(testNetworkName);
+        ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
+        for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )    { 
+            assertNotNull(gatewayConnection.getAllocatedIPAddresses());
+            assertNotNull(gatewayConnection.getConnectivityState());
+            assertNotNull(gatewayConnection.getEgressBytesTransferred());
+            assertNotNull(gatewayConnection.getIngressBytesTransferred());
+            assertNotNull(gatewayConnection.getLastConnectionEstablished());
+            assertNotNull(gatewayConnection.getLastEvent());
+            assertNotNull(gatewayConnection.getLocalNetworkSiteName());
+        }    
     }
 }
