@@ -41,17 +41,13 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
 
     @AfterClass
     public static void cleanup() throws Exception {
-        try
-        {
+        try {
             ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
-            for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist)
-            { 
+            for (ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificate : clientRootCertificatelist) {
                 clientRootCertificateOperations.delete(testNetworkName, clientRootCertificate.getThumbprint());
             }
-        }
-        catch (ServiceException e) {
-            e.printStackTrace();
+        } catch (ServiceException e) {
         }
     }
     
