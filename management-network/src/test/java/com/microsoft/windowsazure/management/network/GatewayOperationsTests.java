@@ -16,28 +16,93 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.management.network.models.*;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.management.network.models.*;
+import com.microsoft.windowsazure.exception.ServiceException;
+import java.util.concurrent.ExecutionException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
-    private static String virtualNetworkName = "network123";
-
+    
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        createNetwork(virtualNetworkName);
+        networkOperations = networkManagementClient.getNetworksOperations();
+        gatewayOperations = networkManagementClient.getGatewaysOperations();
+        testNetworkName = testNetworkPrefix + randomString(10);
+        testGatewayName = testGatewayPrefix + randomString(10);
+        createNetwork(testNetworkName);
     }
 
-    @Test
-    public void gatewayListSupportedDevicesResponse() throws Exception {
-        // Arrange  
-        GatewayListSupportedDevicesResponse gatewayListConnectionsResponse = networkManagementClient.getGatewaysOperations().listSupportedDevices();
-
+    @AfterClass
+    public static void cleanup() {
+        deleteNetwork(testNetworkName);
+        
+        try {
+            gatewayOperations.delete(testNetworkName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Test(expected = ExecutionException.class)
+    public void createGatewayOnEmptyNetworkFailed() throws Exception {     
+        // Arrange
+        GatewayCreateParameters gatewayCreateParameters = new GatewayCreateParameters();
+        gatewayCreateParameters.setGatewayType(GatewayType.StaticRouting);
+        
+        // Act
+        OperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);
+        
         // Assert
-        Assert.assertEquals(200, gatewayListConnectionsResponse.getStatusCode());
-        Assert.assertNotNull(gatewayListConnectionsResponse.getRequestId());
+        Assert.assertEquals(201, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+    }
+    
+    @Test
+    public void getGatewaySuccess() throws Exception {
+        // Act
+        GatewayGetResponse gatewayGetResponse = gatewayOperations.get(testNetworkName);
+        // Assert
+        Assert.assertEquals(200, gatewayGetResponse.getStatusCode());
+        Assert.assertNotNull(gatewayGetResponse.getRequestId());
+    }
+    
+    @Test(expected = ServiceException.class)
+    public void listGatewayFailedWithInsufficientPermission() throws Exception {
+        // Arrange  
+        GatewayListConnectionsResponse gatewayListConnectionsResponse = gatewayOperations.listConnections(testNetworkName);
+        ArrayList<GatewayListConnectionsResponse.GatewayConnection> gatewayConnectionlist = gatewayListConnectionsResponse.getConnections();
+        for (GatewayListConnectionsResponse.GatewayConnection gatewayConnection : gatewayConnectionlist )    { 
+            assertNotNull(gatewayConnection.getAllocatedIPAddresses());
+            assertNotNull(gatewayConnection.getConnectivityState());
+            assertNotNull(gatewayConnection.getEgressBytesTransferred());
+            assertNotNull(gatewayConnection.getIngressBytesTransferred());
+            assertNotNull(gatewayConnection.getLastConnectionEstablished());
+            assertNotNull(gatewayConnection.getLastEvent());
+            assertNotNull(gatewayConnection.getLocalNetworkSiteName());
+        }
     }
 }

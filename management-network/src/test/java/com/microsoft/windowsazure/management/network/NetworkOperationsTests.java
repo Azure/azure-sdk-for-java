@@ -16,8 +16,11 @@
 
 package com.microsoft.windowsazure.management.network;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,26 +39,27 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase {
+    
     @BeforeClass
     public static void setup() throws Exception {
-        createService();
+        createService(); 
+        networkOperations = networkManagementClient.getNetworksOperations();
     }
 
     @Test
     public void getConfiguration() throws Exception {
         //act
-        NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
-
+        NetworkGetConfigurationResponse operationResponse = networkOperations.getConfiguration();
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
         Assert.assertNotNull(operationResponse.getConfiguration());
     }
-
+    
     @Test
     public void setConfiguration() throws Exception {
         //act
-        NetworkGetConfigurationResponse operationResponse = networkManagementClient.getNetworksOperations().getConfiguration();
+        NetworkGetConfigurationResponse operationResponse = networkOperations.getConfiguration();
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -76,21 +80,25 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
 
         NetworkSetConfigurationParameters parameters = new NetworkSetConfigurationParameters();
         parameters.setConfiguration(stringWriter.toString());
-        OperationResponse response = networkManagementClient.getNetworksOperations().setConfiguration(parameters);
+        OperationResponse response = networkOperations.setConfiguration(parameters);
 
         //Assert
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertNotNull(response.getRequestId());
     }
-
+    
     @Test
-    public void list() throws Exception {
-        //act
-        NetworkListResponse operationResponse = networkManagementClient.getNetworksOperations().list();
-
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
-        Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertNotNull(operationResponse.getVirtualNetworkSites());
+    public void listNetworksSuccess() throws Exception {
+        // Arrange  
+        NetworkListResponse NetworkListResponse = networkOperations.list();
+        ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
+        for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist) {
+            assertNotNull(networksite.getName());
+            assertNotNull(networksite.getAffinityGroup());
+            assertNotNull(networksite.getId());
+            assertNotNull(networksite.getState());
+            assertNotNull(networksite.getAddressSpace());
+            assertNotNull(networksite.getSubnets());
+        }
     }
 }
