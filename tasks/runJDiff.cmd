@@ -18,7 +18,7 @@ set NEWCOMPUTEMANAGEMENTAPI=microsoft-azure-management-compute-api-new
 set NEWSQLMANAGEMENTAPI=microsoft-azure-management-sql-api-new
 set NEWNETWORKMANAGEMENTAPI=microsoft-azure-management-network-api-new
 set NEWSTORAGEMANAGEMENTAPI=microsoft-azure-management-storage-api-new
-set NEWWEBSITEMANAGEMENTAPI=microsoft-azure-management-website-api-new
+set NEWWEBSITEMANAGEMENTAPI=microsoft-azure-management-websites-api-new
 
 :: set the paths 
 set OLDBRANCHPATH=%OLDBRANCH%\microsoft-azure-api\src\main\java
@@ -31,7 +31,7 @@ set NEWCOMPUTEMANAGEMENTPATH=%NEWBRANCH%\management-compute\src\main\java
 set NEWNETWORKMANAGEMENTPATH=%NEWBRANCH%\management-network\src\main\java
 set NEWSQLMANAGEMENTPATH=%NEWBRANCH%\management-sql\src\main\java
 set NEWSTORAGEMANAGEMENTPATH=%NEWBRANCH%\management-storage\src\main\java
-set NEWWEBSITEMANAGEMENTPATH=%NEWBRANCH%\management-website\src\main\java 
+set NEWWEBSITEMANAGEMENTPATH=%NEWBRANCH%\management-websites\src\main\java 
 
 set OLDSERVICEBUSPATH=%OLDBRANCHPATH%
 
@@ -48,7 +48,7 @@ set NEWCOMPUTEMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.compute
 set NEWNETWORKMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.network
 set NEWSQLMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.sql
 set NEWSTORAGEMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.storage
-set NEWWEBSITEMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.website com.microsoft.windowsazure.management.websites
+set NEWWEBSITEMANAGEMENTNAMESPACE=com.microsoft.windowsazure.management.websites
 
 :: First, generate the javadoc for the old code. 
 :: Service Bus
@@ -93,29 +93,19 @@ javadoc -doclet jdiff.JDiff -docletpath %JDIFF% -apiname %NEWWEBSITEMANAGEMENTAP
 :: Third, create the sub directory 
 :: Service Runtime
 set RUNTIMEOUTPUT=jdiff\serviceruntime
-mkdir RUNTIMEOUTPUT
-set RUNTIMEOUTPUTCHANGES=jdiff\serviceruntime\changes
-mkdir RUNTIMEOUTPUTCHANGES
+mkdir %RUNTIMEOUTPUT%
 :: Service Bus
 set SERVICEBUSOUTPUT=jdiff\servicebus
-mkdir SERVICEBUSOUTPUT
-set SERVICEBUSOUTPUTCHANGES=jdiff\servicebus\changes
-mkdir SERVICEBUSOUTPUTCHANGES
+mkdir %SERVICEBUSOUTPUT%
 :: Media Services
 set MEDIASERVICEOUTPUT=jdiff\mediaservice
-mkdir MEDIASERVICEOUTPUT
-set MEDIASERVICEOUTPUTCHANGES=jdiff\mediaservice\changes
-mkdir MEDIASERVICEOUTPUTCHANGES
+mkdir %MEDIASERVICEOUTPUT%
 :: Management 
 set MANAGEMENTOUTPUT=jdiff\management
-mkdir MANAGEMENTOUTPUT
-set MANAGEMENTOUTPUTCHANGES=jdiff\management\changes
-mkdir MANAGEMENTOUTPUTCHANGES
+mkdir %MANAGEMENTOUTPUT%
 :: Core
 set COREOUTPUT=jdiff\core
-mkdir COREOUTPUT
-set COREOUTPUTCHANGES=jdiff\core\changes
-mkdir COREOUTPUTCHANGES
+mkdir %COREOUTPUT%
 
 :: Fourth, perform the jdiff comparison
 :: service bus
