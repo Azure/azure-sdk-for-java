@@ -40,9 +40,13 @@ import org.xml.sax.SAXException;
 */
 public interface VirtualMachineVMImageOperations {
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Begin Deleting Virtual Machine Image operation deletes the specified
+    * virtual machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -50,21 +54,29 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginDeleting(String vmImageName) throws IOException, ServiceException;
+    OperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Begin Deleting Virtual Machine Image operation deletes the specified
+    * virtual machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginDeletingAsync(String vmImageName);
+    Future<OperationResponse> beginDeletingAsync(String vmImageName, boolean deleteFromStorage);
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Delete Virtual Machine Image operation deletes the specified virtual
+    * machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -84,32 +96,34 @@ public interface VirtualMachineVMImageOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
-    OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    OperationStatusResponse delete(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Delete Virtual Machine Image operation deletes the specified virtual
+    * machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
-    Future<OperationStatusResponse> deleteAsync(String vmImageName);
+    Future<OperationStatusResponse> deleteAsync(String vmImageName, boolean deleteFromStorage);
     
     /**
-    * The List VM Images operation retrieves a list of the virtual machine
-    * images.
+    * The List Virtual Machine Images operation retrieves a list of the virtual
+    * machine images.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -126,8 +140,8 @@ public interface VirtualMachineVMImageOperations {
     VirtualMachineVMImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
-    * The List VM Images operation retrieves a list of the virtual machine
-    * images.
+    * The List Virtual Machine Images operation retrieves a list of the virtual
+    * machine images.
     *
     * @return The List VM Images operation response.
     */

@@ -78,7 +78,7 @@ public class ConfigurationSet {
     /**
     * Optional. Specifies the computer name for the virtual machine. If the
     * computer name is not specified, a name is created based on the name of
-    * the role.  Computer names must be 1 to 15 characters in length. This
+    * the role. Computer names must be 1 to 15 characters in length. This
     * element is only used with the WindowsProvisioningConfiguration set.
     * @return The ComputerName value.
     */
@@ -89,7 +89,7 @@ public class ConfigurationSet {
     /**
     * Optional. Specifies the computer name for the virtual machine. If the
     * computer name is not specified, a name is created based on the name of
-    * the role.  Computer names must be 1 to 15 characters in length. This
+    * the role. Computer names must be 1 to 15 characters in length. This
     * element is only used with the WindowsProvisioningConfiguration set.
     * @param computerNameValue The ComputerName value.
     */
@@ -113,6 +113,26 @@ public class ConfigurationSet {
     */
     public void setConfigurationSetType(final String configurationSetTypeValue) {
         this.configurationSetType = configurationSetTypeValue;
+    }
+    
+    private String customData;
+    
+    /**
+    * Optional. Optional. Provides base64 encoded custom data to be passed to
+    * VM.
+    * @return The CustomData value.
+    */
+    public String getCustomData() {
+        return this.customData;
+    }
+    
+    /**
+    * Optional. Optional. Provides base64 encoded custom data to be passed to
+    * VM.
+    * @param customDataValue The CustomData value.
+    */
+    public void setCustomData(final String customDataValue) {
+        this.customData = customDataValue;
     }
     
     private Boolean disableSshPasswordAuthentication;
@@ -141,7 +161,7 @@ public class ConfigurationSet {
     private DomainJoinSettings domainJoin;
     
     /**
-    * Optional.  Contains properties that specify a domain to which the virtual
+    * Optional. Contains properties that specify a domain to which the virtual
     * machine will be joined. This element is only used with the
     * WindowsProvisioningConfiguration set.
     * @return The DomainJoin value.
@@ -151,7 +171,7 @@ public class ConfigurationSet {
     }
     
     /**
-    * Optional.  Contains properties that specify a domain to which the virtual
+    * Optional. Contains properties that specify a domain to which the virtual
     * machine will be joined. This element is only used with the
     * WindowsProvisioningConfiguration set.
     * @param domainJoinValue The DomainJoin value.
@@ -208,8 +228,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. Contains a collection of external endpoints for the virtual
-    * machine.  This element is only used with the NetworkConfigurationSet
-    * type.
+    * machine. This element is only used with the NetworkConfigurationSet type.
     * @return The InputEndpoints value.
     */
     public ArrayList<InputEndpoint> getInputEndpoints() {
@@ -218,8 +237,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. Contains a collection of external endpoints for the virtual
-    * machine.  This element is only used with the NetworkConfigurationSet
-    * type.
+    * machine. This element is only used with the NetworkConfigurationSet type.
     * @param inputEndpointsValue The InputEndpoints value.
     */
     public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue) {
@@ -272,7 +290,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. Specifies a Customer Address, i.e. an IP address assigned to a
-    * VM in a VNet's SubNet, for example: 10.0.0.4.
+    * VM in a VNet's SubNet. For example: 10.0.0.4.
     * @return The StaticVirtualNetworkIPAddress value.
     */
     public String getStaticVirtualNetworkIPAddress() {
@@ -281,7 +299,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. Specifies a Customer Address, i.e. an IP address assigned to a
-    * VM in a VNet's SubNet, for example: 10.0.0.4.
+    * VM in a VNet's SubNet. For example: 10.0.0.4.
     * @param staticVirtualNetworkIPAddressValue The
     * StaticVirtualNetworkIPAddress value.
     */
@@ -315,7 +333,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. The list of Virtual Network subnet names that the deployment
-    * belongs to.  This element is only used with the NetworkConfigurationSet
+    * belongs to. This element is only used with the NetworkConfigurationSet
     * type.
     * @return The SubnetNames value.
     */
@@ -325,7 +343,7 @@ public class ConfigurationSet {
     
     /**
     * Optional. The list of Virtual Network subnet names that the deployment
-    * belongs to.  This element is only used with the NetworkConfigurationSet
+    * belongs to. This element is only used with the NetworkConfigurationSet
     * type.
     * @param subnetNamesValue The SubnetNames value.
     */
@@ -336,13 +354,13 @@ public class ConfigurationSet {
     private String timeZone;
     
     /**
-    * Optional.  Specifies the time zone for the virtual machine. This element
-    * is only used with the WindowsProvisioningConfiguration set.  For a
-    * complete list of supported time zone entries, you can:  Refer to the
+    * Optional. Specifies the time zone for the virtual machine. This element
+    * is only used with the WindowsProvisioningConfiguration set. For a
+    * complete list of supported time zone entries, you can refer to the
     * values listed in the registry entry
     * HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows
     * NT\\CurrentVersion\\Time Zones on a computer running Windows 7, Windows
-    * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
+    * Server 2008, and Windows Server 2008 R2 or you can use the tzutil
     * command-line tool to list the valid time. The tzutil tool is installed
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     * @return The TimeZone value.
@@ -352,13 +370,13 @@ public class ConfigurationSet {
     }
     
     /**
-    * Optional.  Specifies the time zone for the virtual machine. This element
-    * is only used with the WindowsProvisioningConfiguration set.  For a
-    * complete list of supported time zone entries, you can:  Refer to the
+    * Optional. Specifies the time zone for the virtual machine. This element
+    * is only used with the WindowsProvisioningConfiguration set. For a
+    * complete list of supported time zone entries, you can refer to the
     * values listed in the registry entry
     * HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows
     * NT\\CurrentVersion\\Time Zones on a computer running Windows 7, Windows
-    * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
+    * Server 2008, and Windows Server 2008 R2 or you can use the tzutil
     * command-line tool to list the valid time. The tzutil tool is installed
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     * @param timeZoneValue The TimeZone value.

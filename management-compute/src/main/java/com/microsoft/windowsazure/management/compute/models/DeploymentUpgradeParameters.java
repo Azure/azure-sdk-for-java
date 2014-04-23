@@ -52,13 +52,13 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 25 extended property name/value pairs. The maximum length of
+    * the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and the name must start with a
+    * letter. Attempting to use other characters, starting the name with a
     * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
+    * another extended property owned by the same hosted service will result
     * in a status code 400 (Bad Request) error.
     * @return The ExtendedProperties value.
     */
@@ -68,13 +68,13 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 25 extended property name/value pairs. The maximum length of
+    * the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and the name must start with a
+    * letter. Attempting to use other characters, starting the name with a
     * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
+    * another extended property owned by the same hosted service will result
     * in a status code 400 (Bad Request) error.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
@@ -86,11 +86,10 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
+    * Azure, a process can run as an extension of a cloud service. For
+    * example, Remote Desktop Access or the Azure Diagnostics Agent can run as
+    * extensions to the cloud service. You must add an extension to the cloud
+    * service by using Add Extension before it can be added to the deployment.
     * @return The ExtensionConfiguration value.
     */
     public ExtensionConfiguration getExtensionConfiguration() {
@@ -99,11 +98,10 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
+    * Azure, a process can run as an extension of a cloud service. For
+    * example, Remote Desktop Access or the Azure Diagnostics Agent can run as
+    * extensions to the cloud service. You must add an extension to the cloud
+    * service by using Add Extension before it can be added to the deployment.
     * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
     public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue) {
@@ -114,8 +112,7 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Required. Specifies whether the rollback should proceed even when it will
-    * cause local data to be lost from some role instances. True if the
-    * rollback should proceed; otherwise false.
+    * cause local data to be lost from some role instances.
     * @return The Force value.
     */
     public boolean isForce() {
@@ -124,8 +121,7 @@ public class DeploymentUpgradeParameters {
     
     /**
     * Required. Specifies whether the rollback should proceed even when it will
-    * cause local data to be lost from some role instances. True if the
-    * rollback should proceed; otherwise false.
+    * cause local data to be lost from some role instances.
     * @param forceValue The Force value.
     */
     public void setForce(final boolean forceValue) {
@@ -162,7 +158,7 @@ public class DeploymentUpgradeParameters {
     * Required. The type of update to initiate. Role instances are allocated to
     * update domains when the service is deployed. Updates can be initiated
     * manually in each update domain or initiated automatically in all update
-    * domains. Possible values are: Auto, Manual.  If not specified, the
+    * domains. Possible values are Auto or Manual. If not specified, the
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
@@ -176,7 +172,7 @@ public class DeploymentUpgradeParameters {
     * Required. The type of update to initiate. Role instances are allocated to
     * update domains when the service is deployed. Updates can be initiated
     * manually in each update domain or initiated automatically in all update
-    * domains. Possible values are: Auto, Manual.  If not specified, the
+    * domains. Possible values are Auto or Manual. If not specified, the
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
@@ -192,7 +188,7 @@ public class DeploymentUpgradeParameters {
     * Required. A URL that refers to the location of the service package in the
     * Blob service. The service package can be located either in a storage
     * account beneath the same subscription or a Shared Access Signature (SAS)
-    * URI from any storage account. For more info about Shared Access
+    * URI from any storage account. For more information about Shared Access
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
@@ -206,7 +202,7 @@ public class DeploymentUpgradeParameters {
     * Required. A URL that refers to the location of the service package in the
     * Blob service. The service package can be located either in a storage
     * account beneath the same subscription or a Shared Access Signature (SAS)
-    * URI from any storage account. For more info about Shared Access
+    * URI from any storage account. For more information about Shared Access
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.

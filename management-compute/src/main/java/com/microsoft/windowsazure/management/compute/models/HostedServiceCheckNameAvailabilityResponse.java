@@ -32,8 +32,7 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     private boolean isAvailable;
     
     /**
-    * Optional. A boolean value that indicates whether the name is available
-    * for you to use. True if the name is available; otherwise false.  The
+    * Optional. Indicates whether the name is available for you to use. The
     * operation returns false for reserved or profane words.
     * @return The IsAvailable value.
     */
@@ -42,8 +41,7 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     }
     
     /**
-    * Optional. A boolean value that indicates whether the name is available
-    * for you to use. True if the name is available; otherwise false.  The
+    * Optional. Indicates whether the name is available for you to use. The
     * operation returns false for reserved or profane words.
     * @param isAvailableValue The IsAvailable value.
     */

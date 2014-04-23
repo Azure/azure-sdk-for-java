@@ -53,8 +53,7 @@ public class DeploymentGetPackageParameters {
     
     /**
     * Optional. Specifies whether an existing package in the storage container
-    * should be overwritten. If true the packages with the same names under
-    * the specified storage container will be overwritten; otherwise false.
+    * should be overwritten.
     * @return The OverwriteExisting value.
     */
     public Boolean isOverwriteExisting() {
@@ -63,8 +62,7 @@ public class DeploymentGetPackageParameters {
     
     /**
     * Optional. Specifies whether an existing package in the storage container
-    * should be overwritten. If true the packages with the same names under
-    * the specified storage container will be overwritten; otherwise false.
+    * should be overwritten.
     * @param overwriteExistingValue The OverwriteExisting value.
     */
     public void setOverwriteExisting(final Boolean overwriteExistingValue) {

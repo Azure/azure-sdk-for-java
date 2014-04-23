@@ -289,7 +289,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         private URI mediaLinkUri;
         
         /**
-        * Optional. The location of the blob in Windows Azure storage. The blob
+        * Optional. The location of the blob in Azure storage. The blob
         * location belongs to a storage account in the subscription specified
         * by the SubscriptionId value in the operation call.  Example:
         * http://example.blob.core.windows.net/disks/myimage.vhd
@@ -300,7 +300,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The location of the blob in Windows Azure storage. The blob
+        * Optional. The location of the blob in Azure storage. The blob
         * location belongs to a storage account in the subscription specified
         * by the SubscriptionId value in the operation call.  Example:
         * http://example.blob.core.windows.net/disks/myimage.vhd
@@ -419,7 +419,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         private String publisherName;
         
         /**
-        * Optional. The name of the publisher of this OS Image in Windows Azure.
+        * Optional. The name of the publisher of this OS Image in Azure.
         * @return The PublisherName value.
         */
         public String getPublisherName() {
@@ -427,7 +427,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The name of the publisher of this OS Image in Windows Azure.
+        * Optional. The name of the publisher of this OS Image in Azure.
         * @param publisherNameValue The PublisherName value.
         */
         public void setPublisherName(final String publisherNameValue) {
@@ -458,7 +458,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         
         /**
         * Optional. Specifies the URI to the small icon that is displayed when
-        * the image is presented in the Windows Azure Management Portal.  The
+        * the image is presented in the Azure Management Portal.  The
         * SmallIconUri element is only available using version 2013-03-01 or
         * higher.
         * @return The SmallIconUri value.
@@ -469,7 +469,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         
         /**
         * Optional. Specifies the URI to the small icon that is displayed when
-        * the image is presented in the Windows Azure Management Portal.  The
+        * the image is presented in the Azure Management Portal.  The
         * SmallIconUri element is only available using version 2013-03-01 or
         * higher.
         * @param smallIconUriValue The SmallIconUri value.

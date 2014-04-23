@@ -34,7 +34,7 @@ public class VirtualMachineCreateParameters {
     /**
     * Optional. Specifies the name of an availability set to which to add the
     * virtual machine. This value controls the virtual machine allocation in
-    * the Windows Azure environment. Virtual machines specified in the same
+    * the Azure environment. Virtual machines specified in the same
     * availability set are allocated to different nodes to maximize
     * availability.
     * @return The AvailabilitySetName value.
@@ -46,7 +46,7 @@ public class VirtualMachineCreateParameters {
     /**
     * Optional. Specifies the name of an availability set to which to add the
     * virtual machine. This value controls the virtual machine allocation in
-    * the Windows Azure environment. Virtual machines specified in the same
+    * the Azure environment. Virtual machines specified in the same
     * availability set are allocated to different nodes to maximize
     * availability.
     * @param availabilitySetNameValue The AvailabilitySetName value.
@@ -78,8 +78,8 @@ public class VirtualMachineCreateParameters {
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the data
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the data disk for
+    * the virtual machine.
     * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
@@ -87,8 +87,8 @@ public class VirtualMachineCreateParameters {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the data
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the data disk for
+    * the virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
@@ -98,8 +98,8 @@ public class VirtualMachineCreateParameters {
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the operating
+    * system disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk() {
@@ -107,8 +107,8 @@ public class VirtualMachineCreateParameters {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the operating
+    * system disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
     public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
@@ -119,8 +119,8 @@ public class VirtualMachineCreateParameters {
     
     /**
     * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
+    * installed on the Virtual Machine. To run a resource extension in a
+    * Virtual Machine, this service must be installed.
     * @return The ProvisionGuestAgent value.
     */
     public Boolean isProvisionGuestAgent() {
@@ -129,8 +129,8 @@ public class VirtualMachineCreateParameters {
     
     /**
     * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
+    * installed on the Virtual Machine. To run a resource extension in a
+    * Virtual Machine, this service must be installed.
     * @param provisionGuestAgentValue The ProvisionGuestAgent value.
     */
     public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue) {

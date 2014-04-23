@@ -74,7 +74,7 @@ public class DomainJoinSettings {
     * 500-distinguished name of the organizational unit (OU) in which the
     * computer account is created. This account is in Active Directory on a
     * domain controller in the domain to which the computer is being joined.
-    * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
+    * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com.
     * @return The LdapMachineObjectOU value.
     */
     public String getLdapMachineObjectOU() {
@@ -86,7 +86,7 @@ public class DomainJoinSettings {
     * 500-distinguished name of the organizational unit (OU) in which the
     * computer account is created. This account is in Active Directory on a
     * domain controller in the domain to which the computer is being joined.
-    * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
+    * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com.
     * @param ldapMachineObjectOUValue The LdapMachineObjectOU value.
     */
     public void setLdapMachineObjectOU(final String ldapMachineObjectOUValue) {

@@ -38,7 +38,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account does not belong to an
     * affinity group the value is NULL and the element is not displayed in the
-    * response.  This value is NULL for platform images.
+    * response. This value is NULL for platform images.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -50,7 +50,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account does not belong to an
     * affinity group the value is NULL and the element is not displayed in the
-    * response.  This value is NULL for platform images.
+    * response. This value is NULL for platform images.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -196,7 +196,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     private String language;
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
@@ -205,7 +205,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
@@ -219,7 +219,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * Optional. The geo-location in which this media is located. The Location
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account belongs to an affinity
-    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * group the value is NULL. If the version is set to 2012-08-01 or later,
     * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @return The Location value.
@@ -232,7 +232,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * Optional. The geo-location in which this media is located. The Location
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account belongs to an affinity
-    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * group the value is NULL. If the version is set to 2012-08-01 or later,
     * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @param locationValue The Location value.
@@ -262,10 +262,10 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * Optional. The location of the blob in Windows Azure storage. The blob
-    * location belongs to a storage account in the subscription specified by
-    * the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/myimage.vhd
+    * Optional. The location of the blob in Azure storage. The blob location
+    * belongs to a storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -273,10 +273,10 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The location of the blob in Windows Azure storage. The blob
-    * location belongs to a storage account in the subscription specified by
-    * the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/myimage.vhd
+    * Optional. The location of the blob in Azure storage. The blob location
+    * belongs to a storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -307,7 +307,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     
     /**
     * Optional. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType() {
@@ -316,7 +316,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     
     /**
     * Optional. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -366,7 +366,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     private String publisherName;
     
     /**
-    * Optional. The name of the publisher of this OS Image in Windows Azure.
+    * Optional. The name of the publisher of this OS Image in Azure.
     * @return The PublisherName value.
     */
     public String getPublisherName() {
@@ -374,7 +374,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The name of the publisher of this OS Image in Windows Azure.
+    * Optional. The name of the publisher of this OS Image in Azure.
     * @param publisherNameValue The PublisherName value.
     */
     public void setPublisherName(final String publisherNameValue) {
@@ -404,8 +404,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     private Boolean showInGui;
     
     /**
-    * Optional. Indicates whther the image should be shown in the windows azure
-    * portal.
+    * Optional. Indicates whether the image should be shown in the Azure portal.
     * @return The ShowInGui value.
     */
     public Boolean isShowInGui() {
@@ -413,8 +412,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Indicates whther the image should be shown in the windows azure
-    * portal.
+    * Optional. Indicates whether the image should be shown in the Azure portal.
     * @param showInGuiValue The ShowInGui value.
     */
     public void setShowInGui(final Boolean showInGuiValue) {
@@ -425,9 +423,8 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -436,9 +433,8 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

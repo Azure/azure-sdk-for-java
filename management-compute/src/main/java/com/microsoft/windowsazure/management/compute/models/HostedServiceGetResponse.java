@@ -54,7 +54,7 @@ public class HostedServiceGetResponse extends OperationResponse {
     * Optional. The name of the cloud service. This name is the DNS prefix name
     * and can be used to access the cloud service. For example, if the cloud
     * service name is MyService you could access the access the cloud service
-    * by calling: http://MyService.cloudapp.net
+    * by calling: http://MyService.cloudapp.net.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -65,7 +65,7 @@ public class HostedServiceGetResponse extends OperationResponse {
     * Optional. The name of the cloud service. This name is the DNS prefix name
     * and can be used to access the cloud service. For example, if the cloud
     * service name is MyService you could access the access the cloud service
-    * by calling: http://MyService.cloudapp.net
+    * by calling: http://MyService.cloudapp.net.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {
@@ -75,7 +75,7 @@ public class HostedServiceGetResponse extends OperationResponse {
     private URI uri;
     
     /**
-    * Optional. The Service Management API request URI used to performGet
+    * Optional. The Service Management API request URI used to perform Get
     * Hosted Service Properties requests against the cloud service.
     * @return The Uri value.
     */
@@ -84,7 +84,7 @@ public class HostedServiceGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The Service Management API request URI used to performGet
+    * Optional. The Service Management API request URI used to perform Get
     * Hosted Service Properties requests against the cloud service.
     * @param uriValue The Uri value.
     */

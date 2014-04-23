@@ -68,7 +68,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     }
     
     /**
-    * An extension that were added to a cloud service.
+    * An extension that was added to a cloud service.
     */
     public static class Extension {
         private String id;
@@ -93,8 +93,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * Optional. The provider namespace of the extension. The provider
-        * namespace for Windows Azure extensions is
-        * Microsoft.Windows.Azure.Extensions.
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @return The ProviderNamespace value.
         */
         public String getProviderNamespace() {
@@ -103,8 +102,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * Optional. The provider namespace of the extension. The provider
-        * namespace for Windows Azure extensions is
-        * Microsoft.Windows.Azure.Extensions.
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @param providerNamespaceValue The ProviderNamespace value.
         */
         public void setProviderNamespace(final String providerNamespaceValue) {
@@ -115,7 +113,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * Optional. The public configuration that is defined using the schema
-        * returned by the List Available Extensions operation.
+        * returned by the List Extensions operation.
         * @return The PublicConfiguration value.
         */
         public String getPublicConfiguration() {
@@ -124,7 +122,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * Optional. The public configuration that is defined using the schema
-        * returned by the List Available Extensions operation.
+        * returned by the List Extensions operation.
         * @param publicConfigurationValue The PublicConfiguration value.
         */
         public void setPublicConfiguration(final String publicConfigurationValue) {
@@ -158,8 +156,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         private String thumbprintAlgorithm;
         
         /**
-        * Optional. The thumbprint algorithm of the certificate that is used
-        * toencrypt the configuration specified in PrivateConfiguration.
+        * Optional. The thumbprint algorithm of the certificate that is used to
+        * encrypt the configuration specified in PrivateConfiguration.
         * @return The ThumbprintAlgorithm value.
         */
         public String getThumbprintAlgorithm() {
@@ -167,8 +165,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         }
         
         /**
-        * Optional. The thumbprint algorithm of the certificate that is used
-        * toencrypt the configuration specified in PrivateConfiguration.
+        * Optional. The thumbprint algorithm of the certificate that is used to
+        * encrypt the configuration specified in PrivateConfiguration.
         * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
         public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {

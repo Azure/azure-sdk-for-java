@@ -146,11 +146,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
+    * service. In Azure, a process can run as an extension of a cloud service.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as extensions to the cloud service. You can find the available
+    * extension by using the List Available Extensions operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
@@ -162,10 +161,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> addExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters) {
@@ -179,11 +177,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
+    * service. In Azure, a process can run as an extension of a cloud service.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as extensions to the cloud service. You can find the available
+    * extension by using the List Available Extensions operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
@@ -207,10 +204,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
@@ -269,18 +265,17 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
-    * more information)
+    * The Begin Adding Extension operation adds an available extension to your
+    * cloud service. In Azure, a process can run as an extension of a cloud
+    * service. For example, Remote Desktop Access or the Azure Diagnostics
+    * Agent can run as extensions to the cloud service. You can find the
+    * available extension by using the List Available Extensions operation.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx
+    * for more information)
     *
     * @param serviceName Required. The name of the cloud service.
-    * @param parameters Required. Parameters supplied to the Add Extension
-    * operation.
+    * @param parameters Required. Parameters supplied to the Begin Adding
+    * Extension operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -295,18 +290,17 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
-    * more information)
+    * The Begin Adding Extension operation adds an available extension to your
+    * cloud service. In Azure, a process can run as an extension of a cloud
+    * service. For example, Remote Desktop Access or the Azure Diagnostics
+    * Agent can run as extensions to the cloud service. You can find the
+    * available extension by using the List Available Extensions operation.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx
+    * for more information)
     *
     * @param serviceName Required. The name of the cloud service.
-    * @param parameters Required. Parameters supplied to the Add Extension
-    * operation.
+    * @param parameters Required. Parameters supplied to the Begin Adding
+    * Extension operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -470,8 +464,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Begin Deleting All Hosted Service operation deletes the specified
+    * cloud service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -490,8 +484,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Begin Deleting All Hosted Service operation deletes the specified
+    * cloud service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -577,8 +571,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Extension operation deletes the specified extension from a
-    * cloud service.  (see
+    * The Begin Deleting Extension operation deletes the specified extension
+    * from a cloud service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
@@ -599,8 +593,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Extension operation deletes the specified extension from a
-    * cloud service.  (see
+    * The Begin Deleting Extension operation deletes the specified extension
+    * from a cloud service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
@@ -829,10 +823,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Create Hosted Service operation creates a new cloud service in
-    * Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
-    * more information)
+    * The Create Hosted Service operation creates a new cloud service in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Hosted
     * Service operation.
@@ -850,10 +843,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Create Hosted Service operation creates a new cloud service in
-    * Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
-    * more information)
+    * The Create Hosted Service operation creates a new cloud service in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Hosted
     * Service operation.
@@ -1036,7 +1028,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -1056,7 +1048,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -1152,8 +1144,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Delete All Hosted Service operation deletes the specified cloud
+    * service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -1163,10 +1155,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> deleteAllAsync(final String serviceName) {
@@ -1179,8 +1170,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Delete All Hosted Service operation deletes the specified cloud
+    * service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -1202,10 +1193,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
@@ -1276,10 +1266,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> deleteExtensionAsync(final String serviceName, final String extensionId) {
@@ -1317,10 +1306,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException {
@@ -1381,7 +1369,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     /**
     * The Get Hosted Service Properties operation retrieves system properties
     * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
+    * name and service type; and the name of the affinity group to which the
     * service belongs, or its location if it is not part of an affinity group.
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
@@ -1402,7 +1390,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     /**
     * The Get Hosted Service Properties operation retrieves system properties
     * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
+    * name and service type; and the name of the affinity group to which the
     * service belongs, or its location if it is not part of an affinity group.
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
@@ -1583,11 +1571,11 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Get Hosted Service Properties operation retrieves system properties
-    * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
-    * service belongs, or its location if it is not part of an affinity group;
-    * and information on the deployments of the service.  (see
+    * The Get Detailed Hosted Service Properties operation retrieves system
+    * properties for the specified cloud service. These properties include the
+    * service name and service type; the name of the affinity group to which
+    * the service belongs, or its location if it is not part of an affinity
+    * group; and information on the deployments of the service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
@@ -1605,11 +1593,11 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     }
     
     /**
-    * The Get Hosted Service Properties operation retrieves system properties
-    * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
-    * service belongs, or its location if it is not part of an affinity group;
-    * and information on the deployments of the service.  (see
+    * The Get Detailed Hosted Service Properties operation retrieves system
+    * properties for the specified cloud service. These properties include the
+    * service name and service type; the name of the affinity group to which
+    * the service belongs, or its location if it is not part of an affinity
+    * group; and information on the deployments of the service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
@@ -2675,6 +2663,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 }
                                             }
                                         }
+                                        
+                                        Element customDataElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "CustomData");
+                                        if (customDataElement != null) {
+                                            String customDataInstance;
+                                            customDataInstance = customDataElement.getTextContent();
+                                            configurationSetInstance.setCustomData(customDataInstance);
+                                        }
                                     }
                                 }
                                 
@@ -2784,7 +2779,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (diskLabelElement != null) {
                                             String diskLabelInstance;
                                             diskLabelInstance = diskLabelElement.getTextContent();
-                                            dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
+                                            dataVirtualHardDiskInstance.setLabel(diskLabelInstance);
                                         }
                                         
                                         Element diskNameElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
@@ -3321,7 +3316,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460781.aspx for
     * more information)
     *
-    * @return The Get Hosted Service operation response.
+    * @return The List Hosted Service operation response.
     */
     @Override
     public Future<HostedServiceListResponse> listAsync() {
@@ -3349,7 +3344,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Get Hosted Service operation response.
+    * @return The List Hosted Service operation response.
     */
     @Override
     public HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -3519,8 +3514,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * The List Available Extensions operation lists the extensions that are
     * available to add to your cloud service. In Windows Azure, a process can
     * run as an extension of a cloud service. For example, Remote Desktop
-    * Access or the Windows Azure Diagnostics Agent can run as extensions to
-    * the cloud service.  (see
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169559.aspx for
     * more information)
     *
@@ -3540,8 +3535,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * The List Available Extensions operation lists the extensions that are
     * available to add to your cloud service. In Windows Azure, a process can
     * run as an extension of a cloud service. For example, Remote Desktop
-    * Access or the Windows Azure Diagnostics Agent can run as extensions to
-    * the cloud service.  (see
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169559.aspx for
     * more information)
     *
@@ -3931,10 +3926,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The List Extension Versions operation lists the versions of an extension
-    * that are available to add to a cloud service. In Windows Azure, a
-    * process can run as an extension of a cloud service. For example, Remote
-    * Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * extensions to the cloud service.  (see
+    * that are available to add to a cloud service. In Azure, a process can
+    * run as an extension of a cloud service. For example, Remote Desktop
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
@@ -3954,10 +3949,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The List Extension Versions operation lists the versions of an extension
-    * that are available to add to a cloud service. In Windows Azure, a
-    * process can run as an extension of a cloud service. For example, Remote
-    * Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * extensions to the cloud service.  (see
+    * that are available to add to a cloud service. In Azure, a process can
+    * run as an extension of a cloud service. For example, Remote Desktop
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
@@ -4182,7 +4177,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Update Hosted Service operation can update the label or description
-    * of a cloud service in Windows Azure.  (see
+    * of a cloud service in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *
@@ -4204,7 +4199,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     
     /**
     * The Update Hosted Service operation can update the label or description
-    * of a cloud service in Windows Azure.  (see
+    * of a cloud service in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *

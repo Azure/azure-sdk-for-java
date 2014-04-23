@@ -33,8 +33,8 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. A description for the cloud service. The description may be up
-    * to 1024 characters in length. You must specify a value for either Label
-    * or Description, or for both.
+    * to 1024 characters in length. You must specify a value for at least one
+    * of Label or Description.
     * @return The Description value.
     */
     public String getDescription() {
@@ -43,8 +43,8 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. A description for the cloud service. The description may be up
-    * to 1024 characters in length. You must specify a value for either Label
-    * or Description, or for both.
+    * to 1024 characters in length. You must specify a value for at least one
+    * of Label or Description.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -55,15 +55,15 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs. The maximum length
+    * of the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and it must start with a letter.
+    * Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties() {
@@ -72,15 +72,15 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs. The maximum length
+    * of the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and it must start with a letter.
+    * Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
@@ -91,10 +91,10 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. A name for the cloud service. The name may be up to 100
-    * characters in length. You must specify a value for either Label or
-    * Description, or for both. It is recommended that the label be unique
-    * within the subscription. The name can be used identify the service for
-    * your tracking purposes.
+    * characters in length. You must specify a value for at least one of Label
+    * or Description. It is recommended that the label be unique within the
+    * subscription. The name can be used identify the service for your
+    * tracking purposes.
     * @return The Label value.
     */
     public String getLabel() {
@@ -103,10 +103,10 @@ public class HostedServiceUpdateParameters {
     
     /**
     * Optional. A name for the cloud service. The name may be up to 100
-    * characters in length. You must specify a value for either Label or
-    * Description, or for both. It is recommended that the label be unique
-    * within the subscription. The name can be used identify the service for
-    * your tracking purposes.
+    * characters in length. You must specify a value for at least one of Label
+    * or Description. It is recommended that the label be unique within the
+    * subscription. The name can be used identify the service for your
+    * tracking purposes.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {

@@ -33,7 +33,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Required. Specifies the environment in which to deploy the virtual
-    * machine.  Possible values are: Staging, Production.
+    * machine. Possible values are: Staging or Production.
     * @return The DeploymentSlot value.
     */
     public DeploymentSlot getDeploymentSlot() {
@@ -42,7 +42,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Required. Specifies the environment in which to deploy the virtual
-    * machine.  Possible values are: Staging, Production.
+    * machine. Possible values are: Staging or Production.
     * @param deploymentSlotValue The DeploymentSlot value.
     */
     public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue) {
@@ -52,7 +52,7 @@ public class VirtualMachineCreateDeploymentParameters {
     private DnsSettings dnsSettings;
     
     /**
-    * Optional. Contains a list of DNS servers to associate with themachine.
+    * Optional. Contains a list of DNS servers to associate with the machine.
     * @return The DnsSettings value.
     */
     public DnsSettings getDnsSettings() {
@@ -60,7 +60,7 @@ public class VirtualMachineCreateDeploymentParameters {
     }
     
     /**
-    * Optional. Contains a list of DNS servers to associate with themachine.
+    * Optional. Contains a list of DNS servers to associate with the machine.
     * @param dnsSettingsValue The DnsSettings value.
     */
     public void setDnsSettings(final DnsSettings dnsSettingsValue) {
@@ -71,7 +71,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
-    * characters in length.  It is recommended that the label be unique within
+    * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
     * @return The Label value.
@@ -82,7 +82,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
-    * characters in length.  It is recommended that the label be unique within
+    * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
     * @param labelValue The Label value.
@@ -157,7 +157,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Optional. Specifies the name of an existing virtual network to which the
-    * deployment will belong.  Virtual networks are created by calling the Set
+    * deployment will belong. Virtual networks are created by calling the Set
     * Network Configuration operation.
     * @return The VirtualNetworkName value.
     */
@@ -167,7 +167,7 @@ public class VirtualMachineCreateDeploymentParameters {
     
     /**
     * Optional. Specifies the name of an existing virtual network to which the
-    * deployment will belong.  Virtual networks are created by calling the Set
+    * deployment will belong. Virtual networks are created by calling the Set
     * Network Configuration operation.
     * @param virtualNetworkNameValue The VirtualNetworkName value.
     */

@@ -29,31 +29,11 @@ import java.net.URI;
 * Objects that are used to create a data disk for a virtual machine.
 */
 public class DataVirtualHardDisk {
-    private String diskLabel;
-    
-    /**
-    * Optional. Specifies the friendly name of the VHD to use to create thedata
-    * disk for the virtual machine.
-    * @return The DiskLabel value.
-    */
-    public String getDiskLabel() {
-        return this.diskLabel;
-    }
-    
-    /**
-    * Optional. Specifies the friendly name of the VHD to use to create thedata
-    * disk for the virtual machine.
-    * @param diskLabelValue The DiskLabel value.
-    */
-    public void setDiskLabel(final String diskLabelValue) {
-        this.diskLabel = diskLabelValue;
-    }
-    
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
     * Optional. Specifies the platform caching behavior of the data disk blob
-    * for read/write efficiency. The default vault is ReadOnly.
+    * for read/write efficiency. The default value is ReadOnly.
     * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching() {
@@ -62,20 +42,40 @@ public class DataVirtualHardDisk {
     
     /**
     * Optional. Specifies the platform caching behavior of the data disk blob
-    * for read/write efficiency. The default vault is ReadOnly.
+    * for read/write efficiency. The default value is ReadOnly.
     * @param hostCachingValue The HostCaching value.
     */
     public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     
+    private String label;
+    
+    /**
+    * Optional. Specifies the friendly name of the VHD used to create the data
+    * disk for the virtual machine.
+    * @return The Label value.
+    */
+    public String getLabel() {
+        return this.label;
+    }
+    
+    /**
+    * Optional. Specifies the friendly name of the VHD used to create the data
+    * disk for the virtual machine.
+    * @param labelValue The Label value.
+    */
+    public void setLabel(final String labelValue) {
+        this.label = labelValue;
+    }
+    
     private Integer logicalDiskSizeInGB;
     
     /**
     * Optional. Specifies the size, in GB, of an empty VHD to be attached to
-    * the virtual machine. The VHD can be created as part of disk attach or
-    * create virtual machine call by specifying the value for this property.
-    * Windows Azure creates the empty VHD based on size preference and
+    * the virtual machine. The VHD can be created as part of an attached disk
+    * or created as a virtual machine call by specifying the value for this
+    * property. Azure creates the empty VHD based on the size preference and
     * attaches the newly created VHD to the virtual machine.
     * @return The LogicalDiskSizeInGB value.
     */
@@ -85,9 +85,9 @@ public class DataVirtualHardDisk {
     
     /**
     * Optional. Specifies the size, in GB, of an empty VHD to be attached to
-    * the virtual machine. The VHD can be created as part of disk attach or
-    * create virtual machine call by specifying the value for this property.
-    * Windows Azure creates the empty VHD based on size preference and
+    * the virtual machine. The VHD can be created as part of an attached disk
+    * or created as a virtual machine call by specifying the value for this
+    * property. Azure creates the empty VHD based on the size preference and
     * attaches the newly created VHD to the virtual machine.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
@@ -126,7 +126,7 @@ public class DataVirtualHardDisk {
     * in the subscription or the VHD for the disk already exists in blob
     * storage, this element is ignored. If a VHD file does not exist in blob
     * storage, this element defines the location of the new VHD that is
-    * created when the new disk is added. Example:
+    * created when the new disk is added.Example:
     * http://example.blob.core.windows.net/disks/mydatadisk.vhd
     * @return The MediaLink value.
     */
@@ -139,7 +139,7 @@ public class DataVirtualHardDisk {
     * in the subscription or the VHD for the disk already exists in blob
     * storage, this element is ignored. If a VHD file does not exist in blob
     * storage, this element defines the location of the new VHD that is
-    * created when the new disk is added. Example:
+    * created when the new disk is added.Example:
     * http://example.blob.core.windows.net/disks/mydatadisk.vhd
     * @param mediaLinkValue The MediaLink value.
     */
@@ -150,7 +150,7 @@ public class DataVirtualHardDisk {
     private String name;
     
     /**
-    * Optional. Specifies the name of the VHD to use to create thedata disk for
+    * Optional. Specifies the name of the VHD used to create the data disk for
     * the virtual machine.
     * @return The Name value.
     */
@@ -159,7 +159,7 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Optional. Specifies the name of the VHD to use to create thedata disk for
+    * Optional. Specifies the name of the VHD used to create the data disk for
     * the virtual machine.
     * @param nameValue The Name value.
     */
