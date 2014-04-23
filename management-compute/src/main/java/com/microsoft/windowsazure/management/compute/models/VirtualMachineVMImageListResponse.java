@@ -36,7 +36,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
     private ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> vMImages;
     
     /**
-    * Optional. The virtual machine VM images associated with your subscription.
+    * Optional. The virtual machine images associated with your subscription.
     * @return The VMImages value.
     */
     public ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> getVMImages() {
@@ -44,7 +44,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
     }
     
     /**
-    * Optional. The virtual machine VM images associated with your subscription.
+    * Optional. The virtual machine images associated with your subscription.
     * @param vMImagesValue The VMImages value.
     */
     public void setVMImages(final ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> vMImagesValue) {
@@ -97,9 +97,9 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         /**
         * Optional. Specifies the size, in GB, of an empty VHD to be attached
         * to the virtual machine. The VHD can be created as part of disk
-        * attach or create virtual machine call by specifying the value for
-        * this property.  Windows Azure creates the empty VHD based on size
-        * preference and attaches the newly created VHD to the virtual machine.
+        * attach or create virtual machine calls by specifying the value for
+        * this property. Azure creates the empty VHD based on size preference
+        * and attaches the newly created VHD to the virtual machine.
         * @return The LogicalDiskSizeInGB value.
         */
         public int getLogicalDiskSizeInGB() {
@@ -109,9 +109,9 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         /**
         * Optional. Specifies the size, in GB, of an empty VHD to be attached
         * to the virtual machine. The VHD can be created as part of disk
-        * attach or create virtual machine call by specifying the value for
-        * this property.  Windows Azure creates the empty VHD based on size
-        * preference and attaches the newly created VHD to the virtual machine.
+        * attach or create virtual machine calls by specifying the value for
+        * this property. Azure creates the empty VHD based on size preference
+        * and attaches the newly created VHD to the virtual machine.
         * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
         */
         public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
@@ -163,8 +163,8 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String name;
         
         /**
-        * Optional. Specifies the name of the VHD to use to create thedata disk
-        * for the virtual machine.
+        * Optional. Specifies the name of the VHD to use to create the data
+        * disk for the virtual machine.
         * @return The Name value.
         */
         public String getName() {
@@ -172,8 +172,8 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. Specifies the name of the VHD to use to create thedata disk
-        * for the virtual machine.
+        * Optional. Specifies the name of the VHD to use to create the data
+        * disk for the virtual machine.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -210,9 +210,9 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         /**
         * Optional. Specifies the size, in GB, of an empty VHD to be attached
         * to the virtual machine. The VHD can be created as part of disk
-        * attach or create virtual machine call by specifying the value for
-        * this property.  Windows Azure creates the empty VHD based on size
-        * preference and attaches the newly created VHD to the virtual machine.
+        * attach or create virtual machine calls by specifying the value for
+        * this property. Azure creates the empty VHD based on size preference
+        * and attaches the newly created VHD to the virtual machine.
         * @return The LogicalDiskSizeInGB value.
         */
         public int getLogicalDiskSizeInGB() {
@@ -222,9 +222,9 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         /**
         * Optional. Specifies the size, in GB, of an empty VHD to be attached
         * to the virtual machine. The VHD can be created as part of disk
-        * attach or create virtual machine call by specifying the value for
-        * this property.  Windows Azure creates the empty VHD based on size
-        * preference and attaches the newly created VHD to the virtual machine.
+        * attach or create virtual machine calls by specifying the value for
+        * this property. Azure creates the empty VHD based on size preference
+        * and attaches the newly created VHD to the virtual machine.
         * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
         */
         public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
@@ -252,8 +252,8 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String name;
         
         /**
-        * Optional. Specifies the name an operating system image in the image
-        * repository.
+        * Optional. Specifies the name of an operating system image in the
+        * image repository.
         * @return The Name value.
         */
         public String getName() {
@@ -261,8 +261,8 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. Specifies the name an operating system image in the image
-        * repository.
+        * Optional. Specifies the name of an operating system image in the
+        * image repository.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -313,7 +313,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String affinityGroup;
         
         /**
-        * Optional. The affinity group name of the VM image.
+        * Optional. The affinity group name of the virtual machine image.
         * @return The AffinityGroup value.
         */
         public String getAffinityGroup() {
@@ -321,7 +321,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The affinity group name of the VM image.
+        * Optional. The affinity group name of the virtual machine image.
         * @param affinityGroupValue The AffinityGroup value.
         */
         public void setAffinityGroup(final String affinityGroupValue) {
@@ -331,7 +331,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String category;
         
         /**
-        * Optional. The classification of the VM image.
+        * Optional. The classification of the virtual machine image.
         * @return The Category value.
         */
         public String getCategory() {
@@ -339,7 +339,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The classification of the VM image.
+        * Optional. The classification of the virtual machine image.
         * @param categoryValue The Category value.
         */
         public void setCategory(final String categoryValue) {
@@ -349,7 +349,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private Calendar createdTime;
         
         /**
-        * Optional. The date when the VM image was created.
+        * Optional. The date when the virtual machine image was created.
         * @return The CreatedTime value.
         */
         public Calendar getCreatedTime() {
@@ -357,7 +357,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The date when the VM image was created.
+        * Optional. The date when the virtual machine image was created.
         * @param createdTimeValue The CreatedTime value.
         */
         public void setCreatedTime(final Calendar createdTimeValue) {
@@ -385,7 +385,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String deploymentName;
         
         /**
-        * Optional. The deployment name of the VM image.
+        * Optional. The deployment name of the virtual machine image.
         * @return The DeploymentName value.
         */
         public String getDeploymentName() {
@@ -393,7 +393,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The deployment name of the VM image.
+        * Optional. The deployment name of the virtual machine image.
         * @param deploymentNameValue The DeploymentName value.
         */
         public void setDeploymentName(final String deploymentNameValue) {
@@ -403,7 +403,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String label;
         
         /**
-        * Optional. An identifier for the VM image.
+        * Optional. An identifier for the virtual machine image.
         * @return The Label value.
         */
         public String getLabel() {
@@ -411,7 +411,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. An identifier for the VM image.
+        * Optional. An identifier for the virtual machine image.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -421,7 +421,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String name;
         
         /**
-        * Optional. The name of the VM image.
+        * Optional. The name of the virtual machine image.
         * @return The Name value.
         */
         public String getName() {
@@ -429,7 +429,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The name of the VM image.
+        * Optional. The name of the virtual machine image.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -457,7 +457,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String roleName;
         
         /**
-        * Optional. The role name of the VM image.
+        * Optional. The role name of the virtual machine image.
         * @return The RoleName value.
         */
         public String getRoleName() {
@@ -465,7 +465,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The role name of the VM image.
+        * Optional. The role name of the virtual machine image.
         * @param roleNameValue The RoleName value.
         */
         public void setRoleName(final String roleNameValue) {
@@ -475,7 +475,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         private String serviceName;
         
         /**
-        * Optional. The service name of the VM image.
+        * Optional. The service name of the virtual machine image.
         * @return The ServiceName value.
         */
         public String getServiceName() {
@@ -483,7 +483,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The service name of the VM image.
+        * Optional. The service name of the virtual machine image.
         * @param serviceNameValue The ServiceName value.
         */
         public void setServiceName(final String serviceNameValue) {

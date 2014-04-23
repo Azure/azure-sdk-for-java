@@ -92,16 +92,16 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
+    * The Begin Creating Service Certificate operation adds a certificate to a
+    * hosted service. This operation is an asynchronous operation. To
+    * determine whether the management service has finished processing the
+    * request, call Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
     * @param serviceName Required. The DNS prefix name of your service.
-    * @param parameters Required. Parameters supplied to the Create Service
-    * Certificate operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Service Certificate operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -116,16 +116,16 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
+    * The Begin Creating Service Certificate operation adds a certificate to a
+    * hosted service. This operation is an asynchronous operation. To
+    * determine whether the management service has finished processing the
+    * request, call Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
     * @param serviceName Required. The DNS prefix name of your service.
-    * @param parameters Required. Parameters supplied to the Create Service
-    * Certificate operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Service Certificate operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -256,16 +256,16 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
+    * The Begin Deleting Service Certificate operation deletes a service
+    * certificate from the certificate store of a hosted service. This
+    * operation is an asynchronous operation. To determine whether the
+    * management service has finished processing the request, call Get
     * Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Required. Parameters supplied to the Delete Service
-    * Certificate operation.
+    * @param parameters Required. Parameters supplied to the Begin Deleting
+    * Service Certificate operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -280,16 +280,16 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
+    * The Begin Deleting Service Certificate operation deletes a service
+    * certificate from the certificate store of a hosted service. This
+    * operation is an asynchronous operation. To determine whether the
+    * management service has finished processing the request, call Get
     * Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Required. Parameters supplied to the Delete Service
-    * Certificate operation.
+    * @param parameters Required. Parameters supplied to the Begin Deleting
+    * Service Certificate operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -381,11 +381,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
+    * The Create Service Certificate operation adds a certificate to a hosted
+    * service. This operation is an asynchronous operation. To determine
+    * whether the management service has finished processing the request, call
+    * Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
@@ -397,10 +396,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
@@ -413,11 +411,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     }
     
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
+    * The Create Service Certificate operation adds a certificate to a hosted
+    * service. This operation is an asynchronous operation. To determine
+    * whether the management service has finished processing the request, call
+    * Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
@@ -450,10 +447,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
@@ -513,10 +509,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     
     /**
     * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
+    * from the certificate store of a hosted service. This operation is an
+    * asynchronous operation. To determine whether the management service has
+    * finished processing the request, call Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
@@ -527,10 +522,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters) {
@@ -544,10 +538,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     
     /**
     * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
+    * from the certificate store of a hosted service. This operation is an
+    * asynchronous operation. To determine whether the management service has
+    * finished processing the request, call Get Operation Status.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
@@ -572,10 +565,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException {

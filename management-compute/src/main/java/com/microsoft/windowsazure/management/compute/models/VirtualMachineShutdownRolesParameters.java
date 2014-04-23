@@ -32,8 +32,8 @@ public class VirtualMachineShutdownRolesParameters {
     private PostShutdownAction postShutdownAction;
     
     /**
-    * Optional. The state of the roles after shutdown.  Possible values include
-    * Stopped or StoppedDeallocated
+    * Optional. The state of the roles after shutdown. Possible values include
+    * Stopped or StoppedDeallocated.
     * @return The PostShutdownAction value.
     */
     public PostShutdownAction getPostShutdownAction() {
@@ -41,8 +41,8 @@ public class VirtualMachineShutdownRolesParameters {
     }
     
     /**
-    * Optional. The state of the roles after shutdown.  Possible values include
-    * Stopped or StoppedDeallocated
+    * Optional. The state of the roles after shutdown. Possible values include
+    * Stopped or StoppedDeallocated.
     * @param postShutdownActionValue The PostShutdownAction value.
     */
     public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue) {

@@ -73,7 +73,7 @@ public class VirtualMachineOSImageCreateParameters {
     private URI iconUri;
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
@@ -82,7 +82,7 @@ public class VirtualMachineOSImageCreateParameters {
     }
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
@@ -149,7 +149,7 @@ public class VirtualMachineOSImageCreateParameters {
     private String language;
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
@@ -158,7 +158,7 @@ public class VirtualMachineOSImageCreateParameters {
     }
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
@@ -169,10 +169,10 @@ public class VirtualMachineOSImageCreateParameters {
     private URI mediaLinkUri;
     
     /**
-    * Required. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Required. Specifies the location of the blob in Azure storage. The blob
+    * location must belong to a storage account in the subscription specified
+    * by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -180,10 +180,10 @@ public class VirtualMachineOSImageCreateParameters {
     }
     
     /**
-    * Required. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Required. Specifies the location of the blob in Azure storage. The blob
+    * location must belong to a storage account in the subscription specified
+    * by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -193,8 +193,8 @@ public class VirtualMachineOSImageCreateParameters {
     private String name;
     
     /**
-    * Required. Specifies a name that Windows Azure uses to identify the image
-    * when creating one or more virtual machines.
+    * Required. Specifies a name that Azure uses to identify the image when
+    * creating one or more virtual machines.
     * @return The Name value.
     */
     public String getName() {
@@ -202,8 +202,8 @@ public class VirtualMachineOSImageCreateParameters {
     }
     
     /**
-    * Required. Specifies a name that Windows Azure uses to identify the image
-    * when creating one or more virtual machines.
+    * Required. Specifies a name that Azure uses to identify the image when
+    * creating one or more virtual machines.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -214,7 +214,7 @@ public class VirtualMachineOSImageCreateParameters {
     
     /**
     * Required. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType() {
@@ -223,7 +223,7 @@ public class VirtualMachineOSImageCreateParameters {
     
     /**
     * Required. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -312,9 +312,8 @@ public class VirtualMachineOSImageCreateParameters {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -323,9 +322,8 @@ public class VirtualMachineOSImageCreateParameters {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

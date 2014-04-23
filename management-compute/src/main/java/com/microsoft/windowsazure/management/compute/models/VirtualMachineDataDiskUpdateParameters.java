@@ -34,8 +34,8 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Required. Specifies the platform caching behavior of data disk blob for
     * read/write efficiency. The default vault is ReadOnly. Possible values
-    * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
-    * the consistency of the disk.
+    * are: None, ReadOnly, or ReadWrite. Warning: Setting this property
+    * impacts the consistency of the disk.
     * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching() {
@@ -45,8 +45,8 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Required. Specifies the platform caching behavior of data disk blob for
     * read/write efficiency. The default vault is ReadOnly. Possible values
-    * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
-    * the consistency of the disk.
+    * are: None, ReadOnly, or ReadWrite. Warning: Setting this property
+    * impacts the consistency of the disk.
     * @param hostCachingValue The HostCaching value.
     */
     public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
@@ -82,9 +82,9 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Optional. Specifies the size, in GB, of an empty disk to be attached to
     * the role. The disk can be created as part of disk attach or create VM
-    * role call by specifying the value for this property.  Windows Azure
-    * creates the empty disk based on size preference and attaches the newly
-    * created disk to the Role.
+    * role call by specifying the value for this property. Azure creates the
+    * empty disk based on size preference and attaches the newly created disk
+    * to the Role.
     * @return The LogicalDiskSizeInGB value.
     */
     public int getLogicalDiskSizeInGB() {
@@ -94,9 +94,9 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Optional. Specifies the size, in GB, of an empty disk to be attached to
     * the role. The disk can be created as part of disk attach or create VM
-    * role call by specifying the value for this property.  Windows Azure
-    * creates the empty disk based on size preference and attaches the newly
-    * created disk to the Role.
+    * role call by specifying the value for this property. Azure creates the
+    * empty disk based on size preference and attaches the newly created disk
+    * to the Role.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
     public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
@@ -108,7 +108,7 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Optional. Specifies the Logical Unit Number (LUN) for the disk. The LUN
     * specifies the slot in which the data drive appears when mounted for
-    * usage by the virtual machine.  Valid LUN values are 0 through 15.
+    * usage by the virtual machine. Valid LUN values are 0 through 15.
     * @return The LogicalUnitNumber value.
     */
     public Integer getLogicalUnitNumber() {
@@ -118,7 +118,7 @@ public class VirtualMachineDataDiskUpdateParameters {
     /**
     * Optional. Specifies the Logical Unit Number (LUN) for the disk. The LUN
     * specifies the slot in which the data drive appears when mounted for
-    * usage by the virtual machine.  Valid LUN values are 0 through 15.
+    * usage by the virtual machine. Valid LUN values are 0 through 15.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
     public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
@@ -128,11 +128,11 @@ public class VirtualMachineDataDiskUpdateParameters {
     private URI mediaLinkUri;
     
     /**
-    * Required. Specifies the location of the blob in Windows Azure blob store
-    * where the media for the disk is located. The blob location must belong
-    * to the storage account in the subscription specified by the
-    * SubscriptionId value in the operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Required. Specifies the location of the blob in Azure blob store where
+    * the media for the disk is located. The blob location must belong to the
+    * storage account in the subscription specified by the SubscriptionId
+    * value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -140,11 +140,11 @@ public class VirtualMachineDataDiskUpdateParameters {
     }
     
     /**
-    * Required. Specifies the location of the blob in Windows Azure blob store
-    * where the media for the disk is located. The blob location must belong
-    * to the storage account in the subscription specified by the
-    * SubscriptionId value in the operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Required. Specifies the location of the blob in Azure blob store where
+    * the media for the disk is located. The blob location must belong to the
+    * storage account in the subscription specified by the SubscriptionId
+    * value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -154,9 +154,9 @@ public class VirtualMachineDataDiskUpdateParameters {
     private String name;
     
     /**
-    * Optional. Specifies the name of the disk. Windows Azure uses the
-    * specified disk to create the data disk for the machine and populates
-    * this field with the disk name.
+    * Optional. Specifies the name of the disk. Azure uses the specified disk
+    * to create the data disk for the machine and populates this field with
+    * the disk name.
     * @return The Name value.
     */
     public String getName() {
@@ -164,9 +164,9 @@ public class VirtualMachineDataDiskUpdateParameters {
     }
     
     /**
-    * Optional. Specifies the name of the disk. Windows Azure uses the
-    * specified disk to create the data disk for the machine and populates
-    * this field with the disk name.
+    * Optional. Specifies the name of the disk. Azure uses the specified disk
+    * to create the data disk for the machine and populates this field with
+    * the disk name.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

@@ -30,7 +30,7 @@ public class DomainJoinProvisioning {
     private String accountData;
     
     /**
-    * Optional. The account infor for joining the domain.
+    * Optional. The account info for joining the domain.
     * @return The AccountData value.
     */
     public String getAccountData() {
@@ -38,7 +38,7 @@ public class DomainJoinProvisioning {
     }
     
     /**
-    * Optional. The account infor for joining the domain.
+    * Optional. The account info for joining the domain.
     * @param accountDataValue The AccountData value.
     */
     public void setAccountData(final String accountDataValue) {

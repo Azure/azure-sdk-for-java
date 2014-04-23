@@ -109,15 +109,15 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs.  The maximum
+    * length of the name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the name, and it must start with
     * a letter. Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties() {
@@ -126,15 +126,15 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs.  The maximum
+    * length of the name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the name, and it must start with
     * a letter. Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
@@ -162,7 +162,7 @@ public class DeploymentGetResponse extends OperationResponse {
     private String label;
     
     /**
-    * Optional. The user supplied name of the deployment. This name can be used
+    * Optional. The user-supplied name of the deployment. This name can be used
     * identify the deployment for tracking purposes.
     * @return The Label value.
     */
@@ -171,7 +171,7 @@ public class DeploymentGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The user supplied name of the deployment. This name can be used
+    * Optional. The user-supplied name of the deployment. This name can be used
     * identify the deployment for tracking purposes.
     * @param labelValue The Label value.
     */
@@ -201,8 +201,7 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Indicates whether the deployment is locked for new write
-    * operations. True if the deployment is locked because an existing
-    * operation is updating the deployment; otherwise false.
+    * operations because an existing operation is updating the deployment.
     * @return The Locked value.
     */
     public boolean isLocked() {
@@ -211,8 +210,7 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Indicates whether the deployment is locked for new write
-    * operations. True if the deployment is locked because an existing
-    * operation is updating the deployment; otherwise false.
+    * operations because an existing operation is updating the deployment.
     * @param lockedValue The Locked value.
     */
     public void setLocked(final boolean lockedValue) {
@@ -335,7 +333,7 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Indicates whether the Rollback Update Or Upgrade operation is
-    * allowed at this time. True if the operation is allowed; otherwise false.
+    * allowed at this time.
     * @return The RollbackAllowed value.
     */
     public boolean isRollbackAllowed() {
@@ -344,7 +342,7 @@ public class DeploymentGetResponse extends OperationResponse {
     
     /**
     * Optional. Indicates whether the Rollback Update Or Upgrade operation is
-    * allowed at this time. True if the operation is allowed; otherwise false.
+    * allowed at this time.
     * @param rollbackAllowedValue The RollbackAllowed value.
     */
     public void setRollbackAllowed(final boolean rollbackAllowedValue) {
@@ -354,10 +352,10 @@ public class DeploymentGetResponse extends OperationResponse {
     private String sdkVersion;
     
     /**
-    * Optional. The version of the Windows Azure SDK that was used to generate
-    * the .cspkg that created this deployment.  The first two numerical
-    * components of the returned version represent the version of the SDK used
-    * to create the package.
+    * Optional. The version of the Azure SDK that was used to generate the
+    * .cspkg that created this deployment. The first two numerical components
+    * of the returned version represent the version of the SDK used to create
+    * the package.
     * @return The SdkVersion value.
     */
     public String getSdkVersion() {
@@ -365,10 +363,10 @@ public class DeploymentGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The version of the Windows Azure SDK that was used to generate
-    * the .cspkg that created this deployment.  The first two numerical
-    * components of the returned version represent the version of the SDK used
-    * to create the package.
+    * Optional. The version of the Azure SDK that was used to generate the
+    * .cspkg that created this deployment. The first two numerical components
+    * of the returned version represent the version of the SDK used to create
+    * the package.
     * @param sdkVersionValue The SdkVersion value.
     */
     public void setSdkVersion(final String sdkVersionValue) {
@@ -414,8 +412,7 @@ public class DeploymentGetResponse extends OperationResponse {
     private UpgradeStatus upgradeStatus;
     
     /**
-    * Optional. Specifies information about an update occurring on the
-    * deployment.
+    * Optional. Information about an update occurring on the deployment.
     * @return The UpgradeStatus value.
     */
     public UpgradeStatus getUpgradeStatus() {
@@ -423,8 +420,7 @@ public class DeploymentGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies information about an update occurring on the
-    * deployment.
+    * Optional. Information about an update occurring on the deployment.
     * @param upgradeStatusValue The UpgradeStatus value.
     */
     public void setUpgradeStatus(final UpgradeStatus upgradeStatusValue) {
@@ -436,7 +432,7 @@ public class DeploymentGetResponse extends OperationResponse {
     /**
     * Optional. The URL used to access the hosted service. For example, if the
     * service name is MyService you could access the access the service by
-    * calling: http://MyService.cloudapp.net
+    * calling: http://MyService.cloudapp.net.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -446,7 +442,7 @@ public class DeploymentGetResponse extends OperationResponse {
     /**
     * Optional. The URL used to access the hosted service. For example, if the
     * service name is MyService you could access the access the service by
-    * calling: http://MyService.cloudapp.net
+    * calling: http://MyService.cloudapp.net.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {
@@ -456,7 +452,7 @@ public class DeploymentGetResponse extends OperationResponse {
     private ArrayList<VirtualIPAddress> virtualIPAddresses;
     
     /**
-    * Optional. The virtual IP addresses that are specified for thedeployment.
+    * Optional. The virtual IP addresses that are specified for the deployment.
     * @return The VirtualIPAddresses value.
     */
     public ArrayList<VirtualIPAddress> getVirtualIPAddresses() {
@@ -464,7 +460,7 @@ public class DeploymentGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The virtual IP addresses that are specified for thedeployment.
+    * Optional. The virtual IP addresses that are specified for the deployment.
     * @param virtualIPAddressesValue The VirtualIPAddresses value.
     */
     public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue) {

@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The status could contain values like: Transitioning, Error, Success, or
-* Warning
+* The status of the resource extension configuration, containing values like
+* Transitioning, Error, Success, or Warning.
 */
 public abstract class ResourceExtensionConfigurationStatusTypes {
     public static final String TRANSITIONING = "Transitioning";

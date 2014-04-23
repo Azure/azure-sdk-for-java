@@ -89,8 +89,8 @@ public class RoleInstance {
     private String instanceErrorCode;
     
     /**
-    * Optional. An error code that can be provided to WindowsAzure support to
-    * assist in resolution of errors. Typicallythis field will be empty.
+    * Optional. An error code that can be provided to Windows Azure support to
+    * assist in resolution of errors. This field will typically be empty.
     * @return The InstanceErrorCode value.
     */
     public String getInstanceErrorCode() {
@@ -98,8 +98,8 @@ public class RoleInstance {
     }
     
     /**
-    * Optional. An error code that can be provided to WindowsAzure support to
-    * assist in resolution of errors. Typicallythis field will be empty.
+    * Optional. An error code that can be provided to Windows Azure support to
+    * assist in resolution of errors. This field will typically be empty.
     * @param instanceErrorCodeValue The InstanceErrorCode value.
     */
     public void setInstanceErrorCode(final String instanceErrorCodeValue) {
@@ -131,7 +131,7 @@ public class RoleInstance {
     private String instanceName;
     
     /**
-    * Optional. TThe name of the specific role instance, if an instance of the
+    * Optional. The name of the specific role instance, if an instance of the
     * role is running.
     * @return The InstanceName value.
     */
@@ -140,7 +140,7 @@ public class RoleInstance {
     }
     
     /**
-    * Optional. TThe name of the specific role instance, if an instance of the
+    * Optional. The name of the specific role instance, if an instance of the
     * role is running.
     * @param instanceNameValue The InstanceName value.
     */
@@ -169,7 +169,7 @@ public class RoleInstance {
     private String instanceStateDetails;
     
     /**
-    * Optional. The instance state is returned as a string that, when present,
+    * Optional. The instance state, returned as a string that, when present,
     * provides a snapshot of the state of the virtual machine at the time the
     * operation was called.
     * @return The InstanceStateDetails value.
@@ -179,7 +179,7 @@ public class RoleInstance {
     }
     
     /**
-    * Optional. The instance state is returned as a string that, when present,
+    * Optional. The instance state, returned as a string that, when present,
     * provides a snapshot of the state of the virtual machine at the time the
     * operation was called.
     * @param instanceStateDetailsValue The InstanceStateDetails value.

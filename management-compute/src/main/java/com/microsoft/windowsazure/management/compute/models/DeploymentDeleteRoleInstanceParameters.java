@@ -23,16 +23,36 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import java.util.ArrayList;
+
 /**
-* The resource extension status, which can be "Installing", "Ready",
-* "NotReady", or "Unresponsive".
+* Parameters supplied to the delete role instance by deployment name operation.
 */
-public abstract class ResourceExtensionStatusTypes {
-    public static final String INSTALLING = "Installing";
+public class DeploymentDeleteRoleInstanceParameters {
+    private ArrayList<String> name;
     
-    public static final String READY = "Ready";
+    /**
+    * Optional.
+    * @return The Name value.
+    */
+    public ArrayList<String> getName() {
+        return this.name;
+    }
     
-    public static final String NORREADY = "NorReady";
+    /**
+    * Optional.
+    * @param nameValue The Name value.
+    */
+    public void setName(final ArrayList<String> nameValue) {
+        this.name = nameValue;
+    }
     
-    public static final String UNRESPONSIVE = "Unresponsive";
+    /**
+    * Initializes a new instance of the DeploymentDeleteRoleInstanceParameters
+    * class.
+    *
+    */
+    public DeploymentDeleteRoleInstanceParameters() {
+        this.name = new ArrayList<String>();
+    }
 }

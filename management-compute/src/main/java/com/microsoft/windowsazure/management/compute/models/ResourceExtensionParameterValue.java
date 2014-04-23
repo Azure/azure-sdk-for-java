@@ -30,7 +30,7 @@ public class ResourceExtensionParameterValue {
     private String key;
     
     /**
-    * Optional. Key
+    * Optional. The key of the parameter.
     * @return The Key value.
     */
     public String getKey() {
@@ -38,7 +38,7 @@ public class ResourceExtensionParameterValue {
     }
     
     /**
-    * Optional. Key
+    * Optional. The key of the parameter.
     * @param keyValue The Key value.
     */
     public void setKey(final String keyValue) {
@@ -72,7 +72,7 @@ public class ResourceExtensionParameterValue {
     private String value;
     
     /**
-    * Optional. Value
+    * Optional. The value of the parameter.
     * @return The Value value.
     */
     public String getValue() {
@@ -80,7 +80,7 @@ public class ResourceExtensionParameterValue {
     }
     
     /**
-    * Optional. Value
+    * Optional. The value of the parameter.
     * @param valueValue The Value value.
     */
     public void setValue(final String valueValue) {
