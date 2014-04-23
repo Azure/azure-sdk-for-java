@@ -34,7 +34,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     
     /**
     * Optional. The current value of the platform caching behavior of data disk
-    * blob for read/write efficiency. Possible values are: None, ReadOnly,
+    * blob for read/write efficiency. Possible values are: None, ReadOnly, or
     * ReadWrite.
     * @return The HostCaching value.
     */
@@ -44,7 +44,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     
     /**
     * Optional. The current value of the platform caching behavior of data disk
-    * blob for read/write efficiency. Possible values are: None, ReadOnly,
+    * blob for read/write efficiency. Possible values are: None, ReadOnly, or
     * ReadWrite.
     * @param hostCachingValue The HostCaching value.
     */
@@ -113,9 +113,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * Optional. The location of physical blob backing the data disk. The blob
-    * location is in storage account in the subscription specified by the
-    * SubscriptionId value in the operation call.
+    * Optional. The location of the physical blob backing the data disk. The
+    * blob location is in the storage account in the subscription specified by
+    * the SubscriptionId value in the operation call.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -123,9 +123,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The location of physical blob backing the data disk. The blob
-    * location is in storage account in the subscription specified by the
-    * SubscriptionId value in the operation call.
+    * Optional. The location of the physical blob backing the data disk. The
+    * blob location is in the storage account in the subscription specified by
+    * the SubscriptionId value in the operation call.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {

@@ -34,7 +34,7 @@ public class SshSettings {
     private ArrayList<SshSettingKeyPair> keyPairs;
     
     /**
-    * Optional. Specifies the collection of SSH public keys.
+    * Optional. Specifies the collection of SSH key pairs.
     * @return The KeyPairs value.
     */
     public ArrayList<SshSettingKeyPair> getKeyPairs() {
@@ -42,7 +42,7 @@ public class SshSettings {
     }
     
     /**
-    * Optional. Specifies the collection of SSH public keys.
+    * Optional. Specifies the collection of SSH key pairs.
     * @param keyPairsValue The KeyPairs value.
     */
     public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue) {

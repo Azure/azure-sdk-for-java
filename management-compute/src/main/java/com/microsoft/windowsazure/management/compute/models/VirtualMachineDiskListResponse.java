@@ -200,7 +200,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * media for the disk is located. The blob location belongs to a
         * storage account in the subscription specified by the SubscriptionId
         * value in the operation call. Example:
-        * http://example.blob.core.windows.net/disks/mydisk.vhd
+        * http://example.blob.core.windows.net/disks/mydisk.vhd.
         * @return The MediaLinkUri value.
         */
         public URI getMediaLinkUri() {
@@ -212,7 +212,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * media for the disk is located. The blob location belongs to a
         * storage account in the subscription specified by the SubscriptionId
         * value in the operation call. Example:
-        * http://example.blob.core.windows.net/disks/mydisk.vhd
+        * http://example.blob.core.windows.net/disks/mydisk.vhd.
         * @param mediaLinkUriValue The MediaLinkUri value.
         */
         public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -242,8 +242,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String operatingSystemType;
         
         /**
-        * Optional. The operating system type of the OS image.  Possible Values
-        * are: Linux, Windows, NULL.
+        * Optional. The operating system type of the OS image. Possible Values
+        * are: Linux, Windows, or NULL.
         * @return The OperatingSystemType value.
         */
         public String getOperatingSystemType() {
@@ -251,8 +251,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * Optional. The operating system type of the OS image.  Possible Values
-        * are: Linux, Windows, NULL.
+        * Optional. The operating system type of the OS image. Possible Values
+        * are: Linux, Windows, or NULL.
         * @param operatingSystemTypeValue The OperatingSystemType value.
         */
         public void setOperatingSystemType(final String operatingSystemTypeValue) {

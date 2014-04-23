@@ -53,11 +53,10 @@ import org.xml.sax.SAXException;
 public interface HostedServiceOperations {
     /**
     * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
+    * service. In Azure, a process can run as an extension of a cloud service.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as extensions to the cloud service. You can find the available
+    * extension by using the List Available Extensions operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
@@ -81,20 +80,18 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     OperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
+    * service. In Azure, a process can run as an extension of a cloud service.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as extensions to the cloud service. You can find the available
+    * extension by using the List Available Extensions operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
@@ -106,26 +103,24 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> addExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
     
     /**
-    * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
-    * more information)
+    * The Begin Adding Extension operation adds an available extension to your
+    * cloud service. In Azure, a process can run as an extension of a cloud
+    * service. For example, Remote Desktop Access or the Azure Diagnostics
+    * Agent can run as extensions to the cloud service. You can find the
+    * available extension by using the List Available Extensions operation.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx
+    * for more information)
     *
     * @param serviceName Required. The name of the cloud service.
-    * @param parameters Required. Parameters supplied to the Add Extension
-    * operation.
+    * @param parameters Required. Parameters supplied to the Begin Adding
+    * Extension operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -142,26 +137,25 @@ public interface HostedServiceOperations {
     OperationResponse beginAddingExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
-    * The Add Extension operation adds an available extension to your cloud
-    * service. In Windows Azure, a process can run as an extension of a cloud
-    * service. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as extensions to the cloud service. You can
-    * find the available extension by using the List Available Extensions
-    * operation.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
-    * more information)
+    * The Begin Adding Extension operation adds an available extension to your
+    * cloud service. In Azure, a process can run as an extension of a cloud
+    * service. For example, Remote Desktop Access or the Azure Diagnostics
+    * Agent can run as extensions to the cloud service. You can find the
+    * available extension by using the List Available Extensions operation.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx
+    * for more information)
     *
     * @param serviceName Required. The name of the cloud service.
-    * @param parameters Required. Parameters supplied to the Add Extension
-    * operation.
+    * @param parameters Required. Parameters supplied to the Begin Adding
+    * Extension operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     Future<OperationResponse> beginAddingExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Begin Deleting All Hosted Service operation deletes the specified
+    * cloud service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -176,8 +170,8 @@ public interface HostedServiceOperations {
     OperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException;
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Begin Deleting All Hosted Service operation deletes the specified
+    * cloud service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -188,8 +182,8 @@ public interface HostedServiceOperations {
     Future<OperationResponse> beginDeletingAllAsync(String serviceName);
     
     /**
-    * The Delete Extension operation deletes the specified extension from a
-    * cloud service.  (see
+    * The Begin Deleting Extension operation deletes the specified extension
+    * from a cloud service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
@@ -206,8 +200,8 @@ public interface HostedServiceOperations {
     OperationResponse beginDeletingExtension(String serviceName, String extensionId) throws IOException, ServiceException;
     
     /**
-    * The Delete Extension operation deletes the specified extension from a
-    * cloud service.  (see
+    * The Begin Deleting Extension operation deletes the specified extension
+    * from a cloud service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
@@ -252,10 +246,9 @@ public interface HostedServiceOperations {
     Future<HostedServiceCheckNameAvailabilityResponse> checkNameAvailabilityAsync(String serviceName);
     
     /**
-    * The Create Hosted Service operation creates a new cloud service in
-    * Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
-    * more information)
+    * The Create Hosted Service operation creates a new cloud service in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Hosted
     * Service operation.
@@ -286,10 +279,9 @@ public interface HostedServiceOperations {
     OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
-    * The Create Hosted Service operation creates a new cloud service in
-    * Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
-    * more information)
+    * The Create Hosted Service operation creates a new cloud service in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Hosted
     * Service operation.
@@ -300,7 +292,7 @@ public interface HostedServiceOperations {
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -326,7 +318,7 @@ public interface HostedServiceOperations {
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -337,8 +329,8 @@ public interface HostedServiceOperations {
     Future<OperationResponse> deleteAsync(String serviceName);
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Delete All Hosted Service operation deletes the specified cloud
+    * service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -360,16 +352,15 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     OperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
-    * The Delete Hosted Service operation deletes the specified cloud service
-    * from Windows Azure.  (see
+    * The Delete All Hosted Service operation deletes the specified cloud
+    * service from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
@@ -379,10 +370,9 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> deleteAllAsync(String serviceName);
     
@@ -412,10 +402,9 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     OperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
@@ -433,17 +422,16 @@ public interface HostedServiceOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> deleteExtensionAsync(String serviceName, String extensionId);
     
     /**
     * The Get Hosted Service Properties operation retrieves system properties
     * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
+    * name and service type; and the name of the affinity group to which the
     * service belongs, or its location if it is not part of an affinity group.
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
@@ -466,7 +454,7 @@ public interface HostedServiceOperations {
     /**
     * The Get Hosted Service Properties operation retrieves system properties
     * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
+    * name and service type; and the name of the affinity group to which the
     * service belongs, or its location if it is not part of an affinity group.
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
@@ -477,11 +465,11 @@ public interface HostedServiceOperations {
     Future<HostedServiceGetResponse> getAsync(String serviceName);
     
     /**
-    * The Get Hosted Service Properties operation retrieves system properties
-    * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
-    * service belongs, or its location if it is not part of an affinity group;
-    * and information on the deployments of the service.  (see
+    * The Get Detailed Hosted Service Properties operation retrieves system
+    * properties for the specified cloud service. These properties include the
+    * service name and service type; the name of the affinity group to which
+    * the service belongs, or its location if it is not part of an affinity
+    * group; and information on the deployments of the service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
@@ -501,11 +489,11 @@ public interface HostedServiceOperations {
     HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
-    * The Get Hosted Service Properties operation retrieves system properties
-    * for the specified cloud service. These properties include the service
-    * name and service type; the name of the affinity group to which the
-    * service belongs, or its location if it is not part of an affinity group;
-    * and information on the deployments of the service.  (see
+    * The Get Detailed Hosted Service Properties operation retrieves system
+    * properties for the specified cloud service. These properties include the
+    * service name and service type; the name of the affinity group to which
+    * the service belongs, or its location if it is not part of an affinity
+    * group; and information on the deployments of the service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
@@ -564,7 +552,7 @@ public interface HostedServiceOperations {
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Get Hosted Service operation response.
+    * @return The List Hosted Service operation response.
     */
     HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
@@ -574,7 +562,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460781.aspx for
     * more information)
     *
-    * @return The Get Hosted Service operation response.
+    * @return The List Hosted Service operation response.
     */
     Future<HostedServiceListResponse> listAsync();
     
@@ -582,8 +570,8 @@ public interface HostedServiceOperations {
     * The List Available Extensions operation lists the extensions that are
     * available to add to your cloud service. In Windows Azure, a process can
     * run as an extension of a cloud service. For example, Remote Desktop
-    * Access or the Windows Azure Diagnostics Agent can run as extensions to
-    * the cloud service.  (see
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169559.aspx for
     * more information)
     *
@@ -605,8 +593,8 @@ public interface HostedServiceOperations {
     * The List Available Extensions operation lists the extensions that are
     * available to add to your cloud service. In Windows Azure, a process can
     * run as an extension of a cloud service. For example, Remote Desktop
-    * Access or the Windows Azure Diagnostics Agent can run as extensions to
-    * the cloud service.  (see
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169559.aspx for
     * more information)
     *
@@ -646,10 +634,10 @@ public interface HostedServiceOperations {
     
     /**
     * The List Extension Versions operation lists the versions of an extension
-    * that are available to add to a cloud service. In Windows Azure, a
-    * process can run as an extension of a cloud service. For example, Remote
-    * Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * extensions to the cloud service.  (see
+    * that are available to add to a cloud service. In Azure, a process can
+    * run as an extension of a cloud service. For example, Remote Desktop
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
@@ -671,10 +659,10 @@ public interface HostedServiceOperations {
     
     /**
     * The List Extension Versions operation lists the versions of an extension
-    * that are available to add to a cloud service. In Windows Azure, a
-    * process can run as an extension of a cloud service. For example, Remote
-    * Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * extensions to the cloud service.  (see
+    * that are available to add to a cloud service. In Azure, a process can
+    * run as an extension of a cloud service. For example, Remote Desktop
+    * Access or the Azure Diagnostics Agent can run as extensions to the cloud
+    * service.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
@@ -686,7 +674,7 @@ public interface HostedServiceOperations {
     
     /**
     * The Update Hosted Service operation can update the label or description
-    * of a cloud service in Windows Azure.  (see
+    * of a cloud service in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *
@@ -722,7 +710,7 @@ public interface HostedServiceOperations {
     
     /**
     * The Update Hosted Service operation can update the label or description
-    * of a cloud service in Windows Azure.  (see
+    * of a cloud service in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *

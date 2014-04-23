@@ -40,10 +40,10 @@ import org.xml.sax.SAXException;
 public interface VirtualMachineExtensionOperations {
     /**
     * The List Resource Extensions operation lists the resource extensions that
-    * are available to add to a Virtual Machine. In Windows Azure, a process
-    * can run as a resource extension of a Virtual Machine. For example,
-    * Remote Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * resource extensions to the Virtual Machine.  (see
+    * are available to add to a Virtual Machine. In Azure, a process can run
+    * as a resource extension of a Virtual Machine. For example, Remote
+    * Desktop Access or the Azure Diagnostics Agent can run as resource
+    * extensions to the Virtual Machine.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495441.aspx for
     * more information)
     *
@@ -63,10 +63,10 @@ public interface VirtualMachineExtensionOperations {
     
     /**
     * The List Resource Extensions operation lists the resource extensions that
-    * are available to add to a Virtual Machine. In Windows Azure, a process
-    * can run as a resource extension of a Virtual Machine. For example,
-    * Remote Desktop Access or the Windows Azure Diagnostics Agent can run as
-    * resource extensions to the Virtual Machine.  (see
+    * are available to add to a Virtual Machine. In Azure, a process can run
+    * as a resource extension of a Virtual Machine. For example, Remote
+    * Desktop Access or the Azure Diagnostics Agent can run as resource
+    * extensions to the Virtual Machine.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495441.aspx for
     * more information)
     *
@@ -77,11 +77,11 @@ public interface VirtualMachineExtensionOperations {
     /**
     * The List Resource Extension Versions operation lists the versions of a
     * resource extension that are available to add to a Virtual Machine. In
-    * Windows Azure, a process can run as a resource extension of a Virtual
-    * Machine. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as resource extensions to the Virtual Machine.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
-    * for more information)
+    * Azure, a process can run as a resource extension of a Virtual Machine.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as resource extensions to the Virtual Machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx for
+    * more information)
     *
     * @param publisherName Required. The name of the publisher.
     * @param extensionName Required. The name of the extension.
@@ -102,11 +102,11 @@ public interface VirtualMachineExtensionOperations {
     /**
     * The List Resource Extension Versions operation lists the versions of a
     * resource extension that are available to add to a Virtual Machine. In
-    * Windows Azure, a process can run as a resource extension of a Virtual
-    * Machine. For example, Remote Desktop Access or the Windows Azure
-    * Diagnostics Agent can run as resource extensions to the Virtual Machine.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
-    * for more information)
+    * Azure, a process can run as a resource extension of a Virtual Machine.
+    * For example, Remote Desktop Access or the Azure Diagnostics Agent can
+    * run as resource extensions to the Virtual Machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx for
+    * more information)
     *
     * @param publisherName Required. The name of the publisher.
     * @param extensionName Required. The name of the extension.

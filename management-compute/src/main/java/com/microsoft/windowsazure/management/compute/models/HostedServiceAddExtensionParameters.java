@@ -69,7 +69,7 @@ public class HostedServiceAddExtensionParameters {
     
     /**
     * Optional. The provider namespace of the extension. The provider namespace
-    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * for Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @return The ProviderNamespace value.
     */
     public String getProviderNamespace() {
@@ -78,7 +78,7 @@ public class HostedServiceAddExtensionParameters {
     
     /**
     * Optional. The provider namespace of the extension. The provider namespace
-    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * for Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @param providerNamespaceValue The ProviderNamespace value.
     */
     public void setProviderNamespace(final String providerNamespaceValue) {
@@ -132,8 +132,8 @@ public class HostedServiceAddExtensionParameters {
     private String thumbprintAlgorithm;
     
     /**
-    * Optional. The thumbprint algorithm of the certificate that is used
-    * toencrypt the configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used to
+    * encrypt the configuration specified in PrivateConfiguration.
     * @return The ThumbprintAlgorithm value.
     */
     public String getThumbprintAlgorithm() {
@@ -141,8 +141,8 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * Optional. The thumbprint algorithm of the certificate that is used
-    * toencrypt the configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used to
+    * encrypt the configuration specified in PrivateConfiguration.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {

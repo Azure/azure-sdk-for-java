@@ -47,10 +47,10 @@ import org.xml.sax.SAXException;
 */
 public interface VirtualMachineOSImageOperations {
     /**
-    * The Add OS Image operation adds an operating system image that is stored
-    * in a storage account and is available from the image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
-    * more information)
+    * The Create OS Image operation adds an operating system image that is
+    * stored in a storage account and is available from the image repository.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Image operation.
@@ -81,10 +81,10 @@ public interface VirtualMachineOSImageOperations {
     VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
-    * The Add OS Image operation adds an operating system image that is stored
-    * in a storage account and is available from the image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
-    * more information)
+    * The Create OS Image operation adds an operating system image that is
+    * stored in a storage account and is available from the image repository.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Image operation.

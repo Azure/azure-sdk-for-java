@@ -94,8 +94,8 @@ public class InputEndpoint {
     
     /**
     * Optional. Contains properties that specify the endpoint settings which
-    * the Windows Azure load balancer uses to monitor the availability of this
-    * virtual machine before forwarding traffic to the endpoint.
+    * the Azure load balancer uses to monitor the availability of this virtual
+    * machine before forwarding traffic to the endpoint.
     * @return The LoadBalancerProbe value.
     */
     public LoadBalancerProbe getLoadBalancerProbe() {
@@ -104,8 +104,8 @@ public class InputEndpoint {
     
     /**
     * Optional. Contains properties that specify the endpoint settings which
-    * the Windows Azure load balancer uses to monitor the availability of this
-    * virtual machine before forwarding traffic to the endpoint.
+    * the Azure load balancer uses to monitor the availability of this virtual
+    * machine before forwarding traffic to the endpoint.
     * @param loadBalancerProbeValue The LoadBalancerProbe value.
     */
     public void setLoadBalancerProbe(final LoadBalancerProbe loadBalancerProbeValue) {
@@ -193,7 +193,7 @@ public class InputEndpoint {
     private InetAddress virtualIPAddress;
     
     /**
-    * Optional. The ip of the role instance.
+    * Optional. The virtual IP address of the role instance.
     * @return The VirtualIPAddress value.
     */
     public InetAddress getVirtualIPAddress() {
@@ -201,7 +201,7 @@ public class InputEndpoint {
     }
     
     /**
-    * Optional. The ip of the role instance.
+    * Optional. The virtual IP address of the role instance.
     * @param virtualIPAddressValue The VirtualIPAddress value.
     */
     public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {

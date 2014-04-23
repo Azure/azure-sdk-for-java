@@ -50,10 +50,9 @@ public class SshSettingPublicKey {
     private String path;
     
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH public key. If the file already exists, the
-    * specified key is appended to the file.
-    * Example:/home/user/.ssh/authorized_keys
+    * Required. Specifies the full path of a file on the virtual machine which
+    * stores the SSH public key. If the file already exists, the specified key
+    * is appended to the file. Example: /home/user/.ssh/authorized_keys.
     * @return The Path value.
     */
     public String getPath() {
@@ -61,10 +60,9 @@ public class SshSettingPublicKey {
     }
     
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH public key. If the file already exists, the
-    * specified key is appended to the file.
-    * Example:/home/user/.ssh/authorized_keys
+    * Required. Specifies the full path of a file on the virtual machine which
+    * stores the SSH public key. If the file already exists, the specified key
+    * is appended to the file. Example: /home/user/.ssh/authorized_keys.
     * @param pathValue The Path value.
     */
     public void setPath(final String pathValue) {

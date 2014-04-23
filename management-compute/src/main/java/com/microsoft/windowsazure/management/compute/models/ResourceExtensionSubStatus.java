@@ -24,14 +24,14 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* A substatus object contains additional status information reported by the
+* A substatus object containing additional status information reported by the
 * Resource Extension.
 */
 public class ResourceExtensionSubStatus {
     private Integer code;
     
     /**
-    * Optional. Integer. Status code from the result of applying the sub status
+    * Optional. Integer status code from the result of applying the substatus
     * settings.
     * @return The Code value.
     */
@@ -40,7 +40,7 @@ public class ResourceExtensionSubStatus {
     }
     
     /**
-    * Optional. Integer. Status code from the result of applying the sub status
+    * Optional. Integer status code from the result of applying the substatus
     * settings.
     * @param codeValue The Code value.
     */
@@ -51,7 +51,7 @@ public class ResourceExtensionSubStatus {
     private GuestAgentFormattedMessage formattedMessage;
     
     /**
-    * Optional. This object encapsulates localized status message.
+    * Optional. This object encapsulates a formatted localized status message.
     * @return The FormattedMessage value.
     */
     public GuestAgentFormattedMessage getFormattedMessage() {
@@ -59,7 +59,7 @@ public class ResourceExtensionSubStatus {
     }
     
     /**
-    * Optional. This object encapsulates localized status message.
+    * Optional. This object encapsulates a formatted localized status message.
     * @param formattedMessageValue The FormattedMessage value.
     */
     public void setFormattedMessage(final GuestAgentFormattedMessage formattedMessageValue) {
@@ -69,7 +69,7 @@ public class ResourceExtensionSubStatus {
     private GuestAgentMessage message;
     
     /**
-    * Optional. The message.
+    * Optional. This object encapsulates a localized status message.
     * @return The Message value.
     */
     public GuestAgentMessage getMessage() {
@@ -77,7 +77,7 @@ public class ResourceExtensionSubStatus {
     }
     
     /**
-    * Optional. The message.
+    * Optional. This object encapsulates a localized status message.
     * @param messageValue The Message value.
     */
     public void setMessage(final GuestAgentMessage messageValue) {
@@ -87,7 +87,7 @@ public class ResourceExtensionSubStatus {
     private String name;
     
     /**
-    * Optional. String. A name for the substatus.
+    * Optional. A name for the substatus.
     * @return The Name value.
     */
     public String getName() {
@@ -95,7 +95,7 @@ public class ResourceExtensionSubStatus {
     }
     
     /**
-    * Optional. String. A name for the substatus.
+    * Optional. A name for the substatus.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -105,8 +105,8 @@ public class ResourceExtensionSubStatus {
     private String status;
     
     /**
-    * Optional. The status could contain values like: Transitioning, Error,
-    * Success, or Warning
+    * Optional. The resource extension substatus, containing values like
+    * Transitioning, Error, Success, or Warning.
     * @return The Status value.
     */
     public String getStatus() {
@@ -114,8 +114,8 @@ public class ResourceExtensionSubStatus {
     }
     
     /**
-    * Optional. The status could contain values like: Transitioning, Error,
-    * Success, or Warning
+    * Optional. The resource extension substatus, containing values like
+    * Transitioning, Error, Success, or Warning.
     * @param statusValue The Status value.
     */
     public void setStatus(final String statusValue) {

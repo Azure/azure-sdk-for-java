@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* This object encapsulates localized status message from the Guest Agent.
+* This object encapsulates a localized status message from the Guest Agent.
 */
 public class GuestAgentFormattedMessage {
     private String language;
     
     /**
-    * Optional. Language code. Eg. "en-US"
+    * Optional. Language code. Eg. "en-US".
     * @return The Language value.
     */
     public String getLanguage() {
@@ -38,7 +38,7 @@ public class GuestAgentFormattedMessage {
     }
     
     /**
-    * Optional. Language code. Eg. "en-US"
+    * Optional. Language code. Eg. "en-US".
     * @param languageValue The Language value.
     */
     public void setLanguage(final String languageValue) {
@@ -48,8 +48,8 @@ public class GuestAgentFormattedMessage {
     private String message;
     
     /**
-    * Optional. A string containing message about status of the Guest Agent, or
-    * Resource Extension.
+    * Optional. A string containing a message about the status of the Guest
+    * Agent or Resource Extension.
     * @return The Message value.
     */
     public String getMessage() {
@@ -57,8 +57,8 @@ public class GuestAgentFormattedMessage {
     }
     
     /**
-    * Optional. A string containing message about status of the Guest Agent, or
-    * Resource Extension.
+    * Optional. A string containing a message about the status of the Guest
+    * Agent or Resource Extension.
     * @param messageValue The Message value.
     */
     public void setMessage(final String messageValue) {

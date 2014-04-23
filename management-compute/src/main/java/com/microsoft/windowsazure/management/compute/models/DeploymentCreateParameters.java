@@ -52,13 +52,13 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 25 extended property name/value pairs. The maximum length of
+    * the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and the name must start with a
+    * letter. Attempting to use other characters, starting the name with a
     * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
+    * another extended property owned by the same hosted service will result
     * in a status code 400 (Bad Request) error.
     * @return The ExtendedProperties value.
     */
@@ -68,13 +68,13 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 25 extended property name/value pairs. The maximum length of
+    * the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and the name must start with a
+    * letter. Attempting to use other characters, starting the name with a
     * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
+    * another extended property owned by the same hosted service will result
     * in a status code 400 (Bad Request) error.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
@@ -86,11 +86,10 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
+    * Azure, a process can run as an extension of a cloud service. For
+    * example, Remote Desktop Access or the Azure Diagnostics Agent can run as
+    * extensions to the cloud service. You must add an extension to the cloud
+    * service by using Add Extension before it can be added to the deployment.
     * @return The ExtensionConfiguration value.
     */
     public ExtensionConfiguration getExtensionConfiguration() {
@@ -99,11 +98,10 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
+    * Azure, a process can run as an extension of a cloud service. For
+    * example, Remote Desktop Access or the Azure Diagnostics Agent can run as
+    * extensions to the cloud service. You must add an extension to the cloud
+    * service by using Add Extension before it can be added to the deployment.
     * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
     public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue) {
@@ -188,7 +186,7 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Indicates whether to start the deployment immediately after it
-    * is created. The default value is false.  If false, the service model is
+    * is created. The default value is false. If false, the service model is
     * still deployed to the virtual machines but the code is not run
     * immediately. Instead, the service is Suspended until you call Update
     * Deployment Status and set the status toRunning, at which time the
@@ -202,7 +200,7 @@ public class DeploymentCreateParameters {
     
     /**
     * Optional. Indicates whether to start the deployment immediately after it
-    * is created. The default value is false.  If false, the service model is
+    * is created. The default value is false. If false, the service model is
     * still deployed to the virtual machines but the code is not run
     * immediately. Instead, the service is Suspended until you call Update
     * Deployment Status and set the status toRunning, at which time the

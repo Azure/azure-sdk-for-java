@@ -32,7 +32,7 @@ public class GuestAgentMessage {
     private String messageResourceId;
     
     /**
-    * Optional. The message resource Id.
+    * Optional. The message resource ID.
     * @return The MessageResourceId value.
     */
     public String getMessageResourceId() {
@@ -40,7 +40,7 @@ public class GuestAgentMessage {
     }
     
     /**
-    * Optional. The message resource Id.
+    * Optional. The message resource ID.
     * @param messageResourceIdValue The MessageResourceId value.
     */
     public void setMessageResourceId(final String messageResourceIdValue) {

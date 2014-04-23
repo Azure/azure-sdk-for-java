@@ -82,26 +82,34 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Begin Deleting Virtual Machine Image operation deletes the specified
+    * virtual machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final String vmImageName) {
+    public Future<OperationResponse> beginDeletingAsync(final String vmImageName, final boolean deleteFromStorage) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
-                return beginDeleting(vmImageName);
+                return beginDeleting(vmImageName, deleteFromStorage);
             }
          });
     }
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Begin Deleting Virtual Machine Image operation deletes the specified
+    * virtual machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -110,7 +118,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(String vmImageName) throws IOException, ServiceException {
+    public OperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
         if (vmImageName == null) {
             throw new NullPointerException("vmImageName");
@@ -123,12 +131,16 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("vmImageName", vmImageName);
+            tracingParameters.put("deleteFromStorage", deleteFromStorage);
             CloudTracing.enter(invocationId, this, "beginDeletingAsync", tracingParameters);
         }
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages/" + vmImageName.trim() + "?" + "comp=media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/vmimages/" + vmImageName.trim() + "?";
+        if (deleteFromStorage == true) {
+            url = url + "comp=" + "media";
+        }
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -183,33 +195,40 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Delete Virtual Machine Image operation deletes the specified virtual
+    * machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public Future<OperationStatusResponse> deleteAsync(final String vmImageName) {
+    public Future<OperationStatusResponse> deleteAsync(final String vmImageName, final boolean deleteFromStorage) {
         return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
             public OperationStatusResponse call() throws Exception {
-                return delete(vmImageName);
+                return delete(vmImageName, deleteFromStorage);
             }
          });
     }
     
     /**
-    * The Delete VM Image operation deletes the specified VM image.
+    * The Delete Virtual Machine Image operation deletes the specified virtual
+    * machine image.
     *
-    * @param vmImageName Required. The name of the VM image to delete.
+    * @param vmImageName Required. The name of the virtual machine image to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
+    * image should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -229,13 +248,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public OperationStatusResponse delete(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -243,6 +261,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("vmImageName", vmImageName);
+            tracingParameters.put("deleteFromStorage", deleteFromStorage);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
         try {
@@ -250,7 +269,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getVirtualMachineVMImagesOperations().beginDeletingAsync(vmImageName).get();
+            OperationResponse response = client2.getVirtualMachineVMImagesOperations().beginDeletingAsync(vmImageName, deleteFromStorage).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
@@ -290,8 +309,8 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The List VM Images operation retrieves a list of the virtual machine
-    * images.
+    * The List Virtual Machine Images operation retrieves a list of the virtual
+    * machine images.
     *
     * @return The List VM Images operation response.
     */
@@ -306,8 +325,8 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The List VM Images operation retrieves a list of the virtual machine
-    * images.
+    * The List Virtual Machine Images operation retrieves a list of the virtual
+    * machine images.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by

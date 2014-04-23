@@ -122,7 +122,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private DnsSettings dnsSettings;
         
         /**
-        * Optional. The custom DNS settings that are specified for deployment.
+        * Optional. The custom DNS settings that are specified for the
+        * deployment.
         * @return The DnsSettings value.
         */
         public DnsSettings getDnsSettings() {
@@ -130,7 +131,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional. The custom DNS settings that are specified for deployment.
+        * Optional. The custom DNS settings that are specified for the
+        * deployment.
         * @param dnsSettingsValue The DnsSettings value.
         */
         public void setDnsSettings(final DnsSettings dnsSettingsValue) {
@@ -141,14 +143,14 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Represents the name of an extended cloud service property.
-        * Each extended property must have both a defined name and value. You
-        * can have a maximum of 50 extended property name and value pairs.
-        * The maximum length of the Name element is 64 characters, only
+        * Each extended property must have a defined name and a value. You can
+        * have a maximum of 50 extended property name and value pairs. The
+        * maximum length of the name element is 64 characters, only
         * alphanumeric characters and underscores are valid in the name, and
         * it must start with a letter. Attempting to use other characters,
         * starting with a non-letter character, or entering a name that is
         * identical to that of another extended property owned by the same
-        * service, will result in a status code 400 (Bad Request) error.  Each
+        * service will result in a status code 400 (Bad Request) error. Each
         * extended property value has a maximum length of 255 characters.
         * @return The ExtendedProperties value.
         */
@@ -158,14 +160,14 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Represents the name of an extended cloud service property.
-        * Each extended property must have both a defined name and value. You
-        * can have a maximum of 50 extended property name and value pairs.
-        * The maximum length of the Name element is 64 characters, only
+        * Each extended property must have a defined name and a value. You can
+        * have a maximum of 50 extended property name and value pairs. The
+        * maximum length of the name element is 64 characters, only
         * alphanumeric characters and underscores are valid in the name, and
         * it must start with a letter. Attempting to use other characters,
         * starting with a non-letter character, or entering a name that is
         * identical to that of another extended property owned by the same
-        * service, will result in a status code 400 (Bad Request) error.  Each
+        * service will result in a status code 400 (Bad Request) error. Each
         * extended property value has a maximum length of 255 characters.
         * @param extendedPropertiesValue The ExtendedProperties value.
         */
@@ -215,8 +217,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Indicates whether the deployment is locked for new write
-        * operations. True if the deployment is locked because an existing
-        * operation is updating the deployment; otherwise false.
+        * operations because an existing operation is updating the deployment.
         * @return The Locked value.
         */
         public boolean isLocked() {
@@ -225,8 +226,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Indicates whether the deployment is locked for new write
-        * operations. True if the deployment is locked because an existing
-        * operation is updating the deployment; otherwise false.
+        * operations because an existing operation is updating the deployment.
         * @param lockedValue The Locked value.
         */
         public void setLocked(final boolean lockedValue) {
@@ -236,7 +236,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String name;
         
         /**
-        * Optional.
+        * Optional. The name of the deployment.
         * @return The Name value.
         */
         public String getName() {
@@ -244,7 +244,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional.
+        * Optional. The name of the deployment.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -329,8 +329,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Indicates whether the Rollback Update Or Upgrade operation
-        * is allowed at this time. True if the operation is allowed; otherwise
-        * false.
+        * is allowed at this time.
         * @return The RollbackAllowed value.
         */
         public boolean isRollbackAllowed() {
@@ -339,8 +338,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         
         /**
         * Optional. Indicates whether the Rollback Update Or Upgrade operation
-        * is allowed at this time. True if the operation is allowed; otherwise
-        * false.
+        * is allowed at this time.
         * @param rollbackAllowedValue The RollbackAllowed value.
         */
         public void setRollbackAllowed(final boolean rollbackAllowedValue) {
@@ -350,10 +348,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String sdkVersion;
         
         /**
-        * Optional. The version of the Windows Azure SDK that was used to
-        * generate the .cspkg that created this deployment.  The first two
-        * numerical components of the returned version represent the version
-        * of the SDK used to create the package.
+        * Optional. The version of the Azure SDK that was used to generate the
+        * .cspkg that created this deployment. The first two numerical
+        * components of the returned version represent the version of the SDK
+        * used to create the package.
         * @return The SdkVersion value.
         */
         public String getSdkVersion() {
@@ -361,10 +359,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional. The version of the Windows Azure SDK that was used to
-        * generate the .cspkg that created this deployment.  The first two
-        * numerical components of the returned version represent the version
-        * of the SDK used to create the package.
+        * Optional. The version of the Azure SDK that was used to generate the
+        * .cspkg that created this deployment. The first two numerical
+        * components of the returned version represent the version of the SDK
+        * used to create the package.
         * @param sdkVersionValue The SdkVersion value.
         */
         public void setSdkVersion(final String sdkVersionValue) {
@@ -432,9 +430,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private URI uri;
         
         /**
-        * Optional. The URL used to access the hosted service.  For example, if
+        * Optional. The URL used to access the hosted service. For example, if
         * the service name is MyService you could access the access the
-        * service by calling: http://MyService.cloudapp.net
+        * service by calling: http://MyService.cloudapp.net.
         * @return The Uri value.
         */
         public URI getUri() {
@@ -442,9 +440,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional. The URL used to access the hosted service.  For example, if
+        * Optional. The URL used to access the hosted service. For example, if
         * the service name is MyService you could access the access the
-        * service by calling: http://MyService.cloudapp.net
+        * service by calling: http://MyService.cloudapp.net.
         * @param uriValue The Uri value.
         */
         public void setUri(final URI uriValue) {
