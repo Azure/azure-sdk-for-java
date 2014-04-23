@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 /**
 * A response that indicates the availability of a static IP address, and if
-* not, provide a list of suggestions.
+* not, provides a list of suggestions.
 */
 public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     private ArrayList<InetAddress> availableAddresses;

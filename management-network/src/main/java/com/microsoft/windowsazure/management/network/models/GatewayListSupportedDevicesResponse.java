@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
-* The respoonse to the get supported platform configuration request.
+* The response to the list supported devices request.
 */
 public class GatewayListSupportedDevicesResponse extends OperationResponse {
     private ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendors;
@@ -80,7 +80,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         private String name;
         
         /**
-        * Optional. The name of the os family.
+        * Optional. The name of the OS family.
         * @return The Name value.
         */
         public String getName() {
@@ -88,7 +88,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         }
         
         /**
-        * Optional. The name of the os family.
+        * Optional. The name of the OS family.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -97,7 +97,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
     }
     
     /**
-    * The name and supported OS Families for this vendor on the platform.
+    * The name and supported OS families for this vendor on the platform.
     */
     public static class Platform {
         private String name;
@@ -121,7 +121,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         private ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamilies;
         
         /**
-        * Optional. The supported OS Families for this platform.
+        * Optional. The supported OS families for this platform.
         * @return The OSFamilies value.
         */
         public ArrayList<GatewayListSupportedDevicesResponse.OSFamily> getOSFamilies() {
@@ -129,7 +129,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         }
         
         /**
-        * Optional. The supported OS Families for this platform.
+        * Optional. The supported OS families for this platform.
         * @param oSFamiliesValue The OSFamilies value.
         */
         public void setOSFamilies(final ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamiliesValue) {

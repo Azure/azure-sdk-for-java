@@ -71,7 +71,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String deploymentName;
     
     /**
-    * Optional. The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if used.
     * @return The DeploymentName value.
     */
     public String getDeploymentName() {
@@ -79,7 +79,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if used.
     * @param deploymentNameValue The DeploymentName value.
     */
     public void setDeploymentName(final String deploymentNameValue) {
@@ -107,7 +107,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private boolean inUse;
     
     /**
-    * Optional. The indicator of whether the reserved IP is being used.
+    * Optional. The indicator of whether the reserved IP is used.
     * @return The InUse value.
     */
     public boolean isInUse() {
@@ -115,7 +115,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The indicator of whether the reserved IP is being used.
+    * Optional. The indicator of whether the reserved IP is used.
     * @param inUseValue The InUse value.
     */
     public void setInUse(final boolean inUseValue) {
@@ -161,7 +161,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String serviceName;
     
     /**
-    * Optional. The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if used.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -169,7 +169,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if used.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {
@@ -180,7 +180,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     
     /**
     * Optional. Current status of the reserved IP. (Created, Creating,
-    * Updating, Deleting, Unavailable)
+    * Updating, Deleting, or Unavailable.)
     * @return The State value.
     */
     public String getState() {
@@ -189,7 +189,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     
     /**
     * Optional. Current status of the reserved IP. (Created, Creating,
-    * Updating, Deleting, Unavailable)
+    * Updating, Deleting, or Unavailable.)
     * @param stateValue The State value.
     */
     public void setState(final String stateValue) {

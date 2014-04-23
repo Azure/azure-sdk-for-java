@@ -62,6 +62,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the reserved IPs
+* for your subscription.
+*/
 public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManagementClientImpl>, ReservedIPOperations {
     /**
     * Initializes a new instance of the ReservedIPOperationsImpl class.
@@ -84,17 +88,17 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Create Reserved IP operation creates a reserved IP from
-    * your the subscription.
+    * Preview Only. The Begin Creating Reserved IP operation creates a reserved
+    * IP from your the subscription.
     *
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Machine Image operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Reserved IP operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -110,11 +114,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Create Reserved IP operation creates a reserved IP from
-    * your the subscription.
+    * Preview Only. The Begin Creating Reserved IP operation creates a reserved
+    * IP from your the subscription.
     *
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Machine Image operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Reserved IP operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -130,7 +134,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -260,8 +264,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Delete Reserved IP operation removes a reserved IP from
-    * your the subscription.
+    * Preview Only. The Begin Deleting Reserved IP operation removes a reserved
+    * IP from your the subscription.
     *
     * @param ipName Required. The name of the reserved IP.
     * @return A standard storage response including an HTTP status code and
@@ -278,8 +282,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Delete Reserved IP operation removes a reserved IP from
-    * your the subscription.
+    * Preview Only. The Begin Deleting Reserved IP operation removes a reserved
+    * IP from your the subscription.
     *
     * @param ipName Required. The name of the reserved IP.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -371,14 +375,14 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * The Create Reserved IP operation creates a reserved IP from your the
     * subscription.
     *
-    * @param parameters Required. Parameters supplied to create a network
-    * reserved IP.
+    * @param parameters Required. Parameters supplied to the Create Reserved IP
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -397,8 +401,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * The Create Reserved IP operation creates a reserved IP from your the
     * subscription.
     *
-    * @param parameters Required. Parameters supplied to create a network
-    * reserved IP.
+    * @param parameters Required. Parameters supplied to the Create Reserved IP
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -422,7 +426,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -495,7 +499,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -538,7 +542,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -599,7 +603,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Get Reserved IP operation retrieves the details for
+    * Preview Only. The Get Reserved IP operation retrieves the details for the
     * virtual IP reserved for the subscription.
     *
     * @param ipName Required. The name of the reserved IP to retrieve.
@@ -616,7 +620,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Get Reserved IP operation retrieves the details for
+    * Preview Only. The Get Reserved IP operation retrieves the details for the
     * virtual IP reserved for the subscription.
     *
     * @param ipName Required. The name of the reserved IP to retrieve.
@@ -777,10 +781,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The List Reserved IP operation retrieves the virtual IPs
-    * reserved for the subscription.
+    * Preview Only. The List Reserved IP operation retrieves all of the virtual
+    * IPs reserved for the subscription.
     *
-    * @return Preview Only. The response structure for the Server List operation
+    * @return Preview Only. The response structure for the Server List
+    * operation.
     */
     @Override
     public Future<NetworkReservedIPListResponse> listAsync() {
@@ -793,8 +798,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The List Reserved IP operation retrieves the virtual IPs
-    * reserved for the subscription.
+    * Preview Only. The List Reserved IP operation retrieves all of the virtual
+    * IPs reserved for the subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -804,7 +809,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Preview Only. The response structure for the Server List operation
+    * @return Preview Only. The response structure for the Server List
+    * operation.
     */
     @Override
     public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {

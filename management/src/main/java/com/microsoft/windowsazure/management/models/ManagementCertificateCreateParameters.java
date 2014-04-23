@@ -30,7 +30,7 @@ public class ManagementCertificateCreateParameters {
     private byte[] data;
     
     /**
-    * Optional. The certificate’s raw data in base-64 encoded .cer format.
+    * Optional. The certificate's raw data in base-64-encoded cer format.
     * @return The Data value.
     */
     public byte[] getData() {
@@ -38,7 +38,7 @@ public class ManagementCertificateCreateParameters {
     }
     
     /**
-    * Optional. The certificate’s raw data in base-64 encoded .cer format.
+    * Optional. The certificate's raw data in base-64-encoded cer format.
     * @param dataValue The Data value.
     */
     public void setData(final byte[] dataValue) {
@@ -48,7 +48,7 @@ public class ManagementCertificateCreateParameters {
     private byte[] publicKey;
     
     /**
-    * Optional. A base64 representation of the management certificate public
+    * Optional. A base-64-representation of the management certificate public
     * key.
     * @return The PublicKey value.
     */
@@ -57,7 +57,7 @@ public class ManagementCertificateCreateParameters {
     }
     
     /**
-    * Optional. A base64 representation of the management certificate public
+    * Optional. A base-64-representation of the management certificate public
     * key.
     * @param publicKeyValue The PublicKey value.
     */
@@ -68,7 +68,7 @@ public class ManagementCertificateCreateParameters {
     private String thumbprint;
     
     /**
-    * Optional. The thumb print that uniquely identifies the management
+    * Optional. The thumbprint that uniquely identifies the management
     * certificate.
     * @return The Thumbprint value.
     */
@@ -77,7 +77,7 @@ public class ManagementCertificateCreateParameters {
     }
     
     /**
-    * Optional. The thumb print that uniquely identifies the management
+    * Optional. The thumbprint that uniquely identifies the management
     * certificate.
     * @param thumbprintValue The Thumbprint value.
     */

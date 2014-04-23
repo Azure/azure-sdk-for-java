@@ -28,7 +28,7 @@ package com.microsoft.windowsazure.management.models;
 */
 public abstract class AffinityGroupCapabilities {
     /**
-    * Indicates if the virtual machine related operations can be performed in
+    * Indicates if the virtual machine-related operations can be performed in
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
     */
