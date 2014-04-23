@@ -32,7 +32,8 @@ public class WebSpacesGetResponse extends OperationResponse {
     private WebSpaceAvailabilityState availabilityState;
     
     /**
-    * Optional. Possible values are Normal or Limited.
+    * Optional. The current availability state. Possible values are Normal or
+    * Limited.
     * @return The AvailabilityState value.
     */
     public WebSpaceAvailabilityState getAvailabilityState() {
@@ -40,7 +41,8 @@ public class WebSpacesGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Possible values are Normal or Limited.
+    * Optional. The current availability state. Possible values are Normal or
+    * Limited.
     * @param availabilityStateValue The AvailabilityState value.
     */
     public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
@@ -106,7 +108,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     private String geoRegion;
     
     /**
-    * Optional. The geographical region where the webspace is located.
+    * Optional. The geographical region where the web space is located.
     * @return The GeoRegion value.
     */
     public String getGeoRegion() {
@@ -114,7 +116,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The geographical region where the webspace is located.
+    * Optional. The geographical region where the web space is located.
     * @param geoRegionValue The GeoRegion value.
     */
     public void setGeoRegion(final String geoRegionValue) {
@@ -124,7 +126,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     private String name;
     
     /**
-    * Optional. The name of the webspace.
+    * Optional. The name of the web space.
     * @return The Name value.
     */
     public String getName() {
@@ -132,7 +134,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The name of the webspace.
+    * Optional. The name of the web space.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -142,7 +144,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     private String plan;
     
     /**
-    * Optional. The name of the webspace.
+    * Optional. The web space plan name.
     * @return The Plan value.
     */
     public String getPlan() {
@@ -150,7 +152,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The name of the webspace.
+    * Optional. The web space plan name.
     * @param planValue The Plan value.
     */
     public void setPlan(final String planValue) {
@@ -161,7 +163,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     
     /**
     * Optional. The status of the Web Space. Possible values are Ready or
-    * Limited.  Note: The Limited status occurs only if the datacenter is
+    * Limited. Note: The Limited status occurs only if the datacenter is
     * encountering an operational issue.
     * @return The Status value.
     */
@@ -171,7 +173,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     
     /**
     * Optional. The status of the Web Space. Possible values are Ready or
-    * Limited.  Note: The Limited status occurs only if the datacenter is
+    * Limited. Note: The Limited status occurs only if the datacenter is
     * encountering an operational issue.
     * @param statusValue The Status value.
     */
@@ -201,7 +203,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     
     /**
     * Optional. The worker size. Possible values are Small, Medium, and Large.
-    * For JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+    * For JSON, the equivalents are 0 = Small, 1 = Medium, and 2 = Large.
     * @return The WorkerSize value.
     */
     public WebSpaceWorkerSize getWorkerSize() {
@@ -210,7 +212,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     
     /**
     * Optional. The worker size. Possible values are Small, Medium, and Large.
-    * For JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+    * For JSON, the equivalents are 0 = Small, 1 = Medium, and 2 = Large.
     * @param workerSizeValue The WorkerSize value.
     */
     public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {

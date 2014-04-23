@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The Get DNS Suffix operation response.
+* The List Geo Regions operation response.
 */
 public class WebSpacesListGeoRegionsResponse extends OperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
     private ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions;
@@ -73,7 +73,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private String description;
         
         /**
-        * Optional. Geo Region description.
+        * Optional. Description of the geo region.
         * @return The Description value.
         */
         public String getDescription() {
@@ -81,7 +81,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Optional. Geo Region description.
+        * Optional. Description of the geo region.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
@@ -91,7 +91,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private String name;
         
         /**
-        * Optional. Name of the region.
+        * Optional. Name of the geo region.
         * @return The Name value.
         */
         public String getName() {
@@ -99,7 +99,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Optional. Name of the region.
+        * Optional. Name of the geo region.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -109,7 +109,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private int sortOrder;
         
         /**
-        * Optional. Sort order.
+        * Optional. Sort order for the geo region.
         * @return The SortOrder value.
         */
         public int getSortOrder() {
@@ -117,7 +117,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Optional. Sort order.
+        * Optional. Sort order for the geo region.
         * @param sortOrderValue The SortOrder value.
         */
         public void setSortOrder(final int sortOrderValue) {

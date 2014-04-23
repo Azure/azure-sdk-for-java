@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The Get Web Site Historical Usage Metrics operation response.
+* The Get Historical Usage Metrics Web Site operation response.
 */
 public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> {
     private ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetrics;

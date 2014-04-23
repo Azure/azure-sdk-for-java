@@ -48,7 +48,7 @@ public class ServerFarmCreateParameters {
     private ServerFarmWorkerSize currentWorkerSize;
     
     /**
-    * Optional. The current worker size Possible values are Small, Medium, or
+    * Optional. The current worker size. Possible values are Small, Medium, or
     * Large.
     * @return The CurrentWorkerSize value.
     */
@@ -57,7 +57,7 @@ public class ServerFarmCreateParameters {
     }
     
     /**
-    * Optional. The current worker size Possible values are Small, Medium, or
+    * Optional. The current worker size. Possible values are Small, Medium, or
     * Large.
     * @param currentWorkerSizeValue The CurrentWorkerSize value.
     */
@@ -88,7 +88,7 @@ public class ServerFarmCreateParameters {
     private ServerFarmStatus status;
     
     /**
-    * Optional. Server farm status. Possible values are Ready or Pending.
+    * Optional. The server farm status. Possible values are Ready or Pending.
     * @return The Status value.
     */
     public ServerFarmStatus getStatus() {
@@ -96,7 +96,7 @@ public class ServerFarmCreateParameters {
     }
     
     /**
-    * Optional. Server farm status. Possible values are Ready or Pending.
+    * Optional. The server farm status. Possible values are Ready or Pending.
     * @param statusValue The Status value.
     */
     public void setStatus(final ServerFarmStatus statusValue) {

@@ -29,14 +29,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
-* The Get Web Site Configuration operation response.
+* The Get Configuration Web Site operation response.
 */
 public class WebSiteGetConfigurationResponse extends OperationResponse {
     private HashMap<String, String> appSettings;
     
     /**
     * Optional. A set of name/value pairs that contain application settings for
-    * a site.
+    * a web site.
     * @return The AppSettings value.
     */
     public HashMap<String, String> getAppSettings() {
@@ -45,7 +45,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     
     /**
     * Optional. A set of name/value pairs that contain application settings for
-    * a site.
+    * a web site.
     * @param appSettingsValue The AppSettings value.
     */
     public void setAppSettings(final HashMap<String, String> appSettingsValue) {
@@ -55,7 +55,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings;
     
     /**
-    * Optional. Contains connection strings for database and other external
+    * Optional. The connection strings for database and other external
     * resources.
     * @return The ConnectionStrings value.
     */
@@ -64,7 +64,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains connection strings for database and other external
+    * Optional. The connection strings for database and other external
     * resources.
     * @param connectionStringsValue The ConnectionStrings value.
     */
@@ -75,10 +75,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private ArrayList<String> defaultDocuments;
     
     /**
-    * Optional. Contains one or more string elements that list, in order of
-    * preference, the name of the file that a web site returns when the web
-    * site's domain name is requested by itself. For example, if the default
-    * document for http://contoso.com is default.htm, the page
+    * Optional. One or more string elements that list, in order of preference,
+    * the name of the file that a web site returns when the web site's domain
+    * name is requested by itself. For example, if the default document for
+    * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     * @return The DefaultDocuments value.
@@ -88,10 +88,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains one or more string elements that list, in order of
-    * preference, the name of the file that a web site returns when the web
-    * site's domain name is requested by itself. For example, if the default
-    * document for http://contoso.com is default.htm, the page
+    * Optional. One or more string elements that list, in order of preference,
+    * the name of the file that a web site returns when the web site's domain
+    * name is requested by itself. For example, if the default document for
+    * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     * @param defaultDocumentsValue The DefaultDocuments value.
@@ -103,7 +103,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean detailedErrorLoggingEnabled;
     
     /**
-    * Optional. True if detailed error logging is enabled; otherwise, false.
+    * Optional. Indicates if detailed error logging is enabled.
     * @return The DetailedErrorLoggingEnabled value.
     */
     public Boolean isDetailedErrorLoggingEnabled() {
@@ -111,7 +111,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True if detailed error logging is enabled; otherwise, false.
+    * Optional. Indicates if detailed error logging is enabled.
     * @param detailedErrorLoggingEnabledValue The DetailedErrorLoggingEnabled
     * value.
     */
@@ -160,7 +160,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean httpLoggingEnabled;
     
     /**
-    * Optional. True if HTTP error logging is enabled; otherwise, false.
+    * Optional. Indicates if HTTP error logging is enabled.
     * @return The HttpLoggingEnabled value.
     */
     public Boolean isHttpLoggingEnabled() {
@@ -168,7 +168,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True if HTTP error logging is enabled; otherwise, false.
+    * Optional. Indicates if HTTP error logging is enabled.
     * @param httpLoggingEnabledValue The HttpLoggingEnabled value.
     */
     public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
@@ -178,7 +178,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Integer logsDirectorySizeLimit;
     
     /**
-    * Optional. The limit of the logs directory.
+    * Optional. The size limit of the logs directory.
     * @return The LogsDirectorySizeLimit value.
     */
     public Integer getLogsDirectorySizeLimit() {
@@ -186,7 +186,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The limit of the logs directory.
+    * Optional. The size limit of the logs directory.
     * @param logsDirectorySizeLimitValue The LogsDirectorySizeLimit value.
     */
     public void setLogsDirectorySizeLimit(final Integer logsDirectorySizeLimitValue) {
@@ -196,7 +196,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private ManagedPipelineMode managedPipelineMode;
     
     /**
-    * Optional. Managed pipeline modes.
+    * Optional. The managed pipeline mode.
     * @return The ManagedPipelineMode value.
     */
     public ManagedPipelineMode getManagedPipelineMode() {
@@ -204,7 +204,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Managed pipeline modes.
+    * Optional. The managed pipeline mode.
     * @param managedPipelineModeValue The ManagedPipelineMode value.
     */
     public void setManagedPipelineMode(final ManagedPipelineMode managedPipelineModeValue) {
@@ -214,8 +214,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private HashMap<String, String> metadata;
     
     /**
-    * Optional. Contains name/value pairs for source control or other
-    * information.
+    * Optional. Name/value pairs for source control or other information.
     * @return The Metadata value.
     */
     public HashMap<String, String> getMetadata() {
@@ -223,8 +222,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains name/value pairs for source control or other
-    * information.
+    * Optional. Name/value pairs for source control or other information.
     * @param metadataValue The Metadata value.
     */
     public void setMetadata(final HashMap<String, String> metadataValue) {
@@ -252,10 +250,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Integer numberOfWorkers;
     
     /**
-    * Optional. The number of web workers allotted to the web site. If the site
-    * mode is Free, this value is 1. If the site mode is Shared, this value
-    * can range from 1 through 6. If the site mode is Standard, this value can
-    * range from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the web
+    * site mode is Free, this value is 1. If the web site mode is Shared, this
+    * value can range from 1 through 6. If the web site mode is Standard, this
+    * value can range from 1 through 10.
     * @return The NumberOfWorkers value.
     */
     public Integer getNumberOfWorkers() {
@@ -263,10 +261,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The number of web workers allotted to the web site. If the site
-    * mode is Free, this value is 1. If the site mode is Shared, this value
-    * can range from 1 through 6. If the site mode is Standard, this value can
-    * range from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the web
+    * site mode is Free, this value is 1. If the web site mode is Shared, this
+    * value can range from 1 through 6. If the web site mode is Standard, this
+    * value can range from 1 through 10.
     * @param numberOfWorkersValue The NumberOfWorkers value.
     */
     public void setNumberOfWorkers(final Integer numberOfWorkersValue) {
@@ -276,8 +274,8 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private String phpVersion;
     
     /**
-    * Optional. Supported values are an empty string (an empty string disables
-    * PHP), 5.3, and 5.4.
+    * Optional. The web site PHP version. Supported values are an empty string
+    * (an empty string disables PHP), 5.3, and 5.4.
     * @return The PhpVersion value.
     */
     public String getPhpVersion() {
@@ -285,8 +283,8 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Supported values are an empty string (an empty string disables
-    * PHP), 5.3, and 5.4.
+    * Optional. The web site PHP version. Supported values are an empty string
+    * (an empty string disables PHP), 5.3, and 5.4.
     * @param phpVersionValue The PhpVersion value.
     */
     public void setPhpVersion(final String phpVersionValue) {
@@ -314,8 +312,9 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private String publishingUserName;
     
     /**
-    * Optional. The username used for publishing the web site. This is normally
-    * a dollar sign prepended to the web site name (for example, "$contoso").
+    * Optional. The user name used for publishing the web site. This is
+    * normally a dollar sign prepended to the web site name (for example,
+    * "$contoso").
     * @return The PublishingUserName value.
     */
     public String getPublishingUserName() {
@@ -323,8 +322,9 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The username used for publishing the web site. This is normally
-    * a dollar sign prepended to the web site name (for example, "$contoso").
+    * Optional. The user name used for publishing the web site. This is
+    * normally a dollar sign prepended to the web site name (for example,
+    * "$contoso").
     * @param publishingUserNameValue The PublishingUserName value.
     */
     public void setPublishingUserName(final String publishingUserNameValue) {
@@ -334,7 +334,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean remoteDebuggingEnabled;
     
     /**
-    * Optional. True remote debugging is enabled; otherwise, false.
+    * Optional. Indicates if remote debugging is enabled.
     * @return The RemoteDebuggingEnabled value.
     */
     public Boolean isRemoteDebuggingEnabled() {
@@ -342,7 +342,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True remote debugging is enabled; otherwise, false.
+    * Optional. Indicates if remote debugging is enabled.
     * @param remoteDebuggingEnabledValue The RemoteDebuggingEnabled value.
     */
     public void setRemoteDebuggingEnabled(final Boolean remoteDebuggingEnabledValue) {
@@ -352,7 +352,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private RemoteDebuggingVersion remoteDebuggingVersion;
     
     /**
-    * Optional. True remote debugging version.
+    * Optional. The remote debugging version.
     * @return The RemoteDebuggingVersion value.
     */
     public RemoteDebuggingVersion getRemoteDebuggingVersion() {
@@ -360,7 +360,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True remote debugging version.
+    * Optional. The remote debugging version.
     * @param remoteDebuggingVersionValue The RemoteDebuggingVersion value.
     */
     public void setRemoteDebuggingVersion(final RemoteDebuggingVersion remoteDebuggingVersionValue) {
@@ -370,7 +370,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean requestTracingEnabled;
     
     /**
-    * Optional. True if request tracing is enabled; otherwise, false.
+    * Optional. Indicates if request tracing is enabled.
     * @return The RequestTracingEnabled value.
     */
     public Boolean isRequestTracingEnabled() {
@@ -378,7 +378,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True if request tracing is enabled; otherwise, false.
+    * Optional. Indicates if request tracing is enabled.
     * @param requestTracingEnabledValue The RequestTracingEnabled value.
     */
     public void setRequestTracingEnabled(final Boolean requestTracingEnabledValue) {
@@ -429,7 +429,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean use32BitWorkerProcess;
     
     /**
-    * Optional. True if 32-bit mode is enabled; otherwise, false.
+    * Optional. Indicates if 32-bit mode is enabled.
     * @return The Use32BitWorkerProcess value.
     */
     public Boolean isUse32BitWorkerProcess() {
@@ -437,7 +437,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True if 32-bit mode is enabled; otherwise, false.
+    * Optional. Indicates if 32-bit mode is enabled.
     * @param use32BitWorkerProcessValue The Use32BitWorkerProcess value.
     */
     public void setUse32BitWorkerProcess(final Boolean use32BitWorkerProcessValue) {
@@ -447,7 +447,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean webSocketsEnabled;
     
     /**
-    * Optional. True if Web Sockets are enabled; otherwise, false.
+    * Optional. Indicates if Web Sockets are enabled.
     * @return The WebSocketsEnabled value.
     */
     public Boolean isWebSocketsEnabled() {
@@ -455,7 +455,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * Optional. True if Web Sockets are enabled; otherwise, false.
+    * Optional. Indicates if Web Sockets are enabled.
     * @param webSocketsEnabledValue The WebSocketsEnabled value.
     */
     public void setWebSocketsEnabled(final Boolean webSocketsEnabledValue) {
@@ -482,7 +482,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         private String connectionString;
         
         /**
-        * Optional. A database connection string.
+        * Optional. The database connection string.
         * @return The ConnectionString value.
         */
         public String getConnectionString() {
@@ -490,7 +490,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         }
         
         /**
-        * Optional. A database connection string.
+        * Optional. The database connection string.
         * @param connectionStringValue The ConnectionString value.
         */
         public void setConnectionString(final String connectionStringValue) {
