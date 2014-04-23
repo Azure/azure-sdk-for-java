@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 /**
-* The parameters to the Gateway Create request.
+* Parameters supplied to the Create Virtual Network Gateway operation.
 */
 public class GatewayCreateParameters {
     private GatewayType gatewayType;

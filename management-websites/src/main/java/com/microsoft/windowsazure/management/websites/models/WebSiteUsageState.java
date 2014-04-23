@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* Usage of a website's quota.
+* Usage of a web site's quota.
 */
 public enum WebSiteUsageState {
     Normal,

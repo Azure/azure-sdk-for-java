@@ -32,10 +32,10 @@ public class WebSiteCreateParameters {
     private WebSiteComputeMode computeMode;
     
     /**
-    * Optional. This value should be Shared for the Free or Paid Shared
-    * offerings, or Dedicated for the Standard offering. The default value is
-    * Shared. If you set ComputeMode to Dedicated, you must specify a value
-    * for the ServerFarm element.
+    * Optional. The compute mode for the web site. This value should be Shared
+    * for the Free or Paid Shared offerings or Dedicated for the Standard
+    * offering. The default value is Shared. If you set ComputeMode to
+    * Dedicated, you must specify a value for the ServerFarm element.
     * @return The ComputeMode value.
     */
     public WebSiteComputeMode getComputeMode() {
@@ -43,10 +43,10 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Optional. This value should be Shared for the Free or Paid Shared
-    * offerings, or Dedicated for the Standard offering. The default value is
-    * Shared. If you set ComputeMode to Dedicated, you must specify a value
-    * for the ServerFarm element.
+    * Optional. The compute mode for the web site. This value should be Shared
+    * for the Free or Paid Shared offerings or Dedicated for the Standard
+    * offering. The default value is Shared. If you set ComputeMode to
+    * Dedicated, you must specify a value for the ServerFarm element.
     * @param computeModeValue The ComputeMode value.
     */
     public void setComputeMode(final WebSiteComputeMode computeModeValue) {
@@ -56,10 +56,10 @@ public class WebSiteCreateParameters {
     private ArrayList<String> hostNames;
     
     /**
-    * Optional. The fully qualified domain name for website. Only one hostname
-    * can be specified in the azurewebsites.net domain. The hostname should
-    * match the name of the website. Custom domains can only be specified for
-    * Shared or Standard websites.
+    * Optional. The fully qualified domain name for web site. Only one host
+    * name can be specified in the azurewebsites.net domain. The host name
+    * should match the name of the web site. Custom domains can only be
+    * specified for Shared or Standard web sites.
     * @return The HostNames value.
     */
     public ArrayList<String> getHostNames() {
@@ -67,10 +67,10 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Optional. The fully qualified domain name for website. Only one hostname
-    * can be specified in the azurewebsites.net domain. The hostname should
-    * match the name of the website. Custom domains can only be specified for
-    * Shared or Standard websites.
+    * Optional. The fully qualified domain name for web site. Only one host
+    * name can be specified in the azurewebsites.net domain. The host name
+    * should match the name of the web site. Custom domains can only be
+    * specified for Shared or Standard web sites.
     * @param hostNamesValue The HostNames value.
     */
     public void setHostNames(final ArrayList<String> hostNamesValue) {
@@ -80,8 +80,8 @@ public class WebSiteCreateParameters {
     private String name;
     
     /**
-    * Required. The name of the website. This should match the hostname in the
-    * default domain.
+    * Required. The name of the web site. This should match the host name in
+    * the default domain.
     * @return The Name value.
     */
     public String getName() {
@@ -89,8 +89,8 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Required. The name of the website. This should match the hostname in the
-    * default domain.
+    * Required. The name of the web site. This should match the host name in
+    * the default domain.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -100,7 +100,7 @@ public class WebSiteCreateParameters {
     private String serverFarm;
     
     /**
-    * Optional. The name of the Server Farm associated with this website. This
+    * Optional. The name of the Server Farm associated with this web site. This
     * is a required value for Standard mode.
     * @return The ServerFarm value.
     */
@@ -109,7 +109,7 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Optional. The name of the Server Farm associated with this website. This
+    * Optional. The name of the Server Farm associated with this web site. This
     * is a required value for Standard mode.
     * @param serverFarmValue The ServerFarm value.
     */
@@ -120,10 +120,11 @@ public class WebSiteCreateParameters {
     private WebSiteMode siteMode;
     
     /**
-    * Optional. This value is limited for the Free offering Basic for the Paid
-    * Shared offering. The default value is Limited. Note: Standard mode does
-    * not use the SiteMode setting; it uses the ComputeMode setting. For more
-    * information, see Upgrade or Downgrade a Web Site.
+    * Optional. The web site mode. This value is Limited for the Free offering
+    * and Basic for the Paid and Shared offerings. The default value is
+    * Limited. Note: Standard mode does not use the SiteMode setting; it uses
+    * the ComputeMode setting. For more information, see Upgrade or Downgrade
+    * a Web Site.
     * @return The SiteMode value.
     */
     public WebSiteMode getSiteMode() {
@@ -131,10 +132,11 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Optional. This value is limited for the Free offering Basic for the Paid
-    * Shared offering. The default value is Limited. Note: Standard mode does
-    * not use the SiteMode setting; it uses the ComputeMode setting. For more
-    * information, see Upgrade or Downgrade a Web Site.
+    * Optional. The web site mode. This value is Limited for the Free offering
+    * and Basic for the Paid and Shared offerings. The default value is
+    * Limited. Note: Standard mode does not use the SiteMode setting; it uses
+    * the ComputeMode setting. For more information, see Upgrade or Downgrade
+    * a Web Site.
     * @param siteModeValue The SiteMode value.
     */
     public void setSiteMode(final WebSiteMode siteModeValue) {
@@ -162,7 +164,7 @@ public class WebSiteCreateParameters {
     private String webSpaceName;
     
     /**
-    * Required. The name of the webspace.
+    * Required. The name of the web space.
     * @return The WebSpaceName value.
     */
     public String getWebSpaceName() {
@@ -170,7 +172,7 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Required. The name of the webspace.
+    * Required. The name of the web space.
     * @param webSpaceNameValue The WebSpaceName value.
     */
     public void setWebSpaceName(final String webSpaceNameValue) {
@@ -192,7 +194,7 @@ public class WebSiteCreateParameters {
         private String geoRegion;
         
         /**
-        * Required. The geographical region of the webspace that will be
+        * Required. The geographical region of the web space that will be
         * created.
         * @return The GeoRegion value.
         */
@@ -201,7 +203,7 @@ public class WebSiteCreateParameters {
         }
         
         /**
-        * Required. The geographical region of the webspace that will be
+        * Required. The geographical region of the web space that will be
         * created.
         * @param geoRegionValue The GeoRegion value.
         */
@@ -212,7 +214,7 @@ public class WebSiteCreateParameters {
         private String name;
         
         /**
-        * Required. The name of the webspace.
+        * Required. The name of the web space.
         * @return The Name value.
         */
         public String getName() {
@@ -220,7 +222,7 @@ public class WebSiteCreateParameters {
         }
         
         /**
-        * Required. The name of the webspace.
+        * Required. The name of the web space.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -230,7 +232,7 @@ public class WebSiteCreateParameters {
         private String plan;
         
         /**
-        * Required. This value must be VirtualDedicatedPlan.
+        * Required. The web space plan. This value must be VirtualDedicatedPlan.
         * @return The Plan value.
         */
         public String getPlan() {
@@ -238,7 +240,7 @@ public class WebSiteCreateParameters {
         }
         
         /**
-        * Required. This value must be VirtualDedicatedPlan.
+        * Required. The web space plan. This value must be VirtualDedicatedPlan.
         * @param planValue The Plan value.
         */
         public void setPlan(final String planValue) {

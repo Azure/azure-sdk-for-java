@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* The Delete Web Site operation parameters.
+* Parameters supplied to the Delete Web Site operation.
 */
 public class WebSiteDeleteParameters {
     private boolean deleteAllSlots;
     
     /**
-    * Required. Delete all slots for the web site.
+    * Required. Indicates if all slots for the web site should be deleted.
     * @return The DeleteAllSlots value.
     */
     public boolean isDeleteAllSlots() {
@@ -38,7 +38,7 @@ public class WebSiteDeleteParameters {
     }
     
     /**
-    * Required. Delete all slots for the web site.
+    * Required. Indicates if all slots for the web site should be deleted.
     * @param deleteAllSlotsValue The DeleteAllSlots value.
     */
     public void setDeleteAllSlots(final boolean deleteAllSlotsValue) {
@@ -48,8 +48,9 @@ public class WebSiteDeleteParameters {
     private boolean deleteEmptyServerFarm;
     
     /**
-    * Required. If the site being deleted is the last web site in a server
-    * farm, you can delete the server farm.
+    * Required. Indicates if the server farm should be deleted. You can delete
+    * the server farm if the web site being deleted is the last web site in a
+    * server farm.
     * @return The DeleteEmptyServerFarm value.
     */
     public boolean isDeleteEmptyServerFarm() {
@@ -57,8 +58,9 @@ public class WebSiteDeleteParameters {
     }
     
     /**
-    * Required. If the site being deleted is the last web site in a server
-    * farm, you can delete the server farm.
+    * Required. Indicates if the server farm should be deleted. You can delete
+    * the server farm if the web site being deleted is the last web site in a
+    * server farm.
     * @param deleteEmptyServerFarmValue The DeleteEmptyServerFarm value.
     */
     public void setDeleteEmptyServerFarm(final boolean deleteEmptyServerFarmValue) {
@@ -68,7 +70,7 @@ public class WebSiteDeleteParameters {
     private boolean deleteMetrics;
     
     /**
-    * Required. Delete the metrics for the web site.
+    * Required. Indicates if the metrics for the web site should be deleted.
     * @return The DeleteMetrics value.
     */
     public boolean isDeleteMetrics() {
@@ -76,7 +78,7 @@ public class WebSiteDeleteParameters {
     }
     
     /**
-    * Required. Delete the metrics for the web site.
+    * Required. Indicates if the metrics for the web site should be deleted.
     * @param deleteMetricsValue The DeleteMetrics value.
     */
     public void setDeleteMetrics(final boolean deleteMetricsValue) {

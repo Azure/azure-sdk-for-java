@@ -24,15 +24,15 @@
 package com.microsoft.windowsazure.management.websites;
 
 /**
-* In addition to standard HTTP status codes, the Windows Azure Web Sites
-* Management REST API returns extended error codes and error messages. The
-* extended codes do not replace the standard HTTP status codes, but provide
-* additional, actionable information that can be used in conjunction with the
-* standard HTTP status codes. For example, an HTTP 404 error can occur for
-* numerous reasons, so having the additional information in the extended
-* message can assist with problem resolution. (For more information on the
-* standard HTTP codes returned by the REST API, see Service Management Status
-* and Error Codes.)  (see
+* In addition to standard HTTP status codes, the Azure Web Sites Management
+* REST API returns extended error codes and error messages. The extended codes
+* do not replace the standard HTTP status codes, but provide additional,
+* actionable information that can be used in conjunction with the standard
+* HTTP status codes. For example, an HTTP 404 error can occur for numerous
+* reasons, so having the additional information in the extended message can
+* assist with problem resolution. (For more information on the standard HTTP
+* codes returned by the REST API, see Service Management Status and Error
+* Codes.)  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166968.aspx for more
 * information)
 */
@@ -150,7 +150,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String NUMBEROFSITESLIMIT = "03001";
     
     /**
-    * NumberOfWorkers exceeds the maximum allowed.
+    * Number of workers exceeds the maximum allowed.
     */
     public static final String NUMBEROFWORKERSLIMIT = "03002";
     
@@ -165,7 +165,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String WEBSPACEALREADYEXISTS = "03004";
     
     /**
-    * Cannot find webspace {0} for subscription {1}
+    * Cannot find webspace {0} for subscription {1}.
     */
     public static final String WEBSPACENOTFOUND = "03005";
     
@@ -190,7 +190,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String NOWORKERSAVAILABLE = "03009";
     
     /**
-    * Failed to create web space {0} on storage volume {1}: {2}
+    * Failed to create web space {0} on storage volume {1}: {2}.
     */
     public static final String WEBSPACECREATEERROR = "03010";
     
@@ -220,7 +220,8 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String HOSTNAMEALREADYEXISTS = "04005";
     
     /**
-    * No CNAME pointing from {0} to a site in a default DNS zone (or too many).
+    * No CNAME (or too many CNAMEs) pointing from {0} to a site in a default
+    * DNS zone.
     */
     public static final String INVALIDCUSTOMHOSTNAMEVALIDATION = "04006";
     
@@ -336,17 +337,17 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String PUBLISHINGUSERNAMEISEMPTY = "06009";
     
     /**
-    * An error occurred when adding the {0} entry: {1}
+    * An error occurred when adding the {0} entry: {1}.
     */
     public static final String ERRORADDING = "51001";
     
     /**
-    * An error occurred when deleting the {0} entry: {1}
+    * An error occurred when deleting the {0} entry: {1}.
     */
     public static final String ERRORDELETING = "51002";
     
     /**
-    * An error occurred when updating the {0} entry: {1}
+    * An error occurred when updating the {0} entry: {1}.
     */
     public static final String ERRORUPDATING = "51003";
     
@@ -361,7 +362,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String SUBSCRIPTIONCONFLICT = "52001";
     
     /**
-    * Subscripton Name cannot be null or empty.
+    * Subscription Name cannot be null or empty.
     */
     public static final String SUBSCRIPTIONNONEMPTY = "52002";
     
@@ -371,7 +372,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String SUBSCRIPTIONNOTFOUND = "52003";
     
     /**
-    * Subscription {0} is Suspended.
+    * Subscription {0} is suspended.
     */
     public static final String SUBSCRIPTIONSUSPENDED = "52004";
     
@@ -396,7 +397,7 @@ public abstract class WebSiteExtendedErrorCodes {
     public static final String NONEMPTYWEBSPACE = "53003";
     
     /**
-    * An Error occurred when picking Stamp for WebSpace {0}.
+    * An error occurred when picking Stamp for WebSpace {0}.
     */
     public static final String ERRORPICKINGSTAMP = "53004";
     

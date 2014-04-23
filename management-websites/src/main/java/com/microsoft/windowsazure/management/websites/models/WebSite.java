@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
-* Describes a website.
+* Describes a web site.
 */
 public class WebSite {
     private boolean adminEnabled;
@@ -55,10 +55,11 @@ public class WebSite {
     
     /**
     * Optional. The state of the availability of management information for the
-    * site. Possible values are Normal or Limited. Normal means that the site
-    * is running correctly and that management information for the site is
-    * available. Limited means that only partial management information for
-    * the site is available and that detailed site information is unavailable.
+    * web site. Possible values are Normal or Limited. Normal means that the
+    * web site is running correctly and that management information for the
+    * web site is available. Limited means that only partial management
+    * information for the web site is available and that detailed web site
+    * information is unavailable.
     * @return The AvailabilityState value.
     */
     public WebSpaceAvailabilityState getAvailabilityState() {
@@ -67,10 +68,11 @@ public class WebSite {
     
     /**
     * Optional. The state of the availability of management information for the
-    * site. Possible values are Normal or Limited. Normal means that the site
-    * is running correctly and that management information for the site is
-    * available. Limited means that only partial management information for
-    * the site is available and that detailed site information is unavailable.
+    * web site. Possible values are Normal or Limited. Normal means that the
+    * web site is running correctly and that management information for the
+    * web site is available. Limited means that only partial management
+    * information for the web site is available and that detailed web site
+    * information is unavailable.
     * @param availabilityStateValue The AvailabilityState value.
     */
     public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
@@ -100,8 +102,9 @@ public class WebSite {
     private boolean enabled;
     
     /**
-    * Optional. true if the site is enabled; otherwise, false. Setting this
-    * value to false disables the site (takes the site off line).
+    * Optional. The current state of the web site. This is true if the site is
+    * enabled and false otherwise. Setting this value to false disables the
+    * site (takes the site offline).
     * @return The Enabled value.
     */
     public boolean isEnabled() {
@@ -109,8 +112,9 @@ public class WebSite {
     }
     
     /**
-    * Optional. true if the site is enabled; otherwise, false. Setting this
-    * value to false disables the site (takes the site off line).
+    * Optional. The current state of the web site. This is true if the site is
+    * enabled and false otherwise. Setting this value to false disables the
+    * site (takes the site offline).
     * @param enabledValue The Enabled value.
     */
     public void setEnabled(final boolean enabledValue) {
@@ -120,8 +124,8 @@ public class WebSite {
     private ArrayList<String> enabledHostNames;
     
     /**
-    * Optional. An array of strings that contains enabled hostnames for the
-    * site. By default, these are [SiteName].azurewebsites.net and
+    * Optional. An array of strings that contains enabled host names for the
+    * web site. By default, these are [SiteName].azurewebsites.net and
     * [SiteName].scm.azurewebsites.net.
     * @return The EnabledHostNames value.
     */
@@ -130,8 +134,8 @@ public class WebSite {
     }
     
     /**
-    * Optional. An array of strings that contains enabled hostnames for the
-    * site. By default, these are [SiteName].azurewebsites.net and
+    * Optional. An array of strings that contains enabled host names for the
+    * web site. By default, these are [SiteName].azurewebsites.net and
     * [SiteName].scm.azurewebsites.net.
     * @param enabledHostNamesValue The EnabledHostNames value.
     */
@@ -142,12 +146,12 @@ public class WebSite {
     private ArrayList<String> hostNames;
     
     /**
-    * Optional. An array of strings that contains the public hostnames for the
-    * site, including custom domains. Important: When you add a custom domain
-    * in a PUT operation, be sure to include every hostname that you want for
-    * the web site. To delete a custom domain name in a PUT operation, include
-    * all of the hostnames for the site that you want to keep, but leave out
-    * the one that you wangt to delete.
+    * Optional. An array of strings that contains the public host names for the
+    * web site, including custom domains. Important: When you add a custom
+    * domain in a PUT operation, be sure to include every host name that you
+    * want for the web site. To delete a custom domain name in a PUT
+    * operation, include all of the host names for the web site that you want
+    * to keep, but leave out the one that you want to delete.
     * @return The HostNames value.
     */
     public ArrayList<String> getHostNames() {
@@ -155,12 +159,12 @@ public class WebSite {
     }
     
     /**
-    * Optional. An array of strings that contains the public hostnames for the
-    * site, including custom domains. Important: When you add a custom domain
-    * in a PUT operation, be sure to include every hostname that you want for
-    * the web site. To delete a custom domain name in a PUT operation, include
-    * all of the hostnames for the site that you want to keep, but leave out
-    * the one that you wangt to delete.
+    * Optional. An array of strings that contains the public host names for the
+    * web site, including custom domains. Important: When you add a custom
+    * domain in a PUT operation, be sure to include every host name that you
+    * want for the web site. To delete a custom domain name in a PUT
+    * operation, include all of the host names for the web site that you want
+    * to keep, but leave out the one that you want to delete.
     * @param hostNamesValue The HostNames value.
     */
     public void setHostNames(final ArrayList<String> hostNamesValue) {
@@ -170,7 +174,7 @@ public class WebSite {
     private ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStates;
     
     /**
-    * Optional. SSL states bound to the website.
+    * Optional. SSL states bound to the web site.
     * @return The HostNameSslStates value.
     */
     public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates() {
@@ -178,7 +182,7 @@ public class WebSite {
     }
     
     /**
-    * Optional. SSL states bound to the website.
+    * Optional. SSL states bound to the web site.
     * @param hostNameSslStatesValue The HostNameSslStates value.
     */
     public void setHostNameSslStates(final ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStatesValue) {
@@ -226,7 +230,7 @@ public class WebSite {
     private String owner;
     
     /**
-    * Optional. Owner of the web site.
+    * Optional. The owner of the web site.
     * @return The Owner value.
     */
     public String getOwner() {
@@ -234,7 +238,7 @@ public class WebSite {
     }
     
     /**
-    * Optional. Owner of the web site.
+    * Optional. The owner of the web site.
     * @param ownerValue The Owner value.
     */
     public void setOwner(final String ownerValue) {
@@ -244,7 +248,7 @@ public class WebSite {
     private String repositorySiteName;
     
     /**
-    * Optional. The name of the repository web site.
+    * Optional. The name of the web site repository.
     * @return The RepositorySiteName value.
     */
     public String getRepositorySiteName() {
@@ -252,7 +256,7 @@ public class WebSite {
     }
     
     /**
-    * Optional. The name of the repository web site.
+    * Optional. The name of the web site repository.
     * @param repositorySiteNameValue The RepositorySiteName value.
     */
     public void setRepositorySiteName(final String repositorySiteNameValue) {
@@ -262,11 +266,12 @@ public class WebSite {
     private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
     
     /**
-    * Optional. Possible values are Normal, Degraded, or NotAvailable. Normal:
-    * the web site is running correctly. Degraded: the web site is running
-    * temporarily in a degraded mode (typically with less memory and a shared
-    * instance.) Not Available: due to an unexpected issue, the site has been
-    * excluded from provisioning. This typically occurs only for free sites.
+    * Optional. The current availability state for the web site. Possible
+    * values are Normal, Degraded, or NotAvailable: Normal: the web site is
+    * running correctly; Degraded: the web site is running temporarily in a
+    * degraded mode (typically with less memory and a shared instance); Not
+    * Available: due to an unexpected issue, the site has been excluded from
+    * provisioning. This typically occurs only for free sites.
     * @return The RuntimeAvailabilityState value.
     */
     public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
@@ -274,11 +279,12 @@ public class WebSite {
     }
     
     /**
-    * Optional. Possible values are Normal, Degraded, or NotAvailable. Normal:
-    * the web site is running correctly. Degraded: the web site is running
-    * temporarily in a degraded mode (typically with less memory and a shared
-    * instance.) Not Available: due to an unexpected issue, the site has been
-    * excluded from provisioning. This typically occurs only for free sites.
+    * Optional. The current availability state for the web site. Possible
+    * values are Normal, Degraded, or NotAvailable: Normal: the web site is
+    * running correctly; Degraded: the web site is running temporarily in a
+    * degraded mode (typically with less memory and a shared instance); Not
+    * Available: due to an unexpected issue, the site has been excluded from
+    * provisioning. This typically occurs only for free sites.
     * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
     */
     public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
@@ -288,8 +294,8 @@ public class WebSite {
     private String serverFarm;
     
     /**
-    * Optional. String. If a server farm exists, this value is
-    * DefaultServerFarm.
+    * Optional. A string defining the web site server farm. If a server farm
+    * exists, this value is DefaultServerFarm.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -297,8 +303,8 @@ public class WebSite {
     }
     
     /**
-    * Optional. String. If a server farm exists, this value is
-    * DefaultServerFarm.
+    * Optional. A string defining the web site server farm. If a server farm
+    * exists, this value is DefaultServerFarm.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
@@ -308,9 +314,9 @@ public class WebSite {
     private WebSiteMode siteMode;
     
     /**
-    * Optional. String that represents the web site mode. If the web site mode
+    * Optional. A string representing the web site mode. If the web site mode
     * is Free, this value is Limited. If the web site mode is Shared, this
-    * value is Basic.  Note: The SiteMode value is not used for Reserved mode.
+    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
     * Reserved mode uses the ComputeMode setting.
     * @return The SiteMode value.
     */
@@ -319,9 +325,9 @@ public class WebSite {
     }
     
     /**
-    * Optional. String that represents the web site mode. If the web site mode
+    * Optional. A string representing the web site mode. If the web site mode
     * is Free, this value is Limited. If the web site mode is Shared, this
-    * value is Basic.  Note: The SiteMode value is not used for Reserved mode.
+    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
     * Reserved mode uses the ComputeMode setting.
     * @param siteModeValue The SiteMode value.
     */
@@ -332,7 +338,8 @@ public class WebSite {
     private WebSite.WebSiteProperties siteProperties;
     
     /**
-    * Optional. Contains AppSettings, Metadata, and Properties for a site.
+    * Optional. The web site properties of the web site. Contains AppSettings,
+    * Metadata, and Properties.
     * @return The SiteProperties value.
     */
     public WebSite.WebSiteProperties getSiteProperties() {
@@ -340,7 +347,8 @@ public class WebSite {
     }
     
     /**
-    * Optional. Contains AppSettings, Metadata, and Properties for a site.
+    * Optional. The web site properties of the web site. Contains AppSettings,
+    * Metadata, and Properties.
     * @param sitePropertiesValue The SiteProperties value.
     */
     public void setSiteProperties(final WebSite.WebSiteProperties sitePropertiesValue) {
@@ -388,8 +396,8 @@ public class WebSite {
     private URI uri;
     
     /**
-    * Optional. Direct URL to the web site endpoint on Windows Azure Web Sites,
-    * including the subscription ID, webspace name, and site name.
+    * Optional. Direct URL to the web site endpoint on Azure Web Sites,
+    * including the subscription ID, web space name, and web site name.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -397,8 +405,8 @@ public class WebSite {
     }
     
     /**
-    * Optional. Direct URL to the web site endpoint on Windows Azure Web Sites,
-    * including the subscription ID, webspace name, and site name.
+    * Optional. Direct URL to the web site endpoint on Azure Web Sites,
+    * including the subscription ID, web space name, and web site name.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {
@@ -408,9 +416,9 @@ public class WebSite {
     private WebSiteUsageState usageState;
     
     /**
-    * Optional. Possible values are Normal or Exceeded. If any quota is
-    * exceeded, the UsageState value changes to Exceeded and the site goes off
-    * line.
+    * Optional. The usage state of the web site. Possible values are Normal or
+    * Exceeded. If any quota is exceeded, the UsageState value changes to
+    * Exceeded and the site goes offline.
     * @return The UsageState value.
     */
     public WebSiteUsageState getUsageState() {
@@ -418,9 +426,9 @@ public class WebSite {
     }
     
     /**
-    * Optional. Possible values are Normal or Exceeded. If any quota is
-    * exceeded, the UsageState value changes to Exceeded and the site goes off
-    * line.
+    * Optional. The usage state of the web site. Possible values are Normal or
+    * Exceeded. If any quota is exceeded, the UsageState value changes to
+    * Exceeded and the site goes offline.
     * @param usageStateValue The UsageState value.
     */
     public void setUsageState(final WebSiteUsageState usageStateValue) {
@@ -430,8 +438,8 @@ public class WebSite {
     private String webSpace;
     
     /**
-    * Optional. The name of the webspace in which the web site is located. This
-    * property is read-only.
+    * Optional. The name of the web space in which the web site is located.
+    * This property is read-only.
     * @return The WebSpace value.
     */
     public String getWebSpace() {
@@ -439,8 +447,8 @@ public class WebSite {
     }
     
     /**
-    * Optional. The name of the webspace in which the web site is located. This
-    * property is read-only.
+    * Optional. The name of the web space in which the web site is located.
+    * This property is read-only.
     * @param webSpaceValue The WebSpace value.
     */
     public void setWebSpace(final String webSpaceValue) {
@@ -459,7 +467,7 @@ public class WebSite {
     }
     
     /**
-    * SSL states bound to a website.
+    * SSL state bound to a web site.
     */
     public static class WebSiteHostNameSslState {
         private String name;
@@ -503,8 +511,7 @@ public class WebSite {
         private String thumbprint;
         
         /**
-        * Optional. A string that contains the thumbprint of the SSL
-        * certificate.
+        * Optional. A string containing the thumbprint of the SSL certificate.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -512,8 +519,7 @@ public class WebSite {
         }
         
         /**
-        * Optional. A string that contains the thumbprint of the SSL
-        * certificate.
+        * Optional. A string containing the thumbprint of the SSL certificate.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {
@@ -523,8 +529,8 @@ public class WebSite {
         private InetAddress virtualIP;
         
         /**
-        * Optional. String. The IP address assigned to the hostname if the
-        * hostname uses IP SSL.
+        * Optional. A string containing the IP address assigned to the hostname
+        * if the hostname uses IP SSL.
         * @return The VirtualIP value.
         */
         public InetAddress getVirtualIP() {
@@ -532,8 +538,8 @@ public class WebSite {
         }
         
         /**
-        * Optional. String. The IP address assigned to the hostname if the
-        * hostname uses IP SSL.
+        * Optional. A string containing the IP address assigned to the hostname
+        * if the hostname uses IP SSL.
         * @param virtualIPValue The VirtualIP value.
         */
         public void setVirtualIP(final InetAddress virtualIPValue) {
@@ -546,7 +552,7 @@ public class WebSite {
         
         /**
         * Optional. A set of name/value pairs that contain application settings
-        * for a site.
+        * for a web site.
         * @return The AppSettings value.
         */
         public HashMap<String, String> getAppSettings() {
@@ -555,7 +561,7 @@ public class WebSite {
         
         /**
         * Optional. A set of name/value pairs that contain application settings
-        * for a site.
+        * for a web site.
         * @param appSettingsValue The AppSettings value.
         */
         public void setAppSettings(final HashMap<String, String> appSettingsValue) {
@@ -566,7 +572,7 @@ public class WebSite {
         
         /**
         * Optional. A set of name/value pairs that contain metadata information
-        * for a site.
+        * for a web site.
         * @return The Metadata value.
         */
         public HashMap<String, String> getMetadata() {
@@ -575,7 +581,7 @@ public class WebSite {
         
         /**
         * Optional. A set of name/value pairs that contain metadata information
-        * for a site.
+        * for a web site.
         * @param metadataValue The Metadata value.
         */
         public void setMetadata(final HashMap<String, String> metadataValue) {
@@ -585,7 +591,7 @@ public class WebSite {
         private HashMap<String, String> properties;
         
         /**
-        * Optional. A set of name/value pairs that contain properties for a
+        * Optional. A set of name/value pairs that contain properties for a web
         * site.
         * @return The Properties value.
         */
@@ -594,7 +600,7 @@ public class WebSite {
         }
         
         /**
-        * Optional. A set of name/value pairs that contain properties for a
+        * Optional. A set of name/value pairs that contain properties for a web
         * site.
         * @param propertiesValue The Properties value.
         */
@@ -614,7 +620,7 @@ public class WebSite {
     }
     
     /**
-    * Contains SSL certificate properties.
+    * The SSL certificate properties.
     */
     public static class WebSiteSslCertificate {
         private Calendar expirationDate;
@@ -658,8 +664,8 @@ public class WebSite {
         private ArrayList<String> hostNames;
         
         /**
-        * Optional. An array of strings that contain the hostnames to which the
-        * certificate is bound.
+        * Optional. An array of strings that contain the host names to which
+        * the certificate is bound.
         * @return The HostNames value.
         */
         public ArrayList<String> getHostNames() {
@@ -667,8 +673,8 @@ public class WebSite {
         }
         
         /**
-        * Optional. An array of strings that contain the hostnames to which the
-        * certificate is bound.
+        * Optional. An array of strings that contain the host names to which
+        * the certificate is bound.
         * @param hostNamesValue The HostNames value.
         */
         public void setHostNames(final ArrayList<String> hostNamesValue) {
@@ -716,7 +722,7 @@ public class WebSite {
         private Boolean isToBeDeleted;
         
         /**
-        * Optional. Boolean. true if the certificate is to be deleted.
+        * Optional. Indicates if the certificate is to be deleted.
         * @return The IsToBeDeleted value.
         */
         public Boolean isToBeDeleted() {
@@ -724,7 +730,7 @@ public class WebSite {
         }
         
         /**
-        * Optional. Boolean. true if the certificate is to be deleted.
+        * Optional. Indicates if the certificate is to be deleted.
         * @param isToBeDeletedValue The IsToBeDeleted value.
         */
         public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
@@ -734,7 +740,7 @@ public class WebSite {
         private Boolean isValid;
         
         /**
-        * Optional. Boolean. true if the certificate is valid; otherwise, false.
+        * Optional. Indicates if the certificate is valid.
         * @return The IsValid value.
         */
         public Boolean isValid() {
@@ -742,7 +748,7 @@ public class WebSite {
         }
         
         /**
-        * Optional. Boolean. true if the certificate is valid; otherwise, false.
+        * Optional. Indicates if the certificate is valid.
         * @param isValidValue The IsValid value.
         */
         public void setIsValid(final Boolean isValidValue) {

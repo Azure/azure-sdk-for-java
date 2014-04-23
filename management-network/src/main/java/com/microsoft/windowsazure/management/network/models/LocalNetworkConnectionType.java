@@ -23,6 +23,9 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+/**
+* Possible values for the Local Network Connection Type.
+*/
 public enum LocalNetworkConnectionType {
     IPSecurity,
     

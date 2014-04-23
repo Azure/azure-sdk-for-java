@@ -50,7 +50,7 @@ public class AffinityGroupUpdateParameters {
     private String label;
     
     /**
-    * Required. A name for the affinity specified as a base-64 encoded string.
+    * Required. A name for the affinity specified as a base-64-encoded string.
     * The label can be up to 100 characters in length.
     * @return The Label value.
     */
@@ -59,7 +59,7 @@ public class AffinityGroupUpdateParameters {
     }
     
     /**
-    * Required. A name for the affinity specified as a base-64 encoded string.
+    * Required. A name for the affinity specified as a base-64-encoded string.
     * The label can be up to 100 characters in length.
     * @param labelValue The Label value.
     */

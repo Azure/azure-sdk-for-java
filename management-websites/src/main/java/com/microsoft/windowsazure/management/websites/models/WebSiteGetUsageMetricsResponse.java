@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The Get Web Site Usage Metrics operation response.
+* The Get Usage Metrics Web Site operation response.
 */
 public class WebSiteGetUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric> {
     private ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics;
@@ -141,7 +141,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * typically include CPU Time, Memory Usage, and File System Storage.
         * Important: Site level Limits information is only meaningful for
         * Shared and Standard web sites. For free web sites, limits are
-        * enforced at the webspace level.
+        * enforced at the web space level.
         * @return The Limit value.
         */
         public String getLimit() {
@@ -156,7 +156,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * typically include CPU Time, Memory Usage, and File System Storage.
         * Important: Site level Limits information is only meaningful for
         * Shared and Standard web sites. For free web sites, limits are
-        * enforced at the webspace level.
+        * enforced at the web space level.
         * @param limitValue The Limit value.
         */
         public void setLimit(final String limitValue) {

@@ -94,7 +94,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         
         /**
         * Optional. The connection state of the site. You can set the
-        * connection state to Connected, Connecting or NotConnected.
+        * connection state to Connected, Connecting, or NotConnected.
         * @return The ConnectivityState value.
         */
         public GatewayConnectivityState getConnectivityState() {
@@ -103,7 +103,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         
         /**
         * Optional. The connection state of the site. You can set the
-        * connection state to Connected, Connecting or NotConnected.
+        * connection state to Connected, Connecting, or NotConnected.
         * @param connectivityStateValue The ConnectivityState value.
         */
         public void setConnectivityState(final GatewayConnectivityState connectivityStateValue) {
@@ -153,7 +153,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private Calendar lastConnectionEstablished;
         
         /**
-        * Optional.
+        * Optional. The time that the last connection was established.
         * @return The LastConnectionEstablished value.
         */
         public Calendar getLastConnectionEstablished() {
@@ -161,7 +161,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * Optional.
+        * Optional. The time that the last connection was established.
         * @param lastConnectionEstablishedValue The LastConnectionEstablished
         * value.
         */

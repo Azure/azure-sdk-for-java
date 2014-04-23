@@ -24,9 +24,8 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
-* Known location names for Windows Azure.  You can obtain a complete list of
-* the latest locations available to your subscription from the List Locations
-* Operation.
+* Known location names for Azure. You can obtain a complete list of the latest
+* locations available to your subscription from the List Locations Operation.
 */
 public abstract class LocationNames {
     public static final String WESTEUROPE = "West Europe";

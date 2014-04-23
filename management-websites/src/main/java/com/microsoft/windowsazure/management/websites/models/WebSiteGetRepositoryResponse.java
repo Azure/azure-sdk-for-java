@@ -27,13 +27,13 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
-* The Get Web Site Repository operation response.
+* The Get Repository Web Site operation response.
 */
 public class WebSiteGetRepositoryResponse extends OperationResponse {
     private URI uri;
     
     /**
-    * Optional. Contains the URI of the web site repository.
+    * Optional. The URI of the web site repository.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -41,7 +41,7 @@ public class WebSiteGetRepositoryResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains the URI of the web site repository.
+    * Optional. The URI of the web site repository.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {

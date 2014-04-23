@@ -50,7 +50,7 @@ public class NetworkReservedIPCreateParameters {
     private String deploymentName;
     
     /**
-    * Optional. The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if used.
     * @return The DeploymentName value.
     */
     public String getDeploymentName() {
@@ -58,7 +58,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * Optional. The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if used.
     * @param deploymentNameValue The DeploymentName value.
     */
     public void setDeploymentName(final String deploymentNameValue) {
@@ -68,7 +68,7 @@ public class NetworkReservedIPCreateParameters {
     private String label;
     
     /**
-    * Optional. The friendly identifier of the site.
+    * Optional. The friendly identifier for the site.
     * @return The Label value.
     */
     public String getLabel() {
@@ -76,7 +76,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * Optional. The friendly identifier of the site.
+    * Optional. The friendly identifier for the site.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -104,7 +104,7 @@ public class NetworkReservedIPCreateParameters {
     private String serviceName;
     
     /**
-    * Optional. The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if used.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -112,7 +112,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * Optional. The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if used.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {

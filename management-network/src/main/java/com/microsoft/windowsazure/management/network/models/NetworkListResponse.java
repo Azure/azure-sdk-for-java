@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response structure for the Server List operation.
+* The response structure for the Network Operations List operation.
 */
 public class NetworkListResponse extends OperationResponse implements Iterable<NetworkListResponse.VirtualNetworkSite> {
     private ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites;
@@ -71,7 +71,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private ArrayList<String> addressPrefixes;
         
         /**
-        * Optional. Address spaces, in CIDR format in the virtual network
+        * Optional. Address spaces, in CIDR format in the virtual network.
         * @return The AddressPrefixes value.
         */
         public ArrayList<String> getAddressPrefixes() {
@@ -79,7 +79,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. Address spaces, in CIDR format in the virtual network
+        * Optional. Address spaces, in CIDR format in the virtual network.
         * @param addressPrefixesValue The AddressPrefixes value.
         */
         public void setAddressPrefixes(final ArrayList<String> addressPrefixesValue) {
@@ -204,7 +204,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private NetworkListResponse.VPNClientAddressPool vPNClientAddressPool;
         
         /**
-        * Optional. The VPNClientAddressPool reserves a pool of IP addresses
+        * Optional. The VPN Client Address Pool reserves a pool of IP addresses
         * for VPN clients. This object is used for point-to-site connectivity.
         * @return The VPNClientAddressPool value.
         */
@@ -213,7 +213,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. The VPNClientAddressPool reserves a pool of IP addresses
+        * Optional. The VPN Client Address Pool reserves a pool of IP addresses
         * for VPN clients. This object is used for point-to-site connectivity.
         * @param vPNClientAddressPoolValue The VPNClientAddressPool value.
         */
@@ -322,7 +322,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Optional. Represents an address space, in CIDR format that defines
-        * the subnet
+        * the subnet.
         * @return The AddressPrefix value.
         */
         public String getAddressPrefix() {
@@ -331,7 +331,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Optional. Represents an address space, in CIDR format that defines
-        * the subnet
+        * the subnet.
         * @param addressPrefixValue The AddressPrefix value.
         */
         public void setAddressPrefix(final String addressPrefixValue) {
@@ -341,7 +341,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private String name;
         
         /**
-        * Optional. Name for the subnet.
+        * Optional. Name of the subnet.
         * @return The Name value.
         */
         public String getName() {
@@ -349,7 +349,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. Name for the subnet.
+        * Optional. Name of the subnet.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -408,8 +408,8 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private ArrayList<NetworkListResponse.DnsServer> dnsServers;
         
         /**
-        * Optional. The list of on DNS Servers associated with the virtual
-        * network site.
+        * Optional. The list of available DNS Servers associated with the
+        * virtual network site.
         * @return The DnsServers value.
         */
         public ArrayList<NetworkListResponse.DnsServer> getDnsServers() {
@@ -417,8 +417,8 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. The list of on DNS Servers associated with the virtual
-        * network site.
+        * Optional. The list of available DNS Servers associated with the
+        * virtual network site.
         * @param dnsServersValue The DnsServers value.
         */
         public void setDnsServers(final ArrayList<NetworkListResponse.DnsServer> dnsServersValue) {
@@ -428,9 +428,9 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private NetworkListResponse.Gateway gateway;
         
         /**
-        * Optional. Gateway that contains a list of Local Network Sites which
-        * enables the Virtual network site to communicate with a customer’s on
-        * premise networks.
+        * Optional. The gateway that contains a list of Local Network Sites
+        * which enable the Virtual Network Site to communicate with a
+        * customer's on-premise networks.
         * @return The Gateway value.
         */
         public NetworkListResponse.Gateway getGateway() {
@@ -438,9 +438,9 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. Gateway that contains a list of Local Network Sites which
-        * enables the Virtual network site to communicate with a customer’s on
-        * premise networks.
+        * Optional. The gateway that contains a list of Local Network Sites
+        * which enable the Virtual Network Site to communicate with a
+        * customer's on-premise networks.
         * @param gatewayValue The Gateway value.
         */
         public void setGateway(final NetworkListResponse.Gateway gatewayValue) {
@@ -470,7 +470,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         private String label;
         
         /**
-        * Optional. The friendly identifier of the site.
+        * Optional. The friendly identifier for the site.
         * @return The Label value.
         */
         public String getLabel() {
@@ -478,7 +478,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         }
         
         /**
-        * Optional. The friendly identifier of the site.
+        * Optional. The friendly identifier for the site.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -507,7 +507,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Optional. Current status of the virtual network. (Created, Creating,
-        * Updating, Deleting, Unavailable)
+        * Updating, Deleting, or Unavailable.)
         * @return The State value.
         */
         public String getState() {
@@ -516,7 +516,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Optional. Current status of the virtual network. (Created, Creating,
-        * Updating, Deleting, Unavailable)
+        * Updating, Deleting, or Unavailable.)
         * @param stateValue The State value.
         */
         public void setState(final String stateValue) {
@@ -556,8 +556,8 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     }
     
     /**
-    * The VPNClientAddressPool reserves a pool of IP addresses for VPN clients.
-    * This object is used for point-to-site connectivity.
+    * The VPN Client Address Pool reserves a pool of IP addresses for VPN
+    * clients. This object is used for point-to-site connectivity.
     */
     public static class VPNClientAddressPool {
         private ArrayList<String> addressPrefixes;

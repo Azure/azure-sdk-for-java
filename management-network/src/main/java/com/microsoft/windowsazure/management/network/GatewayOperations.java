@@ -43,6 +43,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the gateways for
+* your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for more
+* information)
+*/
 public interface GatewayOperations {
     /**
     * To connect to, disconnect from, or test your connection to a local
@@ -55,8 +61,8 @@ public interface GatewayOperations {
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkSiteName Required. The name of the site to connect to.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Begin Connect
+    * Disconnect Or Testing Gateway operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -83,23 +89,23 @@ public interface GatewayOperations {
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkSiteName Required. The name of the site to connect to.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Begin Connect
+    * Disconnect Or Testing Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     Future<GatewayOperationResponse> beginConnectDisconnectOrTestingAsync(String networkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters);
     
     /**
-    * The Create Virtual network Gateway operation creates a new network
-    * gateways account in Windows Azure.  (see
+    * The Begin Creating Virtual network Gateway operation creates a new
+    * network gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -116,23 +122,23 @@ public interface GatewayOperations {
     GatewayOperationResponse beginCreating(String networkName, GatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
-    * The Create Virtual network Gateway operation creates a new network
-    * gateways account in Windows Azure.  (see
+    * The Begin Creating Virtual network Gateway operation creates a new
+    * network gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     Future<GatewayOperationResponse> beginCreatingAsync(String networkName, GatewayCreateParameters parameters);
     
     /**
-    * The Delete Virtual network Gateway operation deletes a network gateway
-    * for the specified virtual network in Windows Azure.  (see
+    * The Begin Deleting Virtual Network Gateway operation deletes a network
+    * gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
@@ -151,8 +157,8 @@ public interface GatewayOperations {
     GatewayOperationResponse beginDeleting(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Delete Virtual network Gateway operation deletes a network gateway
-    * for the specified virtual network in Windows Azure.  (see
+    * The Begin Deleting Virtual Network Gateway operation deletes a network
+    * gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
@@ -163,8 +169,8 @@ public interface GatewayOperations {
     Future<GatewayOperationResponse> beginDeletingAsync(String networkName);
     
     /**
-    * The Failover Virtual network Gateway operation causes a network gateway
-    * failover for the specified virtual network in Windows Azure.  (see
+    * The Begin Failover Virtual Network Gateway operation causes a network
+    * gateway failover for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
@@ -183,8 +189,8 @@ public interface GatewayOperations {
     GatewayOperationResponse beginFailover(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Failover Virtual network Gateway operation causes a network gateway
-    * failover for the specified virtual network in Windows Azure.  (see
+    * The Begin Failover Virtual Network Gateway operation causes a network
+    * gateway failover for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
@@ -195,17 +201,17 @@ public interface GatewayOperations {
     Future<GatewayOperationResponse> beginFailoverAsync(String networkName);
     
     /**
-    * The Reset Virtual network Gateway shared key operation resets the shared
-    * key on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Begin Reset Virtual Network Gateway Shared Key operation resets the
+    * shared key on the virtual network gateway for the specified virtual
+    * network connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkName Required. The name of the local network.
-    * @param parameters Required. The parameters to the Virtual Network Gateway
-    * Reset Shared Key request.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key request.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -222,17 +228,17 @@ public interface GatewayOperations {
     GatewayOperationResponse beginResetSharedKey(String networkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
-    * The Reset Virtual network Gateway shared key operation resets the shared
-    * key on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Begin Reset Virtual Network Gateway Shared Key operation resets the
+    * shared key on the virtual network gateway for the specified virtual
+    * network connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkName Required. The name of the local network.
-    * @param parameters Required. The parameters to the Virtual Network Gateway
-    * Reset Shared Key request.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -249,8 +255,8 @@ public interface GatewayOperations {
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkSiteName Required. The name of the site to connect to.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Connect Disconnect
+    * Or Testing Gateway operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -264,11 +270,11 @@ public interface GatewayOperations {
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -286,14 +292,14 @@ public interface GatewayOperations {
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param localNetworkSiteName Required. The name of the site to connect to.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Connect Disconnect
+    * Or Testing Gateway operation.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -302,7 +308,7 @@ public interface GatewayOperations {
     
     /**
     * The Create Virtual network Gateway operation creates a new network
-    * gateways account in Windows Azure.  (see
+    * gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
@@ -329,11 +335,11 @@ public interface GatewayOperations {
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -342,7 +348,7 @@ public interface GatewayOperations {
     
     /**
     * The Create Virtual network Gateway operation creates a new network
-    * gateways account in Windows Azure.  (see
+    * gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
@@ -351,11 +357,11 @@ public interface GatewayOperations {
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Network Gateway operation.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -363,8 +369,8 @@ public interface GatewayOperations {
     Future<GatewayGetOperationStatusResponse> createAsync(String networkName, GatewayCreateParameters parameters);
     
     /**
-    * The Delete Virtual network Gateway operation deletes a network gateway
-    * for the specified virtual network in Windows Azure.  (see
+    * The Delete Virtual Network Gateway operation deletes a network gateway
+    * for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
@@ -388,11 +394,11 @@ public interface GatewayOperations {
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -400,18 +406,18 @@ public interface GatewayOperations {
     GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
     
     /**
-    * The Delete Virtual network Gateway operation deletes a network gateway
-    * for the specified virtual network in Windows Azure.  (see
+    * The Delete Virtual Network Gateway operation deletes a network gateway
+    * for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -419,8 +425,8 @@ public interface GatewayOperations {
     Future<GatewayGetOperationStatusResponse> deleteAsync(String networkName);
     
     /**
-    * The Failover Virtual network Gateway operation causes a network gateway
-    * failover for the specified virtual network in Windows Azure.  (see
+    * The Failover Virtual Network Gateway operation causes a network gateway
+    * failover for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
@@ -438,11 +444,11 @@ public interface GatewayOperations {
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -450,18 +456,18 @@ public interface GatewayOperations {
     GatewayGetOperationStatusResponse failover(String networkName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
-    * The Failover Virtual network Gateway operation causes a network gateway
-    * failover for the specified virtual network in Windows Azure.  (see
+    * The Failover Virtual Network Gateway operation causes a network gateway
+    * failover for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network in Azure.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -469,15 +475,15 @@ public interface GatewayOperations {
     Future<GatewayGetOperationStatusResponse> failoverAsync(String networkName);
     
     /**
-    * The Generate VPN Client Package creates a VPN client package for the
-    * specified virtual network and gateway in Windows Azure.  (see
+    * The Generate VPN Client Package operation creates a VPN client package
+    * for the specified virtual network and gateway in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Generate VPN
+    * Client Package operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -494,23 +500,23 @@ public interface GatewayOperations {
     GatewayOperationResponse generateVpnClientPackage(String networkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
-    * The Generate VPN Client Package creates a VPN client package for the
-    * specified virtual network and gateway in Windows Azure.  (see
+    * The Generate VPN Client Package operation creates a VPN client package
+    * for the specified virtual network and gateway in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Generate VPN
+    * Client Package operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     Future<GatewayOperationResponse> generateVpnClientPackageAsync(String networkName, GatewayGenerateVpnClientPackageParameters parameters);
     
     /**
-    * The Get Virtual network Gateway operation gets information on the network
-    * gateway for the specified vitrual network in Windows Azure.  (see
+    * The Get Virtual Network Gateway operation gets information about the
+    * network gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154109.aspx for
     * more information)
     *
@@ -530,8 +536,8 @@ public interface GatewayOperations {
     GatewayGetResponse get(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Get Virtual network Gateway operation gets information on the network
-    * gateway for the specified vitrual network in Windows Azure.  (see
+    * The Get Virtual Network Gateway operation gets information about the
+    * network gateway for the specified virtual network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154109.aspx for
     * more information)
     *
@@ -550,14 +556,14 @@ public interface GatewayOperations {
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. The parameters for the
-    * GetDeviceConfigurationScript request.
+    * @param parameters Required. The parameters for the Get Device
+    * Configuration Script operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return The configuration script returned from the get device
-    * configuration script request.
+    * configuration script operation.
     */
     GatewayGetDeviceConfigurationScriptResponse getDeviceConfigurationScript(String networkName, GatewayGetDeviceConfigurationScriptParameters parameters) throws IOException, ServiceException;
     
@@ -569,20 +575,20 @@ public interface GatewayOperations {
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. The parameters for the
-    * GetDeviceConfigurationScript request.
+    * @param parameters Required. The parameters for the Get Device
+    * Configuration Script operation.
     * @return The configuration script returned from the get device
-    * configuration script request.
+    * configuration script operation.
     */
     Future<GatewayGetDeviceConfigurationScriptResponse> getDeviceConfigurationScriptAsync(String networkName, GatewayGetDeviceConfigurationScriptParameters parameters);
     
     /**
-    * The Get Virtual network Gateway operation status gets information on the
-    * status of network gateway operations in Windows Azure.  (see
+    * The Get Virtual Network Gateway Operation Status gets information on the
+    * status of network gateway operations in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154112.aspx for
     * more information)
     *
-    * @param operationId Required. The id  of the network operation.
+    * @param operationId Required. The ID of the network operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -592,11 +598,11 @@ public interface GatewayOperations {
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -604,18 +610,18 @@ public interface GatewayOperations {
     GatewayGetOperationStatusResponse getOperationStatus(String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Get Virtual network Gateway operation status gets information on the
-    * status of network gateway operations in Windows Azure.  (see
+    * The Get Virtual Network Gateway Operation Status gets information on the
+    * status of network gateway operations in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154112.aspx for
     * more information)
     *
-    * @param operationId Required. The id  of the network operation.
+    * @param operationId Required. The ID of the network operation.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -623,9 +629,9 @@ public interface GatewayOperations {
     Future<GatewayGetOperationStatusResponse> getOperationStatusAsync(String operationId);
     
     /**
-    * The Get Virtual network Gateway shared key operation gets the shared key
-    * on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Get Virtual Network Gateway Shared Key operation gets the shared key
+    * on the virtual network gateway for the specified virtual network
+    * connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154122.aspx for
     * more information)
     *
@@ -645,9 +651,9 @@ public interface GatewayOperations {
     GatewayGetSharedKeyResponse getSharedKey(String networkName, String localNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Get Virtual network Gateway shared key operation gets the shared key
-    * on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Get Virtual Network Gateway Shared Key operation gets the shared key
+    * on the virtual network gateway for the specified virtual network
+    * connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154122.aspx for
     * more information)
     *
@@ -706,7 +712,7 @@ public interface GatewayOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The respoonse to the get supported platform configuration request.
+    * @return The response to the list supported devices request.
     */
     GatewayListSupportedDevicesResponse listSupportedDevices() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
@@ -716,14 +722,14 @@ public interface GatewayOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154102.aspx
     * for more information)
     *
-    * @return The respoonse to the get supported platform configuration request.
+    * @return The response to the list supported devices request.
     */
     Future<GatewayListSupportedDevicesResponse> listSupportedDevicesAsync();
     
     /**
-    * The Reset Virtual network Gateway shared key operation resets the shared
-    * key on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Reset Virtual Network Gateway Shared Key operation resets the shared
+    * key on the virtual network gateway for the specified virtual network
+    * connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
@@ -745,11 +751,11 @@ public interface GatewayOperations {
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -757,9 +763,9 @@ public interface GatewayOperations {
     GatewayGetOperationStatusResponse resetSharedKey(String networkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
-    * The Reset Virtual network Gateway shared key operation resets the shared
-    * key on the virtual network gateway for the specified vitrual network
-    * connection to the specified local network in Windows Azure.  (see
+    * The Reset Virtual Network Gateway Shared Key operation resets the shared
+    * key on the virtual network gateway for the specified virtual network
+    * connection to the specified local network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
@@ -769,11 +775,11 @@ public interface GatewayOperations {
     * @param parameters Required. The parameters to the Virtual Network Gateway
     * Reset Shared Key request.
     * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.

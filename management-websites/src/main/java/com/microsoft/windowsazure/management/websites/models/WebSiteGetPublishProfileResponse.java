@@ -29,13 +29,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The Get Web Site Publish Profile operation response.
+* The Get Publish Profile Web Site operation response.
 */
 public class WebSiteGetPublishProfileResponse extends OperationResponse implements Iterable<WebSiteGetPublishProfileResponse.PublishProfile> {
     private ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles;
     
     /**
-    * Optional. Contains one or more publish profiles.
+    * Optional. The web site publish profiles.
     * @return The PublishProfiles value.
     */
     public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles() {
@@ -43,7 +43,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     }
     
     /**
-    * Optional. Contains one or more publish profiles.
+    * Optional. The web site publish profiles.
     * @param publishProfilesValue The PublishProfiles value.
     */
     public void setPublishProfiles(final ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfilesValue) {
@@ -68,14 +68,13 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     }
     
     /**
-    * Contains attributes that contain information for a single database
-    * connection.
+    * Attributes that contain information for a single database connection.
     */
     public static class Database {
         private String connectionString;
         
         /**
-        * Optional. Contains a database connection string.
+        * Optional. The database connection string.
         * @return The ConnectionString value.
         */
         public String getConnectionString() {
@@ -83,7 +82,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. Contains a database connection string.
+        * Optional. The database connection string.
         * @param connectionStringValue The ConnectionString value.
         */
         public void setConnectionString(final String connectionStringValue) {
@@ -93,7 +92,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private String name;
         
         /**
-        * Optional. Contains the friendly name of the connection string.
+        * Optional. The friendly name of the connection string.
         * @return The Name value.
         */
         public String getName() {
@@ -101,7 +100,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. Contains the friendly name of the connection string.
+        * Optional. The friendly name of the connection string.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -111,8 +110,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private String providerName;
         
         /**
-        * Optional. Contains the type of database provider (for example, "SQL"
-        * or "MySQL").
+        * Optional. The name of database provider (for example, "SQL" or
+        * "MySQL").
         * @return The ProviderName value.
         */
         public String getProviderName() {
@@ -120,8 +119,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. Contains the type of database provider (for example, "SQL"
-        * or "MySQL").
+        * Optional. The name of database provider (for example, "SQL" or
+        * "MySQL").
         * @param providerNameValue The ProviderName value.
         */
         public void setProviderName(final String providerNameValue) {
@@ -131,7 +130,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private String type;
         
         /**
-        * Optional.
+        * Optional. The type of database provider.
         * @return The Type value.
         */
         public String getType() {
@@ -139,7 +138,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional.
+        * Optional. The type of database provider.
         * @param typeValue The Type value.
         */
         public void setType(final String typeValue) {
@@ -148,7 +147,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     }
     
     /**
-    * Contains attributes that hold publish profile values.
+    * Attributes that hold publish profile values.
     */
     public static class PublishProfile {
         private URI controlPanelUri;
@@ -172,8 +171,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private ArrayList<WebSiteGetPublishProfileResponse.Database> databases;
         
         /**
-        * Optional. Contains connection information for the databases used by
-        * the web site application.
+        * Optional. Connection information for the databases used by the web
+        * site application.
         * @return The Databases value.
         */
         public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases() {
@@ -181,8 +180,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. Contains connection information for the databases used by
-        * the web site application.
+        * Optional. Connection information for the databases used by the web
+        * site application.
         * @param databasesValue The Databases value.
         */
         public void setDatabases(final ArrayList<WebSiteGetPublishProfileResponse.Database> databasesValue) {
@@ -192,7 +191,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private URI destinationAppUri;
         
         /**
-        * Optional. The URL of the website that will be published to.
+        * Optional. The URL of the web site that will be published to.
         * @return The DestinationAppUri value.
         */
         public URI getDestinationAppUri() {
@@ -200,7 +199,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. The URL of the website that will be published to.
+        * Optional. The URL of the web site that will be published to.
         * @param destinationAppUriValue The DestinationAppUri value.
         */
         public void setDestinationAppUri(final URI destinationAppUriValue) {
@@ -210,9 +209,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private boolean ftpPassiveMode;
         
         /**
-        * Optional. True or False depending on whether FTP passive mode is
-        * being used. This attribute applies only if publishMethod is set to
-        * FTP.
+        * Optional. Indicates if FTP passive mode is being used. This attribute
+        * applies only if publishMethod is set to FTP.
         * @return The FtpPassiveMode value.
         */
         public boolean isFtpPassiveMode() {
@@ -220,9 +218,8 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. True or False depending on whether FTP passive mode is
-        * being used. This attribute applies only if publishMethod is set to
-        * FTP.
+        * Optional. Indicates if FTP passive mode is being used. This attribute
+        * applies only if publishMethod is set to FTP.
         * @param ftpPassiveModeValue The FtpPassiveMode value.
         */
         public void setFtpPassiveMode(final boolean ftpPassiveModeValue) {
@@ -250,7 +247,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private String mSDeploySite;
         
         /**
-        * Optional. The name of the site that will be published to. This
+        * Optional. The name of the web site that will be published to. This
         * attribute applies only if publishMethod is set to MSDeploy.
         * @return The MSDeploySite value.
         */
@@ -259,7 +256,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. The name of the site that will be published to. This
+        * Optional. The name of the web site that will be published to. This
         * attribute applies only if publishMethod is set to MSDeploy.
         * @param mSDeploySiteValue The MSDeploySite value.
         */
@@ -365,7 +362,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         private String userName;
         
         /**
-        * Optional. The name for the identity that will be used for publishing.
+        * Optional. The name of the user that will be used for publishing.
         * @return The UserName value.
         */
         public String getUserName() {
@@ -373,7 +370,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         }
         
         /**
-        * Optional. The name for the identity that will be used for publishing.
+        * Optional. The name of the user that will be used for publishing.
         * @param userNameValue The UserName value.
         */
         public void setUserName(final String userNameValue) {

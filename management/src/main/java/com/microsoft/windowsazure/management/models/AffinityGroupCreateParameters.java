@@ -50,8 +50,8 @@ public class AffinityGroupCreateParameters {
     private String label;
     
     /**
-    * Required. A base-64 encoded name for the affinity group. The name can be
-    * up to 100 characters in length.  Its value defaults to the Name of the
+    * Required. A base-64-encoded name for the affinity group. The name can be
+    * up to 100 characters in length. Its value defaults to the Name of the
     * affinity group if not provided.
     * @return The Label value.
     */
@@ -64,8 +64,8 @@ public class AffinityGroupCreateParameters {
     }
     
     /**
-    * Required. A base-64 encoded name for the affinity group. The name can be
-    * up to 100 characters in length.  Its value defaults to the Name of the
+    * Required. A base-64-encoded name for the affinity group. The name can be
+    * up to 100 characters in length. Its value defaults to the Name of the
     * affinity group if not provided.
     * @param labelValue The Label value.
     */
