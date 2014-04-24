@@ -23,6 +23,9 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+/**
+* Possible values for the Virtual Network State.
+*/
 public abstract class VirtualNetworkState {
     public static final String CREATED = "Created";
     

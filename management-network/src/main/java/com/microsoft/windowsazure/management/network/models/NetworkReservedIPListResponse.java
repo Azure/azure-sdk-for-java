@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Preview Only. The response structure for the Server List operation
+* Preview Only. The response structure for the Server List operation.
 */
 public class NetworkReservedIPListResponse extends OperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP> {
     private ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs;
@@ -112,7 +112,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         private String deploymentName;
         
         /**
-        * Optional. The name of the deployment the IP belongs to, if being used.
+        * Optional. The name of the deployment the IP belongs to, if used.
         * @return The DeploymentName value.
         */
         public String getDeploymentName() {
@@ -120,7 +120,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         }
         
         /**
-        * Optional. The name of the deployment the IP belongs to, if being used.
+        * Optional. The name of the deployment the IP belongs to, if used.
         * @param deploymentNameValue The DeploymentName value.
         */
         public void setDeploymentName(final String deploymentNameValue) {
@@ -148,7 +148,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         private boolean inUse;
         
         /**
-        * Optional. The indicator of whether the reserved IP is being used.
+        * Optional. The indicator of whether the reserved IP is used.
         * @return The InUse value.
         */
         public boolean isInUse() {
@@ -156,7 +156,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         }
         
         /**
-        * Optional. The indicator of whether the reserved IP is being used.
+        * Optional. The indicator of whether the reserved IP is used.
         * @param inUseValue The InUse value.
         */
         public void setInUse(final boolean inUseValue) {
@@ -166,7 +166,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         private String label;
         
         /**
-        * Optional. The friendly identifier of the site.
+        * Optional. The friendly identifier for the site.
         * @return The Label value.
         */
         public String getLabel() {
@@ -174,7 +174,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         }
         
         /**
-        * Optional. The friendly identifier of the site.
+        * Optional. The friendly identifier for the site.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -202,7 +202,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         private String serviceName;
         
         /**
-        * Optional. The name of the service the IP belongs to, if being used.
+        * Optional. The name of the service the IP belongs to, if used.
         * @return The ServiceName value.
         */
         public String getServiceName() {
@@ -210,7 +210,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         }
         
         /**
-        * Optional. The name of the service the IP belongs to, if being used.
+        * Optional. The name of the service the IP belongs to, if used.
         * @param serviceNameValue The ServiceName value.
         */
         public void setServiceName(final String serviceNameValue) {
@@ -221,7 +221,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         
         /**
         * Optional. Current status of the reserved IP. (Created, Creating,
-        * Updating, Deleting, Unavailable)
+        * Updating, Deleting, or Unavailable.)
         * @return The State value.
         */
         public String getState() {
@@ -230,7 +230,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         
         /**
         * Optional. Current status of the reserved IP. (Created, Creating,
-        * Updating, Deleting, Unavailable)
+        * Updating, Deleting, or Unavailable.)
         * @param stateValue The State value.
         */
         public void setState(final String stateValue) {

@@ -59,10 +59,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* The Windows Azure Web Sites management API provides a RESTful set of web
-* services that interact with Windows Azure Web Sites service to manage your
-* web sites. The API has entities that capture the relationship between an end
-* user and the Windows Azure Web Sites service.  (see
+* The Web Sites Management API provides a RESTful set of web services that
+* interact with the Windows Azure Web Sites service to manage your web sites.
+* The API has entities that capture the relationship between an end user and
+* Windows Azure Web Sites service.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
 * information)
 */
@@ -80,12 +80,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * When you create an Azure subscription, it is uniquely identified by a
+    * subscription ID. The subscription ID forms part of the URI for every
+    * call that you make to the Service Management API. The Azure Service
+    * Management API uses mutual authentication of management certificates
+    * over SSL to ensure that a request made to the service is secure. No
+    * anonymous requests are allowed.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
@@ -107,7 +107,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     private WebSiteOperations webSites;
     
     /**
-    * Operations for managing the web sites in a web space.
+    * Operations for managing the web sites in a web space.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for
+    * more information)
     * @return The WebSitesOperations value.
     */
     public WebSiteOperations getWebSitesOperations() {
@@ -142,13 +144,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @param baseUri Required. The URI used as the base for all Service
     * Management requests.
     */
@@ -176,13 +177,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -206,7 +206,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling a long-running operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, timed out, or is still in progress.  (see
@@ -218,13 +218,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param siteName Required. The name of the site where the operation was
     * targeted.
     * @param operationId Required. The operation ID for the operation you wish
-    * to track. The operation ID is returned in the Id field in the body of
+    * to track. The operation ID is returned in the ID field in the body of
     * the response for long-running operations.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
@@ -238,7 +238,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling a long-running operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, timed out, or is still in progress.  (see
@@ -250,7 +250,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param siteName Required. The name of the site where the operation was
     * targeted.
     * @param operationId Required. The operation ID for the operation you wish
-    * to track. The operation ID is returned in the Id field in the body of
+    * to track. The operation ID is returned in the ID field in the body of
     * the response for long-running operations.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -262,9 +262,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
@@ -530,7 +530,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * Register your subscription to use Windows Azure Web Sites.
+    * Register your subscription to use Azure Web Sites.
     *
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -546,7 +546,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * Register your subscription to use Windows Azure Web Sites.
+    * Register your subscription to use Azure Web Sites.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -628,7 +628,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * Unregister your subscription to use Windows Azure Web Sites.
+    * Unregister your subscription to use Azure Web Sites.
     *
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -644,7 +644,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
-    * Unregister your subscription to use Windows Azure Web Sites.
+    * Unregister your subscription to use Azure Web Sites.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by

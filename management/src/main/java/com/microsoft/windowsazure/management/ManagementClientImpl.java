@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
 * The Service Management API provides programmatic access to much of the
 * functionality available through the Management Portal. The Service
 * Management API is a REST API. All API operations are performed over SSL and
-* mutually authenticated using X.509 v3 certificates.  (see
+* are mutually authenticated using X.509 v3 certificates.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
@@ -75,12 +75,12 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * When you create an Azure subscription, it is uniquely identified by a
+    * subscription ID. The subscription ID forms part of the URI for every
+    * call that you make to the Service Management API. The Azure Service
+    * Management API uses mutual authentication of management certificates
+    * over SSL to ensure that a request made to the service is secure. No
+    * anonymous requests are allowed.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
@@ -90,7 +90,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     private AffinityGroupOperations affinityGroups;
     
     /**
-    * Operations for managing affinity groups beneath your subscription.  (see
+    * Operations for managing affinity groups in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
     * @return The AffinityGroupsOperations value.
@@ -117,7 +117,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     /**
     * You can use management certificates, which are also known as subscription
     * certificates, to authenticate clients attempting to connect to resources
-    * associated with your Windows Azure subscription.  (see
+    * associated with your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
     * @return The ManagementCertificatesOperations value.
@@ -140,7 +140,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     private SubscriptionOperations subscriptions;
     
     /**
-    * Operation for listing subscription operations and details.  (see
+    * Operations for listing subscription details.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
     * @return The SubscriptionsOperations value.
@@ -169,13 +169,12 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @param baseUri Required. The URI used as the base for all Service
     * Management requests.
     */
@@ -203,13 +202,12 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -233,7 +231,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -264,7 +262,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see

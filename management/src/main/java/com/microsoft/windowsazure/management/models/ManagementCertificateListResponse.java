@@ -96,8 +96,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private byte[] data;
         
         /**
-        * Optional. A base64 representation of the data contained in the
-        * management certificate, in .cer format.
+        * Optional. A base-64 representation of the data contained in the
+        * management certificate, in cer format.
         * @return The Data value.
         */
         public byte[] getData() {
@@ -105,8 +105,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. A base64 representation of the data contained in the
-        * management certificate, in .cer format.
+        * Optional. A base-64 representation of the data contained in the
+        * management certificate, in cer format.
         * @param dataValue The Data value.
         */
         public void setData(final byte[] dataValue) {
@@ -116,7 +116,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private byte[] publicKey;
         
         /**
-        * Optional. A base64 representation of the management certificate
+        * Optional. A base-64 representation of the management certificate
         * public key.
         * @return The PublicKey value.
         */
@@ -125,7 +125,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. A base64 representation of the management certificate
+        * Optional. A base-64 representation of the management certificate
         * public key.
         * @param publicKeyValue The PublicKey value.
         */
@@ -136,8 +136,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private String thumbprint;
         
         /**
-        * Optional. The X509 certificate thumb print property of the management
-        * certificate. This thumb print uniquely identifies the certificate.
+        * Optional. The X509 certificate thumbprint property of the management
+        * certificate. This thumbprint uniquely identifies the certificate.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -145,8 +145,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Optional. The X509 certificate thumb print property of the management
-        * certificate. This thumb print uniquely identifies the certificate.
+        * Optional. The X509 certificate thumbprint property of the management
+        * certificate. This thumbprint uniquely identifies the certificate.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {

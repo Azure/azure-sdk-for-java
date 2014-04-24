@@ -74,7 +74,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         
         /**
         * Optional. Indicates if the affinity group is able to perform virtual
-        * machine related operations. If so, the string PersistentVMRole will
+        * machine-related operations. If so, the string PersistentVMRole will
         * be returned by this element. Otherwise, this element will not be
         * present.
         * @return The Capabilities value.
@@ -85,7 +85,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         
         /**
         * Optional. Indicates if the affinity group is able to perform virtual
-        * machine related operations. If so, the string PersistentVMRole will
+        * machine-related operations. If so, the string PersistentVMRole will
         * be returned by this element. Otherwise, this element will not be
         * present.
         * @param capabilitiesValue The Capabilities value.
@@ -97,7 +97,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String description;
         
         /**
-        * Optional. The user supplied description of this affinity group.
+        * Optional. The user-supplied description for this affinity group.
         * @return The Description value.
         */
         public String getDescription() {
@@ -105,7 +105,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Optional. The user supplied description of this affinity group.
+        * Optional. The user-supplied description for this affinity group.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
@@ -115,8 +115,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String label;
         
         /**
-        * Optional. The user supplied label of the affinity group returned as a
-        * base-64 encoded string.
+        * Optional. The user-supplied label for the affinity group, returned as
+        * a base-64-encoded string.
         * @return The Label value.
         */
         public String getLabel() {
@@ -124,8 +124,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Optional. The user supplied label of the affinity group returned as a
-        * base-64 encoded string.
+        * Optional. The user-supplied label for the affinity group, returned as
+        * a base-64-encoded string.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -135,7 +135,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String location;
         
         /**
-        * Optional. The user specified data center that this affinity groups is
+        * Optional. The user-specified data center that this affinity groups is
         * located in.
         * @return The Location value.
         */
@@ -144,7 +144,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Optional. The user specified data center that this affinity groups is
+        * Optional. The user-specified data center that this affinity groups is
         * located in.
         * @param locationValue The Location value.
         */
@@ -155,7 +155,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String name;
         
         /**
-        * Optional. The user supplied name of the affinity group.
+        * Optional. The user-supplied name for the affinity group.
         * @return The Name value.
         */
         public String getName() {
@@ -163,7 +163,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Optional. The user supplied name of the affinity group.
+        * Optional. The user-supplied name for the affinity group.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {

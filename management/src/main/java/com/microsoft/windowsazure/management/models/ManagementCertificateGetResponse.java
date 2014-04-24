@@ -51,8 +51,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private byte[] data;
     
     /**
-    * Optional. A base64 representation of the raw data contained in the
-    * management certificate in .cer format.
+    * Optional. A base-64 representation of the raw data contained in the
+    * management certificate, in cer format.
     * @return The Data value.
     */
     public byte[] getData() {
@@ -60,8 +60,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. A base64 representation of the raw data contained in the
-    * management certificate in .cer format.
+    * Optional. A base-64 representation of the raw data contained in the
+    * management certificate, in cer format.
     * @param dataValue The Data value.
     */
     public void setData(final byte[] dataValue) {
@@ -71,7 +71,7 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private byte[] publicKey;
     
     /**
-    * Optional. A base64 representation of the management certificate public
+    * Optional. A base-64 representation of the management certificate public
     * key.
     * @return The PublicKey value.
     */
@@ -80,7 +80,7 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. A base64 representation of the management certificate public
+    * Optional. A base-64 representation of the management certificate public
     * key.
     * @param publicKeyValue The PublicKey value.
     */
@@ -91,8 +91,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private String thumbprint;
     
     /**
-    * Optional. The thumb print that uniquely identifies the management
-    * certificate. This thumb print is the same value as the one specified by
+    * Optional. The thumbprint that uniquely identifies the management
+    * certificate. This thumbprint is the same value as the one specified by
     * the request URI.
     * @return The Thumbprint value.
     */
@@ -101,8 +101,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The thumb print that uniquely identifies the management
-    * certificate. This thumb print is the same value as the one specified by
+    * Optional. The thumbprint that uniquely identifies the management
+    * certificate. This thumbprint is the same value as the one specified by
     * the request URI.
     * @param thumbprintValue The Thumbprint value.
     */
