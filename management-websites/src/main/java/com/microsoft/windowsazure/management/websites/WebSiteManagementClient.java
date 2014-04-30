@@ -36,10 +36,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* The Windows Azure Web Sites management API provides a RESTful set of web
-* services that interact with Windows Azure Web Sites service to manage your
-* web sites. The API has entities that capture the relationship between an end
-* user and the Windows Azure Web Sites service.  (see
+* The Web Sites Management API provides a RESTful set of web services that
+* interact with the Windows Azure Web Sites service to manage your web sites.
+* The API has entities that capture the relationship between an end user and
+* Windows Azure Web Sites service.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
 * information)
 */
@@ -51,12 +51,12 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     URI getBaseUri();
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * When you create an Azure subscription, it is uniquely identified by a
+    * subscription ID. The subscription ID forms part of the URI for every
+    * call that you make to the Service Management API. The Azure Service
+    * Management API uses mutual authentication of management certificates
+    * over SSL to ensure that a request made to the service is secure. No
+    * anonymous requests are allowed.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
@@ -70,7 +70,9 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     ServerFarmOperations getServerFarmsOperations();
     
     /**
-    * Operations for managing the web sites in a web space.
+    * Operations for managing the web sites in a web space.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for
+    * more information)
     * @return The WebSitesOperations value.
     */
     WebSiteOperations getWebSitesOperations();
@@ -82,7 +84,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     WebSpaceOperations getWebSpacesOperations();
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling a long-running operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, timed out, or is still in progress.  (see
@@ -94,7 +96,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @param siteName Required. The name of the site where the operation was
     * targeted.
     * @param operationId Required. The operation ID for the operation you wish
-    * to track. The operation ID is returned in the Id field in the body of
+    * to track. The operation ID is returned in the ID field in the body of
     * the response for long-running operations.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -106,15 +108,15 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling a long-running operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, timed out, or is still in progress.  (see
@@ -126,19 +128,19 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @param siteName Required. The name of the site where the operation was
     * targeted.
     * @param operationId Required. The operation ID for the operation you wish
-    * to track. The operation ID is returned in the Id field in the body of
+    * to track. The operation ID is returned in the ID field in the body of
     * the response for long-running operations.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     Future<WebSiteOperationStatusResponse> getOperationStatusAsync(String webSpaceName, String siteName, String operationId);
     
     /**
-    * Register your subscription to use Windows Azure Web Sites.
+    * Register your subscription to use Azure Web Sites.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -150,7 +152,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     OperationResponse registerSubscription() throws IOException, ServiceException;
     
     /**
-    * Register your subscription to use Windows Azure Web Sites.
+    * Register your subscription to use Azure Web Sites.
     *
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -158,7 +160,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     Future<OperationResponse> registerSubscriptionAsync();
     
     /**
-    * Unregister your subscription to use Windows Azure Web Sites.
+    * Unregister your subscription to use Azure Web Sites.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -170,7 +172,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     OperationResponse unregisterSubscription() throws IOException, ServiceException;
     
     /**
-    * Unregister your subscription to use Windows Azure Web Sites.
+    * Unregister your subscription to use Azure Web Sites.
     *
     * @return A standard service response including an HTTP status code and
     * request ID.

@@ -54,6 +54,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the client root
+* certificates for your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for more
+* information)
+*/
 public class ClientRootCertificateOperationsImpl implements ServiceOperations<NetworkManagementClientImpl>, ClientRootCertificateOperations {
     /**
     * Initializes a new instance of the ClientRootCertificateOperationsImpl
@@ -78,14 +84,14 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
-    * client root certificate to Windows Azure.  (see
+    * client root certificate to Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Upload client
-    * certificate Virtual Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Upload Client Root
+    * Certificate Virtual Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -101,14 +107,14 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
-    * client root certificate to Windows Azure.  (see
+    * client root certificate to Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Upload client
-    * certificate Virtual Network Gateway operation.
+    * @param parameters Required. Parameters supplied to the Upload Client Root
+    * Certificate Virtual Network Gateway operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -236,7 +242,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Delete Client Root Certificate operation deletes a previously
-    * uploaded client root certificate. from Windows Azure  (see
+    * uploaded client root certificate from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
     * more information)
     *
@@ -258,7 +264,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Delete Client Root Certificate operation deletes a previously
-    * uploaded client root certificate. from Windows Azure  (see
+    * uploaded client root certificate from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
     * more information)
     *
@@ -383,16 +389,15 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Get Client Root Certificate operation returns the public portion of a
-    * previously uploaded client root certificate in a base-64 encoded format
-    * from Windows Azure.  (see
+    * previously uploaded client root certificate in a base-64-encoded format
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint Required. The X509 certificate thumbprint.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
+    * @return Response to the Get Client Root Certificate operation.
     */
     @Override
     public Future<ClientRootCertificateGetResponse> getAsync(final String networkName, final String certificateThumbprint) {
@@ -406,8 +411,8 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     
     /**
     * The Get Client Root Certificate operation returns the public portion of a
-    * previously uploaded client root certificate in a base-64 encoded format
-    * from Windows Azure.  (see
+    * previously uploaded client root certificate in a base-64-encoded format
+    * from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
     * more information)
     *
@@ -422,8 +427,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
+    * @return Response to the Get Client Root Certificate operation.
     */
     @Override
     public ClientRootCertificateGetResponse get(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -509,13 +513,13 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     /**
     * The List Client Root Certificates operation returns a list of all the
     * client root certificates that are associated with the specified virtual
-    * network in Windows Azure.  (see
+    * network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @return The response to the list client root certificates request.
+    * @return The response for the List Client Root Certificates operation.
     */
     @Override
     public Future<ClientRootCertificateListResponse> listAsync(final String networkName) {
@@ -530,7 +534,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     /**
     * The List Client Root Certificates operation returns a list of all the
     * client root certificates that are associated with the specified virtual
-    * network in Windows Azure.  (see
+    * network in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
     * more information)
     *
@@ -544,7 +548,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The response to the list client root certificates request.
+    * @return The response for the List Client Root Certificates operation.
     */
     @Override
     public ClientRootCertificateListResponse list(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {

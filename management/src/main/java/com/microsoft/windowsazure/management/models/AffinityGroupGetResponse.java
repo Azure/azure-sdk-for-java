@@ -34,7 +34,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     private ArrayList<String> capabilities;
     
     /**
-    * Optional. Indicates if the virtual machine related operations can be
+    * Optional. Indicates if the virtual machine-related operations can be
     * performed in this affinity group. If so, the string PersistentVMRole
     * will be returned by this element. Otherwise, this element will not be
     * present.
@@ -45,7 +45,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Indicates if the virtual machine related operations can be
+    * Optional. Indicates if the virtual machine-related operations can be
     * performed in this affinity group. If so, the string PersistentVMRole
     * will be returned by this element. Otherwise, this element will not be
     * present.
@@ -58,7 +58,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     private String description;
     
     /**
-    * Optional. The user supplied description of this affinity group.
+    * Optional. The user-supplied description for this affinity group.
     * @return The Description value.
     */
     public String getDescription() {
@@ -66,7 +66,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The user supplied description of this affinity group.
+    * Optional. The user-supplied description for this affinity group.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -94,8 +94,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     private String label;
     
     /**
-    * Optional. The user supplied label of the affinity group returned as a
-    * base-64 encoded string.
+    * Optional. The user-supplied label for the affinity group, returned as a
+    * base-64-encoded string.
     * @return The Label value.
     */
     public String getLabel() {
@@ -103,8 +103,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The user supplied label of the affinity group returned as a
-    * base-64 encoded string.
+    * Optional. The user-supplied label for the affinity group, returned as a
+    * base-64-encoded string.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -134,7 +134,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     private String name;
     
     /**
-    * Optional. The user supplied name of the affinity group.
+    * Optional. The user-supplied name for the affinity group.
     * @return The Name value.
     */
     public String getName() {
@@ -142,7 +142,7 @@ public class AffinityGroupGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The user supplied name of the affinity group.
+    * Optional. The user-supplied name for the affinity group.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

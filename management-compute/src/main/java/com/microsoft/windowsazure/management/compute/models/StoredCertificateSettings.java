@@ -24,18 +24,18 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Service certificates with which to provision to the new virtual machine.
-* Stored certificate settings reference certificates that already exist in the
-* Windows Azure hosted service. Prior to configuring the stored certificates
-* for the virtual machine, you must call the Add Service Certificate operation
-* or add the certificate via the Windows Azure Management portal.
+* Service certificates with which to provision the new virtual machine. Stored
+* certificate settings reference certificates that already exist in the Azure
+* hosted service. Prior to configuring the stored certificates for the virtual
+* machine, you must call the Add Service Certificate operation or add the
+* certificate via the Azure Management portal.
 */
 public class StoredCertificateSettings {
     private String storeName;
     
     /**
-    * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, "My".
+    * Required. Specifies the name of the certificate store from which to
+    * retrieve certificates.  For example, "My".
     * @return The StoreName value.
     */
     public String getStoreName() {
@@ -43,8 +43,8 @@ public class StoredCertificateSettings {
     }
     
     /**
-    * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, "My".
+    * Required. Specifies the name of the certificate store from which to
+    * retrieve certificates.  For example, "My".
     * @param storeNameValue The StoreName value.
     */
     public void setStoreName(final String storeNameValue) {

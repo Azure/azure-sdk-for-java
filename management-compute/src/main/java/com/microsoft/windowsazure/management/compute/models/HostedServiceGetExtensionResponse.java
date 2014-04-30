@@ -51,7 +51,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     
     /**
     * Optional. The provider namespace of the extension. The provider namespace
-    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * for Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @return The ProviderNamespace value.
     */
     public String getProviderNamespace() {
@@ -60,7 +60,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     
     /**
     * Optional. The provider namespace of the extension. The provider namespace
-    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * for Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @param providerNamespaceValue The ProviderNamespace value.
     */
     public void setProviderNamespace(final String providerNamespaceValue) {

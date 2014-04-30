@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the virtual
-* networks your subscription.  (see
+* networks for your subscription.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
 * information)
 */
@@ -74,12 +74,12 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * When you create an Azure subscription, it is uniquely identified by a
+    * subscription ID. The subscription ID forms part of the URI for every
+    * call that you make to the Service Management API. The Azure Service
+    * Management API uses mutual authentication of management certificates
+    * over SSL to ensure that a request made to the service is secure. No
+    * anonymous requests are allowed.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
@@ -89,6 +89,10 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private ClientRootCertificateOperations clientRootCertificates;
     
     /**
+    * The Network Management API includes operations for managing the client
+    * root certificates for your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
     * @return The ClientRootCertificatesOperations value.
     */
     public ClientRootCertificateOperations getClientRootCertificatesOperations() {
@@ -98,6 +102,10 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private GatewayOperations gateways;
     
     /**
+    * The Network Management API includes operations for managing the gateways
+    * for your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
     * @return The GatewaysOperations value.
     */
     public GatewayOperations getGatewaysOperations() {
@@ -107,6 +115,10 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private NetworkOperations networks;
     
     /**
+    * The Network Management API includes operations for managing the virtual
+    * networks for your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for
+    * more information)
     * @return The NetworksOperations value.
     */
     public NetworkOperations getNetworksOperations() {
@@ -116,6 +128,8 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private ReservedIPOperations reservedIPs;
     
     /**
+    * The Network Management API includes operations for managing the reserved
+    * IPs for your subscription.
     * @return The ReservedIPsOperations value.
     */
     public ReservedIPOperations getReservedIPsOperations() {
@@ -125,6 +139,8 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private StaticIPOperations staticIPs;
     
     /**
+    * The Network Management API includes operations for managing the static
+    * IPs for your subscription.
     * @return The StaticIPsOperations value.
     */
     public StaticIPOperations getStaticIPsOperations() {
@@ -151,13 +167,12 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @param baseUri Required. The URI used as the base for all SQL requests.
     */
     @Inject
@@ -184,13 +199,12 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. When you create an Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Azure Service Management API uses mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure. No anonymous requests are allowed.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -214,7 +228,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -229,7 +243,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -245,7 +259,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -268,7 +282,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.

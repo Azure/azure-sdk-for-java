@@ -30,8 +30,8 @@ public class GatewayResetSharedKeyParameters {
     private int keyLength;
     
     /**
-    * Optional. The number of bytes in the shared key.  Minimum is 1 and
-    * maximum is 128
+    * Optional. The number of bytes in the shared key. Minimum is 1 and maximum
+    * is 128
     * @return The KeyLength value.
     */
     public int getKeyLength() {
@@ -39,8 +39,8 @@ public class GatewayResetSharedKeyParameters {
     }
     
     /**
-    * Optional. The number of bytes in the shared key.  Minimum is 1 and
-    * maximum is 128
+    * Optional. The number of bytes in the shared key. Minimum is 1 and maximum
+    * is 128
     * @param keyLengthValue The KeyLength value.
     */
     public void setKeyLength(final int keyLengthValue) {

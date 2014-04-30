@@ -24,14 +24,14 @@
 package com.microsoft.windowsazure.management.network.models;
 
 /**
-* The vendor, platform, and os family ofthe requested device configuration
+* The vendor, platform, and OS family of the requested device configuration
 * script.
 */
 public class GatewayGetDeviceConfigurationScriptParameters {
     private String oSFamily;
     
     /**
-    * Optional. The device OS Family.
+    * Optional. The device OS family.
     * @return The OSFamily value.
     */
     public String getOSFamily() {
@@ -39,7 +39,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     }
     
     /**
-    * Optional. The device OS Family.
+    * Optional. The device OS family.
     * @param oSFamilyValue The OSFamily value.
     */
     public void setOSFamily(final String oSFamilyValue) {

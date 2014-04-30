@@ -45,7 +45,8 @@ import org.xml.sax.SAXException;
 */
 public interface WebSpaceOperations {
     /**
-    * Creates a source control user allowed to publish to this web space.
+    * Creates a source control user with permissions to publish to this web
+    * space.
     *
     * @param username Required. The user name.
     * @param password Required. The user password.
@@ -66,7 +67,8 @@ public interface WebSpaceOperations {
     WebSpacesCreatePublishingUserResponse createPublishingUser(String username, String password, WebSpacesCreatePublishingUserParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
-    * Creates a source control user allowed to publish to this web space.
+    * Creates a source control user with permissions to publish to this web
+    * space.
     *
     * @param username Required. The user name.
     * @param password Required. The user password.
@@ -77,8 +79,8 @@ public interface WebSpaceOperations {
     Future<WebSpacesCreatePublishingUserResponse> createPublishingUserAsync(String username, String password, WebSpacesCreatePublishingUserParameters parameters);
     
     /**
-    * You can retrieve details for a specified webspace name by issuing an HTTP
-    * GET request.  (see
+    * You can retrieve details for a specified web space name by issuing an
+    * HTTP GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
@@ -98,8 +100,8 @@ public interface WebSpaceOperations {
     WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
-    * You can retrieve details for a specified webspace name by issuing an HTTP
-    * GET request.  (see
+    * You can retrieve details for a specified web space name by issuing an
+    * HTTP GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
@@ -109,7 +111,7 @@ public interface WebSpaceOperations {
     Future<WebSpacesGetResponse> getAsync(String webSpaceName);
     
     /**
-    * Get the dns suffix for this subscription.
+    * Get the DNS Suffix for this subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -124,14 +126,14 @@ public interface WebSpaceOperations {
     WebSpacesGetDnsSuffixResponse getDnsSuffix() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * Get the dns suffix for this subscription.
+    * Get the DNS Suffix for this subscription.
     *
     * @return The Get DNS Suffix operation response.
     */
     Future<WebSpacesGetDnsSuffixResponse> getDnsSuffixAsync();
     
     /**
-    * You can list the webspaces under the current subscription by issuing a
+    * You can list the web spaces under the current subscription by issuing a
     * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166961.aspx for
     * more information)
@@ -149,7 +151,7 @@ public interface WebSpaceOperations {
     WebSpacesListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * You can list the webspaces under the current subscription by issuing a
+    * You can list the web spaces under the current subscription by issuing a
     * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166961.aspx for
     * more information)
@@ -159,7 +161,7 @@ public interface WebSpaceOperations {
     Future<WebSpacesListResponse> listAsync();
     
     /**
-    * Get the available geo regions for this webspace.
+    * Get the available geo regions for this web space.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -169,14 +171,14 @@ public interface WebSpaceOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Get DNS Suffix operation response.
+    * @return The List Geo Regions operation response.
     */
     WebSpacesListGeoRegionsResponse listGeoRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * Get the available geo regions for this webspace.
+    * Get the available geo regions for this web space.
     *
-    * @return The Get DNS Suffix operation response.
+    * @return The List Geo Regions operation response.
     */
     Future<WebSpacesListGeoRegionsResponse> listGeoRegionsAsync();
     

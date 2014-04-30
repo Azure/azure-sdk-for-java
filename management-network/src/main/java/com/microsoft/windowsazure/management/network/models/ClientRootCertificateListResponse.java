@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The response to the list client root certificates request.
+* The response for the List Client Root Certificates operation.
 */
 public class ClientRootCertificateListResponse extends OperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate> {
     private ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates;

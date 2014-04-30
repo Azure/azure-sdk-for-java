@@ -55,8 +55,8 @@ public class GatewayConnectDisconnectOrTestParameters {
     
     /**
     * Required. Specifies the operation to perform on the connection. Can be
-    * set to Connect, Disconnect or Test to connect to a local network,
-    * disconnect from a local network, or test the gateway’s connection to a
+    * set to Connect, Disconnect, or Test to connect to a local network,
+    * disconnect from a local network, or test the gateway's connection to a
     * local network site.
     * @return The Operation value.
     */
@@ -66,8 +66,8 @@ public class GatewayConnectDisconnectOrTestParameters {
     
     /**
     * Required. Specifies the operation to perform on the connection. Can be
-    * set to Connect, Disconnect or Test to connect to a local network,
-    * disconnect from a local network, or test the gateway’s connection to a
+    * set to Connect, Disconnect, or Test to connect to a local network,
+    * disconnect from a local network, or test the gateway's connection to a
     * local network site.
     * @param operationValue The Operation value.
     */

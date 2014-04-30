@@ -49,8 +49,8 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for determining the version of the Windows Azure Guest Operating
-* System on which your service is running.  (see
+* Operations for determining the version of the Azure Guest Operating System on
+* which your service is running.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
 * information)
 */
@@ -79,11 +79,11 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * The List Operating Systems operation lists the versions of the guest
     * operating system that are currently available in Windows Azure. The
     * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
+    * an operating system version belongs to. Currently Azure supports two
+    * operating system families: the Azure guest operating system that is
+    * substantially compatible with Windows Server 2008 SP2, and the Azure
+    * guest operating system that is substantially compatible with Windows
+    * Server 2008 R2.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
     * more information)
     *
@@ -103,11 +103,11 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * The List Operating Systems operation lists the versions of the guest
     * operating system that are currently available in Windows Azure. The
     * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
+    * an operating system version belongs to. Currently Azure supports two
+    * operating system families: the Azure guest operating system that is
+    * substantially compatible with Windows Server 2008 SP2, and the Azure
+    * guest operating system that is substantially compatible with Windows
+    * Server 2008 R2.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
     * more information)
     *
@@ -252,14 +252,13 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     
     /**
     * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
+    * available in Azure, and also lists the operating system versions
+    * available for each family. Currently Azure supports two operating system
+    * families: the Azure guest operating system that is substantially
+    * compatible with Windows Server 2008 SP2, and the Azure guest operating
+    * system that is substantially compatible with Windows Server 2008 R2.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx
+    * for more information)
     *
     * @return The List Operating System Families operation response.
     */
@@ -275,14 +274,13 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     
     /**
     * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
+    * available in Azure, and also lists the operating system versions
+    * available for each family. Currently Azure supports two operating system
+    * families: the Azure guest operating system that is substantially
+    * compatible with Windows Server 2008 SP2, and the Azure guest operating
+    * system that is substantially compatible with Windows Server 2008 R2.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx
+    * for more information)
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by

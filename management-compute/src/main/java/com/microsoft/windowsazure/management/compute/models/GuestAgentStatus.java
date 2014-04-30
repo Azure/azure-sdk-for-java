@@ -55,8 +55,8 @@ public class GuestAgentStatus {
     private GuestAgentFormattedMessage formattedMessage;
     
     /**
-    * Optional. This object encapsulates localized status message from the
-    * Guest Agent.
+    * Optional. This object encapsulates a formatted localized status message
+    * from the Guest Agent.
     * @return The FormattedMessage value.
     */
     public GuestAgentFormattedMessage getFormattedMessage() {
@@ -64,8 +64,8 @@ public class GuestAgentStatus {
     }
     
     /**
-    * Optional. This object encapsulates localized status message from the
-    * Guest Agent.
+    * Optional. This object encapsulates a formatted localized status message
+    * from the Guest Agent.
     * @param formattedMessageValue The FormattedMessage value.
     */
     public void setFormattedMessage(final GuestAgentFormattedMessage formattedMessageValue) {
@@ -93,7 +93,7 @@ public class GuestAgentStatus {
     private GuestAgentMessage message;
     
     /**
-    * Optional. This object encapsulates localized status message from the
+    * Optional. This object encapsulates a localized status message from the
     * Guest Agent.
     * @return The Message value.
     */
@@ -102,7 +102,7 @@ public class GuestAgentStatus {
     }
     
     /**
-    * Optional. This object encapsulates localized status message from the
+    * Optional. This object encapsulates a localized status message from the
     * Guest Agent.
     * @param messageValue The Message value.
     */
@@ -131,7 +131,7 @@ public class GuestAgentStatus {
     private String status;
     
     /**
-    * Optional. The guest agent status, which can be: "Ready" or "NotReady"
+    * Optional. The guest agent status, which can be: "Ready" or "NotReady".
     * @return The Status value.
     */
     public String getStatus() {
@@ -139,7 +139,7 @@ public class GuestAgentStatus {
     }
     
     /**
-    * Optional. The guest agent status, which can be: "Ready" or "NotReady"
+    * Optional. The guest agent status, which can be: "Ready" or "NotReady".
     * @param statusValue The Status value.
     */
     public void setStatus(final String statusValue) {

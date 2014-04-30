@@ -320,7 +320,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private String subscriptionName;
     
     /**
-    * Optional. The user-supplied name of the subscription.
+    * Optional. The user-supplied name for the subscription.
     * @return The SubscriptionName value.
     */
     public String getSubscriptionName() {
@@ -328,7 +328,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The user-supplied name of the subscription.
+    * Optional. The user-supplied name for the subscription.
     * @param subscriptionNameValue The SubscriptionName value.
     */
     public void setSubscriptionName(final String subscriptionNameValue) {

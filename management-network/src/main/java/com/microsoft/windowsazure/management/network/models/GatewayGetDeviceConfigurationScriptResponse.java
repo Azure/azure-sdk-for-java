@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The configuration script returned from the get device configuration script
-* request.
+* operation.
 */
 public class GatewayGetDeviceConfigurationScriptResponse extends OperationResponse {
     private String configurationScript;

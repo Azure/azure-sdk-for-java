@@ -31,7 +31,7 @@ public class SshSettingKeyPair {
     
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
-    * associated with the hosted service that includes the SSH keypair.
+    * associated with the hosted service that includes the SSH key pair.
     * @return The Fingerprint value.
     */
     public String getFingerprint() {
@@ -40,7 +40,7 @@ public class SshSettingKeyPair {
     
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
-    * associated with the hosted service that includes the SSH keypair.
+    * associated with the hosted service that includes the SSH key pair.
     * @param fingerprintValue The Fingerprint value.
     */
     public void setFingerprint(final String fingerprintValue) {
@@ -50,11 +50,11 @@ public class SshSettingKeyPair {
     private String path;
     
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH private key. The file is overwritten when multiple
-    * keys are written to it. The SSH public key is stored in the same
-    * directory and has the same name as the private key file with .pub
-    * suffix.  Example: /home/user/.ssh/id_rsa
+    * Required. Specifies the full path of a file on the virtual machine which
+    * stores the SSH private key. The file is overwritten when multiple keys
+    * are written to it. The SSH public key is stored in the same directory
+    * and has the same name as the private key file with .pub suffix. Example:
+    * /home/user/.ssh/id_rsa.
     * @return The Path value.
     */
     public String getPath() {
@@ -62,11 +62,11 @@ public class SshSettingKeyPair {
     }
     
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH private key. The file is overwritten when multiple
-    * keys are written to it. The SSH public key is stored in the same
-    * directory and has the same name as the private key file with .pub
-    * suffix.  Example: /home/user/.ssh/id_rsa
+    * Required. Specifies the full path of a file on the virtual machine which
+    * stores the SSH private key. The file is overwritten when multiple keys
+    * are written to it. The SSH public key is stored in the same directory
+    * and has the same name as the private key file with .pub suffix. Example:
+    * /home/user/.ssh/id_rsa.
     * @param pathValue The Path value.
     */
     public void setPath(final String pathValue) {

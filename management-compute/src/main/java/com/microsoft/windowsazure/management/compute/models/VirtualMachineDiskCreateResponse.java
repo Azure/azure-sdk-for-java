@@ -139,7 +139,7 @@ public class VirtualMachineDiskCreateResponse extends OperationResponse {
     * for the disk is located. The blob location belongs to a storage account
     * in the subscription specified by the SubscriptionId value in the
     * operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -151,7 +151,7 @@ public class VirtualMachineDiskCreateResponse extends OperationResponse {
     * for the disk is located. The blob location belongs to a storage account
     * in the subscription specified by the SubscriptionId value in the
     * operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -223,7 +223,7 @@ public class VirtualMachineDiskCreateResponse extends OperationResponse {
     private VirtualMachineDiskCreateResponse.VirtualMachineDiskUsageDetails usageDetails;
     
     /**
-    * Optional. Contains properties that specify a virtual machine that
+    * Optional. Contains properties that specify a virtual machine that is
     * currently using the disk. A disk cannot be deleted as long as it is
     * attached to a virtual machine.
     * @return The UsageDetails value.
@@ -233,7 +233,7 @@ public class VirtualMachineDiskCreateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains properties that specify a virtual machine that
+    * Optional. Contains properties that specify a virtual machine that is
     * currently using the disk. A disk cannot be deleted as long as it is
     * attached to a virtual machine.
     * @param usageDetailsValue The UsageDetails value.

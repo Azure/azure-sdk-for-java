@@ -77,8 +77,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the data
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the data disk for
+    * the virtual machine.
     * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
@@ -86,8 +86,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the data
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the data disk for
+    * the virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
@@ -138,8 +138,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the operating
+    * system disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk() {
@@ -147,8 +147,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure used to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure used to create the operating
+    * system disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
     public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
@@ -159,7 +159,7 @@ public class VirtualMachineGetResponse extends OperationResponse {
     
     /**
     * Optional. The name for the virtual machine. The name is unique within
-    * Windows Azure.
+    * Azure.
     * @return The RoleName value.
     */
     public String getRoleName() {
@@ -168,7 +168,7 @@ public class VirtualMachineGetResponse extends OperationResponse {
     
     /**
     * Optional. The name for the virtual machine. The name is unique within
-    * Windows Azure.
+    * Azure.
     * @param roleNameValue The RoleName value.
     */
     public void setRoleName(final String roleNameValue) {

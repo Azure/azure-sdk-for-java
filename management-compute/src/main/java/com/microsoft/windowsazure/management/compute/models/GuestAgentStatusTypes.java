@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The guest agent status, which can be: "Ready" or "NotReady"
+* The guest agent status, which can be: "Ready" or "NotReady".
 */
 public abstract class GuestAgentStatusTypes {
     public static final String READY = "Ready";

@@ -94,7 +94,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     private URI iconUri;
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
@@ -103,7 +103,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
@@ -170,7 +170,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     private String language;
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
@@ -179,7 +179,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
@@ -193,7 +193,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     * Optional. The geo-location in which this media is located. The Location
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account belongs to an affinity
-    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * group the value is NULL. If the version is set to 2012-08-01 or later,
     * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @return The Location value.
@@ -206,7 +206,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     * Optional. The geo-location in which this media is located. The Location
     * value is derived from storage account that contains the blob in which
     * the media is located. If the storage account belongs to an affinity
-    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * group the value is NULL. If the version is set to 2012-08-01 or later,
     * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @param locationValue The Location value.
@@ -236,10 +236,10 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * Optional. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. Specifies the location of the blob in Azure storage. The blob
+    * location must belong to a storage account in the subscription specified
+    * by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -247,10 +247,10 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. Specifies the location of the blob in Azure storage. The blob
+    * location must belong to a storage account in the subscription specified
+    * by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -260,8 +260,8 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     private String name;
     
     /**
-    * Optional. Specifies a name that Windows Azure uses to identify the image
-    * when creating one or more virtual machines.
+    * Optional. Specifies a name that Azure uses to identify the image when
+    * creating one or more virtual machines.
     * @return The Name value.
     */
     public String getName() {
@@ -269,8 +269,8 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies a name that Windows Azure uses to identify the image
-    * when creating one or more virtual machines.
+    * Optional. Specifies a name that Azure uses to identify the image when
+    * creating one or more virtual machines.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -281,7 +281,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     
     /**
     * Optional. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType() {
@@ -290,7 +290,7 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     
     /**
     * Optional. The operating system type of the OS image. Possible values are:
-    * Linux, Windows.
+    * Linux or Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -397,9 +397,8 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -408,9 +407,8 @@ public class VirtualMachineOSImageUpdateResponse extends OperationResponse {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

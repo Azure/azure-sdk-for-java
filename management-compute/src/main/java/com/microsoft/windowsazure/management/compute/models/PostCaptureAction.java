@@ -34,7 +34,7 @@ public enum PostCaptureAction {
     
     /**
     * Causes the virtual machine to be redeployed after the image is captured
-    * by using the specified information in ProvisioningConfiguration
+    * by using the specified information in ProvisioningConfiguration.
     */
     Reprovision,
 }

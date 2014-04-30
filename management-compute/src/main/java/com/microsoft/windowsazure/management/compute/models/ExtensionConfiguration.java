@@ -88,7 +88,7 @@ public class ExtensionConfiguration {
         /**
         * Required. The identifier of the extension. The identifier is created
         * when the extension is added to the cloud service. You can find the
-        * Id of an extension that was added to a cloud service by using List
+        * ID of an extension that was added to a cloud service by using List
         * Extensions.
         * @return The Id value.
         */
@@ -99,7 +99,7 @@ public class ExtensionConfiguration {
         /**
         * Required. The identifier of the extension. The identifier is created
         * when the extension is added to the cloud service. You can find the
-        * Id of an extension that was added to a cloud service by using List
+        * ID of an extension that was added to a cloud service by using List
         * Extensions.
         * @param idValue The Id value.
         */

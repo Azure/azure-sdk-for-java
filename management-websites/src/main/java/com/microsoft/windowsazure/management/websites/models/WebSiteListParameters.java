@@ -32,7 +32,7 @@ public class WebSiteListParameters {
     private ArrayList<String> propertiesToInclude;
     
     /**
-    * Optional. Specifies a list of the names of any addtional parameters to
+    * Optional. Specifies a list of the names of any additional parameters to
     * return.
     * @return The PropertiesToInclude value.
     */
@@ -41,7 +41,7 @@ public class WebSiteListParameters {
     }
     
     /**
-    * Optional. Specifies a list of the names of any addtional parameters to
+    * Optional. Specifies a list of the names of any additional parameters to
     * return.
     * @param propertiesToIncludeValue The PropertiesToInclude value.
     */

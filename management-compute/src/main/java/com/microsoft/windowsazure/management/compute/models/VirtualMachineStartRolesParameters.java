@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Parameters for the start roles operation.
+* Parameters for the Start Roles operation.
 */
 public class VirtualMachineStartRolesParameters {
     private ArrayList<String> roles;

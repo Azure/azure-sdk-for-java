@@ -35,14 +35,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* Operation for listing subscription operations and details.  (see
+* Operations for listing subscription details.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for more
 * information)
 */
 public interface SubscriptionOperations {
     /**
     * The Get Subscription operation returns account and resource allocation
-    * information on the specified subscription.  (see
+    * information for the specified subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
     * more information)
     *
@@ -62,7 +62,7 @@ public interface SubscriptionOperations {
     
     /**
     * The Get Subscription operation returns account and resource allocation
-    * information on the specified subscription.  (see
+    * information for the specified subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
     * more information)
     *

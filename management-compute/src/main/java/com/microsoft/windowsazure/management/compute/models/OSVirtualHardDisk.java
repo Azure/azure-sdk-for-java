@@ -26,8 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.URI;
 
 /**
-* The parameters Windows Azure uses to create theoperating system disk for the
-* virtual machine.
+* The parameters Azure uses to create the operating system disk for the virtual
+* machine.
 */
 public class OSVirtualHardDisk {
     private VirtualHardDiskHostCaching hostCaching;
@@ -53,7 +53,7 @@ public class OSVirtualHardDisk {
     private String label;
     
     /**
-    * Optional. Specifies the friendly name an operating system image in the
+    * Optional. Specifies the friendly name of an operating system image in the
     * image repository.
     * @return The Label value.
     */
@@ -62,7 +62,7 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Optional. Specifies the friendly name an operating system image in the
+    * Optional. Specifies the friendly name of an operating system image in the
     * image repository.
     * @param labelValue The Label value.
     */
@@ -73,8 +73,8 @@ public class OSVirtualHardDisk {
     private URI mediaLink;
     
     /**
-    * Optional. Specifies the location of the operating system disk in Windows
-    * Azure storage.
+    * Optional. Specifies the location of the operating system disk in Azure
+    * storage.
     * @return The MediaLink value.
     */
     public URI getMediaLink() {
@@ -82,8 +82,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Optional. Specifies the location of the operating system disk in Windows
-    * Azure storage.
+    * Optional. Specifies the location of the operating system disk in Azure
+    * storage.
     * @param mediaLinkValue The MediaLink value.
     */
     public void setMediaLink(final URI mediaLinkValue) {
@@ -93,7 +93,7 @@ public class OSVirtualHardDisk {
     private String name;
     
     /**
-    * Optional. Specifies the name an operating system image in the image
+    * Optional. Specifies the name of an operating system image in the image
     * repository.
     * @return The Name value.
     */
@@ -102,7 +102,7 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Optional. Specifies the name an operating system image in the image
+    * Optional. Specifies the name of an operating system image in the image
     * repository.
     * @param nameValue The Name value.
     */

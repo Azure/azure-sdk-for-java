@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.network.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* A standard storage response including an HTTP status code and request ID.
+* Response to the Get Client Root Certificate operation.
 */
 public class ClientRootCertificateGetResponse extends OperationResponse {
     private String certificate;

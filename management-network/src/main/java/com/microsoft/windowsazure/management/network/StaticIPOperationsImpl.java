@@ -47,6 +47,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the static IPs
+* for your subscription.
+*/
 public class StaticIPOperationsImpl implements ServiceOperations<NetworkManagementClientImpl>, StaticIPOperations {
     /**
     * Initializes a new instance of the StaticIPOperationsImpl class.
@@ -75,7 +79,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
     * @param networkName Required. The name of the virtual network.
     * @param ipAddress Required. The address of the static IP.
     * @return A response that indicates the availability of a static IP
-    * address, and if not, provide a list of suggestions.
+    * address, and if not, provides a list of suggestions.
     */
     @Override
     public Future<NetworkStaticIPAvailabilityResponse> checkAsync(final String networkName, final InetAddress ipAddress) {
@@ -102,7 +106,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
     * @return A response that indicates the availability of a static IP
-    * address, and if not, provide a list of suggestions.
+    * address, and if not, provides a list of suggestions.
     */
     @Override
     public NetworkStaticIPAvailabilityResponse check(String networkName, InetAddress ipAddress) throws IOException, ServiceException, ParserConfigurationException, SAXException {

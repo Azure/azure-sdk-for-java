@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Is Hostname Available operation response.
+* The Is Hostname Available Web Site operation response.
 */
 public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
     private boolean isAvailable;

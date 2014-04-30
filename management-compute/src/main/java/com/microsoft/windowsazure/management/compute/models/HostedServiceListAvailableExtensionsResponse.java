@@ -75,8 +75,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         private Boolean blockRoleUponFailure;
         
         /**
-        * Optional. Boolean flag indicating whether this version of extension
-        * blocks the role upon failure.
+        * Optional. Indicates whether this version of extension blocks the role
+        * upon failure.
         * @return The BlockRoleUponFailure value.
         */
         public Boolean isBlockRoleUponFailure() {
@@ -84,8 +84,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         }
         
         /**
-        * Optional. Boolean flag indicating whether this version of extension
-        * blocks the role upon failure.
+        * Optional. Indicates whether this version of extension blocks the role
+        * upon failure.
         * @param blockRoleUponFailureValue The BlockRoleUponFailure value.
         */
         public void setBlockRoleUponFailure(final Boolean blockRoleUponFailureValue) {
@@ -116,7 +116,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Optional. URI string pointing to the EULA (End User License
         * Agreement) of this version of extension. This is optionally
         * specified by the third-party publishing the extension instead of
-        * Windows Azure, at the time of extension creation or update.
+        * Azure, at the time of extension creation or update.
         * @return The Eula value.
         */
         public URI getEula() {
@@ -127,7 +127,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Optional. URI string pointing to the EULA (End User License
         * Agreement) of this version of extension. This is optionally
         * specified by the third-party publishing the extension instead of
-        * Windows Azure, at the time of extension creation or update.
+        * Azure, at the time of extension creation or update.
         * @param eulaValue The Eula value.
         */
         public void setEula(final URI eulaValue) {
@@ -139,8 +139,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * Optional. URI string pointing to the homepage of this version of
         * extension. This is optionally specified by the third-party
-        * publishing the extension instead of Windows Azure, at the time of
-        * extension creation or update.
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
         * @return The HomepageUri value.
         */
         public URI getHomepageUri() {
@@ -150,8 +150,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * Optional. URI string pointing to the homepage of this version of
         * extension. This is optionally specified by the third-party
-        * publishing the extension instead of Windows Azure, at the time of
-        * extension creation or update.
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
         * @param homepageUriValue The HomepageUri value.
         */
         public void setHomepageUri(final URI homepageUriValue) {
@@ -184,7 +184,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Optional. Boolean property indicating whether the extension accepts
         * JSON or XML based configuration. If this property is 'true' then the
         * extension accepts JSON based configuration. If this property is
-        * 'false' the extension accepts XML based confihuration.
+        * 'false' the extension accepts XML based configuration.
         * @return The IsJsonExtension value.
         */
         public Boolean isJsonExtension() {
@@ -195,7 +195,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Optional. Boolean property indicating whether the extension accepts
         * JSON or XML based configuration. If this property is 'true' then the
         * extension accepts JSON based configuration. If this property is
-        * 'false' the extension accepts XML based confihuration.
+        * 'false' the extension accepts XML based configuration.
         * @param isJsonExtensionValue The IsJsonExtension value.
         */
         public void setIsJsonExtension(final Boolean isJsonExtensionValue) {
@@ -225,8 +225,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * Optional. URI string pointing to the privacy document of this version
         * of extension. This is optionally specified by the third-party
-        * publishing the extension instead of Windows Azure, at the time of
-        * extension creation or update.
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
         * @return The PrivacyUri value.
         */
         public URI getPrivacyUri() {
@@ -236,8 +236,8 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * Optional. URI string pointing to the privacy document of this version
         * of extension. This is optionally specified by the third-party
-        * publishing the extension instead of Windows Azure, at the time of
-        * extension creation or update.
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
         * @param privacyUriValue The PrivacyUri value.
         */
         public void setPrivacyUri(final URI privacyUriValue) {
@@ -267,8 +267,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * Optional. The provider namespace of the extension. The provider
-        * namespace for Windows Azure extensions is
-        * Microsoft.Windows.Azure.Extensions.
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @return The ProviderNamespace value.
         */
         public String getProviderNamespace() {
@@ -277,8 +276,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * Optional. The provider namespace of the extension. The provider
-        * namespace for Windows Azure extensions is
-        * Microsoft.Windows.Azure.Extensions.
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @param providerNamespaceValue The ProviderNamespace value.
         */
         public void setProviderNamespace(final String providerNamespaceValue) {
@@ -307,13 +305,13 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         private Boolean replicationCompleted;
         
         /**
-        * Optional. Boolean flag indicating whether this version of extension
-        * has been replicated to all regions or not. If true, then the given
-        * extension version can be used in creating or updating deployments.
-        * Otherwise, the given extension version might cause failure in
-        * creating or updating deployments. The typical time is 20 minutes for
-        * a newly-registered or newly-updated extension to replicate
-        * completely by Windows Azure.
+        * Optional. Indicates whether this version of extension has been
+        * replicated to all regions or not. If true, then the given extension
+        * version can be used in creating or updating deployments. Otherwise,
+        * the given extension version might cause failure in creating or
+        * updating deployments. The typical time is 20 minutes for a
+        * newly-registered or newly-updated extension to replicate completely
+        * by Azure.
         * @return The ReplicationCompleted value.
         */
         public Boolean isReplicationCompleted() {
@@ -321,13 +319,13 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         }
         
         /**
-        * Optional. Boolean flag indicating whether this version of extension
-        * has been replicated to all regions or not. If true, then the given
-        * extension version can be used in creating or updating deployments.
-        * Otherwise, the given extension version might cause failure in
-        * creating or updating deployments. The typical time is 20 minutes for
-        * a newly-registered or newly-updated extension to replicate
-        * completely by Windows Azure.
+        * Optional. Indicates whether this version of extension has been
+        * replicated to all regions or not. If true, then the given extension
+        * version can be used in creating or updating deployments. Otherwise,
+        * the given extension version might cause failure in creating or
+        * updating deployments. The typical time is 20 minutes for a
+        * newly-registered or newly-updated extension to replicate completely
+        * by Azure.
         * @param replicationCompletedValue The ReplicationCompleted value.
         */
         public void setReplicationCompleted(final Boolean replicationCompletedValue) {

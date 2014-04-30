@@ -30,8 +30,8 @@ public class ServiceCertificateCreateParameters {
     private CertificateFormat certificateFormat;
     
     /**
-    * Required. The service certificate format. Windows Azure supports the pfx
-    * and cer file formats.
+    * Required. The service certificate format. Azure supports the pfx and cer
+    * file formats.
     * @return The CertificateFormat value.
     */
     public CertificateFormat getCertificateFormat() {
@@ -39,8 +39,8 @@ public class ServiceCertificateCreateParameters {
     }
     
     /**
-    * Required. The service certificate format. Windows Azure supports the pfx
-    * and cer file formats.
+    * Required. The service certificate format. Azure supports the pfx and cer
+    * file formats.
     * @param certificateFormatValue The CertificateFormat value.
     */
     public void setCertificateFormat(final CertificateFormat certificateFormatValue) {
@@ -50,7 +50,7 @@ public class ServiceCertificateCreateParameters {
     private byte[] data;
     
     /**
-    * Required. The pfx or .cer file.
+    * Required. The pfx or cer file.
     * @return The Data value.
     */
     public byte[] getData() {
@@ -58,7 +58,7 @@ public class ServiceCertificateCreateParameters {
     }
     
     /**
-    * Required. The pfx or .cer file.
+    * Required. The pfx or cer file.
     * @param dataValue The Data value.
     */
     public void setData(final byte[] dataValue) {
@@ -68,8 +68,8 @@ public class ServiceCertificateCreateParameters {
     private String password;
     
     /**
-    * Optional. The password for a .pfx certificate. A .cer certificate does
-    * not require a password.
+    * Optional. The password for a pfx certificate. A cer certificate does not
+    * require a password.
     * @return The Password value.
     */
     public String getPassword() {
@@ -77,8 +77,8 @@ public class ServiceCertificateCreateParameters {
     }
     
     /**
-    * Optional. The password for a .pfx certificate. A .cer certificate does
-    * not require a password.
+    * Optional. The password for a pfx certificate. A cer certificate does not
+    * require a password.
     * @param passwordValue The Password value.
     */
     public void setPassword(final String passwordValue) {
