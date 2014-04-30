@@ -21,16 +21,16 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.BasicResourceGroup;
-import Microsoft.Azure.Management.Resources.Models.LongRunningOperationResponse;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupCreateOrUpdateResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupExistsResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupGetResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupListParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupListResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupPatchResult;
+import com.microsoft.azure.management.resources.models.BasicResourceGroup;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
+import com.microsoft.azure.management.resources.models.ResourceGroupCreateOrUpdateResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupExistsResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
+import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;

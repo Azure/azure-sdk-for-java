@@ -21,11 +21,11 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsGetResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsListParameters;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsListResult;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsGetResult;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsListParameters;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsListResult;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;

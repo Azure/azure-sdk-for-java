@@ -21,20 +21,20 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.BasicDeployment;
-import Microsoft.Azure.Management.Resources.Models.Deployment;
-import Microsoft.Azure.Management.Resources.Models.DeploymentGetResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentListParameters;
-import Microsoft.Azure.Management.Resources.Models.DeploymentListResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentMode;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsCreateResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentProperties;
-import Microsoft.Azure.Management.Resources.Models.DeploymentValidateResponse;
-import Microsoft.Azure.Management.Resources.Models.ResourceManagementError;
-import Microsoft.Azure.Management.Resources.Models.ResourceManagementErrorWithDetails;
-import Microsoft.Azure.Management.Resources.Models.TemplateLink;
+import com.microsoft.azure.management.resources.models.BasicDeployment;
+import com.microsoft.azure.management.resources.models.Deployment;
+import com.microsoft.azure.management.resources.models.DeploymentGetResult;
+import com.microsoft.azure.management.resources.models.DeploymentListParameters;
+import com.microsoft.azure.management.resources.models.DeploymentListResult;
+import com.microsoft.azure.management.resources.models.DeploymentMode;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
+import com.microsoft.azure.management.resources.models.DeploymentProperties;
+import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
+import com.microsoft.azure.management.resources.models.ResourceManagementError;
+import com.microsoft.azure.management.resources.models.ResourceManagementErrorWithDetails;
+import com.microsoft.azure.management.resources.models.TemplateLink;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -299,24 +299,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode propertiesValue = objectMapper.createObjectNode();
         requestDoc = objectMapper.createObjectNode();
-        requestDoc.put("properties", propertiesValue);
+        ((ObjectNode) requestDoc).put("properties", propertiesValue);
         
         if (parameters.getTemplateLink() != null) {
             ObjectNode templateLinkValue = objectMapper.createObjectNode();
-            propertiesValue.put("templateLink", templateLinkValue);
+            ((ObjectNode) propertiesValue).put("templateLink", templateLinkValue);
             
-            templateLinkValue.put("uri", parameters.getTemplateLink().getUri().toString());
+            ((ObjectNode) templateLinkValue).put("uri", parameters.getTemplateLink().getUri().toString());
             
             if (parameters.getTemplateLink().getContentVersion() != null) {
-                templateLinkValue.put("contentVersion", parameters.getTemplateLink().getContentVersion());
+                ((ObjectNode) templateLinkValue).put("contentVersion", parameters.getTemplateLink().getContentVersion());
             }
         }
         
         if (parameters.getParameters() != null) {
-            propertiesValue.put("parameters", parameters.getParameters());
+            ((ObjectNode) propertiesValue).put("parameters", parameters.getParameters());
         }
         
-        propertiesValue.put("mode", parameters.getMode().toString());
+        ((ObjectNode) propertiesValue).put("mode", parameters.getMode().toString());
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
@@ -350,7 +350,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DeploymentOperationsCreateResult();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -558,7 +558,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             result = new DeploymentGetResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -763,7 +763,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             result = new DeploymentListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -957,7 +957,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             result = new DeploymentListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -1163,24 +1163,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode propertiesValue = objectMapper.createObjectNode();
         requestDoc = objectMapper.createObjectNode();
-        requestDoc.put("properties", propertiesValue);
+        ((ObjectNode) requestDoc).put("properties", propertiesValue);
         
         if (parameters.getTemplateLink() != null) {
             ObjectNode templateLinkValue = objectMapper.createObjectNode();
-            propertiesValue.put("templateLink", templateLinkValue);
+            ((ObjectNode) propertiesValue).put("templateLink", templateLinkValue);
             
-            templateLinkValue.put("uri", parameters.getTemplateLink().getUri().toString());
+            ((ObjectNode) templateLinkValue).put("uri", parameters.getTemplateLink().getUri().toString());
             
             if (parameters.getTemplateLink().getContentVersion() != null) {
-                templateLinkValue.put("contentVersion", parameters.getTemplateLink().getContentVersion());
+                ((ObjectNode) templateLinkValue).put("contentVersion", parameters.getTemplateLink().getContentVersion());
             }
         }
         
         if (parameters.getParameters() != null) {
-            propertiesValue.put("parameters", parameters.getParameters());
+            ((ObjectNode) propertiesValue).put("parameters", parameters.getParameters());
         }
         
-        propertiesValue.put("mode", parameters.getMode().toString());
+        ((ObjectNode) propertiesValue).put("mode", parameters.getMode().toString());
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
@@ -1214,7 +1214,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DeploymentValidateResponse();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             

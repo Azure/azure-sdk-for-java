@@ -21,13 +21,13 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.Provider;
-import Microsoft.Azure.Management.Resources.Models.ProviderGetResult;
-import Microsoft.Azure.Management.Resources.Models.ProviderListParameters;
-import Microsoft.Azure.Management.Resources.Models.ProviderListResult;
-import Microsoft.Azure.Management.Resources.Models.ProviderResourceType;
+import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.azure.management.resources.models.ProviderGetResult;
+import com.microsoft.azure.management.resources.models.ProviderListParameters;
+import com.microsoft.azure.management.resources.models.ProviderListResult;
+import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -163,7 +163,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ProviderGetResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -316,7 +316,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ProviderListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -471,7 +471,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ProviderListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             

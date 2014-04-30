@@ -21,9 +21,8 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources.models;
+package com.microsoft.azure.management.resources.models;
 
-import Microsoft.Azure.Management.Resources.Models.Provider;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 

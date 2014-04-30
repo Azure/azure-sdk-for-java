@@ -21,18 +21,17 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.BasicResourceGroup;
-import Microsoft.Azure.Management.Resources.Models.LongRunningOperationResponse;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroup;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupCreateOrUpdateResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupExistsResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupGetResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupListParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupListResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGroupPatchResult;
-import Microsoft.Azure.Management.Resources.ResourceManagementClient;
+import com.microsoft.azure.management.resources.models.BasicResourceGroup;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.ResourceGroupCreateOrUpdateResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupExistsResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
+import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -192,10 +191,10 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.getFailed());
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.getSucceeded());
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -411,14 +410,14 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         ObjectNode basicResourceGroupValue = objectMapper.createObjectNode();
         requestDoc = basicResourceGroupValue;
         
-        basicResourceGroupValue.put("location", parameters.getLocation());
+        ((ObjectNode) basicResourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            basicResourceGroupValue.put("properties", parameters.getProperties());
+            ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
         }
         
         if (parameters.getProvisioningState() != null) {
-            basicResourceGroupValue.put("provisioningState", parameters.getProvisioningState());
+            ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -453,7 +452,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ResourceGroupCreateOrUpdateResult();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -707,7 +706,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             result = new ResourceGroupGetResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -869,7 +868,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             result = new ResourceGroupListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -1033,7 +1032,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             result = new ResourceGroupListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -1210,14 +1209,14 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         ObjectNode basicResourceGroupValue = objectMapper.createObjectNode();
         requestDoc = basicResourceGroupValue;
         
-        basicResourceGroupValue.put("location", parameters.getLocation());
+        ((ObjectNode) basicResourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            basicResourceGroupValue.put("properties", parameters.getProperties());
+            ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
         }
         
         if (parameters.getProvisioningState() != null) {
-            basicResourceGroupValue.put("provisioningState", parameters.getProvisioningState());
+            ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -1252,7 +1251,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ResourceGroupPatchResult();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             

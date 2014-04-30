@@ -21,9 +21,7 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources.models;
-
-import Microsoft.Azure.Management.Resources.Models.BasicResource;
+package com.microsoft.azure.management.resources.models;
 
 /**
 * Create or update resource parameters.

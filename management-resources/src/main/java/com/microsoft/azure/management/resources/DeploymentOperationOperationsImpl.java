@@ -21,14 +21,14 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperation;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationProperties;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsGetResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsListParameters;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsListResult;
-import Microsoft.Azure.Management.Resources.Models.TargetResource;
+import com.microsoft.azure.management.resources.models.DeploymentOperation;
+import com.microsoft.azure.management.resources.models.DeploymentOperationProperties;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsGetResult;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsListParameters;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsListResult;
+import com.microsoft.azure.management.resources.models.TargetResource;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -183,7 +183,7 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             result = new DeploymentOperationsGetResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -386,7 +386,7 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             result = new DeploymentOperationsListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -573,7 +573,7 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             result = new DeploymentOperationsListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             

@@ -21,9 +21,7 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources.models;
-
-import Microsoft.Azure.Management.Resources.Models.BasicResourceGroup;
+package com.microsoft.azure.management.resources.models;
 
 /**
 * Resource group information.

@@ -21,17 +21,17 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.BasicResource;
-import Microsoft.Azure.Management.Resources.Models.Resource;
-import Microsoft.Azure.Management.Resources.Models.ResourceCreateOrUpdateParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceCreateOrUpdateResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceExistsResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGetResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceIdentity;
-import Microsoft.Azure.Management.Resources.Models.ResourceListParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceListResult;
+import com.microsoft.azure.management.resources.models.BasicResource;
+import com.microsoft.azure.management.resources.models.Resource;
+import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateParameters;
+import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
+import com.microsoft.azure.management.resources.models.ResourceExistsResult;
+import com.microsoft.azure.management.resources.models.ResourceGetResult;
+import com.microsoft.azure.management.resources.models.ResourceIdentity;
+import com.microsoft.azure.management.resources.models.ResourceListParameters;
+import com.microsoft.azure.management.resources.models.ResourceListResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -55,6 +55,7 @@ import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing resources.
@@ -319,14 +320,14 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         
         ObjectMapper objectMapper = new ObjectMapper();
         requestDoc = objectMapper.createObjectNode();
-        requestDoc.put("location", parameters.getResource().getLocation());
+        ((ObjectNode) requestDoc).put("location", parameters.getResource().getLocation());
         
         if (parameters.getResource().getProperties() != null) {
-            requestDoc.put("properties", parameters.getResource().getProperties());
+            ((ObjectNode) requestDoc).put("properties", parameters.getResource().getProperties());
         }
         
         if (parameters.getResource().getProvisioningState() != null) {
-            requestDoc.put("provisioningState", parameters.getResource().getProvisioningState());
+            ((ObjectNode) requestDoc).put("provisioningState", parameters.getResource().getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -361,7 +362,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ResourceCreateOrUpdateResult();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -668,7 +669,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ResourceGetResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -844,7 +845,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ResourceListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
@@ -1015,7 +1016,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             result = new ResourceListResult();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if ((responseContent == null || responseContent.isEmpty() == true) == false) {
+            if (responseContent == null == false) {
                 responseDoc = objectMapper.readTree(responseContent);
             }
             

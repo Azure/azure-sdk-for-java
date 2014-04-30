@@ -21,9 +21,9 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.LongRunningOperationResponse;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;

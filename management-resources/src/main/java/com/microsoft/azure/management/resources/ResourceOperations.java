@@ -21,15 +21,15 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.ResourceCreateOrUpdateParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceCreateOrUpdateResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceExistsResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceGetResult;
-import Microsoft.Azure.Management.Resources.Models.ResourceIdentity;
-import Microsoft.Azure.Management.Resources.Models.ResourceListParameters;
-import Microsoft.Azure.Management.Resources.Models.ResourceListResult;
+import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateParameters;
+import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
+import com.microsoft.azure.management.resources.models.ResourceExistsResult;
+import com.microsoft.azure.management.resources.models.ResourceGetResult;
+import com.microsoft.azure.management.resources.models.ResourceIdentity;
+import com.microsoft.azure.management.resources.models.ResourceListParameters;
+import com.microsoft.azure.management.resources.models.ResourceListResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;

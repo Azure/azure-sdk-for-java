@@ -21,10 +21,9 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.LongRunningOperationResponse;
-import Microsoft.Azure.Management.Resources.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
@@ -229,6 +228,28 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets or sets subscription credentials which
+    * uniquely identify Windows  Azure subscription. The subscription ID forms
+    * part of the URI for  every call that you make to the Service Management
+    * API.
+    * @param baseUri Required. Gets or sets the URI used as the base for all
+    * cloud service management requests.
+    * @param longRunningOperationInitialTimeout Required.
+    * @param longRunningOperationRetryTimeout Required.
+    */
+    public ResourceManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the ResourceManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected ResourceManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new ResourceManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
@@ -321,10 +342,10 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.getFailed());
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.getSucceeded());
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {

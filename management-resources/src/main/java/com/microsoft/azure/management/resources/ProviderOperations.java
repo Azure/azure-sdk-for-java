@@ -21,11 +21,11 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.ProviderGetResult;
-import Microsoft.Azure.Management.Resources.Models.ProviderListParameters;
-import Microsoft.Azure.Management.Resources.Models.ProviderListResult;
+import com.microsoft.azure.management.resources.models.ProviderGetResult;
+import com.microsoft.azure.management.resources.models.ProviderListParameters;
+import com.microsoft.azure.management.resources.models.ProviderListResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;

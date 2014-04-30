@@ -21,14 +21,14 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package microsoft.azure.management.resources;
+package com.microsoft.azure.management.resources;
 
-import Microsoft.Azure.Management.Resources.Models.BasicDeployment;
-import Microsoft.Azure.Management.Resources.Models.DeploymentGetResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentListParameters;
-import Microsoft.Azure.Management.Resources.Models.DeploymentListResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentOperationsCreateResult;
-import Microsoft.Azure.Management.Resources.Models.DeploymentValidateResponse;
+import com.microsoft.azure.management.resources.models.BasicDeployment;
+import com.microsoft.azure.management.resources.models.DeploymentGetResult;
+import com.microsoft.azure.management.resources.models.DeploymentListParameters;
+import com.microsoft.azure.management.resources.models.DeploymentListResult;
+import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
+import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
