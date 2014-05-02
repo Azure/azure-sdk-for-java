@@ -38,7 +38,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 	static String filePath = "D:\\test\\vhdfile\\";
 
 	@BeforeClass
-    public static void setup() throws Exception {
+	public static void setup() throws Exception {
 		createComputeManagementClient();
 		//create storage service for storage account creation
 		createStorageManagementClient();
@@ -46,9 +46,9 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 		createComputeManagementClient();
 		//create management service for accessing management operation
 		createManagementClient();
-        //dynamic get location for vm storage/hosted service
-        getLocation();
-        //create a new storage account for vm .vhd storage.
+		//dynamic get location for vm storage/hosted service
+		getLocation();
+		//create a new storage account for vm .vhd storage.
         createStorageAccount(storageAccountName, storageContainer);
         uploadFileToBlob(storageAccountName, storageContainer, vhdfileName, filePath);
         createDisk();
