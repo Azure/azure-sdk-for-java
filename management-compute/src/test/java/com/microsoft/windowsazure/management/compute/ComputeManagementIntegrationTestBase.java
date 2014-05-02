@@ -121,9 +121,8 @@ public abstract class ComputeManagementIntegrationTestBase {
         StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);
         storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
         CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
-        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
-        //Thread.sleep(1000 * 60);
-        container.create();
+        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);      
+        container.createIfNotExists();
 
         //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
         boolean found = false;
@@ -209,20 +208,23 @@ public abstract class ComputeManagementIntegrationTestBase {
         }
 
         // Retrieve reference to a previously created container
-        CloudBlobContainer container = null;
-        try {
-            container = blobClient.getContainerReference(storageContainer);
-        } catch (URISyntaxException e) {
-        } catch (StorageException e) {
-        }
+        if (blobClient != null)
+        {
+        	CloudBlobContainer container = null;
+        	try {
+        		container = blobClient.getContainerReference(storageContainer);
+        	} catch (URISyntaxException e) {
+        	} catch (StorageException e) {
+        	}
 
-        try {
-            container.breakLease(300);
-        } catch (StorageException e) {
-        }
-        try {
-            container.delete();
-        } catch (StorageException e) {
+        	try {
+        		container.breakLease(300);
+        	} catch (StorageException e) {
+        	}
+        	try {
+        		container.delete();
+        	} catch (StorageException e) {
+        	}
         }
     }
 

@@ -32,7 +32,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {  
+public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {
 	static int random = (int)(Math.random()* 100);
 	static String virtualMachineOSImageName = testVMPrefix + "OSImage" + random; 
 
@@ -86,8 +86,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     public static void createVirtualMachineOSImage() throws Exception {
      	String virtualMachineOSImageDescription =  virtualMachineOSImageName + "Description";
      	URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);
-     	//URI mediaLinkUriValue =  new URI("http://onesdktest.blob.core.test-cint.azure-test.net/communityimages/oneGBFixedWS2008R2.vhd");
-
+     	
     	//Arrange
     	VirtualMachineOSImageCreateParameters createParameters = new VirtualMachineOSImageCreateParameters();
     	createParameters.setName(virtualMachineOSImageName);
@@ -105,11 +104,12 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     @Test
     public void getVirtualMachineOSImages() throws Exception {
     	//Act
-        VirtualMachineOSImageGetResponse VirtualMachineOSImageResponse = computeManagementClient.getVirtualMachineOSImagesOperations().get(virtualMachineOSImageName);
+        VirtualMachineOSImageGetResponse virtualMachineOSImageResponse = computeManagementClient.getVirtualMachineOSImagesOperations().get(virtualMachineOSImageName);
 
         //Assert
-        Assert.assertEquals(200, VirtualMachineOSImageResponse.getStatusCode());
-        Assert.assertNotNull(VirtualMachineOSImageResponse.getRequestId());
+        Assert.assertEquals(200, virtualMachineOSImageResponse.getStatusCode());
+        Assert.assertNotNull(virtualMachineOSImageResponse.getRequestId());
+        Assert.assertEquals(virtualMachineOSImageName, virtualMachineOSImageResponse.getName());
     }
 
     @Test
