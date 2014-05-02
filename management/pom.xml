@@ -25,9 +25,9 @@
   <artifactId>microsoft-azure-api-management</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Management Client API</name>
-  <description>Windows Azure Management SDK Clients</description>
-  <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
+  <name>Microsoft Azure Management Client API</name>
+  <description>Microsoft Azure Management SDK Clients</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
     <license>
@@ -38,8 +38,8 @@
   </licenses>
 
   <scm>
-    <url>scm:git:https://github.com/WindowsAzure/azure-sdk-for-java</url>
-    <connection>scm:git:git://github.com/WindowsAzure/azure-sdk-for-java.git</connection>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git://github.com/Azure/azure-sdk-for-java.git</connection>
   </scm>
 
   <properties>
