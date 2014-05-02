@@ -40,7 +40,7 @@ public class VirtualMachineVMImagesOperationsTests extends ComputeManagementInte
     	ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> virtualMachineVMImagelist = virtualMachineImageListResponse.getVMImages();
     	for (VirtualMachineVMImageListResponse.VirtualMachineVMImage virtualMachineVMImage : virtualMachineVMImagelist)      		
     	{
-    		Assert.assertNotNull(virtualMachineVMImage.getName());
+			Assert.assertNotNull(virtualMachineVMImage.getName());
     	}
     }
 }

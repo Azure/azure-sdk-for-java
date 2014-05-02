@@ -33,9 +33,9 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 
 	static String storageAccountName = testStoragePrefix + randomString(10);
 	static String storageContainer = "disk-store";
-
-    static String vhdfileName = "oneGBFixedWS2008R2.vhd";
-    static String filePath = "D:\\test\\vhdfile\\";
+	
+	static String vhdfileName = "oneGBFixedWS2008R2.vhd";
+	static String filePath = "D:\\test\\vhdfile\\";
 
 	@BeforeClass
     public static void setup() throws Exception {
@@ -44,8 +44,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 		createStorageManagementClient();
 		//create compute management service for all compute management operation
 		createComputeManagementClient();
-        //create management service for accessing management operation
-        createManagementClient();
+		//create management service for accessing management operation
+		createManagementClient();
         //dynamic get location for vm storage/hosted service
         getLocation();
         //create a new storage account for vm .vhd storage.
@@ -79,7 +79,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 		}
 	}
 
-    public static void createDisk() throws Exception {
+	public static void createDisk() throws Exception {
      	String virtualMachineDiskDescription =  virtualMachineDiskName + "Description";     
      	URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);     	
 
