@@ -28,56 +28,56 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrationTestBase {
-	static int random = (int)(Math.random()* 100);
-	public static String virtualMachineDiskName = testVMPrefix + "Disk" + random;
+    static int random = (int)(Math.random()* 100);
+    public static String virtualMachineDiskName = testVMPrefix + "Disk" + random;
 
-	static String storageAccountName = testStoragePrefix + randomString(10);
-	static String storageContainer = "disk-store";
-	
-	static String vhdfileName = "oneGBFixedWS2008R2.vhd";
+    static String storageAccountName = testStoragePrefix + randomString(10);
+    static String storageContainer = "disk-store";
+
+    static String vhdfileName = "oneGBFixedWS2008R2.vhd";
 	static String filePath = "D:\\test\\vhdfile\\";
 
-	@BeforeClass
-	public static void setup() throws Exception {
-		createComputeManagementClient();
-		//create storage service for storage account creation
-		createStorageManagementClient();
-		//create compute management service for all compute management operation
-		createComputeManagementClient();
-		//create management service for accessing management operation
-		createManagementClient();
-		//dynamic get location for vm storage/hosted service
-		getLocation();
-		//create a new storage account for vm .vhd storage.
+    @BeforeClass
+    public static void setup() throws Exception {
+        createComputeManagementClient();
+        //create storage service for storage account creation
+        createStorageManagementClient();
+        //create compute management service for all compute management operation
+        createComputeManagementClient();
+        //create management service for accessing management operation
+        createManagementClient();
+        //dynamic get location for vm storage/hosted service
+        getLocation();
+        //create a new storage account for vm .vhd storage.
         createStorageAccount(storageAccountName, storageContainer);
         uploadFileToBlob(storageAccountName, storageContainer, vhdfileName, filePath);
         createDisk();
-	}
+    }
 
-	@AfterClass
-	public static void cleanup() throws Exception {
-		deletDisks();
-		cleanBlob(storageAccountName, storageContainer);
-		cleanStorageAccount(storageAccountName);
-	}
+    @AfterClass
+    public static void cleanup() throws Exception {
+        deletDisks();
+        cleanBlob(storageAccountName, storageContainer);
+        cleanStorageAccount(storageAccountName);
+    }
 
-	private static void deletDisks() throws Exception {
-		try
-		{
-			VirtualMachineDiskListResponse VirtualMachineDiskListResponse = computeManagementClient.getVirtualMachineDisksOperations().listDisks();
-			ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> virtualMachineDisklist = VirtualMachineDiskListResponse.getDisks();
-			for (VirtualMachineDiskListResponse.VirtualMachineDisk VirtualMachineDisk : virtualMachineDisklist)
-			{
-				if (VirtualMachineDisk.getName().contains(virtualMachineDiskName))
-				{
-					computeManagementClient.getVirtualMachineDisksOperations().deleteDisk(VirtualMachineDisk.getName(), true);
-				}
-			}
-		}
-		catch (ServiceException e) {
-			e.printStackTrace();
-		}
-	}
+    private static void deletDisks() throws Exception {
+        try
+        {
+            VirtualMachineDiskListResponse VirtualMachineDiskListResponse = computeManagementClient.getVirtualMachineDisksOperations().listDisks();
+            ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> virtualMachineDisklist = VirtualMachineDiskListResponse.getDisks();
+            for (VirtualMachineDiskListResponse.VirtualMachineDisk VirtualMachineDisk : virtualMachineDisklist)
+            {
+                if (VirtualMachineDisk.getName().contains(virtualMachineDiskName))
+                {
+                    computeManagementClient.getVirtualMachineDisksOperations().deleteDisk(VirtualMachineDisk.getName(), true);
+                }
+            }
+        }
+        catch (ServiceException e) {
+            .printStackTrace();
+        }
+    }
 
 	public static void createDisk() throws Exception {
      	String virtualMachineDiskDescription =  virtualMachineDiskName + "Description";     
