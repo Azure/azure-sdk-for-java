@@ -33,14 +33,14 @@ public class VirtualMachineVMImagesOperationsTests extends ComputeManagementInte
 
     @Test
     public void listVirtualMachineVMImagesSuccess() throws Exception {
-    	VirtualMachineVMImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineVMImagesOperations().list();
-    	Assert.assertEquals(200, virtualMachineImageListResponse.getStatusCode());
-    	Assert.assertNotNull(virtualMachineImageListResponse.getRequestId());
+        VirtualMachineVMImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineVMImagesOperations().list();
+        Assert.assertEquals(200, virtualMachineImageListResponse.getStatusCode());
+        Assert.assertNotNull(virtualMachineImageListResponse.getRequestId());
 
-    	ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> virtualMachineVMImagelist = virtualMachineImageListResponse.getVMImages();
-    	for (VirtualMachineVMImageListResponse.VirtualMachineVMImage virtualMachineVMImage : virtualMachineVMImagelist)      		
-    	{
-			Assert.assertNotNull(virtualMachineVMImage.getName());
-    	}
+        ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> virtualMachineVMImagelist = virtualMachineImageListResponse.getVMImages();
+        for (VirtualMachineVMImageListResponse.VirtualMachineVMImage virtualMachineVMImage : virtualMachineVMImagelist)      		
+        {
+            Assert.assertNotNull(virtualMachineVMImage.getName());
+        }
     }
 }
