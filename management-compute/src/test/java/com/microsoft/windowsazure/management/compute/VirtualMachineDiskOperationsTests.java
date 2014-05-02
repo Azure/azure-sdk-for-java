@@ -35,7 +35,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
     static String storageContainer = "disk-store";
 
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";
-	static String filePath = "D:\\test\\vhdfile\\";
+    static String filePath = "D:\\test\\vhdfile\\";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -75,7 +75,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
             }
         }
         catch (ServiceException e) {
-            .printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -120,7 +120,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
     	Assert.assertTrue(virtualMachineDisklist.size() >= 1);
     	for (VirtualMachineDiskListResponse.VirtualMachineDisk virtualMachineDisk : virtualMachineDisklist)
     	{
-    		Assert.assertNotNull(virtualMachineDisk.getName());
+    	    Assert.assertNotNull(virtualMachineDisk.getName());
     	}
     }
 
