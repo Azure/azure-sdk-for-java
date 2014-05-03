@@ -37,13 +37,15 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";
     static String filePath = "D:\\test\\vhdfile\\";
 
+    static VirtualMachineDiskOperations diskOperation;
+
     @BeforeClass
     public static void setup() throws Exception {
-        createComputeManagementClient();
         //create storage service for storage account creation
         createStorageManagementClient();
         //create compute management service for all compute management operation
         createComputeManagementClient();
+        diskOperation = getVMDisksOperations();
         //create management service for accessing management operation
         createManagementClient();
         //dynamic get location for vm storage/hosted service
@@ -55,16 +57,20 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {
+    public static void cleanup() {
         deletDisks();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
     }
 
-    private static void deletDisks() throws Exception {
+    private static VirtualMachineDiskOperations getVMDisksOperations(){
+       return computeManagementClient.getVirtualMachineDisksOperations();
+    }
+
+    private static void deletDisks() {
         try
         {
-            VirtualMachineDiskListResponse VirtualMachineDiskListResponse = computeManagementClient.getVirtualMachineDisksOperations().listDisks();
+            VirtualMachineDiskListResponse VirtualMachineDiskListResponse = diskOperation.listDisks();
             ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> virtualMachineDisklist = VirtualMachineDiskListResponse.getDisks();
             for (VirtualMachineDiskListResponse.VirtualMachineDisk VirtualMachineDisk : virtualMachineDisklist)
             {
@@ -77,31 +83,34 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
         catch (ServiceException e) {
             e.printStackTrace();
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-	public static void createDisk() throws Exception {
-     	String virtualMachineDiskDescription =  virtualMachineDiskName + "Description";     
-     	URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);     	
+    public static void createDisk() throws Exception {
+        String virtualMachineDiskDescription =  virtualMachineDiskName + "Description";
+        URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);
 
-     	//Arrange
-    	VirtualMachineDiskCreateParameters createParameters = new VirtualMachineDiskCreateParameters();
-    	createParameters.setName(virtualMachineDiskName);
-    	createParameters.setLabel(virtualMachineDiskDescription);
-    	createParameters.setMediaLinkUri(mediaLinkUriValue);
-    	createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS); 
+        //Arrange
+        VirtualMachineDiskCreateParameters createParameters = new VirtualMachineDiskCreateParameters();
+        createParameters.setName(virtualMachineDiskName);
+        createParameters.setLabel(virtualMachineDiskDescription);
+        createParameters.setMediaLinkUri(mediaLinkUriValue);
+        createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS);
 
-    	//Act
-    	VirtualMachineDiskCreateResponse operationResponse = computeManagementClient.getVirtualMachineDisksOperations().createDisk(createParameters);
+        //Act
+        VirtualMachineDiskCreateResponse operationResponse = diskOperation.createDisk(createParameters);
 
-    	//Assert
-    	Assert.assertEquals(200, operationResponse.getStatusCode());
-    	Assert.assertNotNull(operationResponse.getRequestId());
+        //Assert
+        Assert.assertEquals(200, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
     }
 
     @Test
     public void getDisk() throws Exception {
         //Act
-        VirtualMachineDiskGetResponse VirtualMachineDiskResponse = computeManagementClient.getVirtualMachineDisksOperations().getDisk(virtualMachineDiskName);
+        VirtualMachineDiskGetResponse VirtualMachineDiskResponse = diskOperation.getDisk(virtualMachineDiskName);
 
         //Assert
         Assert.assertEquals(200, VirtualMachineDiskResponse.getStatusCode());
@@ -111,34 +120,34 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 
     @Test
     public void listDisks() throws Exception {
-    	//Act
-    	VirtualMachineDiskListResponse virtualMachineDiskListResponse = computeManagementClient.getVirtualMachineDisksOperations().listDisks();
-    	ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> virtualMachineDisklist = virtualMachineDiskListResponse.getDisks();
+        //Act
+        VirtualMachineDiskListResponse virtualMachineDiskListResponse = diskOperation.listDisks();
+        ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> virtualMachineDisklist = virtualMachineDiskListResponse.getDisks();
 
-    	//Assert
-    	Assert.assertNotNull(virtualMachineDisklist);
-    	Assert.assertTrue(virtualMachineDisklist.size() >= 1);
-    	for (VirtualMachineDiskListResponse.VirtualMachineDisk virtualMachineDisk : virtualMachineDisklist)
-    	{
-    	    Assert.assertNotNull(virtualMachineDisk.getName());
-    	}
+        //Assert
+        Assert.assertNotNull(virtualMachineDisklist);
+        Assert.assertTrue(virtualMachineDisklist.size() >= 1);
+        for (VirtualMachineDiskListResponse.VirtualMachineDisk virtualMachineDisk : virtualMachineDisklist)
+        {
+            Assert.assertNotNull(virtualMachineDisk.getName());
+        }
     }
 
     @Test
     public void updateDisk() throws Exception {
-    	//Arrange
-    	String virtualMachineDiskLabel = virtualMachineDiskName + "Label";
-    	String expectedUpdatedVirtualMachineDiskLabel = virtualMachineDiskLabel + "updated";    	
-    	String expectedvirtualMachineDiskName = virtualMachineDiskName + "updated";	         
+        //Arrange
+        String virtualMachineDiskLabel = virtualMachineDiskName + "Label";
+        String expectedUpdatedVirtualMachineDiskLabel = virtualMachineDiskLabel + "updated";
+        String expectedvirtualMachineDiskName = virtualMachineDiskName + "updated";
 
-    	//Act
-    	VirtualMachineDiskUpdateParameters updateParameters = new VirtualMachineDiskUpdateParameters();	
-    	updateParameters.setLabel(expectedUpdatedVirtualMachineDiskLabel);
-    	updateParameters.setName(expectedvirtualMachineDiskName);
-    	VirtualMachineDiskUpdateResponse updateOperationResponse = computeManagementClient.getVirtualMachineDisksOperations().updateDisk(virtualMachineDiskName, updateParameters);
+        //Act
+        VirtualMachineDiskUpdateParameters updateParameters = new VirtualMachineDiskUpdateParameters();
+        updateParameters.setLabel(expectedUpdatedVirtualMachineDiskLabel);
+        updateParameters.setName(expectedvirtualMachineDiskName);
+        VirtualMachineDiskUpdateResponse updateOperationResponse = diskOperation.updateDisk(virtualMachineDiskName, updateParameters);
 
-    	//Assert
-    	Assert.assertEquals(200, updateOperationResponse.getStatusCode());
-    	Assert.assertNotNull(updateOperationResponse.getRequestId());
+        //Assert
+        Assert.assertEquals(200, updateOperationResponse.getStatusCode());
+        Assert.assertNotNull(updateOperationResponse.getRequestId());
     }
 }
