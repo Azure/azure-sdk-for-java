@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
-* The Get Web Site Historical Usage Metrics parameters.
+* Parameters supplied to the Get Historical Usage Metrics Web Site operation.
 */
 public class WebSiteGetHistoricalUsageMetricsParameters {
     private Calendar endTime;

@@ -63,7 +63,7 @@ import org.xml.sax.SAXException;
 /**
 * You can use management certificates, which are also known as subscription
 * certificates, to authenticate clients attempting to connect to resources
-* associated with your Windows Azure subscription.  (see
+* associated with your Azure subscription.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
 * information)
 */
@@ -90,12 +90,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     }
     
     /**
-    * The Add Management Certificate operation adds a certificate to the list
-    * of management certificates. Management certificates, which are also
+    * The Create Management Certificate operation adds a certificate to the
+    * list of management certificates. Management certificates, which are also
     * known as subscription certificates, authenticate clients attempting to
-    * connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
-    * for more information)
+    * connect to resources associated with your Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
+    * more information)
     *
     * @param parameters Required. Parameters supplied to the Create Management
     * Certificate operation.
@@ -113,12 +113,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     }
     
     /**
-    * The Add Management Certificate operation adds a certificate to the list
-    * of management certificates. Management certificates, which are also
+    * The Create Management Certificate operation adds a certificate to the
+    * list of management certificates. Management certificates, which are also
     * known as subscription certificates, authenticate clients attempting to
-    * connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
-    * for more information)
+    * connect to resources associated with your Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
+    * more information)
     *
     * @param parameters Required. Parameters supplied to the Create Management
     * Certificate operation.
@@ -251,11 +251,11 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * The Delete Management Certificate operation deletes a certificate from
     * the list of management certificates. Management certificates, which are
     * also known as subscription certificates, authenticate clients attempting
-    * to connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-    * for more information)
+    * to connect to resources associated with your Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx for
+    * more information)
     *
-    * @param thumbprint Required. the thumbprint value of the certificate to
+    * @param thumbprint Required. The thumbprint value of the certificate to
     * delete.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -274,11 +274,11 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * The Delete Management Certificate operation deletes a certificate from
     * the list of management certificates. Management certificates, which are
     * also known as subscription certificates, authenticate clients attempting
-    * to connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-    * for more information)
+    * to connect to resources associated with your Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx for
+    * more information)
     *
-    * @param thumbprint Required. the thumbprint value of the certificate to
+    * @param thumbprint Required. The thumbprint value of the certificate to
     * delete.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -365,7 +365,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * management certificate with the specified thumbprint. Management
     * certificates, which are also known as subscription certificates,
     * authenticate clients attempting to connect to resources associated with
-    * your Windows Azure subscription.  (see
+    * your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
     * more information)
     *
@@ -388,7 +388,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * management certificate with the specified thumbprint. Management
     * certificates, which are also known as subscription certificates,
     * authenticate clients attempting to connect to resources associated with
-    * your Windows Azure subscription.  (see
+    * your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
     * more information)
     *
@@ -522,7 +522,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * information about all of the management certificates associated with the
     * specified subscription. Management certificates, which are also known as
     * subscription certificates, authenticate clients attempting to connect to
-    * resources associated with your Windows Azure subscription.  (see
+    * resources associated with your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
     * more information)
     *
@@ -543,7 +543,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * information about all of the management certificates associated with the
     * specified subscription. Management certificates, which are also known as
     * subscription certificates, authenticate clients attempting to connect to
-    * resources associated with your Windows Azure subscription.  (see
+    * resources associated with your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
     * more information)
     *

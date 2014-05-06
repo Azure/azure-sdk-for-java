@@ -73,7 +73,7 @@ public class VirtualMachineOSImageUpdateParameters {
     private URI iconUri;
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
@@ -82,7 +82,7 @@ public class VirtualMachineOSImageUpdateParameters {
     }
     
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
+    * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
@@ -132,7 +132,7 @@ public class VirtualMachineOSImageUpdateParameters {
     
     /**
     * Required. Specifies the friendly name of the image to be updated. You
-    * cannot use this operation to update images provided by the Windows Azure
+    * cannot use this operation to update images provided by the Azure
     * platform.
     * @return The Label value.
     */
@@ -142,7 +142,7 @@ public class VirtualMachineOSImageUpdateParameters {
     
     /**
     * Required. Specifies the friendly name of the image to be updated. You
-    * cannot use this operation to update images provided by the Windows Azure
+    * cannot use this operation to update images provided by the Azure
     * platform.
     * @param labelValue The Label value.
     */
@@ -153,7 +153,7 @@ public class VirtualMachineOSImageUpdateParameters {
     private String language;
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
@@ -162,7 +162,7 @@ public class VirtualMachineOSImageUpdateParameters {
     }
     
     /**
-    * Optional. Specifies the language of the image.  The Language element is
+    * Optional. Specifies the language of the image. The Language element is
     * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
@@ -234,9 +234,8 @@ public class VirtualMachineOSImageUpdateParameters {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -245,9 +244,8 @@ public class VirtualMachineOSImageUpdateParameters {
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
-    * image is presented in the Windows Azure Management Portal.  The
-    * SmallIconUri element is only available using version 2013-03-01 or
-    * higher.
+    * image is presented in the Azure Management Portal. The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

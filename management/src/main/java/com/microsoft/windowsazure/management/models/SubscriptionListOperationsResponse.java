@@ -88,7 +88,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     }
     
     /**
-    * A collection of attributes that identifies the source of the operation.
+    * A collection of attributes that identify the source of the operation.
     */
     public static class OperationCallerDetails {
         private InetAddress clientIPAddress;
@@ -138,8 +138,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         
         /**
         * Optional. Indicates whether the operation was initiated by using the
-        * Service Management API. False if it was initiated by another source,
-        * such as the Management Portal.
+        * Service Management API. This will be false if it was initiated by
+        * another source, such as the Management Portal.
         * @return The UsedServiceManagementApi value.
         */
         public boolean isUsedServiceManagementApi() {
@@ -148,8 +148,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         
         /**
         * Optional. Indicates whether the operation was initiated by using the
-        * Service Management API. False if it was initiated by another source,
-        * such as the Management Portal.
+        * Service Management API. This will be false if it was initiated by
+        * another source, such as the Management Portal.
         * @param usedServiceManagementApiValue The UsedServiceManagementApi
         * value.
         */
@@ -188,8 +188,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private SubscriptionListOperationsResponse.OperationCallerDetails operationCaller;
         
         /**
-        * Optional. A collection of attributes that identifies the source of
-        * the operation.
+        * Optional. A collection of attributes that identify the source of the
+        * operation.
         * @return The OperationCaller value.
         */
         public SubscriptionListOperationsResponse.OperationCallerDetails getOperationCaller() {
@@ -197,8 +197,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * Optional. A collection of attributes that identifies the source of
-        * the operation.
+        * Optional. A collection of attributes that identify the source of the
+        * operation.
         * @param operationCallerValue The OperationCaller value.
         */
         public void setOperationCaller(final SubscriptionListOperationsResponse.OperationCallerDetails operationCallerValue) {
@@ -324,8 +324,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         * of the operation. The object returned has the following XML format:
         * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
-        * </OperationStatus>  Possible values of the Status element,
-        * whichholds the operation status, are: Succeeded, Failed, InProgress.
+        * </OperationStatus>. Possible values of the Status element,
+        * whichholds the operation status, are: Succeeded, Failed, or
+        * InProgress.
         * @return The OperationStatus value.
         */
         public String getOperationStatus() {
@@ -337,8 +338,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         * of the operation. The object returned has the following XML format:
         * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
-        * </OperationStatus>  Possible values of the Status element,
-        * whichholds the operation status, are: Succeeded, Failed, InProgress.
+        * </OperationStatus>. Possible values of the Status element,
+        * whichholds the operation status, are: Succeeded, Failed, or
+        * InProgress.
         * @param operationStatusValue The OperationStatus value.
         */
         public void setOperationStatus(final String operationStatusValue) {

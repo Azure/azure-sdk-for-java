@@ -30,7 +30,7 @@ public class DeploymentSwapParameters {
     private String productionDeployment;
     
     /**
-    * Optional. The optional  name of the production deployment.
+    * Optional. The optional name of the production deployment.
     * @return The ProductionDeployment value.
     */
     public String getProductionDeployment() {
@@ -38,7 +38,7 @@ public class DeploymentSwapParameters {
     }
     
     /**
-    * Optional. The optional  name of the production deployment.
+    * Optional. The optional name of the production deployment.
     * @param productionDeploymentValue The ProductionDeployment value.
     */
     public void setProductionDeployment(final String productionDeploymentValue) {

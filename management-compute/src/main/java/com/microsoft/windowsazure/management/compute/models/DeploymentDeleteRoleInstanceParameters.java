@@ -23,12 +23,36 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import java.util.ArrayList;
+
 /**
-* Known values for the operating system type of the OS in a virtual machine
-* image.
+* Parameters supplied to the delete role instance by deployment name operation.
 */
-public abstract class VirtualMachineImageOperatingSystemType {
-    public static final String LINUX = "Linux";
+public class DeploymentDeleteRoleInstanceParameters {
+    private ArrayList<String> name;
     
-    public static final String WINDOWS = "Windows";
+    /**
+    * Optional.
+    * @return The Name value.
+    */
+    public ArrayList<String> getName() {
+        return this.name;
+    }
+    
+    /**
+    * Optional.
+    * @param nameValue The Name value.
+    */
+    public void setName(final ArrayList<String> nameValue) {
+        this.name = nameValue;
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentDeleteRoleInstanceParameters
+    * class.
+    *
+    */
+    public DeploymentDeleteRoleInstanceParameters() {
+        this.name = new ArrayList<String>();
+    }
 }

@@ -96,10 +96,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The Add OS Image operation adds an operating system image that is stored
-    * in a storage account and is available from the image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
-    * more information)
+    * The Create OS Image operation adds an operating system image that is
+    * stored in a storage account and is available from the image repository.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Image operation.
@@ -117,10 +117,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
-    * The Add OS Image operation adds an operating system image that is stored
-    * in a storage account and is available from the image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
-    * more information)
+    * The Create OS Image operation adds an operating system image that is
+    * stored in a storage account and is available from the image repository.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx
+    * for more information)
     *
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Image operation.

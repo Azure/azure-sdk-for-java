@@ -31,9 +31,9 @@ public class VirtualMachineCaptureOSImageParameters {
     
     /**
     * Required. Specifies the action that is performed after the capture
-    * operation finishes.  Possible values are:  Delete – this value causes
-    * the virtual machine to be deleted after the image has been captured.
-    * Reprovision – this value causes the virtual machine to be redeployed
+    * operation finishes. Possible values are: Delete - this value causes the
+    * virtual machine to be deleted after the image has been captured; or
+    * Reprovision - this value causes the virtual machine to be redeployed
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
     * @return The PostCaptureAction value.
@@ -44,9 +44,9 @@ public class VirtualMachineCaptureOSImageParameters {
     
     /**
     * Required. Specifies the action that is performed after the capture
-    * operation finishes.  Possible values are:  Delete – this value causes
-    * the virtual machine to be deleted after the image has been captured.
-    * Reprovision – this value causes the virtual machine to be redeployed
+    * operation finishes. Possible values are: Delete - this value causes the
+    * virtual machine to be deleted after the image has been captured; or
+    * Reprovision - this value causes the virtual machine to be redeployed
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
     * @param postCaptureActionValue The PostCaptureAction value.
@@ -81,7 +81,7 @@ public class VirtualMachineCaptureOSImageParameters {
     
     /**
     * Required. Specifies the friendly name of the captured image. This is the
-    * value that appears in the Name column for the image in the Windows Azure
+    * value that appears in the Name column for the image in the Azure
     * Management Portal.
     * @return The TargetImageLabel value.
     */
@@ -91,7 +91,7 @@ public class VirtualMachineCaptureOSImageParameters {
     
     /**
     * Required. Specifies the friendly name of the captured image. This is the
-    * value that appears in the Name column for the image in the Windows Azure
+    * value that appears in the Name column for the image in the Azure
     * Management Portal.
     * @param targetImageLabelValue The TargetImageLabel value.
     */

@@ -27,8 +27,8 @@ public class ClientRootCertificateCreateParameters {
     private String certificate;
     
     /**
-    * Required. The new client root certificate to upload, represented as a hex
-    * encoded string
+    * Required. The new client root certificate to upload, represented as a
+    * hex-encoded string.
     * @return The Certificate value.
     */
     public String getCertificate() {
@@ -36,8 +36,8 @@ public class ClientRootCertificateCreateParameters {
     }
     
     /**
-    * Required. The new client root certificate to upload, represented as a hex
-    * encoded string
+    * Required. The new client root certificate to upload, represented as a
+    * hex-encoded string.
     * @param certificateValue The Certificate value.
     */
     public void setCertificate(final String certificateValue) {

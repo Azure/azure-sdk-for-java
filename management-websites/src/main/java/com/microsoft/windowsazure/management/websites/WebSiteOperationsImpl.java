@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteGetPublishPr
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetRepositoryResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetUsageMetricsResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteInstanceIdsResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAvailableResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
@@ -96,7 +97,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for managing the web sites in a web space.
+* Operations for managing the web sites in a web space.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
+* information)
 */
 public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, WebSiteOperations {
     /**
@@ -120,36 +123,40 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can swap a web site from one slot to the production slot.
+    * You can swap a web site from one slot to another slot.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param slotName Required. The name of the web site slot to swap with the
-    * production slot.
+    * @param sourceSlotName Required. The name of the first web site slot to
+    * swap (source).
+    * @param targetSlotName Required. The name of the second web site slot to
+    * swap with (target).
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
-    public Future<WebSiteOperationStatusResponse> beginSwapingSlotsAsync(final String webSpaceName, final String webSiteName, final String slotName) {
+    public Future<WebSiteOperationStatusResponse> beginSwapingSlotsAsync(final String webSpaceName, final String webSiteName, final String sourceSlotName, final String targetSlotName) {
         return this.getClient().getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
             @Override
             public WebSiteOperationStatusResponse call() throws Exception {
-                return beginSwapingSlots(webSpaceName, webSiteName, slotName);
+                return beginSwapingSlots(webSpaceName, webSiteName, sourceSlotName, targetSlotName);
             }
          });
     }
     
     /**
-    * You can swap a web site from one slot to the production slot.
+    * You can swap a web site from one slot to another slot.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param slotName Required. The name of the web site slot to swap with the
-    * production slot.
+    * @param sourceSlotName Required. The name of the first web site slot to
+    * swap (source).
+    * @param targetSlotName Required. The name of the second web site slot to
+    * swap with (target).
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -160,13 +167,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
-    public WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
@@ -174,8 +181,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (webSiteName == null) {
             throw new NullPointerException("webSiteName");
         }
-        if (slotName == null) {
-            throw new NullPointerException("slotName");
+        if (sourceSlotName == null) {
+            throw new NullPointerException("sourceSlotName");
+        }
+        if (targetSlotName == null) {
+            throw new NullPointerException("targetSlotName");
         }
         
         // Tracing
@@ -186,15 +196,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("webSiteName", webSiteName);
-            tracingParameters.put("slotName", slotName);
+            tracingParameters.put("sourceSlotName", sourceSlotName);
+            tracingParameters.put("targetSlotName", targetSlotName);
             CloudTracing.enter(invocationId, this, "beginSwapingSlotsAsync", tracingParameters);
         }
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/slots" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "(" + sourceSlotName.trim() + ")/slots" + "?";
         url = url + "Command=swap";
-        url = url + "&" + "targetSlot=" + URLEncoder.encode(slotName.trim(), "UTF-8");
+        url = url + "&" + "targetSlot=" + URLEncoder.encode(targetSlotName.trim(), "UTF-8");
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -438,7 +449,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @param webSpaceName Required. The name of the web space.
     * @param parameters Required. Parameters supplied to the Create Web Site
     * operation.
-    * @return The Create Web Space operation response.
+    * @return The Create Web Site operation response.
     */
     @Override
     public Future<WebSiteCreateResponse> createAsync(final String webSpaceName, final WebSiteCreateParameters parameters) {
@@ -471,7 +482,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Create Web Space operation response.
+    * @return The Create Web Site operation response.
     */
     @Override
     public WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
@@ -1069,11 +1080,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository create operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
@@ -1093,11 +1103,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository create operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
@@ -1197,7 +1206,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The parameters to delete a web site.
+    * @param parameters Required. Parameters supplied to the Delete Web Site
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1221,7 +1231,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The parameters to delete a web site.
+    * @param parameters Required. Parameters supplied to the Delete Web Site
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1314,17 +1325,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository delete operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The Delete Web Site Repository operation response.
+    * @return The Delete Repository Web Site operation response.
     */
     @Override
     public Future<WebSiteDeleteRepositoryResponse> deleteRepositoryAsync(final String webSpaceName, final String webSiteName) {
@@ -1337,11 +1347,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository delete operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
@@ -1357,7 +1366,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Delete Web Site Repository operation response.
+    * @return The Delete Repository Web Site operation response.
     */
     @Override
     public WebSiteDeleteRepositoryResponse deleteRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -1450,8 +1459,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     
     /**
     * You can generate a new random password for publishing a site by issuing
-    * an HTTP POST request.  Tip: If you want to verify that the publish
-    * password has changed, call HTTP GET on /publishxml before calling
+    * an HTTP POST request. Tip: If you want to verify that the publish
+    * password has changed, issue an HTTP GET on /publishxml before calling
     * /newpassword. In the publish XML, note the hash value in the userPWD
     * attribute. After calling /newpassword, call /publishxml again. You can
     * then compare the new value of userPWD in the Publish XML with the one
@@ -1476,8 +1485,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     
     /**
     * You can generate a new random password for publishing a site by issuing
-    * an HTTP POST request.  Tip: If you want to verify that the publish
-    * password has changed, call HTTP GET on /publishxml before calling
+    * an HTTP POST request. Tip: If you want to verify that the publish
+    * password has changed, issue an HTTP GET on /publishxml before calling
     * /newpassword. In the publish XML, note the hash value in the userPWD
     * attribute. After calling /newpassword, call /publishxml again. You can
     * then compare the new value of userPWD in the Publish XML with the one
@@ -1578,8 +1587,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Optional. Additional parameters.
-    * @return The Get Web Site Details operation response.
+    * @param parameters Optional. Parameters supplied to the Get Web Site
+    * Operation.
+    * @return The Get Web Site operation response.
     */
     @Override
     public Future<WebSiteGetResponse> getAsync(final String webSpaceName, final String webSiteName, final WebSiteGetParameters parameters) {
@@ -1598,7 +1608,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Optional. Additional parameters.
+    * @param parameters Optional. Parameters supplied to the Get Web Site
+    * Operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1609,7 +1620,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Get Web Site Details operation response.
+    * @return The Get Web Site operation response.
     */
     @Override
     public WebSiteGetResponse get(String webSpaceName, String webSiteName, WebSiteGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -2121,14 +2132,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
-    * GET request, or update them by using HTTP PUT with a request body that
-    * contains the settings to be updated.  (see
+    * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The Get Web Site Configuration operation response.
+    * @return The Get Configuration Web Site operation response.
     */
     @Override
     public Future<WebSiteGetConfigurationResponse> getConfigurationAsync(final String webSpaceName, final String webSiteName) {
@@ -2142,8 +2152,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
-    * GET request, or update them by using HTTP PUT with a request body that
-    * contains the settings to be updated.  (see
+    * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
@@ -2157,7 +2166,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Get Web Site Configuration operation response.
+    * @return The Get Configuration Web Site operation response.
     */
     @Override
     public WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -2475,9 +2484,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The Get Web Site Historical Usage Metrics
-    * parameters.
-    * @return The Get Web Site Historical Usage Metrics operation response.
+    * @param parameters Required. Parameters supplied to the Get Historical
+    * Usage Metrics Web Site operation.
+    * @return The Get Historical Usage Metrics Web Site operation response.
     */
     @Override
     public Future<WebSiteGetHistoricalUsageMetricsResponse> getHistoricalUsageMetricsAsync(final String webSpaceName, final String webSiteName, final WebSiteGetHistoricalUsageMetricsParameters parameters) {
@@ -2497,8 +2506,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The Get Web Site Historical Usage Metrics
-    * parameters.
+    * @param parameters Required. Parameters supplied to the Get Historical
+    * Usage Metrics Web Site operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2507,7 +2516,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Get Web Site Historical Usage Metrics operation response.
+    * @return The Get Historical Usage Metrics Web Site operation response.
     */
     @Override
     public WebSiteGetHistoricalUsageMetricsResponse getHistoricalUsageMetrics(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -2749,6 +2758,136 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
+    * You can retrieve the list of active instances by ids for a web site by
+    * issuing an HTTP GET request.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for
+    * more information)
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return The web site instance ids reponse.
+    */
+    @Override
+    public Future<WebSiteInstanceIdsResponse> getInstanceIdsAsync(final String webSpaceName, final String webSiteName) {
+        return this.getClient().getExecutorService().submit(new Callable<WebSiteInstanceIdsResponse>() { 
+            @Override
+            public WebSiteInstanceIdsResponse call() throws Exception {
+                return getInstanceIds(webSpaceName, webSiteName);
+            }
+         });
+    }
+    
+    /**
+    * You can retrieve the list of active instances by ids for a web site by
+    * issuing an HTTP GET request.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for
+    * more information)
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The web site instance ids reponse.
+    */
+    @Override
+    public WebSiteInstanceIdsResponse getInstanceIds(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            CloudTracing.enter(invocationId, this, "getInstanceIdsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/instanceids";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteInstanceIdsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteInstanceIdsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+            
+            Element arrayOfstringSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "ArrayOfstring");
+            if (arrayOfstringSequenceElement != null) {
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfstringSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element arrayOfstringElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfstringSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i1));
+                    result.getInstanceIds().add(arrayOfstringElement.getTextContent());
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * You can retrieve the publish settings information for a web site by
     * issuing an HTTP GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166996.aspx for
@@ -2756,7 +2895,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The Get Web Site Publish Profile operation response.
+    * @return The Get Publish Profile Web Site operation response.
     */
     @Override
     public Future<WebSiteGetPublishProfileResponse> getPublishProfileAsync(final String webSpaceName, final String webSiteName) {
@@ -2786,7 +2925,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Get Web Site Publish Profile operation response.
+    * @return The Get Publish Profile Web Site operation response.
     */
     @Override
     public WebSiteGetPublishProfileResponse getPublishProfile(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -2973,17 +3112,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository get operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The Get Web Site Repository operation response.
+    * @return The Get Repository Web Site operation response.
     */
     @Override
     public Future<WebSiteGetRepositoryResponse> getRepositoryAsync(final String webSpaceName, final String webSiteName) {
@@ -2996,11 +3134,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. You can create a
-    * repository for your web site by issuing an HTTP POST request, or
-    * retrieve information about the repository by using HTTP GET.  (see
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
+    * a repository get operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
@@ -3016,7 +3153,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The Get Web Site Repository operation response.
+    * @return The Get Repository Web Site operation response.
     */
     @Override
     public WebSiteGetRepositoryResponse getRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -3108,17 +3245,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can retrieve a site's current usage metrics by issuing an HTTP GET
+    * You can retrieve current usage metrics for a site by issuing an HTTP GET
     * request. The metrics returned include CPU Time, Data In, Data Out, Local
-    * bytes read, Local bytes written, Network bytes read, Network bytes
-    * written, WP stop requests, Memory Usage, CPU Time - Minute Limit, and
+    * Bytes Read, Local Bytes Written, Network Bytes Read, Network Bytes
+    * Written, WP Stop Requests, Memory Usage, CPU Time - Minute Limit, and
     * File System Storage.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166991.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The Get Web Site Usage Metrics operation response.
+    * @return The Get Usage Metrics Web Site operation response.
     */
     @Override
     public Future<WebSiteGetUsageMetricsResponse> getUsageMetricsAsync(final String webSpaceName, final String webSiteName) {
@@ -3131,10 +3268,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can retrieve a site's current usage metrics by issuing an HTTP GET
+    * You can retrieve current usage metrics for a site by issuing an HTTP GET
     * request. The metrics returned include CPU Time, Data In, Data Out, Local
-    * bytes read, Local bytes written, Network bytes read, Network bytes
-    * written, WP stop requests, Memory Usage, CPU Time - Minute Limit, and
+    * Bytes Read, Local Bytes Written, Network Bytes Read, Network Bytes
+    * Written, WP Stop Requests, Memory Usage, CPU Time - Minute Limit, and
     * File System Storage.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166991.aspx for
     * more information)
@@ -3149,7 +3286,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Get Web Site Usage Metrics operation response.
+    * @return The Get Usage Metrics Web Site operation response.
     */
     @Override
     public WebSiteGetUsageMetricsResponse getUsageMetrics(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -3310,10 +3447,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * Determines if a hostname is available
+    * Determines if a host name is available.
     *
     * @param webSiteName Required. The name of the web site.
-    * @return The Is Hostname Available operation response.
+    * @return The Is Hostname Available Web Site operation response.
     */
     @Override
     public Future<WebSiteIsHostnameAvailableResponse> isHostnameAvailableAsync(final String webSiteName) {
@@ -3326,7 +3463,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * Determines if a hostname is available
+    * Determines if a host name is available.
     *
     * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -3337,7 +3474,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Is Hostname Available operation response.
+    * @return The Is Hostname Available Web Site operation response.
     */
     @Override
     public WebSiteIsHostnameAvailableResponse isHostnameAvailable(String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -3539,36 +3676,40 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can swap a web site from one slot to the production slot.
+    * You can swap a web site from one slot to another slot.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param slotName Required. The name of the web site slot to swap with the
-    * production slot.
+    * @param sourceSlotName Required. The name of the first web site slot to
+    * swap (source).
+    * @param targetSlotName Required. The name of the second web site slot to
+    * swap with (target).
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
-    public Future<WebSiteOperationStatusResponse> swapSlotsAsync(final String webSpaceName, final String webSiteName, final String slotName) {
+    public Future<WebSiteOperationStatusResponse> swapSlotsAsync(final String webSpaceName, final String webSiteName, final String sourceSlotName, final String targetSlotName) {
         return this.getClient().getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
             @Override
             public WebSiteOperationStatusResponse call() throws Exception {
-                return swapSlots(webSpaceName, webSiteName, slotName);
+                return swapSlots(webSpaceName, webSiteName, sourceSlotName, targetSlotName);
             }
          });
     }
     
     /**
-    * You can swap a web site from one slot to the production slot.
+    * You can swap a web site from one slot to another slot.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param slotName Required. The name of the web site slot to swap with the
-    * production slot.
+    * @param sourceSlotName Required. The name of the first web site slot to
+    * swap (source).
+    * @param targetSlotName Required. The name of the second web site slot to
+    * swap with (target).
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3583,13 +3724,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * the request.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
-    * inprogress, has time dout, or has failed. Note that this status is
+    * inprogress, has timed out, or has failed. Note that this status is
     * distinct from the HTTP status code returned for the Get Operation Status
-    * operation itself.  If the long-running operation failed, the response
+    * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
     @Override
-    public WebSiteOperationStatusResponse swapSlots(String webSpaceName, String webSiteName, String slotName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public WebSiteOperationStatusResponse swapSlots(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         WebSiteManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3598,7 +3739,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("webSiteName", webSiteName);
-            tracingParameters.put("slotName", slotName);
+            tracingParameters.put("sourceSlotName", sourceSlotName);
+            tracingParameters.put("targetSlotName", targetSlotName);
             CloudTracing.enter(invocationId, this, "swapSlotsAsync", tracingParameters);
         }
         try {
@@ -3606,7 +3748,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            WebSiteOperationStatusResponse response = client2.getWebSitesOperations().beginSwapingSlotsAsync(webSpaceName, webSiteName, slotName).get();
+            WebSiteOperationStatusResponse response = client2.getWebSitesOperations().beginSwapingSlotsAsync(webSpaceName, webSiteName, sourceSlotName, targetSlotName).get();
             if (response.getStatus() == WebSiteOperationStatus.Succeeded) {
                 return response;
             }
@@ -3649,9 +3791,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. This API executes
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
     * a repository sync operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
@@ -3672,9 +3814,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * A web site repository is essentially a GIT repository that you can use to
-    * manage your web site content. By using GIT source control tools, you can
-    * push or pull version controlled changes to your site. This API executes
+    * A web site repository is essentially a Git repository that you can use to
+    * manage your web site content. By using Git source control tools, you can
+    * push or pull version-controlled changes to your site. This API executes
     * a repository sync operation.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
@@ -4459,15 +4601,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can retrieve the config settings for a web site by issuing an HTTP
-    * GET request, or update them by using HTTP PUT with a request body that
-    * contains the settings to be updated.  (see
+    * You can update the config settings for a web site by issuing an HTTP PUT
+    * with a request body containing the updated settings.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The Update Web Site Configuration parameters.
+    * @param parameters Required. Parameters supplied to the Update
+    * Configuration Web Site operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -4482,15 +4624,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
-    * You can retrieve the config settings for a web site by issuing an HTTP
-    * GET request, or update them by using HTTP PUT with a request body that
-    * contains the settings to be updated.  (see
+    * You can update the config settings for a web site by issuing an HTTP PUT
+    * with a request body containing the updated settings.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. The Update Web Site Configuration parameters.
+    * @param parameters Required. Parameters supplied to the Update
+    * Configuration Web Site operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

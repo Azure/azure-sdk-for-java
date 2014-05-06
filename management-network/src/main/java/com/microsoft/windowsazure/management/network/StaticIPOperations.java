@@ -31,6 +31,10 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the static IPs
+* for your subscription.
+*/
 public interface StaticIPOperations {
     /**
     * The Check Static IP operation retrieves the details for the availability
@@ -47,7 +51,7 @@ public interface StaticIPOperations {
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
     * @return A response that indicates the availability of a static IP
-    * address, and if not, provide a list of suggestions.
+    * address, and if not, provides a list of suggestions.
     */
     NetworkStaticIPAvailabilityResponse check(String networkName, InetAddress ipAddress) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
@@ -58,7 +62,7 @@ public interface StaticIPOperations {
     * @param networkName Required. The name of the virtual network.
     * @param ipAddress Required. The address of the static IP.
     * @return A response that indicates the availability of a static IP
-    * address, and if not, provide a list of suggestions.
+    * address, and if not, provides a list of suggestions.
     */
     Future<NetworkStaticIPAvailabilityResponse> checkAsync(String networkName, InetAddress ipAddress);
 }

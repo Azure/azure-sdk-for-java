@@ -70,8 +70,8 @@ public class Role {
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
-    * Optional. Contains the parameters Windows Azure uses to create a data
-    * disk for a virtual machine.
+    * Optional. Contains the parameters Azure uses to create a data disk for a
+    * virtual machine.
     * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
@@ -79,8 +79,8 @@ public class Role {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure uses to create a data
-    * disk for a virtual machine.
+    * Optional. Contains the parameters Azure uses to create a data disk for a
+    * virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
@@ -149,8 +149,8 @@ public class Role {
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
-    * Optional. Contains the parameters Windows Azure uses to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure uses to create the operating
+    * system disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk() {
@@ -158,8 +158,8 @@ public class Role {
     }
     
     /**
-    * Optional. Contains the parameters Windows Azure uses to create the
-    * operating system disk for the virtual machine.
+    * Optional. Contains the parameters Azure uses to create the operating
+    * system disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
     public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
@@ -170,8 +170,8 @@ public class Role {
     
     /**
     * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
+    * installed on the Virtual Machine. To run a resource extension in a
+    * Virtual Machine, this service must be installed.
     * @return The ProvisionGuestAgent value.
     */
     public Boolean isProvisionGuestAgent() {
@@ -180,8 +180,8 @@ public class Role {
     
     /**
     * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
+    * installed on the Virtual Machine. To run a resource extension in a
+    * Virtual Machine, this service must be installed.
     * @param provisionGuestAgentValue The ProvisionGuestAgent value.
     */
     public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue) {
@@ -251,7 +251,7 @@ public class Role {
     
     /**
     * Optional. Specifies the type of the role. This element is only listed for
-    * Virtual Machine deployments and by default is PersistentVMRole.
+    * Virtual Machine deployments, and by default is PersistentVMRole.
     * @return The RoleType value.
     */
     public String getRoleType() {
@@ -260,7 +260,7 @@ public class Role {
     
     /**
     * Optional. Specifies the type of the role. This element is only listed for
-    * Virtual Machine deployments and by default is PersistentVMRole.
+    * Virtual Machine deployments, and by default is PersistentVMRole.
     * @param roleTypeValue The RoleType value.
     */
     public void setRoleType(final String roleTypeValue) {
@@ -270,7 +270,7 @@ public class Role {
     private String vMImageName;
     
     /**
-    * Optional. Optional. Name of the VMImage from which this Role is to be
+    * Optional. Optional. The name of the VMImage from which this Role is to be
     * created. If the OSDisk in the VMImage was Specialized, then no
     * WindowsProvisioningConfigurationSet or LinuxProvisioningConfigurationSet
     * should be provided. No OSVirtualHardDisk or DataVirtualHardDisk should
@@ -282,7 +282,7 @@ public class Role {
     }
     
     /**
-    * Optional. Optional. Name of the VMImage from which this Role is to be
+    * Optional. Optional. The name of the VMImage from which this Role is to be
     * created. If the OSDisk in the VMImage was Specialized, then no
     * WindowsProvisioningConfigurationSet or LinuxProvisioningConfigurationSet
     * should be provided. No OSVirtualHardDisk or DataVirtualHardDisk should

@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.management.network.models.NetworkListResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -46,11 +45,9 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -60,6 +57,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the virtual
+* networks for your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
+* information)
+*/
 public class NetworkOperationsImpl implements ServiceOperations<NetworkManagementClientImpl>, NetworkOperations {
     /**
     * Initializes a new instance of the NetworkOperationsImpl class.
@@ -82,12 +85,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     }
     
     /**
-    * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * The Begin Setting Network Configuration operation asynchronously
+    * configures the virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -102,12 +106,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     }
     
     /**
-    * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * The Begin Setting Network Configuration operation asynchronously
+    * configures the virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -307,7 +312,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157185.aspx for
     * more information)
     *
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Network Operations List operation.
     */
     @Override
     public Future<NetworkListResponse> listAsync() {
@@ -333,7 +338,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Network Operations List operation.
     */
     @Override
     public NetworkListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -600,17 +605,18 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     
     /**
     * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -627,11 +633,12 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     
     /**
     * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -649,7 +656,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.

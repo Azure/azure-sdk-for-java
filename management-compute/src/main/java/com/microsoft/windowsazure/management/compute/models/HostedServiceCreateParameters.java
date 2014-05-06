@@ -32,10 +32,10 @@ public class HostedServiceCreateParameters {
     private String affinityGroup;
     
     /**
-    * Optional. Required if Location is not specified. The name of an existing
-    * affinity group associated with this subscription. This name is a GUID
+    * Optional. The name of an existing affinity group associated with this
+    * subscription. Required if Location is not specified. This name is a GUID
     * and can be retrieved by examining the name element of the response body
-    * returned by the List Affinity Groups operation.  Specify either Location
+    * returned by the List Affinity Groups operation. Specify either Location
     * or AffinityGroup, but not both. To list available affinity groups, use
     * the List Affinity Groups operation.
     * @return The AffinityGroup value.
@@ -45,10 +45,10 @@ public class HostedServiceCreateParameters {
     }
     
     /**
-    * Optional. Required if Location is not specified. The name of an existing
-    * affinity group associated with this subscription. This name is a GUID
+    * Optional. The name of an existing affinity group associated with this
+    * subscription. Required if Location is not specified. This name is a GUID
     * and can be retrieved by examining the name element of the response body
-    * returned by the List Affinity Groups operation.  Specify either Location
+    * returned by the List Affinity Groups operation. Specify either Location
     * or AffinityGroup, but not both. To list available affinity groups, use
     * the List Affinity Groups operation.
     * @param affinityGroupValue The AffinityGroup value.
@@ -81,15 +81,15 @@ public class HostedServiceCreateParameters {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs. The maximum length
+    * of the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and it must start with a letter.
+    * Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties() {
@@ -98,15 +98,15 @@ public class HostedServiceCreateParameters {
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
+    * extended property must have a defined name and a value. You can have a
+    * maximum of 50 extended property name and value pairs. The maximum length
+    * of the name element is 64 characters, only alphanumeric characters and
+    * underscores are valid in the name, and it must start with a letter.
+    * Attempting to use other characters, starting with a non-letter
     * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
+    * extended property owned by the same service will result in a status code
+    * 400 (Bad Request) error. Each extended property value has a maximum
+    * length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
@@ -142,8 +142,8 @@ public class HostedServiceCreateParameters {
     private String location;
     
     /**
-    * Optional. Required if AffinityGroup is not specified. The location where
-    * the cloud service will be created.  Specify either Location or
+    * Optional. The location where the cloud service will be created. Required
+    * if AffinityGroup is not specified. Specify either Location or
     * AffinityGroup, but not both. To list available locations, use the List
     * Locations operation.
     * @return The Location value.
@@ -153,8 +153,8 @@ public class HostedServiceCreateParameters {
     }
     
     /**
-    * Optional. Required if AffinityGroup is not specified. The location where
-    * the cloud service will be created.  Specify either Location or
+    * Optional. The location where the cloud service will be created. Required
+    * if AffinityGroup is not specified. Specify either Location or
     * AffinityGroup, but not both. To list available locations, use the List
     * Locations operation.
     * @param locationValue The Location value.
@@ -166,9 +166,8 @@ public class HostedServiceCreateParameters {
     private String serviceName;
     
     /**
-    * Required. A name for the cloud service that is unique within Windows
-    * Azure. This name is the DNS prefix name and can be used to access the
-    * service.
+    * Required. A name for the cloud service that is unique within Azure. This
+    * name is the DNS prefix name and can be used to access the service.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -176,9 +175,8 @@ public class HostedServiceCreateParameters {
     }
     
     /**
-    * Required. A name for the cloud service that is unique within Windows
-    * Azure. This name is the DNS prefix name and can be used to access the
-    * service.
+    * Required. A name for the cloud service that is unique within Azure. This
+    * name is the DNS prefix name and can be used to access the service.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {

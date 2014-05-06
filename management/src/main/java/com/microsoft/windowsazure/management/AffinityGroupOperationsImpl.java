@@ -62,7 +62,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for managing affinity groups beneath your subscription.  (see
+* Operations for managing affinity groups in your subscription.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for more
 * information)
 */
@@ -262,7 +262,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
     * more information)
     *
-    * @param affinityGroupName Required. The name of your affinity group.
+    * @param affinityGroupName Required. The name of the affinity group.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -282,7 +282,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
     * more information)
     *
-    * @param affinityGroupName Required. The name of your affinity group.
+    * @param affinityGroupName Required. The name of the affinity group.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -729,7 +729,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
     * more information)
     *
-    * @param affinityGroupName Required. The name of your affinity group.
+    * @param affinityGroupName Required. The name of the affinity group.
     * @param parameters Required. Parameters supplied to the Update Affinity
     * Group operation.
     * @return A standard service response including an HTTP status code and
@@ -751,7 +751,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
     * more information)
     *
-    * @param affinityGroupName Required. The name of your affinity group.
+    * @param affinityGroupName Required. The name of the affinity group.
     * @param parameters Required. Parameters supplied to the Update Affinity
     * Group operation.
     * @throws ParserConfigurationException Thrown if there was an error

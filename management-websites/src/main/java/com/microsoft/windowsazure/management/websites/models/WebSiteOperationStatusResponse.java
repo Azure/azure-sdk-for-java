@@ -29,9 +29,9 @@ import java.util.Calendar;
 
 /**
 * The response body contains the status of the specified long-running
-* operation, indicating whether it has succeeded, is inprogress, has time
-* dout, or has failed. Note that this status is distinct from the HTTP status
-* code returned for the Get Operation Status operation itself.  If the
+* operation, indicating whether it has succeeded, is inprogress, has timed
+* out, or has failed. Note that this status is distinct from the HTTP status
+* code returned for the Get Operation Status operation itself. If the
 * long-running operation failed, the response body includes error information
 * regarding the failure.
 */
@@ -93,7 +93,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     private String geoMasterOperationId;
     
     /**
-    * Optional. The GeoMaster Operation Id for this operation, if any.
+    * Optional. The GeoMaster Operation ID for this operation, if any.
     * @return The GeoMasterOperationId value.
     */
     public String getGeoMasterOperationId() {
@@ -101,7 +101,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The GeoMaster Operation Id for this operation, if any.
+    * Optional. The GeoMaster Operation ID for this operation, if any.
     * @param geoMasterOperationIdValue The GeoMasterOperationId value.
     */
     public void setGeoMasterOperationId(final String geoMasterOperationIdValue) {
@@ -147,8 +147,8 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     private String operationId;
     
     /**
-    * Optional. The operation Id for this operation.  Used to poll for
-    * operation status.
+    * Optional. The Operation ID for this operation. Used to poll for operation
+    * status.
     * @return The OperationId value.
     */
     public String getOperationId() {
@@ -156,8 +156,8 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The operation Id for this operation.  Used to poll for
-    * operation status.
+    * Optional. The Operation ID for this operation. Used to poll for operation
+    * status.
     * @param operationIdValue The OperationId value.
     */
     public void setOperationId(final String operationIdValue) {
@@ -192,7 +192,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * Information about an error that occured suring the operation.
+    * Information about an error that occured during the operation.
     */
     public static class Error {
         private String code;
@@ -216,7 +216,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
         private String extendedCode;
         
         /**
-        * Optional. The error extended code.
+        * Optional. The extended error code.
         * @return The ExtendedCode value.
         */
         public String getExtendedCode() {
@@ -224,7 +224,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
         }
         
         /**
-        * Optional. The error extended code.
+        * Optional. The extended error code.
         * @param extendedCodeValue The ExtendedCode value.
         */
         public void setExtendedCode(final String extendedCodeValue) {

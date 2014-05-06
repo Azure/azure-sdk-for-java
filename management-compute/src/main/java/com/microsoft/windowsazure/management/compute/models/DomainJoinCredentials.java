@@ -31,10 +31,10 @@ public class DomainJoinCredentials {
     
     /**
     * Optional. Specifies the name of the domain used to authenticate an
-    * account. The value is a fully qualified DNS domain.  If the domains name
+    * account. The value is a fully qualified DNS domain. If the domains name
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
-    * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * fully-qualified-DNS-domain\\username format. Example: example.com.
     * @return The Domain value.
     */
     public String getDomain() {
@@ -43,10 +43,10 @@ public class DomainJoinCredentials {
     
     /**
     * Optional. Specifies the name of the domain used to authenticate an
-    * account. The value is a fully qualified DNS domain.  If the domains name
+    * account. The value is a fully qualified DNS domain. If the domains name
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
-    * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * fully-qualified-DNS-domain\\username format. Example: example.com.
     * @param domainValue The Domain value.
     */
     public void setDomain(final String domainValue) {

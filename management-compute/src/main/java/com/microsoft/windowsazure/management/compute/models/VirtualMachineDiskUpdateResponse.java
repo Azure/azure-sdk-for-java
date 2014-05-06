@@ -57,7 +57,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private Boolean isPremium;
     
     /**
-    * Optional. Specifies whether the comtained image is a premium image
+    * Optional. Specifies whether the contained image is a premium image.
     * @return The IsPremium value.
     */
     public Boolean isPremium() {
@@ -65,7 +65,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies whether the comtained image is a premium image
+    * Optional. Specifies whether the contained image is a premium image.
     * @param isPremiumValue The IsPremium value.
     */
     public void setIsPremium(final Boolean isPremiumValue) {

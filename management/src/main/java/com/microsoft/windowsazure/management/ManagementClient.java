@@ -38,7 +38,7 @@ import org.xml.sax.SAXException;
 * The Service Management API provides programmatic access to much of the
 * functionality available through the Management Portal. The Service
 * Management API is a REST API. All API operations are performed over SSL and
-* mutually authenticated using X.509 v3 certificates.  (see
+* are mutually authenticated using X.509 v3 certificates.  (see
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
@@ -50,18 +50,18 @@ public interface ManagementClient extends Closeable, FilterableService<Managemen
     URI getBaseUri();
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * When you create an Azure subscription, it is uniquely identified by a
+    * subscription ID. The subscription ID forms part of the URI for every
+    * call that you make to the Service Management API. The Azure Service
+    * Management API uses mutual authentication of management certificates
+    * over SSL to ensure that a request made to the service is secure. No
+    * anonymous requests are allowed.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
     
     /**
-    * Operations for managing affinity groups beneath your subscription.  (see
+    * Operations for managing affinity groups in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
     * @return The AffinityGroupsOperations value.
@@ -80,7 +80,7 @@ public interface ManagementClient extends Closeable, FilterableService<Managemen
     /**
     * You can use management certificates, which are also known as subscription
     * certificates, to authenticate clients attempting to connect to resources
-    * associated with your Windows Azure subscription.  (see
+    * associated with your Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
     * @return The ManagementCertificatesOperations value.
@@ -95,7 +95,7 @@ public interface ManagementClient extends Closeable, FilterableService<Managemen
     RoleSizeOperations getRoleSizesOperations();
     
     /**
-    * Operation for listing subscription operations and details.  (see
+    * Operations for listing subscription details.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
     * @return The SubscriptionsOperations value.
@@ -103,7 +103,7 @@ public interface ManagementClient extends Closeable, FilterableService<Managemen
     SubscriptionOperations getSubscriptionsOperations();
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -134,7 +134,7 @@ public interface ManagementClient extends Closeable, FilterableService<Managemen
     OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * The Get Operation Status operation returns the status of thespecified
+    * The Get Operation Status operation returns the status of the specified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see

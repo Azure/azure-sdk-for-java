@@ -103,7 +103,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Creates a source control user allowed to publish to this web space.
+    * Creates a source control user with permissions to publish to this web
+    * space.
     *
     * @param username Required. The user name.
     * @param password Required. The user password.
@@ -122,7 +123,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Creates a source control user allowed to publish to this web space.
+    * Creates a source control user with permissions to publish to this web
+    * space.
     *
     * @param username Required. The user name.
     * @param password Required. The user password.
@@ -295,8 +297,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * You can retrieve details for a specified webspace name by issuing an HTTP
-    * GET request.  (see
+    * You can retrieve details for a specified web space name by issuing an
+    * HTTP GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
@@ -314,8 +316,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * You can retrieve details for a specified webspace name by issuing an HTTP
-    * GET request.  (see
+    * You can retrieve details for a specified web space name by issuing an
+    * HTTP GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
@@ -500,7 +502,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Get the dns suffix for this subscription.
+    * Get the DNS Suffix for this subscription.
     *
     * @return The Get DNS Suffix operation response.
     */
@@ -515,7 +517,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Get the dns suffix for this subscription.
+    * Get the DNS Suffix for this subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -609,7 +611,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * You can list the webspaces under the current subscription by issuing a
+    * You can list the web spaces under the current subscription by issuing a
     * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166961.aspx for
     * more information)
@@ -627,7 +629,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * You can list the webspaces under the current subscription by issuing a
+    * You can list the web spaces under the current subscription by issuing a
     * GET request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166961.aspx for
     * more information)
@@ -812,9 +814,9 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Get the available geo regions for this webspace.
+    * Get the available geo regions for this web space.
     *
-    * @return The Get DNS Suffix operation response.
+    * @return The List Geo Regions operation response.
     */
     @Override
     public Future<WebSpacesListGeoRegionsResponse> listGeoRegionsAsync() {
@@ -827,7 +829,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     }
     
     /**
-    * Get the available geo regions for this webspace.
+    * Get the available geo regions for this web space.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -837,7 +839,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Get DNS Suffix operation response.
+    * @return The List Geo Regions operation response.
     */
     @Override
     public WebSpacesListGeoRegionsResponse listGeoRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException {

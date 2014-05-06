@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 /**
-* Possible values for Gateway Profile.
+* Possible values for the Gateway Profile.
 */
 public enum GatewayProfile {
     Small,

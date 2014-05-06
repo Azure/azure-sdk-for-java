@@ -28,41 +28,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Web Sites operation response.
+* The web site instance ids reponse.
 */
-public class WebSpacesListWebSitesResponse extends OperationResponse implements Iterable<WebSite> {
-    private ArrayList<WebSite> webSites;
+public class WebSiteInstanceIdsResponse extends OperationResponse implements Iterable<String> {
+    private ArrayList<String> instanceIds;
     
     /**
-    * Optional. The web sites associated with the specified web space.
-    * @return The WebSites value.
+    * Optional. The identifiers of the currently running instances of the web
+    * site.
+    * @return The InstanceIds value.
     */
-    public ArrayList<WebSite> getWebSites() {
-        return this.webSites;
+    public ArrayList<String> getInstanceIds() {
+        return this.instanceIds;
     }
     
     /**
-    * Optional. The web sites associated with the specified web space.
-    * @param webSitesValue The WebSites value.
+    * Optional. The identifiers of the currently running instances of the web
+    * site.
+    * @param instanceIdsValue The InstanceIds value.
     */
-    public void setWebSites(final ArrayList<WebSite> webSitesValue) {
-        this.webSites = webSitesValue;
+    public void setInstanceIds(final ArrayList<String> instanceIdsValue) {
+        this.instanceIds = instanceIdsValue;
     }
     
     /**
-    * Initializes a new instance of the WebSpacesListWebSitesResponse class.
+    * Initializes a new instance of the WebSiteInstanceIdsResponse class.
     *
     */
-    public WebSpacesListWebSitesResponse() {
+    public WebSiteInstanceIdsResponse() {
         super();
-        this.webSites = new ArrayList<WebSite>();
+        this.instanceIds = new ArrayList<String>();
     }
     
     /**
-    * Gets the sequence of WebSites.
+    * Gets the sequence of InstanceIds.
     *
     */
-    public Iterator<WebSite> iterator() {
-        return this.getWebSites().iterator();
+    public Iterator<String> iterator() {
+        return this.getInstanceIds().iterator();
     }
 }

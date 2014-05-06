@@ -35,14 +35,21 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
+/**
+* The Network Management API includes operations for managing the virtual
+* networks for your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
+* information)
+*/
 public interface NetworkOperations {
     /**
-    * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * The Begin Setting Network Configuration operation asynchronously
+    * configures the virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -53,12 +60,13 @@ public interface NetworkOperations {
     OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
-    * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * The Begin Setting Network Configuration operation asynchronously
+    * configures the virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -102,7 +110,7 @@ public interface NetworkOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Network Operations List operation.
     */
     NetworkListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
@@ -112,17 +120,18 @@ public interface NetworkOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157185.aspx for
     * more information)
     *
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Network Operations List operation.
     */
     Future<NetworkListResponse> listAsync();
     
     /**
     * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -140,7 +149,7 @@ public interface NetworkOperations {
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -149,17 +158,18 @@ public interface NetworkOperations {
     
     /**
     * The Set Network Configuration operation asynchronously configures the
-    * virtual network  (see
+    * virtual network.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters Required. The updated network configuration.
+    * @param parameters Required. Parameters supplied to the Set Network
+    * Configuration operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.

@@ -33,7 +33,7 @@ public class ResourceExtensionConfigurationStatus {
     private Integer code;
     
     /**
-    * Optional. Integer. Status code from the result of applying the
+    * Optional. Integer status code from the result of applying the
     * configuration settings.
     * @return The Code value.
     */
@@ -42,7 +42,7 @@ public class ResourceExtensionConfigurationStatus {
     }
     
     /**
-    * Optional. Integer. Status code from the result of applying the
+    * Optional. Integer status code from the result of applying the
     * configuration settings.
     * @param codeValue The Code value.
     */
@@ -71,7 +71,7 @@ public class ResourceExtensionConfigurationStatus {
     private GuestAgentFormattedMessage formattedMessage;
     
     /**
-    * Optional. This object encapsulates localized status message.
+    * Optional. This object encapsulates a formatted localized status message.
     * @return The FormattedMessage value.
     */
     public GuestAgentFormattedMessage getFormattedMessage() {
@@ -79,7 +79,7 @@ public class ResourceExtensionConfigurationStatus {
     }
     
     /**
-    * Optional. This object encapsulates localized status message.
+    * Optional. This object encapsulates a formatted localized status message.
     * @param formattedMessageValue The FormattedMessage value.
     */
     public void setFormattedMessage(final GuestAgentFormattedMessage formattedMessageValue) {
@@ -89,7 +89,7 @@ public class ResourceExtensionConfigurationStatus {
     private GuestAgentMessage message;
     
     /**
-    * Optional. The message.
+    * Optional. This object encapsulates a localized status message.
     * @return The Message value.
     */
     public GuestAgentMessage getMessage() {
@@ -97,7 +97,7 @@ public class ResourceExtensionConfigurationStatus {
     }
     
     /**
-    * Optional. The message.
+    * Optional. This object encapsulates a localized status message.
     * @param messageValue The Message value.
     */
     public void setMessage(final GuestAgentMessage messageValue) {
@@ -145,8 +145,8 @@ public class ResourceExtensionConfigurationStatus {
     private String status;
     
     /**
-    * Optional. The status could contain values like: Transitioning, Error,
-    * Success, or Warning
+    * Optional. The status of the resourse extension, containing values like
+    * Transitioning, Error, Success, or Warning.
     * @return The Status value.
     */
     public String getStatus() {
@@ -154,8 +154,8 @@ public class ResourceExtensionConfigurationStatus {
     }
     
     /**
-    * Optional. The status could contain values like: Transitioning, Error,
-    * Success, or Warning
+    * Optional. The status of the resourse extension, containing values like
+    * Transitioning, Error, Success, or Warning.
     * @param statusValue The Status value.
     */
     public void setStatus(final String statusValue) {

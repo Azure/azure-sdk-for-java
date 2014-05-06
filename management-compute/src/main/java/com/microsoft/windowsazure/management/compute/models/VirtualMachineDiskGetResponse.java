@@ -57,7 +57,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     private Boolean isCorrupted;
     
     /**
-    * Optional. Specifies thether the disk is known to be corrupt.
+    * Optional. Specifies whether the disk is known to be corrupt.
     * @return The IsCorrupted value.
     */
     public Boolean isCorrupted() {
@@ -65,7 +65,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Specifies thether the disk is known to be corrupt.
+    * Optional. Specifies whether the disk is known to be corrupt.
     * @param isCorruptedValue The IsCorrupted value.
     */
     public void setIsCorrupted(final Boolean isCorruptedValue) {
@@ -159,7 +159,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     * for the disk is located. The blob location belongs to a storage account
     * in the subscription specified by the SubscriptionId value in the
     * operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -171,7 +171,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     * for the disk is located. The blob location belongs to a storage account
     * in the subscription specified by the SubscriptionId value in the
     * operation call. Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -201,8 +201,8 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     private String operatingSystemType;
     
     /**
-    * Optional. The operating system type of the OS image.  Possible Values
-    * are: Linux, Windows, NULL.
+    * Optional. The operating system type of the OS image. Possible Values are:
+    * Linux, Windows, or NULL.
     * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType() {
@@ -210,8 +210,8 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The operating system type of the OS image.  Possible Values
-    * are: Linux, Windows, NULL.
+    * Optional. The operating system type of the OS image. Possible Values are:
+    * Linux, Windows, or NULL.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -245,7 +245,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     private VirtualMachineDiskGetResponse.VirtualMachineDiskUsageDetails usageDetails;
     
     /**
-    * Optional. Contains properties that specify a virtual machine that
+    * Optional. Contains properties that specify a virtual machine that is
     * currently using the disk. A disk cannot be deleted as long as it is
     * attached to a virtual machine.
     * @return The UsageDetails value.
@@ -255,7 +255,7 @@ public class VirtualMachineDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Contains properties that specify a virtual machine that
+    * Optional. Contains properties that specify a virtual machine that is
     * currently using the disk. A disk cannot be deleted as long as it is
     * attached to a virtual machine.
     * @param usageDetailsValue The UsageDetails value.

@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* The custom DNS settings that are specified for deployment.
+* The custom DNS settings that are specified for the deployment.
 */
 public class DnsSettings {
     private ArrayList<DnsServer> dnsServers;

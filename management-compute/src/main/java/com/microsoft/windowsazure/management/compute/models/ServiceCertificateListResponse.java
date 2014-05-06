@@ -94,7 +94,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         private byte[] data;
         
         /**
-        * Optional. The public part of the service certificate as a .cer file.
+        * Optional. The public part of the service certificate as a cer file.
         * @return The Data value.
         */
         public byte[] getData() {
@@ -102,7 +102,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         }
         
         /**
-        * Optional. The public part of the service certificate as a .cer file.
+        * Optional. The public part of the service certificate as a cer file.
         * @param dataValue The Data value.
         */
         public void setData(final byte[] dataValue) {

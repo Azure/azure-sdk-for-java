@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The Get Hosted Service operation response.
+* The List Hosted Service operation response.
 */
 public class HostedServiceListResponse extends OperationResponse implements Iterable<HostedServiceListResponse.HostedService> {
     private ArrayList<HostedServiceListResponse.HostedService> hostedServices;
@@ -95,7 +95,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * Optional. The name of the cloud service. This name is the DNS prefix
         * name and can be used to access the cloud service. For example, if
         * the cloud service name is MyService you could access the cloud
-        * service by calling: http://MyService.cloudapp.net
+        * service by calling: http://MyService.cloudapp.net.
         * @return The ServiceName value.
         */
         public String getServiceName() {
@@ -106,7 +106,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * Optional. The name of the cloud service. This name is the DNS prefix
         * name and can be used to access the cloud service. For example, if
         * the cloud service name is MyService you could access the cloud
-        * service by calling: http://MyService.cloudapp.net
+        * service by calling: http://MyService.cloudapp.net.
         * @param serviceNameValue The ServiceName value.
         */
         public void setServiceName(final String serviceNameValue) {
@@ -116,7 +116,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         private URI uri;
         
         /**
-        * Optional. The Service Management API request URI used to perform Get
+        * Optional. The Service Management API request URI used to perform List
         * Hosted Service Properties requests against the cloud service.
         * @return The Uri value.
         */
@@ -125,7 +125,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Optional. The Service Management API request URI used to perform Get
+        * Optional. The Service Management API request URI used to perform List
         * Hosted Service Properties requests against the cloud service.
         * @param uriValue The Uri value.
         */
