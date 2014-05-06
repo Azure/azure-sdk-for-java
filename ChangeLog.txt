@@ -1,3 +1,39 @@
+2014.05.06 Version 0.7.0
+ * Created a DefaultRequestOptions object for each service client
+ * Deprecated getter/setters for all request option properties on the service clients 
+ * Removed server timeout defaults. These are still settable via the DefaultRequestOptions object on the client if desired
+ * Removed OperationContext getCurrentRequestObject/setCurrentReqestObject methods
+ * Removed SharedAccess{Blob|Queue|Table}Policy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods
+ * Moved all execute and executeSegmented methods for TableOperations, TableBatchOperations, and TableQueries from CloudTableClient to CloudTable. The CloudTableClient methods are removed
+ * Deprecated getEntityClass() in TableQuery. Please use getClazzType() instead.
+ * Removed CloudPageBlob openOutputStream methods in favor of equivalent openWriteNew methods
+ * Removed reserved methods from StorageCredentials classes
+ * Made the isUsePathStyleUris() method in ServiceClient protected
+ * Removed CloudTableClient constructors taking only URI/StorageUri and throw if credentials passed into constructors are null as tables do not allow anonymous access
+ * Removed extraneous ServiceClient constructors
+ * Moved LeaseDuration, LeaseState, and LeaseStatus from the storage package to the blob package
+ * Made the parse(String) methods in LeaseDuration, LeaseState, and LeaseStatus internal
+ * RetryContext currentRetryCount and lastRequestResult fields must be accessed with their corresponding getters/setters
+ * BlockEntry searchMode field must be accessed through its getter/setter
+ * BlockEntry has an additional constructor taking only block id
+ * Removed BlobType enum parse() method
+ * Removed CopyStatus enum parse() method
+ * Removed CloudQueueMessage setExpirationTime(), setNextVisibleTime() and setPopReceipt() methods
+ * Removed TableConstants class
+ * Removed some classes/methods originally marked "Internal Use Only": Credentials.getSigningAccountName(), StorageCredentialsAccountAndKey.setSigningAccountName(), DeserializationHelper class, some BlobProperties setter methods
+ * Applied MaximumExecutionTime to downloadToByteArray and downloadRangeToByteArray methods
+ * Removed GeoReplicationStats.getGeoReplicationStatus(String)
+ * Moved SharedAccessPolicy, Permissions base classes (and serializers/deserializers) from core to storage
+ * Added container/queue/table constructors taking only URI or StorageUri to enable direct instantiation with a SAS token
+ * Fixed LeaseState so that it is parsed correctly. Previously, a leased blob returned LeaseState.UNSPECIFIED rather than LeaseState.LEASED
+ * Fixed the CloudTable(URI) method to correctly handle partition key and row key limits for passed in SAS tokens
+ * Fixed an issue that allowed whitespace metadata values to be set
+ * Changed package name from com.microsoft.windowsazure.storage to com.microsoft.azure.storage
+ * Deprecated AtomPub format for tables
+ * Added support for secondary location access in Azure Storage Emulator
+ * Removed unnecessary exceptions specified in the throws clause of method declarations
+ * Fixed issue with path-style uris and sas credentials
+ 
 2014.02.19 Version 0.6.0
  * Removed OperationContext getCurrentOperationByteCount/setCurrentOperationByteCount and getIntermediateMD5/setIntermediateMD5 methods
  * Deprecated OperationContext getCurrentRequestObject/setCurrentReqestObject methods

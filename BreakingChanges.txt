@@ -1,3 +1,40 @@
+Changes in 0.7.0
+
+BLOB
+ * Removed CloudPageBlob openOutputStream methods in favor of equivalent openWriteNew methods.
+ * Removed SharedAccessBlobPolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+ * Moved LeaseDuration, LeaseState, and LeaseStatus from the storage package to the blob package
+ * Made the parse(String) methods in LeaseDuration, LeaseState, and LeaseStatus internal
+ * Removed BlobType enum parse() method
+ * Removed CopyStatus enum parse() method
+ * Removed some BlobProperties setter methods (all originally marked "Internal Use Only")
+ * BlockEntry searchMode field must be accessed through its getter/setter
+ * Applied MaximumExecutionTime to downloadToByteArray and downloadRangeToByteArray methods
+ * Deprecated ConcurrentRequestCount and SingleBlobPutThresholdInBytes getters and setters on the blob service client. Use the getters and setters located on the request options object accessible via getDefaultRequestOptions() instead.  
+
+QUEUE
+ * Removed SharedAccessQueuePolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+ * Removed CloudQueueMessage setExpirationTime(), setNextVisibleTime() and setPopReceipt() methods
+
+TABLE
+ * Moved all execute and executeSegmented methods for TableOperations, TableBatchOperations, and TableQueries from CloudTableClient to CloudTable. The CloudTableClient methods are removed.
+ * Removed SharedAccessTablePolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+ * Removed CloudTableClient constructors taking only URI/StorageUri and throw if credentials passed into constructors are null as tables do not allow anonymous access
+ * Removed TableConstants class
+ * Deprecated the TablePayloadFormat getter and setter on the table service client. Use the getter and setter located on the request options object accessible via getDefaultRequestOptions() instead.
+
+OTHER
+ * Changed package name from com.microsoft.windowsazure.storage to com.microsoft.azure.storage
+ * Removed OperationContext getCurrentRequestObject/setCurrentReqestObject methods
+ * Removed reserved methods from StorageCredentials classes
+ * Made the isUsePathStyleUris() method in ServiceClient protected
+ * RetryContext currentRetryCount and lastRequestResult fields must be accessed with their corresponding getters/setters
+ * Removed some classes/methods originally marked "Internal Use Only": Credentials.getSigningAccountName(), StorageCredentialsAccountAndKey.setSigningAccountName(), DeserializationHelper class
+ * Removed GeoReplicationStats.getGeoReplicationStatus(String)
+ * Deprecated LocationMode, RetryPolicyFactory, TimeoutInMs, and MaximumExecutionTimeInMs getters and setters on the service clients. Use the getters and setters located on the request options object accessible via getDefaultRequestOptions() instead. 
+ * Removed server TimeoutInMs defaults. These are still settable via the DefaultRequestOptions object on the client if desired.
+ * Whitespace only metadata values are no longer accepted
+
 Changes in 0.6.0
 
 BLOB
