@@ -1,0 +1,30 @@
+/**
+ * Copyright Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.microsoft.azure.storage.blob;
+
+/**
+ * RESERVED FOR INTERNAL USE. Describes actions that may be used for writing to a page blob or clearing a set of pages.
+ */
+enum PageOperationType {
+    /**
+     * Update the page with new data.
+     */
+    UPDATE,
+
+    /**
+     * Clear the page.
+     */
+    CLEAR
+}
