@@ -1,6 +1,6 @@
 #Microsoft Azure SDK for Java
 
-This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/).
+This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/).
 
 #Features
 
@@ -45,7 +45,7 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Sql Database Management
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
-  
+
 
 #Getting Started
 
@@ -54,7 +54,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 
 To get the source code of the SDK via git just type:
 
-    git clone git://github.com/WindowsAzure/azure-sdk-for-java.git
+    git clone git://github.com/Azure/azure-sdk-for-java.git
     cd ./azure-sdk-for-java/microsoft-azure-api/
     mvn compile
 
@@ -75,7 +75,7 @@ within your project you can also have them installed by the Java package manager
 
 * Java 1.6
 * (Optional) Maven
- 
+
 
 ##Usage
 
@@ -87,7 +87,7 @@ deployment tools.
 ##Code Sample
 
 The following is a quick example on how to set up a Azure blob using the API
-and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://www.windowsazure.com/en-us/develop/java/).
+and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://azure.microsoft.com/en-us/develop/java/).
 
 ```java
 import java.io.*;
@@ -147,12 +147,12 @@ Be sure to check out the Microsoft Azure [Developer Forums on Stack Overflow](ht
 
 #Contribute Code or Provide Feedback
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://windowsazure.github.com/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.com/guidelines.html).
 
-If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/WindowsAzure/azure-sdk-for-java/issues) section of the project.
+If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-java/issues) section of the project.
 
 #Learn More
 
-* [Microsoft Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/)
+* [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/)
 * [JavaDocs](http://dl.windowsazure.com/javadoc/)
 
