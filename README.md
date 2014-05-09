@@ -4,18 +4,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 
 #Features
 
-* Storage
-    * Blob
-        * Create/Read/Update/Delete containers
-        * Create/Read/Update/Delete blobs
-    * Queue
-        * Create/Delete Queues
-        * Insert/Peek Queue Messages
-        * Advanced Queue Operations
-    * Table
-        * Create/Read/Update/Delete tables
-        * Create/Read/Update/Delete entities
-        * Batch operation
+
 * Service Bus
     * Queues
         * Create/Read/Update/Delete queues
@@ -40,7 +29,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 * Service Management
     * Compute Management
     * Web Site Management
-    * Virtual Network Management
+    * Network Management
     * Storage Management
     * Sql Database Management
 * Service Runtime
@@ -84,62 +73,6 @@ account.  To host your Java code in Microsoft Azure, you additionally need to do
 the full Microsoft Azure SDK for Java - which includes packaging, emulation, and
 deployment tools.
 
-##Code Sample
-
-The following is a quick example on how to set up a Azure blob using the API
-and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://azure.microsoft.com/en-us/develop/java/).
-
-```java
-import java.io.*;
-
-import com.microsoft.windowsazure.services.core.storage.*;
-import com.microsoft.windowsazure.services.blob.client.*;
-
-public class BlobSample {
-    public static final String storageConnectionString =
-            "DefaultEndpointsProtocol=http;"
-            + "AccountName=your_account_name;"
-            + "AccountKey= your_account_key";
-
-    public static void main(String[] args) {
-        try {
-            CloudStorageAccount account;
-            CloudBlobClient serviceClient;
-            CloudBlobContainer container;
-            CloudBlockBlob blob;
-
-            account = CloudStorageAccount.parse(storageConnectionString);
-            serviceClient = account.createCloudBlobClient();
-            // Container name must be lower case.
-            container = serviceClient.getContainerReference("blobsample");
-            container.createIfNotExist();
-
-            // Set anonymous access on the container.
-            BlobContainerPermissions containerPermissions;
-            containerPermissions = new BlobContainerPermissions();
-            container.uploadPermissions(containerPermissions);
-
-            // Upload an image file.
-            blob = container.getBlockBlobReference("image1.jpg");
-            File fileReference = new File("c:\\myimages\\image1.jpg");
-            blob.upload(new FileInputStream(fileReference), fileReference.length());
-        } catch (FileNotFoundException fileNotFoundException) {
-            System.out.print("FileNotFoundException encountered: ");
-            System.out.println(fileNotFoundException.getMessage());
-            System.exit(-1);
-        } catch (StorageException storageException) {
-            System.out.print("StorageException encountered: ");
-            System.out.println(storageException.getMessage());
-            System.exit(-1);
-        } catch (Exception e) {
-            System.out.print("Exception encountered: ");
-            System.out.println(e.getMessage());
-            System.exit(-1);
-        }
-
-    }
-}
-```
 
 #Need Help?
 
