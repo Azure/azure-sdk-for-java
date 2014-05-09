@@ -1,6 +1,42 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Azure Tooling #
+node_modules
+
+# Eclipse #
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# Other Tooling #
 .classpath
 .project
 target
-node_modules
 .idea
 *.iml
+
+# Mac OS #
+.DS_Store
+.DS_Store?
+
+# Windows #
+Thumbs.db

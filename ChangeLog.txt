@@ -1,3 +1,7 @@
+2014.04.2 Version 0.5.0
+ * Add multiple service management modules
+ * Split the SDK into multiple sub-modules
+
 2013.09.30 Version 0.4.6
  * Allow users to set the client-request-id for better tracking/debugging of storage requests. This is set on the OperationContext.
  * Prevent a potential arithmetic overflow while calculating the exponential retry back-off interval in storage.

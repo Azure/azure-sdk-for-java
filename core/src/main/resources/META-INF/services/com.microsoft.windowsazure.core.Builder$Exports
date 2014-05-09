@@ -1,0 +1,5 @@
+com.microsoft.windowsazure.core.pipeline.apache.Exports
+com.microsoft.windowsazure.core.pipeline.jersey.Exports
+com.microsoft.windowsazure.core.utils.Exports
+com.microsoft.windowsazure.credentials.Exports
+com.microsoft.windowsazure.management.configuration.Exports
