@@ -75,7 +75,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //dynamic get location for vm storage/hosted service
         getLocation();
         //create a new storage account for vm .vhd storage.
-        createStorageAccount();        
+        createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
     }
@@ -84,8 +84,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     public static void cleanup() {        
         cleanDeployment();
         cleanHostedService();
-        cleanBlob();
-        cleanStorageAccount();
+        cleanBlob(storageAccountName, storageContainer);
+        cleanStorageAccount(storageAccountName);
     }
     
     @Test
@@ -377,8 +377,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
-    
-    
+
     private static String getOSSourceImage() throws Exception {
         String sourceImageName = null;
         VirtualMachineOSImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
@@ -393,129 +392,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         Assert.assertNotNull(sourceImageName);
         return sourceImageName;
-    }
-   
-    private static void createStorageAccount() throws Exception {
-        String storageAccountCreateName = testStoragePrefix + randomString(10);
-        String storageAccountLabel = testStoragePrefix + "storageLabel1";
-
-        //Arrange
-        StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
-        //required
-        createParameters.setName(storageAccountCreateName);
-        //required
-        createParameters.setLabel(storageAccountLabel);
-        //required if no affinity group has set
-        createParameters.setLocation(vmLocation);
-
-        //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
-      
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
-        storageAccountName = storageAccountCreateName;
-        
-        //use container inside storage account, needed for os image storage.
-        StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
-        storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
-        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
-        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
-        container.createIfNotExists();
-        
-        //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
-        boolean found = false;
-        while(found == false) {
-            Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
-                        for (CloudBlobContainer item : listContainerResult) {
-                 if (item.getName().contains(storageContainer) == true) {
-                     found = true;                  
-                 }
-            }
-        
-            if (found == false) { 
-                Thread.sleep(1000 * 30);
-            }
-            else {
-                Thread.sleep(1000 * 120);
-            }           
-        }       
-    }
-    
-    private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException {
-        String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
-        CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
-
-        // Create the blob client
-        CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-        return blobClient;
-    }
-    
-    private static void cleanBlob() {
-        // Create the blob client
-        CloudBlobClient blobClient = null;
-        try {
-            blobClient = createBlobClient(storageAccountName, storageAccountKey);
-        } catch (InvalidKeyException e) {
-        } catch (URISyntaxException e) {
-        }
-
-        // Retrieve reference to a previously created container
-        CloudBlobContainer container = null;
-        try {
-            container = blobClient.getContainerReference(storageContainer);
-        } catch (URISyntaxException e) {
-        } catch (StorageException e) {
-        }           
-        
-        try {
-            container.breakLease(300);
-        } catch (StorageException e) {
-        }
-        try {
-            container.delete();
-        } catch (StorageException e) {
-        }
-    }
-    
-    private static void getLocation() throws Exception {
-        //has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
-        ArrayList<String> serviceName = new ArrayList<String>();
-        serviceName.add(LocationAvailableServiceNames.COMPUTE);
-        serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
-        serviceName.add(LocationAvailableServiceNames.STORAGE);     
-        
-        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
-        for (LocationsListResponse.Location location : locationsListResponse) {
-            ArrayList<String> availableServicelist = location.getAvailableServices();
-            String locationName = location.getName();
-            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true)) {                       
-                vmLocation = locationName;              
-            }           
-        }
-    }
-
-    private static void cleanStorageAccount() {
-        StorageAccountGetResponse storageAccountGetResponse = null; 
-        try {
-            storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
-        } catch (ServiceException e) {
-        } catch (IOException e) {
-        } catch (ParserConfigurationException e) {
-        } catch (SAXException e) {
-        } catch (URISyntaxException e) {
-        }
-        
-        if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))) {
-            OperationResponse operationResponse = null;
-            try {
-                operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
-            } catch (IOException e) {
-            } catch (ServiceException e) {
-            }
-            if (operationResponse != null) {
-                Assert.assertEquals(200, operationResponse.getStatusCode());
-            }
-        }
     }
     
     private static void cleanHostedService() {

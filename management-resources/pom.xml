@@ -1,0 +1,161 @@
+<!--
+ Copyright Microsoft Corporation
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.microsoft.windowsazure</groupId>
+    <artifactId>microsoft-azure-api-parent</artifactId>
+    <version>0.5.0</version>
+    <relativePath>../parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>microsoft-azure-api-management-resources</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Microsoft Azure Resource Management Client API</name>
+  <description>Windows Azure Management SDK Clients</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>scm:git:https://github.com/WindowsAzure/azure-sdk-for-java</url>
+    <connection>scm:git:git://github.com/WindowsAzure/azure-sdk-for-java.git</connection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+
+    <jackson.version>2.1.1</jackson.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-core</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk16</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>2.1.1</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>evaluate</goal>
+            </goals>
+            <configuration>
+              <expression>legal</expression>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8</version>
+        <configuration>
+          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
+          <bottom><![CDATA[<code>/**
+<br/>* Copyright Microsoft Corporation
+<br/>*
+<br/>* Licensed under the Apache License, Version 2.0 (the "License");
+<br/>* you may not use this file except in compliance with the License.
+<br/>* You may obtain a copy of the License at
+<br/>* http://www.apache.org/licenses/LICENSE-2.0
+<br/>*
+<br/>* Unless required by applicable law or agreed to in writing, software
+<br/>* distributed under the License is distributed on an "AS IS" BASIS,
+<br/>* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<br/>* See the License for the specific language governing permissions and
+<br/>* limitations under the License.
+<br/>*/</code>]]></bottom>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

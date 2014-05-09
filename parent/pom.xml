@@ -291,6 +291,7 @@
     <module>../management-sql</module>
     <module>../management-storage</module>
     <module>../management-network</module>
+    <module>../management-resources</module>
     <module>../management-websites</module>
     <module>../media</module>
     <module>../serviceBus</module>
