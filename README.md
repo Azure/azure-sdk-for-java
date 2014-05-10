@@ -28,11 +28,41 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Create/Read/Update/Delete notification endpoints
 * Service Management
     * Management
+      * Create/Delete/Get/List/Update affinity group
+      * List location
+      * Create/Delete/Get/List management certificate
+      * List role size
+      * Get/List subscription
+      * Register/Unregister resource
     * Compute Management
-    * Web Site Management
+      * ChangeConfiguration/Delete/Reboot/Reimage/Swap/Update/Upgrade deployment
+      * AddExtension/Delete/CheckNameAvailability/Create/Delete/Get/GetDetailed/GetExtension/List/ListAvailableExtension/Update hosted service operations
+      * List/ListFamilies operating system
+      * Create/Delete/Get/List service certificate
+      * Create/Delete/Get/List/Update data disk or disk
+      * List/ListVersions virtual machine extension
+      * Capture/Create/Delete/Restart/Shutdown/Start/Update/Start/Update/UpdateLoadBalancedEndpointSet virtual machine
+      * Create/Delete/Get/List/Update virtual machine OS image
+      * Delete/List virtual machine image
+    * Websites Management
+      * Create/Delete/Get/List/Update server farm
+      * Create/Delete/DeleteRepository/GeneratePassword/Get/GetConfiguration/GetHistoricalUsageMetrics/GetInstanceIds/GetPublishProfile/GetRepository/GetUsageMetrics/isHostnameAvailable/Restart/SwapSlots/SyncRepository/Update/UpdateConfiguration of Azure web sites
+      * CreatePublishingUser/Get/List/ListGeoRegions/ListPublishingUser/ListWebSites of web space
     * Network Management
+      * Create/Delete/Get/List client root certificate
+      * Connect/Disconnect/Testing/Create/Delete/Failover/ResetSharedKey gateway operations
+      * SetConfiguration/GetConfiguration/Get/List network 
+      * Create/Delete/Get/List reserved IP operations
+      * Check static IP operations
     * Storage Management
+      * Create/CheckNameAvailability/Delete/Get/GetAsync/GetKeys/List/RegenerateKeys/Update Azure storage account
     * Sql Database Management
+      * Export/GetStatus/Import database 
+      * Get/List database operation's operation
+      * Create/Delete/Get/GetAsync/GetEventLogs/List/Update database operations
+      * Create/Delete/Get/List/Update firewall rule
+      * ChangeAdministratorPassword/Create/Delete/List server operations
+      * Get/List service objective
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
 
