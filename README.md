@@ -27,6 +27,7 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Add/Get job notifications
     * Create/Read/Update/Delete notification endpoints
 * Service Management
+    * Management
     * Compute Management
     * Web Site Management
     * Network Management
@@ -44,7 +45,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 To get the source code of the SDK via git just type:
 
     git clone git://github.com/Azure/azure-sdk-for-java.git
-    cd ./azure-sdk-for-java/microsoft-azure-api/
+    cd ./azure-sdk-for-java/
     mvn compile
 
 ###Option 2: Via Maven
@@ -55,8 +56,78 @@ within your project you can also have them installed by the Java package manager
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.5</version>
+  <artifactId>microsoft-azure-api-management</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-compute</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-network</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-resources</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-sql</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-storage</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-websites</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-media</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-servicebus</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-tracing-util</artifactId>
+  <version>0.5.0</version>
 </dependency>
 ```
 
