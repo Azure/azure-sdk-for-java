@@ -51,7 +51,7 @@ public enum BlobListingDetails {
      * Sets the value of this enum.
      * 
      * @param val
-     *            The value being assigned.
+     *        An <code>int</code> which represents the value being assigned.
      */
     BlobListingDetails(final int val) {
         this.value = val;

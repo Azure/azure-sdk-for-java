@@ -20,7 +20,7 @@ package com.microsoft.azure.storage;
  */
 public enum LoggingOperations {
     /**
-     * Log Read Operations .
+     * Log Read Operations.
      */
     READ,
 

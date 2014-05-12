@@ -43,25 +43,25 @@ public class TableResult {
      * Initializes an empty {@link TableResult} instance.
      */
     public TableResult() {
-        // empty ctor
+        // Empty constructor.
     }
 
     /**
      * Initializes a {@link TableResult} instance with the specified HTTP status code.
      * 
      * @param httpStatusCode
-     *            The HTTP status code for the table operation returned by the server.
+     *            An <code>int<code> which represents the HTTP status code for the table operation returned by the server.
      */
     public TableResult(final int httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
     }
 
     /**
-     * Gets the Etag returned with the table operation results. The server will return the same Etag value for a
+     * Gets the ETag returned with the table operation results. The server will return the same ETag value for a
      * table, entity, or entity group returned by an operation as long as it is unchanged on the server.
      * 
      * @return
-     *         A <code>String</code> containing the Etag returned by the server with the table operation results.
+     *         A <code>String</code> containing the ETag returned by the server with the table operation results.
      */
     public String getEtag() {
         return this.etag;
@@ -71,7 +71,7 @@ public class TableResult {
      * Gets the HTTP status code returned by a table operation request.
      * 
      * @return
-     *         The HTTP status code for the table operation returned by the server.
+     *         An <code>int<code> which represents the HTTP status code for the table operation returned by the server.
      */
     public int getHttpStatusCode() {
         return this.httpStatusCode;
@@ -92,7 +92,7 @@ public class TableResult {
      * Gets the result returned by the table operation as an Object.
      * 
      * @return
-     *         The result returned by the table operation as an <code>Object</code>.
+     *         An <code>Object</code> reference which represents the result returned by the table operation.
      */
     public Object getResult() {
         return this.result;
@@ -102,7 +102,7 @@ public class TableResult {
      * Gets the result returned by the table operation as an instance of the specified type.
      * 
      * @return
-     *         The result returned by the table operation as an instance of type <code>T</code>.
+     *         An <code>T</code> reference which represents the result returned by the table operation.
      */
     @SuppressWarnings("unchecked")
     public <T> T getResultAsType() {
@@ -110,10 +110,10 @@ public class TableResult {
     }
 
     /**
-     * Reserved for internal use. Sets the Etag associated with the table operation results.
+     * Reserved for internal use. Sets the ETag associated with the table operation results.
      * 
      * @param etag
-     *            A <code>String</code> containing an Etag to associate with the table operation results.
+     *            A <code>String</code> containing an ETag to associate with the table operation results.
      */
     protected void setEtag(final String etag) {
         this.etag = etag;

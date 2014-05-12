@@ -55,13 +55,13 @@ public final class ResultContinuation {
      * Creates an instance of the <code>ResultContinuation</code> class.
      */
     public ResultContinuation() {
-        // Empty Default Ctor
+        // Empty default constructor.
     }
 
     /**
      * Gets the type of the continuation token.
      * 
-     * @return the continuationType
+     * @return The {@link ResultContinuationType} value.
      */
     public ResultContinuationType getContinuationType() {
         return this.continuationType;
@@ -70,25 +70,25 @@ public final class ResultContinuation {
     /**
      * Gets the next marker for continuing results of listing operations.
      * 
-     * @return the nextMarker
+     * @return A <code>String</code> which represents the the next marker.
      */
     public String getNextMarker() {
         return this.nextMarker;
     }
 
     /**
-     * Gets the next partition key for TableServiceEntity enumeration operations.
+     * Gets the next partition key for {@link TableServiceEntity} enumeration operations.
      * 
-     * @return the nextPartitionKey
+     * @return A <code>String</code> which represents the the next partition key.
      */
     public String getNextPartitionKey() {
         return this.nextPartitionKey;
     }
 
     /**
-     * Gets the next row key for TableServiceEntity enumeration operations.
+     * Gets the next row key for {@link TableServiceEntity} enumeration operations.
      * 
-     * @return the nextRowKey
+     * @return A <code>String</code> which represents the the next row key.
      */
     public String getNextRowKey() {
         return this.nextRowKey;
@@ -97,7 +97,7 @@ public final class ResultContinuation {
     /**
      * Gets the next table name for Table enumeration operations.
      * 
-     * @return the nextTableName
+     * @return A <code>String</code> which represents the the next table name.
      */
     public String getNextTableName() {
         return this.nextTableName;
@@ -106,14 +106,14 @@ public final class ResultContinuation {
     /**
      * Gets the location that the token applies to.
      * 
-     * @return the targetLocation
+     * @return A {@link StorageLocation} value which indicates the location. 
      */
     public StorageLocation getTargetLocation() {
         return targetLocation;
     }
 
     /**
-     * Returns a value that indicates whether continuation information is available.
+     * Indicates whether continuation information is available.
      * 
      * @return <code>true</code> if any continuation information is available; otherwise <code>false</code>.
      */
@@ -126,7 +126,7 @@ public final class ResultContinuation {
      * Sets the type of the continuation token.
      * 
      * @param continuationType
-     *            the continuationType to set
+     *        The {@link ResultContinuationType} value to set.
      */
     public void setContinuationType(final ResultContinuationType continuationType) {
         this.continuationType = continuationType;
@@ -136,27 +136,27 @@ public final class ResultContinuation {
      * Sets the next marker for continuing results of listing operations.
      * 
      * @param nextMarker
-     *            the nextMarker to set
+     *        A <code>String</code> which represents the the next marker to set.
      */
     public void setNextMarker(final String nextMarker) {
         this.nextMarker = nextMarker;
     }
 
     /**
-     * Sets the next partition key for TableServiceEntity enumeration operations.
+     * Sets the next partition key for {@link TableServiceEntity} enumeration operations.
      * 
      * @param nextPartitionKey
-     *            the nextPartitionKey to set
+     *        A <code>String</code> which represents the the next partition key to set.
      */
     public void setNextPartitionKey(final String nextPartitionKey) {
         this.nextPartitionKey = nextPartitionKey;
     }
 
     /**
-     * Sets the next row key for TableServiceEntity enumeration operations.
+     * Sets the next row key for {@link TableServiceEntity} enumeration operations.
      * 
      * @param nextRowKey
-     *            the nextRowKey to set
+     *        A <code>String</code> which represents the the next row key to set.
      */
     public void setNextRowKey(final String nextRowKey) {
         this.nextRowKey = nextRowKey;
@@ -166,7 +166,7 @@ public final class ResultContinuation {
      * Sets the next table name for Table enumeration operations.
      * 
      * @param nextTableName
-     *            the nextTableName to set
+     *        A <code>String</code> which represents the the next table name to set.
      */
     public void setNextTableName(final String nextTableName) {
         this.nextTableName = nextTableName;
@@ -176,7 +176,7 @@ public final class ResultContinuation {
      * Sets the location that the token applies to.
      * 
      * @param targetLocation
-     *            the targetLocation to set
+     *        A {@link StorageLocation} value which indicates the location to set.
      */
     public void setTargetLocation(StorageLocation targetLocation) {
         this.targetLocation = targetLocation;

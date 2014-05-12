@@ -91,7 +91,7 @@ public final class CloudTable {
     /**
      * Returns the list of URIs for all locations.
      * 
-     * @return A <code>StorageUri</code> that represents the list of URIs for all locations..
+     * @return A {@link StorageUri} that represents the list of URIs for all locations..
      */
     public final StorageUri getStorageUri() {
         return this.storageUri;
@@ -127,7 +127,7 @@ public final class CloudTable {
      * include a SAS token.
      * 
      * @param uri
-     *            A <code>StorageUri</code> object that represents the absolute URI of the table.
+     *            A {@link StorageUri} object that represents the absolute URI of the table.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -142,19 +142,20 @@ public final class CloudTable {
      * Creates an instance of the <code>CloudTable</code> class using the specified name and client.
      * 
      * @param tableName
-     *            The name of the table, which must adhere to table naming rules. The table name
-     *            should not include any path separator characters (/).
+     *            A <code>String</code> which represents the name of the table, which must adhere to table naming rules.
+     *            The table name should not include any path separator characters (/).
      *            Table names are case insensitive, must be unique within an account and must be between 3-63 characters
      *            long. Table names must start with an cannot begin with a numeric character and may only contain
      *            alphanumeric characters. Some table names are reserved, including "table".
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
+     * 
      * @throws URISyntaxException
      *             If the resource URI constructed based on the tableName is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179338.aspx">Understanding the Table Service Data
+     * @see <a href="http://msdn.microsoft.com/library/azure/dd179338.aspx">Understanding the Table Service Data
      *      Model</a>
      */
     public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
@@ -192,7 +193,7 @@ public final class CloudTable {
      * Creates an instance of the <code>CloudTable</code> class using the specified table URI and client.
      * 
      * @param uri
-     *            A <code>StorageUri</code> object that represents the absolute URI of the table.
+     *            A {@link StorageUri} object that represents the absolute URI of the table.
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
@@ -207,7 +208,8 @@ public final class CloudTable {
 
         this.storageUri = uri;
 
-        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client.isUsePathStyleUris();
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri())
+                : client.isUsePathStyleUris();
 
         this.name = PathUtility.getTableNameFromUri(uri.getPrimaryUri(), usePathStyleUris);
         this.tableServiceClient = client;
@@ -274,8 +276,7 @@ public final class CloudTable {
     /**
      * Creates the table in the storage service using default request options if it does not already exist.
      * 
-     * @return A value of <code>true</code> if the table is created in the storage service, otherwise <code>false</code>
-     *         .
+     * @return <code>true</code> if the table is created in the storage service; otherwise <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -374,7 +375,7 @@ public final class CloudTable {
     /**
      * Deletes the table from the storage service, if it exists.
      * 
-     * @return A value of <code>true</code> if the table existed in the storage service and has been deleted, otherwise
+     * @return <code>true</code> if the table existed in the storage service and has been deleted; otherwise
      *         <code>false</code>.
      * 
      * @throws StorageException
@@ -835,7 +836,7 @@ public final class CloudTable {
     /**
      * Returns a value that indicates whether the table exists in the storage service.
      * 
-     * @return <code>true</code> if the table exists in the storage service, otherwise <code>false</code>.
+     * @return <code>true</code> if the table exists in the storage service; otherwise <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1114,13 +1115,24 @@ public final class CloudTable {
     }
 
     /**
-     * Returns a shared access signature for the table.
+     * Creates a shared access signature for the table.
      * 
      * @param policy
-     *            The access policy for the shared access signature.
+     *            A {@link SharedAccessTablePolicy} object which represents the access policy for the shared access
+     *            signature.
      * @param accessPolicyIdentifier
-     *            A table-level access policy.
+     *            A <code>String</code> which represents a table-level access policy.
+     * @param startPartitionKey
+     *            A <code>String</code> which represents the starting partition key.
+     * @param startRowKey
+     *            A <code>String</code> which represents the starting row key.
+     * @param endPartitionKey
+     *            A <code>String</code> which represents the ending partition key.
+     * @param endRowKey
+     *            A <code>String</code> which represents the ending end key.
+     * 
      * @return A <code>String</code> containing the shared access signature for the table.
+     * 
      * @throws InvalidKeyException
      *             If an invalid key was passed.
      * @throws StorageException
@@ -1176,11 +1188,12 @@ public final class CloudTable {
      * a new client is created based on SAS information or as anonymous credentials.
      * 
      * @param completeUri
-     *            The complete Uri.
+     *            A {@link StorageUri} object which represents the complete URI.
      * @param existingClient
-     *            The client to use.
+     *            A {@link CloudTableClient} object which represents the client to use.
      * @param usePathStyleUris
-     *            If true, path style Uris are used.
+     *            <code>true</code> if path-style URIs are used; otherwise <code>false</code>.
+     * 
      * @throws URISyntaxException
      * @throws StorageException
      */

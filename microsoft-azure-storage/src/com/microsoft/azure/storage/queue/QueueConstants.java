@@ -106,7 +106,7 @@ final class QueueConstants {
     public static final String TIME_NEXT_VISIBLE_ELEMENT = "TimeNextVisible";
 
     /**
-     * Private Default Ctor.
+     * Private Default Constructor.
      */
     private QueueConstants() {
         // No op

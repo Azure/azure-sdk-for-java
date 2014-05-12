@@ -74,11 +74,11 @@ import com.microsoft.azure.storage.StorageException;
 public interface TableEntity {
 
     /**
-     * Gets the Etag value for the entity. This value is used to determine if the table entity has changed since it was
+     * Gets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
      * last read from Microsoft Azure storage.
      * 
      * @return
-     *         A <code>String</code> containing the Etag for the entity.
+     *         A <code>String</code> which represents the ETag for the entity.
      */
     public String getEtag();
 
@@ -86,7 +86,7 @@ public interface TableEntity {
      * Gets the PartitionKey value for the entity.
      * 
      * @return
-     *         A <code>String</code> containing the PartitionKey value for the entity.
+     *         A <code>String</code> which represents the PartitionKey value for the entity.
      */
     public String getPartitionKey();
 
@@ -94,7 +94,7 @@ public interface TableEntity {
      * Gets the RowKey value for the entity.
      * 
      * @return
-     *         A <code>String</code> containing the RowKey value for the entity.
+     *         A <code>String</code> which represents the RowKey value for the entity.
      */
     public String getRowKey();
 
@@ -102,30 +102,31 @@ public interface TableEntity {
      * Gets the Timestamp for the entity.
      * 
      * @return
-     *         A <code>Date</code> containing the Timestamp value for the entity.
+     *         A <code>java.util.Date</code> object which represents the Timestamp value for the entity.
      */
     public Date getTimestamp();
 
     /**
      * Populates an instance of the object implementing {@link TableEntity} using the specified properties parameter,
-     * containing a map of <code>String</code> property names to {@link EntityProperty} data typed values.
+     * which represents a map of <code>String</code> property names to {@link EntityProperty} data typed values.
      * 
      * @param properties
      *            The <code>java.util.HashMap</code> of <code>String</code> to {@link EntityProperty} data typed values
      *            to use to populate the table entity instance.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
+     * 
      * @throws StorageException
-     *             if an error occurs during the operation.
+     *             If an error occurs during the operation.
      */
     public void readEntity(HashMap<String, EntityProperty> properties, OperationContext opContext)
             throws StorageException;
 
     /**
-     * Sets the Etag for the entity.
+     * Sets the ETag for the entity.
      * 
      * @param etag
-     *            The <code>String</code> containing the Etag to set for the entity.
+     *            A <code>String</code> which specifies the ETag to set for the entity.
      */
     public void setEtag(String etag);
 
@@ -133,7 +134,7 @@ public interface TableEntity {
      * Sets the PartitionKey value for the entity.
      * 
      * @param partitionKey
-     *            The <code>String</code> containing the PartitionKey value to set for the entity.
+     *            A <code>String</code> which specifies the PartitionKey value to set for the entity.
      */
     public void setPartitionKey(String partitionKey);
 
@@ -141,7 +142,7 @@ public interface TableEntity {
      * Sets the RowKey value for the entity.
      * 
      * @param rowKey
-     *            The <code>String</code> containing the RowKey value to set for the entity.
+     *            A <code>String</code> which specifies the RowKey value to set for the entity.
      */
     public void setRowKey(String rowKey);
 
@@ -149,7 +150,7 @@ public interface TableEntity {
      * Sets the Timestamp value for the entity.
      * 
      * @param timeStamp
-     *            The <code>Date</code> containing the Timestamp value to set for the entity.
+     *            A <code>java.util.Date</code> which specifies the Timestamp value to set for the entity.
      */
     public void setTimestamp(Date timeStamp);
 
@@ -159,12 +160,13 @@ public interface TableEntity {
      * 
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
+     * 
      * @return
-     *         The <code>java.util.HashMap</code> of <code>String</code> property names to {@link EntityProperty} data
+     *         A <code>java.util.HashMap</code> of <code>String</code> property names to {@link EntityProperty} data
      *         typed values representing the properties of the table entity.
      * 
      * @throws StorageException
-     *             if an error occurs during the operation.
+     *             If an error occurs during the operation.
      */
     public HashMap<String, EntityProperty> writeEntity(OperationContext opContext) throws StorageException;
 }

@@ -161,13 +161,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>BooleanProperty eq false</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>boolean</code> containing the value to compare with the property.
+     *            A <code>boolean</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final boolean value) {
         return generateFilterCondition(propertyName, operation, value ? Constants.TRUE : Constants.FALSE,
@@ -186,13 +186,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>ByteArray eq X'010f'</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>byte[]</code> containing the value to compare with the property.
+     *            A <code>byte</code> array which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final byte[] value) {
         StringBuilder sb = new StringBuilder();
@@ -218,13 +218,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>ByteArray eq X'01fe'</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>Byte[]</code> containing the value to compare with the property.
+     *            A <code>Byte</code> array which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final Byte[] value) {
         StringBuilder sb = new StringBuilder();
@@ -239,7 +239,7 @@ public class TableQuery<T extends TableEntity> {
     }
 
     /**
-     * Generates a property filter condition string for a <code>Date</code> value. Creates a formatted string to use in
+     * Generates a property filter condition string for a <code>java.util.Date</code> value. Creates a formatted string to use in
      * a filter expression that uses the specified operation to compare the property with the value, formatted as a
      * datetime value, as in the following example:
      * <p>
@@ -250,13 +250,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>FutureDate gt datetime'2013-01-31T09:00:00'</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>Date</code> containing the value to compare with the property.
+     *            A <code>java.util.Date</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final Date value) {
         return generateFilterCondition(propertyName, operation,
@@ -276,13 +276,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>Circumference eq 6.283184</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>double</code> containing the value to compare with the property.
+     *            A <code>double</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final double value) {
         return generateFilterCondition(propertyName, operation, Double.toString(value), EdmType.DOUBLE);
@@ -300,13 +300,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>Population gt 1000</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            An <code>int</code> containing the value to compare with the property.
+     *            An <code>int</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final int value) {
         return generateFilterCondition(propertyName, operation, Integer.toString(value), EdmType.INT32);
@@ -324,13 +324,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>StellarMass gt 7000000000</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>long</code> containing the value to compare with the property.
+     *            A <code>long</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final long value) {
         return generateFilterCondition(propertyName, operation, Long.toString(value), EdmType.INT64);
@@ -348,13 +348,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>Platform eq 'Azure'</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>String</code> containing the value to compare with the property.
+     *            A <code>String</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final String value) {
         return generateFilterCondition(propertyName, operation, value, EdmType.STRING);
@@ -365,15 +365,15 @@ public class TableQuery<T extends TableEntity> {
      * the specified operation to compare the property with the value, formatted as the specified {@link EdmType}.
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>String</code> containing the value to compare with the property.
+     *            A <code>String</code> which specifies the value to compare with the property.
      * @param edmType
      *            The {@link EdmType} to format the value as.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, String value, EdmType edmType) {
         String valueOperand = null;
@@ -413,13 +413,13 @@ public class TableQuery<T extends TableEntity> {
      * <code>Identity eq guid'c9da6455-213d-42c9-9a79-3e9149a57833'</code>
      * 
      * @param propertyName
-     *            A <code>String</code> containing the name of the property to compare.
+     *            A <code>String</code> which specifies the name of the property to compare.
      * @param operation
-     *            A <code>String</code> containing the comparison operator to use.
+     *            A <code>String</code> which specifies the comparison operator to use.
      * @param value
-     *            A <code>UUID</code> containing the value to compare with the property.
+     *            A <code>UUID</code> which specifies the value to compare with the property.
      * @return
-     *         A <code>String</code> containing the formatted filter condition.
+     *         A <code>String</code> which represents the formatted filter condition.
      */
     public static String generateFilterCondition(String propertyName, String operation, final UUID value) {
         return generateFilterCondition(propertyName, operation, value.toString(), EdmType.GUID);
@@ -429,13 +429,13 @@ public class TableQuery<T extends TableEntity> {
      * Creates a filter condition using the specified logical operator on two filter conditions.
      * 
      * @param filterA
-     *            A <code>String</code> containing the first formatted filter condition.
+     *            A <code>String</code> which specifies the first formatted filter condition.
      * @param operator
-     *            A <code>String</code> containing <code>Operators.AND</code> or <code>Operators.OR</code>.
+     *            A <code>String</code> which specifies <code>Operators.AND</code> or <code>Operators.OR</code>.
      * @param filterB
-     *            A <code>String</code> containing the first formatted filter condition.
+     *            A <code>String</code> which specifies the first formatted filter condition.
      * @return
-     *         A <code>String</code> containing the combined filter expression.
+     *         A <code>String</code> which represents the combined filter expression.
      */
     public static String combineFilters(String filterA, String operator, String filterB) {
         return String.format("(%s) %s (%s)", filterA, operator, filterB);
@@ -490,7 +490,7 @@ public class TableQuery<T extends TableEntity> {
      * automatically requested from the table service whether specified in the {@link TableQuery} or not.
      * 
      * @return
-     *         An array of <code>String</code> objects containing the property names of the table entity properties to
+     *         An array of <code>String</code> objects which represents the property names of the table entity properties to
      *         return in the query.
      */
     public String[] getColumns() {
@@ -517,7 +517,7 @@ public class TableQuery<T extends TableEntity> {
      * specified with a call to the {@link #setFilterString} or {@link #where} methods.
      * 
      * @return
-     *         A <code>String</code> containing the filter expression used in the query.
+     *         A <code>String</code> which represents the filter expression used in the query.
      */
     public String getFilterString() {
         return this.filterString;
@@ -527,7 +527,7 @@ public class TableQuery<T extends TableEntity> {
      * Gets the name of the source table specified in the table query.
      * 
      * @return
-     *         A <code>String</code> containing the name of the source table used in the query.
+     *         A <code>String</code> which represents the name of the source table used in the query.
      */
     protected String getSourceTableName() {
         return this.sourceTableName;
@@ -542,7 +542,7 @@ public class TableQuery<T extends TableEntity> {
      * {@link StorageException} when executed.
      * 
      * @return
-     *         The maximum number of entities for the table query to return.
+     *         An <code>Integer</code> which represents the maximum number of entities for the table query to return.
      */
     public Integer getTakeCount() {
         return this.takeCount;
@@ -557,7 +557,7 @@ public class TableQuery<T extends TableEntity> {
      * automatically requested from the table service whether specified in the {@link TableQuery} or not.
      * 
      * @param columns
-     *            An array of <code>String</code> objects containing the property names of the table entity properties
+     *            An array of <code>String</code> objects which specify the property names of the table entity properties
      *            to return when the query is executed.
      * 
      * @return
@@ -594,7 +594,7 @@ public class TableQuery<T extends TableEntity> {
      * automatically requested from the table service whether specified in the {@link TableQuery} or not.
      * 
      * @param columns
-     *            An array of <code>String</code> objects containing the property names of the table entity properties
+     *            An array of <code>String</code> objects which specify the property names of the table entity properties
      *            to return when the query is executed.
      */
     public void setColumns(final String[] columns) {
@@ -623,7 +623,7 @@ public class TableQuery<T extends TableEntity> {
      * Note that no more than 15 discrete comparisons are permitted within a filter string.
      * 
      * @param filterString
-     *            A <code>String</code> containing the filter expression to use in the query.
+     *            A <code>String</code> which represents the filter expression to use in the query.
      */
     public void setFilterString(final String filterString) {
         Utility.assertNotNullOrEmpty("filterString", filterString);
@@ -634,7 +634,7 @@ public class TableQuery<T extends TableEntity> {
      * Sets the name of the source table for the table query. A table query must have a source table to be executed.
      * 
      * @param sourceTableName
-     *            A <code>String</code> containing the name of the source table to use in the query.
+     *            A <code>String</code> which specifies the name of the source table to use in the query.
      */
     protected void setSourceTableName(final String sourceTableName) {
         Utility.assertNotNullOrEmpty("tableName", sourceTableName);
@@ -649,7 +649,7 @@ public class TableQuery<T extends TableEntity> {
      * {@link StorageException} when executed.
      * 
      * @param takeCount
-     *            The maximum number of entities for the table query to return.
+     *        An <code>Integer</code> which represents the maximum number of entities for the table query to return.
      */
     public void setTakeCount(final Integer takeCount) {
         if (takeCount != null && takeCount <= 0) {
@@ -667,7 +667,7 @@ public class TableQuery<T extends TableEntity> {
      * {@link StorageException} when executed.
      * 
      * @param take
-     *            The maximum number of entities for the table query to return.
+     *        An <code>Integer</code> which represents the maximum number of entities for the table query to return.
      * 
      * @return
      *         A reference to the {@link TableQuery} instance with the number of entities to return set.
@@ -702,7 +702,7 @@ public class TableQuery<T extends TableEntity> {
      * Note that no more than 15 discrete comparisons are permitted within a filter string.
      * 
      * @param filter
-     *            A <code>String</code> containing the filter expression to apply to the table query.
+     *            A <code>String</code> which specifies the filter expression to apply to the table query.
      * @return
      *         A reference to the {@link TableQuery} instance with the filter on entities to return set.
      */
@@ -714,8 +714,8 @@ public class TableQuery<T extends TableEntity> {
     /**
      * Reserved for internal use. Creates a {@link UriQueryBuilder} object representing the table query.
      * 
-     * @return
-     *         A {@link UriQueryBuilder} object representing the table query.
+     * @return A {@link UriQueryBuilder} object representing the table query.
+     * 
      * @throws StorageException
      *             if an error occurs in adding or encoding the query parameters.
      */

@@ -41,7 +41,7 @@ public enum LeaseDuration {
      * Parses a lease duration from the specified string.
      * 
      * @param typeString
-     *            The string to parse.
+     *        A <code>String</code> which contains the lease duration to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */

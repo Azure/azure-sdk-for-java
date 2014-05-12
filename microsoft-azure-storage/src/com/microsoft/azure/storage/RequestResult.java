@@ -73,150 +73,190 @@ public final class RequestResult {
     private StorageLocation targetLocation;
 
     /**
-     * @return the location that the request was sent to.
+     * Gets the location that the request was sent to.
+     * 
+     * @return A {@link StorageLocation} object.
      */
     public StorageLocation getTargetLocation() {
         return targetLocation;
     }
 
     /**
-     * @return the contentMD5
+     * Gets the MD5 hash for the request.
+     * 
+     * @return A <code>String</code> which contains the MD5 hash.
      */
     public String getContentMD5() {
         return this.contentMD5;
     }
 
     /**
-     * @return the etag
+     * Gets the ETag for the request. 
+     * 
+     * @return A <code>String</code> which contains the ETag.
      */
     public String getEtag() {
         return this.etag;
     }
 
     /**
-     * @return the exception
+     * Gets the <code>Exception</code> for the request.  
+     * 
+     * @return An <code>Exception</code>.
      */
     public Exception getException() {
         return this.exception;
     }
 
     /**
-     * @return the requestDate
+     * Gets the request date.
+     * 
+     * @return A <code>String</code> which contains the date of the request.
      */
     public String getRequestDate() {
         return this.requestDate;
     }
 
     /**
-     * @return the serviceRequestID
+     * Gets the service request ID.
+     * 
+     * @return A <code>String</code> which contains the service request ID.
      */
     public String getServiceRequestID() {
         return this.serviceRequestID;
     }
 
     /**
-     * @return the startDate
+     * Gets the start date for the request.
+     * 
+     * @return A <code>java.util.Date</code> object which contains the start date.
      */
     public Date getStartDate() {
         return this.startDate;
     }
 
     /**
-     * @return the statusCode
+     * Gets the HTTP status code for the request.
+     * 
+     * @return An <code>int</code> which contains the HTTP status code.
      */
     public int getStatusCode() {
         return this.statusCode;
     }
 
     /**
-     * @return the statusMessage
+     * Gets the HTTP status message for the request.
+     * 
+     * @return A <code>String</code> which contains the HTTP status message.
      */
     public String getStatusMessage() {
         return this.statusMessage;
     }
 
     /**
-     * @return the stopDate
+     * Gets the stop date for the request.
+     * 
+     * @return A <code>java.util.Date</code> object which contains the stop date.
      */
     public Date getStopDate() {
         return this.stopDate;
     }
 
     /**
+     * Sets the MD5 hash for the request.
+     * 
      * @param contentMD5
-     *            the contentMD5 to set
+     *        A <code>String</code> object which contains the MD5 hash to set.
      */
     public void setContentMD5(final String contentMD5) {
         this.contentMD5 = contentMD5;
     }
 
     /**
+     * Sets the ETag for the request.
+     * 
      * @param etag
-     *            the etag to set
+     *        A <code>String</code> object which contains the ETag to set.
      */
     public void setEtag(final String etag) {
         this.etag = etag;
     }
 
     /**
+     * Sets the <code>Exception</code> for the request.
+     * 
      * @param exception
-     *            the exception to set
+     *        The <code>Exception</code> to set.
      */
     public void setException(final Exception exception) {
         this.exception = exception;
     }
 
     /**
+     * Sets the request date.
+     * 
      * @param requestDate
-     *            the date to set
+     *        A <code>java.util.Date</code> object which contains the request date to set.
      */
     public void setRequestDate(final String requestDate) {
         this.requestDate = requestDate;
     }
 
     /**
+     * Sets the service request ID.
+     * 
      * @param serviceRequestID
-     *            the serviceRequestID to set
+     *        A <code>String</code> object which contains the service request ID to set.
      */
     public void setServiceRequestID(final String serviceRequestID) {
         this.serviceRequestID = serviceRequestID;
     }
 
     /**
+     * Sets the start date for the request.
+     * 
      * @param startDate
-     *            the startDate to set
+     *        A <code>java.util.Date</code> object which contains the start date to set.
      */
     public void setStartDate(final Date startDate) {
         this.startDate = startDate;
     }
 
     /**
+     * Sets the HTTP status code for the request.
+     * 
      * @param statusCode
-     *            the statusCode to set
+     *        An <code>int</code> which contains the HTTP status code to set.
      */
     public void setStatusCode(final int statusCode) {
         this.statusCode = statusCode;
     }
 
     /**
+     * Sets the HTTP status message for the request.
+     * 
      * @param statusMessage
-     *            the statusMessage to set
+     *        A <code>String</code> which contains the status message to set.
      */
     public void setStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
     }
 
     /**
+     * Sets the stop date for the request.
+     * 
      * @param stopDate
-     *            the stopDate to set
+     *        A <code>java.util.Date</code> object which contains the stop date to set.
      */
     public void setStopDate(final Date stopDate) {
         this.stopDate = stopDate;
     }
 
     /**
+     * Sets the location that the request was sent to.
+     * 
      * @param targetLocation
-     *            Location that the request was sent to.
+     *        A {@link StorageLocation} object to set.
      */
     public void setTargetLocation(StorageLocation targetLocation) {
         this.targetLocation = targetLocation;

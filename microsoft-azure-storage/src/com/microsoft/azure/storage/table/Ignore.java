@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * during reflection-based serialization and deserialization. See the documentation for {@link TableServiceEntity} for
  * more information on using reflection-based serialization and deserialization.
  * 
- * @see StoreAs
+ * @see {@link StoreAs}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

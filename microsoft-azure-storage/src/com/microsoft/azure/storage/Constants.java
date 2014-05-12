@@ -415,7 +415,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2013-08-15";
+        public static final String TARGET_STORAGE_VERSION = "2014-02-14";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -435,7 +435,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "0.7.0";
+        public static final String USER_AGENT_VERSION = "1.0.0";
 
         /**
          * The default type for content-type and accept

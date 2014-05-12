@@ -40,6 +40,18 @@ public final class RetryContext {
      */
     private final RequestResult lastRequestResult;
 
+    /**
+     * Creates an instance of the <code>RequestResult</code> class.
+     * 
+     * @param currentRetryCount
+     *            An <code>int</code> which represents the number of retries for the given operation.
+     * @param lastRequestResult
+     *            A {@link RequestResult} object which represents the last request's results.
+     * @param nextLocation
+     *            A {@link StorageLocation} object which represents the location mode for subsequent retries.
+     * @param locationMode
+     *            A {@link LocationMode} value which represents the location mode for subsequent retries.
+     */
     public RetryContext(int currentRetryCount, RequestResult lastRequestResult, StorageLocation nextLocation,
             LocationMode locationMode) {
         this.currentRetryCount = currentRetryCount;
@@ -51,7 +63,7 @@ public final class RetryContext {
     /**
      * Gets the number of retries for the given operation.
      * 
-     * @return the currentRetryCount
+     * @return An <code>int</code> which represents the number of retries for the given operation.
      */
     public int getCurrentRetryCount() {
         return currentRetryCount;
@@ -60,7 +72,7 @@ public final class RetryContext {
     /**
      * Gets the last request's results.
      * 
-     * @return the lastRequestResult
+     * @return A {@link RequestResult} object which represents the last request's results.
      */
     public RequestResult getLastRequestResult() {
         return lastRequestResult;
@@ -69,7 +81,7 @@ public final class RetryContext {
     /**
      * Gets the location mode for subsequent retries.
      * 
-     * @return the locationMode
+     * @return A {@link LocationMode} value which represents the location mode for subsequent retries.
      */
     public LocationMode getLocationMode() {
         return locationMode;
@@ -78,7 +90,7 @@ public final class RetryContext {
     /**
      * Gets the location that the next retry should target.
      * 
-     * @return the nextLocation
+     * @return A {@link StorageLocation} object which represents the location for subsequent retries.
      */
     public StorageLocation getNextLocation() {
         return this.nextLocation;
@@ -86,6 +98,8 @@ public final class RetryContext {
 
     /**
      * Returns a string that represents the current {@link RetryContext} instance.
+     * 
+     * @return An <code>String</code> which represents the current {@link RetryContext} instance.
      */
     @Override
     public String toString() {

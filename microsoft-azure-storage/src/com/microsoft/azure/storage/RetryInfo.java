@@ -32,7 +32,7 @@ public class RetryInfo {
     private LocationMode updatedLocationMode;
 
     /**
-     * The interval in ms until the next retry. The minimum back-off interval is 3 seconds.
+     * The interval in milliseconds until the next retry. The minimum back-off interval is 3 seconds.
      */
     private int retryInterval = 3000;
 
@@ -57,9 +57,9 @@ public class RetryInfo {
     }
 
     /**
-     * Gets the interval in ms until the next retry. The minimum back-off interval is 3 seconds.
+     * Gets the interval in milliseconds until the next retry. The minimum back-off interval is 3 seconds.
      * 
-     * @return the retryInterval
+     * @return An <code>int</code> which represents the retry interval (in milliseconds).
      */
     public int getRetryInterval() {
         return this.retryInterval;
@@ -68,7 +68,7 @@ public class RetryInfo {
     /**
      * Gets the location that the next retry should target.
      * 
-     * @return the targetLocation
+     * @return A {@link StorageLocation} object which represents the location for the next retry.
      */
     public final StorageLocation getTargetLocation() {
         return this.targetLocation;
@@ -77,17 +77,17 @@ public class RetryInfo {
     /**
      * Gets the location mode for subsequent retries.
      * 
-     * @return the updatedLocationMode
+     * @return A {@link LocationMode} object which represents the location mode for subsequent retries.
      */
     public LocationMode getUpdatedLocationMode() {
         return this.updatedLocationMode;
     }
 
     /**
-     * Sets the interval in ms until the next retry. The minimum back-off interval is 3 seconds.
+     * Sets the interval in milliseconds until the next retry. The minimum back-off interval is 3 seconds.
      * 
      * @param retryInterval
-     *            the retryInterval to set
+     *        An <code>int</code> which represents the retry interval to set.
      */
     public void setRetryInterval(int retryInterval) {
         this.retryInterval = (retryInterval > 0 ? retryInterval : 0);
@@ -97,7 +97,7 @@ public class RetryInfo {
      * Sets the location that the next retry should target.
      * 
      * @param targetLocation
-     *            the targetLocation to set
+     *        A {@link StorageLocation} object which represents the location to set.
      */
     public void setTargetLocation(StorageLocation targetLocation) {
         this.targetLocation = targetLocation;
@@ -107,7 +107,7 @@ public class RetryInfo {
      * Sets the location mode for subsequent retries.
      * 
      * @param updatedLocationMode
-     *            the updatedLocationMode to set
+     *        A {@link LocationMode} object which represents the the location mode to set.
      */
     public void setUpdatedLocationMode(LocationMode updatedLocationMode) {
         this.updatedLocationMode = updatedLocationMode;
@@ -115,6 +115,8 @@ public class RetryInfo {
 
     /**
      * Returns a string that represents the current {@link "RetryInfo"} instance.
+     * 
+     * @return A <code>String</code> which represents the current <code>RetryInfo</code> instance.
      */
     @Override
     public String toString() {

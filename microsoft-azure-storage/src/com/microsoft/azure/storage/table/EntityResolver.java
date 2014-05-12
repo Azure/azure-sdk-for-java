@@ -44,7 +44,7 @@ public interface EntityResolver<T> {
      * @param rowKey
      *            A <code>String</code> containing the RowKey value for the entity.
      * @param timeStamp
-     *            A <code>Date</code> containing the Timestamp value for the entity.
+     *            A <code>java.util.Date</code> containing the Timestamp value for the entity.
      * @param properties
      *            The <code>java.util.HashMap</code> of <code>String</code> property names to {@link EntityProperty}
      *            data type and value pairs representing the table entity data.

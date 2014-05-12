@@ -46,7 +46,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsDisable() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsDisable(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -89,7 +89,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsDefaultServiceVersion() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsDefaultServiceVersion(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -119,7 +119,7 @@ public class ServicePropertiesTests {
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
-            props.setDefaultServiceVersion("2013-08-15");
+            props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
             callUploadServiceProps(client, props);
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
@@ -149,7 +149,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsLoggingOperations() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsLoggingOperations(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -189,7 +189,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsMetricsLevel() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsMetricsLevel(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -234,7 +234,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsMinuteMetricsLevel() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsMinuteMetricsLevel(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -279,7 +279,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsRetentionPolicies() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsRetentionPolicies(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -359,7 +359,7 @@ public class ServicePropertiesTests {
     public void testCloudValidCorsRules() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCloudValidCorsRules(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -478,7 +478,7 @@ public class ServicePropertiesTests {
     public void testCorsExpectedExceptions() throws StorageException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsExpectedExceptions(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -537,7 +537,7 @@ public class ServicePropertiesTests {
     public void testCorsMaxOrigins() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsMaxOrigins(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -584,7 +584,7 @@ public class ServicePropertiesTests {
     public void testCorsMaxHeaders() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsMaxHeaders(client, props);
 
         client = TestHelper.createCloudQueueClient();
@@ -683,7 +683,7 @@ public class ServicePropertiesTests {
     public void testOptionalServiceProperties() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
-        props.setDefaultServiceVersion("2013-08-15");
+        props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testOptionalServiceProperties(client, props);
 
         client = TestHelper.createCloudQueueClient();

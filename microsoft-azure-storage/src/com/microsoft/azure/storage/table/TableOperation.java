@@ -151,9 +151,9 @@ public class TableOperation {
      * table name and the {@link TableOperation} as arguments.
      * 
      * @param partitionKey
-     *            A <code>String</code> containing the PartitionKey value for the entity to retrieve.
+     *            A <code>String</code> which specifies the PartitionKey value for the entity to retrieve.
      * @param rowKey
-     *            A <code>String</code> containing the RowKey value for the entity to retrieve.
+     *            A <code>String</code> which specifies the RowKey value for the entity to retrieve.
      * @param clazzType
      *            The class type of the table entity object to retrieve.
      * @return
@@ -173,9 +173,9 @@ public class TableOperation {
      * with the table name and the {@link TableOperation} as arguments.
      * 
      * @param partitionKey
-     *            A <code>String</code> containing the PartitionKey value for the entity to retrieve.
+     *            A <code>String</code> which specifies the PartitionKey value for the entity to retrieve.
      * @param rowKey
-     *            A <code>String</code> containing the RowKey value for the entity to retrieve.
+     *            A <code>String</code> which specifies the RowKey value for the entity to retrieve.
      * @param resolver
      *            The implementation of {@link EntityResolver} to use to project the result entity as type T.
      * @return
@@ -223,7 +223,7 @@ public class TableOperation {
      * Nullary Default Constructor.
      */
     protected TableOperation() {
-        // empty ctor
+        // Empty constructor.
     }
 
     /**
@@ -268,7 +268,7 @@ public class TableOperation {
      *            A {@link CloudTableClient} instance specifying the Table service endpoint, storage account
      *            credentials, and any additional query parameters.
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation.
@@ -276,7 +276,7 @@ public class TableOperation {
      *            An {@link OperationContext} object for tracking the current operation.
      * 
      * @return
-     *         A {@link TableResult} containing the results of executing the operation.
+     *         A {@link TableResult} which represents the results of executing the operation.
      * 
      * @throws StorageException
      *             if an error occurs in the storage operation.
@@ -351,7 +351,7 @@ public class TableOperation {
      *            A {@link CloudTableClient} instance specifying the Table service endpoint, storage account
      *            credentials, and any additional query parameters.
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation.
@@ -359,7 +359,7 @@ public class TableOperation {
      *            An {@link OperationContext} object for tracking the current operation.
      * 
      * @return
-     *         A {@link TableResult} containing the results of executing the operation.
+     *         A {@link TableResult} which represents the results of executing the operation.
      * 
      * @throws StorageException
      *             if an error occurs in the storage operation.
@@ -504,7 +504,7 @@ public class TableOperation {
      *            A {@link CloudTableClient} instance specifying the Table service endpoint, storage account
      *            credentials, and any additional query parameters.
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation.
@@ -512,7 +512,7 @@ public class TableOperation {
      *            An {@link OperationContext} object for tracking the current operation.
      * 
      * @return
-     *         A {@link TableResult} containing the results of executing the operation.
+     *         A {@link TableResult} which represents the results of executing the operation.
      * 
      * @throws StorageException
      *             if an error occurs in the storage operation.
@@ -605,7 +605,7 @@ public class TableOperation {
      *            A {@link CloudTableClient} instance specifying the Table service endpoint, storage account
      *            credentials, and any additional query parameters.
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation.
@@ -613,7 +613,7 @@ public class TableOperation {
      *            An {@link OperationContext} object for tracking the current operation.
      * 
      * @return
-     *         A {@link TableResult} containing the results of executing the operation.
+     *         A {@link TableResult} which represents the results of executing the operation.
      * 
      * @throws StorageException
      *             if an error occurs in the storage operation.
@@ -706,7 +706,7 @@ public class TableOperation {
      *            A {@link CloudTableClient} instance specifying the Table service endpoint, storage account
      *            credentials, and any additional query parameters.
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation.
@@ -714,7 +714,7 @@ public class TableOperation {
      *            An {@link OperationContext} object for tracking the current operation.
      * 
      * @return
-     *         A {@link TableResult} containing the results of executing the operation.
+     *         A {@link TableResult} which represents the results of executing the operation.
      * 
      * @throws StorageException
      *             if an error occurs in the storage operation.
@@ -764,7 +764,7 @@ public class TableOperation {
      * @param encodeKeys
      *            Pass <code>true</code> to url encode the partition & row keys
      * @return
-     *         A <code>String</code> containing the formatted request identity string.
+     *         A <code>String</code> which represents the formatted request identity string.
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -802,9 +802,9 @@ public class TableOperation {
      * entities. This request identity is already UrlEncoded.
      * 
      * @param tableName
-     *            A <code>String</code> containing the name of the table.
+     *            A <code>String</code> which specifies the name of the table.
      * @return
-     *         A <code>String</code> containing the formatted request identity string for the specified table.
+     *         A <code>String</code> which represents the formatted request identity string for the specified table.
      * @throws StorageException
      */
     protected String generateRequestIdentityWithTable(final String tableName) throws StorageException {
@@ -835,11 +835,11 @@ public class TableOperation {
      * Reserved for internal use. Parses the table operation response into a {@link TableResult} to return.
      * 
      * @param inStream
-     *            An <code>InputStream</code> containing the response to an insert operation.
+     *            An <code>InputStream</code> which specifies the response to an insert operation.
      * @param httpStatusCode
-     *            The HTTP status code returned from the operation request.
+     *            An <code>int</code> which represents the HTTP status code returned from the operation request.
      * @param etagFromHeader
-     *            The <code>String</code> containing the Etag returned with the operation response.
+     *            The <code>String</code> which specifies the Etag returned with the operation response.
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation.
      * 
@@ -897,7 +897,7 @@ public class TableOperation {
     /**
      * Gets the boolean representing whether the message payload should be returned in the response.
      * 
-     * @return the boolean value of echo content
+     * @return <code>true</code> if the message payload should be returned in the response; otherwise <code>false</code>.
      */
     protected boolean getEchoContent() {
         return echoContent;
@@ -907,7 +907,7 @@ public class TableOperation {
      * Sets the boolean representing whether the message payload should be returned in the response.
      * 
      * @param echoContent
-     *            The new value to set echo content to
+     *        <code>true</code> if the message payload should be returned in the response; otherwise <code>false</code>.
      */
     protected void setEchoContent(boolean echoContent) {
         this.echoContent = echoContent;

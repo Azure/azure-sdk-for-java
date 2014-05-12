@@ -58,7 +58,7 @@ final class BlobRequest {
      * Generates a web request to abort a copy operation.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -157,7 +157,7 @@ final class BlobRequest {
      * Creates a request to copy a blob, Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -214,7 +214,7 @@ final class BlobRequest {
      * Constructs a web request to create a new container. Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -261,7 +261,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to delete the blob, Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -325,7 +325,7 @@ final class BlobRequest {
      * Constructs a web request to delete the container and all of blobs within it. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -389,7 +389,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to download the blob, Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -461,7 +461,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to return the blob's system properties, Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -495,7 +495,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to return a list of the block blobs blocks. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -543,7 +543,7 @@ final class BlobRequest {
      * Constructs a web request to return the user-defined metadata for this container. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -586,7 +586,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to return a list of the PageBlob's page ranges. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -631,7 +631,7 @@ final class BlobRequest {
      * Constructs a web request to return the user-defined metadata for this container. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -661,7 +661,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to Acquire,Release,Break, or Renew a blob/container lease. Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -724,7 +724,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to Acquire,Release,Break, or Renew a blob lease. Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -770,7 +770,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to Acquire,Release,Break, or Renew a container lease. Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -817,7 +817,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to list blobs. Sign with no length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -861,7 +861,7 @@ final class BlobRequest {
                 builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
             }
 
-            if (listingContext.getListingDetails().size() > 0) {
+            if (listingContext.getListingDetails() != null && listingContext.getListingDetails().size() > 0) {
                 final StringBuilder sb = new StringBuilder();
 
                 boolean started = false;
@@ -926,7 +926,7 @@ final class BlobRequest {
      * specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -981,7 +981,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to upload a blob. Sign with blob length, or -1 for pageblob create.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1046,7 +1046,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to upload a block. Sign with length of block data.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1092,7 +1092,7 @@ final class BlobRequest {
      * with length of block list data.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1137,7 +1137,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to upload a page. Sign with page length for update, or 0 for clear.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1189,7 +1189,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to set the page blob's size, Sign with zero length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1239,7 +1239,7 @@ final class BlobRequest {
      * Sets the ACL for the container. Sign with length of aclBytes.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1281,7 +1281,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to set the blob's metadata, Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1311,7 +1311,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to set the blob's properties, Sign with zero length specified.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1360,7 +1360,7 @@ final class BlobRequest {
      * Constructs a web request to set user-defined metadata for the container, Sign with 0 Length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1385,7 +1385,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to set the blob's metadata, Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -1421,7 +1421,7 @@ final class BlobRequest {
      * Constructs a HttpURLConnection to create a snapshot of the blob. Sign with 0 length.
      * 
      * @param uri
-     *            A <code>URI</code> object that specifies the absolute URI.
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
      * @param blobOptions
      *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the

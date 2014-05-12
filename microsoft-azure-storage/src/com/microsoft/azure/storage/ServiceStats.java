@@ -15,12 +15,12 @@
 package com.microsoft.azure.storage;
 
 /**
- * Class representing a set of stats pertaining to a cloud storage service.
+ * Class representing a set of statistics pertaining to a cloud storage service.
  */
 public class ServiceStats {
 
     /**
-     * The geo-replication stats.
+     * The geo-replication statistics.
      */
     private GeoReplicationStats geoReplication;
 
@@ -29,15 +29,19 @@ public class ServiceStats {
     }
 
     /**
-     * @return the geoReplication
+     * Gets the <code>{@link GeoReplicationStats}</code> for a cloud storage service.
+     * 
+     * @return The <code>GeoReplicationStats</code> for the cloud storage service.
      */
     public GeoReplicationStats getGeoReplication() {
         return geoReplication;
     }
 
     /**
+     * Sets the <code>{@link GeoReplicationStats}</code> for a cloud storage service.
+     * 
      * @param geoReplication
-     *            the geoReplication to set
+     *        The <code>GeoReplicationStats</code> to set for the cloud storage service.
      */
     protected void setGeoReplication(GeoReplicationStats geoReplication) {
         this.geoReplication = geoReplication;

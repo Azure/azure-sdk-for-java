@@ -286,10 +286,10 @@ public final class EntityProperty {
     }
 
     /**
-     * Constructs an {@link EntityProperty} instance from a <code>Date</code> value.
+     * Constructs an {@link EntityProperty} instance from a <code>java.util.Date</code> value.
      * 
      * @param value
-     *            The <code>Date</code> to set as the entity property value.
+     *            The <code>java.util.Date</code> to set as the entity property value.
      */
     public EntityProperty(final Date value) {
         this.setValue(value);
@@ -413,7 +413,7 @@ public final class EntityProperty {
      *         A <code>boolean</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
      */
     public boolean getValueAsBoolean() {
         if (this.isNull) {
@@ -429,7 +429,7 @@ public final class EntityProperty {
      *         A <code>Boolean</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
      */
     public Boolean getValueAsBooleanObject() {
         if (this.isNull) {
@@ -459,13 +459,13 @@ public final class EntityProperty {
     }
 
     /**
-     * Gets the value of this {@link EntityProperty} as a <code>Date</code>.
+     * Gets the value of this {@link EntityProperty} as a <code>java.util.Date</code>.
      * 
      * @return
-     *         A <code>Date</code> representation of the {@link EntityProperty} value, or <code>null</code>.
+     *         A <code>java.util.Date</code> representation of the {@link EntityProperty} value, or <code>null</code>.
      * 
      * @throws IllegalArgumentException
-     *             if the value is not <code>null</code> and cannot be parsed as a <code>Date</code>.
+     *             If the value is not <code>null</code> and cannot be parsed as a <code>java.util.Date</code>.
      */
     public Date getValueAsDate() {
         if (this.isNull) {
@@ -481,7 +481,7 @@ public final class EntityProperty {
      *         A <code>double</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>double</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>double</code>.
      */
     public double getValueAsDouble() {
         if (this.isNull) {
@@ -508,7 +508,7 @@ public final class EntityProperty {
      *         A <code>double</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>double</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>double</code>.
      */
     public Double getValueAsDoubleObject() {
         if (this.isNull) {
@@ -535,7 +535,7 @@ public final class EntityProperty {
      *         An <code>int</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as an <code>int</code>.
+     *             If the value is <code>null</code> or cannot be parsed as an <code>int</code>.
      */
     public int getValueAsInteger() {
         if (this.isNull) {
@@ -551,7 +551,7 @@ public final class EntityProperty {
      *         An <code>Integer</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as an <code>int</code>.
+     *             If the value is <code>null</code> or cannot be parsed as an <code>int</code>.
      */
     public Integer getValueAsIntegerObject() {
         if (this.isNull) {
@@ -567,7 +567,7 @@ public final class EntityProperty {
      *         A <code>long</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>long</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>long</code>.
      */
     public long getValueAsLong() {
         if (this.isNull) {
@@ -583,7 +583,7 @@ public final class EntityProperty {
      *         A <code>long</code> representation of the {@link EntityProperty} value.
      * 
      * @throws IllegalArgumentException
-     *             if the value is <code>null</code> or cannot be parsed as a <code>long</code>.
+     *             If the value is <code>null</code> or cannot be parsed as a <code>long</code>.
      */
     public Long getValueAsLongObject() {
         if (this.isNull) {
@@ -609,7 +609,7 @@ public final class EntityProperty {
      *         A <code>java.util.UUID</code> representation of the {@link EntityProperty} value, or <code>null</code>.
      * 
      * @throws IllegalArgumentException
-     *             if the value cannot be parsed as a <code>java.util.UUID</code>.
+     *             If the value cannot be parsed as a <code>java.util.UUID</code>.
      */
     public UUID getValueAsUUID() {
         return this.isNull ? null : UUID.fromString(this.value);
@@ -692,10 +692,10 @@ public final class EntityProperty {
     }
 
     /**
-     * Sets this {@link EntityProperty} using the serialized <code>Date</code> value.
+     * Sets this {@link EntityProperty} using the serialized <code>java.util.Date</code> value.
      * 
      * @param value
-     *            The <code>Date</code> value to set as the {@link EntityProperty} value. This value may be
+     *            The <code>java.util.Date</code> value to set as the {@link EntityProperty} value. This value may be
      *            <code>null</code>.
      */
     public synchronized final void setValue(final Date value) {

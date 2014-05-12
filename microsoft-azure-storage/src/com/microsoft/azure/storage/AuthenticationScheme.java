@@ -15,7 +15,7 @@
 package com.microsoft.azure.storage;
 
 /**
- * Specifies the authentication scheme used to sign HTTP requests.
+ * Specifies the authentication scheme that is used to sign HTTP requests.
  */
 public enum AuthenticationScheme {
     /**

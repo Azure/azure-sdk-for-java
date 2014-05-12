@@ -53,10 +53,10 @@ public enum LeaseState {
     BROKEN;
 
     /**
-     * Parses a lease status from the given string.
+     * Parses a lease state from the given string.
      * 
      * @param typeString
-     *            The string to parse.
+     *        A <code>String</code> which contains the lease state to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */

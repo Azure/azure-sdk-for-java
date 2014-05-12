@@ -60,7 +60,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute StorageUri.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object that represents the absolute URI to the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -105,7 +105,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * service client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object that represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * 
@@ -140,7 +140,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * service client and container.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object that represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * @param container
@@ -178,7 +178,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * ID, and storage service client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object that represents the absolute URI to the blob.
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot version, if applicable.
      * @param client
@@ -197,7 +197,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * successfully written to the server in a prior uploadBlock operation.
      * 
      * @param blockList
-     *            An enumerable collection of <code>BlockEntry</code> objects that represents the list block items being
+     *            An enumerable collection of {@link BlockEntry} objects that represents the list block items being
      *            committed. The <code>size</code> field is ignored.
      * 
      * @throws StorageException
@@ -214,7 +214,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * uploadBlock operation.
      * 
      * @param blockList
-     *            An enumerable collection of <code>BlockEntry</code> objects that represents the list block items being
+     *            An enumerable collection of {@link BlockEntry} objects that represents the list block items being
      *            committed. The size field is ignored.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
@@ -326,7 +326,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * list of committed blocks is returned in the same order that they were committed to the blob. No block may appear
      * more than once in the committed block list.
      * 
-     * @return An <code>ArrayList</code> object of <code>BlockEntry</code> objects that represent the committed list
+     * @return An <code>ArrayList</code> object of {@link BlockEntry} objects that represent the committed list
      *         block items downloaded from the block blob.
      * 
      * @throws StorageException
@@ -360,7 +360,7 @@ public final class CloudBlockBlob extends CloudBlob {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return An <code>ArrayList</code> object of <code>BlockEntry</code> objects that represent the list block items
+     * @return An <code>ArrayList</code> object of {@link BlockEntry} objects that represent the list block items
      *         downloaded from the block blob.
      * 
      * @throws StorageException
@@ -481,9 +481,9 @@ public final class CloudBlockBlob extends CloudBlob {
      * Uploads the source stream data to the block blob.
      * 
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the block blob.
+     *            An {@link InputStream} object that represents the input stream to write to the block blob.
      * @param length
-     *            The length, in bytes, of the stream data, or -1 if unknown.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, or -1 if unknown.
      * 
      * @throws IOException
      *             If an I/O error occurred.
@@ -500,9 +500,9 @@ public final class CloudBlockBlob extends CloudBlob {
      * Uploads the source stream data to the blob, using the specified lease ID, request options, and operation context.
      * 
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the block blob.
+     *            An {@link InputStream} object that represents the input stream to write to the block blob.
      * @param length
-     *            The length, in bytes, of the stream data, or -1 if unknown.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, or -1 if unknown.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -588,9 +588,9 @@ public final class CloudBlockBlob extends CloudBlob {
      *            A <code>String</code> that represents the Base-64 encoded block ID. Note for a given blob the length
      *            of all Block IDs must be identical.
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the block blob.
+     *            An {@link InputStream} object that represents the input stream to write to the block blob.
      * @param length
-     *            The length, in bytes, of the stream data, or -1 if unknown.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, or -1 if unknown.
      * @throws IOException
      *             If an I/O error occurred.
      * @throws StorageException
@@ -610,9 +610,9 @@ public final class CloudBlockBlob extends CloudBlob {
      *            A <code>String</code> that represents the Base-64 encoded block ID. Note for a given blob the length
      *            of all Block IDs must be identical.
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the block blob.
+     *            An {@link InputStream} object that represents the input stream to write to the block blob.
      * @param length
-     *            The length, in bytes, of the stream data, or -1 if unknown.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, or -1 if unknown.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -691,19 +691,19 @@ public final class CloudBlockBlob extends CloudBlob {
      * Uploads a block of the blob to the server.
      * 
      * @param blockId
-     *            the Base64 Encoded Block ID
+     *            A <code>String</code> which represents the Base64-encoded Block ID.
      * @param md5
-     *            the MD5 to use if it will be set.
+     *            A <code>String</code> which represents the MD5 to use if it is set.
      * @param sourceStream
-     *            the InputStream to read from
+     *            An {@link InputStream} object to read from.
      * @param length
-     *            the OutputStream to write the blob to.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, or -1 if unknown.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
-     *            An object that specifies any additional options for the request
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
      * @param opContext
-     *            an object used to track the execution of the operation
+     *            An {@link OperationContext} object that is used to track the execution of the operation.
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -770,7 +770,7 @@ public final class CloudBlockBlob extends CloudBlob {
      * Uploads a blob from a string using the platform's default encoding.
      * 
      * @param content
-     *            A string, the content of which will be uploaded to the blob.
+     *            A <code>String</code> which represents the content that will be uploaded to the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -784,10 +784,10 @@ public final class CloudBlockBlob extends CloudBlob {
      * Uploads a blob from a string using the specified encoding.
      * 
      * @param content
-     *            A string, the content of which will be uploaded to the blob.
+     *            A <code>String</code> which represents the content that will be uploaded to the blob.
      * @param charsetName
-     *            The name of the charset to use to encode the content. If null, the platform's default encoding is
-     *            used.
+     *            A <code>String</code> which represents the name of the charset to use to encode the content.
+     *            If null, the platform's default encoding is used.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -812,8 +812,8 @@ public final class CloudBlockBlob extends CloudBlob {
     /**
      * Downloads a blob to a string using the platform's default encoding.
      * 
-     * @return
-     *         String representation of the blob's contents.
+     * @return A <code>String</code> which represents the blob's contents.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -827,9 +827,8 @@ public final class CloudBlockBlob extends CloudBlob {
      * Downloads a blob to a string using the specified encoding.
      * 
      * @param charsetName
-     *            The name of the charset to use to decode the blob into a string. If null, the platform's default
-     *            encoding is used.
-     *            encoding.
+     *            A <code>String</code> which represents the name of the charset to use to encode the content.
+     *            If null, the platform's default encoding is used.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -841,8 +840,8 @@ public final class CloudBlockBlob extends CloudBlob {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return
-     *         String representation of the blob's contents.
+     * @return A <code>String</code> which represents the blob's contents.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -859,8 +858,8 @@ public final class CloudBlockBlob extends CloudBlob {
      * Sets the number of bytes to buffer when writing to a {@link BlobOutputStream}.
      * 
      * @param writeBlockSizeInBytes
-     *            The maximum block size, in bytes, for writing to a block blob while using a {@link BlobOutputStream}
-     *            object, ranging from 16 KB to 4 MB, inclusive.
+     *            An <code>int</code> which represents the maximum block size, in bytes, for writing to a block blob
+     *            while using a {@link BlobOutputStream} object, ranging from 16 KB to 4 MB, inclusive.
      * 
      * @throws IllegalArgumentException
      *             If <code>streamWriteSizeInBytes</code> is less than 16 KB or greater than 4 MB.

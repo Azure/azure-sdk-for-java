@@ -27,8 +27,8 @@ public final class AccessCondition {
     /**
      * Generates a new empty AccessCondition.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @return An <code>AccessCondition</code> object that has no conditions set.
      */
@@ -44,8 +44,8 @@ public final class AccessCondition {
      * this access condition is set, the operation is performed only if the ETag of the resource matches the specified
      * ETag.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
@@ -66,8 +66,8 @@ public final class AccessCondition {
      * header. If this access condition is set, the operation is performed only if the resource has been modified since
      * the specified time.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @param lastMotified
      *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
@@ -88,8 +88,8 @@ public final class AccessCondition {
      * If this access condition is set, the operation is performed only if the ETag of the resource does not match the
      * specified ETag.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
@@ -110,8 +110,8 @@ public final class AccessCondition {
      * header. If this access condition is set, the operation is performed only if the resource has not been modified
      * since the specified time.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @param lastMotified
      *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
@@ -126,17 +126,13 @@ public final class AccessCondition {
 
     /**
      * Returns an access condition such that an operation will be performed only if the resource is accessible under the
-     * specified lease id.
+     * specified lease ID.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Unmodified-Since</i> conditional
-     * header. If this access condition is set, the operation is performed only if the resource has not been modified
-     * since the specified time.
-     * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
-     * Conditional Headers for Blob Service Operations</a>.
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
      * 
      * @param leaseID
-     *            The lease id to specify.
+     *            The lease ID to specify.
      * 
      */
     public static AccessCondition generateLeaseCondition(final String leaseID) {
@@ -148,17 +144,17 @@ public final class AccessCondition {
     private String leaseID = null;
 
     /**
-     * Represents the etag of the resource for if [none] match conditions
+     * Represents the ETag of the resource for if [none] match conditions
      */
     private String etag = null;
 
     /**
-     * Represents the date for IfModifiedSince conditions.
+     * Represents the date for ifModifiedSinceDate conditions.
      */
     private Date ifModifiedSinceDate = null;
 
     /**
-     * Represents the date for IfUn,odifiedSince conditions.
+     * Represents the date for ifUnmodifiedSinceDate conditions.
      */
     private Date ifUnmodifiedSinceDate = null;
 
@@ -171,7 +167,7 @@ public final class AccessCondition {
      * Creates an instance of the <code>AccessCondition</code> class.
      */
     public AccessCondition() {
-        // Empty Default Ctor
+        // Empty default constructor.
     }
 
     /**
@@ -248,43 +244,55 @@ public final class AccessCondition {
     }
 
     /**
-     * @return the etag when the If-Match condition is set.
+     * Gets the ETag when the <i>If-Match</i> condition is set.
+     * 
+     * @return The ETag when the <i>If-Match</i> condition is set; otherwise, null.
      */
     public String getIfMatch() {
         return this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_MATCH) ? this.etag : null;
     }
 
     /**
-     * @return the ifModifiedSinceDate
+     * Gets the <i>If-Modified-Since</i> date.
+     * 
+     * @return A <code>java.util.Date</code> object that represents the <i>If-Modified-Since</i> date.
      */
     public Date getIfModifiedSinceDate() {
         return this.ifModifiedSinceDate;
     }
 
     /**
-     * @return the etag when the If-None-Match condition is set.
+     * Gets the ETag when the If-None-Match condition is set.
+     * 
+     * @return The ETag when the If-None-Match condition is set; otherwise, null.
      */
     public String getIfNoneMatch() {
         return this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH) ? this.etag : null;
     }
 
     /**
-     * @return the ifUnmodifiedSinceDate
+     * Gets the <i>If-Unmodified-Since</i> date.
+     * 
+     * @return A <code>java.util.Date</code> object that represents the <i>If-Unmodified-Since</i> date.
      */
     public Date getIfUnmodifiedSinceDate() {
         return this.ifUnmodifiedSinceDate;
     }
 
     /**
-     * @return the leaseID
+     * Gets the lease ID.
+     * 
+     * @return The lease ID.
      */
     public String getLeaseID() {
         return this.leaseID;
     }
 
     /**
+     * Sets the ETag for the <i>If-Match</i> condition.
+     * 
      * @param etag
-     *            the etag to set
+     *            The ETag to set for the <i>If-Match</i> condition.
      */
     public void setIfMatch(String etag) {
         this.etag = normalizeEtag(etag);
@@ -292,16 +300,20 @@ public final class AccessCondition {
     }
 
     /**
+     * Sets the <i>If-Modified-Since</i> date.
+     * 
      * @param ifModifiedSinceDate
-     *            the ifModifiedSinceDate to set
+     *            A <code>java.util.Date</code> object that represents the <i>If-Modified-Since</i> to set.
      */
     public void setIfModifiedSinceDate(Date ifModifiedSinceDate) {
         this.ifModifiedSinceDate = ifModifiedSinceDate;
     }
 
     /**
+     * Sets the ETag for the <i>If-None-Match</i> condition.
+     * 
      * @param etag
-     *            the etag to set
+     *            The ETag to set for the <i>If-None-Match</i> condition.
      */
     public void setIfNoneMatch(String etag) {
         this.etag = normalizeEtag(etag);
@@ -309,16 +321,20 @@ public final class AccessCondition {
     }
 
     /**
+     * Sets the <i>If-Unmodified-Since</i> date.
+     * 
      * @param ifUnmodifiedSinceDate
-     *            the ifUnmodifiedSinceDate to set
+     *            A <code>java.util.Date</code> object that represents the <i>If-Unmodified-Since</i> to set.
      */
     public void setIfUnmodifiedSinceDate(Date ifUnmodifiedSinceDate) {
         this.ifUnmodifiedSinceDate = ifUnmodifiedSinceDate;
     }
 
     /**
+     * Gets the lease ID.
+     * 
      * @param leaseID
-     *            the leaseID to set
+     *            The lease ID to set.
      */
     public void setLeaseID(String leaseID) {
         this.leaseID = leaseID;
@@ -367,11 +383,11 @@ public final class AccessCondition {
     }
 
     /**
-     * Normalizes an Etag to be quoted, unless it is *
+     * Normalizes an ETag to be quoted, unless it is *.
      * 
      * @param inTag
-     *            the etag to normalize
-     * @return the quoted etag
+     *            The ETag to normalize.
+     * @return The quoted ETag.
      */
     private static String normalizeEtag(String inTag) {
         if (Utility.isNullOrEmpty(inTag) || inTag.equals("*")) {

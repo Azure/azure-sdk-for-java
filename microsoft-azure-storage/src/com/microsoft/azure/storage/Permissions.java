@@ -17,11 +17,11 @@ package com.microsoft.azure.storage;
 import java.util.HashMap;
 
 /**
- * Represents the permissions.
+ * Represents the permissions for a shared access policy.
  */
 public abstract class Permissions<T extends SharedAccessPolicy> {
     /**
-     * Gets the set of shared access policies.
+     * Represents the set of shared access policies.
      */
     private HashMap<String, T> sharedAccessPolicies;
 
@@ -35,19 +35,19 @@ public abstract class Permissions<T extends SharedAccessPolicy> {
     /**
      * Returns the set of shared access policies.
      * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessPolicy} objects that represent the set of shared
-     *         access policies.
+     * @return A <code>java.util.HashMap</code> object of {@link SharedAccessPolicy} objects
+     *         which represent the set of shared access policies.
      */
     public HashMap<String, T> getSharedAccessPolicies() {
         return this.sharedAccessPolicies;
     }
 
     /**
-     * Sets the set of shared access policies.
+     * Sets the shared access policies.
      * 
      * @param sharedAccessPolicies
-     *            The set of shared access policies to set, represented by a <code>HashMap</code> object of
-     *            {@link SharedAccessPolicy} objects.
+     *        A <code>java.util.HashMap</code> object of {@link SharedAccessPolicy} objects
+     *        which contain the shared access policies to set.
      */
     public void setSharedAccessPolicies(final HashMap<String, T> sharedAccessPolicies) {
         this.sharedAccessPolicies = sharedAccessPolicies;

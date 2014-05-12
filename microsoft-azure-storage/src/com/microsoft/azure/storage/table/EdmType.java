@@ -143,6 +143,7 @@ public enum EdmType {
      *            A <code>String</code> containing the name of an EDM data type.
      * @return
      *         The {@link EdmType} enumeration value matching the specified EDM data type.
+     *         
      * @throws IllegalArgumentException
      *             if an EDM data type not supported in Microsoft Azure Table storage is passed as an argument.
      * 

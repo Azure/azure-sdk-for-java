@@ -50,7 +50,8 @@ public enum SharedAccessTablePermissions {
      * Returns the enum set representing the shared access permissions for the specified byte value.
      * 
      * @param value
-     *            The byte value to convert to the corresponding enum set.
+     *        A <code>byte</code> which represents the value to convert to the corresponding enum set.
+     *            
      * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessTablePermissions</code> values
      *         corresponding to the specified byte value.
      */
@@ -83,7 +84,7 @@ public enum SharedAccessTablePermissions {
      * Sets the value of this enum.
      * 
      * @param val
-     *            The value being assigned.
+     *        A <code>byte</code> which represents the value being assigned.
      */
     SharedAccessTablePermissions(final byte val) {
         this.value = val;

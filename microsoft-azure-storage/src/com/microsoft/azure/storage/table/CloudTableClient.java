@@ -121,12 +121,14 @@ public final class CloudTableClient extends ServiceClient {
      * Gets a {@link CloudTable} object with the specified name.
      * 
      * @param tableName
-     *            The name of the table, which must adhere to table naming rules. The table name
-     *            should not include any path separator characters (/).
+     *            A <code>String</code> which represents the name of the table, which must adhere to table naming rules.
+     *            The table name should not include any path separator characters (/).
      *            Table names are case insensitive, must be unique within an account and must be between 3-63 characters
      *            long. Table names must start with an cannot begin with a numeric character and may only contain
      *            alphanumeric characters. Some table names are reserved, including "table".
+     * 
      * @return A reference to a {@link CloudTable} object.
+     * 
      * @throws URISyntaxException
      *             If the resource URI constructed based on the tableName is invalid.
      * @throws StorageException
@@ -146,8 +148,7 @@ public final class CloudTableClient extends ServiceClient {
      * REST API to list the table names, using the Table service endpoint and storage account credentials of this
      * instance.
      * 
-     * @return
-     *         An <code>Iterable</code> collection of the table names in the storage account retrieved lazily.
+     * @return An <code>Iterable</code> collection of the table names in the storage account retrieved lazily.
      */
     @DoesServiceRequest
     public Iterable<String> listTables() {
@@ -166,8 +167,7 @@ public final class CloudTableClient extends ServiceClient {
      * 
      * @return
      *         An <code>Iterable</code> collection of the table names in the storage account retrieved lazily that match
-     *         the specified
-     *         prefix.
+     *         the specified prefix.
      */
     @DoesServiceRequest
     public Iterable<String> listTables(final String prefix) {
@@ -747,7 +747,9 @@ public final class CloudTableClient extends ServiceClient {
     }
 
     /**
-     * @return the usePathStyleUris
+     * Indicates whether path-style URIs are used.
+     * 
+     * @return <code>true</code> if path-style URIs are used; otherwise <code>false</code>.
      */
     @Override
     protected boolean isUsePathStyleUris() {

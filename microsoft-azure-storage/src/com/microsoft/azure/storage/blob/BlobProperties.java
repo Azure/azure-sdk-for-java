@@ -109,7 +109,7 @@ public final class BlobProperties {
      * <code>BlobProperties</code> class.
      * 
      * @param other
-     *            A <code>BlobProperties</code> object that represents the blob properties to copy.
+     *        A <code>BlobProperties</code> object which represents the blob properties to copy.
      */
     public BlobProperties(final BlobProperties other) {
         this.blobType = other.blobType;
@@ -130,6 +130,9 @@ public final class BlobProperties {
 
     /**
      * Creates an instance of the <code>BlobProperties</code> class.
+     * 
+     * @param type
+     *        A <code>BlobType</code> object which represents the blob type.
      */
     public BlobProperties(final BlobType type) {
         this.blobType = type;
@@ -147,7 +150,7 @@ public final class BlobProperties {
     /**
      * Gets the cache control value for the blob.
      * 
-     * @return A string that represents the cache control value for the blob.
+     * @return A <code>String</code> which represents the content cache control value for the blob.
      */
     public String getCacheControl() {
         return this.cacheControl;
@@ -156,7 +159,7 @@ public final class BlobProperties {
     /**
      * Gets the content disposition value for the blob.
      * 
-     * @return A string containing the content disposition, or <code>null</code> if content disposition has not been set
+     * @return A <code>String</code> which represents the content disposition, or <code>null</code> if content disposition has not been set
      *         on the blob.
      */
     public String getContentDisposition() {
@@ -166,7 +169,7 @@ public final class BlobProperties {
     /**
      * Gets the content encoding value for the blob.
      * 
-     * @return A string containing the content encoding, or <code>null</code> if content encoding has not been set
+     * @return A <code>String</code> which represents the content encoding, or <code>null</code> if content encoding has not been set
      *         on the blob.
      */
     public String getContentEncoding() {
@@ -176,7 +179,7 @@ public final class BlobProperties {
     /**
      * Gets the content language value for the blob.
      * 
-     * @return A string containing the content language, or <code>null</code> if content language has not been set on
+     * @return A <code>String</code> which represents the contentt language, or <code>null</code> if content language has not been set on
      *         the blob.
      */
     public String getContentLanguage() {
@@ -186,7 +189,7 @@ public final class BlobProperties {
     /**
      * Gets the content MD5 value for the blob.
      * 
-     * @return A string containing the content MD5 value.
+     * @return A <code>String</code> which represents the content MD5 value.
      */
     public String getContentMD5() {
         return this.contentMD5;
@@ -195,7 +198,7 @@ public final class BlobProperties {
     /**
      * Gets the content type value for the blob.
      * 
-     * @return A string containing content type, or <code>null</code> if the content type has not be set for the blob.
+     * @return A <code>String</code> which represents the content type, or <code>null</code> if the content type has not be set for the blob.
      */
     public String getContentType() {
         return this.contentType;
@@ -204,7 +207,7 @@ public final class BlobProperties {
     /**
      * Gets the blob's copy state.
      * 
-     * @return A {@link CopyState} object that represents the copy state of the blob.
+     * @return A {@link CopyState} object which represents the copy state of the blob.
      */
     public CopyState getCopyState() {
         return this.copyState;
@@ -219,7 +222,7 @@ public final class BlobProperties {
      * The {@link AccessCondition#ifMatch} and {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
      * an {@link AccessCondition} object that may be specified on the request.
      * 
-     * @return A string containing the ETag value.
+     * @return A <code>String</code> which represents the ETag value.
      */
     public String getEtag() {
         return this.etag;
@@ -228,7 +231,7 @@ public final class BlobProperties {
     /**
      * Gets the last modified time for the blob.
      * 
-     * @return A <code>Date</code> containing the last modified time for the blob.
+     * @return A {@link java.util.Date} object which represents the last modified time. 
      */
     public Date getLastModified() {
         return this.lastModified;
@@ -237,7 +240,7 @@ public final class BlobProperties {
     /**
      * Gets the lease status for the blob.
      * 
-     * @return A <code>LeaseStatus</code> object representing the lease status.
+     * @return A {@link LeaseStatus} object which represents the lease status. 
      */
     public LeaseStatus getLeaseStatus() {
         return this.leaseStatus;
@@ -246,7 +249,7 @@ public final class BlobProperties {
     /**
      * Gets the lease state for the blob.
      * 
-     * @return A <code>LeaseState</code> object representing the lease state.
+     * @return A {@link LeaseState} object which represents the lease state. 
      */
     public LeaseState getLeaseState() {
         return this.leaseState;
@@ -255,7 +258,7 @@ public final class BlobProperties {
     /**
      * Gets the lease duration for the blob.
      * 
-     * @return A <code>LeaseDuration</code> object representing the lease duration.
+     * @return A {@link LeaseDuration} object which represents the lease duration. 
      */
     public LeaseDuration getLeaseDuration() {
         return this.leaseDuration;
@@ -264,7 +267,7 @@ public final class BlobProperties {
     /**
      * Gets the size, in bytes, of the blob.
      * 
-     * @return The length of the blob.
+     * @return A <code>long</code> which represents the length of the blob.
      */
     public long getLength() {
         return this.length;
@@ -274,7 +277,7 @@ public final class BlobProperties {
      * Sets the cache control value for the blob.
      * 
      * @param cacheControl
-     *            The cache control value to set.
+     *        A <code>String</code> which specifies the cache control value to set.
      */
     public void setCacheControl(final String cacheControl) {
         this.cacheControl = cacheControl;
@@ -284,7 +287,7 @@ public final class BlobProperties {
      * Sets the content disposition value for the blob.
      * 
      * @param contentDisposition
-     *            The content disposition value to set.
+     *        A <code>String</code> which specifies the content disposition value to set.
      */
     public void setContentDisposition(final String contentDisposition) {
         this.contentDisposition = contentDisposition;
@@ -294,7 +297,7 @@ public final class BlobProperties {
      * Sets the content encoding value for the blob.
      * 
      * @param contentEncoding
-     *            The content encoding value to set.
+     *        A <code>String</code> which specifies the content encoding value to set.
      */
     public void setContentEncoding(final String contentEncoding) {
         this.contentEncoding = contentEncoding;
@@ -304,7 +307,7 @@ public final class BlobProperties {
      * Sets the content language for the blob.
      * 
      * @param contentLanguage
-     *            The content language value to set.
+     *        A <code>String</code> which specifies the content language value to set.
      */
     public void setContentLanguage(final String contentLanguage) {
         this.contentLanguage = contentLanguage;
@@ -314,7 +317,7 @@ public final class BlobProperties {
      * Sets the content MD5 value for the blob.
      * 
      * @param contentMD5
-     *            The content MD5 value to set.
+     *        A <code>String</code> which specifies the content MD5 value to set.
      */
     public void setContentMD5(final String contentMD5) {
         this.contentMD5 = contentMD5;
@@ -324,7 +327,7 @@ public final class BlobProperties {
      * Sets the content type value for the blob.
      * 
      * @param contentType
-     *            The content type value to set.
+     *        A <code>String</code> which specifies the content type value to set.
      */
     public void setContentType(final String contentType) {
         this.contentType = contentType;
@@ -334,7 +337,7 @@ public final class BlobProperties {
      * Sets the blob type.
      * 
      * @param blobType
-     *            The blob type to set, represented by a <code>BlobType</code> object.
+     *        A {@link BlobType} object which specifies the blob type to set.
      */
     protected void setBlobType(final BlobType blobType) {
         this.blobType = blobType;
@@ -344,7 +347,7 @@ public final class BlobProperties {
      * Sets the copy state value for the blob
      * 
      * @param copyState
-     *            the copyState to set
+     *        A {@link CopyState} object which specifies the copy state value to set.
      */
     protected void setCopyState(final CopyState copyState) {
         this.copyState = copyState;
@@ -354,7 +357,7 @@ public final class BlobProperties {
      * Sets the ETag value for the blob.
      * 
      * @param etag
-     *            The ETag value to set.
+     *        A <code>String</code> which specifies the ETag value to set.
      */
     protected void setEtag(final String etag) {
         this.etag = etag;
@@ -364,7 +367,7 @@ public final class BlobProperties {
      * Sets the last modified time for the blob.
      * 
      * @param lastModified
-     *            The last modified time to set.
+     *        A {@link java.util.Date} object which specifies the last modified time to set.
      */
     protected void setLastModified(final Date lastModified) {
         this.lastModified = lastModified;
@@ -374,7 +377,7 @@ public final class BlobProperties {
      * Sets the lease status for the blob.
      * 
      * @param leaseStatus
-     *            The lease status to set, represented by a <code>LeaseStatus</code> object.
+     *        A {@link LeaseStatus} object which specifies the lease status value to set.
      */
     protected void setLeaseStatus(final LeaseStatus leaseStatus) {
         this.leaseStatus = leaseStatus;
@@ -384,7 +387,7 @@ public final class BlobProperties {
      * Sets the lease state for the blob.
      * 
      * @param leaseState
-     *            The lease state to set, represented by a <code>LeaseState</code> object.
+     *        A {@link LeaseState} object which specifies the lease state value to set.
      */
     protected void setLeaseState(final LeaseState leaseState) {
         this.leaseState = leaseState;
@@ -394,7 +397,7 @@ public final class BlobProperties {
      * Sets the lease duration for the blob.
      * 
      * @param leaseDuration
-     *            The lease duration value to set, represented by a <code>LeaseDuration</code> object.
+     *        A {@link LeaseDuration} object which specifies the lease duration value to set.
      */
     protected void setLeaseDuration(final LeaseDuration leaseDuration) {
         this.leaseDuration = leaseDuration;
@@ -404,7 +407,7 @@ public final class BlobProperties {
      * Sets the content length, in bytes, for the blob.
      * 
      * @param length
-     *            The length to set.
+     *        A <code>long</code> which specifies the length to set.
      */
     protected void setLength(final long length) {
         this.length = length;

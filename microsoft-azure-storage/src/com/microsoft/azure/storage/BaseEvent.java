@@ -58,7 +58,7 @@ public abstract class BaseEvent {
      * Gets a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as a
      * connection object.
      * 
-     * @return the connectionObject
+     * @return An <code>Object</code> for the connection.
      */
     public Object getConnectionObject() {
         return this.connectionObject;
@@ -68,7 +68,7 @@ public abstract class BaseEvent {
      * Gets a context for the current operation. This object is used to track requests to the storage service, and
      * to provide additional runtime information about the operation.
      * 
-     * @return the opContext
+     * @return The {@link OperationContext} for the current operation.
      */
     public OperationContext getOpContext() {
         return this.opContext;
@@ -77,7 +77,7 @@ public abstract class BaseEvent {
     /**
      * Gets a {@link RequestResult} object that represents the current request result.
      * 
-     * @return the {@link RequestResult} object
+     * @return The {@link RequestResult} object for the current request result.
      */
     public RequestResult getRequestResult() {
         return this.requestResult;

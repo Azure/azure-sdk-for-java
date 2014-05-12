@@ -66,8 +66,9 @@ public final class CloudBlobContainer {
      * Converts the ACL string to a BlobContainerPermissions object.
      * 
      * @param aclString
-     *            the string to convert.
-     * @return The resulting BlobContainerPermissions object.
+     *            A <code>String</code> which specifies the ACLs to convert.
+     * 
+     * @return A {@link BlobContainerPermissions} object which represents the ACLs.
      */
     static BlobContainerPermissions getContainerAcl(final String aclString) {
         BlobContainerPublicAccessType accessType = BlobContainerPublicAccessType.OFF;
@@ -120,7 +121,7 @@ public final class CloudBlobContainer {
      * Initializes a new instance of the CloudBlobContainer class.
      * 
      * @param client
-     *            the reference to the associated service client.
+     *            A {@link CloudBlobClient} which represents a reference to the associated service client.
      */
     private CloudBlobContainer(final CloudBlobClient client) {
         this.metadata = new HashMap<String, String>();
@@ -133,7 +134,7 @@ public final class CloudBlobContainer {
      * include a SAS token unless anonymous access is to be used.
      * 
      * @param uri
-     *            A <code>java.net.URI</code> object that represents the URI of the container.
+     *            A <code>java.net.URI</code> object which represents the URI of the container.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -149,7 +150,7 @@ public final class CloudBlobContainer {
      * include a SAS token unless anonymous access is to be used.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> object that represents the URI of the container.
+     *            A {@link StorageUri} object which represents the URI of the container.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -164,19 +165,22 @@ public final class CloudBlobContainer {
      * Creates an instance of the <code>CloudBlobContainer</code> class using the specified name and client.
      * 
      * @param containerName
-     *            The name of the container, which must adhere to container naming rules. The container name should not
-     *            include any path separator characters (/).
+     *            A <code>String</code> which represents the name of the container, which must adhere to container
+     *            naming rules.
+     *            The container name should not include any path separator characters (/).
      *            Container names must be lowercase, between 3-63 characters long and must start with a letter or
      *            number. Container names may contain only letters, numbers, and the dash (-) character.
      * @param client
      *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
      *            endpoint for the Blob service. *
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI constructed based on the containerName is invalid.
-     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd135715.aspx">Naming and Referencing Containers,
-     *      Blobs, and Metadata</a>
+     * 
+     * @see <a href="http://msdn.microsoft.com/library/azure/dd135715.aspx">Naming and Referencing Containers, Blobs,
+     *      and Metadata</a>
      */
     public CloudBlobContainer(final String containerName, final CloudBlobClient client) throws URISyntaxException,
             StorageException {
@@ -212,7 +216,7 @@ public final class CloudBlobContainer {
      * Creates an instance of the <code>CloudBlobContainer</code> class using the specified URI and client.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> object that represents the absolute URI of the container.
+     *            A {@link StorageUri} object which represents the absolute URI of the container.
      * @param client
      *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
      *            endpoint for the Blob service.
@@ -230,7 +234,8 @@ public final class CloudBlobContainer {
 
         this.storageUri = storageUri;
 
-        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client.isUsePathStyleUris();
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri())
+                : client.isUsePathStyleUris();
 
         this.name = PathUtility.getContainerNameFromUri(storageUri.getPrimaryUri(), usePathStyleUris);
 
@@ -336,9 +341,9 @@ public final class CloudBlobContainer {
      * Creates the container if it does not exist, using the specified request options and operation context.
      * 
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
+     *            Specifying <code>null</code> will use the default request options from the associated service client
+     *            ({@link CloudBlobClient}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -794,10 +799,13 @@ public final class CloudBlobContainer {
      * Returns a shared access signature for the container. Note this does not contain the leading "?".
      * 
      * @param policy
-     *            The access policy for the shared access signature.
+     *            An {@link SharedAccessBlobPolicy} object that represents the access policy for the shared access
+     *            signature.
      * @param groupPolicyIdentifier
-     *            A container-level access policy.
-     * @return a shared access signature for the container.
+     *            A <code>String</code> which represents the container-level access policy.
+     * 
+     * @return A <code>String</code> which represents a shared access signature for the container.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws InvalidKeyException
@@ -916,7 +924,7 @@ public final class CloudBlobContainer {
     /**
      * Returns the list of URIs for all locations.
      * 
-     * @return A <code>StorageUri</code> that represents the list of URIs for all locations..
+     * @return A {@link StorageUri} object which represents the list of URIs for all locations..
      */
     public StorageUri getStorageUri() {
         return this.storageUri;
@@ -927,6 +935,7 @@ public final class CloudBlobContainer {
      * 
      * @param blobName
      *            A <code>String</code> that represents the name of the blob.
+     * 
      * @return A {@link CloudPageBlob} object that represents a reference to the specified page blob.
      * 
      * @throws StorageException
@@ -1043,9 +1052,8 @@ public final class CloudBlobContainer {
      *            A <code>String</code> that represents the blob name prefix. This value must be preceded either by the
      *            name of the container or by the absolute path to the container.
      * 
-     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represents the items whose
-     *         names begin with
-     *         the specified prefix in this container.
+     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represents the
+     *         items whose names begin with the specified prefix in this container.
      */
     @DoesServiceRequest
     public Iterable<ListBlobItem> listBlobs(final String prefix) {
@@ -1075,9 +1083,8 @@ public final class CloudBlobContainer {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represent the block items
-     *         whose names begin
-     *         with the specified prefix in this directory.
+     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represent the block
+     *         items whose names begin with the specified prefix in this directory.
      */
     @DoesServiceRequest
     public Iterable<ListBlobItem> listBlobs(final String prefix, final boolean useFlatBlobListing,
@@ -1268,8 +1275,7 @@ public final class CloudBlobContainer {
      * Returns an enumerable collection of containers for the service client associated with this container.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represent the
-     *         containers for the
-     *         service client associated with this container.
+     *         containers for the service client associated with this container.
      */
     @DoesServiceRequest
     public Iterable<CloudBlobContainer> listContainers() {
@@ -1284,8 +1290,8 @@ public final class CloudBlobContainer {
      *            A <code>String</code> that represents the container name prefix.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represent the
-     *         containers whose names
-     *         begin with the specified prefix for the service client associated with this container.
+     *         containers whose names begin with the specified prefix for the service client associated with this
+     *         container.
      */
     @DoesServiceRequest
     public Iterable<CloudBlobContainer> listContainers(final String prefix) {
@@ -1396,18 +1402,18 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Parse Uri for SAS (Shared access signature) information.
+     * Parse URI for SAS (Shared access signature) information.
      * 
      * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
      * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
      * a new client is created based on SAS information or as anonymous credentials.
      * 
      * @param completeUri
-     *            The complete Uri.
+     *            A {@link StorageUri} object which represents the complete URI.
      * @param existingClient
-     *            The client to use.
+     *            A {@link CloudBlobClient} object which represents the client to use.
      * @param usePathStyleUris
-     *            If true, path style Uris are used.
+     *            <code>true</code> if path-style URIs are used; otherwise, <code>false</code>.
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -1490,7 +1496,7 @@ public final class CloudBlobContainer {
      * Sets the list of URIs for all locations.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> that represents the list of URIs for all locations.
+     *            A {@link StorageUri} object which represents the list of URIs for all locations.
      */
     protected void setStorageUri(final StorageUri storageUri) {
         this.storageUri = storageUri;
@@ -1697,7 +1703,7 @@ public final class CloudBlobContainer {
      * Acquires a new lease on the container with the specified lease time and proposed lease ID.
      * 
      * @param leaseTimeInSeconds
-     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            An <code>Integer</code> which specifies the span of time for which to acquire the lease, in seconds.
      *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
@@ -1722,7 +1728,7 @@ public final class CloudBlobContainer {
      * options, and operation context.
      * 
      * @param leaseTimeInSeconds
-     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            An <code>Integer</code> which specifies the span of time for which to acquire the lease, in seconds.
      *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
@@ -1981,7 +1987,8 @@ public final class CloudBlobContainer {
      * period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the time to wait, in seconds, until the current lease is broken.
+     *            An <code>Integer</code> which specifies the time to wait, in seconds, until the current lease is
+     *            broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @return The time, in seconds, remaining in the lease period.
@@ -1999,7 +2006,8 @@ public final class CloudBlobContainer {
      * another client cannot acquire a new lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the time to wait, in seconds, until the current lease is broken.
+     *            An <code>Integer</code> which specifies the time to wait, in seconds, until the current lease is
+     *            broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @param accessCondition

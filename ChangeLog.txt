@@ -1,3 +1,8 @@
+2014.05.12 Version 1.0.0
+ * Updated service version to 2014-02-14
+ * Fixed null-reference when null listingDetails are passed to listBlobsSegmented(String, boolean, EnumSet<BlobListingDetails>, int, ResultContinuation, BlobRequestOptions, OperationContext) overload
+ * StorageUri may contain only a secondary endpoint
+
 2014.05.06 Version 0.7.0
  * Created a DefaultRequestOptions object for each service client
  * Deprecated getter/setters for all request option properties on the service clients 

@@ -27,7 +27,7 @@ import java.util.Random;
 public final class RetryExponentialRetry extends RetryPolicy implements RetryPolicyFactory {
 
     /**
-     * Holds the random number generator used to calculate randomized backoff interavals.
+     * Holds the random number generator used to calculate randomized backoff intervals.
      */
     private final Random randRef = new Random();
 

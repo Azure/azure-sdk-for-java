@@ -281,7 +281,7 @@ final class BlobConstants {
     public static final String LEASE = "lease";
 
     /**
-     * Private Default Ctor
+     * Private Default Constructor.
      */
     private BlobConstants() {
         // No op

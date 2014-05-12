@@ -29,12 +29,12 @@ public final class PageRange {
     private long startOffset;
 
     /**
-     * Creates an instance of the <code>PageRange</code> class.
+     * Creates an instance of the <code>{@link PageRange}</code> class.
      * 
      * @param start
-     *            The starting offset.
+     *        A <code>long</code> which represents the starting offset.
      * @param end
-     *            The ending offset.
+     *        A <code>long</code> which represents the ending offset.
      */
     public PageRange(final long start, final long end) {
         this.setStartOffset(start);
@@ -42,30 +42,38 @@ public final class PageRange {
     }
 
     /**
-     * @return the endOffset
+     * Gets the ending offset.
+     * 
+     * @return A <code>long</code> which represents the ending offset.
      */
     public long getEndOffset() {
         return this.endOffset;
     }
 
     /**
-     * @return the startOffset
+     * Gets the starting offset.
+     * 
+     * @return A <code>long</code> which represents the starting offset.
      */
     public long getStartOffset() {
         return this.startOffset;
     }
 
     /**
+     * Sets the ending offset.
+     * 
      * @param endOffset
-     *            the endOffset to set
+     *        A <code>long</code> which specifies the ending offset.
      */
     public void setEndOffset(final long endOffset) {
         this.endOffset = endOffset;
     }
 
     /**
+     * Sets the starting offset.
+     * 
      * @param startOffset
-     *            the startOffset to set
+     *        A <code>long</code> which specifies the starting offset.
      */
     public void setStartOffset(final long startOffset) {
         this.startOffset = startOffset;
@@ -74,7 +82,7 @@ public final class PageRange {
     /**
      * Returns the content of the page range as a string.
      * 
-     * @return A <code>String</code> that represents the contents of the page range.
+     * @return A <code>String</code> which represents the contents of the page range.
      */
     @Override
     public String toString() {

@@ -86,7 +86,7 @@ import com.microsoft.azure.storage.core.SR;
  * <tr>
  * <td><strong>Edm.DateTime</strong></td>
  * <td>{@link EdmType#DATE_TIME}</td>
- * <td><code>Date</code></td>
+ * <td><code>java.util.Date</code></td>
  * <td>A 64-bit value expressed as Coordinated Universal Time (UTC). The supported range begins from 12:00 midnight,
  * January 1, 1601 A.D. (C.E.), UTC. The range ends at December 31, 9999.</td>
  * </tr>
@@ -122,9 +122,8 @@ import com.microsoft.azure.storage.core.SR;
  * </tr>
  * </table>
  * <p>
- * See the MSDN topic <a href="http://msdn.microsoft.com/en-us/library/azure/dd179338.aspx">Understanding the Table
- * Service Data Model</a> for an overview of tables, entities, and properties as used in the Microsoft Azure Storage
- * service.
+ * See the MSDN topic <a href="http://msdn.microsoft.com//library/azure/dd179338.aspx">Understanding the Table Service
+ * Data Model</a> for an overview of tables, entities, and properties as used in the Microsoft Azure Storage service.
  * <p>
  * For an overview of the available EDM primitive data types and names, see the
  * 
@@ -150,10 +149,12 @@ public class TableServiceEntity implements TableEntity {
      * type are not copied.
      * 
      * @param instance
-     *            A reference to an instance of a class implementing {@link TableEntity} to deserialize the table entity
+     *            An <code>Object</code> reference to an instance of a class implementing {@link TableEntity} to
+     *            deserialize the table entity
      *            data into.
      * @param properties
-     *            A map of <code>String</code> property names to {@link EntityProperty} objects containing typed data
+     *            A <code>java.util.HashMap</code> object which maps <code>String</code> property names to
+     *            {@link EntityProperty} objects containing typed data
      *            values to deserialize into the instance parameter object.
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation.
@@ -192,11 +193,13 @@ public class TableServiceEntity implements TableEntity {
      * name and data type are not copied.
      * 
      * @param instance
-     *            A reference to an instance of a class implementing {@link TableEntity} to serialize the table entity
+     *            An <code>Object</code> reference to an instance of a class implementing {@link TableEntity} to
+     *            serialize the table entity
      *            data from.
      * @return
-     *         A map of <code>String</code> property names to {@link EntityProperty} objects containing typed data
-     *         values serialized from the instance parameter object.
+     *         A <code>java.util.HashMap</code> object which maps <code>String</code> property names to
+     *         {@link EntityProperty} objects containing typed data values serialized from the instance parameter
+     *         object.
      * 
      * @throws IllegalArgumentException
      *             if the table entity is invalid or improperly formatted.
@@ -250,7 +253,7 @@ public class TableServiceEntity implements TableEntity {
     protected String rowKey = null;
 
     /**
-     * Reserved for internal use. The value of the Etag for the entity.
+     * Reserved for internal use. The value of the ETag for the entity.
      */
     protected String etag = null;
 
@@ -270,9 +273,11 @@ public class TableServiceEntity implements TableEntity {
      * Initializes a new instance of the {@link TableServiceEntity} class with the specified partition key and row key.
      * 
      * @param partitionKey
-     *            The partition key of the {@link TableServiceEntity} to be initialized.
+     *            A <code>String</code> which represents the partition key of the {@link TableServiceEntity} to be
+     *            initialized.
      * @param rowKey
-     *            The row key of the {@link TableServiceEntity} to be initialized.
+     *            A <code>String</code> which represents the row key of the {@link TableServiceEntity} to be
+     *            initialized.
      */
     public TableServiceEntity(String partitionKey, String rowKey) {
         this.partitionKey = partitionKey;
@@ -280,11 +285,11 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Gets the Etag value for the entity. This value is used to determine if the table entity has changed since it was
+     * Gets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
      * last read from Microsoft Azure storage.
      * 
      * @return
-     *         A <code>String</code> containing the Etag for the entity.
+     *         A <code>String</code> containing the ETag for the entity.
      */
     @Override
     public String getEtag() {
@@ -314,10 +319,10 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Gets the Timestamp value for the entity.
+     * Gets the <code>timeStamp</code> value for the entity.
      * 
      * @return
-     *         A <code>Date</code> containing the Timestamp value for the entity.
+     *         A <code>java.util.Date</code> containing the <code>timeStamp</code> value for the entity.
      */
     @Override
     public Date getTimestamp() {
@@ -332,7 +337,7 @@ public class TableServiceEntity implements TableEntity {
      * than using reflection on a known entity type, the values from the dictionary are used instead.
      * 
      * @return
-     *         the boolean representing whether or not the reflected entity cache is disabled
+     *         <code>true</code> if the reflected entity cache is disabled; otherwise, <code>false</code>.
      */
     public static boolean isReflectedEntityCacheDisabled() {
         return TableServiceEntity.disableReflectedEntityCache;
@@ -346,7 +351,7 @@ public class TableServiceEntity implements TableEntity {
      * than using reflection on a known entity type, the values from the dictionary are used instead.
      * 
      * @param disableReflectedEntityCache
-     *            the boolean representing whether or not the reflected entity cache is disabled
+     *            <code>true</code> to disable the reflected entity cache; otherwise, <code>false</code>.
      */
     public static void setReflectedEntityCacheDisabled(boolean disableReflectedEntityCache) {
         if (TableServiceEntity.reflectedEntityCache != null && disableReflectedEntityCache) {
@@ -395,11 +400,11 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Sets the Etag value for the entity. This value is used to determine if the table entity has changed since it was
+     * Sets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
      * last read from Microsoft Azure storage.
      * 
      * @param etag
-     *            A <code>String</code> containing the Etag for the entity.
+     *            A <code>String</code> containing the ETag for the entity.
      */
     @Override
     public void setEtag(final String etag) {
@@ -429,10 +434,10 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Sets the Timestamp value for the entity.
+     * Sets the <code>timeStamp</code> value for the entity.
      * 
      * @param timeStamp
-     *            A <code>Date</code> containing the Timestamp value for the entity.
+     *            A <code>java.util.Date</code> containing the <code>timeStamp</code> value for the entity.
      */
     @Override
     public void setTimestamp(final Date timeStamp) {
@@ -492,7 +497,7 @@ public class TableServiceEntity implements TableEntity {
      * entities are deserialized and the payload does not include JSON metadata.
      * 
      * @return
-     *         the <code>ConcurrentHashMap<Class<?>, HashMap<String, PropertyPair>></code> representing the known entity
+     *         The <code>ConcurrentHashMap<Class<?>, HashMap<String, PropertyPair>></code> representing the known entity
      *         types and their reflected entity dictionaries
      */
     protected static ConcurrentHashMap<Class<?>, HashMap<String, PropertyPair>> getReflectedEntityCache() {

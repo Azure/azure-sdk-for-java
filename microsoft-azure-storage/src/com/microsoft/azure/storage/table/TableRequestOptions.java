@@ -34,15 +34,15 @@ public class TableRequestOptions extends RequestOptions {
          * Given the partition key, row, key, and the property name, produces the EdmType
          * 
          * @param pk
-         *            The partition key
+         *            A <code>String</code> which represents the partition key.
          * @param rk
-         *            The row key
+         *            A <code>String</code> which represents the row key.
          * @param key
-         *            The property name
+         *            A <code>String</code> which represents the property name.
          * @param value
-         *            The property value
+         *            A <code>String</code> which represents the property value.
          * @return
-         *         EdmType of the property
+         *         The {@link EdmType} of the property.
          */
         public EdmType propertyResolver(String pk, String rk, String key, String value);
 
@@ -88,9 +88,12 @@ public class TableRequestOptions extends RequestOptions {
      * currently <code>null</code>, using the values specified in the {@link CloudTableClient} parameter.
      * 
      * @param options
-     *            The input options to copy from when applying defaults
+     *            A {@link TableRequestOptions} object which represents the input options to copy from when applying defaults.
      * @param client
-     *            The {@link CloudTableClient} client object to copy the timeout and retry policy from.
+     *            A {@link CloudTableClient} object from which to copy the timeout and retry policy.
+     *
+     * @return A {@link TableRequestOptions} object.
+     * 
      */
     protected static final TableRequestOptions applyDefaults(final TableRequestOptions options,
             final CloudTableClient client) {
@@ -112,6 +115,13 @@ public class TableRequestOptions extends RequestOptions {
 
     /**
      * Populates any null fields in the first requestOptions object with values from the second requestOptions object.
+     * 
+     * @param modifiedOptions
+     *            A {@link TableRequestOptions} object from which to copy options.
+     * @param clientOptions
+     *            A {@link TableRequestOptions} object where options will be copied.
+     *            
+     * @return A {@link RequestOptions} object.
      */
     private static final RequestOptions populateRequestOptions(TableRequestOptions modifiedOptions,
             final TableRequestOptions clientOptions) {
@@ -132,7 +142,7 @@ public class TableRequestOptions extends RequestOptions {
      * see {@link #setTablePayloadFormat(TablePayloadFormat)}.
      * 
      * @return
-     *         The {@link TablePayloadFormat} used by this {@link TableRequest}
+     *         The {@link TablePayloadFormat} used by this {@link TableRequest}.
      */
     public TablePayloadFormat getTablePayloadFormat() {
         return this.payloadFormat;
@@ -144,7 +154,7 @@ public class TableRequestOptions extends RequestOptions {
      * defaults, see {@link #setPropertyResolver(PropertyResolver)}.
      * 
      * @return
-     *         The property resolver in use
+     *         The current {@link PropertyResolver} object.
      */
     public PropertyResolver getPropertyResolver() {
         return this.propertyResolver;
@@ -159,7 +169,7 @@ public class TableRequestOptions extends RequestOptions {
      * via the service client will use that {@link TablePayloadFormat}.
      * 
      * @param payloadFormat
-     *            The TablePayloadFormat to use.
+     *            Specifies the {@link TablePayloadFormat} to set.
      */
     public void setTablePayloadFormat(TablePayloadFormat payloadFormat) {
         this.payloadFormat = payloadFormat;
@@ -175,7 +185,7 @@ public class TableRequestOptions extends RequestOptions {
      * requests made via the service client will use that {@link PropertyResolver}.
      * 
      * @param propertyResolver
-     *            The property resolver to use.
+     *            Specifies the {@link PropertyResolver} to set.
      */
     public void setPropertyResolver(PropertyResolver propertyResolver) {
         this.propertyResolver = propertyResolver;

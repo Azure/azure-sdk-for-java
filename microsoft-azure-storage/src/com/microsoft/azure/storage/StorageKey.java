@@ -147,10 +147,10 @@ public final class StorageKey {
     }
 
     /**
-     * Initializes the hmacsha256 Mac and SecretKey.
+     * Initializes the HMAC-SHA256 Mac and SecretKey.
      * 
      * @throws InvalidKeyException
-     *             if the key is not a valid SecretKey according to spec.
+     *             If the key is not a valid SecretKey according to specification.
      */
     private void initHmacSha256() throws InvalidKeyException {
         this.key256 = new SecretKeySpec(this.key, "HmacSHA256");
@@ -164,10 +164,10 @@ public final class StorageKey {
     }
 
     /**
-     * Initializes the hmacsha512 Mac and SecretKey.
+     * Initializes the HMAC-SHA256 Mac and SecretKey.
      * 
      * @throws InvalidKeyException
-     *             if the key is not a valid SecretKey according to spec.
+     *             If the key is not a valid SecretKey according to specification.
      */
     private void initHmacSha512() throws InvalidKeyException {
         this.key512 = new SecretKeySpec(this.key, "HmacSHA512");
@@ -186,7 +186,7 @@ public final class StorageKey {
      * This method is provided to support key rotation. This method is not thread-safe.
      * 
      * @param key
-     *            A byte array that represents the key being assigned.
+     *            A <code>byte</code> array that represents the key being assigned.
      */
     public void setKey(final byte[] key) {
         this.key = key;
