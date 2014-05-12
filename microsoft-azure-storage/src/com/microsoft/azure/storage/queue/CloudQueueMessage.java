@@ -69,29 +69,29 @@ public class CloudQueueMessage {
     private String popReceipt;
 
     /**
-     * Initializes a new instance of the CloudQueueMessage class (used
-     * internally).
+     * Initializes a new instance of the <code>CloudQueueMessage</code> class (used internally).
      */
     protected CloudQueueMessage() {
         // no op
     }
 
     /**
-     * Initializes a new instance of the CloudQueueMessage class with an array of <code>byte</code> containing the
-     * message.
+     * Initializes a new instance of the <code>CloudQueueMessage</code> class with a <code>byte</code>
+     * array containing the message.
      * 
      * @param content
-     *            The array of <code>byte</code> that contains the message.
+     *        A <code>byte</code> array which contains the message.
      */
     public CloudQueueMessage(final byte[] content) {
         this.setMessageContent(content);
     }
 
     /**
-     * Initializes a new instance of the CloudQueueMessage class with a string containing the message.
+     * Initializes a new instance of the <code>CloudQueueMessage</code> class with a <code>String</code>
+     * containing the message.
      * 
      * @param content
-     *            The <code>String</code> that contains the message.
+     *        A <code>String</code> which contains the message.
      */
     public CloudQueueMessage(final String content) {
         this.setMessageContent(content);
@@ -100,7 +100,7 @@ public class CloudQueueMessage {
     /**
      * Gets the dequeue count.
      * 
-     * @return The dequeue count.
+     * @return An <code>int</code> which contains the dequeue count.
      */
     public final int getDequeueCount() {
         return this.dequeueCount;
@@ -109,7 +109,7 @@ public class CloudQueueMessage {
     /**
      * Gets the time that the message expires.
      * 
-     * @return The time that the message expires.
+     * @return A <code>java.util.Date</code> object which represents the time that the message expires.
      */
     public final Date getExpirationTime() {
         return this.expirationTime;
@@ -118,16 +118,16 @@ public class CloudQueueMessage {
     /**
      * Gets the message ID.
      * 
-     * @return A <code>String</code> that contains the message ID.
+     * @return A <code>String</code> which contains the message ID.
      */
     public final String getId() {
         return this.id;
     }
 
     /**
-     * Gets the <code>java.util.Date</code> representing the time the message was added to the queue.
+     * Gets the time the message was added to the queue.
      * 
-     * @return The <code>java.util.Date</code> representing the time the message was added to the queue.
+     * @return A <code>java.util.Date</code> which represents the time the message was added to the queue.
      */
     public final Date getInsertionTime() {
         return this.insertionTime;
@@ -136,10 +136,10 @@ public class CloudQueueMessage {
     /**
      * Gets the content of the message as a byte array.
      * 
-     * @return An array of <code>byte</code> with the content of the message.
+     * @return A <code>byte</code> array which contains the content of the message.
      * 
      * @throws StorageException
-     *             If a storage service error occurred.
+     *         If a storage service error occurred.
      */
     public final byte[] getMessageContentAsByte() throws StorageException {
         if (Utility.isNullOrEmpty(this.messageContent)) {
@@ -162,10 +162,10 @@ public class CloudQueueMessage {
     /**
      * Gets the content of the message as a string.
      * 
-     * @return A <code>String</code> with the content of the message.
+     * @return A <code>String</code> which contains the content of the message.
      * 
      * @throws StorageException
-     *             If a storage service error occurred.
+     *         If a storage service error occurred.
      */
     public final String getMessageContentAsString() throws StorageException {
         if (this.messageType == QueueMessageType.RAW_STRING) {
@@ -188,9 +188,10 @@ public class CloudQueueMessage {
     /**
      * Gets the content of the message for transfer (internal use only).
      * 
-     * @return A <code>String</code> with the content of the message.
+     * @return A <code>String</code> which contains the content of the message.
      * 
      * @throws StorageException
+     *         If a storage service error occurred.
      */
     protected final String getMessageContentForTransfer(final boolean shouldEncodeMessage) throws StorageException {
         String result = null;
@@ -210,18 +211,18 @@ public class CloudQueueMessage {
     }
 
     /**
-     * Gets the message's id
+     * Gets the message ID.
      * 
-     * @return The <code>String</code> representing the message's id
+     * @return A <code>String</code> which contains the message ID.
      */
     public final String getMessageId() {
         return this.id;
     }
 
     /**
-     * Gets the message's type
+     * Gets the message type.
      * 
-     * @return The <code>QueueMessageType</code> representing the message's type
+     * @return A <code>QueueMessageType</code> value which represents the message type.
      */
     protected final QueueMessageType getMessageType() {
         return this.messageType;
@@ -240,7 +241,7 @@ public class CloudQueueMessage {
     /**
      * Gets the message's pop receipt.
      * 
-     * @return A <code>String</code> containing the message's pop receipt.
+     * @return A <code>String</code> which contains the message's pop receipt.
      */
     public final String getPopReceipt() {
         return this.popReceipt;
@@ -250,7 +251,7 @@ public class CloudQueueMessage {
      * Sets the dequeue count.
      * 
      * @param dequeueCount
-     *            The dequeue count.
+     *        An <code>int</code> which contains the dequeue count.
      */
     protected final void setDequeueCount(int dequeueCount) {
         this.dequeueCount = dequeueCount;
@@ -260,7 +261,7 @@ public class CloudQueueMessage {
      * Sets the expiration time for the message.
      * 
      * @param expirationTime
-     *            The <code>java.util.Date</code> representing the expiration time to set on the message.
+     *        The <code>java.util.Date</code> which represents the expiration time to set on the message.
      */
     protected final void setExpirationTime(final Date expirationTime) {
         this.expirationTime = expirationTime;
@@ -270,17 +271,17 @@ public class CloudQueueMessage {
      * Sets the <code>java.util.Date</code> representing the time the message was added to the queue.
      * 
      * @param insertiontTime
-     *            The <code>java.util.Date</code> representing the time the message was added to the queue.
+     *        The <code>java.util.Date</code> representing the time the message was added to the queue.
      */
     protected final void setInsertionTime(Date insertionTime) {
         this.insertionTime = insertionTime;
     }
 
     /**
-     * Sets the content of the message as an array of <code>byte</code>.
+     * Sets the content of the message as a <code>byte</code> array.
      * 
      * @param content
-     *            The content of the message.
+     *        A <code>byte</code> array which contains the content of the message.
      */
     public final void setMessageContent(final byte[] content) {
         Utility.assertNotNull("content", content);
@@ -293,7 +294,7 @@ public class CloudQueueMessage {
      * Sets the content of the message as a <code>String</code>.
      * 
      * @param content
-     *            The content of the message.
+     *        A <code>String</code> which contains the content of the message.
      */
     public final void setMessageContent(final String content) {
         this.messageContent = content;
@@ -301,10 +302,10 @@ public class CloudQueueMessage {
     }
 
     /**
-     * Sets the message's id
+     * Sets the message ID.
      * 
      * @param id
-     *            The <code>String</code> representing the message's id
+     *        A <code>String</code> which represents the message ID.
      */
     protected final void setMessageId(String id) {
         this.id = id;
@@ -314,7 +315,7 @@ public class CloudQueueMessage {
      * Sets the message's type
      * 
      * @param messageType
-     *            The <code>QueueMessageType</code> representing the message's type
+     *        A <code>QueueMessageType</code> value which represents the message type.
      */
     protected final void setMessageType(final QueueMessageType messageType) {
         this.messageType = messageType;
@@ -324,8 +325,8 @@ public class CloudQueueMessage {
      * Sets the time for the message to become visible in the queue.
      * 
      * @param nextVisibleTime
-     *            The <code>java.util.Date</code> representing the time to set
-     *            for the message to be visible.
+     *        A <code>java.util.Date</code> with the time that the message will
+     *        next be visible.
      */
     protected final void setNextVisibleTime(final Date nextVisibleTime) {
         this.nextVisibleTime = nextVisibleTime;
@@ -335,7 +336,7 @@ public class CloudQueueMessage {
      * Sets the message's pop receipt.
      * 
      * @param popReceipt
-     *            A <code>String</code> containing the message's pop receipt.
+     *        A <code>String</code> which contains the message's pop receipt.
      */
     protected final void setPopReceipt(final String popReceipt) {
         this.popReceipt = popReceipt;

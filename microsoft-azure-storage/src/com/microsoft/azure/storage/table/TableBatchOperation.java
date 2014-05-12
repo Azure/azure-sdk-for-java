@@ -57,7 +57,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * Adds the table operation at the specified index in the batch operation <code>ArrayList</code>.
      * 
      * @param index
-     *            The index in the batch operation <code>ArrayList</code> to add the table operation at.
+     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add the table operation at.
      * @param element
      *            The {@link TableOperation} to add to the batch operation.
      */
@@ -107,9 +107,9 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * index.
      * 
      * @param index
-     *            The index in the batch operation <code>ArrayList</code> to add the table operation at.
+     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add the table operation at.
      * @param c
-     *            The collection of {@link TableOperation} objects to add to the batch operation.
+     *            A <code>java.util.Collection</code> of {@link TableOperation} objects to add to the batch operation.
      * @return
      *         <code>true</code> if the operations were added successfully.
      */
@@ -138,7 +138,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * Adds the collection of table operations to the batch operation <code>ArrayList</code>.
      * 
      * @param c
-     *            The collection of {@link TableOperation} objects to add to the batch operation.
+     *            A <code>java.util.Collection</code> of {@link TableOperation} objects to add to the batch operation.
      * @return
      *         <code>true</code> if the operations were added successfully.
      */
@@ -276,7 +276,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * Removes the table operation at the specified index from the batch operation.
      * 
      * @param index
-     *            The index in the <code>ArrayList</code> of the table operation to remove from the batch operation.
+     *            An <code>int</code> which represents the index in the <code>ArrayList</code> of the table operation to remove from the batch operation.
      */
     @Override
     public TableOperation remove(int index) {
@@ -588,11 +588,11 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * operation <code>ArrayList</code>.
      * 
      * @param fromIndex
-     *            The inclusive lower bound of the range of {@link TableOperation} objects to remove from the batch
-     *            operation <code>ArrayList</code>.
+     *            An <code>int</code> which represents the inclusive lower bound of the range of
+     *            {@link TableOperation} objects to remove from the batch operation <code>ArrayList</code>.
      * @param toIndex
-     *            The exclusive upper bound of the range of {@link TableOperation} objects to remove from the batch
-     *            operation <code>ArrayList</code>.
+     *            An <code>int</code> which represents the exclusive upper bound of the range of
+     *            {@link TableOperation} objects to remove from the batch operation <code>ArrayList</code>.
      */
     @Override
     protected void removeRange(int fromIndex, int toIndex) {

@@ -44,7 +44,7 @@ public enum LeaseStatus {
      * Parses a lease status from the given string.
      * 
      * @param typeString
-     *            A <code>String</code> that represents the string to parse.
+     *        A <code>String</code> which contains the lease status to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */

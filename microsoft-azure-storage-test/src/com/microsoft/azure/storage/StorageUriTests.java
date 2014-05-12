@@ -54,6 +54,16 @@ public class StorageUriTests {
         URI secondaryClientUri = new URI("http://" + ACCOUNT_NAME + SECONDARY_SUFFIX + BLOB_SERVICE + ENDPOINT_SUFFIX);
         URI dummyClientUri = new URI("http://" + ACCOUNT_NAME + "-dummy" + BLOB_SERVICE + ENDPOINT_SUFFIX);
 
+        // no uri
+        try {
+            new StorageUri(null, null);
+            fail(SR.STORAGE_URI_NOT_NULL);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.STORAGE_URI_NOT_NULL, ex.getMessage());
+        }
+
+        // primary uri only
         StorageUri singleUri = new StorageUri(primaryClientUri);
         assertEquals(primaryClientUri, singleUri.getPrimaryUri());
         assertNull(singleUri.getSecondaryUri());
@@ -64,6 +74,18 @@ public class StorageUriTests {
         StorageUri singleUri3 = new StorageUri(secondaryClientUri);
         assertFalse(singleUri.equals(singleUri3));
 
+        // secondary uri only
+        StorageUri singleSecondaryUri = new StorageUri(null, secondaryClientUri);
+        assertEquals(primaryClientUri, singleSecondaryUri.getSecondaryUri());
+        assertNull(singleUri.getPrimaryUri());
+
+        StorageUri singleSecondarUri2 = new StorageUri(null, secondaryClientUri);
+        assertEquals(singleSecondaryUri, singleSecondarUri2);
+
+        StorageUri singleSecondarUri3 = new StorageUri(null, primaryClientUri);
+        assertFalse(singleSecondaryUri.equals(singleSecondarUri3));
+
+        // primary and secondary uri
         StorageUri multiUri = new StorageUri(primaryClientUri, secondaryClientUri);
         assertEquals(primaryClientUri, multiUri.getPrimaryUri());
         assertEquals(secondaryClientUri, multiUri.getSecondaryUri());
@@ -74,6 +96,7 @@ public class StorageUriTests {
 
         try {
             new StorageUri(primaryClientUri, primaryContainerUri);
+            fail(SR.STORAGE_URI_MUST_MATCH);
         }
         catch (IllegalArgumentException ex) {
             assertEquals(SR.STORAGE_URI_MUST_MATCH, ex.getMessage());
@@ -90,7 +113,7 @@ public class StorageUriTests {
     }
 
     @Test
-    public void DevelopmentStorageWithTwoUris() throws URISyntaxException {
+    public void testDevelopmentStorageWithTwoUris() throws URISyntaxException {
         CloudStorageAccount account = CloudStorageAccount.getDevelopmentStorageAccount();
         URI primaryClientURI = account.getBlobStorageUri().getPrimaryUri();
         URI primaryContainerURI = new URI(primaryClientURI.toString() + "/container");

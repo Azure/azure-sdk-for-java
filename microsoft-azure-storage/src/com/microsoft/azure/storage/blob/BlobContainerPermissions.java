@@ -29,7 +29,7 @@ import com.microsoft.azure.storage.Permissions;
  * provides delegated access to the container's resources.</li>
  * </ul>
  * For more information on managing container permissions, see <a
- * href='http://go.microsoft.com/fwlink/?LinkID=224643&clcid=0x409'>Managing Access to Containers and Blobs</a>.
+ * href='http://go.microsoft.com/fwlink/?LinkID=224643'>Managing Access to Containers and Blobs</a>.
  */
 public final class BlobContainerPermissions extends Permissions<SharedAccessBlobPolicy> {
 
@@ -60,7 +60,7 @@ public final class BlobContainerPermissions extends Permissions<SharedAccessBlob
      * container metadata, and the list of blobs in the container.</li>
      * </ul>
      * For more information on managing anonymous access to Blob service resources, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224644&clcid=0x409'>Setting Access Control for Containers</a>.
+     * href='http://go.microsoft.com/fwlink/?LinkID=224644'>Setting Access Control for Containers</a>.
      */
     public BlobContainerPublicAccessType getPublicAccess() {
         return this.publicAccess;
@@ -80,7 +80,7 @@ public final class BlobContainerPermissions extends Permissions<SharedAccessBlob
      * container metadata, and the list of blobs in the container.</li>
      * </ul>
      * For more information on managing anonymous access to Blob service resources, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224644&clcid=0x409'>Setting Access Control for Containers</a>.
+     * href='http://go.microsoft.com/fwlink/?LinkID=224644'>Setting Access Control for Containers</a>.
      */
     public void setPublicAccess(final BlobContainerPublicAccessType publicAccess) {
         this.publicAccess = publicAccess;

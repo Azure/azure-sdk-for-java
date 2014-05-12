@@ -33,16 +33,16 @@ public class DynamicTableEntity extends TableServiceEntity {
      * Nullary default constructor.
      */
     public DynamicTableEntity() {
-        // empty ctor
+        // Empty constructor.
     }
 
     /**
      * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
      * 
      * @param partitionKey
-     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the partition key of the {@link DynamicTableEntity} to be initialized.
      * @param rowKey
-     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
      */
     public DynamicTableEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
@@ -63,9 +63,9 @@ public class DynamicTableEntity extends TableServiceEntity {
      * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
      * 
      * @param partitionKey
-     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the partition key of the {@link DynamicTableEntity} to be initialized.
      * @param rowKey
-     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
      * @param properties
      *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
@@ -78,11 +78,11 @@ public class DynamicTableEntity extends TableServiceEntity {
      * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
      * 
      * @param partitionKey
-     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the partition key of the {@link DynamicTableEntity} to be initialized.
      * @param rowKey
-     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
      * @param etag
-     *            The etag of the {@link DynamicTableEntity} to be initialized.
+     *            The ETag of the {@link DynamicTableEntity} to be initialized.
      * @param properties
      *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
@@ -98,11 +98,11 @@ public class DynamicTableEntity extends TableServiceEntity {
      * @param partitionKey
      *            The partition key of the {@link DynamicTableEntity} to be initialized.
      * @param rowKey
-     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
      * @param etag
-     *            The etag of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>String</code> which represents the ETag of the {@link DynamicTableEntity} to be initialized.
      * @param timestamp
-     *            The timestamp of the {@link DynamicTableEntity} to be initialized.
+     *            A <code>java.util.Date</code> object which represents the timestamp of the {@link DynamicTableEntity} to be initialized.
      * @param properties
      *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
@@ -122,7 +122,7 @@ public class DynamicTableEntity extends TableServiceEntity {
 
     /**
      * Gets the property map for this {@link DynamicTableEntity} instance.
-     * 
+     *  
      * @return
      *         A <code>java.util.HashMap</code> containing the map of <code>String</code> property names to
      *         {@link EntityProperty} data typed values for this {@link DynamicTableEntity} instance.
@@ -137,8 +137,7 @@ public class DynamicTableEntity extends TableServiceEntity {
      * 
      * @param properties
      *            The <code>java.util.HashMap</code> of <code>String</code> property names to {@link EntityProperty}
-     *            data
-     *            typed values to store in this {@link DynamicTableEntity} instance.
+     *            data typed values to store in this {@link DynamicTableEntity} instance.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      */
@@ -168,6 +167,7 @@ public class DynamicTableEntity extends TableServiceEntity {
      * @return
      *         A <code>java.util.HashMap</code> containing the map of <code>String</code> property names to
      *         {@link EntityProperty} data typed values stored in this {@link DynamicTableEntity} instance.
+     *         
      * @throws StorageException
      *             if a Storage service error occurs.
      */

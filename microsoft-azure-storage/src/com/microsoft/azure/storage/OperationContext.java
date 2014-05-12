@@ -21,8 +21,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 
 /**
- * Represents the current logical operation. A logical operation has potentially a one-to-many relationship with
- * individual physical requests.
+ * Represents the current logical operation. A logical operation may have a one-to-many relationship with
+ * multiple individual physical requests.
  */
 public final class OperationContext {
 
@@ -33,8 +33,8 @@ public final class OperationContext {
     public static final String defaultLoggerName = Logger.ROOT_LOGGER_NAME;
 
     /**
-     * Whether or not the client library should produce log entries by default. The default can be overridden to
-     * turn on logging for an individual operation context instance by using setLoggingEnabled.
+     * Indicates whether the client library should produce log entries by default. The default can be overridden to
+     * enable logging for an individual operation context instance by using {@link setLoggingEnabled}.
      */
     private static boolean enableLoggingByDefault = false;
 
@@ -50,7 +50,7 @@ public final class OperationContext {
     private String clientRequestID;
 
     /**
-     * The boolean representing whether or not to enable to logging for a given operation context.
+     * Indicates whether to enable logging for a given operation context.
      */
     private Boolean enableLogging;
 
@@ -154,9 +154,9 @@ public final class OperationContext {
     }
 
     /**
-     * Get the client side trace ID.
+     * Gets the client side trace ID.
      * 
-     * @return the clientRequestID
+     * @return A <code>String</cod> which represents the client request ID.
      */
     public String getClientRequestID() {
         return this.clientRequestID;
@@ -166,16 +166,16 @@ public final class OperationContext {
      * Gets the operation latency, in milliseconds, from the client's perspective. This may include any potential
      * retries.
      * 
-     * @return the clientTimeInMs
+     * @return A <code>long</code> which contains the client latency time in milliseconds.
      */
     public long getClientTimeInMs() {
         return this.clientTimeInMs;
     }
 
     /**
-     * Returns the last request result encountered for the operation.
+     * Gets the last request result encountered for the operation.
      * 
-     * @return A {@link RequestResult} object that represents the last request result.
+     * @return A {@link RequestResult} object which represents the last request result.
      */
     public synchronized RequestResult getLastResult() {
         if (this.requestResults == null || this.requestResults.size() == 0) {
@@ -187,10 +187,11 @@ public final class OperationContext {
     }
 
     /**
-     * Gets the {@link org.slf4j.Logger} associated with this operation, or the class's default {@link org.slf4j.Logger}
-     * if null.
+     * Gets the {@link org.slf4j.Logger} associated with this operation. If the {@link org.slf4j.Logger} object 
+     * associated with this operation is null, this will return the class's default {@link org.slf4j.Logger} object.
      * 
-     * @return the {@link org.slf4j.Logger} associated with this operation
+     * @return The {@link org.slf4j.Logger} object associated with this operation,
+     *         or the class's default {@link org.slf4j.Logger} if null.
      */
     public org.slf4j.Logger getLogger() {
         if (this.logger == null) {
@@ -203,17 +204,17 @@ public final class OperationContext {
     /**
      * Gets any additional headers for the request, for example, for proxy or logging information.
      * 
-     * @return the userHeaders
+     * @return A <code>java.util.HashMap</code> which contains the the user headers for the request.
      */
     public HashMap<String, String> getUserHeaders() {
         return this.userHeaders;
     }
 
     /**
-     * Sets the default logger
+     * Sets the default logger.
      * 
      * This is in a separate method so that it's synchronized, just in case multiple threads are
-     * sharing the OperationContext.
+     * sharing the <code>OperationContext</code>.
      */
     private synchronized void setDefaultLoggerSynchronized() {
         if (this.logger == null) {
@@ -224,18 +225,19 @@ public final class OperationContext {
     /**
      * Returns the set of request results that the current operation has created.
      * 
-     * @return An <code>ArrayList</code> object that contains {@link RequestResult} objects that represent the request
-     *         results created by the current operation.
+     * @return An <code>ArrayList</code> object that contains {@link RequestResult} objects that represent
+     *         the request results created by the current operation.
      */
     public ArrayList<RequestResult> getRequestResults() {
         return this.requestResults;
     }
 
     /**
-     * Reserved for internal use. appends a {@link RequestResult} object to the internal collection in a synchronized
+     * Reserved for internal use. Appends a {@link RequestResult} object to the internal collection in a synchronized
      * manner.
      * 
      * @param requestResult
+     *        A {@Link RequestResult} to append.
      */
     public synchronized void appendRequestResult(RequestResult requestResult) {
         this.requestResults.add(requestResult);
@@ -245,7 +247,7 @@ public final class OperationContext {
      * Gets a global event multi-caster that is triggered before sending a request. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the globalSendingRequestEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>globalSendingRequestEventHandler</code>.
      */
     public static StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getGlobalSendingRequestEventHandler() {
         return OperationContext.globalSendingRequestEventHandler;
@@ -255,7 +257,7 @@ public final class OperationContext {
      * Gets a global event multi-caster that is triggered when a response is received. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the globalResponseReceivedEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>globalResponseReceivedEventHandler</code>.
      */
     public static StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getGlobalResponseReceivedEventHandler() {
         return OperationContext.globalResponseReceivedEventHandler;
@@ -265,7 +267,7 @@ public final class OperationContext {
      * Gets a global event multi-caster that is triggered when a request is completed. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the globalRequestCompletedEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>globalRequestCompletedEventHandler</code>.
      */
     public static StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> getGlobalRequestCompletedEventHandler() {
         return OperationContext.globalRequestCompletedEventHandler;
@@ -275,7 +277,7 @@ public final class OperationContext {
      * Gets a global event multi-caster that is triggered when a request is retried. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the globalRetryingEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>globalRetryingEventHandler</code>.
      */
     public static StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> getGlobalRetryingEventHandler() {
         return OperationContext.globalRetryingEventHandler;
@@ -285,7 +287,7 @@ public final class OperationContext {
      * Gets an event multi-caster that is triggered before sending a request. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the sendingRequestEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>sendingRequestEventHandler</code>.
      */
     public StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getSendingRequestEventHandler() {
         return this.sendingRequestEventHandler;
@@ -295,7 +297,7 @@ public final class OperationContext {
      * Gets an event multi-caster that is triggered when a response is received. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the responseReceivedEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>responseReceivedEventHandler</code>.
      */
     public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
         return this.responseReceivedEventHandler;
@@ -305,7 +307,7 @@ public final class OperationContext {
      * Gets an event multi-caster that is triggered when a request is completed. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the requestCompletedEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>requestCompletedEventHandler</code>.
      */
     public StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> getRequestCompletedEventHandler() {
         return this.requestCompletedEventHandler;
@@ -315,15 +317,15 @@ public final class OperationContext {
      * Gets an event multi-caster that is triggered when a request is retried. It allows event listeners to be
      * dynamically added and removed.
      * 
-     * @return the retryingEventHandler
+     * @return A {@link StorageEventMultiCaster} object for the <code>retryingEventHandler</code>.
      */
     public StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> getRetryingEventHandler() {
         return this.retryingEventHandler;
     }
 
     /**
-     * Reserved for internal use. Initializes the OperationContext in order to begin processing a new operation. All
-     * operation specific information is erased.
+     * Reserved for internal use. Initializes the <code>OperationContext</code> in order to begin processing a
+     * new operation. All operation specific information is erased.
      */
     public void initialize() {
         this.setClientTimeInMs(0);
@@ -331,9 +333,9 @@ public final class OperationContext {
     }
 
     /**
-     * A boolean representing whether or not log entries will be produced for this request.
+     * Indicates whether log entries will be produced for this request.
      * 
-     * @return the <code>boolean</code>, true if logging is enabled, false if it is disabled
+     * @return <code>true</code> if logging is enabled; otherwise <code>false</code>.
      */
     public boolean isLoggingEnabled() {
         if (this.enableLogging == null) {
@@ -343,10 +345,10 @@ public final class OperationContext {
     }
 
     /**
-     * Set the client side trace ID.
+     * Sets the client side request ID.
      * 
      * @param clientRequestID
-     *            the clientRequestID to set
+     *        A <code>String</code> which contains the client request ID to set.
      */
     public void setClientRequestID(final String clientRequestID) {
         this.clientRequestID = clientRequestID;
@@ -357,7 +359,7 @@ public final class OperationContext {
      * may include any potential retries.
      * 
      * @param clientTimeInMs
-     *            the clientTimeInMs to set
+     *        A <code>long</code> which contains the client operation latency in milliseconds.
      */
     public void setClientTimeInMs(final long clientTimeInMs) {
         this.clientTimeInMs = clientTimeInMs;
@@ -367,7 +369,7 @@ public final class OperationContext {
      * Sets the {@link org.slf4j.Logger} for this operation.
      * 
      * @param logger
-     *            the {@link org.slf4j.Logger} to use for this operation
+     *        The <code>{@link org.slf4j.Logger}</code> to use for this operation.
      */
     public void setLogger(final org.slf4j.Logger logger) {
         this.logger = logger;
@@ -377,17 +379,17 @@ public final class OperationContext {
      * Sets any additional headers for the request, for example, for proxy or logging information.
      * 
      * @param userHeaders
-     *            the userHeaders to set
+     *        A <code>java.util.HashMap</code> which contains any additional headers to set.
      */
     public void setUserHeaders(final HashMap<String, String> userHeaders) {
         this.userHeaders = userHeaders;
     }
 
     /**
-     * A boolean representing whether or not log entries will be produced for this request
+     * Specifies whether log entries will be produced for this request.
      * 
      * @param loggingEnabled
-     *            the <code>boolean</code>, true to enable logging, false to disable
+     *        <code>true</code> to enable logging; otherwise <code>false</code> to disable logging.
      */
     public void setLoggingEnabled(boolean loggingEnabled) {
         this.enableLogging = loggingEnabled;
@@ -397,7 +399,7 @@ public final class OperationContext {
      * Sets a global event multi-caster that is triggered before sending a request.
      * 
      * @param globalSendingRequestEventHandler
-     *            the globalSendingRequestEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>globalSendingRequestEventHandler</code>.
      */
     public static void setGlobalSendingRequestEventHandler(
             final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> globalSendingRequestEventHandler) {
@@ -408,7 +410,7 @@ public final class OperationContext {
      * Sets a global event multi-caster that is triggered when a response is received.
      * 
      * @param globalResponseReceivedEventHandler
-     *            the globalResponseReceivedEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>globalResponseReceivedEventHandler</code>.
      */
     public static void setGlobalResponseReceivedEventHandler(
             final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> globalResponseReceivedEventHandler) {
@@ -419,7 +421,7 @@ public final class OperationContext {
      * Sets a global event multi-caster that is triggered when a request is completed.
      * 
      * @param globalRequestCompletedEventHandler
-     *            the globalRequestCompletedEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>globalRequestCompletedEventHandler</code>.
      */
     public static void setGlobalRequestCompletedEventHandler(
             final StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> globalRequestCompletedEventHandler) {
@@ -430,7 +432,7 @@ public final class OperationContext {
      * Sets a global event multi-caster that is triggered when a request is retried.
      * 
      * @param globalRetryingEventHandler
-     *            the globalRetryingEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>globalRetryingEventHandler</code>.
      */
     public static void setGlobalRetryingEventHandler(
             final StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> globalRetryingEventHandler) {
@@ -441,7 +443,7 @@ public final class OperationContext {
      * Sets an event multi-caster that is triggered before sending a request.
      * 
      * @param sendingRequestEventHandler
-     *            the sendingRequestEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>sendingRequestEventHandler</code>.
      */
     public void setSendingRequestEventHandler(
             final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler) {
@@ -452,7 +454,7 @@ public final class OperationContext {
      * Sets an event multi-caster that is triggered when a response is received.
      * 
      * @param responseReceivedEventHandler
-     *            the responseReceivedEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>responseReceivedEventHandler</code>.
      */
     public void setResponseReceivedEventHandler(
             final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler) {
@@ -463,7 +465,7 @@ public final class OperationContext {
      * Sets an event multi-caster that is triggered when a request is completed.
      * 
      * @param requestCompletedEventHandler
-     *            the requestCompletedEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>requestCompletedEventHandler</code>.
      */
     public void setRequestCompletedEventHandler(
             final StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> requestCompletedEventHandler) {
@@ -474,7 +476,7 @@ public final class OperationContext {
      * Sets an event multi-caster that is triggered when a request is retried.
      * 
      * @param retryingEventHandler
-     *            the retryingEventHandler to set
+     *        The {@link StorageEventMultiCaster} object to set for the <code>retryingEventHandler</code>.
      */
     public void setRetryingEventHandler(
             final StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> retryingEventHandler) {
@@ -482,23 +484,22 @@ public final class OperationContext {
     }
 
     /**
-     * Gets a boolean value indicating whether or not the client library should produce log entries by default. The
-     * default can be overridden to turn on logging for an individual operation context instance by using
-     * setLoggingEnabled().
+     * Indicates whether the client library should produce log entries by default. The default can be overridden
+     * to enable logging for an individual operation context instance by using {@link setLoggingEnabled}.
      * 
      * @return
-     *         the boolean representing whether or not logging is enabled by default
+     *         <code>true</code> if logging is enabled by default; otherwise <code>false</code>.
      */
     public static boolean isLoggingEnabledByDefault() {
         return enableLoggingByDefault;
     }
 
     /**
-     * Specifies whether or not the client library should produce log entries by default. The default can be overridden
-     * to turn on logging for an individual operation context instance by using setLoggingEnabled.
+     * Specifies whether the client library should produce log entries by default. The default can be overridden
+     * to turn on logging for an individual operation context instance by using {@link setLoggingEnabled}.
      * 
      * @param enableLoggingByDefault
-     *            the boolean representing whether or not logging is enabled by default
+     *        <code>true</code> if logging should be enabled by default; otherwise <code>false</code> if logging should be disabled by default.
      */
     public static void setLoggingEnabledByDefault(boolean enableLoggingByDefault) {
         OperationContext.enableLoggingByDefault = enableLoggingByDefault;

@@ -51,7 +51,7 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * Gets additional error details, as a <code>java.util.HashMap</code> object.
      * 
-     * @return the additionalDetails
+     * @return A <code>java.util.HashMap</code> of key/value pairs which contain the additional error details.
      */
     public HashMap<String, String[]> getAdditionalDetails() {
         return this.additionalDetails;
@@ -60,7 +60,7 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * Gets the storage service error code.
      * 
-     * @return the errorCode
+     * @return A <code>String</code> which contains the error code.
      */
     public String getErrorCode() {
         return this.errorCode;
@@ -69,7 +69,7 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * Gets the storage service error message.
      * 
-     * @return the errorMessage
+     * @return A <code>String</code> which contains the error message.
      */
     public String getErrorMessage() {
         return this.errorMessage;
@@ -78,8 +78,10 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * RESERVED FOR INTERNAL USE.
      * 
+     * Sets additional error details.
+     * 
      * @param additionalDetails
-     *            the additionalDetails to set
+     *        A <code>java.util.HashMap</code> of key/value pairs which contain the additional error details.
      */
     public void setAdditionalDetails(final HashMap<String, String[]> additionalDetails) {
         this.additionalDetails = additionalDetails;
@@ -88,8 +90,10 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * RESERVED FOR INTERNAL USE.
      * 
+     * Sets the storage service error code.
+     * 
      * @param errorCode
-     *            the errorCode to set
+     *        A <code>String</code> which contains the error code.
      */
     public void setErrorCode(final String errorCode) {
         this.errorCode = errorCode;
@@ -98,8 +102,10 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * RESERVED FOR INTERNAL USE.
      * 
+     * Sets the storage service error message.
+     * 
      * @param errorMessage
-     *            the errorMessage to set
+     *        A <code>String</code> which contains the error message.
      */
     public void setErrorMessage(final String errorMessage) {
         this.errorMessage = errorMessage;

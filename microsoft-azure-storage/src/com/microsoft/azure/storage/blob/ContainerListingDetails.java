@@ -42,7 +42,7 @@ public enum ContainerListingDetails {
      * Sets the value of this enum.
      * 
      * @param val
-     *            The value being assigned.
+     *        An <code>int</code> which represents the value being assigned.
      */
     ContainerListingDetails(final int val) {
         this.value = val;

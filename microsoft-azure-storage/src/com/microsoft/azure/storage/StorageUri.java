@@ -40,16 +40,27 @@ public class StorageUri {
     private URI secondaryUri;
 
     /**
-     * Initializes a new instance of the <code>StorageUri</code> class using the URI specified.
+     * Initializes a new instance of the {@link StorageUri} class using the specified URI.
+     * 
+     * @param primaryUri
+     *        A <code>java.net.URI</code> object for the primary URI.
      */
     public StorageUri(URI primaryUri) {
         this(primaryUri, null /* secondaryUri */);
     }
 
     /**
-     * Initializes a new instance of the <code>StorageUri</code> class using the URI specified.
+     * Initializes a new instance of the {@link StorageUri} class using the specified primary and secondary URIs.
+     * 
+     * @param primaryUri
+     *        A <code>java.net.URI</code> object for the primary URI.
+     * @param secondaryUri
+     *        A <code>java.net.URI</code> object for the secondary URI.
      */
     public StorageUri(URI primaryUri, URI secondaryUri) {
+        if (primaryUri == null && secondaryUri == null) {
+            throw new IllegalArgumentException(SR.STORAGE_URI_NOT_NULL);
+        }
         if (primaryUri != null && secondaryUri != null) {
             // check query component is equivalent
             if ((primaryUri.getQuery() == null && secondaryUri.getQuery() != null)
@@ -101,12 +112,13 @@ public class StorageUri {
     }
 
     /**
-     * Indicates whether some other <code>StorageUri</code> object is "equal to" this one.
+     * Indicates whether a {@link StorageUri} object is equal to the current {@link StorageUri} object.
      * 
      * @param other
-     *            the reference <code>StorageUri</code> object with which to compare.
+     *        A reference to a {@link StorageUri} object to compare.
+     *        
      * @return
-     *         <code>true</code> if this object is the same as the other argument; <code>false</code> otherwise.
+     *         <code>true</code> if this object is the same as the other argument; otherwise <code>false</code>.
      */
     public boolean equals(StorageUri other) {
         return (other != null) && StorageUri.AreUrisEqual(this.primaryUri, other.primaryUri)
@@ -116,7 +128,7 @@ public class StorageUri {
     /**
      * Gets the endpoint for the primary location for the storage account.
      * 
-     * @return the primaryUri
+     * @return A <code>java.net.URI</code> object for the primary URI.
      */
     public URI getPrimaryUri() {
         return this.primaryUri;
@@ -125,19 +137,20 @@ public class StorageUri {
     /**
      * Gets the endpoint for the secondary location for the storage account.
      * 
-     * @return the secondaryUri
+     * @return A <code>java.net.URI</code> object for the secondary URI.
      */
     public URI getSecondaryUri() {
         return this.secondaryUri;
     }
 
     /**
-     * Gets the URI given a Storage Location.
+     * Gets the URI for a specified {@link StorageLocation}.
      * 
      * @param location
-     *            The <code>StorageLocation</code> object whose corresponding Uri is going to be returned.
+     *        The <code>StorageLocation</code> object for which to retrieve a URI.
+     *        
      * @return
-     *         <code>java.net.URI</code> given the location.
+     *        A <code>java.net.URI</code> object for the specified <code>StorageLocation</code>.
      */
     public URI getUri(StorageLocation location) {
         switch (location) {
@@ -161,22 +174,21 @@ public class StorageUri {
     }
 
     /**
-     * Sets the endpoint for the primary location for the storage account.
+     * Sets the endpoint for the primary location of the storage account.
      * 
      * @param primaryUri
-     *            the primaryUri to set
+     *        A <code>java.net.URI</code> object for the primary URI.
      */
     private void setPrimaryUri(URI primaryUri) {
-        Utility.assertNotNull("primaryUri", primaryUri);
         StorageUri.AssertAbsoluteUri(primaryUri);
         this.primaryUri = primaryUri;
     }
 
     /**
-     * Sets the endpoint for the secondary location for the storage account.
+     * Sets the endpoint for the secondary location of the storage account.
      * 
      * @param secondaryUri
-     *            the secondaryUri to set
+     *        A <code>java.net.URI</code> object for the secondary URI.
      */
     private void setSecondaryUri(URI secondaryUri) {
         StorageUri.AssertAbsoluteUri(secondaryUri);
@@ -189,12 +201,13 @@ public class StorageUri {
     }
 
     /**
-     * Validate that we have the URI corresponding to the given <code>LocationMode</code>.
+     * Validate that a URI exists for the specified <code>{@link LocationMode}</code>.
      * 
      * @param mode
-     *            The <code>LocationMode</code> object.
+     *        The <code>LocationMode</code> to validate.
+     *        
      * @return
-     *         <code>true</code> if the mode is valid; <code>false</code> otherwise.
+     *         <code>true</code> if a URI exists for the specified mode; otherwise <code>false</code>.
      */
     public boolean validateLocationMode(LocationMode mode) {
         switch (mode) {
@@ -210,10 +223,10 @@ public class StorageUri {
     }
 
     /**
-     * Tells whether or not this <code>StorageUri</code> is absolute.
+     * Indicates whether this {@link StorageUri} is absolute.
      * 
      * @return
-     *         <code>true</code> if, and only if, this <code>StorageUri</code> is absolute.
+     *         <code>true</code> if the current {@link StorageUri} is absolute; otherwise <code>false</code>. 
      */
     public boolean isAbsolute() {
         if (this.secondaryUri == null) {
@@ -225,11 +238,11 @@ public class StorageUri {
     }
 
     /**
-     * Returns the decoded query component of this <code>StorageUri</code> object.
+     * Returns the decoded query component of this {@link StorageUri} object.
      * 
      * @return
-     *         The decoded query component of this <code>StorageUri</code>, or <code>null</code> if the query is
-     *         undefined.
+     *         A <code>String</code> which contains the decoded query component of the current {@link StorageUri},
+     *         or <code>null</code> if the query is undefined.
      */
     public String getQuery() {
         return this.primaryUri.getQuery();

@@ -27,55 +27,67 @@ public final class LoggingProperties {
     private String version = "1.0";
 
     /**
-     * A EnumSet of <code>LoggingOperationTypes</code> that represent which storage operations should be logged.
+     * An <code>EnumSet<code> of <code>LoggingOperations</code> that represents which storage operations should be logged.
      */
     private EnumSet<LoggingOperations> logOperationTypes = EnumSet.noneOf(LoggingOperations.class);
 
     /**
-     * The Retention policy for the logging data.
+     * Represents the retention policy for the logging data.
      */
     private Integer retentionIntervalInDays;
 
     /**
-     * @return the logOperationTypes
+     * Gets an <code>EnumSet<code> of <code>{@link LoggingOperations}</code> that represents which storage operations should be logged.
+     * 
+     * @return An <code>EnumSet<code> of <code>{@link LoggingOperations}</code>.
      */
     public EnumSet<LoggingOperations> getLogOperationTypes() {
         return this.logOperationTypes;
     }
 
     /**
-     * @return the retentionIntervalInDays
+     * Gets the retention interval (in days).
+     * 
+     * @return An <code>Integer</code> which contains the retention interval.
      */
     public Integer getRetentionIntervalInDays() {
         return this.retentionIntervalInDays;
     }
 
     /**
-     * @return the version
+     * Gets the analytics version.
+     * 
+     * @return A <code>String</code> which contains the version.
      */
     public String getVersion() {
         return this.version;
     }
 
     /**
+     * Sets the <code>{@link LoggingOperations}</code> for which storage operations should be logged.
+     * 
      * @param logOperationTypes
-     *            the logOperationTypes to set
+     *        An <code>EnumSet<code> of <code>{@link LoggingOperations}</code> to set.
      */
     public void setLogOperationTypes(final EnumSet<LoggingOperations> logOperationTypes) {
         this.logOperationTypes = logOperationTypes;
     }
 
     /**
+     * Sets the retention interval (in days).
+     * 
      * @param retentionIntervalInDays
-     *            the retentionIntervalInDays to set
+     *        An <code>Integer</code> which contains the retention interval to set.
      */
     public void setRetentionIntervalInDays(final Integer retentionIntervalInDays) {
         this.retentionIntervalInDays = retentionIntervalInDays;
     }
 
     /**
+     * Sets the analytics version.
+     * 
      * @param version
-     *            the version to set
+     *        A <code>String</code> which contains the version to set.
      */
     public void setVersion(final String version) {
         this.version = version;

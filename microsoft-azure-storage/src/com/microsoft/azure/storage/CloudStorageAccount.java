@@ -70,7 +70,7 @@ public final class CloudStorageAccount {
     private static final String DEVELOPMENT_STORAGE_PRIMARY_ENDPOINT_FORMAT = "%s://%s:%s/%s";
 
     /**
-     * The format string for the secondary endpoint
+     * The format string for the secondary endpoint.
      */
     private static final String DEVELOPMENT_STORAGE_SECONDARY_ENDPOINT_FORMAT = DEVELOPMENT_STORAGE_PRIMARY_ENDPOINT_FORMAT
             + SECONDARY_LOCATION_ACCOUNT_SUFFIX;
@@ -134,7 +134,7 @@ public final class CloudStorageAccount {
      * Gets the default blob {@link StorageUri} using specified settings.
      * 
      * @param settings
-     *            The settings to use
+     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
      * @return The default blob {@link StorageUri}.
      * @throws URISyntaxException
      */
@@ -175,7 +175,7 @@ public final class CloudStorageAccount {
      * Gets the default queue {@link StorageUri} using the specified settings.
      * 
      * @param settings
-     *            The settings.
+     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
      * @return The default queue {@link StorageUri}.
      * @throws URISyntaxException
      */
@@ -190,11 +190,13 @@ public final class CloudStorageAccount {
     }
 
     /**
-     * Gets the default queue endpoint using the specified settings.
+     * Gets the default queue endpoint using the specified protocol and account name.
      * 
-     * @param settings
-     *            The settings.
-     * @return The default queue endpoint.
+     * @param scheme
+     *            The protocol to use.
+     * @param accountName
+     *            The name of the storage account.
+     * @return The default queue {@link StorageUri}.
      */
     private static StorageUri getDefaultQueueStorageUri(final String scheme, final String accountName)
             throws URISyntaxException {
@@ -216,7 +218,7 @@ public final class CloudStorageAccount {
      * Gets the default table {@link StorageUri} using the specified settings.
      * 
      * @param settings
-     *            The settings.
+     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
      * @return The default table {@link StorageUri}.
      */
     private static StorageUri getDefaultTableStorageUri(final HashMap<String, String> settings)
@@ -265,7 +267,7 @@ public final class CloudStorageAccount {
             return getDevelopmentStorageAccount(null);
         }
         catch (final URISyntaxException e) {
-            // this wont happen since we know the standard dev store uri is valid
+            // this won't happen since we know the standard development stororage uri is valid.
             return null;
         }
     }
@@ -384,8 +386,9 @@ public final class CloudStorageAccount {
      * Evaluates connection settings and returns a CloudStorageAccount representing Development Storage.
      * 
      * @param settings
-     *            A Hashmap of key value pairs representing the connection.
-     * @return A CloudStorageAccount object constructed from the values provided in the connection settings, or null if
+     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
+     * @return A {@link CloudStorageAccount} object constructed from the values provided in the connection settings, or
+     *         null if
      *         one cannot be constructed.
      * @throws URISyntaxException
      *             if the connection settings contains an invalid URI
@@ -413,8 +416,8 @@ public final class CloudStorageAccount {
      * Evaluates connection settings and configures a CloudStorageAccount accordingly.
      * 
      * @param settings
-     *            A Hashmap of key value pairs representing the connection.
-     * @return A CloudStorageAccount represented by the settings.
+     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
+     * @return A {@link CloudStorageAccount} represented by the settings.
      * @throws URISyntaxException
      *             if the connectionString specifies an invalid URI.
      * @throws InvalidKeyException
@@ -598,11 +601,11 @@ public final class CloudStorageAccount {
      *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
      *            this account.
      * @param blobStorageUri
-     *            A <code>StorageUri</code> object that represents the Blob service endpoint.
+     *            A {@link StorageUri} object that represents the Blob service endpoint.
      * @param queueStorageUri
-     *            A <code>StorageUri</code> object that represents the Queue service endpoint.
+     *            A {@link StorageUri} object that represents the Queue service endpoint.
      * @param tableStorageUri
-     *            A <code>StorageUri</code> object that represents the Table service endpoint.
+     *            A {@link StorageUri} object that represents the Table service endpoint.
      */
     public CloudStorageAccount(final StorageCredentials storageCredentials, final StorageUri blobStorageUri,
             final StorageUri queueStorageUri, final StorageUri tableStorageUri) {
@@ -657,7 +660,7 @@ public final class CloudStorageAccount {
     /**
      * Creates a new Blob service client.
      * 
-     * @return A {@link CloudBlobClient} that represents the cloud blob client.
+     * @return A {@link CloudBlobClient} that represents the cloud Blob client.
      * 
      */
     public CloudBlobClient createCloudBlobClient() {
@@ -676,7 +679,7 @@ public final class CloudStorageAccount {
     }
 
     /**
-     * Creates a new queue service client.
+     * Creates a new Queue service client.
      * 
      * @return A client object that uses the Queue service endpoint.
      */
@@ -696,7 +699,7 @@ public final class CloudStorageAccount {
     }
 
     /**
-     * Creates a new table service client.
+     * Creates a new Table service client.
      * 
      * @return A client object that uses the Table service endpoint.
      */
@@ -719,7 +722,7 @@ public final class CloudStorageAccount {
      * Returns the endpoint for the Blob service for the storage account. This method is not supported when using shared
      * access signature credentials.
      * 
-     * @return A <code>java.net.URI</code> object that represents the blob endpoint associated with this account.
+     * @return A <code>java.net.URI</code> object that represents the Blob endpoint associated with this account.
      */
     public URI getBlobEndpoint() {
         if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
@@ -737,7 +740,7 @@ public final class CloudStorageAccount {
      * Returns the endpoint for the Blob service for the storage account. This method is not supported when using shared
      * access signature credentials.
      * 
-     * @return A <code>StorageUri</code> object that represents the blob endpoint associated with this account.
+     * @return A {@link StorageUri} object that represents the Blob endpoint associated with this account.
      */
     public StorageUri getBlobStorageUri() {
         if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
@@ -776,7 +779,7 @@ public final class CloudStorageAccount {
     /**
      * Returns the endpoint for the Queue service for the storage account.
      * 
-     * @return A <code>StorageUri</code> object that represents the queue endpoint associated with this account.
+     * @return A {@link StorageUri} object that represents the Queue endpoint associated with this account.
      */
     public StorageUri getQueueStorageUri() {
         if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
@@ -787,9 +790,9 @@ public final class CloudStorageAccount {
     }
 
     /**
-     * Returns the endpoint for the table service for the storage account.
+     * Returns the endpoint for the Table service for the storage account.
      * 
-     * @return A <code>StorageUri</code> object that represents the table endpoint associated with this account.
+     * @return A {@link StorageUri} object that represents the Table endpoint associated with this account.
      */
     public URI getTableEndpoint() {
         if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
@@ -804,9 +807,9 @@ public final class CloudStorageAccount {
     }
 
     /**
-     * Returns the endpoint for the table service for the storage account.
+     * Returns the endpoint for the Table service for the storage account.
      * 
-     * @return A <code>java.net.URI</code> object that represents the table endpoint associated with this account.
+     * @return A <code>java.net.URI</code> object that represents the Table endpoint associated with this account.
      */
     public StorageUri getTableStorageUri() {
         if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
@@ -819,7 +822,7 @@ public final class CloudStorageAccount {
     //
     // Sets the StorageCredentials to use with this account. Warning internal
     // use only, updating the credentials to a new account can potentially
-    // invalidate a bunch of pre-existingobjects.
+    // invalidate a bunch of pre-existing objects.
     //
     // @param credentials
     // the credentials to set

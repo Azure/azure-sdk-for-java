@@ -59,7 +59,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * Creates an instance of the <code>BlobRequestOptions</code> class.
      */
     public BlobRequestOptions() {
-        // Empty Default Ctor
+        // Empty Default Constructor.
     }
 
     /**
@@ -67,7 +67,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <code>BlobRequestOptions</code> instance.
      * 
      * @param other
-     *            A <code>BlobRequestOptions</code> object that represents the blob request options to copy.
+     *        A {@link BlobRequestOptions} object which represents the blob request options to copy.
      */
     public BlobRequestOptions(final BlobRequestOptions other) {
         super(other);

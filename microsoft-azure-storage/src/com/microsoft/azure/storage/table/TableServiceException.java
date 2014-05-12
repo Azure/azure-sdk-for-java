@@ -46,7 +46,7 @@ public final class TableServiceException extends StorageException {
      * the specified parameters.
      * 
      * @param retryable
-     *            A flag indicating the table operation can be retried.
+     *            <code>true</code> if the table operation can be retried; otherwise, <code>false</code>.
      * @param res
      *            A {@link RequestResult} containing the result of the table storage service operation.
      * @param op
@@ -76,7 +76,7 @@ public final class TableServiceException extends StorageException {
      * @param message
      *            A <code>String</code> that represents the error message returned by the table operation.
      * @param statusCode
-     *            The HTTP status code returned by the table operation.
+     *            An <code>int>/code> which represents the HTTP status code returned by the table operation.
      * @param extendedErrorInfo
      *            A {@link StorageExtendedErrorInformation} object that represents the extended error information
      *            returned by the table operation.

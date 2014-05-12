@@ -58,7 +58,7 @@ final class BlobAttributes {
     /**
      * Gets the metadata for the blob.
      * 
-     * @return A <code>HashMap</code> object containing the metadata for the blob.
+     * @return A <code>java.util.HashMap</code> object containing the metadata for the blob.
      */
     public HashMap<String, String> getMetadata() {
         return this.metadata;
@@ -85,7 +85,7 @@ final class BlobAttributes {
     /**
      * Gets the list of URIs for all locations for the blob.
      * 
-     * @return A <code>StorageUri</code> object that represents the list of URIs for all locations for the blob.
+     * @return A {@link StorageUri} object that represents the list of URIs for all locations for the blob.
      */
     public final StorageUri getStorageUri() {
         return this.storageUri;

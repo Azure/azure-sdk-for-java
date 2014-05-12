@@ -20,7 +20,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * Class representing a CORS Rule.
+ * Represents a Cross-Origin Resource Sharing (CORS) rule.
  */
 public class CorsRule {
 
@@ -42,7 +42,7 @@ public class CorsRule {
     /**
      * The HTTP methods permitted to execute for the allowedOrigins.
      */
-    private EnumSet<CorsHttpMethods> allowedMethods = EnumSet.noneOf(CorsHttpMethods.class);;
+    private EnumSet<CorsHttpMethods> allowedMethods = EnumSet.noneOf(CorsHttpMethods.class);
 
     /**
      * The length of time in seconds that a preflight response should be cached by browser.
@@ -50,96 +50,101 @@ public class CorsRule {
     private int maxAgeInSeconds = 0;
 
     /**
-     * Get allowed origins.
+     * Gets the allowed origins.
      * 
-     * @return the allowedOrigins
+     * @return A <code>List</code> object which contains the allowed origins.
      */
     public List<String> getAllowedOrigins() {
         return allowedOrigins;
     }
 
     /**
-     * Set allowed origins.
+     * Sets the allowed origins.
      * 
-     * Limited to 64 origins OR ‘*’ to allow all origins, no more than 256 characters each.
+     * Limited to 64 origins OR "*" to allow all origins, no more than 256 characters each.
      * 
      * @param allowedOrigins
+     *        A <code>List</code> object which contains the allowed origins.
      */
     public void setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
     }
 
     /**
-     * Get exposed headers
+     * Gets the exposed headers.
      * 
-     * @return the exposedHeaders
+     * @return A <code>List</code> object which contains the exposed headers. 
      */
     public List<String> getExposedHeaders() {
         return exposedHeaders;
     }
 
     /**
-     * Set exposed headers
+     * Sets the exposed headers.
      * 
      * Limited to 64 defined headers and two prefixed headers, no more than 256 characters each.
      * 
      * @param exposedHeaders
+     *        A <code>List</code> object which contains the exposed headers.
      */
     public void setExposedHeaders(List<String> exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
     }
 
     /**
-     * Get allowed headers
+     * Gets the allowed headers.
      * 
-     * @return allowedHeaders
+     * @return A <code>List</code> object which contains the allowed headers.
      */
     public List<String> getAllowedHeaders() {
         return allowedHeaders;
     }
 
     /**
-     * Set allowed headers
+     * Sets the allowed headers.
      * 
      * Limited to 64 defined headers and two prefixed headers, no more than 256 characters each.
      * 
      * @param allowedHeaders
+     *        A <code>List</code> object which contains the allowed headers.
      */
     public void setAllowedHeaders(List<String> allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
     }
 
     /**
-     * Get allowed methods
+     * Gets the allowed methods.
      * 
-     * @return allowedMethods
+     * @return A <code>List</code> object which contains the allowed methods.
      */
     public EnumSet<CorsHttpMethods> getAllowedMethods() {
         return allowedMethods;
     }
 
     /**
-     * Set allowed methods
+     * Sets the allowed methods.
      * 
      * @param allowedMethods
+     *        A <code>List</code> object which contains the allowed methods.
      */
     public void setAllowedMethods(EnumSet<CorsHttpMethods> allowedMethods) {
         this.allowedMethods = allowedMethods;
     }
 
     /**
-     * Get maxAgeInSeconds
+     * Gets the maximum age in seconds.
      * 
-     * @return maxAgeInSeconds
+     * @return An <code>int</code> which represents the the maximum age in seconds.
      */
     public int getMaxAgeInSeconds() {
         return maxAgeInSeconds;
     }
 
     /**
-     * Set maxAgeInSeconds
+     * Sets the maximum age in seconds.
      * 
      * @param maxAgeInSeconds
+     *        An <code>int</code> which represents the the maximum age in seconds.
      */
     public void setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;

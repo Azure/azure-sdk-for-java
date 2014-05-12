@@ -17,7 +17,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.microsoft.windowsazure.storage</groupId>
 	<artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-	<version>0.7.0</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure Storage Client SDK</name>

@@ -101,7 +101,7 @@ public final class CloudBlobClient extends ServiceClient {
      * account credentials.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> object that represents the Blob service endpoint used to create the
+     *            A {@link StorageUri} object that represents the Blob service endpoint used to create the
      *            client.
      * @param credentials
      *            A {@link StorageCredentials} object that represents the account credentials.
@@ -138,13 +138,16 @@ public final class CloudBlobClient extends ServiceClient {
      *            include any path separator characters (/).
      *            Container names must be lowercase, between 3-63 characters long and must start with a letter or
      *            number. Container names may contain only letters, numbers, and the dash (-) character.
+     * 
      * @return A reference to a {@link CloudBlobContainer} object.
+     * 
      * @throws URISyntaxException
      *             If the resource URI constructed based on the containerName is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd135715.aspx">Naming and Referencing Containers,
-     *      Blobs, and Metadata</a>
+     * 
+     * @see <a href="http://msdn.microsoft.com/library/azure/dd135715.aspx">Naming and Referencing Containers, Blobs,
+     *      and Metadata</a>
      */
     public CloudBlobContainer getContainerReference(final String containerName) throws URISyntaxException,
             StorageException {
@@ -154,7 +157,7 @@ public final class CloudBlobClient extends ServiceClient {
     /**
      * Returns the value for the default delimiter used for cloud blob directories. The default is '/'.
      * 
-     * @return The value for the default delimiter.
+     * @return A <code>String<code> which represents the value for the default delimiter.
      */
     public String getDirectoryDelimiter() {
         return this.directoryDelimiter;
@@ -179,8 +182,7 @@ public final class CloudBlobClient extends ServiceClient {
      * Returns an enumerable collection of blob containers for this Blob service client.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represent the
-     *         containers for this
-     *         client.
+     *         containers for this client.
      */
     @DoesServiceRequest
     public Iterable<CloudBlobContainer> listContainers() {
@@ -196,8 +198,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            A <code>String</code> that represents the container name prefix.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represent the
-     *         containers for this
-     *         client whose names begin with the specified prefix.
+     *         containers for this client whose names begin with the specified prefix.
      */
     @DoesServiceRequest
     public Iterable<CloudBlobContainer> listContainers(final String prefix) {
@@ -223,8 +224,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            the operation.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represents the
-     *         containers for this
-     *         client.
+     *         containers for this client.
      */
     @DoesServiceRequest
     public Iterable<CloudBlobContainer> listContainers(final String prefix,
@@ -324,8 +324,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            the operation.
      * 
      * @return An enumerable collection of {@link CloudBlobContainer} objects retrieved lazily that represent the
-     *         containers whose names
-     *         begin with the specified prefix.
+     *         containers whose names begin with the specified prefix.
      */
     private Iterable<CloudBlobContainer> listContainersWithPrefix(final String prefix,
             final ContainerListingDetails detailsIncluded, BlobRequestOptions options, OperationContext opContext) {
@@ -461,7 +460,8 @@ public final class CloudBlobClient extends ServiceClient {
     /**
      * Queries the service for the {@link ServiceStats}.
      * 
-     * @return {@link ServiceStats} for the given storage service
+     * @return A {@link ServiceStats} object for the given storage service.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -481,7 +481,9 @@ public final class CloudBlobClient extends ServiceClient {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * @return {@link ServiceStats} for the given storage service
+     * 
+     * @return A {@link ServiceStats} object for the given storage service.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -502,7 +504,8 @@ public final class CloudBlobClient extends ServiceClient {
      * Retrieves the current {@link ServiceProperties} for the given storage service. This includes Logging,
      * HourMetrics, MinuteMetrics and CORS configurations.
      * 
-     * @return the {@link ServiceProperties} object representing the current configuration of the service.
+     * @return A {@link ServiceProperties} object representing the current configuration of the service.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -524,7 +527,8 @@ public final class CloudBlobClient extends ServiceClient {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return the {@link ServiceProperties} object representing the current configuration of the service.
+     * @return A {@link ServiceProperties} object representing the current configuration of the service.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -547,7 +551,8 @@ public final class CloudBlobClient extends ServiceClient {
      * HourMetrics, MinuteMetrics and CORS configurations.
      * 
      * @param properties
-     *            The {@link ServiceProperties} to upload.
+     *            A {@link ServiceProperties} object which specifies the service properties to upload.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -561,7 +566,7 @@ public final class CloudBlobClient extends ServiceClient {
      * HourMetrics, MinuteMetrics and CORS configurations.
      * 
      * @param properties
-     *            The {@link ServiceProperties} to upload.
+     *            A {@link ServiceProperties} object which specifies the service properties to upload.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -570,6 +575,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -608,7 +614,7 @@ public final class CloudBlobClient extends ServiceClient {
      * Sets the value for the default delimiter used for cloud blob directories.
      * 
      * @param directoryDelimiter
-     *            A <code>String</code> that represents the value for the default directory delimiter.
+     *            A <code>String</code> that specifies the value for the default directory delimiter.
      */
     public void setDirectoryDelimiter(final String directoryDelimiter) {
         Utility.assertNotNullOrEmpty("directoryDelimiter", directoryDelimiter);
@@ -619,8 +625,10 @@ public final class CloudBlobClient extends ServiceClient {
      * Sets the threshold size used for writing a single blob to use with this Blob service client.
      * 
      * @param singleBlobPutThresholdInBytes
-     *            The maximum size, in bytes, of a blob that may be uploaded as a single blob, ranging from 1 MB to 64
-     *            MB inclusive. If a blob size is above the threshold, it will be uploaded as blocks.
+     *            An <code>int</code> which specifies the maximum size, in bytes, of a blob that may be uploaded as a
+     *            single
+     *            blob, ranging from 1 MB to 64 MB inclusive. If a blob size is above the threshold, it will be uploaded
+     *            as blocks.
      * 
      * @throws IllegalArgumentException
      *             If <code>minimumReadSize</code> is less than 1 MB or greater than 64 MB.
@@ -635,8 +643,7 @@ public final class CloudBlobClient extends ServiceClient {
     /**
      * Gets the {@link BlobRequestOptions} that is used for requests associated with this <code>CloudBlobClient</code>
      * 
-     * @return
-     *         The {@link BlobRequestOptions} object containing the values used by this <code>CloudBlobClient</code>
+     * @return The {@link BlobRequestOptions} object containing the values used by this <code>CloudBlobClient</code>
      */
     @Override
     public BlobRequestOptions getDefaultRequestOptions() {
@@ -648,7 +655,7 @@ public final class CloudBlobClient extends ServiceClient {
      * <code>CloudBlobClient</code> object.
      * 
      * @param defaultRequestOptions
-     *            The BlobRequestOptions to use.
+     *            A {@link BlobRequestOptions} object which specifies the options to use.
      */
     public void setDefaultRequestOptions(BlobRequestOptions defaultRequestOptions) {
         Utility.assertNotNull("defaultRequestOptions", defaultRequestOptions);
@@ -656,7 +663,9 @@ public final class CloudBlobClient extends ServiceClient {
     }
 
     /**
-     * @return the usePathStyleUris
+     * Indicates whether path-style URIs are being used.
+     * 
+     * @return <code>true</code> if using path-style URIs; otherwise, <code>false</code>.
      */
     @Override
     protected boolean isUsePathStyleUris() {

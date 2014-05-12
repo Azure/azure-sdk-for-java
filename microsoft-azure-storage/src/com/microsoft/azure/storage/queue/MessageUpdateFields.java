@@ -38,7 +38,7 @@ public enum MessageUpdateFields {
      * Sets the value of this enum.
      * 
      * @param val
-     *            The value being assigned.
+     *        An <code>int</code> which represents the value being assigned.
      */
     private MessageUpdateFields(final int val) {
         this.value = val;

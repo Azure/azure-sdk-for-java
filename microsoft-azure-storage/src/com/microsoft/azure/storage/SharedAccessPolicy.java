@@ -36,13 +36,13 @@ public abstract class SharedAccessPolicy {
      * Creates an instance of the <code>SharedAccessPolicy</code> class.
      * */
     public SharedAccessPolicy() {
-        // Empty Default Ctor
+        // Empty Default Constructor.
     }
 
     /**
      * Gets the expiry time for a shared access signature associated with this shared access policy.
      * 
-     * @return A <code>Date</code> object that contains the shared access signature expiry time.
+     * @return A <code>java.util.Date</code> object which contains the shared access signature expiry time.
      */
     public Date getSharedAccessExpiryTime() {
         return this.sharedAccessExpiryTime;
@@ -51,7 +51,7 @@ public abstract class SharedAccessPolicy {
     /**
      * Gets the start time for a shared access signature associated with this shared access policy.
      * 
-     * @return A <code>Date</code> object that contains the shared access signature start time.
+     * @return A <code>java.util.Date</code> object which contains the shared access signature start time.
      */
     public Date getSharedAccessStartTime() {
         return this.sharedAccessStartTime;
@@ -61,7 +61,7 @@ public abstract class SharedAccessPolicy {
      * Sets the expiry time for a shared access signature associated with this shared access policy.
      * 
      * @param sharedAccessExpiryTime
-     *            The expiry time to set for the shared access signature.
+     *        A <code>java.util.Date</code> object which represents the expiry time to set for the shared access signature.
      */
     public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
@@ -71,16 +71,16 @@ public abstract class SharedAccessPolicy {
      * Sets the start time for a shared access signature associated with this shared access policy.
      * 
      * @param sharedAccessStartTime
-     *            The start time to set for the shared access signature.
+     *        A <code>java.util.Date</code> object which represents the start time to set for the shared access signature.
      */
     public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
         this.sharedAccessStartTime = sharedAccessStartTime;
     }
 
     /**
-     * Converts this policy's permissions to a string.
+     * Converts this shared access policy's permissions to a string.
      * 
-     * @return A <code>String</code> that represents the shared access permissions.
+     * @return A <code>String</code> which represents the shared access permissions.
      */
     public abstract String permissionsToString();
 
@@ -88,7 +88,7 @@ public abstract class SharedAccessPolicy {
      * Sets shared access permissions using the specified permissions string.
      * 
      * @param value
-     *            A <code>String</code> that represents the shared access permissions.
+     *        A <code>String</code> which represents the shared access permissions.
      **/
     public abstract void setPermissionsFromString(final String value);
 }

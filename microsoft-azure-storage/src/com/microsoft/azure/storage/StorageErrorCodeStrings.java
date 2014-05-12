@@ -269,7 +269,7 @@ public final class StorageErrorCodeStrings {
     public static final String UNSUPPORTED_QUERY_PARAMETER = "UnsupportedQueryParameter";
 
     /**
-     * Private Default Ctor.
+     * Private Default Constructor.
      */
     private StorageErrorCodeStrings() {
         // No op

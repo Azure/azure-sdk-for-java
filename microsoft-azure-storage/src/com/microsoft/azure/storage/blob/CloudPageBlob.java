@@ -45,7 +45,7 @@ public final class CloudPageBlob extends CloudBlob {
      * client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
+     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -59,7 +59,7 @@ public final class CloudPageBlob extends CloudBlob {
      * client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object which represents the absolute URI to the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -77,7 +77,7 @@ public final class CloudPageBlob extends CloudBlob {
      * Creates an instance of the <code>CloudPageBlob</code> class by copying values from another page blob.
      * 
      * @param otherBlob
-     *            A <code>CloudPageBlob</code> object that represents the page blob to copy.
+     *            A <code>CloudPageBlob</code> object which represents the page blob to copy.
      */
     public CloudPageBlob(final CloudPageBlob otherBlob) {
         super(otherBlob);
@@ -87,7 +87,7 @@ public final class CloudPageBlob extends CloudBlob {
      * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI and cloud blob client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
+     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * 
@@ -102,7 +102,7 @@ public final class CloudPageBlob extends CloudBlob {
      * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI and cloud blob client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object which represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * 
@@ -118,11 +118,11 @@ public final class CloudPageBlob extends CloudBlob {
      * blob container.
      * 
      * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
+     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * @param container
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
+     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -137,11 +137,11 @@ public final class CloudPageBlob extends CloudBlob {
      * blob container.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object which represents the absolute URI to the blob.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * @param container
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
+     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -156,11 +156,11 @@ public final class CloudPageBlob extends CloudBlob {
      * client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
+     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
      * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
+     *            A <code>String</code> which represents the snapshot version, if applicable.
      * @param client
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
+     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -175,11 +175,11 @@ public final class CloudPageBlob extends CloudBlob {
      * client.
      * 
      * @param blobAbsoluteUri
-     *            A <code>StorageUri</code> object that represents the absolute URI to the blob.
+     *            A {@link StorageUri} object which represents the absolute URI to the blob.
      * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
+     *            A <code>String</code> which represents the snapshot version, if applicable.
      * @param client
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
+     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -215,17 +215,19 @@ public final class CloudPageBlob extends CloudBlob {
      * cleared are no longer tracked as part of the page blob, and no longer incur a charge against the storage account.
      * 
      * @param offset
-     *            The offset, in bytes, at which to begin clearing pages. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the offset, in bytes, at which to begin clearing pages. This
+     *            value must be a multiple of 512.
      * @param length
-     *            The length, in bytes, of the data range to be cleared. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the data range to be cleared. This value
+     *            must be a multiple of 512.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -260,7 +262,7 @@ public final class CloudPageBlob extends CloudBlob {
      * Creates a page blob.
      * 
      * @param length
-     *            The size, in bytes, of the page blob.
+     *            A <code>long</code> which represents the size, in bytes, of the page blob.
      * 
      * @throws IllegalArgumentException
      *             If the length is not a multiple of 512.
@@ -276,15 +278,15 @@ public final class CloudPageBlob extends CloudBlob {
      * Creates a page blob using the specified request options and operation context.
      * 
      * @param length
-     *            The size, in bytes, of the page blob.
+     *            A <code>long</code> which represents the size, in bytes, of the page blob.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -358,7 +360,7 @@ public final class CloudPageBlob extends CloudBlob {
      * <p>
      * The start and end byte offsets for each page range are inclusive.
      * 
-     * @return An <code>ArrayList</code> object that represents the set of page ranges and their starting and ending
+     * @return An <code>ArrayList</code> object which represents the set of page ranges and their starting and ending
      *         byte offsets.
      * 
      * @throws StorageException
@@ -374,17 +376,17 @@ public final class CloudPageBlob extends CloudBlob {
      * options and operation context.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return An <code>ArrayList</code> object that represents the set of page ranges and their starting and ending
+     * @return An <code>ArrayList</code> object which represents the set of page ranges and their starting and ending
      *         byte offsets.
      * 
      * @throws StorageException
@@ -471,13 +473,13 @@ public final class CloudPageBlob extends CloudBlob {
      * operation context. The page blob must already exist.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -498,7 +500,8 @@ public final class CloudPageBlob extends CloudBlob {
      * be created with the length specified.
      * 
      * @param length
-     *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
      * 
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * 
@@ -516,15 +519,16 @@ public final class CloudPageBlob extends CloudBlob {
      * operation context. The page blob does not need to yet exist and will be created with the length specified.
      * 
      * @param length
-     *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -545,16 +549,17 @@ public final class CloudPageBlob extends CloudBlob {
      * Otherwise, the page blob must already exist and a stream of its current length will be opened.
      * 
      * @param length
-     *            The length, in bytes, of the stream to create. This value must be a multiple of 512 or null if the
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512 or null if the
      *            page blob already exists.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -600,21 +605,21 @@ public final class CloudPageBlob extends CloudBlob {
      * Used for both uploadPages and clearPages.
      * 
      * @param pageProperties
-     *            The page properties.
+     *            A {@link PageProperties} object that specifies the page properties.
      * @param data
-     *            The data to write.
+     *            A <code>byte</code> array which represents the data to write.
      * @param length
-     *            The number of bytes to write.
+     *            A <code>long</code> which represents the number of bytes to write.
      * @param md5
-     *            the MD5 hash for the data.
+     *            A <code>String</code> which represents the MD5 hash for the data.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -688,7 +693,8 @@ public final class CloudPageBlob extends CloudBlob {
      * Resizes the page blob to the specified size.
      * 
      * @param size
-     *            The size of the page blob, in bytes.
+     *            A <code>long</code> which represents the size of the page blob, in bytes.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -700,17 +706,18 @@ public final class CloudPageBlob extends CloudBlob {
      * Resizes the page blob to the specified size.
      * 
      * @param size
-     *            The size of the page blob, in bytes.
+     *            A <code>long</code> which represents the size of the page blob, in bytes.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -772,9 +779,10 @@ public final class CloudPageBlob extends CloudBlob {
      * Uploads the source stream data to the page blob.
      * 
      * @param sourceStream
-     *            An <code>IntputStream</code> object to read from.
+     *            An {@link IntputStream} object to read from.
      * @param length
-     *            The length, in bytes, of the stream data, must be non zero and a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data, must be non zero and a
+     *            multiple of 512.
      * 
      * @throws IOException
      *             If an I/O exception occurred.
@@ -792,17 +800,18 @@ public final class CloudPageBlob extends CloudBlob {
      * context.
      * 
      * @param sourceStream
-     *            An <code>IntputStream</code> object to read from.
+     *            An {@link IntputStream} object to read from.
      * @param length
-     *            The length, in bytes, of the stream data. This must be great than zero and a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be great than
+     *            zero and a multiple of 512.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -849,12 +858,14 @@ public final class CloudPageBlob extends CloudBlob {
      * Uploads a range of contiguous pages, up to 4 MB in size, at the specified offset in the page blob.
      * 
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the page blob.
+     *            An {@link IntputStream} object which represents the input stream to write to the page blob.
      * @param offset
-     *            The offset, in number of bytes, at which to begin writing the data. This value must be a multiple of
+     *            A <code>long</code> which represents the offset, in number of bytes, at which to begin writing the
+     *            data. This value must be a multiple of
      *            512.
      * @param length
-     *            The length, in bytes, of the data to write. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the data to write. This value must be a
+     *            multiple of 512.
      * 
      * @throws IllegalArgumentException
      *             If the offset or length are not multiples of 512, or if the length is greater than 4 MB.
@@ -874,20 +885,22 @@ public final class CloudPageBlob extends CloudBlob {
      * specified lease ID, request options, and operation context.
      * 
      * @param sourceStream
-     *            An <code>InputStream</code> object that represents the input stream to write to the page blob.
+     *            An {@link IntputStream} object which represents the input stream to write to the page blob.
      * @param offset
-     *            The offset, in number of bytes, at which to begin writing the data. This value must be a multiple of
+     *            A <code>long</code> which represents the offset, in number of bytes, at which to begin writing the
+     *            data. This value must be a multiple of
      *            512.
      * @param length
-     *            The length, in bytes, of the data to write. This value must be a multiple of 512.
+     *            A <code>long</code> which represents the length, in bytes, of the data to write. This value must be a
+     *            multiple of 512.
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
      *            {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -956,7 +969,8 @@ public final class CloudPageBlob extends CloudBlob {
      * Sets the number of bytes to buffer when writing to a {@link BlobOutputStream}.
      * 
      * @param pageBlobStreamWriteSizeInBytes
-     *            The maximum number of bytes to buffer when writing to a page blob stream. This value must be a
+     *            An <code>int</code> which represents the maximum number of bytes to buffer when writing to a page blob
+     *            stream. This value must be a
      *            multiple of 512 and
      *            less than or equal to 4 MB.
      * 

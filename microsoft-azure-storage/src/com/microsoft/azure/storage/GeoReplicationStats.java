@@ -17,32 +17,32 @@ package com.microsoft.azure.storage;
 import java.util.Date;
 
 /**
- * Class representing the geo-replication stats.
+ * Class representing the geo-replication statistics.
  */
 public class GeoReplicationStats {
 
     /**
-     * Specifies the geo replication status
+     * Specifies the geo-replication status.
      */
     private GeoReplicationStatus status;
 
     /**
-     * Specifies the last sync time
+     * Specifies the last synchronization time.
      */
     private Date lastSyncTime;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     GeoReplicationStats() {
         // no op
     }
 
     /**
-     * Gets the last sync time. All primary writes preceding this value are guaranteed to be available for read
-     * operations. Primary writes following this point in time may or may not be available for reads.
+     * Gets the last synchronization time. All primary writes preceding this value are guaranteed to be available
+     * for read operations. Primary writes following this point in time may or may not be available for reads.
      * 
-     * @return the lastSyncTime.
+     * @return A <code>java.util.Date</code> object which represents the last synchronization time.
      */
     public Date getLastSyncTime() {
         return lastSyncTime;
@@ -51,17 +51,17 @@ public class GeoReplicationStats {
     /**
      * Gets the {@link GeoReplicationStatus} status.
      * 
-     * @return the status
+     * @return The <code>GeoReplicationStatus</code> status.
      */
     public GeoReplicationStatus getStatus() {
         return status;
     }
 
     /**
-     * Sets the last sync time.
+     * Sets the last synchronization time.
      * 
      * @param lastSyncTime
-     *            the lastSyncTime to set
+     *            A <code>java.util.Date</code> object which represents the last synchronization time to set.
      */
     void setLastSyncTime(Date lastSyncTime) {
         this.lastSyncTime = lastSyncTime;
@@ -71,7 +71,7 @@ public class GeoReplicationStats {
      * Sets the geo-replication status.
      * 
      * @param status
-     *            the status to set
+     *            The <code>GeoReplicationStatus</code> status to set.
      */
     void setStatus(GeoReplicationStatus status) {
         this.status = status;

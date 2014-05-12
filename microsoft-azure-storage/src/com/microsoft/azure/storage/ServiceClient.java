@@ -29,7 +29,7 @@ import com.microsoft.azure.storage.core.StreamMd5AndLength;
 import com.microsoft.azure.storage.core.Utility;
 
 /**
- * Reserved for internal use. Provides a client for accessing the Microsoft Azure Storage service.
+ * Provides a client for accessing the Microsoft Azure Storage service.
  */
 public abstract class ServiceClient {
 
@@ -58,10 +58,9 @@ public abstract class ServiceClient {
      * credentials.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> object that represents the service endpoint used to create the client.
-     * 
+     *            A {@link StorageUri} object which represents the service endpoint used to create the client.
      * @param credentials
-     *            A {@link StorageCredentials} object that represents the account credentials.
+     *            A {@link StorageCredentials} object which represents the account credentials.
      */
     protected ServiceClient(final StorageUri storageUri, final StorageCredentials credentials) {
         Utility.assertNotNull("baseUri", storageUri);
@@ -169,7 +168,7 @@ public abstract class ServiceClient {
     /**
      * Returns the storage credentials associated with this service client.
      * 
-     * @return A {@link StorageCredentials} object that represents the storage credentials associated with this client.
+     * @return A {@link StorageCredentials} object which represents the storage credentials associated with this client.
      */
     public final StorageCredentials getCredentials() {
         return this.credentials;
@@ -178,7 +177,7 @@ public abstract class ServiceClient {
     /**
      * Returns the AuthenticationScheme associated with this service client.
      * 
-     * @return An {@link AuthenticationScheme} object that represents the authentication scheme associated with this
+     * @return An {@link AuthenticationScheme} object which represents the authentication scheme associated with this
      *         client.
      */
     public final AuthenticationScheme getAuthenticationScheme() {
@@ -188,7 +187,7 @@ public abstract class ServiceClient {
     /**
      * Returns the base URI for this service client.
      * 
-     * @return A <code>java.net.URI</code> object that represents the base URI for the service client.
+     * @return A <code>java.net.URI</code> object which represents the base URI for the service client.
      */
     public final URI getEndpoint() {
         return this.storageUri.getPrimaryUri();
@@ -197,14 +196,14 @@ public abstract class ServiceClient {
     /**
      * Returns the list of URIs for all locations.
      * 
-     * @return A {@link StorageUri} object that represents the list of URIs for all locations.
+     * @return A {@link StorageUri} object which represents the list of URIs for all locations.
      */
     public final StorageUri getStorageUri() {
         return this.storageUri;
     }
 
     /**
-     * @return the usePathStyleUris
+     * @return <code>true</code> if path-style URIs are used; otherwise, <code>false</code>.
      */
     protected boolean isUsePathStyleUris() {
         return this.usePathStyleUris;
@@ -214,7 +213,7 @@ public abstract class ServiceClient {
      * Sets the credentials to use with this service client.
      * 
      * @param credentials
-     *            A <code>Credentials</code> object that represents the credentials being assigned for the service
+     *            A {@link StorageCredentials} object which represents the credentials being assigned for the service
      *            client.
      */
     protected final void setCredentials(final StorageCredentials credentials) {
@@ -225,7 +224,7 @@ public abstract class ServiceClient {
      * Sets the list of URIs for all locations.
      * 
      * @param storageUri
-     *            A <code>StorageUri</code> object that represents the list of URIs for all locations.
+     *            A {@link StorageUri} object which represents the list of URIs for all locations.
      */
     protected final void setStorageUri(final StorageUri storageUri) {
         this.usePathStyleUris = Utility.determinePathStyleFromUri(storageUri.getPrimaryUri());
@@ -236,9 +235,8 @@ public abstract class ServiceClient {
      * Sets the Authentication Scheme to use with this service client.
      * 
      * @param scheme
-     *            An <code>AuthenticationScheme</code> object that represents the authentication scheme being assigned
-     *            for the service
-     *            client.
+     *            An {@link AuthenticationScheme} object which represents the authentication scheme being assigned for
+     *            the service client.
      */
     public final void setAuthenticationScheme(final AuthenticationScheme scheme) {
         this.authenticationScheme = scheme;
@@ -321,7 +319,7 @@ public abstract class ServiceClient {
     /**
      * Gets the default location mode for requests made via the service client.
      * 
-     * @return A {@link LocationMode} object that represents the default location mode for the service client.
+     * @return A {@link LocationMode} object which represents the default location mode for the service client.
      * 
      * @deprecated use {@link #getDefaultRequestOptions().getLocationMode()} instead.
      */
@@ -333,7 +331,7 @@ public abstract class ServiceClient {
     /**
      * Returns the retry policy currently in effect for this service client.
      * 
-     * @return An {@link RetryPolicyFactory} object that represents the current retry policy.
+     * @return An {@link RetryPolicyFactory} object which represents the current retry policy.
      * 
      * @see RetryPolicy
      * @see RetryExponentialRetry

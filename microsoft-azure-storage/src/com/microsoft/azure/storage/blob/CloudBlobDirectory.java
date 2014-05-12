@@ -66,7 +66,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * and client.
      * 
      * @param uri
-     *            A <code>StorageUri</code> that represents the blob directory's address.
+     *            A {@link StorageUri} that represents the blob directory's address.
      * @param prefix
      *            A <code>String</code> that represents the blob directory's prefix.
      * @param client
@@ -89,7 +89,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * and client.
      * 
      * @param uri
-     *            A <code>StorageUri</code> that represents the blob directory's address.
+     *            A {@link StorageUri} that represents the blob directory's address.
      * @param prefix
      *            A <code>String</code> that represents the blob directory's prefix.
      * @param parent
@@ -296,7 +296,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
     /**
      * Returns the list of URIs for all locations.
      * 
-     * @return A <code>StorageUri</code> that represents the list of URIs for all locations..
+     * @return A {@link StorageUri} that represents the list of URIs for all locations..
      */
     @Override
     public final StorageUri getStorageUri() {

@@ -121,6 +121,7 @@ public class SR {
     public static final String STORAGE_CLIENT_OR_SAS_REQUIRED = "Either a SAS token or a service client must be specified.";
     public static final String STORAGE_URI_MISSING_LOCATION = "The URI for the target storage location is not specified. Please consider changing the request's location mode.";
     public static final String STORAGE_URI_MUST_MATCH = "Primary and secondary location URIs in a StorageUri must point to the same resource.";
+    public static final String STORAGE_URI_NOT_NULL = "Primary and secondary location URIs in a StorageUri must not both be null.";
     public static final String STOREAS_DIFFERENT_FOR_GETTER_AND_SETTER = "StoreAs Annotation found for both getter and setter for property %s with unequal values.";
     public static final String STOREAS_USED_ON_EMPTY_PROPERTY = "StoreAs Annotation found for property %s with empty value.";
     public static final String STREAM_CLOSED = "Stream is already closed.";

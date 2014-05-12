@@ -57,7 +57,7 @@ public final class SharedAccessBlobHeaders {
      * Initializes a new instance of the {@link SharedAccessBlobHeaders} class based on an existing instance.
      * 
      * @param other
-     *            The set of blob properties to clone.
+     *        A {@link SharedAccessBlobHeaders} object which specifies the set of blob properties to clone.
      */
     public SharedAccessBlobHeaders(SharedAccessBlobHeaders other) {
         Utility.assertNotNull("other", other);
@@ -70,75 +70,95 @@ public final class SharedAccessBlobHeaders {
     }
 
     /**
-     * @return the cacheControl
+     * Gets the cache control header.
+     * 
+     * @return A <code>String</code> which represents the cache control header.
      */
     public final String getCacheControl() {
         return cacheControl;
     }
 
     /**
+     * Sets the cache control header.
+     * 
      * @param cacheControl
-     *            The cacheControl to set.
+     *        A <code>String</code> which specifies the cache control header.
      */
     public void setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
     }
 
     /**
-     * @return the contentDisposition
+     * Gets the content disposition header.
+     * 
+     * @return A <code>String</code> which represents the content disposition header.
      */
     public final String getContentDisposition() {
         return contentDisposition;
     }
 
     /**
+     * Sets the content disposition header.
+     * 
      * @param contentDisposition
-     *            The contentDisposition to set.
+     *        A <code>String</code> which specifies the content disposition header.
      */
     public void setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
     }
 
     /**
-     * @return the contentEncoding
+     * Gets the content encoding header.
+     * 
+     * @return A <code>String</code> which represents the content encoding header.
      */
     public final String getContentEncoding() {
         return contentEncoding;
     }
 
     /**
+     * Sets the content encoding header.
+     * 
      * @param contentEncoding
-     *            The contentEncoding to set.
+     *        A <code>String</code> which specifies the content encoding header.
      */
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
     }
 
     /**
-     * @return the contentLanguage
+     * Gets the content language header.
+     * 
+     * @return A <code>String</code> which represents the content language header.
      */
     public final String getContentLanguage() {
         return contentLanguage;
     }
 
     /**
+     * Sets the content language header.
+     * 
      * @param contentLanguage
-     *            The contentLanguage to set.
+     *        A <code>String</code> which specifies the content language header.
      */
     public void setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
     }
 
     /**
-     * @return the contentType
+     * Gets the content type header.
+     * 
+     * @return A <code>String</code> which represents the content type header.
      */
     public final String getContentType() {
         return contentType;
     }
 
     /**
+     * Sets the content type header.
+     * 
      * @param contentType
-     *            The contentType to set.
+     *        A <code>String</code> which specifies the content type header.
      */
     public void setContentType(String contentType) {
         this.contentType = contentType;

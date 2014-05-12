@@ -58,7 +58,7 @@ public final class ServiceProperties {
     /**
      * Gets the logging properties.
      * 
-     * @return the logging
+     * @return A {@link LoggingProperties} object which represents the logging properties. 
      */
     public LoggingProperties getLogging() {
         return this.logging;
@@ -68,6 +68,7 @@ public final class ServiceProperties {
      * Sets the logging properties.
      * 
      * @param logging
+     *        A {@link LoggingProperties} object which represents the logging properties.
      */
     public void setLogging(final LoggingProperties logging) {
         this.logging = logging;
@@ -76,7 +77,7 @@ public final class ServiceProperties {
     /**
      * Gets the hour metrics properties.
      * 
-     * @return the hour metrics
+     * @return A {@link MetricsProperties} object which represents the hour metrics properties.
      */
     public MetricsProperties getHourMetrics() {
         return this.hourMetrics;
@@ -86,6 +87,7 @@ public final class ServiceProperties {
      * Sets the hour metrics properties.
      * 
      * @param metrics
+     *        A {@link MetricsProperties} object which represents the hour metrics properties.
      */
     public void setHourMetrics(final MetricsProperties metrics) {
         this.hourMetrics = metrics;
@@ -94,7 +96,7 @@ public final class ServiceProperties {
     /**
      * Gets the minute metrics properties.
      * 
-     * @return the minute metrics
+     * @return A {@link MetricsProperties} object which represents the minute metrics properties.
      */
     public MetricsProperties getMinuteMetrics() {
         return this.minuteMetrics;
@@ -104,24 +106,26 @@ public final class ServiceProperties {
      * Sets the minute metrics properties.
      * 
      * @param metrics
+     *        A {@link MetricsProperties} object which represents the minute metrics properties.
      */
     public void setMinuteMetrics(final MetricsProperties metrics) {
         this.minuteMetrics = metrics;
     }
 
     /**
-     * Gets the Cross Origin Resource Sharing (CORS) properties.
+     * Gets the Cross-Origin Resource Sharing (CORS) properties.
      * 
-     * @return the CORS properties
+     * @return A {@link CorsProperties} object which represents the CORS properties.
      */
     public CorsProperties getCors() {
         return this.cors;
     }
 
     /**
-     * Sets the Cross Origin Resource Sharing (CORS) properties.
+     * Sets the Cross-Origin Resource Sharing (CORS) properties.
      * 
      * @param CORS
+     *        A {@link CorsProperties} object which represents the CORS properties.
      */
     public void setCors(final CorsProperties cors) {
         this.cors = cors;
@@ -130,7 +134,7 @@ public final class ServiceProperties {
     /**
      * Gets default service version.
      * 
-     * @return the defaultServiceVersion
+     * @return A <code>String</code> which represents the default service version.
      */
     public String getDefaultServiceVersion() {
         return this.defaultServiceVersion;
@@ -140,6 +144,7 @@ public final class ServiceProperties {
      * Sets default service version.
      * 
      * @param defaultServiceVersion
+     *        A <code>String</code> which represents the default service version.
      */
     public void setDefaultServiceVersion(final String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;

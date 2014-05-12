@@ -69,7 +69,7 @@ public enum SharedAccessBlobPermissions {
     }
 
     /**
-     * Returns the value of this enum.
+     * Represents the value of this enum.
      */
     private byte value;
 
@@ -77,7 +77,7 @@ public enum SharedAccessBlobPermissions {
      * Sets the value of this enum.
      * 
      * @param val
-     *            The value being assigned.
+     *        A <code>byte</code> which specifies the value being assigned.
      */
     private SharedAccessBlobPermissions(final byte val) {
         this.value = val;
