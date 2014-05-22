@@ -88,7 +88,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     
     @Test
     public void createStorageAccountSuccess() throws Exception { 
-        String storageAccountName = testStorageAccountPrefix + "csas";
+        String storageAccountName = testStorageAccountPrefix + "csas"+randomString(10);
         String storageAccountDescription = "create storage account success"; 
 
         //Arrange
@@ -124,7 +124,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     
     @Test
     public void checkAvailabilitySuccess() throws Exception {
-        String expectedStorageAccountName = testStorageAccountPrefix + "cas";
+        String expectedStorageAccountName = testStorageAccountPrefix + "cas"+randomString(10);
         //Act       
         CheckNameAvailabilityResponse checkNameAvailabilityResponse = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(expectedStorageAccountName);
                
@@ -171,7 +171,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     @Test
     public void updateStorageAccountSuccess() throws Exception {
         //Arrange 
-        String expectedStorageAccountName = testStorageAccountPrefix + "03";
+        String expectedStorageAccountName = testStorageAccountPrefix + "usas"+randomString(10);
         String expectedStorageAccountLabel =  "testUpdateLabel3";
         
         String expectedUpdatedStorageAccountLabel = "testStorageAccountUpdatedLabel3";	        
