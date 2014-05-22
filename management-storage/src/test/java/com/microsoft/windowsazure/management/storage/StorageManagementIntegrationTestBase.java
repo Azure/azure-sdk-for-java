@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.Configuration;
 
 public abstract class StorageManagementIntegrationTestBase {
 
-    protected static String testStorageAccountPrefix = "aztst";
+    protected static String testStorageAccountPrefix = "azurejavatest";
 
     protected static StorageManagementClient storageManagementClient;
 
