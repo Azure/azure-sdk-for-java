@@ -31,7 +31,7 @@ import org.junit.Test;
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
-        testNetworkName =  testNetworkPrefix + randomString(10);;
+        testNetworkName =  testNetworkPrefix + "clrcot" + randomString(10);;
         createService();
         networkOperations = networkManagementClient.getNetworksOperations();
         createNetwork(testNetworkName);
@@ -48,6 +48,7 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
             }
         } catch (ServiceException e) {
         }
+        deleteNetwork(testNetworkName);
     }
     
     @Test(expected = ServiceException.class)

@@ -28,7 +28,7 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
     public static void setup() throws Exception {
         createService();
         networkOperations = networkManagementClient.getNetworksOperations();
-        testNetworkName = testNetworkPrefix + randomString(10);
+        testNetworkName = testNetworkPrefix + "sio" + randomString(10);
         createNetwork(testNetworkName);
         staticIPOperations = networkManagementClient.getStaticIPsOperations();
     }
