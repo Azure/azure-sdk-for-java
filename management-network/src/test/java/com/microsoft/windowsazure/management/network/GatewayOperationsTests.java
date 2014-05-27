@@ -40,8 +40,8 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
         createService();
         networkOperations = networkManagementClient.getNetworksOperations();
         gatewayOperations = networkManagementClient.getGatewaysOperations();
-        testNetworkName = testNetworkPrefix + randomString(10);
-        testGatewayName = testGatewayPrefix + randomString(10);
+        testNetworkName = testNetworkPrefix + "got" + randomString(10);
+        testGatewayName = testGatewayPrefix + "got" + randomString(10);
         createNetwork(testNetworkName);
     }
 
