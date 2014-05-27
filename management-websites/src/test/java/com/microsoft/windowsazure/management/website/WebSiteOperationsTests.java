@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
-    private static String webSpaceName = WebSpaceNames.NORTHEUROPEWEBSPACE; 
+    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE; 
     private static String hostName = ".azurewebsites.net";
     
     @BeforeClass
