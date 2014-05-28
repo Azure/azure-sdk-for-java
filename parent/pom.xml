@@ -288,6 +288,8 @@
     <module>../core-test</module> 
     <module>../management</module>
     <module>../management-compute</module>
+    <module>../management-media</module>
+    <module>../management-scheduler</module>
     <module>../management-sql</module>
     <module>../management-storage</module>
     <module>../management-network</module>
