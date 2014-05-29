@@ -31,6 +31,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {
 	static int random = (int)(Math.random()* 100);
@@ -42,7 +43,8 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";
     static String filePath = "D:\\test\\vhdfile\\";
 
-    @BeforeClass
+    //@BeforeClass
+    @Ignore
     public static void setup() throws Exception {
         //create storage service for storage account creation
         createStorageManagementClient();
@@ -58,7 +60,8 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         createVirtualMachineOSImage();
     }
 
-    @AfterClass
+    //@AfterClass
+    @Ignore
     public static void cleanup() throws Exception {
     	deleteVirtualMachineOSImages();
     	cleanBlob(storageAccountName, storageContainer);
@@ -101,7 +104,8 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         Assert.assertNotNull(operationResponse.getRequestId());
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void getVirtualMachineOSImages() throws Exception {
     	//Act
         VirtualMachineOSImageGetResponse virtualMachineOSImageResponse = computeManagementClient.getVirtualMachineOSImagesOperations().get(virtualMachineOSImageName);
@@ -112,7 +116,8 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         Assert.assertEquals(virtualMachineOSImageName, virtualMachineOSImageResponse.getName());
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void listVirtualMachineOSImagesSuccess() throws Exception {
     	//Arrange
     	VirtualMachineOSImageListResponse virtualMachineOSImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
@@ -120,7 +125,8 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     	Assert.assertTrue(virtualMachineOSImagelist.size() >= 1);
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void updateVirtualMachineOSImagesuccess() throws Exception {
     	//Arrange
     	String virtualMachineOSImageLabel = virtualMachineOSImageName + "Label";
