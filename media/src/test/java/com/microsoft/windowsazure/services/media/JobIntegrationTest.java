@@ -340,7 +340,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         int retryCounter = 0;
         while (cancellingJobInfo.getState() == JobState.Canceling
-                && retryCounter < 10) {
+                && retryCounter < 100) {
             Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
             retryCounter++;
