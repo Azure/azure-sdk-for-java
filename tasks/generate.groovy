@@ -22,34 +22,14 @@
 //
 def hydraSpecs = [
     [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Compute.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Compute.ComputeManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-compute"
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.Scheduler.SchedulerManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
     ],
     [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Specification.dll",
-        clientType: 'Microsoft.WindowsAzure.Management.ManagementClient',
-        generatedCodeDestinationRootDirectoryName: 'management'
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Network.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Network.NetworkManagementClient",
-        generatedCodeDestinationRootDirectoryName: 'management-network'
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Sql.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Sql.SqlManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-sql"
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Storage.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Storage.StorageManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-storage"
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.WebSites.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.WebSites.WebSiteManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-websites"
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.MediaServices.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-media"
     ]
 ]
 
@@ -137,8 +117,8 @@ def restorePackages()
     }
     finally {
         // Need to wait a bit, config file stays open while nuget.exe shuts down
-        Thread.sleep(1000)
-        new File('./restore.config').delete()
+//        Thread.sleep(1000)
+ //       new File('./restore.config').delete()
     }
 }
 

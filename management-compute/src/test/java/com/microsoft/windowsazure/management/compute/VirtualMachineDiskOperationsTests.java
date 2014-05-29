@@ -26,6 +26,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrationTestBase {
     static int random = (int)(Math.random()* 100);
@@ -39,7 +40,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
 
     static VirtualMachineDiskOperations diskOperation;
 
-    @BeforeClass
+    //@BeforeClass
+    @Ignore
     public static void setup() throws Exception {
         //create storage service for storage account creation
         createStorageManagementClient();
@@ -56,7 +58,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
         createDisk();
     }
 
-    @AfterClass
+    //@AfterClass
+    @Ignore
     public static void cleanup() {
         deletDisks();
         cleanBlob(storageAccountName, storageContainer);
@@ -107,7 +110,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
         Assert.assertNotNull(operationResponse.getRequestId());
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void getDisk() throws Exception {
         //Act
         VirtualMachineDiskGetResponse VirtualMachineDiskResponse = diskOperation.getDisk(virtualMachineDiskName);
@@ -118,7 +122,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
         Assert.assertEquals(virtualMachineDiskName, VirtualMachineDiskResponse.getName()); 
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void listDisks() throws Exception {
         //Act
         VirtualMachineDiskListResponse virtualMachineDiskListResponse = diskOperation.listDisks();
@@ -133,7 +138,8 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
         }
     }
 
-    @Test
+    //@Test
+    @Ignore
     public void updateDisk() throws Exception {
         //Arrange
         String virtualMachineDiskLabel = virtualMachineDiskName + "Label";

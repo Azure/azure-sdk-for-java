@@ -1,21 +1,10 @@
 #Microsoft Azure SDK for Java
 
-This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/).
+This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/).
 
 #Features
 
-* Storage
-    * Blob
-        * Create/Read/Update/Delete containers
-        * Create/Read/Update/Delete blobs
-    * Queue
-        * Create/Delete Queues
-        * Insert/Peek Queue Messages
-        * Advanced Queue Operations
-    * Table
-        * Create/Read/Update/Delete tables
-        * Create/Read/Update/Delete entities
-        * Batch operation
+
 * Service Bus
     * Queues
         * Create/Read/Update/Delete queues
@@ -38,14 +27,45 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Add/Get job notifications
     * Create/Read/Update/Delete notification endpoints
 * Service Management
+    * Management
+      * Create/Delete/Get/List/Update affinity group
+      * List location
+      * Create/Delete/Get/List management certificate
+      * List role size
+      * Get/List subscription
+      * Register/Unregister resource
     * Compute Management
-    * Web Site Management
-    * Virtual Network Management
+      * ChangeConfiguration/Delete/Reboot/Reimage/Swap/Update/Upgrade deployment
+      * AddExtension/Delete/CheckNameAvailability/Create/Delete/Get/GetDetailed/GetExtension/List/ListAvailableExtension/Update hosted service operations
+      * List/ListFamilies operating system
+      * Create/Delete/Get/List service certificate
+      * Create/Delete/Get/List/Update data disk or disk
+      * List/ListVersions virtual machine extension
+      * Capture/Create/Delete/Restart/Shutdown/Start/Update/Start/Update/UpdateLoadBalancedEndpointSet virtual machine
+      * Create/Delete/Get/List/Update virtual machine OS image
+      * Delete/List virtual machine image
+    * Websites Management
+      * Create/Delete/Get/List/Update server farm
+      * Create/Delete/DeleteRepository/GeneratePassword/Get/GetConfiguration/GetHistoricalUsageMetrics/GetInstanceIds/GetPublishProfile/GetRepository/GetUsageMetrics/isHostnameAvailable/Restart/SwapSlots/SyncRepository/Update/UpdateConfiguration of Azure web sites
+      * CreatePublishingUser/Get/List/ListGeoRegions/ListPublishingUser/ListWebSites of web space
+    * Network Management
+      * Create/Delete/Get/List client root certificate
+      * Connect/Disconnect/Testing/Create/Delete/Failover/ResetSharedKey gateway operations
+      * SetConfiguration/GetConfiguration/Get/List network 
+      * Create/Delete/Get/List reserved IP operations
+      * Check static IP operations
     * Storage Management
+      * Create/CheckNameAvailability/Delete/Get/GetAsync/GetKeys/List/RegenerateKeys/Update Azure storage account
     * Sql Database Management
+      * Export/GetStatus/Import database 
+      * Get/List database operation's operation
+      * Create/Delete/Get/GetAsync/GetEventLogs/List/Update database operations
+      * Create/Delete/Get/List/Update firewall rule
+      * ChangeAdministratorPassword/Create/Delete/List server operations
+      * Get/List service objective
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
-  
+
 
 #Getting Started
 
@@ -54,8 +74,8 @@ This project provides a client library in Java that makes it easy to consume Mic
 
 To get the source code of the SDK via git just type:
 
-    git clone git://github.com/WindowsAzure/azure-sdk-for-java.git
-    cd ./azure-sdk-for-java/microsoft-azure-api/
+    git clone git://github.com/Azure/azure-sdk-for-java.git
+    cd ./azure-sdk-for-java/
     mvn compile
 
 ###Option 2: Via Maven
@@ -66,8 +86,64 @@ within your project you can also have them installed by the Java package manager
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.5</version>
+  <artifactId>microsoft-azure-api-management</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-compute</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-network</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-sql</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-storage</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-management-websites</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-media</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-servicebus</artifactId>
+  <version>0.5.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
+  <version>0.5.0</version>
 </dependency>
 ```
 
@@ -75,7 +151,7 @@ within your project you can also have them installed by the Java package manager
 
 * Java 1.6
 * (Optional) Maven
- 
+
 
 ##Usage
 
@@ -84,62 +160,6 @@ account.  To host your Java code in Microsoft Azure, you additionally need to do
 the full Microsoft Azure SDK for Java - which includes packaging, emulation, and
 deployment tools.
 
-##Code Sample
-
-The following is a quick example on how to set up a Azure blob using the API
-and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://www.windowsazure.com/en-us/develop/java/).
-
-```java
-import java.io.*;
-
-import com.microsoft.windowsazure.services.core.storage.*;
-import com.microsoft.windowsazure.services.blob.client.*;
-
-public class BlobSample {
-    public static final String storageConnectionString =
-            "DefaultEndpointsProtocol=http;"
-            + "AccountName=your_account_name;"
-            + "AccountKey= your_account_key";
-
-    public static void main(String[] args) {
-        try {
-            CloudStorageAccount account;
-            CloudBlobClient serviceClient;
-            CloudBlobContainer container;
-            CloudBlockBlob blob;
-
-            account = CloudStorageAccount.parse(storageConnectionString);
-            serviceClient = account.createCloudBlobClient();
-            // Container name must be lower case.
-            container = serviceClient.getContainerReference("blobsample");
-            container.createIfNotExist();
-
-            // Set anonymous access on the container.
-            BlobContainerPermissions containerPermissions;
-            containerPermissions = new BlobContainerPermissions();
-            container.uploadPermissions(containerPermissions);
-
-            // Upload an image file.
-            blob = container.getBlockBlobReference("image1.jpg");
-            File fileReference = new File("c:\\myimages\\image1.jpg");
-            blob.upload(new FileInputStream(fileReference), fileReference.length());
-        } catch (FileNotFoundException fileNotFoundException) {
-            System.out.print("FileNotFoundException encountered: ");
-            System.out.println(fileNotFoundException.getMessage());
-            System.exit(-1);
-        } catch (StorageException storageException) {
-            System.out.print("StorageException encountered: ");
-            System.out.println(storageException.getMessage());
-            System.exit(-1);
-        } catch (Exception e) {
-            System.out.print("Exception encountered: ");
-            System.out.println(e.getMessage());
-            System.exit(-1);
-        }
-
-    }
-}
-```
 
 #Need Help?
 
@@ -147,12 +167,12 @@ Be sure to check out the Microsoft Azure [Developer Forums on Stack Overflow](ht
 
 #Contribute Code or Provide Feedback
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://windowsazure.github.com/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.com/guidelines.html).
 
-If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/WindowsAzure/azure-sdk-for-java/issues) section of the project.
+If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/Azure/azure-sdk-for-java/issues) section of the project.
 
 #Learn More
 
-* [Microsoft Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/)
+* [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/)
 * [JavaDocs](http://dl.windowsazure.com/javadoc/)
 
