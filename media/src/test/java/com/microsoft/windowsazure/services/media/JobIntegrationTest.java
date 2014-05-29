@@ -196,6 +196,17 @@ public class JobIntegrationTest extends IntegrationTestBase {
         JobInfo actualJob = service.create(creator);
 
         // Assert
+        JobInfo pendingJobInfo = service.get(Job.get(actualJob.getId()));
+        int retryCounter = 0;
+        while (pendingJobInfo.getState() != JobState.Error
+                && retryCounter < 100) {
+            try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+            pendingJobInfo = service.get(Job.get(actualJob.getId()));
+            retryCounter++;
+        }
         verifyJobProperties("actualJob", name, priority, duration, state,
                 templateId, created, lastModified, stateTime, endTime, 1,
                 actualJob);
