@@ -201,9 +201,9 @@ public class JobIntegrationTest extends IntegrationTestBase {
         while (pendingJobInfo.getState() != JobState.Error
                 && retryCounter < 100) {
             try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
             pendingJobInfo = service.get(Job.get(actualJob.getId()));
             retryCounter++;
         }
