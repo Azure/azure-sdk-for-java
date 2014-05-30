@@ -60,7 +60,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
 
     @BeforeClass    
     public static void setup() throws Exception {
-        storageAccountName = testStoragePrefix + randomString(10);
+        storageAccountName = testStoragePrefix + "vmo" + randomString(7);
         hostedServiceName = testHostedServicePrefix + randomString(10);
         
         //create storage service for storage account creation
