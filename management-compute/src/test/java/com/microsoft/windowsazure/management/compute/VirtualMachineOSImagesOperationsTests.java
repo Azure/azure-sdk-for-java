@@ -36,7 +36,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
 	static int random = (int)(Math.random()* 100);
 	static String virtualMachineOSImageName = testVMPrefix + "OSImage" + random; 
 
-	static String storageAccountName = testStoragePrefix + randomString(10);
+	static String storageAccountName = testStoragePrefix + "vmo" + randomString(7);
 	static String storageContainer = "image-store";
 
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";

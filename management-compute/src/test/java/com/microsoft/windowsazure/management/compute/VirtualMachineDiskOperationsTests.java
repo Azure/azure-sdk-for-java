@@ -31,7 +31,7 @@ public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrat
     static int random = (int)(Math.random()* 100);
     public static String virtualMachineDiskName = testVMPrefix + "Disk" + random;
 
-    static String storageAccountName = testStoragePrefix + "vmd" +randomString(6);
+    static String storageAccountName = testStoragePrefix + "vmd" +randomString(7);
     static String storageContainer = "disk-store";
 
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";
