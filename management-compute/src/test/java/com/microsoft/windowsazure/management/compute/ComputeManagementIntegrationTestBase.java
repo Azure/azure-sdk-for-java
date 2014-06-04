@@ -22,12 +22,8 @@ import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.junit.Assert;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
@@ -40,7 +36,6 @@ import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 import com.microsoft.windowsazure.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.blob.*;
@@ -206,7 +201,6 @@ public abstract class ComputeManagementIntegrationTestBase {
             e.printStackTrace();
         }
 
-        // delete the container
         if (blobClient != null)
         {
         	CloudBlobContainer container = null;
@@ -232,10 +226,8 @@ public abstract class ComputeManagementIntegrationTestBase {
                     Thread.sleep(1000);
                 }
             } catch (StorageException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         	
