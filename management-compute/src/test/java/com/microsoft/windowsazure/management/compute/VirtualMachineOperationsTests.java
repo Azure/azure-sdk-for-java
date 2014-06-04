@@ -26,9 +26,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.*;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -74,9 +76,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @AfterClass   
-    public static void cleanup() {        
-        cleanDeployment();
+    public static void cleanup() {
         cleanHostedService();
+        cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
     }
@@ -411,7 +413,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             } 
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+                waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
             }
+            
+            
         }
     }
     
@@ -438,6 +443,45 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
             }
+            waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
+        }
+        
+        try {
+            Thread.sleep(3*60*1000);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
+        boolean operationCompleted = false;
+        int tryCount =0;
+        while ((!operationCompleted)&&(tryCount<maximumNumberOfTries))
+        {
+            OperationStatusResponse operationStatus = null;
+            try {
+                operationStatus = computeManagementClient.getOperationStatus(requestId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+            
+            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
+            {
+                operationCompleted = true;
+            }else{
+                try {
+                    Thread.sleep(waitTimeBetweenTriesInSeconds * 1000);
+                    tryCount ++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
         }
     }
 }

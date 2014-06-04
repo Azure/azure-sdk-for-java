@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.management.compute;
 
 import java.io.*;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -44,9 +43,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKey
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 import com.microsoft.windowsazure.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.storage.StorageException;
-import com.microsoft.windowsazure.storage.blob.CloudBlobClient;
-import com.microsoft.windowsazure.storage.blob.CloudBlobContainer;
-import com.microsoft.windowsazure.storage.blob.CloudPageBlob;
 import com.microsoft.windowsazure.storage.blob.*;
 import com.microsoft.windowsazure.*;
 
@@ -205,10 +201,12 @@ public abstract class ComputeManagementIntegrationTestBase {
         try {
             blobClient = createBlobClient(storageAccountName, storageAccountKey);
         } catch (InvalidKeyException e) {
+            e.printStackTrace();
         } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
-        // Retrieve reference to a previously created container
+        // delete the container
         if (blobClient != null)
         {
         	CloudBlobContainer container = null;
@@ -217,39 +215,45 @@ public abstract class ComputeManagementIntegrationTestBase {
         	} catch (URISyntaxException e) {
         	} catch (StorageException e) {
         	}
-
+        	
         	try {
-        		container.breakLease(300);
+        		container.breakLease(0);
         	} catch (StorageException e) {
         	}
+        	
         	try {
         		container.delete();
         	} catch (StorageException e) {
         	}
+        	
+        	try {
+                while (container.exists())
+                {
+                    Thread.sleep(1000);
+                }
+            } catch (StorageException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        	
         }
     }
 
     protected static void cleanStorageAccount(String storageAccountName) {
-        StorageAccountGetResponse storageAccountGetResponse = null;
+        OperationResponse operationResponse = null;
         try {
-            storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
-        } catch (ServiceException e) {
+            operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
         } catch (IOException e) {
-        } catch (ParserConfigurationException e) {
-        } catch (SAXException e) {
-        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
-
-        if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))) {
-            OperationResponse operationResponse = null;
-            try {
-                operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
-            } catch (IOException e) {
-            } catch (ServiceException e) {
-            }
-            if (operationResponse != null) {
-                Assert.assertEquals(200, operationResponse.getStatusCode());
-            }
+        
+        if (operationResponse != null) {
+            Assert.assertEquals(200, operationResponse.getStatusCode());
         }
     }
 }
