@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.management.compute;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
@@ -27,13 +26,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.*;
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.windowsazure.management.storage.models.*;
-import com.microsoft.windowsazure.storage.*;
-import com.microsoft.windowsazure.storage.blob.*;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -47,7 +43,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
     private static String storageAccountName;
-    private static String storageAccountKey = "";
     private static String storageContainer = "vhd-store";    
     private static String hostedServiceName;   
     private static String deploymentName = testVMPrefix + "deploy1";    
@@ -60,7 +55,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
 
     @BeforeClass    
     public static void setup() throws Exception {
-        storageAccountName = testStoragePrefix + randomString(10);
+        storageAccountName = testStoragePrefix + "vmo" + randomString(7);
         hostedServiceName = testHostedServicePrefix + randomString(10);
         
         //create storage service for storage account creation
@@ -81,9 +76,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @AfterClass   
-    public static void cleanup() {        
-        cleanDeployment();
+    public static void cleanup() {
         cleanHostedService();
+        cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
     }
@@ -418,7 +413,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             } 
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+                waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
             }
+            
+            
         }
     }
     
@@ -445,6 +443,45 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
             }
+            waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
+        }
+        
+        try {
+            Thread.sleep(3*60*1000);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
+        boolean operationCompleted = false;
+        int tryCount =0;
+        while ((!operationCompleted)&&(tryCount<maximumNumberOfTries))
+        {
+            OperationStatusResponse operationStatus = null;
+            try {
+                operationStatus = computeManagementClient.getOperationStatus(requestId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+            
+            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
+            {
+                operationCompleted = true;
+            }else{
+                try {
+                    Thread.sleep(waitTimeBetweenTriesInSeconds * 1000);
+                    tryCount ++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
         }
     }
 }
