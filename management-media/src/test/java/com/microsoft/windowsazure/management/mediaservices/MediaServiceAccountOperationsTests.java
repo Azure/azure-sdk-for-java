@@ -90,11 +90,12 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
     @Test
     public void getMediaServicesAccountSuccess() throws Exception { 
         //Act
-        MediaServicesAccountGetResponse MediaServicesAccountResponse = mediaServicesManagementClient.getAccountsOperations().get(mediaServicesAccountName);
+        MediaServicesAccountGetResponse mediaServicesAccountResponse = mediaServicesManagementClient.getAccountsOperations().get(mediaServicesAccountName);
       
-       //Assert
-        Assert.assertEquals(200, MediaServicesAccountResponse.getStatusCode());
-        Assert.assertNotNull(MediaServicesAccountResponse.getRequestId());
+        //Assert
+        Assert.assertEquals(200, mediaServicesAccountResponse.getStatusCode());
+        Assert.assertNotNull(mediaServicesAccountResponse.getRequestId());
+        Assert.assertEquals(mediaServicesAccountName, mediaServicesAccountResponse.getAccount().getAccountName());
     }    
     
     @Test

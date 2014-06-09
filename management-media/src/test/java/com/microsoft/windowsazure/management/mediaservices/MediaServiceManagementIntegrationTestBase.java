@@ -77,11 +77,11 @@ public abstract class MediaServiceManagementIntegrationTestBase {
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+                baseUri != null ? new URI(baseUri) : null,
+                        System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                        System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                        System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                        KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );        
     }
     
@@ -132,8 +132,7 @@ public abstract class MediaServiceManagementIntegrationTestBase {
         }
     } 
     
- public static void cleanMediaServicesAccount() {
-    	
+    public static void cleanMediaServicesAccount() {
         MediaServicesAccountListResponse mediaServicesAccountListResponse = null;
         try {
         	mediaServicesAccountListResponse  = mediaServicesManagementClient.getAccountsOperations().list();
@@ -160,33 +159,31 @@ public abstract class MediaServiceManagementIntegrationTestBase {
     
     protected static void getLocation() throws Exception {
         ArrayList<String> serviceName = new ArrayList<String>();       
-        serviceName.add(LocationAvailableServiceNames.HIGHMEMORY);
-        String firstLocation = null;
+        serviceName.add(LocationAvailableServiceNames.HIGHMEMORY);       
 
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         for (LocationsListResponse.Location location : locationsListResponse) {
             ArrayList<String> availableServicelist = location.getAvailableServices();
             String locationName = location.getName();
             if (availableServicelist.containsAll(serviceName)== true) {  
-            	if (locationName.contains("West US") == true)
-            	{
-                  storageLocation = locationName;                  
-            	} 
-            	 if (storageLocation==null)
-                 {
-                 	storageLocation = locationName; 
-                 }             	
+                if (locationName.contains("West US") == true)
+                {
+                    storageLocation = locationName;
+                }
+                if (storageLocation==null)
+                {
+                    storageLocation = locationName;
+                }
             }
         } 
     }
     
-    protected static String randomString(int length)
-    {
+    protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i=0; i<length; i++)
         {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
