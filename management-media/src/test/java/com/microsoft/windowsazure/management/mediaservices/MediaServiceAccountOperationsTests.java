@@ -57,15 +57,10 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
         createParameters.setRegion(storageLocation);
         createParameters.setStorageAccountName(storageAccountName); 
         createParameters.setStorageAccountKey(storageAccountKey);
-        createParameters.setBlobStorageEndpointUri(storageEndpointUri);
-     
+        createParameters.setBlobStorageEndpointUri(storageEndpointUri);     
         //act
-        MediaServicesAccountCreateResponse operationResponse = mediaServicesManagementClient.getAccountsOperations().create(createParameters);
-        
-        //Assert
-        Assert.assertEquals(201, operationResponse.getStatusCode());
-        Assert.assertNotNull(operationResponse.getRequestId());
-    }    
+        MediaServicesAccountCreateResponse operationResponse = mediaServicesManagementClient.getAccountsOperations().create(createParameters);       
+     }    
     
     @Test
     public void createMediaServicesAccountSuccess() throws Exception { 
@@ -103,6 +98,9 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
         //Arrange  
         MediaServicesAccountListResponse mediaServicesAccountListResponse = mediaServicesManagementClient.getAccountsOperations().list();
         ArrayList<MediaServiceAccount> MediaServiceAccountlist =  mediaServicesAccountListResponse.getAccounts();
-        Assert.assertNotNull(MediaServiceAccountlist);       
+        
+        //Assert
+        Assert.assertNotNull(MediaServiceAccountlist);  
+        Assert.assertTrue(MediaServiceAccountlist.size() > 0);
     } 
 }

@@ -47,7 +47,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetRes
 
 public abstract class MediaServiceManagementIntegrationTestBase {
     protected static String testMediaServicesAccountPrefix = "aztst" + "media"; 
-    protected static String testStoragePrefix = "aztst" + "storage";
+    protected static String testStoragePrefix = "aztst" + "mediastorage";
     protected static String storageAccountKey = "";
     protected static URI storageEndpointUri;
     protected static String storageLocation = null;
@@ -85,8 +85,7 @@ public abstract class MediaServiceManagementIntegrationTestBase {
         );        
     }
     
-    protected static void createStorageAccount(String storageAccountName) throws Exception {
-        //String storageAccountCreateName = testStoragePrefix + randomString(10);
+    protected static void createStorageAccount(String storageAccountName) throws Exception {      
         String storageAccountLabel = storageAccountName + "Label1";
 
         //Arrange
