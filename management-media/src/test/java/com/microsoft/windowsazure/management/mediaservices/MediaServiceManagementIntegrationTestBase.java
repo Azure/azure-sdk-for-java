@@ -75,15 +75,14 @@ public abstract class MediaServiceManagementIntegrationTestBase {
     }       
   
     protected static Configuration createConfiguration() throws Exception {
-//        String baseUri = System.getenv(ManagementConfiguration.URI);
-//        return ManagementConfiguration.configure(
-//            baseUri != null ? new URI(baseUri) : null,
-//            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-//            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-//            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-//            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-//        );        
-        return PublishSettingsLoader.createManagementConfiguration("C:\\Users\\xuezhain\\Downloads\\Azure SDK sandbox-1-25-2014-credentials.publishsettings","db1ab6f0-4769-4b27-930e-01e2ef9c123c");
+        String baseUri = System.getenv(ManagementConfiguration.URI);
+        return ManagementConfiguration.configure(
+            baseUri != null ? new URI(baseUri) : null,
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+        );        
     }
     
     protected static void createStorageAccount(String storageAccountName) throws Exception {
