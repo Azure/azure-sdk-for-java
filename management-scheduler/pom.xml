@@ -48,6 +48,7 @@
 
     <jackson.version>2.1.1</jackson.version>
     <spring.version>3.0.7.RELEASE</spring.version>
+    <checkstyle.skip>true</checkstyle.skip>
   </properties>
 
   <developers>
