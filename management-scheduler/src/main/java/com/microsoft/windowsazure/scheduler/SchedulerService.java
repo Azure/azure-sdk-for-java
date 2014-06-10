@@ -12,71 +12,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.management.mediaservices;
+package com.microsoft.windowsazure.scheduler;
 
 import com.microsoft.windowsazure.Configuration;
 
 /**
  *
- * Access service management functionality.
+ * Scheduler functionality.
  *
  */
-public final class MediaServicesManagementService {
-    private MediaServicesManagementService() {
+public final class SchedulerService {
+    private SchedulerService() {
         // class is not instantiated
     }
 
     /**
-     * Creates an instance of the <code>MediaServicesManagementClient</code>
+     * Creates an instance of the <code>SchedulerClient</code>
      * API.
-     * @return An instance of the <code>MediaServicesManagementClient</code>
+     * @return An instance of the <code>SchedulerClient</code>
      * API.
      */
-    public static MediaServicesManagementClient create() {
+    public static SchedulerClient create() {
         return Configuration.getInstance().create(
-                MediaServicesManagementClient.class);
+                SchedulerClient.class);
     }
 
     /**
-     * Creates an instance of the <code>MediaServicesManagementClient</code>
+     * Creates an instance of the <code>SchedulerClient</code>
      * API using the specified configuration.
      *
      * @param config A <code>Configuration</code> object that represents the
      * configuration for the service management.
-     * @return An instance of the <code>MediaServicesManagementClient</code>
+     * @return An instance of the <code>SchedulerClient</code>
      * API.
      */
-    public static MediaServicesManagementClient create(
+    public static SchedulerClient create(
             final Configuration config) {
-        return config.create(MediaServicesManagementClient.class);
+        return config.create(SchedulerClient.class);
     }
 
     /**
-     * Creates an instance of the <code>MediaServicesManagementClient</code>
+     * Creates an instance of the <code>SchedulerClient</code>
      * API.
      * 
      * @param profile A <code>String</code> object that representing the profile
      * of the service management service.
-     * @return An instance of the <code>MediaServicesManagementClient</code>
+     * @return An instance of the <code>SchedulerClient</code>
      * API.
      */
-    public static MediaServicesManagementClient create(final String profile) {
+    public static SchedulerClient create(final String profile) {
         return Configuration.getInstance().create(profile,
-                MediaServicesManagementClient.class);
+                SchedulerClient.class);
     }
 
     /**
-     * Creates an instance of the <code>MediaServicesManagementClient</code>
+     * Creates an instance of the <code>SchedulerClient</code>
      * API using the specified configuration.
      * 
      * @param profile The profile.
      * @param config A <code>Configuration</code> object that represents the
      * configuration for the service management.
-     * @return An instance of the <code>MediaServicesManagementClient</code>
+     * @return An instance of the <code>SchedulerClient</code>
      * API.
      */
-    public static MediaServicesManagementClient create(final String profile,
+    public static SchedulerClient create(final String profile,
             final Configuration config) {
-        return config.create(profile, MediaServicesManagementClient.class);
+        return config.create(profile, SchedulerClient.class);
     }
 }

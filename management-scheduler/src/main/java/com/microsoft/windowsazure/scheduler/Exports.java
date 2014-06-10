@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.management.scheduler;
+package com.microsoft.windowsazure.scheduler;
 
 import com.microsoft.windowsazure.core.Builder;
 
@@ -26,9 +26,7 @@ public class Exports implements Builder.Exports {
     @Override
     public void register(final Builder.Registry registry) {
         // provide contract implementation
-        registry.add(SchedulerManagementClient.class,
-                SchedulerManagementClientImpl.class);
-        registry.add(CloudServiceManagementClient.class,
-                CloudServiceManagementClientImpl.class);
+        registry.add(SchedulerClient.class,
+                SchedulerClientImpl.class);
     }
 }

@@ -27,6 +27,16 @@ def hydraSpecs = [
         generatedCodeDestinationRootDirectoryName: "management-scheduler"
     ],
     [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.Scheduler.SchedulerClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
+    ],
+    [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.CloudServices.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.Scheduler.CloudServiceManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
+    ],
+    [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.MediaServices.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-media"
