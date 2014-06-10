@@ -38,7 +38,10 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     @BeforeClass
     public static void setup() throws Exception {
         storageAccountName = testStorageAccountPrefix + randomString(10);
-        createService();
+        createManagementClient();
+        getLocation();
+        
+        createService(); 
         createStorageAccount(); 
     }
 
@@ -76,7 +79,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
         createParameters.setGeoReplicationEnabled(false);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);       
+        createParameters.setLocation(storageLocation);       
      
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -96,7 +99,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
         createParameters.setGeoReplicationEnabled(false);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS); 
+        createParameters.setLocation(storageLocation); 
 
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -108,7 +111,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
    
     @Test
     public void getStorageAccountSuccess() throws Exception {    	
-        String storageAccountLocation = GeoRegionNames.SOUTHCENTRALUS;
+        String storageAccountLocation = storageLocation;
 
         //Act
         StorageAccountGetResponse storageAccountResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
@@ -179,7 +182,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(expectedStorageAccountName);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        createParameters.setLocation(storageLocation);
         createParameters.setLabel(expectedStorageAccountLabel);
         createParameters.setGeoReplicationEnabled(true);
         
