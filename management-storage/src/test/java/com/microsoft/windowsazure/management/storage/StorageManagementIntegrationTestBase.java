@@ -82,8 +82,7 @@ public abstract class StorageManagementIntegrationTestBase {
                     storageLocation = locationName;
                 }
             }
-        } 
-        System.out.println("storageLocation = " + storageLocation);
+        }         
     }
     
     protected static String randomString(int length)
