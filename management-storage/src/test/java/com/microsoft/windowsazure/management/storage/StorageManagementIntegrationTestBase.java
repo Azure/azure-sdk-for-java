@@ -54,16 +54,14 @@ public abstract class StorageManagementIntegrationTestBase {
     }       
   
     protected static Configuration createConfiguration() throws Exception {
-//        String baseUri = System.getenv(ManagementConfiguration.URI);
-//        return ManagementConfiguration.configure(
-//            baseUri != null ? new URI(baseUri) : null,
-//            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-//            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-//            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-//            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-//        );
-        return PublishSettingsLoader.createManagementConfiguration("C:\\Users\\xuezhain\\Downloads\\Azure SDK Mooncake sandbox-5-14-2014-credentials.publishsettings","23a32706-03c1-4920-a6ac-1b7c8de24bb4");
- 
+        String baseUri = System.getenv(ManagementConfiguration.URI);
+        return ManagementConfiguration.configure(
+            baseUri != null ? new URI(baseUri) : null,
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+        );        
     }
     
     protected static void getLocation() throws Exception {
