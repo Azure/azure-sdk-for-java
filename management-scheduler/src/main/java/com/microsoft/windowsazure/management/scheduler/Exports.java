@@ -28,5 +28,7 @@ public class Exports implements Builder.Exports {
         // provide contract implementation
         registry.add(SchedulerManagementClient.class,
                 SchedulerManagementClientImpl.class);
+        registry.add(CloudServiceManagementClient.class,
+                CloudServiceManagementClientImpl.class);
     }
 }
