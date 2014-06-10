@@ -34,7 +34,7 @@ public final class MediaServicesManagementService {
      */
     public static MediaServicesManagementClient create() {
         return Configuration.getInstance().create(
-        		MediaServicesManagementClient.class);
+                MediaServicesManagementClient.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class MediaServicesManagementService {
      */
     public static MediaServicesManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
-        		MediaServicesManagementClient.class);
+                MediaServicesManagementClient.class);
     }
 
     /**

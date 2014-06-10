@@ -34,7 +34,7 @@ public final class SchedulerManagementService {
      */
     public static SchedulerManagementClient create() {
         return Configuration.getInstance().create(
-        		SchedulerManagementClient.class);
+                SchedulerManagementClient.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class SchedulerManagementService {
      */
     public static SchedulerManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
-        		SchedulerManagementClient.class);
+                SchedulerManagementClient.class);
     }
 
     /**
