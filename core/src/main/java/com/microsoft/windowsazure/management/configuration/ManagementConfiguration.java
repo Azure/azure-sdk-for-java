@@ -67,6 +67,9 @@ public final class ManagementConfiguration {
      * Creates a service management configuration using specified URI, and
      * subscription ID.
      * 
+     * @param uri 
+     *            A <code>URI</code> object that represents the URI of the 
+     *            service end point. 
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription
      *            ID.
@@ -93,6 +96,9 @@ public final class ManagementConfiguration {
      * Creates a service management configuration using specified URI, and
      * subscription ID.
      * 
+     * @param URI
+     *            A <code>URI</code> object that represents URI of the service 
+     *            end point.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription
      *            ID.
@@ -124,6 +130,9 @@ public final class ManagementConfiguration {
      *            A <code>String</code> object that represents the profile.
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
+     * @param uri
+     *            A <code>URI</code> object that represents the URI of the 
+     *            service end point.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription
      *            ID.
@@ -169,6 +178,9 @@ public final class ManagementConfiguration {
      *            A <code>String</code> object that represents the profile.
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
+     * @param uri
+     *            A <code>URI</code> object that represents the URI of the service
+     *            end point.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription
      *            ID.
