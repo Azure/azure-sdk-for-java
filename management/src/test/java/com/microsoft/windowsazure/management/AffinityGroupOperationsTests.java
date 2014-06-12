@@ -31,9 +31,7 @@ import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameter
 
 public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase { 
     private static final String affinityGroupName1 = "testAffinityGroup1";
-    private static final String affinityGroupName2 = "testAffinityGroup2";
-    private static final String affinityGroupLocation1 = "West US";
-    private static final String affinityGroupLocation2 = "East US";
+    private static final String affinityGroupName2 = "testAffinityGroup2";   
     private static final String affinityGrouplabel1 = "testAffinityGroup1 Label";
     private static final String affinityGroupLabel2 = "testAffinityGroup2 Label"; 
     private static final String affinityGroupDescription1 = "testAffinityGroupDescription1";
@@ -41,12 +39,13 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     
     @BeforeClass
     public static void setup() throws Exception {
-        createService();
+        createService();        
         cleanup();
         
+        getLocation();
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName1);        
-        createParameters.setLocation(affinityGroupLocation1);
+        createParameters.setLocation(smLocation);
         createParameters.setLabel(affinityGrouplabel1);
         createParameters.setDescription(affinityGroupDescription1);
 
@@ -74,7 +73,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         // Arrange
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName2);
-        createParameters.setLocation(affinityGroupLocation2);
+        createParameters.setLocation(smLocation);
         createParameters.setLabel(affinityGroupLabel2);
         createParameters.setDescription(affinityGroupDescription2);
   
@@ -98,7 +97,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         Assert.assertNotNull(affinityGroupResponse.getRequestId());
         Assert.assertNotNull(affinityGroupResponse.getCapabilities());    
         Assert.assertEquals(affinityGroupName1, affinityGroupResponse.getName());  
-        Assert.assertEquals(affinityGroupLocation1, affinityGroupResponse.getLocation());
+        Assert.assertEquals(smLocation, affinityGroupResponse.getLocation());
         Assert.assertEquals(affinityGrouplabel1, affinityGroupResponse.getLabel());
         Assert.assertEquals(affinityGroupDescription1, affinityGroupResponse.getDescription()); 
         Assert.assertNotNull(affinityGroupResponse.getHostedServices());
@@ -118,13 +117,12 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
 	        // Arrange 
 	    	String expectedAffinityGroupName = "testAffinityGroupUpdateSuccess";
 	        String expectedAffinityGroupLabel = "testAffinityGroupUpdateSuccessLabel";
-	        String expectedUpdatedAffinityGroupLabel = "testAffinityGroupUpdatedSuccessLabel";
-	        String expectedLocation = "West US";
+	        String expectedUpdatedAffinityGroupLabel = "testAffinityGroupUpdatedSuccessLabel";	       
 	        String expectedDescription = "updateAffinityGroupSuccess";
 	         
 		    AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
 		    createParameters.setName(expectedAffinityGroupName);
-		    createParameters.setLocation(expectedLocation);
+		    createParameters.setLocation(smLocation);
 		    createParameters.setLabel(expectedAffinityGroupLabel );
 	        
 	        // Act

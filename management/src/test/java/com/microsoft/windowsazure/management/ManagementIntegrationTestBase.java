@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.management;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
@@ -26,12 +27,15 @@ import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class ManagementIntegrationTestBase {
 
     protected static ManagementClient managementClient;
+    protected static String smLocation = null;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -60,5 +64,26 @@ public abstract class ManagementIntegrationTestBase {
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
             KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
+    }
+    
+    protected static void getLocation() throws Exception {
+        ArrayList<String> serviceName = new ArrayList<String>();       
+        serviceName.add(LocationAvailableServiceNames.STORAGE);       
+
+        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
+        for (LocationsListResponse.Location location : locationsListResponse) {
+            ArrayList<String> availableServicelist = location.getAvailableServices();
+            String locationName = location.getName();
+            if (availableServicelist.containsAll(serviceName)== true) {  
+                if (locationName.contains("West US") == true)
+                {
+                    smLocation = locationName;
+                }
+                if (smLocation==null)
+                {
+                    smLocation = locationName;
+                }
+            }
+        }         
     }
 }

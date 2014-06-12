@@ -46,12 +46,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     private static String storageContainer = "vhd-store";    
     private static String hostedServiceName;   
     private static String deploymentName = testVMPrefix + "deploy1";    
-    private static String virtualMachineName = testVMPrefix + "vm1";    
-    private static String vmLocation = "West US";
+    private static String virtualMachineName = testVMPrefix + "vm1"; 
     private static String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
     private static String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
     private static String deploymentLabel = testVMPrefix + "deployLabel1";
-    private static HostedServiceOperations hostedServicesOperations;
+    private static HostedServiceOperations hostedServicesOperations; 
 
     @BeforeClass    
     public static void setup() throws Exception {
@@ -120,11 +119,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         oSVirtualHardDisk.setSourceImageName(sourceImageName);
       
         VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
-        //required
+        //required       
         createParameters.setRoleName(roleName);
         createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         createParameters.setProvisionGuestAgent(true);
-        createParameters.setConfigurationSets(configlist);
+        createParameters.setConfigurationSets(configlist);       
         createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
 
         //Act
@@ -189,7 +188,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         oSVirtualHardDisk.setSourceImageName(sourceImageName);
 
-        //required
+        //required        
         role.setRoleName(roleName);
         //required
         role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
@@ -415,8 +414,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
                 waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
             }
-            
-            
         }
     }
     
@@ -481,7 +478,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                     e.printStackTrace();
                 }
             }
-            
         }
     }
 }
