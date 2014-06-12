@@ -107,7 +107,7 @@ public abstract class SqlManagementIntegrationTestBase {
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        createParameters.setLocation(testLocationValue);
         storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
