@@ -104,14 +104,14 @@ def nuget(String... args) { run('./nuget.exe', args) }
 def hydra(String hydraExePath, String... args)
 {
     def commands = [exePrefix(), hydraExePath, args].flatten()
-    commands.execute()
+    return commands.execute()
 }
 
 // Generate code for the given specInfo
 def generate(hydraExePath, specInfo)
 {
     def specDLL = findFileInPackagesDirectory(specInfo.specificationDllFileName)
-    hydra(hydraExePath, '-f', 'java', '-s', 'namespace',
+    return hydra(hydraExePath, '-f', 'java', '-s', 'namespace',
         '-c', specInfo.clientType,
         '-d', "../${specInfo.generatedCodeDestinationRootDirectoryName}/src/main/java/com",
         specDLL)
@@ -158,7 +158,14 @@ ensureEnvironment()
 download("http://www.nuget.org/nuget.exe")
 restorePackages()
 def hydraPath = findFileInPackagesDirectory('hydra.exe')
+
+def processes = [];
 hydraSpecs.each {
     System.out.println("generating code for ${it.specificationDllFileName}")
-    generate hydraPath, it
+    processes.push(generate(hydraPath, it))
 }
+// Wait for all generations to finish
+processes.each() {
+    it.waitFor()
+}
+System.out.println("Finished generating")
