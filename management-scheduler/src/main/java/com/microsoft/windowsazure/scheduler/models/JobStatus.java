@@ -124,4 +124,19 @@ public class JobStatus {
     public void setNextExecutionTime(final Calendar nextExecutionTimeValue) {
         this.nextExecutionTime = nextExecutionTimeValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobStatus class.
+    *
+    */
+    public JobStatus() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobStatus class with required arguments.
+    *
+    */
+    public JobStatus(int executionCount) {
+        this.setExecutionCount(executionCount);
+    }
 }

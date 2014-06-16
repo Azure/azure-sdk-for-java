@@ -54,4 +54,21 @@ public class JobCollectionJobsUpdateStateParameters {
     public boolean isStateIsIncluded() {
         return this.stateIsIncluded;
     }
+    
+    /**
+    * Initializes a new instance of the JobCollectionJobsUpdateStateParameters
+    * class.
+    *
+    */
+    public JobCollectionJobsUpdateStateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobCollectionJobsUpdateStateParameters
+    * class with required arguments.
+    *
+    */
+    public JobCollectionJobsUpdateStateParameters(JobState state) {
+        this.setState(state);
+    }
 }

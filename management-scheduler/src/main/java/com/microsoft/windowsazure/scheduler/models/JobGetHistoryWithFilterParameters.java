@@ -46,4 +46,23 @@ public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters {
     public void setStatus(final JobHistoryStatus statusValue) {
         this.status = statusValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobGetHistoryWithFilterParameters class.
+    *
+    */
+    public JobGetHistoryWithFilterParameters() {
+        super();
+    }
+    
+    /**
+    * Initializes a new instance of the JobGetHistoryWithFilterParameters class
+    * with required arguments.
+    *
+    */
+    public JobGetHistoryWithFilterParameters(JobHistoryStatus status, int skip, int top) {
+        this.setStatus(status);
+        this.setSkip(skip);
+        this.setTop(top);
+    }
 }

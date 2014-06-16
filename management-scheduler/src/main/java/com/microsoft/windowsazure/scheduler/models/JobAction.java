@@ -116,4 +116,19 @@ public class JobAction {
     public void setType(final JobActionType typeValue) {
         this.type = typeValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobAction class.
+    *
+    */
+    public JobAction() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobAction class with required arguments.
+    *
+    */
+    public JobAction(JobActionType type) {
+        this.setType(type);
+    }
 }
