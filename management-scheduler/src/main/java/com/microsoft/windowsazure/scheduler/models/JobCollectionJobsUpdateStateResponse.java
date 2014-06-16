@@ -56,7 +56,7 @@ public class JobCollectionJobsUpdateStateResponse extends OperationResponse impl
     */
     public JobCollectionJobsUpdateStateResponse() {
         super();
-        this.jobs = new ArrayList<Job>();
+        this.setJobs(new ArrayList<Job>());
     }
     
     /**

@@ -48,4 +48,21 @@ public class JobListWithFilterParameters extends JobListParameters {
     public void setState(final JobState stateValue) {
         this.state = stateValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobListWithFilterParameters class.
+    *
+    */
+    public JobListWithFilterParameters() {
+        super();
+    }
+    
+    /**
+    * Initializes a new instance of the JobListWithFilterParameters class with
+    * required arguments.
+    *
+    */
+    public JobListWithFilterParameters(JobState state) {
+        this.setState(state);
+    }
 }

@@ -56,7 +56,7 @@ public class JobGetHistoryResponse extends OperationResponse implements Iterable
     */
     public JobGetHistoryResponse() {
         super();
-        this.jobHistory = new ArrayList<JobGetHistoryResponse.JobHistoryEntry>();
+        this.setJobHistory(new ArrayList<JobGetHistoryResponse.JobHistoryEntry>());
     }
     
     /**

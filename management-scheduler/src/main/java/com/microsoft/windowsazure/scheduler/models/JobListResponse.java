@@ -55,7 +55,7 @@ public class JobListResponse extends OperationResponse implements Iterable<Job> 
     */
     public JobListResponse() {
         super();
-        this.jobs = new ArrayList<Job>();
+        this.setJobs(new ArrayList<Job>());
     }
     
     /**

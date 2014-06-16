@@ -122,4 +122,20 @@ public class JobRecurrence {
     public void setSchedule(final JobRecurrenceSchedule scheduleValue) {
         this.schedule = scheduleValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobRecurrence class.
+    *
+    */
+    public JobRecurrence() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobRecurrence class with required
+    * arguments.
+    *
+    */
+    public JobRecurrence(JobRecurrenceFrequency frequency) {
+        this.setFrequency(frequency);
+    }
 }

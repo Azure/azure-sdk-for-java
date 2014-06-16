@@ -84,4 +84,20 @@ public class RetryPolicy {
     public void setRetryType(final RetryType retryTypeValue) {
         this.retryType = retryTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the RetryPolicy class.
+    *
+    */
+    public RetryPolicy() {
+    }
+    
+    /**
+    * Initializes a new instance of the RetryPolicy class with required
+    * arguments.
+    *
+    */
+    public RetryPolicy(RetryType retryType) {
+        this.setRetryType(retryType);
+    }
 }
