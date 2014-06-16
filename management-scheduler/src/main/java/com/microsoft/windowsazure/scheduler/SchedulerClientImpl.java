@@ -180,7 +180,7 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * service requests.
     */
     @Inject
-    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, String cloudServiceName, String jobCollectionName, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
+    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.CLOUD_SERVICE_NAME) String cloudServiceName, @Named(ManagementConfiguration.JOB_COLLECTION_NAME) String jobCollectionName, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
         this(httpBuilder, executorService);
         if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");

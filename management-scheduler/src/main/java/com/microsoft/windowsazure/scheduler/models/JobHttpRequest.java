@@ -107,6 +107,23 @@ public class JobHttpRequest {
     *
     */
     public JobHttpRequest() {
-        this.headers = new HashMap<String, String>();
+        this.setHeaders(new HashMap<String, String>());
+    }
+    
+    /**
+    * Initializes a new instance of the JobHttpRequest class with required
+    * arguments.
+    *
+    */
+    public JobHttpRequest(URI uri, String method) {
+        this();
+        if (uri == null) {
+            throw new NullPointerException("uri");
+        }
+        if (method == null) {
+            throw new NullPointerException("method");
+        }
+        this.setUri(uri);
+        this.setMethod(method);
     }
 }

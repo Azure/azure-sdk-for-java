@@ -66,4 +66,21 @@ public class JobGetHistoryParameters {
     public void setTop(final int topValue) {
         this.top = topValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobGetHistoryParameters class.
+    *
+    */
+    public JobGetHistoryParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobGetHistoryParameters class with
+    * required arguments.
+    *
+    */
+    public JobGetHistoryParameters(int skip, int top) {
+        this.setSkip(skip);
+        this.setTop(top);
+    }
 }

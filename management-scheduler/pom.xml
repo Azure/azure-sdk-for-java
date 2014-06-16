@@ -74,6 +74,18 @@
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-management</artifactId>
+      <version>0.5.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-management-compute</artifactId>
+      <version>0.5.0</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.hamcrest</groupId>

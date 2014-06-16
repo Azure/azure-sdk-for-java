@@ -81,4 +81,20 @@ public class JobErrorAction {
     public void setType(final JobActionType typeValue) {
         this.type = typeValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobErrorAction class.
+    *
+    */
+    public JobErrorAction() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobErrorAction class with required
+    * arguments.
+    *
+    */
+    public JobErrorAction(JobActionType type) {
+        this.setType(type);
+    }
 }

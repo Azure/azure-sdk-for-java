@@ -82,4 +82,23 @@ public class JobCreateParameters {
     public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobCreateParameters class.
+    *
+    */
+    public JobCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobCreateParameters class with required
+    * arguments.
+    *
+    */
+    public JobCreateParameters(JobAction action) {
+        if (action == null) {
+            throw new NullPointerException("action");
+        }
+        this.setAction(action);
+    }
 }

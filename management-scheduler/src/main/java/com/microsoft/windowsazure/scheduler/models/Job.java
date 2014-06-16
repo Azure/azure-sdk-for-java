@@ -136,4 +136,26 @@ public class Job {
     public void setStatus(final JobStatus statusValue) {
         this.status = statusValue;
     }
+    
+    /**
+    * Initializes a new instance of the Job class.
+    *
+    */
+    public Job() {
+    }
+    
+    /**
+    * Initializes a new instance of the Job class with required arguments.
+    *
+    */
+    public Job(String id, JobAction action) {
+        if (id == null) {
+            throw new NullPointerException("id");
+        }
+        if (action == null) {
+            throw new NullPointerException("action");
+        }
+        this.setId(id);
+        this.setAction(action);
+    }
 }

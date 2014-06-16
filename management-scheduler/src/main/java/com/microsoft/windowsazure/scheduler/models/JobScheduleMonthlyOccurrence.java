@@ -66,4 +66,20 @@ public class JobScheduleMonthlyOccurrence {
     public void setOccurrence(final Integer occurrenceValue) {
         this.occurrence = occurrenceValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobScheduleMonthlyOccurrence class.
+    *
+    */
+    public JobScheduleMonthlyOccurrence() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobScheduleMonthlyOccurrence class with
+    * required arguments.
+    *
+    */
+    public JobScheduleMonthlyOccurrence(JobScheduleDay day) {
+        this.setDay(day);
+    }
 }

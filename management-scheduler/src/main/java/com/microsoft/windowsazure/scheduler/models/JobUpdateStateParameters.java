@@ -64,4 +64,20 @@ public class JobUpdateStateParameters {
     public void setUpdateStateReason(final String updateStateReasonValue) {
         this.updateStateReason = updateStateReasonValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobUpdateStateParameters class.
+    *
+    */
+    public JobUpdateStateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobUpdateStateParameters class with
+    * required arguments.
+    *
+    */
+    public JobUpdateStateParameters(JobState state) {
+        this.setState(state);
+    }
 }
