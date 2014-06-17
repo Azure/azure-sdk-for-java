@@ -269,6 +269,12 @@ public final class ManagementConfiguration {
     Configuration configuration, URI uri, String subscriptionId,
     String keyStoreLocation, String keyStorePassword, KeyStoreType keyStoreType, String cloudServiceName, String jobCollectionName) throws IOException
     {
+        if (profile == null) {
+            profile = "";
+        } else if (profile.length() != 0 && !profile.endsWith(".")) {
+            profile = profile + ".";
+        }
+        
         Configuration resultConfiguration = configure(profile, configuration, uri, subscriptionId, keyStoreLocation, keyStorePassword, keyStoreType);
         resultConfiguration.setProperty(profile+ManagementConfiguration.CLOUD_SERVICE_NAME, cloudServiceName);
         resultConfiguration.setProperty(profile+ManagementConfiguration.JOB_COLLECTION_NAME, jobCollectionName);
