@@ -39,6 +39,8 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();
+        getLocation();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();

@@ -35,6 +35,8 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();
+        getLocation();       
         createStorageService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();

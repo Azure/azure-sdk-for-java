@@ -46,7 +46,7 @@ public abstract class ComputeManagementIntegrationTestBase {
     protected static String testStoragePrefix = "aztst";
     protected static String testHostedServicePrefix = "azhst";
     protected static String storageAccountKey = "";
-    protected static String vmLocation = "West US";
+    protected static String vmLocation = null;
     protected static String blobhost = "";
     
     protected static ComputeManagementClient computeManagementClient;
@@ -183,9 +183,16 @@ public abstract class ComputeManagementIntegrationTestBase {
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         for (LocationsListResponse.Location location : locationsListResponse) {
             ArrayList<String> availableServicelist = location.getAvailableServices();
-            String locationName = location.getName();
-            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true)) {                       
-                vmLocation = locationName;
+            String locationName = location.getName();            
+            if (availableServicelist.containsAll(serviceName)== true) {  
+                if (locationName.contains("West US") == true)
+                {
+                    vmLocation = locationName;
+                }
+                if (vmLocation==null)
+                {
+                    vmLocation = locationName;
+                }
             }
         }
     }
