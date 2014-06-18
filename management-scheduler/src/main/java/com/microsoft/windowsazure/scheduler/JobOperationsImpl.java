@@ -220,6 +220,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -951,6 +952,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -1623,6 +1625,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1725,6 +1728,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2204,6 +2208,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2403,6 +2408,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2601,6 +2607,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3086,6 +3093,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3563,6 +3571,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpPatch httpRequest = new HttpPatch(url);
@@ -4066,6 +4075,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = URLEncoder.encode(url, "UTF-8");
         
         // Create HTTP transport objects
         HttpPatch httpRequest = new HttpPatch(url);
