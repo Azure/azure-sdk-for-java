@@ -285,28 +285,4 @@ public final class ManagementConfiguration {
         resultConfiguration.setProperty(profile+ManagementConfiguration.JOB_COLLECTION_NAME, jobCollectionName);
         return resultConfiguration;
     }
-
-    /**
-     * Creates a configuration class for scheduler client with specified parameters.
-     *
-     * @param uri A <code>URI</code> object that represents the URI of the service
-     *            end point.
-     * @param subscriptionId A <code>String</code> object that represents the subscription
-     *            ID.
-     * @param keyStoreLocation A <code>String</code> object that represents the key store location.
-     * @param keyStorePassword A <code>String</code> object that represents the password of
-     *            the keystore.
-     * @param keyStoreType The type of the key store. 
-     * @param cloudServiceName A <code>String</code> object that represents the name of the cloud service. 
-     * @param jobCollectionName A <code>String</code> object that represents the name of the job collection.
-     * @return A <code>Configuration</code> object that can be used when
-     *         creating an instance of the <code>ManagementContract</code>
-     *         class.
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public static Configuration configure(URI uri, String subscriptionId,
-            String keyStoreLocation, String keyStorePassword, KeyStoreType keyStoreType,
-            String cloudServiceName, String jobCollectionName) throws IOException {
-        return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStoreLocation, keyStorePassword, keyStoreType, cloudServiceName, jobCollectionName);
-    }
 }
