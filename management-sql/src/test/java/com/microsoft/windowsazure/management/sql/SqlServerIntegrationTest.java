@@ -37,6 +37,8 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();       
+        getLocation();
         serverOperations = sqlManagementClient.getServersOperations();
     }
 
@@ -68,13 +70,13 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         //arrange 
         String testAdministratorUserName = "testadminname";
         String testPassword = "testpassword8!";
-        String testLocation = "West US";
+        //String testLocation = "West US";
         
         // act
         ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
         serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
         serverCreateParameters.setAdministratorPassword(testPassword);
-        serverCreateParameters.setLocation(testLocation);
+        serverCreateParameters.setLocation(testLocationValue);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
@@ -92,7 +94,7 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         }
         assertNotNull(createdServer);
         assertEquals(testAdministratorUserName, createdServer.getAdministratorUserName());
-        assertEquals(testLocation, createdServer.getLocation());
+        assertEquals(testLocationValue, createdServer.getLocation());
     }
 
     @Test
@@ -100,13 +102,13 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         //arrange 
         String testAdministratorUserName = "testadminname";
         String testPassword = "testpassword8!";
-        String testLocation = "West US";
+        //String testLocation = "West US";
 
         // act
         ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
         serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
         serverCreateParameters.setAdministratorPassword(testPassword);
-        serverCreateParameters.setLocation(testLocation);
+        serverCreateParameters.setLocation(testLocationValue);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverOperations.delete(serverName);

@@ -14,7 +14,11 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
+import com.microsoft.windowsazure.management.ManagementClient;
+import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
@@ -51,10 +55,14 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.Configuration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+import com.microsoft.windowsazure.management.models.LocationsListResponse;
+import com.microsoft.windowsazure.management.ManagementClient;
 
 public abstract class SqlManagementIntegrationTestBase {
 
     protected static String testStorageAccountPrefix = "azsql";
+    protected static ManagementClient managementClient;
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static DatabaseOperations databaseOperations;
@@ -66,7 +74,7 @@ public abstract class SqlManagementIntegrationTestBase {
     
     protected static String testAdministratorPasswordValue = "testAdminPassword!8";
     protected static String testAdministratorUserNameValue = "testadminuser";
-    protected static String testLocationValue = "West US";
+    protected static String testLocationValue = null;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -99,7 +107,7 @@ public abstract class SqlManagementIntegrationTestBase {
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        createParameters.setLocation(testLocationValue);
         storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
@@ -120,7 +128,7 @@ public abstract class SqlManagementIntegrationTestBase {
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
-        return serverName; 
+        return serverName;
     
     }
     
@@ -149,6 +157,33 @@ public abstract class SqlManagementIntegrationTestBase {
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
             KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
         );
+    }
+    
+    protected static void createManagementClient() throws Exception {
+        Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
+        managementClient = ManagementService.create(config);
+    }      
+    
+    protected static void getLocation() throws Exception {
+        ArrayList<String> serviceName = new ArrayList<String>();       
+        serviceName.add(LocationAvailableServiceNames.STORAGE);       
+
+        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
+        for (LocationsListResponse.Location location : locationsListResponse) {
+            ArrayList<String> availableServicelist = location.getAvailableServices();
+            String locationName = location.getName();
+            if (availableServicelist.containsAll(serviceName)== true) {  
+                if (locationName.contains("West US") == true)
+                {
+                    testLocationValue = locationName;
+                }
+                if (testLocationValue==null)
+                {
+                    testLocationValue = locationName;
+                }
+            }
+        } 
     }
     
     protected static String randomString(int length) {

@@ -38,6 +38,8 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();
+        getLocation();  
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();

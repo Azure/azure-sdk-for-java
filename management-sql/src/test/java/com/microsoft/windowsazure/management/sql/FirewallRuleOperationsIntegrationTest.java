@@ -39,6 +39,8 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();
+        getLocation();  
         firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
     }
