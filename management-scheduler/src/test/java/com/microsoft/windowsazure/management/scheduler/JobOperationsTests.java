@@ -286,7 +286,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
             if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
             {
                 operationCompleted = true;
-            }else{
+            } else {
                 try {
                     Thread.sleep(waitTimeBetweenTriesInSeconds * 1000);
                     tryCount ++;
