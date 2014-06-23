@@ -264,6 +264,28 @@ public class RoleInstance {
         this.powerState = powerStateValue;
     }
     
+    private ArrayList<RoleInstance.PublicIP> publicIPs;
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @return The PublicIPs value.
+    */
+    public ArrayList<RoleInstance.PublicIP> getPublicIPs() {
+        return this.publicIPs;
+    }
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @param publicIPsValue The PublicIPs value.
+    */
+    public void setPublicIPs(final ArrayList<RoleInstance.PublicIP> publicIPsValue) {
+        this.publicIPs = publicIPsValue;
+    }
+    
     private String remoteAccessCertificateThumbprint;
     
     /**
@@ -329,7 +351,51 @@ public class RoleInstance {
     *
     */
     public RoleInstance() {
-        this.instanceEndpoints = new ArrayList<InstanceEndpoint>();
-        this.resourceExtensionStatusList = new ArrayList<ResourceExtensionStatus>();
+        this.setInstanceEndpoints(new ArrayList<InstanceEndpoint>());
+        this.setPublicIPs(new ArrayList<RoleInstance.PublicIP>());
+        this.setResourceExtensionStatusList(new ArrayList<ResourceExtensionStatus>());
+    }
+    
+    /**
+    * An additional public IP that will be created for the role. The public IP
+    * will be an additional IP for the role. The role continues to be
+    * addressable via the default deployment VIP.
+    */
+    public static class PublicIP {
+        private InetAddress address;
+        
+        /**
+        * Optional. The address of the public IP.
+        * @return The Address value.
+        */
+        public InetAddress getAddress() {
+            return this.address;
+        }
+        
+        /**
+        * Optional. The address of the public IP.
+        * @param addressValue The Address value.
+        */
+        public void setAddress(final InetAddress addressValue) {
+            this.address = addressValue;
+        }
+        
+        private String name;
+        
+        /**
+        * Optional. The name of the public IP.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Optional. The name of the public IP.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
     }
 }

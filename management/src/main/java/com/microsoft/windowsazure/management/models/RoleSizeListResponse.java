@@ -55,7 +55,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     */
     public RoleSizeListResponse() {
         super();
-        this.roleSizes = new ArrayList<RoleSizeListResponse.RoleSize>();
+        this.setRoleSizes(new ArrayList<RoleSizeListResponse.RoleSize>());
     }
     
     /**
@@ -104,6 +104,26 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         */
         public void setLabel(final String labelValue) {
             this.label = labelValue;
+        }
+        
+        private int maxDataDiskCount;
+        
+        /**
+        * Optional. Number of data disks that can be attached for the given
+        * role size.
+        * @return The MaxDataDiskCount value.
+        */
+        public int getMaxDataDiskCount() {
+            return this.maxDataDiskCount;
+        }
+        
+        /**
+        * Optional. Number of data disks that can be attached for the given
+        * role size.
+        * @param maxDataDiskCountValue The MaxDataDiskCount value.
+        */
+        public void setMaxDataDiskCount(final int maxDataDiskCountValue) {
+            this.maxDataDiskCount = maxDataDiskCountValue;
         }
         
         private int memoryInMb;
@@ -180,6 +200,48 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         */
         public void setSupportedByWebWorkerRoles(final boolean supportedByWebWorkerRolesValue) {
             this.supportedByWebWorkerRoles = supportedByWebWorkerRolesValue;
+        }
+        
+        private int virtualMachineResourceDiskSizeInMb;
+        
+        /**
+        * Optional. Resource disk drive size for the role size in IaaS
+        * deployment.
+        * @return The VirtualMachineResourceDiskSizeInMb value.
+        */
+        public int getVirtualMachineResourceDiskSizeInMb() {
+            return this.virtualMachineResourceDiskSizeInMb;
+        }
+        
+        /**
+        * Optional. Resource disk drive size for the role size in IaaS
+        * deployment.
+        * @param virtualMachineResourceDiskSizeInMbValue The
+        * VirtualMachineResourceDiskSizeInMb value.
+        */
+        public void setVirtualMachineResourceDiskSizeInMb(final int virtualMachineResourceDiskSizeInMbValue) {
+            this.virtualMachineResourceDiskSizeInMb = virtualMachineResourceDiskSizeInMbValue;
+        }
+        
+        private int webWorkerResourceDiskSizeInMb;
+        
+        /**
+        * Optional. Resource disk drive size for the role size in PaaS
+        * deployment.
+        * @return The WebWorkerResourceDiskSizeInMb value.
+        */
+        public int getWebWorkerResourceDiskSizeInMb() {
+            return this.webWorkerResourceDiskSizeInMb;
+        }
+        
+        /**
+        * Optional. Resource disk drive size for the role size in PaaS
+        * deployment.
+        * @param webWorkerResourceDiskSizeInMbValue The
+        * WebWorkerResourceDiskSizeInMb value.
+        */
+        public void setWebWorkerResourceDiskSizeInMb(final int webWorkerResourceDiskSizeInMbValue) {
+            this.webWorkerResourceDiskSizeInMb = webWorkerResourceDiskSizeInMbValue;
         }
     }
 }

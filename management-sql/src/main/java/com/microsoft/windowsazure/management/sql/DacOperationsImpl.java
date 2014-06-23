@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DacExportParameters;
+import com.microsoft.windowsazure.management.sql.models.DacGetStatusParameters;
 import com.microsoft.windowsazure.management.sql.models.DacGetStatusResponse;
 import com.microsoft.windowsazure.management.sql.models.DacImportExportResponse;
 import com.microsoft.windowsazure.management.sql.models.DacImportParameters;
@@ -63,8 +64,8 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* Includes operations for importing and exporting SQL Databases into and out of
-* Windows Azure blob storage.
+* Includes operations for importing and exporting Azure SQL Databases into and
+* out of Azure blob storage.
 */
 public class DacOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DacOperations {
     /**
@@ -88,27 +89,32 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     }
     
     /**
-    * Export DAC into Windows Azure blob storage.
+    * Exports an Azure SQL Database into a DACPAC file in Azure Blob Storage.
     *
-    * @param serverName Required. The name of the server being exported from.
-    * @param parameters Optional. Export parameters.
-    * @return Response for an DAC Import/Export request.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the database to export resides.
+    * @param parameters Optional. The parameters needed to initiate the export
+    * request.
+    * @return Represents the response that the service returns once an import
+    * or export operation has been initiated.
     */
     @Override
-    public Future<DacImportExportResponse> exportDatabaseAsync(final String serverName, final DacExportParameters parameters) {
+    public Future<DacImportExportResponse> exportAsync(final String serverName, final DacExportParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { 
             @Override
             public DacImportExportResponse call() throws Exception {
-                return exportDatabase(serverName, parameters);
+                return export(serverName, parameters);
             }
          });
     }
     
     /**
-    * Export DAC into Windows Azure blob storage.
+    * Exports an Azure SQL Database into a DACPAC file in Azure Blob Storage.
     *
-    * @param serverName Required. The name of the server being exported from.
-    * @param parameters Optional. Export parameters.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the database to export resides.
+    * @param parameters Optional. The parameters needed to initiate the export
+    * request.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -119,10 +125,11 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response for an DAC Import/Export request.
+    * @return Represents the response that the service returns once an import
+    * or export operation has been initiated.
     */
     @Override
-    public DacImportExportResponse exportDatabase(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public DacImportExportResponse export(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -160,12 +167,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "exportDatabaseAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "exportAsync", tracingParameters);
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Export";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Export";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -293,15 +300,24 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     }
     
     /**
-    * Gets the status of the DAC.
+    * Gets the status of the import or export operation in the specified server
+    * with the corresponding request ID.  The request ID is provided in the
+    * responses of the import or export operation.
     *
-    * @param serverName Required. The name of the server.
-    * @param fullyQualifiedServerName Required. The fully qualified name of the
-    * server.
-    * @param username Required. The server's username.
-    * @param password Required. The server's password.
+    * @param serverName Required. The name of the server in which the import or
+    * export operation is taking place.
+    * @param fullyQualifiedServerName Required. The fully qualified domain name
+    * of the Azure SQL Database Server where the operation is taking place.
+    * Example: a9s7f7s9d3.database.windows.net
+    * @param username Required. The administrator username for the Azure SQL
+    * Database Server.
+    * @param password Required. The administrator password for the Azure SQL
+    * Database Server.
     * @param requestId Required. The request ID of the operation being queried.
-    * @return The response structure for the DAC GetStatus operation.
+    * The request ID is obtained from the responses of the import and export
+    * operations.
+    * @return Represents a list of import or export status values returned from
+    * GetStatus.
     */
     @Override
     public Future<DacGetStatusResponse> getStatusAsync(final String serverName, final String fullyQualifiedServerName, final String username, final String password, final String requestId) {
@@ -314,14 +330,22 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     }
     
     /**
-    * Gets the status of the DAC.
+    * Gets the status of the import or export operation in the specified server
+    * with the corresponding request ID.  The request ID is provided in the
+    * responses of the import or export operation.
     *
-    * @param serverName Required. The name of the server.
-    * @param fullyQualifiedServerName Required. The fully qualified name of the
-    * server.
-    * @param username Required. The server's username.
-    * @param password Required. The server's password.
+    * @param serverName Required. The name of the server in which the import or
+    * export operation is taking place.
+    * @param fullyQualifiedServerName Required. The fully qualified domain name
+    * of the Azure SQL Database Server where the operation is taking place.
+    * Example: a9s7f7s9d3.database.windows.net
+    * @param username Required. The administrator username for the Azure SQL
+    * Database Server.
+    * @param password Required. The administrator password for the Azure SQL
+    * Database Server.
     * @param requestId Required. The request ID of the operation being queried.
+    * The request ID is obtained from the responses of the import and export
+    * operations.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -332,7 +356,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The response structure for the DAC GetStatus operation.
+    * @return Represents a list of import or export status values returned from
+    * GetStatus.
     */
     @Override
     public DacGetStatusResponse getStatus(String serverName, String fullyQualifiedServerName, String username, String password, String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
@@ -368,12 +393,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Status" + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Status" + "?";
         url = url + "servername=" + URLEncoder.encode(fullyQualifiedServerName.trim(), "UTF-8");
         url = url + "&" + "username=" + URLEncoder.encode(username.trim(), "UTF-8");
         url = url + "&" + "password=" + URLEncoder.encode(password.trim(), "UTF-8");
         url = url + "&" + "reqId=" + URLEncoder.encode(requestId.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -516,11 +541,275 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     }
     
     /**
-    * Import DAC from Windows Azure blob storage.
+    * Gets the status of the import or export operation in the specified server
+    * with the corresponding request ID.  The request ID is provided in the
+    * responses of the import or export operation.
     *
-    * @param serverName Required. The name of the server being imported to.
-    * @param parameters Optional. Import parameters.
-    * @return Response for an DAC Import/Export request.
+    * @param serverName Required. The name of the server in which the import or
+    * export operation is taking place.
+    * @param parameters Required. The parameters needed to get the status of an
+    * import or export operation.
+    * @return Represents a list of import or export status values returned from
+    * GetStatus.
+    */
+    @Override
+    public Future<DacGetStatusResponse> getStatusPostAsync(final String serverName, final DacGetStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<DacGetStatusResponse>() { 
+            @Override
+            public DacGetStatusResponse call() throws Exception {
+                return getStatusPost(serverName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Gets the status of the import or export operation in the specified server
+    * with the corresponding request ID.  The request ID is provided in the
+    * responses of the import or export operation.
+    *
+    * @param serverName Required. The name of the server in which the import or
+    * export operation is taking place.
+    * @param parameters Required. The parameters needed to get the status of an
+    * import or export operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return Represents a list of import or export status values returned from
+    * GetStatus.
+    */
+    @Override
+    public DacGetStatusResponse getStatusPost(String serverName, DacGetStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+        // Validate
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getPassword() == null) {
+            throw new NullPointerException("parameters.Password");
+        }
+        if (parameters.getRequestId() == null) {
+            throw new NullPointerException("parameters.RequestId");
+        }
+        if (parameters.getServerName() == null) {
+            throw new NullPointerException("parameters.ServerName");
+        }
+        if (parameters.getUserName() == null) {
+            throw new NullPointerException("parameters.UserName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "getStatusPostAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Status";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2012-03-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element statusInputElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInput");
+        requestDoc.appendChild(statusInputElement);
+        
+        Element passwordElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Password");
+        passwordElement.appendChild(requestDoc.createTextNode(parameters.getPassword()));
+        statusInputElement.appendChild(passwordElement);
+        
+        Element requestIdElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
+        requestIdElement.appendChild(requestDoc.createTextNode(parameters.getRequestId()));
+        statusInputElement.appendChild(requestIdElement);
+        
+        Element serverNameElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
+        serverNameElement.appendChild(requestDoc.createTextNode(parameters.getServerName()));
+        statusInputElement.appendChild(serverNameElement);
+        
+        Element userNameElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "UserName");
+        userNameElement.appendChild(requestDoc.createTextNode(parameters.getUserName()));
+        statusInputElement.appendChild(userNameElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DacGetStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DacGetStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+            
+            Element arrayOfStatusInfoElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
+            if (arrayOfStatusInfoElement != null) {
+                if (arrayOfStatusInfoElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").get(i1));
+                        StatusInfo statusInfoInstance = new StatusInfo();
+                        result.getStatusInfoList().add(statusInfoInstance);
+                        
+                        Element blobUriElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
+                        if (blobUriElement != null) {
+                            URI blobUriInstance;
+                            blobUriInstance = new URI(blobUriElement.getTextContent());
+                            statusInfoInstance.setBlobUri(blobUriInstance);
+                        }
+                        
+                        Element databaseNameElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
+                        if (databaseNameElement != null) {
+                            String databaseNameInstance;
+                            databaseNameInstance = databaseNameElement.getTextContent();
+                            statusInfoInstance.setDatabaseName(databaseNameInstance);
+                        }
+                        
+                        Element errorMessageElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
+                        if (errorMessageElement != null) {
+                            boolean isNil = false;
+                            Attr nilAttribute = errorMessageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute != null) {
+                                isNil = "true".equals(nilAttribute.getValue());
+                            }
+                            if (isNil == false) {
+                                String errorMessageInstance;
+                                errorMessageInstance = errorMessageElement.getTextContent();
+                                statusInfoInstance.setErrorMessage(errorMessageInstance);
+                            }
+                        }
+                        
+                        Element lastModifiedTimeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
+                        if (lastModifiedTimeElement != null) {
+                            Calendar lastModifiedTimeInstance;
+                            lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
+                            statusInfoInstance.setLastModifiedTime(lastModifiedTimeInstance);
+                        }
+                        
+                        Element queuedTimeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
+                        if (queuedTimeElement != null) {
+                            Calendar queuedTimeInstance;
+                            queuedTimeInstance = DatatypeConverter.parseDateTime(queuedTimeElement.getTextContent());
+                            statusInfoInstance.setQueuedTime(queuedTimeInstance);
+                        }
+                        
+                        Element requestIdElement2 = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
+                        if (requestIdElement2 != null) {
+                            String requestIdInstance;
+                            requestIdInstance = requestIdElement2.getTextContent();
+                            statusInfoInstance.setRequestId(requestIdInstance);
+                        }
+                        
+                        Element requestTypeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
+                        if (requestTypeElement != null) {
+                            String requestTypeInstance;
+                            requestTypeInstance = requestTypeElement.getTextContent();
+                            statusInfoInstance.setRequestType(requestTypeInstance);
+                        }
+                        
+                        Element serverNameElement2 = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
+                        if (serverNameElement2 != null) {
+                            String serverNameInstance;
+                            serverNameInstance = serverNameElement2.getTextContent();
+                            statusInfoInstance.setServerName(serverNameInstance);
+                        }
+                        
+                        Element statusElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
+                        if (statusElement != null) {
+                            String statusInstance;
+                            statusInstance = statusElement.getTextContent();
+                            statusInfoInstance.setStatus(statusInstance);
+                        }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Initiates an Import of a DACPAC file from Azure Blob Storage into a Azure
+    * SQL Database.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * into which the database is being imported.
+    * @param parameters Optional. The parameters needed to initiated the Import
+    * request.
+    * @return Represents the response that the service returns once an import
+    * or export operation has been initiated.
     */
     @Override
     public Future<DacImportExportResponse> importDatabaseAsync(final String serverName, final DacImportParameters parameters) {
@@ -533,10 +822,13 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     }
     
     /**
-    * Import DAC from Windows Azure blob storage.
+    * Initiates an Import of a DACPAC file from Azure Blob Storage into a Azure
+    * SQL Database.
     *
-    * @param serverName Required. The name of the server being imported to.
-    * @param parameters Optional. Import parameters.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * into which the database is being imported.
+    * @param parameters Optional. The parameters needed to initiated the Import
+    * request.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -547,7 +839,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response for an DAC Import/Export request.
+    * @return Represents the response that the service returns once an import
+    * or export operation has been initiated.
     */
     @Override
     public DacImportExportResponse importDatabase(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
@@ -592,8 +885,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Import";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/DacOperations/Import";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

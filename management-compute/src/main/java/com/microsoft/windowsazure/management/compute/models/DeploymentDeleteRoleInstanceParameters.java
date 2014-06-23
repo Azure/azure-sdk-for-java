@@ -32,7 +32,7 @@ public class DeploymentDeleteRoleInstanceParameters {
     private ArrayList<String> name;
     
     /**
-    * Optional.
+    * Optional. The names of role instances to delete from the deployment
     * @return The Name value.
     */
     public ArrayList<String> getName() {
@@ -40,7 +40,7 @@ public class DeploymentDeleteRoleInstanceParameters {
     }
     
     /**
-    * Optional.
+    * Optional. The names of role instances to delete from the deployment
     * @param nameValue The Name value.
     */
     public void setName(final ArrayList<String> nameValue) {
@@ -53,6 +53,6 @@ public class DeploymentDeleteRoleInstanceParameters {
     *
     */
     public DeploymentDeleteRoleInstanceParameters() {
-        this.name = new ArrayList<String>();
+        this.setName(new ArrayList<String>());
     }
 }

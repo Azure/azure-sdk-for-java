@@ -56,7 +56,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     */
     public GatewayListConnectionsResponse() {
         super();
-        this.connections = new ArrayList<GatewayListConnectionsResponse.GatewayConnection>();
+        this.setConnections(new ArrayList<GatewayListConnectionsResponse.GatewayConnection>());
     }
     
     /**
@@ -212,7 +212,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         *
         */
         public GatewayConnection() {
-            this.allocatedIPAddresses = new ArrayList<String>();
+            this.setAllocatedIPAddresses(new ArrayList<String>());
         }
     }
 }

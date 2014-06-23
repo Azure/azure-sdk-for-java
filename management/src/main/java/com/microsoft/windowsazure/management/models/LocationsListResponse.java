@@ -55,7 +55,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     */
     public LocationsListResponse() {
         super();
-        this.locations = new ArrayList<LocationsListResponse.Location>();
+        this.setLocations(new ArrayList<LocationsListResponse.Location>());
     }
     
     /**
@@ -86,6 +86,24 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         */
         public void setAvailableServices(final ArrayList<String> availableServicesValue) {
             this.availableServices = availableServicesValue;
+        }
+        
+        private ComputeCapabilities computeCapabilities;
+        
+        /**
+        * Optional. The compute capabilities in this location.
+        * @return The ComputeCapabilities value.
+        */
+        public ComputeCapabilities getComputeCapabilities() {
+            return this.computeCapabilities;
+        }
+        
+        /**
+        * Optional. The compute capabilities in this location.
+        * @param computeCapabilitiesValue The ComputeCapabilities value.
+        */
+        public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+            this.computeCapabilities = computeCapabilitiesValue;
         }
         
         private String displayName;
@@ -131,7 +149,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         *
         */
         public Location() {
-            this.availableServices = new ArrayList<String>();
+            this.setAvailableServices(new ArrayList<String>());
         }
     }
 }

@@ -55,6 +55,6 @@ public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     */
     public ResourceProviderGetPropertiesResponse() {
         super();
-        this.properties = new HashMap<String, String>();
+        this.setProperties(new HashMap<String, String>());
     }
 }

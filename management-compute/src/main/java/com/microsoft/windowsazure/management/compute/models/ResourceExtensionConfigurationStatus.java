@@ -206,6 +206,6 @@ public class ResourceExtensionConfigurationStatus {
     *
     */
     public ResourceExtensionConfigurationStatus() {
-        this.subStatusList = new ArrayList<ResourceExtensionSubStatus>();
+        this.setSubStatusList(new ArrayList<ResourceExtensionSubStatus>());
     }
 }

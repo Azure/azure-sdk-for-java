@@ -27,14 +27,16 @@ import java.net.URI;
 import java.util.Calendar;
 
 /**
-* Status of a DAC import.
+* Describes the status of an import or export operation.
 */
 public class StatusInfo {
     private URI blobUri;
     
     /**
-    * Optional. Gets or sets the URI of the DAC file stored in Windows Azure
-    * Blob Storage to be imported.
+    * Optional. Gets the URI of the DACPAC file being used that is stored in
+    * Azure Blob Storage.  For import this is the DACPAC that is being
+    * imported.  For export this is the destination for the resultant DACPAC
+    * file.
     * @return The BlobUri value.
     */
     public URI getBlobUri() {
@@ -42,8 +44,10 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the URI of the DAC file stored in Windows Azure
-    * Blob Storage to be imported.
+    * Optional. Gets the URI of the DACPAC file being used that is stored in
+    * Azure Blob Storage.  For import this is the DACPAC that is being
+    * imported.  For export this is the destination for the resultant DACPAC
+    * file.
     * @param blobUriValue The BlobUri value.
     */
     public void setBlobUri(final URI blobUriValue) {
@@ -53,8 +57,9 @@ public class StatusInfo {
     private String databaseName;
     
     /**
-    * Optional. Gets or sets the name of the database into which this DAC will
-    * be imported.
+    * Optional. Gets the name of the database that is being used.  For import
+    * this is the name of the newly created database that is being imported
+    * into.  For export this is the name of the database being exported.
     * @return The DatabaseName value.
     */
     public String getDatabaseName() {
@@ -62,8 +67,9 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the name of the database into which this DAC will
-    * be imported.
+    * Optional. Gets the name of the database that is being used.  For import
+    * this is the name of the newly created database that is being imported
+    * into.  For export this is the name of the database being exported.
     * @param databaseNameValue The DatabaseName value.
     */
     public void setDatabaseName(final String databaseNameValue) {
@@ -73,8 +79,8 @@ public class StatusInfo {
     private String errorMessage;
     
     /**
-    * Optional. Gets or sets the error message of the request if the request
-    * failed in some way.
+    * Optional. Gets the error message of the request if the request failed in
+    * some way.
     * @return The ErrorMessage value.
     */
     public String getErrorMessage() {
@@ -82,8 +88,8 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the error message of the request if the request
-    * failed in some way.
+    * Optional. Gets the error message of the request if the request failed in
+    * some way.
     * @param errorMessageValue The ErrorMessage value.
     */
     public void setErrorMessage(final String errorMessageValue) {
@@ -93,7 +99,7 @@ public class StatusInfo {
     private Calendar lastModifiedTime;
     
     /**
-    * Optional. Gets or sets the last time the status changed.
+    * Optional. Gets the last time the operation status changed.
     * @return The LastModifiedTime value.
     */
     public Calendar getLastModifiedTime() {
@@ -101,7 +107,7 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the last time the status changed.
+    * Optional. Gets the last time the operation status changed.
     * @param lastModifiedTimeValue The LastModifiedTime value.
     */
     public void setLastModifiedTime(final Calendar lastModifiedTimeValue) {
@@ -111,8 +117,8 @@ public class StatusInfo {
     private Calendar queuedTime;
     
     /**
-    * Optional. Gets or sets the time at which the import/export request was
-    * queued and the process initiated.
+    * Optional. Gets the time at which the import or export request was queued
+    * and the process initiated.
     * @return The QueuedTime value.
     */
     public Calendar getQueuedTime() {
@@ -120,8 +126,8 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the time at which the import/export request was
-    * queued and the process initiated.
+    * Optional. Gets the time at which the import or export request was queued
+    * and the process initiated.
     * @param queuedTimeValue The QueuedTime value.
     */
     public void setQueuedTime(final Calendar queuedTimeValue) {
@@ -131,8 +137,8 @@ public class StatusInfo {
     private String requestId;
     
     /**
-    * Optional. Gets or sets the request ID of this import/export request, so
-    * that it can be tracked with future calls to GetStatus.
+    * Optional. Gets the request ID of this import or export request.  This can
+    * be used to continue to track this operation using GetStatus.
     * @return The RequestId value.
     */
     public String getRequestId() {
@@ -140,8 +146,8 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the request ID of this import/export request, so
-    * that it can be tracked with future calls to GetStatus.
+    * Optional. Gets the request ID of this import or export request.  This can
+    * be used to continue to track this operation using GetStatus.
     * @param requestIdValue The RequestId value.
     */
     public void setRequestId(final String requestIdValue) {
@@ -151,7 +157,8 @@ public class StatusInfo {
     private String requestType;
     
     /**
-    * Optional. Gets or sets the type (Import/Export) of this request.
+    * Optional. Gets the type of the operation.  This can be either: Import or
+    * Export.
     * @return The RequestType value.
     */
     public String getRequestType() {
@@ -159,7 +166,8 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the type (Import/Export) of this request.
+    * Optional. Gets the type of the operation.  This can be either: Import or
+    * Export.
     * @param requestTypeValue The RequestType value.
     */
     public void setRequestType(final String requestTypeValue) {
@@ -169,8 +177,8 @@ public class StatusInfo {
     private String serverName;
     
     /**
-    * Optional. Gets or sets the name of the SQL database server into which
-    * this DAC will be imported or from which it will be exported.
+    * Optional. Gets the name of the SQL Database server holding the database
+    * that the import or export operation is utilizing.
     * @return The ServerName value.
     */
     public String getServerName() {
@@ -178,8 +186,8 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the name of the SQL database server into which
-    * this DAC will be imported or from which it will be exported.
+    * Optional. Gets the name of the SQL Database server holding the database
+    * that the import or export operation is utilizing.
     * @param serverNameValue The ServerName value.
     */
     public void setServerName(final String serverNameValue) {
@@ -189,7 +197,7 @@ public class StatusInfo {
     private String status;
     
     /**
-    * Optional. Gets or sets the status of the import/export request.
+    * Optional. Gets the status of the import or export request.
     * @return The Status value.
     */
     public String getStatus() {
@@ -197,7 +205,7 @@ public class StatusInfo {
     }
     
     /**
-    * Optional. Gets or sets the status of the import/export request.
+    * Optional. Gets the status of the import or export request.
     * @param statusValue The Status value.
     */
     public void setStatus(final String statusValue) {

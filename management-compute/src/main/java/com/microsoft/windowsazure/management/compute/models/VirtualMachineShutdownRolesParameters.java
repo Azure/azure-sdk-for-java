@@ -73,6 +73,6 @@ public class VirtualMachineShutdownRolesParameters {
     *
     */
     public VirtualMachineShutdownRolesParameters() {
-        this.roles = new ArrayList<String>();
+        this.setRoles(new ArrayList<String>());
     }
 }

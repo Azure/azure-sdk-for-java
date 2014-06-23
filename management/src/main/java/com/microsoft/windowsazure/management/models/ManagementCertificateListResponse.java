@@ -58,7 +58,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     */
     public ManagementCertificateListResponse() {
         super();
-        this.subscriptionCertificates = new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>();
+        this.setSubscriptionCertificates(new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>());
     }
     
     /**

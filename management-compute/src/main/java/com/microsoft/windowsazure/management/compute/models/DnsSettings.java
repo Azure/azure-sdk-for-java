@@ -54,6 +54,6 @@ public class DnsSettings {
     *
     */
     public DnsSettings() {
-        this.dnsServers = new ArrayList<DnsServer>();
+        this.setDnsServers(new ArrayList<DnsServer>());
     }
 }

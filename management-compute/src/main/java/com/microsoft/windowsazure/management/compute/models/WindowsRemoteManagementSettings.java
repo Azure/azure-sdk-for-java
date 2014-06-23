@@ -55,6 +55,6 @@ public class WindowsRemoteManagementSettings {
     *
     */
     public WindowsRemoteManagementSettings() {
-        this.listeners = new ArrayList<WindowsRemoteManagementListener>();
+        this.setListeners(new ArrayList<WindowsRemoteManagementListener>());
     }
 }

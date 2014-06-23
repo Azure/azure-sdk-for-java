@@ -158,6 +158,6 @@ public class ResourceExtensionReference {
     *
     */
     public ResourceExtensionReference() {
-        this.resourceExtensionParameterValues = new ArrayList<ResourceExtensionParameterValue>();
+        this.setResourceExtensionParameterValues(new ArrayList<ResourceExtensionParameterValue>());
     }
 }

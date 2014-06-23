@@ -30,7 +30,7 @@ import java.net.URI;
 * The Get Data Disk operation response.
 */
 public class VirtualMachineDataDiskGetResponse extends OperationResponse {
-    private VirtualHardDiskHostCaching hostCaching;
+    private String hostCaching;
     
     /**
     * Optional. The current value of the platform caching behavior of data disk
@@ -38,7 +38,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     * ReadWrite.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public String getHostCaching() {
         return this.hostCaching;
     }
     
@@ -48,7 +48,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     * ReadWrite.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final String hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     

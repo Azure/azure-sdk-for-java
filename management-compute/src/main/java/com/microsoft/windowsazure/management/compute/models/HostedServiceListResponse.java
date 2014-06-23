@@ -56,7 +56,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     */
     public HostedServiceListResponse() {
         super();
-        this.hostedServices = new ArrayList<HostedServiceListResponse.HostedService>();
+        this.setHostedServices(new ArrayList<HostedServiceListResponse.HostedService>());
     }
     
     /**
@@ -71,6 +71,24 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     * A hosted service associated with your subscription.
     */
     public static class HostedService {
+        private ComputeCapabilities computeCapabilities;
+        
+        /**
+        * Optional. The compute capabilities in this hosted service.
+        * @return The ComputeCapabilities value.
+        */
+        public ComputeCapabilities getComputeCapabilities() {
+            return this.computeCapabilities;
+        }
+        
+        /**
+        * Optional. The compute capabilities in this hosted service.
+        * @param computeCapabilitiesValue The ComputeCapabilities value.
+        */
+        public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+            this.computeCapabilities = computeCapabilitiesValue;
+        }
+        
         private HostedServiceProperties properties;
         
         /**

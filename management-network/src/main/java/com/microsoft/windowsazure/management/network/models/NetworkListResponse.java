@@ -56,7 +56,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     */
     public NetworkListResponse() {
         super();
-        this.virtualNetworkSites = new ArrayList<NetworkListResponse.VirtualNetworkSite>();
+        this.setVirtualNetworkSites(new ArrayList<NetworkListResponse.VirtualNetworkSite>());
     }
     
     /**
@@ -91,7 +91,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public AddressSpace() {
-            this.addressPrefixes = new ArrayList<String>();
+            this.setAddressPrefixes(new ArrayList<String>());
         }
     }
     
@@ -226,7 +226,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public Gateway() {
-            this.sites = new ArrayList<NetworkListResponse.LocalNetworkSite>();
+            this.setSites(new ArrayList<NetworkListResponse.LocalNetworkSite>());
         }
     }
     
@@ -313,7 +313,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public LocalNetworkSite() {
-            this.connections = new ArrayList<NetworkListResponse.Connection>();
+            this.setConnections(new ArrayList<NetworkListResponse.Connection>());
         }
     }
     
@@ -550,8 +550,8 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public VirtualNetworkSite() {
-            this.dnsServers = new ArrayList<NetworkListResponse.DnsServer>();
-            this.subnets = new ArrayList<NetworkListResponse.Subnet>();
+            this.setDnsServers(new ArrayList<NetworkListResponse.DnsServer>());
+            this.setSubnets(new ArrayList<NetworkListResponse.Subnet>());
         }
     }
     
@@ -583,7 +583,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public VPNClientAddressPool() {
-            this.addressPrefixes = new ArrayList<String>();
+            this.setAddressPrefixes(new ArrayList<String>());
         }
     }
 }

@@ -75,6 +75,6 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     */
     public NetworkStaticIPAvailabilityResponse() {
         super();
-        this.availableAddresses = new ArrayList<InetAddress>();
+        this.setAvailableAddresses(new ArrayList<InetAddress>());
     }
 }

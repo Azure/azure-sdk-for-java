@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the database operation for a given operation Guid.
+* Represents the database operation for a given operation Guid.
 */
 public class DatabaseOperationGetResponse extends OperationResponse {
     private DatabaseOperation databaseOperation;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database operation information returned from a
+    * call to Get Database Operation.
     * @return The DatabaseOperation value.
     */
     public DatabaseOperation getDatabaseOperation() {
@@ -40,7 +41,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database operation information returned from a
+    * call to Get Database Operation.
     * @param databaseOperationValue The DatabaseOperation value.
     */
     public void setDatabaseOperation(final DatabaseOperation databaseOperationValue) {

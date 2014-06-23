@@ -56,7 +56,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     */
     public VirtualMachineDiskListResponse() {
         super();
-        this.disks = new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>();
+        this.setDisks(new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>());
     }
     
     /**

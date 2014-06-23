@@ -188,6 +188,23 @@ public class HostedServiceCreateParameters {
     *
     */
     public HostedServiceCreateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
+    }
+    
+    /**
+    * Initializes a new instance of the HostedServiceCreateParameters class
+    * with required arguments.
+    *
+    */
+    public HostedServiceCreateParameters(String serviceName, String label) {
+        this();
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setServiceName(serviceName);
+        this.setLabel(label);
     }
 }

@@ -79,4 +79,28 @@ public class EntitleResourceParameters {
     public void setResourceType(final String resourceTypeValue) {
         this.resourceType = resourceTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the EntitleResourceParameters class.
+    *
+    */
+    public EntitleResourceParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the EntitleResourceParameters class with
+    * required arguments.
+    *
+    */
+    public EntitleResourceParameters(String resourceNamespace, String resourceType, Calendar registrationDate) {
+        if (resourceNamespace == null) {
+            throw new NullPointerException("resourceNamespace");
+        }
+        if (resourceType == null) {
+            throw new NullPointerException("resourceType");
+        }
+        this.setResourceNamespace(resourceNamespace);
+        this.setResourceType(resourceType);
+        this.setRegistrationDate(registrationDate);
+    }
 }

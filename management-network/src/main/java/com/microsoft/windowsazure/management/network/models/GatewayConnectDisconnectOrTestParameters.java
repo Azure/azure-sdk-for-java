@@ -74,4 +74,21 @@ public class GatewayConnectDisconnectOrTestParameters {
     public void setOperation(final GatewayConnectionUpdateOperation operationValue) {
         this.operation = operationValue;
     }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayConnectDisconnectOrTestParameters class.
+    *
+    */
+    public GatewayConnectDisconnectOrTestParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayConnectDisconnectOrTestParameters class with required arguments.
+    *
+    */
+    public GatewayConnectDisconnectOrTestParameters(GatewayConnectionUpdateOperation operation) {
+        this.setOperation(operation);
+    }
 }

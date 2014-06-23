@@ -84,4 +84,25 @@ public class ServiceCertificateCreateParameters {
     public void setPassword(final String passwordValue) {
         this.password = passwordValue;
     }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateCreateParameters
+    * class.
+    *
+    */
+    public ServiceCertificateCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateCreateParameters
+    * class with required arguments.
+    *
+    */
+    public ServiceCertificateCreateParameters(byte[] data, CertificateFormat certificateFormat) {
+        if (data == null) {
+            throw new NullPointerException("data");
+        }
+        this.setData(data);
+        this.setCertificateFormat(certificateFormat);
+    }
 }

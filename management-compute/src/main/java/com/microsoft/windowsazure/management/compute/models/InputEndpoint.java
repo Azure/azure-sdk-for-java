@@ -90,6 +90,26 @@ public class InputEndpoint {
         this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
     }
     
+    private String loadBalancerName;
+    
+    /**
+    * Optional. Optional. Specify the name of an internal load balancer if this
+    * endpoint shall not be exposed on the default load balancer.
+    * @return The LoadBalancerName value.
+    */
+    public String getLoadBalancerName() {
+        return this.loadBalancerName;
+    }
+    
+    /**
+    * Optional. Optional. Specify the name of an internal load balancer if this
+    * endpoint shall not be exposed on the default load balancer.
+    * @param loadBalancerNameValue The LoadBalancerName value.
+    */
+    public void setLoadBalancerName(final String loadBalancerNameValue) {
+        this.loadBalancerName = loadBalancerNameValue;
+    }
+    
     private LoadBalancerProbe loadBalancerProbe;
     
     /**

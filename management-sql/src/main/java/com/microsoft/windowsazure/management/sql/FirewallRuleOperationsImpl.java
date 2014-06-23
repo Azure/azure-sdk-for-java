@@ -63,13 +63,11 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* The Windows Azure SQL Database Management API includes operations for
-* managing the server-level firewall rules for SQL Database servers.You cannot
-* manage the database-level firewall rules using the Windows Azure SQL
-* Database Management API; they can only be managed by running the
-* Transact-SQL statements against the master or individual user databases.
-* (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
-* more information)
+* The Azure SQL Database Management API includes operations for managing the
+* server-level Firewall Rules for Azure SQL Database Servers. You cannot
+* manage the database-level firewall rules using the Azure SQL Database
+* Management API; they can only be managed by running the Transact-SQL
+* statements against the master or individual user databases.
 */
 public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, FirewallRuleOperations {
     /**
@@ -93,16 +91,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Adds a new server-level firewall rule for a SQL Database server that
-    * belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-    * more information)
+    * Adds a new server-level Firewall Rule for an Azure SQL Database Server.
     *
-    * @param serverName Required. The name of the SQL database server to which
-    * this rule will be applied.
-    * @param parameters Required. Parameters for the Create Firewall Rule
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * which this rule will be applied.
+    * @param parameters Required. The parameters for the Create Firewall Rule
     * operation.
-    * @return Response containing the firewall rule create response.
+    * @return Contains the response to a Create Firewall Rule operation.
     */
     @Override
     public Future<FirewallRuleCreateResponse> createAsync(final String serverName, final FirewallRuleCreateParameters parameters) {
@@ -115,14 +110,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Adds a new server-level firewall rule for a SQL Database server that
-    * belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-    * more information)
+    * Adds a new server-level Firewall Rule for an Azure SQL Database Server.
     *
-    * @param serverName Required. The name of the SQL database server to which
-    * this rule will be applied.
-    * @param parameters Required. Parameters for the Create Firewall Rule
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * which this rule will be applied.
+    * @param parameters Required. The parameters for the Create Firewall Rule
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
@@ -134,7 +126,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response containing the firewall rule create response.
+    * @return Contains the response to a Create Firewall Rule operation.
     */
     @Override
     public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
@@ -167,8 +159,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -251,6 +243,20 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 FirewallRule serviceResourceInstance = new FirewallRule();
                 result.setFirewallRule(serviceResourceInstance);
                 
+                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                if (startIPAddressElement2 != null) {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                if (endIPAddressElement2 != null) {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                }
+                
                 Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -265,18 +271,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     serviceResourceInstance.setType(typeInstance);
                 }
                 
-                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement2 != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                }
-                
-                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement2 != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
+                if (stateElement != null) {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    serviceResourceInstance.setState(stateInstance);
                 }
             }
             
@@ -297,14 +296,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Deletes a server-level firewall rule from a SQL Database server that
-    * belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
-    * more information)
+    * Deletes a server-level Firewall Rule from an Azure SQL Database Server.
     *
-    * @param serverName Required. The name of the server that will be have new
-    * firewall rule applied to it.
-    * @param ruleName Required. The name of the new firewall rule.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that will have the Firewall Fule removed from it.
+    * @param ruleName Required. The name of the Firewall Fule to delete.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -319,14 +315,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Deletes a server-level firewall rule from a SQL Database server that
-    * belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
-    * more information)
+    * Deletes a server-level Firewall Rule from an Azure SQL Database Server.
     *
-    * @param serverName Required. The name of the server that will be have new
-    * firewall rule applied to it.
-    * @param ruleName Required. The name of the new firewall rule.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that will have the Firewall Fule removed from it.
+    * @param ruleName Required. The name of the Firewall Fule to delete.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -356,8 +349,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -412,17 +405,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Returns a list of all the server-level firewall rules for a SQL Database
-    * server that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-    * more information)
+    * Returns the Firewall rule for an Azure SQL Database Server with a
+    * matching name.
     *
-    * @param serverName Required. The name of the server for which the call is
-    * being made.
-    * @param ruleName Required. The name of the rule for which the call is
-    * being made.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * query for the Firewall Rule.
+    * @param ruleName Required. The name of the rule to retrieve.
+    * @return Contains the response from a request to Get Firewall Rule.
     */
     @Override
     public Future<FirewallRuleGetResponse> getAsync(final String serverName, final String ruleName) {
@@ -435,15 +424,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Returns a list of all the server-level firewall rules for a SQL Database
-    * server that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-    * more information)
+    * Returns the Firewall rule for an Azure SQL Database Server with a
+    * matching name.
     *
-    * @param serverName Required. The name of the server for which the call is
-    * being made.
-    * @param ruleName Required. The name of the rule for which the call is
-    * being made.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * query for the Firewall Rule.
+    * @param ruleName Required. The name of the rule to retrieve.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -452,8 +438,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Contains the response from a request to Get Firewall Rule.
     */
     @Override
     public FirewallRuleGetResponse get(String serverName, String ruleName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -477,8 +462,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -528,6 +513,20 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 FirewallRule serviceResourceInstance = new FirewallRule();
                 result.setFirewallRule(serviceResourceInstance);
                 
+                Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                if (startIPAddressElement != null) {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                if (endIPAddressElement != null) {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                }
+                
                 Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
@@ -542,18 +541,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     serviceResourceInstance.setType(typeInstance);
                 }
                 
-                Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                }
-                
-                Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
+                if (stateElement != null) {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    serviceResourceInstance.setState(stateInstance);
                 }
             }
             
@@ -574,15 +566,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Returns a list of all the server-level firewall rules for a SQL Database
-    * server that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-    * more information)
+    * Returns a list of server-level Firewall Rules for an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the server for which the call is
-    * being made.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * from which to list the Firewall Rules.
+    * @return Contains the response from a request to List Firewall Rules.
     */
     @Override
     public Future<FirewallRuleListResponse> listAsync(final String serverName) {
@@ -595,13 +584,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Returns a list of all the server-level firewall rules for a SQL Database
-    * server that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-    * more information)
+    * Returns a list of server-level Firewall Rules for an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the server for which the call is
-    * being made.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * from which to list the Firewall Rules.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -610,8 +597,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Contains the response from a request to List Firewall Rules.
     */
     @Override
     public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -631,8 +617,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -684,6 +670,20 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     FirewallRule serviceResourceInstance = new FirewallRule();
                     result.getFirewallRules().add(serviceResourceInstance);
                     
+                    Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                    if (startIPAddressElement != null) {
+                        InetAddress startIPAddressInstance;
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                    }
+                    
+                    Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                    if (endIPAddressElement != null) {
+                        InetAddress endIPAddressInstance;
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    }
+                    
                     Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     if (nameElement != null) {
                         String nameInstance;
@@ -698,18 +698,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                    if (startIPAddressElement != null) {
-                        InetAddress startIPAddressInstance;
-                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
-                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                    }
-                    
-                    Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                    if (endIPAddressElement != null) {
-                        InetAddress endIPAddressInstance;
-                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
-                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
                     }
                 }
             }
@@ -731,17 +724,15 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Updates an existing server-level firewall rule for a SQL Database server
-    * that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-    * more information)
+    * Updates an existing server-level Firewall Rule for an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the SQL database server to which
-    * this rule will be applied.
-    * @param ruleName Required. The name of the firewall rule to be updated.
-    * @param parameters Required. Parameters for the Update Firewall Rule
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that has the Firewall Rule to be updated.
+    * @param ruleName Required. The name of the Firewall Rule to be updated.
+    * @param parameters Required. The parameters for the Update Firewall Rule
     * operation.
-    * @return Response containing the firewall rule update response.
+    * @return Represents the firewall rule update response.
     */
     @Override
     public Future<FirewallRuleUpdateResponse> updateAsync(final String serverName, final String ruleName, final FirewallRuleUpdateParameters parameters) {
@@ -754,15 +745,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     }
     
     /**
-    * Updates an existing server-level firewall rule for a SQL Database server
-    * that belongs to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-    * more information)
+    * Updates an existing server-level Firewall Rule for an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the SQL database server to which
-    * this rule will be applied.
-    * @param ruleName Required. The name of the firewall rule to be updated.
-    * @param parameters Required. Parameters for the Update Firewall Rule
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that has the Firewall Rule to be updated.
+    * @param ruleName Required. The name of the Firewall Rule to be updated.
+    * @param parameters Required. The parameters for the Update Firewall Rule
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
@@ -774,7 +763,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response containing the firewall rule update response.
+    * @return Represents the firewall rule update response.
     */
     @Override
     public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
@@ -811,8 +800,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -895,6 +884,20 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 FirewallRule serviceResourceInstance = new FirewallRule();
                 result.setFirewallRule(serviceResourceInstance);
                 
+                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                if (startIPAddressElement2 != null) {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                if (endIPAddressElement2 != null) {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                }
+                
                 Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -909,18 +912,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     serviceResourceInstance.setType(typeInstance);
                 }
                 
-                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement2 != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                }
-                
-                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement2 != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
+                if (stateElement != null) {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    serviceResourceInstance.setState(stateInstance);
                 }
             }
             

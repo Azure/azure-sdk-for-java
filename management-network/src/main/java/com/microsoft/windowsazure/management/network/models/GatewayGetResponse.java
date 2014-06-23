@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
-* A standard storage response including an HTTP status code and request ID.
+* A standard service response including an HTTP status code and request ID.
 */
 public class GatewayGetResponse extends OperationResponse {
     private GatewayType gatewayType;

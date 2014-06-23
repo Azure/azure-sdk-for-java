@@ -70,6 +70,6 @@ public class GuestAgentMessage {
     *
     */
     public GuestAgentMessage() {
-        this.paramList = new ArrayList<String>();
+        this.setParamList(new ArrayList<String>());
     }
 }

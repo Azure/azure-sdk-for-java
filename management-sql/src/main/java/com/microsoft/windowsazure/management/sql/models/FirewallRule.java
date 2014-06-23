@@ -26,13 +26,13 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.net.InetAddress;
 
 /**
-* Firewall rule.
+* Represents a Firewall Rule for an Azure SQL Database Server.
 */
-public class FirewallRule {
+public class FirewallRule extends SqlModelCommon {
     private InetAddress endIPAddress;
     
     /**
-    * Optional. Gets or sets the ending IP address applied to this rule.
+    * Optional. Gets the ending IP address for this Firewall Rule.
     * @return The EndIPAddress value.
     */
     public InetAddress getEndIPAddress() {
@@ -40,35 +40,17 @@ public class FirewallRule {
     }
     
     /**
-    * Optional. Gets or sets the ending IP address applied to this rule.
+    * Optional. Gets the ending IP address for this Firewall Rule.
     * @param endIPAddressValue The EndIPAddress value.
     */
     public void setEndIPAddress(final InetAddress endIPAddressValue) {
         this.endIPAddress = endIPAddressValue;
     }
     
-    private String name;
-    
-    /**
-    * Optional. Gets or sets the name of the Firewall Rule.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the Firewall Rule.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
     private InetAddress startIPAddress;
     
     /**
-    * Optional. Gets or sets the beginning IP address applied to this rule.
+    * Optional. Gets the starting IP address for this Firewall Rule.
     * @return The StartIPAddress value.
     */
     public InetAddress getStartIPAddress() {
@@ -76,28 +58,10 @@ public class FirewallRule {
     }
     
     /**
-    * Optional. Gets or sets the beginning IP address applied to this rule.
+    * Optional. Gets the starting IP address for this Firewall Rule.
     * @param startIPAddressValue The StartIPAddress value.
     */
     public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
-    }
-    
-    private String type;
-    
-    /**
-    * Optional. Gets or sets the type of resource.
-    * @return The Type value.
-    */
-    public String getType() {
-        return this.type;
-    }
-    
-    /**
-    * Optional. Gets or sets the type of resource.
-    * @param typeValue The Type value.
-    */
-    public void setType(final String typeValue) {
-        this.type = typeValue;
     }
 }

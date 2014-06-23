@@ -42,22 +42,49 @@ import org.xml.sax.SAXException;
 */
 public interface NetworkManagementClient extends Closeable, FilterableService<NetworkManagementClient> {
     /**
-    * The URI used as the base for all SQL requests.
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    String getApiVersion();
+    
+    /**
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     URI getBaseUri();
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
     
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    int getLongRunningOperationInitialTimeout();
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue);
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    int getLongRunningOperationRetryTimeout();
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
     * The Network Management API includes operations for managing the client
     * root certificates for your subscription.  (see

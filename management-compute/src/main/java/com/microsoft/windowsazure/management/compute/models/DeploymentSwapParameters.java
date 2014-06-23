@@ -62,4 +62,23 @@ public class DeploymentSwapParameters {
     public void setSourceDeployment(final String sourceDeploymentValue) {
         this.sourceDeployment = sourceDeploymentValue;
     }
+    
+    /**
+    * Initializes a new instance of the DeploymentSwapParameters class.
+    *
+    */
+    public DeploymentSwapParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentSwapParameters class with
+    * required arguments.
+    *
+    */
+    public DeploymentSwapParameters(String sourceDeployment) {
+        if (sourceDeployment == null) {
+            throw new NullPointerException("sourceDeployment");
+        }
+        this.setSourceDeployment(sourceDeployment);
+    }
 }

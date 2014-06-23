@@ -104,4 +104,23 @@ public class JobCollectionUpdateParameters {
     public void setSchemaVersion(final String schemaVersionValue) {
         this.schemaVersion = schemaVersionValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobCollectionUpdateParameters class.
+    *
+    */
+    public JobCollectionUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobCollectionUpdateParameters class
+    * with required arguments.
+    *
+    */
+    public JobCollectionUpdateParameters(String eTag) {
+        if (eTag == null) {
+            throw new NullPointerException("eTag");
+        }
+        this.setETag(eTag);
+    }
 }

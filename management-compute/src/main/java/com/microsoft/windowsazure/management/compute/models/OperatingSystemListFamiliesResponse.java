@@ -58,7 +58,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     */
     public OperatingSystemListFamiliesResponse() {
         super();
-        this.operatingSystemFamilies = new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>();
+        this.setOperatingSystemFamilies(new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>());
     }
     
     /**
@@ -263,7 +263,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         *
         */
         public OperatingSystemFamily() {
-            this.operatingSystems = new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem>();
+            this.setOperatingSystems(new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem>());
         }
     }
 }

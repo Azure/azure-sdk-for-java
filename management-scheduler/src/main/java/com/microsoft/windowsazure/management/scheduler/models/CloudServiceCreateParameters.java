@@ -97,4 +97,31 @@ public class CloudServiceCreateParameters {
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
+    
+    /**
+    * Initializes a new instance of the CloudServiceCreateParameters class.
+    *
+    */
+    public CloudServiceCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the CloudServiceCreateParameters class with
+    * required arguments.
+    *
+    */
+    public CloudServiceCreateParameters(String label, String description, String geoRegion) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (description == null) {
+            throw new NullPointerException("description");
+        }
+        if (geoRegion == null) {
+            throw new NullPointerException("geoRegion");
+        }
+        this.setLabel(label);
+        this.setDescription(description);
+        this.setGeoRegion(geoRegion);
+    }
 }

@@ -73,7 +73,7 @@ public class CloudServiceGetResponse extends OperationResponse {
     */
     public CloudServiceGetResponse() {
         super();
-        this.resources = new ArrayList<CloudServiceGetResponse.Resource>();
+        this.setResources(new ArrayList<CloudServiceGetResponse.Resource>());
     }
     
     /**
@@ -272,7 +272,7 @@ public class CloudServiceGetResponse extends OperationResponse {
         *
         */
         public Resource() {
-            this.outputItems = new HashMap<String, String>();
+            this.setOutputItems(new HashMap<String, String>());
         }
     }
 }

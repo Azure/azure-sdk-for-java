@@ -84,7 +84,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     */
     public SubscriptionListOperationsResponse() {
         super();
-        this.subscriptionOperations = new ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation>();
+        this.setSubscriptionOperations(new ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation>());
     }
     
     /**
@@ -352,7 +352,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         *
         */
         public SubscriptionOperation() {
-            this.operationParameters = new HashMap<String, String>();
+            this.setOperationParameters(new HashMap<String, String>());
         }
     }
 }

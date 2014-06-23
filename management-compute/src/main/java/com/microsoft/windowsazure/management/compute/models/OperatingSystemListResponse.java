@@ -55,7 +55,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     */
     public OperatingSystemListResponse() {
         super();
-        this.operatingSystems = new ArrayList<OperatingSystemListResponse.OperatingSystem>();
+        this.setOperatingSystems(new ArrayList<OperatingSystemListResponse.OperatingSystem>());
     }
     
     /**

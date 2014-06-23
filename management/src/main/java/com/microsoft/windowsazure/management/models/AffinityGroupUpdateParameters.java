@@ -66,4 +66,23 @@ public class AffinityGroupUpdateParameters {
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
+    
+    /**
+    * Initializes a new instance of the AffinityGroupUpdateParameters class.
+    *
+    */
+    public AffinityGroupUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the AffinityGroupUpdateParameters class
+    * with required arguments.
+    *
+    */
+    public AffinityGroupUpdateParameters(String label) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setLabel(label);
+    }
 }

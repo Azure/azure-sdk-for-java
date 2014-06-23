@@ -26,13 +26,13 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.util.ArrayList;
 
 /**
-* Service objective.
+* Contains all the information pertaining to a service objective.
 */
-public class ServiceObjective {
+public class ServiceObjective extends SqlModelCommon {
     private String description;
     
     /**
-    * Optional. Gets or sets the service objective description.
+    * Optional. Gets the description of this service objective.
     * @return The Description value.
     */
     public String getDescription() {
@@ -40,7 +40,7 @@ public class ServiceObjective {
     }
     
     /**
-    * Optional. Gets or sets the service objective description.
+    * Optional. Gets the description of this service objective.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -68,8 +68,7 @@ public class ServiceObjective {
     private boolean enabled;
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is enabled.
+    * Optional. Gets whether or not the service objective is enabled.
     * @return The Enabled value.
     */
     public boolean isEnabled() {
@@ -77,8 +76,7 @@ public class ServiceObjective {
     }
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is enabled.
+    * Optional. Gets whether or not the service objective is enabled.
     * @param enabledValue The Enabled value.
     */
     public void setEnabled(final boolean enabledValue) {
@@ -88,7 +86,7 @@ public class ServiceObjective {
     private String id;
     
     /**
-    * Optional. Gets or sets the service objective id.
+    * Optional. Gets the unique Guid that identifies this service objective.
     * @return The Id value.
     */
     public String getId() {
@@ -96,7 +94,7 @@ public class ServiceObjective {
     }
     
     /**
-    * Optional. Gets or sets the service objective id.
+    * Optional. Gets the unique Guid that identifies this service objective.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -106,8 +104,8 @@ public class ServiceObjective {
     private boolean isDefault;
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is the default objective.
+    * Optional. Gets whether or not the service objective is the default
+    * objective.
     * @return The IsDefault value.
     */
     public boolean isDefault() {
@@ -115,8 +113,8 @@ public class ServiceObjective {
     }
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is the default objective.
+    * Optional. Gets whether or not the service objective is the default
+    * objective.
     * @param isDefaultValue The IsDefault value.
     */
     public void setIsDefault(final boolean isDefaultValue) {
@@ -126,8 +124,7 @@ public class ServiceObjective {
     private boolean isSystem;
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is a system objective.
+    * Optional. Gets whether or not the service objective is a system objective.
     * @return The IsSystem value.
     */
     public boolean isSystem() {
@@ -135,102 +132,11 @@ public class ServiceObjective {
     }
     
     /**
-    * Optional. Gets or sets a value indicating whether the service objective
-    * is a system objective.
+    * Optional. Gets whether or not the service objective is a system objective.
     * @param isSystemValue The IsSystem value.
     */
     public void setIsSystem(final boolean isSystemValue) {
         this.isSystem = isSystemValue;
-    }
-    
-    private String name;
-    
-    /**
-    * Optional. Gets or sets the name of the service objective.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the service objective.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
-    private String parentLink;
-    
-    /**
-    * Optional. Gets or sets the ParentLink of the service objective.
-    * @return The ParentLink value.
-    */
-    public String getParentLink() {
-        return this.parentLink;
-    }
-    
-    /**
-    * Optional. Gets or sets the ParentLink of the service objective.
-    * @param parentLinkValue The ParentLink value.
-    */
-    public void setParentLink(final String parentLinkValue) {
-        this.parentLink = parentLinkValue;
-    }
-    
-    private String selfLink;
-    
-    /**
-    * Optional. Gets or sets the SelfLink of the service objective.
-    * @return The SelfLink value.
-    */
-    public String getSelfLink() {
-        return this.selfLink;
-    }
-    
-    /**
-    * Optional. Gets or sets the SelfLink of the service objective.
-    * @param selfLinkValue The SelfLink value.
-    */
-    public void setSelfLink(final String selfLinkValue) {
-        this.selfLink = selfLinkValue;
-    }
-    
-    private String state;
-    
-    /**
-    * Optional. Gets or sets the state of the service objective.
-    * @return The State value.
-    */
-    public String getState() {
-        return this.state;
-    }
-    
-    /**
-    * Optional. Gets or sets the state of the service objective.
-    * @param stateValue The State value.
-    */
-    public void setState(final String stateValue) {
-        this.state = stateValue;
-    }
-    
-    private String type;
-    
-    /**
-    * Optional. Gets or sets the type of resource.
-    * @return The Type value.
-    */
-    public String getType() {
-        return this.type;
-    }
-    
-    /**
-    * Optional. Gets or sets the type of resource.
-    * @param typeValue The Type value.
-    */
-    public void setType(final String typeValue) {
-        this.type = typeValue;
     }
     
     /**
@@ -238,17 +144,18 @@ public class ServiceObjective {
     *
     */
     public ServiceObjective() {
-        this.dimensionSettings = new ArrayList<ServiceObjective.DimensionSettingResponse>();
+        super();
+        this.setDimensionSettings(new ArrayList<ServiceObjective.DimensionSettingResponse>());
     }
     
     /**
     * Dimension setting.
     */
-    public static class DimensionSettingResponse {
+    public static class DimensionSettingResponse extends SqlModelCommon {
         private String description;
         
         /**
-        * Optional. Gets or sets the dimension setting description.
+        * Optional. Gets the description of the dimension setting.
         * @return The Description value.
         */
         public String getDescription() {
@@ -256,7 +163,7 @@ public class ServiceObjective {
         }
         
         /**
-        * Optional. Gets or sets the dimension setting description.
+        * Optional. Gets the description of the dimension setting.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
@@ -266,7 +173,7 @@ public class ServiceObjective {
         private String id;
         
         /**
-        * Optional. Gets or sets the dimension setting id.
+        * Optional. Gets the unique Guid that identifies the dimension setting.
         * @return The Id value.
         */
         public String getId() {
@@ -274,7 +181,7 @@ public class ServiceObjective {
         }
         
         /**
-        * Optional. Gets or sets the dimension setting id.
+        * Optional. Gets the unique Guid that identifies the dimension setting.
         * @param idValue The Id value.
         */
         public void setId(final String idValue) {
@@ -284,8 +191,8 @@ public class ServiceObjective {
         private boolean isDefault;
         
         /**
-        * Optional. Gets or sets a value indicating whether the dimension
-        * setting is the default setting.
+        * Optional. Indicates whether the dimension setting is the default
+        * setting.
         * @return The IsDefault value.
         */
         public boolean isDefault() {
@@ -293,36 +200,18 @@ public class ServiceObjective {
         }
         
         /**
-        * Optional. Gets or sets a value indicating whether the dimension
-        * setting is the default setting.
+        * Optional. Indicates whether the dimension setting is the default
+        * setting.
         * @param isDefaultValue The IsDefault value.
         */
         public void setIsDefault(final boolean isDefaultValue) {
             this.isDefault = isDefaultValue;
         }
         
-        private String name;
-        
-        /**
-        * Optional. Gets or sets the name of the dimension setting.
-        * @return The Name value.
-        */
-        public String getName() {
-            return this.name;
-        }
-        
-        /**
-        * Optional. Gets or sets the name of the dimension setting.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue) {
-            this.name = nameValue;
-        }
-        
         private byte ordinal;
         
         /**
-        * Optional. Gets or sets the dimension setting ordinal position.
+        * Optional. Gets the dimension setting ordinal position.
         * @return The Ordinal value.
         */
         public byte getOrdinal() {
@@ -330,83 +219,11 @@ public class ServiceObjective {
         }
         
         /**
-        * Optional. Gets or sets the dimension setting ordinal position.
+        * Optional. Gets the dimension setting ordinal position.
         * @param ordinalValue The Ordinal value.
         */
         public void setOrdinal(final byte ordinalValue) {
             this.ordinal = ordinalValue;
-        }
-        
-        private String parentLink;
-        
-        /**
-        * Optional. Gets or sets the ParentLink of the dimension setting.
-        * @return The ParentLink value.
-        */
-        public String getParentLink() {
-            return this.parentLink;
-        }
-        
-        /**
-        * Optional. Gets or sets the ParentLink of the dimension setting.
-        * @param parentLinkValue The ParentLink value.
-        */
-        public void setParentLink(final String parentLinkValue) {
-            this.parentLink = parentLinkValue;
-        }
-        
-        private String selfLink;
-        
-        /**
-        * Optional. Gets or sets the SelfLink of the dimension setting.
-        * @return The SelfLink value.
-        */
-        public String getSelfLink() {
-            return this.selfLink;
-        }
-        
-        /**
-        * Optional. Gets or sets the SelfLink of the dimension setting.
-        * @param selfLinkValue The SelfLink value.
-        */
-        public void setSelfLink(final String selfLinkValue) {
-            this.selfLink = selfLinkValue;
-        }
-        
-        private String state;
-        
-        /**
-        * Optional. Gets or sets the state of the dimension setting.
-        * @return The State value.
-        */
-        public String getState() {
-            return this.state;
-        }
-        
-        /**
-        * Optional. Gets or sets the state of the dimension setting.
-        * @param stateValue The State value.
-        */
-        public void setState(final String stateValue) {
-            this.state = stateValue;
-        }
-        
-        private String type;
-        
-        /**
-        * Optional. Gets or sets the type of resource.
-        * @return The Type value.
-        */
-        public String getType() {
-            return this.type;
-        }
-        
-        /**
-        * Optional. Gets or sets the type of resource.
-        * @param typeValue The Type value.
-        */
-        public void setType(final String typeValue) {
-            this.type = typeValue;
         }
     }
 }

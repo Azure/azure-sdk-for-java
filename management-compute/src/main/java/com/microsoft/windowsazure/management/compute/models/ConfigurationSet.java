@@ -244,6 +244,28 @@ public class ConfigurationSet {
         this.inputEndpoints = inputEndpointsValue;
     }
     
+    private ArrayList<ConfigurationSet.PublicIP> publicIPs;
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @return The PublicIPs value.
+    */
+    public ArrayList<ConfigurationSet.PublicIP> getPublicIPs() {
+        return this.publicIPs;
+    }
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @param publicIPsValue The PublicIPs value.
+    */
+    public void setPublicIPs(final ArrayList<ConfigurationSet.PublicIP> publicIPsValue) {
+        this.publicIPs = publicIPsValue;
+    }
+    
     private Boolean resetPasswordOnFirstLogon;
     
     /**
@@ -456,8 +478,34 @@ public class ConfigurationSet {
     *
     */
     public ConfigurationSet() {
-        this.inputEndpoints = new ArrayList<InputEndpoint>();
-        this.storedCertificateSettings = new ArrayList<StoredCertificateSettings>();
-        this.subnetNames = new ArrayList<String>();
+        this.setInputEndpoints(new ArrayList<InputEndpoint>());
+        this.setPublicIPs(new ArrayList<ConfigurationSet.PublicIP>());
+        this.setStoredCertificateSettings(new ArrayList<StoredCertificateSettings>());
+        this.setSubnetNames(new ArrayList<String>());
+    }
+    
+    /**
+    * An additional public IP that will be created for the role. The public IP
+    * will be an additional IP for the role. The role continues to be
+    * addressable via the default deployment VIP.
+    */
+    public static class PublicIP {
+        private String name;
+        
+        /**
+        * Optional. The name of the public IP.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Optional. The name of the public IP.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
     }
 }

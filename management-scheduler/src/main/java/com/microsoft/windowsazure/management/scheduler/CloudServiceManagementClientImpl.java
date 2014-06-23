@@ -310,8 +310,8 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
         }
         
         // Construct URL
-        String baseUrl = this.getBaseUri().toString();
         String url = (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/EntitleResource";
+        String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -478,8 +478,8 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
         }
         
         // Construct URL
-        String baseUrl = this.getBaseUri().toString();
         String url = (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
+        String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

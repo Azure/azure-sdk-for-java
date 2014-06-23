@@ -44,4 +44,21 @@ public class GatewayGenerateVpnClientPackageParameters {
     public void setProcessorArchitecture(final GatewayProcessorArchitecture processorArchitectureValue) {
         this.processorArchitecture = processorArchitectureValue;
     }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayGenerateVpnClientPackageParameters class.
+    *
+    */
+    public GatewayGenerateVpnClientPackageParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayGenerateVpnClientPackageParameters class with required arguments.
+    *
+    */
+    public GatewayGenerateVpnClientPackageParameters(GatewayProcessorArchitecture processorArchitecture) {
+        this.setProcessorArchitecture(processorArchitecture);
+    }
 }

@@ -24,31 +24,13 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Create Database operation.
+* Represents the parameters supplied to the Create Database operation.
 */
 public class DatabaseUpdateParameters {
-    private String collationName;
-    
-    /**
-    * Required. Gets or sets the collation name for the new database.
-    * @return The CollationName value.
-    */
-    public String getCollationName() {
-        return this.collationName;
-    }
-    
-    /**
-    * Required. Gets or sets the collation name for the new database.
-    * @param collationNameValue The CollationName value.
-    */
-    public void setCollationName(final String collationNameValue) {
-        this.collationName = collationNameValue;
-    }
-    
     private String edition;
     
     /**
-    * Required. Gets or sets the edition for the new database.
+    * Required. Gets or sets the new edition for the database.
     * @return The Edition value.
     */
     public String getEdition() {
@@ -56,53 +38,60 @@ public class DatabaseUpdateParameters {
     }
     
     /**
-    * Required. Gets or sets the edition for the new database.
+    * Required. Gets or sets the new edition for the database.
     * @param editionValue The Edition value.
     */
     public void setEdition(final String editionValue) {
         this.edition = editionValue;
     }
     
-    private int id;
+    private Long maximumDatabaseSizeInBytes;
     
     /**
-    * Optional. Gets or sets the id of the database.
-    * @return The Id value.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * bytes.  If this is used with MaximumDatabaseSizeInGB they must agree.
+    * @return The MaximumDatabaseSizeInBytes value.
     */
-    public int getId() {
-        return this.id;
+    public Long getMaximumDatabaseSizeInBytes() {
+        return this.maximumDatabaseSizeInBytes;
     }
     
     /**
-    * Optional. Gets or sets the id of the database.
-    * @param idValue The Id value.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * bytes.  If this is used with MaximumDatabaseSizeInGB they must agree.
+    * @param maximumDatabaseSizeInBytesValue The MaximumDatabaseSizeInBytes
+    * value.
     */
-    public void setId(final int idValue) {
-        this.id = idValue;
+    public void setMaximumDatabaseSizeInBytes(final Long maximumDatabaseSizeInBytesValue) {
+        this.maximumDatabaseSizeInBytes = maximumDatabaseSizeInBytesValue;
     }
     
-    private int maximumDatabaseSizeInGB;
+    private Integer maximumDatabaseSizeInGB;
     
     /**
-    * Required. Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * gigabytes.  If this is used with MaximumDatabaseSizeInBytes they must
+    * agree.
     * @return The MaximumDatabaseSizeInGB value.
     */
-    public int getMaximumDatabaseSizeInGB() {
+    public Integer getMaximumDatabaseSizeInGB() {
         return this.maximumDatabaseSizeInGB;
     }
     
     /**
-    * Required. Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * gigabytes.  If this is used with MaximumDatabaseSizeInBytes they must
+    * agree.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(final int maximumDatabaseSizeInGBValue) {
+    public void setMaximumDatabaseSizeInGB(final Integer maximumDatabaseSizeInGBValue) {
         this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
     private String name;
     
     /**
-    * Optional. Gets or sets the name of the database.
+    * Optional. Gets or sets the new name of the database.
     * @return The Name value.
     */
     public String getName() {
@@ -110,7 +99,7 @@ public class DatabaseUpdateParameters {
     }
     
     /**
-    * Optional. Gets or sets the name of the database.
+    * Optional. Gets or sets the new name of the database.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -120,7 +109,8 @@ public class DatabaseUpdateParameters {
     private String serviceObjectiveId;
     
     /**
-    * Optional. Gets or sets the id of this service objective.
+    * Optional. Gets or sets the unique identifier for the service objective to
+    * apply to the database.
     * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId() {
@@ -128,10 +118,30 @@ public class DatabaseUpdateParameters {
     }
     
     /**
-    * Optional. Gets or sets the id of this service objective.
+    * Optional. Gets or sets the unique identifier for the service objective to
+    * apply to the database.
     * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
     public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
         this.serviceObjectiveId = serviceObjectiveIdValue;
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseUpdateParameters class.
+    *
+    */
+    public DatabaseUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseUpdateParameters class with
+    * required arguments.
+    *
+    */
+    public DatabaseUpdateParameters(String edition) {
+        if (edition == null) {
+            throw new NullPointerException("edition");
+        }
+        this.setEdition(edition);
     }
 }

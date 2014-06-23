@@ -57,7 +57,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
     */
     public VirtualMachineOSImageListResponse() {
         super();
-        this.images = new ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>();
+        this.setImages(new ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>());
     }
     
     /**

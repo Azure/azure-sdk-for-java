@@ -54,7 +54,7 @@ public class StorageAccountProperties {
     private String description;
     
     /**
-    * Optional. The user supplied description of the storage account.
+    * Optional. The user-supplied description of the storage account.
     * @return The Description value.
     */
     public String getDescription() {
@@ -62,7 +62,7 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Optional. The user supplied description of the storage account.
+    * Optional. The user-supplied description of the storage account.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -112,10 +112,10 @@ public class StorageAccountProperties {
     private boolean geoReplicationEnabled;
     
     /**
-    * Optional. Indicates whether the data in the storage account is replicated
-    * across more than one geographic location so as to enable resilience in
-    * the face of catastrophic service loss. The value is true if
-    * geo-replication is enabled; otherwise false.
+    * Optional. Indicates whether geo-replication is enabled.Geo-replication
+    * means data in the storage account is replicated across more than one
+    * geographic location so as to enable resilience in the face of
+    * catastrophic service loss.
     * @return The GeoReplicationEnabled value.
     */
     public boolean isGeoReplicationEnabled() {
@@ -123,10 +123,10 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Optional. Indicates whether the data in the storage account is replicated
-    * across more than one geographic location so as to enable resilience in
-    * the face of catastrophic service loss. The value is true if
-    * geo-replication is enabled; otherwise false.
+    * Optional. Indicates whether geo-replication is enabled.Geo-replication
+    * means data in the storage account is replicated across more than one
+    * geographic location so as to enable resilience in the face of
+    * catastrophic service loss.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
     public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
@@ -137,7 +137,7 @@ public class StorageAccountProperties {
     
     /**
     * Optional. Indicates the geographical region in which the storage account
-    * is being replicated.  The GeoSecondaryRegion element is not returned if
+    * is being replicated. The GeoSecondaryRegion element is not returned if
     * geo-replication is "off" for this account.
     * @return The GeoSecondaryRegion value.
     */
@@ -147,7 +147,7 @@ public class StorageAccountProperties {
     
     /**
     * Optional. Indicates the geographical region in which the storage account
-    * is being replicated.  The GeoSecondaryRegion element is not returned if
+    * is being replicated. The GeoSecondaryRegion element is not returned if
     * geo-replication is "off" for this account.
     * @param geoSecondaryRegionValue The GeoSecondaryRegion value.
     */
@@ -158,7 +158,7 @@ public class StorageAccountProperties {
     private String label;
     
     /**
-    * Optional. The user supplied name of the storage account returned as a
+    * Optional. The user-supplied name of the storage account, returned as a
     * base-64 encoded string. This name can be used identify the storage
     * account for your tracking purposes.
     * @return The Label value.
@@ -168,7 +168,7 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Optional. The user supplied name of the storage account returned as a
+    * Optional. The user-supplied name of the storage account, returned as a
     * base-64 encoded string. This name can be used identify the storage
     * account for your tracking purposes.
     * @param labelValue The Label value.
@@ -181,12 +181,12 @@ public class StorageAccountProperties {
     
     /**
     * Optional. A timestamp that indicates the most recent instance of a
-    * failover to the secondary region. In case of multiple failovers only the
-    * latest failover date and time maintained. The format of the returned
-    * timestamp is:
+    * failover to the secondary region. In the case of multiple failovers,
+    * only the latest failover date and time is maintained. The format of the
+    * returned timestamp is:
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
-    * LastGeoFailoverTime is not returned if there has not been an instance
-    * of a failover.
+    * LastGeoFailoverTime is not returned if there has not been an instance of
+    * a failover.
     * @return The LastGeoFailoverTime value.
     */
     public Calendar getLastGeoFailoverTime() {
@@ -195,12 +195,12 @@ public class StorageAccountProperties {
     
     /**
     * Optional. A timestamp that indicates the most recent instance of a
-    * failover to the secondary region. In case of multiple failovers only the
-    * latest failover date and time maintained. The format of the returned
-    * timestamp is:
+    * failover to the secondary region. In the case of multiple failovers,
+    * only the latest failover date and time is maintained. The format of the
+    * returned timestamp is:
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
-    * LastGeoFailoverTime is not returned if there has not been an instance
-    * of a failover.
+    * LastGeoFailoverTime is not returned if there has not been an instance of
+    * a failover.
     * @param lastGeoFailoverTimeValue The LastGeoFailoverTime value.
     */
     public void setLastGeoFailoverTime(final Calendar lastGeoFailoverTimeValue) {
@@ -291,6 +291,6 @@ public class StorageAccountProperties {
     *
     */
     public StorageAccountProperties() {
-        this.endpoints = new ArrayList<URI>();
+        this.setEndpoints(new ArrayList<URI>());
     }
 }

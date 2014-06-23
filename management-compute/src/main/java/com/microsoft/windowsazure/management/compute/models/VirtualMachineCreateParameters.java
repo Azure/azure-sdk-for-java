@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -93,6 +94,26 @@ public class VirtualMachineCreateParameters {
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
         this.dataVirtualHardDisks = dataVirtualHardDisksValue;
+    }
+    
+    private URI mediaLocation;
+    
+    /**
+    * Optional. Location where VMImage VHDs should be copied, for published
+    * VMImages.
+    * @return The MediaLocation value.
+    */
+    public URI getMediaLocation() {
+        return this.mediaLocation;
+    }
+    
+    /**
+    * Optional. Location where VMImage VHDs should be copied, for published
+    * VMImages.
+    * @param mediaLocationValue The MediaLocation value.
+    */
+    public void setMediaLocation(final URI mediaLocationValue) {
+        this.mediaLocation = mediaLocationValue;
     }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
@@ -229,8 +250,21 @@ public class VirtualMachineCreateParameters {
     *
     */
     public VirtualMachineCreateParameters() {
-        this.configurationSets = new ArrayList<ConfigurationSet>();
-        this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
-        this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();
+        this.setConfigurationSets(new ArrayList<ConfigurationSet>());
+        this.setDataVirtualHardDisks(new ArrayList<DataVirtualHardDisk>());
+        this.setResourceExtensionReferences(new ArrayList<ResourceExtensionReference>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineCreateParameters class
+    * with required arguments.
+    *
+    */
+    public VirtualMachineCreateParameters(String roleName) {
+        this();
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        this.setRoleName(roleName);
     }
 }

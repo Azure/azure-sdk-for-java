@@ -241,6 +241,6 @@ public class DeploymentCreateParameters {
     *
     */
     public DeploymentCreateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

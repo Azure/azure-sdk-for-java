@@ -110,4 +110,32 @@ public class VirtualMachineDiskCreateParameters {
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskCreateParameters
+    * class.
+    *
+    */
+    public VirtualMachineDiskCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskCreateParameters
+    * class with required arguments.
+    *
+    */
+    public VirtualMachineDiskCreateParameters(String label, URI mediaLinkUri, String name) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (mediaLinkUri == null) {
+            throw new NullPointerException("mediaLinkUri");
+        }
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.setLabel(label);
+        this.setMediaLinkUri(mediaLinkUri);
+        this.setName(name);
+    }
 }

@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the database get response.
+* Contains the response to a Get Database request.
 */
 public class DatabaseGetResponse extends OperationResponse {
     private Database database;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database that was returned from the service in
+    * response to the get operation.
     * @return The Database value.
     */
     public Database getDatabase() {
@@ -40,7 +41,8 @@ public class DatabaseGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database that was returned from the service in
+    * response to the get operation.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final Database databaseValue) {

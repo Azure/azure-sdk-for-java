@@ -57,7 +57,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     */
     public HostedServiceListAvailableExtensionsResponse() {
         super();
-        this.extensionImages = new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>();
+        this.setExtensionImages(new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>());
     }
     
     /**
@@ -176,6 +176,26 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         */
         public void setHostingResources(final String hostingResourcesValue) {
             this.hostingResources = hostingResourcesValue;
+        }
+        
+        private Boolean isInternalExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @return The IsInternalExtension value.
+        */
+        public Boolean isInternalExtension() {
+            return this.isInternalExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @param isInternalExtensionValue The IsInternalExtension value.
+        */
+        public void setIsInternalExtension(final Boolean isInternalExtensionValue) {
+            this.isInternalExtension = isInternalExtensionValue;
         }
         
         private Boolean isJsonExtension;
@@ -404,6 +424,25 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         */
         public void setVersion(final String versionValue) {
             this.version = versionValue;
+        }
+        
+        /**
+        * Initializes a new instance of the ExtensionImage class.
+        *
+        */
+        public ExtensionImage() {
+        }
+        
+        /**
+        * Initializes a new instance of the ExtensionImage class with required
+        * arguments.
+        *
+        */
+        public ExtensionImage(String type) {
+            if (type == null) {
+                throw new NullPointerException("type");
+            }
+            this.setType(type);
         }
     }
 }

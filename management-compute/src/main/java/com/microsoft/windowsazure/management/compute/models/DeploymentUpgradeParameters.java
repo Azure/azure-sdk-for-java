@@ -235,6 +235,6 @@ public class DeploymentUpgradeParameters {
     *
     */
     public DeploymentUpgradeParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

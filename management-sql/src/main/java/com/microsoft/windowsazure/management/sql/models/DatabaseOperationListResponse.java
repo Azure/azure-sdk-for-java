@@ -28,14 +28,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Response containing the list of database operations for a given server or
-* database.
+* Represents the response containing the list of database operations for a
+* given server or database.
 */
 public class DatabaseOperationListResponse extends OperationResponse implements Iterable<DatabaseOperation> {
     private ArrayList<DatabaseOperation> databaseOperations;
     
     /**
-    * Optional. Gets or sets the list of database operations' response.
+    * Optional. Gets or sets the collection of database operations returned
+    * from a call to List Database Operations.
     * @return The DatabaseOperations value.
     */
     public ArrayList<DatabaseOperation> getDatabaseOperations() {
@@ -43,7 +44,8 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     }
     
     /**
-    * Optional. Gets or sets the list of database operations' response.
+    * Optional. Gets or sets the collection of database operations returned
+    * from a call to List Database Operations.
     * @param databaseOperationsValue The DatabaseOperations value.
     */
     public void setDatabaseOperations(final ArrayList<DatabaseOperation> databaseOperationsValue) {
@@ -56,7 +58,7 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     */
     public DatabaseOperationListResponse() {
         super();
-        this.databaseOperations = new ArrayList<DatabaseOperation>();
+        this.setDatabaseOperations(new ArrayList<DatabaseOperation>());
     }
     
     /**

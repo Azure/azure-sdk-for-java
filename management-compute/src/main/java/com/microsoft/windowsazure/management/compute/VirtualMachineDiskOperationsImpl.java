@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskUpdateParameters;
@@ -96,6 +95,230 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     */
     public ComputeManagementClientImpl getClient() {
         return this.client;
+    }
+    
+    /**
+    * The Create Data Disk operation adds a data disk to a virtual machine.
+    * There are three ways to create the data disk using the Add Data Disk
+    * operation. Option 1 - Attach an empty data disk to the role by
+    * specifying the disk label and location of the disk image. Do not include
+    * the DiskName and SourceMediaLink elements in the request body. Include
+    * the MediaLink element and reference a blob that is in the same
+    * geographical region as the role. You can also omit the MediaLink
+    * element. In this usage, Azure will create the data disk in the storage
+    * account configured as default for the role. Option 2 - Attach an
+    * existing data disk that is in the image repository. Do not include the
+    * DiskName and SourceMediaLink elements in the request body. Specify the
+    * data disk to use by including the DiskName element. Note: If included
+    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
+    * are ignored. Option 3 - Specify the location of a blob in your storage
+    * account that contain a disk image to use. Include the SourceMediaLink
+    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginCreatingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginCreatingDataDisk(serviceName, deploymentName, roleName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Create Data Disk operation adds a data disk to a virtual machine.
+    * There are three ways to create the data disk using the Add Data Disk
+    * operation. Option 1 - Attach an empty data disk to the role by
+    * specifying the disk label and location of the disk image. Do not include
+    * the DiskName and SourceMediaLink elements in the request body. Include
+    * the MediaLink element and reference a blob that is in the same
+    * geographical region as the role. You can also omit the MediaLink
+    * element. In this usage, Azure will create the data disk in the storage
+    * account configured as default for the role. Option 2 - Attach an
+    * existing data disk that is in the image repository. Do not include the
+    * DiskName and SourceMediaLink elements in the request body. Specify the
+    * data disk to use by including the DiskName element. Note: If included
+    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
+    * are ignored. Option 3 - Specify the location of a blob in your storage
+    * account that contain a disk image to use. Include the SourceMediaLink
+    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getHostCaching() == null) {
+            throw new NullPointerException("parameters.HostCaching");
+        }
+        if (parameters.getMediaLinkUri() == null) {
+            throw new NullPointerException("parameters.MediaLinkUri");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingDataDiskAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+        requestDoc.appendChild(dataVirtualHardDiskElement);
+        
+        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching()));
+        dataVirtualHardDiskElement.appendChild(hostCachingElement);
+        
+        if (parameters.getLabel() != null) {
+            Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
+            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
+            dataVirtualHardDiskElement.appendChild(diskLabelElement);
+        }
+        
+        if (parameters.getName() != null) {
+            Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
+            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+            dataVirtualHardDiskElement.appendChild(diskNameElement);
+        }
+        
+        if (parameters.getLogicalUnitNumber() != null) {
+            Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
+            lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
+            dataVirtualHardDiskElement.appendChild(lunElement);
+        }
+        
+        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
+        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+        
+        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
+        dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+        
+        if (parameters.getSourceMediaLinkUri() != null) {
+            Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+            sourceMediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getSourceMediaLinkUri().toString()));
+            dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -172,11 +395,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -190,7 +413,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -255,14 +478,20 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @param roleName Required. The name of the role to add the data disk to.
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Data Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<OperationStatusResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return createDataDisk(serviceName, deploymentName, roleName, parameters);
             }
          });
@@ -293,39 +522,30 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @param roleName Required. The name of the role to add the data disk to.
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Data Disk operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
-        // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
-        }
-        if (deploymentName == null) {
-            throw new NullPointerException("deploymentName");
-        }
-        if (roleName == null) {
-            throw new NullPointerException("roleName");
-        }
-        if (parameters == null) {
-            throw new NullPointerException("parameters");
-        }
-        if (parameters.getMediaLinkUri() == null) {
-            throw new NullPointerException("parameters.MediaLinkUri");
-        }
-        
-        // Tracing
+    public OperationStatusResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
@@ -337,116 +557,52 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createDataDiskAsync", tracingParameters);
         }
-        
-        // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks";
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        
-        // Create HTTP transport objects
-        HttpPost httpRequest = new HttpPost(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
-        
-        // Serialize Request
-        String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document requestDoc = documentBuilder.newDocument();
-        
-        Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
-        requestDoc.appendChild(dataVirtualHardDiskElement);
-        
-        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
-        dataVirtualHardDiskElement.appendChild(hostCachingElement);
-        
-        if (parameters.getLabel() != null) {
-            Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
-            dataVirtualHardDiskElement.appendChild(diskLabelElement);
-        }
-        
-        if (parameters.getName() != null) {
-            Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
-            dataVirtualHardDiskElement.appendChild(diskNameElement);
-        }
-        
-        if (parameters.getLogicalUnitNumber() != null) {
-            Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-            lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
-            dataVirtualHardDiskElement.appendChild(lunElement);
-        }
-        
-        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
-        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-        
-        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
-        dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-        
-        if (parameters.getSourceMediaLinkUri() != null) {
-            Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
-            sourceMediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getSourceMediaLinkUri().toString()));
-            dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
-        }
-        
-        DOMSource domSource = new DOMSource(requestDoc);
-        StringWriter stringWriter = new StringWriter();
-        StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.transform(domSource, streamResult);
-        requestContent = stringWriter.toString();
-        StringEntity entity = new StringEntity(requestContent);
-        httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/xml");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            OperationResponse response = client2.getVirtualMachineDisksOperations().beginCreatingDataDiskAsync(serviceName, deploymentName, roleName, parameters).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
             return result;
         } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -520,8 +676,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/disks";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -536,7 +692,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -803,10 +959,16 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             OperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
@@ -896,11 +1058,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim() + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/disks/" + name.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -914,7 +1076,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1025,8 +1187,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1040,7 +1202,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1075,8 +1237,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             if (dataVirtualHardDiskElement != null) {
                 Element hostCachingElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "HostCaching");
                 if (hostCachingElement != null) {
-                    VirtualHardDiskHostCaching hostCachingInstance;
-                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                    String hostCachingInstance;
+                    hostCachingInstance = hostCachingElement.getTextContent();
                     result.setHostCaching(hostCachingInstance);
                 }
                 
@@ -1188,8 +1350,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/disks/" + name.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1203,7 +1365,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1400,8 +1562,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/disks";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1415,7 +1577,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1633,6 +1795,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getHostCaching() == null) {
+            throw new NullPointerException("parameters.HostCaching");
+        }
         if (parameters.getMediaLinkUri() == null) {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
@@ -1652,8 +1817,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roles/" + roleName.trim() + "/DataDisks/" + logicalUnitNumber;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1668,7 +1833,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1680,7 +1845,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         requestDoc.appendChild(dataVirtualHardDiskElement);
         
         Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
+        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
         
         if (parameters.getLabel() != null) {
@@ -1830,8 +1995,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/disks/" + name.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/disks/" + name.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1846,7 +2011,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;

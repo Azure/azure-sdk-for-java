@@ -111,7 +111,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
         //required
         oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
         oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
         //required
         oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
@@ -181,7 +181,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk();
         //required
         oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
         oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
         //required
         oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
@@ -267,7 +267,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
         Assert.assertTrue(osharddisk.getSourceImageName().contains("Win"));
-        Assert.assertEquals(VirtualHardDiskHostCaching.ReadWrite, osharddisk.getHostCaching());
+        Assert.assertEquals(VirtualHardDiskHostCaching.READWRITE, osharddisk.getHostCaching());
     }
     
     @Test

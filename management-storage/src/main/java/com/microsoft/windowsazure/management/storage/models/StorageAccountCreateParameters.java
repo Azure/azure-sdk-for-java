@@ -32,10 +32,11 @@ public class StorageAccountCreateParameters {
     private String affinityGroup;
     
     /**
-    * Optional. Required if Location is not specified. The name of an existing
-    * affinity group in the specified subscription.  You can include either a
-    * Location or AffinityGroup element in the request body, but not both. To
-    * list available affinity groups, use the List Affinity Groups operation.
+    * Optional. The name of an existing affinity group in the specified
+    * subscription. Required if Location is not specified. You can include
+    * either a Location or AffinityGroup element in the request body, but not
+    * both. To list available affinity groups, use the List Affinity Groups
+    * operation.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -43,10 +44,11 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Optional. Required if Location is not specified. The name of an existing
-    * affinity group in the specified subscription.  You can include either a
-    * Location or AffinityGroup element in the request body, but not both. To
-    * list available affinity groups, use the List Affinity Groups operation.
+    * Optional. The name of an existing affinity group in the specified
+    * subscription. Required if Location is not specified. You can include
+    * either a Location or AffinityGroup element in the request body, but not
+    * both. To list available affinity groups, use the List Affinity Groups
+    * operation.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -77,14 +79,14 @@ public class StorageAccountCreateParameters {
     
     /**
     * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
+    * Each extended property must have a defined name and a value. You can
+    * have a maximum of 50 extended property name/value pairs. The maximum
     * length of the Name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the Name, and the name must
     * start with a letter. Attempting to use other characters, starting the
     * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
+    * to that of another extended property owned by the same storage account
+    * will result in a status code 400 (Bad Request) error. Each extended
     * property value has a maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
@@ -94,14 +96,14 @@ public class StorageAccountCreateParameters {
     
     /**
     * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
+    * Each extended property must have a defined name and a value. You can
+    * have a maximum of 50 extended property name/value pairs. The maximum
     * length of the Name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the Name, and the name must
     * start with a letter. Attempting to use other characters, starting the
     * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
+    * to that of another extended property owned by the same storage account
+    * will result in a status code 400 (Bad Request) error. Each extended
     * property value has a maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
@@ -112,11 +114,11 @@ public class StorageAccountCreateParameters {
     private boolean geoReplicationEnabled;
     
     /**
-    * Optional. Specifies whether the storage account is created with the
+    * Optional. Specifies whether the storage account is created with
     * geo-replication enabled. If the element is not included in the request
     * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location so as to
-    * enable resilience in the face of catastrophic service loss.
+    * account is replicated across more than one geographic location to enable
+    * resilience in the face of catastrophic service loss.
     * @return The GeoReplicationEnabled value.
     */
     public boolean isGeoReplicationEnabled() {
@@ -124,11 +126,11 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Optional. Specifies whether the storage account is created with the
+    * Optional. Specifies whether the storage account is created with
     * geo-replication enabled. If the element is not included in the request
     * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location so as to
-    * enable resilience in the face of catastrophic service loss.
+    * account is replicated across more than one geographic location to enable
+    * resilience in the face of catastrophic service loss.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
     public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
@@ -138,9 +140,9 @@ public class StorageAccountCreateParameters {
     private String label;
     
     /**
-    * Required. A name for the storage account specified as abase64-encoded
-    * string. The name may be up to 100 characters inlength. The name can be
-    * used identify the storage account for yourtracking purposes.
+    * Required. A name for the storage account, specified as abase64-encoded
+    * string. The name may be up to 100 characters in length. The name can be
+    * used identify the storage account for your tracking purposes.
     * @return The Label value.
     */
     public String getLabel() {
@@ -152,9 +154,9 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Required. A name for the storage account specified as abase64-encoded
-    * string. The name may be up to 100 characters inlength. The name can be
-    * used identify the storage account for yourtracking purposes.
+    * Required. A name for the storage account, specified as abase64-encoded
+    * string. The name may be up to 100 characters in length. The name can be
+    * used identify the storage account for your tracking purposes.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -164,8 +166,8 @@ public class StorageAccountCreateParameters {
     private String location;
     
     /**
-    * Optional. Required if AffinityGroup is not specified. The location where
-    * the storage account is created.  You can include either a Location or
+    * Optional. The location where the storage account is created. Required if
+    * AffinityGroup is not specified. You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     * @return The Location value.
@@ -175,8 +177,8 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Optional. Required if AffinityGroup is not specified. The location where
-    * the storage account is created.  You can include either a Location or
+    * Optional. The location where the storage account is created. Required if
+    * AffinityGroup is not specified. You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     * @param locationValue The Location value.
@@ -188,12 +190,12 @@ public class StorageAccountCreateParameters {
     private String name;
     
     /**
-    * Required. A name for the storage account that is unique within Windows
-    * Azure. Storage account names must be between 3 and 24 characters in
-    * length and use numbers and lower-case letters only.  This name is the
-    * DNS prefix name and can be used to access blobs, queues, and tables in
-    * the storage account.  For example:
-    * http://ServiceName.blob.core.windows.net/mycontainer/
+    * Required. A name for the storage account, unique within Azure. Storage
+    * account names must be between 3 and 24 characters in length, and must
+    * use numbers and lower-case letters only. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account. For example:
+    * http://ServiceName.blob.core.windows.net/mycontainer/.
     * @return The Name value.
     */
     public String getName() {
@@ -201,12 +203,12 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Required. A name for the storage account that is unique within Windows
-    * Azure. Storage account names must be between 3 and 24 characters in
-    * length and use numbers and lower-case letters only.  This name is the
-    * DNS prefix name and can be used to access blobs, queues, and tables in
-    * the storage account.  For example:
-    * http://ServiceName.blob.core.windows.net/mycontainer/
+    * Required. A name for the storage account, unique within Azure. Storage
+    * account names must be between 3 and 24 characters in length, and must
+    * use numbers and lower-case letters only. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account. For example:
+    * http://ServiceName.blob.core.windows.net/mycontainer/.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -218,6 +220,23 @@ public class StorageAccountCreateParameters {
     *
     */
     public StorageAccountCreateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
+    }
+    
+    /**
+    * Initializes a new instance of the StorageAccountCreateParameters class
+    * with required arguments.
+    *
+    */
+    public StorageAccountCreateParameters(String name, String label) {
+        this();
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setName(name);
+        this.setLabel(label);
     }
 }

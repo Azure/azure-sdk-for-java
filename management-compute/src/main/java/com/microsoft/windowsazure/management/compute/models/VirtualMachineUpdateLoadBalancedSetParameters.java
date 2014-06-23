@@ -54,7 +54,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     *
     */
     public VirtualMachineUpdateLoadBalancedSetParameters() {
-        this.loadBalancedEndpoints = new ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>();
+        this.setLoadBalancedEndpoints(new ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>());
     }
     
     /**
@@ -109,6 +109,26 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         */
         public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue) {
             this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
+        }
+        
+        private String loadBalancerName;
+        
+        /**
+        * Optional. Optional. Specify the name of an internal load balancer if
+        * this endpoint shall not be exposed on the default load balancer.
+        * @return The LoadBalancerName value.
+        */
+        public String getLoadBalancerName() {
+            return this.loadBalancerName;
+        }
+        
+        /**
+        * Optional. Optional. Specify the name of an internal load balancer if
+        * this endpoint shall not be exposed on the default load balancer.
+        * @param loadBalancerNameValue The LoadBalancerName value.
+        */
+        public void setLoadBalancerName(final String loadBalancerNameValue) {
+            this.loadBalancerName = loadBalancerNameValue;
         }
         
         private LoadBalancerProbe loadBalancerProbe;
@@ -280,7 +300,20 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         *
         */
         public InputEndpoint() {
-            this.rules = new ArrayList<AccessControlListRule>();
+            this.setRules(new ArrayList<AccessControlListRule>());
+        }
+        
+        /**
+        * Initializes a new instance of the InputEndpoint class with required
+        * arguments.
+        *
+        */
+        public InputEndpoint(String loadBalancedEndpointSetName) {
+            this();
+            if (loadBalancedEndpointSetName == null) {
+                throw new NullPointerException("loadBalancedEndpointSetName");
+            }
+            this.setLoadBalancedEndpointSetName(loadBalancedEndpointSetName);
         }
     }
 }
