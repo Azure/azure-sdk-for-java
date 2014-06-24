@@ -56,7 +56,7 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
     */
     public WebSpacesListPublishingUsersResponse() {
         super();
-        this.users = new ArrayList<WebSpacesListPublishingUsersResponse.User>();
+        this.setUsers(new ArrayList<WebSpacesListPublishingUsersResponse.User>());
     }
     
     /**

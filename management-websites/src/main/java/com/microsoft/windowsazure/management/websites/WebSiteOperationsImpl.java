@@ -202,10 +202,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "(" + sourceSlotName.trim() + ")/slots" + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "(" + sourceSlotName.trim() + ")/slots" + "?";
         url = url + "Command=swap";
         url = url + "&" + "targetSlot=" + URLEncoder.encode(targetSlotName.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -340,6 +340,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
                                         errorInstance.getParameters().add(parametersElement.getTextContent());
                                     }
+                                } else {
+                                    errorInstance.setParameters(null);
                                 }
                             }
                             
@@ -357,6 +359,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                         }
+                    } else {
+                        result.setErrors(null);
                     }
                 }
                 
@@ -523,8 +527,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -686,23 +690,23 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 Element hostNameSslStatesSequenceElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 if (hostNameSslStatesSequenceElement != null) {
-                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").size(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").get(i2));
-                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").size(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").get(i2));
+                        WebSite.WebSiteHostNameSslState hostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(hostNameSslStateInstance);
                         
                         Element nameElement3 = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         if (nameElement3 != null) {
                             String nameInstance;
                             nameInstance = nameElement3.getTextContent();
-                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                            hostNameSslStateInstance.setName(nameInstance);
                         }
                         
                         Element sslStateElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         if (sslStateElement != null) {
                             WebSiteSslState sslStateInstance;
                             sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
-                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                            hostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
                         Element thumbprintElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
@@ -715,7 +719,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil == false) {
                                 String thumbprintInstance;
                                 thumbprintInstance = thumbprintElement.getTextContent();
-                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                                hostNameSslStateInstance.setThumbprint(thumbprintInstance);
                             }
                         }
                         
@@ -729,7 +733,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil2 == false) {
                                 InetAddress virtualIPInstance;
                                 virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                                hostNameSslStateInstance.setVirtualIP(virtualIPInstance);
                             }
                         }
                     }
@@ -838,6 +842,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
+                                } else {
+                                    certificateInstance.setHostNames(null);
                                 }
                             }
                             
@@ -981,6 +987,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                         }
+                    } else {
+                        webSiteInstance.setSslCertificates(null);
                     }
                 }
                 
@@ -1141,8 +1149,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1266,11 +1274,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "?";
         url = url + "deleteEmptyServerFarm=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteEmptyServerFarm()).toLowerCase(), "UTF-8");
         url = url + "&" + "deleteMetrics=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteMetrics()).toLowerCase(), "UTF-8");
         url = url + "&" + "deleteAllSlots=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteAllSlots()).toLowerCase(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1390,8 +1398,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1525,8 +1533,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/newpassword";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/newpassword";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1645,11 +1653,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "?";
         if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0) {
             url = url + "propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
         }
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1737,23 +1745,23 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 Element hostNameSslStatesSequenceElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 if (hostNameSslStatesSequenceElement != null) {
-                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").size(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").get(i2));
-                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").size(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").get(i2));
+                        WebSite.WebSiteHostNameSslState hostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(hostNameSslStateInstance);
                         
                         Element nameElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         if (nameElement != null) {
                             String nameInstance;
                             nameInstance = nameElement.getTextContent();
-                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                            hostNameSslStateInstance.setName(nameInstance);
                         }
                         
                         Element sslStateElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         if (sslStateElement != null) {
                             WebSiteSslState sslStateInstance;
                             sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
-                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                            hostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
                         Element thumbprintElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
@@ -1766,7 +1774,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil == false) {
                                 String thumbprintInstance;
                                 thumbprintInstance = thumbprintElement.getTextContent();
-                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                                hostNameSslStateInstance.setThumbprint(thumbprintInstance);
                             }
                         }
                         
@@ -1780,7 +1788,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil2 == false) {
                                 InetAddress virtualIPInstance;
                                 virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                                hostNameSslStateInstance.setVirtualIP(virtualIPInstance);
                             }
                         }
                     }
@@ -1889,6 +1897,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
+                                } else {
+                                    certificateInstance.setHostNames(null);
                                 }
                             }
                             
@@ -2032,6 +2042,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                         }
+                    } else {
+                        webSiteInstance.setSslCertificates(null);
                     }
                 }
                 
@@ -2190,8 +2202,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/config";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/config";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2404,7 +2416,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 Element remoteDebuggingVersionElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RemoteDebuggingVersion");
-                if (remoteDebuggingVersionElement != null) {
+                if (remoteDebuggingVersionElement != null && (remoteDebuggingVersionElement.getTextContent() == null || remoteDebuggingVersionElement.getTextContent().isEmpty() == true) == false) {
                     boolean isNil = false;
                     Attr nilAttribute = remoteDebuggingVersionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null) {
@@ -2544,21 +2556,21 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-        simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/metrics" + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/metrics" + "?";
         if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0) {
             url = url + "&" + "names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
         }
         if (parameters.getStartTime() != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
         }
         if (parameters.getEndTime() != null) {
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+            simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
             url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
         }
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2765,7 +2777,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The web site instance ids reponse.
+    * @return The web site instance ids response.
     */
     @Override
     public Future<WebSiteInstanceIdsResponse> getInstanceIdsAsync(final String webSpaceName, final String webSiteName) {
@@ -2793,7 +2805,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The web site instance ids reponse.
+    * @return The web site instance ids response.
     */
     @Override
     public WebSiteInstanceIdsResponse getInstanceIds(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -2817,8 +2829,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/instanceids";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/instanceids";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2949,8 +2961,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/publishxml";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/publishxml";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3177,8 +3189,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3310,8 +3322,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/usages";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/usages";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3494,9 +3506,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces" + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces" + "?";
         url = url + "ishostnameavailable=" + URLEncoder.encode(webSiteName.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3620,8 +3632,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/restart";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/restart";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3754,10 +3766,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             WebSiteOperationStatusResponse result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != WebSiteOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
@@ -3852,8 +3870,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository" + "?" + "action=sync";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/repository" + "?" + "action=sync";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3979,8 +3997,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -4207,23 +4225,23 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 Element hostNameSslStatesSequenceElement2 = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 if (hostNameSslStatesSequenceElement2 != null) {
-                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").size(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").get(i2));
-                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").size(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslState").get(i2));
+                        WebSite.WebSiteHostNameSslState hostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(hostNameSslStateInstance);
                         
                         Element nameElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         if (nameElement != null) {
                             String nameInstance;
                             nameInstance = nameElement.getTextContent();
-                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                            hostNameSslStateInstance.setName(nameInstance);
                         }
                         
                         Element sslStateElement2 = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         if (sslStateElement2 != null) {
                             WebSiteSslState sslStateInstance;
                             sslStateInstance = WebSiteSslState.valueOf(sslStateElement2.getTextContent());
-                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                            hostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
                         Element thumbprintElement3 = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
@@ -4236,7 +4254,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil == false) {
                                 String thumbprintInstance;
                                 thumbprintInstance = thumbprintElement3.getTextContent();
-                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                                hostNameSslStateInstance.setThumbprint(thumbprintInstance);
                             }
                         }
                         
@@ -4250,7 +4268,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (isNil2 == false) {
                                 InetAddress virtualIPInstance;
                                 virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                                hostNameSslStateInstance.setVirtualIP(virtualIPInstance);
                             }
                         }
                     }
@@ -4359,6 +4377,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
+                                } else {
+                                    certificateInstance.setHostNames(null);
                                 }
                             }
                             
@@ -4502,6 +4522,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                         }
+                    } else {
+                        webSiteInstance.setSslCertificates(null);
                     }
                 }
                 
@@ -4672,8 +4694,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/config";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/config";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

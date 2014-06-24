@@ -56,7 +56,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     */
     public WebSiteGetPublishProfileResponse() {
         super();
-        this.publishProfiles = new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>();
+        this.setPublishProfiles(new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>());
     }
     
     /**
@@ -400,7 +400,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         *
         */
         public PublishProfile() {
-            this.databases = new ArrayList<WebSiteGetPublishProfileResponse.Database>();
+            this.setDatabases(new ArrayList<WebSiteGetPublishProfileResponse.Database>());
         }
     }
 }

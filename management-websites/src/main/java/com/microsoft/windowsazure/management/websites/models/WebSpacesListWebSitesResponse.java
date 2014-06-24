@@ -55,7 +55,7 @@ public class WebSpacesListWebSitesResponse extends OperationResponse implements 
     */
     public WebSpacesListWebSitesResponse() {
         super();
-        this.webSites = new ArrayList<WebSite>();
+        this.setWebSites(new ArrayList<WebSite>());
     }
     
     /**

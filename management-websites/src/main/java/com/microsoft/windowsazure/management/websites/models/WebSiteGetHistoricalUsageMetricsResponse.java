@@ -57,7 +57,7 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     */
     public WebSiteGetHistoricalUsageMetricsResponse() {
         super();
-        this.usageMetrics = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>();
+        this.setUsageMetrics(new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>());
     }
     
     /**
@@ -286,7 +286,7 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         *
         */
         public HistoricalUsageMetricData() {
-            this.values = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample>();
+            this.setValues(new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample>());
         }
     }
     

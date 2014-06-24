@@ -80,4 +80,28 @@ public class WebSpacesCreatePublishingUserParameters {
     public void setPublishingUserName(final String publishingUserNameValue) {
         this.publishingUserName = publishingUserNameValue;
     }
+    
+    /**
+    * Initializes a new instance of the WebSpacesCreatePublishingUserParameters
+    * class.
+    *
+    */
+    public WebSpacesCreatePublishingUserParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the WebSpacesCreatePublishingUserParameters
+    * class with required arguments.
+    *
+    */
+    public WebSpacesCreatePublishingUserParameters(String publishingPassword, String publishingUserName) {
+        if (publishingPassword == null) {
+            throw new NullPointerException("publishingPassword");
+        }
+        if (publishingUserName == null) {
+            throw new NullPointerException("publishingUserName");
+        }
+        this.setPublishingPassword(publishingPassword);
+        this.setPublishingUserName(publishingUserName);
+    }
 }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The web site instance ids reponse.
+* The web site instance ids response.
 */
 public class WebSiteInstanceIdsResponse extends OperationResponse implements Iterable<String> {
     private ArrayList<String> instanceIds;
@@ -57,7 +57,7 @@ public class WebSiteInstanceIdsResponse extends OperationResponse implements Ite
     */
     public WebSiteInstanceIdsResponse() {
         super();
-        this.instanceIds = new ArrayList<String>();
+        this.setInstanceIds(new ArrayList<String>());
     }
     
     /**

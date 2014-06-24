@@ -409,7 +409,7 @@ public interface WebSiteOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The web site instance ids reponse.
+    * @return The web site instance ids response.
     */
     WebSiteInstanceIdsResponse getInstanceIds(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
@@ -421,7 +421,7 @@ public interface WebSiteOperations {
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @return The web site instance ids reponse.
+    * @return The web site instance ids response.
     */
     Future<WebSiteInstanceIdsResponse> getInstanceIdsAsync(String webSpaceName, String webSiteName);
     

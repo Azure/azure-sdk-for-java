@@ -54,6 +54,6 @@ public class WebSiteListParameters {
     *
     */
     public WebSiteListParameters() {
-        this.propertiesToInclude = new ArrayList<String>();
+        this.setPropertiesToInclude(new ArrayList<String>());
     }
 }
