@@ -429,6 +429,26 @@ public class ManagementResourceStepdefs {
     public Object when_invoke_with_parameter_values_string(String methodName, String parameter1, String parameter1Type, String parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         return when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, TextUtility.convertStringTo(parameter2, parameter2Type), parameter2Type);
     }
+    
+    /**
+     * When_invoke_with_parameter_values_string.
+     *
+     * @param methodName the method name
+     * @param parameter1 the parameter1
+     * @param parameter1Type the parameter1 type
+     * @param parameter2 the parameter2
+     * @param parameter2Type the parameter2 type
+     * @return the object
+     * @throws NoSuchMethodException the no such method exception
+     * @throws InvocationTargetException the invocation target exception
+     * @throws IllegalAccessException the illegal access exception
+     * @throws ClassNotFoundException the class not found exception
+     */
+    @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\" and parameter \"([^\"]*)\"$")
+    public Object when_invoke_with_parameter_value_string_and_parameter(String methodName, String parameter1, String parameter1Type, String parameter2Name, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+        Object parameter2Value = objects.get(parameter2Name);
+        return when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, parameter2Value, parameter2Value.getClass().getName());
+    }
 
     /**
      * When_invoke_with_parameter_value.
