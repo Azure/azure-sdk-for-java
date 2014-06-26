@@ -319,3 +319,57 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         }
     }
 }
+        JobCollectionJobsUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateJobCollectionState(updateParameters);
+
+        //Assert
+        Assert.assertEquals(200, updateOperationResponse.getStatusCode());
+        Assert.assertNotNull(updateOperationResponse.getRequestId());
+        Assert.assertTrue(updateOperationResponse.getJobs().size() > 0);
+    }
+
+    @Test
+    public void updatejobStateSuccess() throws Exception {
+        //Act
+        JobUpdateStateParameters updateParameters = new JobUpdateStateParameters();
+        updateParameters.setState(JobState.Disabled);
+        updateParameters.setUpdateStateReason("just test");
+        JobUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateState(jobId, updateParameters);
+
+        //Assert
+        Assert.assertEquals(200, updateOperationResponse.getStatusCode());
+        Assert.assertNotNull(updateOperationResponse.getRequestId());
+        Assert.assertEquals(updateOperationResponse.getJob().getState(), JobState.Disabled);
+    }
+
+    private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
+        boolean operationCompleted = false;
+        int tryCount =0;
+        while ((!operationCompleted)&&(tryCount<maximumNumberOfTries))
+        {
+            CloudServiceOperationStatusResponse operationStatus = null;
+            try {
+                operationStatus = cloudServiceManagementClient.getOperationStatus(requestId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
+            {
+                operationCompleted = true;
+            } else {
+                try {
+                    Thread.sleep(waitTimeBetweenTriesInSeconds * 1000);
+                    tryCount ++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
