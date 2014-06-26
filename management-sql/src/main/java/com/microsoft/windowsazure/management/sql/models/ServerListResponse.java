@@ -28,14 +28,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response structure for the Server List operation.
+* The response structure for the Server List operation.  Contains a list of all
+* the servers in a subscription.
 */
 public class ServerListResponse extends OperationResponse implements Iterable<Server> {
     private ArrayList<Server> servers;
     
     /**
-    * Optional. Gets or sets the SQL Servers that are valid for your
-    * subscription.
+    * Optional. Gets the collection of Azure SQL Database Servers that are
+    * valid for your subscription.
     * @return The Servers value.
     */
     public ArrayList<Server> getServers() {
@@ -43,8 +44,8 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     }
     
     /**
-    * Optional. Gets or sets the SQL Servers that are valid for your
-    * subscription.
+    * Optional. Gets the collection of Azure SQL Database Servers that are
+    * valid for your subscription.
     * @param serversValue The Servers value.
     */
     public void setServers(final ArrayList<Server> serversValue) {
@@ -57,7 +58,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     */
     public ServerListResponse() {
         super();
-        this.servers = new ArrayList<Server>();
+        this.setServers(new ArrayList<Server>());
     }
     
     /**

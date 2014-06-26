@@ -28,14 +28,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response structure for the DAC GetStatus operation.
+* Represents a list of import or export status values returned from GetStatus.
 */
 public class DacGetStatusResponse extends OperationResponse implements Iterable<StatusInfo> {
     private ArrayList<StatusInfo> statusInfoList;
     
     /**
-    * Optional. Gets or sets the list of statuses relevant to this
-    * import/export request.
+    * Optional. Gets a collection of statuses relevant to this import or export
+    * request.
     * @return The StatusInfoList value.
     */
     public ArrayList<StatusInfo> getStatusInfoList() {
@@ -43,8 +43,8 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     }
     
     /**
-    * Optional. Gets or sets the list of statuses relevant to this
-    * import/export request.
+    * Optional. Gets a collection of statuses relevant to this import or export
+    * request.
     * @param statusInfoListValue The StatusInfoList value.
     */
     public void setStatusInfoList(final ArrayList<StatusInfo> statusInfoListValue) {
@@ -57,7 +57,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     */
     public DacGetStatusResponse() {
         super();
-        this.statusInfoList = new ArrayList<StatusInfo>();
+        this.setStatusInfoList(new ArrayList<StatusInfo>());
     }
     
     /**

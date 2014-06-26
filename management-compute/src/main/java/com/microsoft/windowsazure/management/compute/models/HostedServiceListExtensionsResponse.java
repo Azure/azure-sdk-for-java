@@ -56,7 +56,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     */
     public HostedServiceListExtensionsResponse() {
         super();
-        this.extensions = new ArrayList<HostedServiceListExtensionsResponse.Extension>();
+        this.setExtensions(new ArrayList<HostedServiceListExtensionsResponse.Extension>());
     }
     
     /**
@@ -207,6 +207,25 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         */
         public void setVersion(final String versionValue) {
             this.version = versionValue;
+        }
+        
+        /**
+        * Initializes a new instance of the Extension class.
+        *
+        */
+        public Extension() {
+        }
+        
+        /**
+        * Initializes a new instance of the Extension class with required
+        * arguments.
+        *
+        */
+        public Extension(String type) {
+            if (type == null) {
+                throw new NullPointerException("type");
+            }
+            this.setType(type);
         }
     }
 }

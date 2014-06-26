@@ -465,11 +465,11 @@ public class WebSiteUpdateConfigurationParameters {
     *
     */
     public WebSiteUpdateConfigurationParameters() {
-        this.appSettings = new HashMap<String, String>();
-        this.connectionStrings = new ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>();
-        this.defaultDocuments = new ArrayList<String>();
-        this.handlerMappings = new ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>();
-        this.metadata = new HashMap<String, String>();
+        this.setAppSettings(new HashMap<String, String>());
+        this.setConnectionStrings(new ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>());
+        this.setDefaultDocuments(new ArrayList<String>());
+        this.setHandlerMappings(new ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>());
+        this.setMetadata(new HashMap<String, String>());
     }
     
     /**

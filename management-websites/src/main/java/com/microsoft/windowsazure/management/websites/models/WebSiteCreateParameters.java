@@ -184,7 +184,24 @@ public class WebSiteCreateParameters {
     *
     */
     public WebSiteCreateParameters() {
-        this.hostNames = new ArrayList<String>();
+        this.setHostNames(new ArrayList<String>());
+    }
+    
+    /**
+    * Initializes a new instance of the WebSiteCreateParameters class with
+    * required arguments.
+    *
+    */
+    public WebSiteCreateParameters(String name, String webSpaceName) {
+        this();
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        this.setName(name);
+        this.setWebSpaceName(webSpaceName);
     }
     
     /**
@@ -245,6 +262,33 @@ public class WebSiteCreateParameters {
         */
         public void setPlan(final String planValue) {
             this.plan = planValue;
+        }
+        
+        /**
+        * Initializes a new instance of the WebSpaceDetails class.
+        *
+        */
+        public WebSpaceDetails() {
+        }
+        
+        /**
+        * Initializes a new instance of the WebSpaceDetails class with required
+        * arguments.
+        *
+        */
+        public WebSpaceDetails(String geoRegion, String name, String plan) {
+            if (geoRegion == null) {
+                throw new NullPointerException("geoRegion");
+            }
+            if (name == null) {
+                throw new NullPointerException("name");
+            }
+            if (plan == null) {
+                throw new NullPointerException("plan");
+            }
+            this.setGeoRegion(geoRegion);
+            this.setName(name);
+            this.setPlan(plan);
         }
     }
 }

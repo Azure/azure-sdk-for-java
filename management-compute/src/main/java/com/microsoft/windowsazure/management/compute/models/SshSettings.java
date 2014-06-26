@@ -72,7 +72,7 @@ public class SshSettings {
     *
     */
     public SshSettings() {
-        this.keyPairs = new ArrayList<SshSettingKeyPair>();
-        this.publicKeys = new ArrayList<SshSettingPublicKey>();
+        this.setKeyPairs(new ArrayList<SshSettingKeyPair>());
+        this.setPublicKeys(new ArrayList<SshSettingPublicKey>());
     }
 }

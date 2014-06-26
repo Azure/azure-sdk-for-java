@@ -53,6 +53,6 @@ public class VirtualMachineStartRolesParameters {
     *
     */
     public VirtualMachineStartRolesParameters() {
-        this.roles = new ArrayList<String>();
+        this.setRoles(new ArrayList<String>());
     }
 }

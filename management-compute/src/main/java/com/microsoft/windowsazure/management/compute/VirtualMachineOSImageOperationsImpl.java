@@ -24,6 +24,8 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -31,16 +33,21 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetDetailsResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageReplicateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageReplicateResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageUpdateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageUpdateResponse;
+import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -93,6 +100,235 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     */
     public ComputeManagementClientImpl getClient() {
         return this.client;
+    }
+    
+    /**
+    * Share an already replicated OS image. This operation is only for
+    * publishers. You have to be registered as image publisher with Windows
+    * Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to share.
+    * @param permission Required. The sharing permission: public, msdn, or
+    * private.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginSharingAsync(final String imageName, final String permission) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginSharing(imageName, permission);
+            }
+         });
+    }
+    
+    /**
+    * Share an already replicated OS image. This operation is only for
+    * publishers. You have to be registered as image publisher with Windows
+    * Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to share.
+    * @param permission Required. The sharing permission: public, msdn, or
+    * private.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException {
+        // Validate
+        if (imageName == null) {
+            throw new NullPointerException("imageName");
+        }
+        if (permission == null) {
+            throw new NullPointerException("permission");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            tracingParameters.put("permission", permission);
+            CloudTracing.enter(invocationId, this, "beginSharingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/share" + "?";
+        url = url + "permission=" + URLEncoder.encode(permission.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Unreplicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this. Note: The operation removes the
+    * published copies of the user OS Image. It does not remove the actual
+    * user OS Image. To remove the actual user OS Image, the publisher will
+    * have to call Delete OS Image.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate. Note: The OS Image Name should be the user OS Image, not the
+    * published name of the OS Image.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginUnreplicatingAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginUnreplicating(imageName);
+            }
+         });
+    }
+    
+    /**
+    * Unreplicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this. Note: The operation removes the
+    * published copies of the user OS Image. It does not remove the actual
+    * user OS Image. To remove the actual user OS Image, the publisher will
+    * have to call Delete OS Image.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate. Note: The OS Image Name should be the user OS Image, not the
+    * published name of the OS Image.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException {
+        // Validate
+        if (imageName == null) {
+            throw new NullPointerException("imageName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            CloudTracing.enter(invocationId, this, "beginUnreplicatingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/unreplicate";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -178,8 +414,8 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -194,7 +430,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -544,11 +780,11 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim() + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -562,7 +798,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -658,8 +894,8 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -673,7 +909,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -864,6 +1100,297 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
+    * Gets OS Image's properties and its replication details. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate.
+    * @return The Get Details OS Images operation response.
+    */
+    @Override
+    public Future<VirtualMachineOSImageGetDetailsResponse> getDetailsAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageGetDetailsResponse>() { 
+            @Override
+            public VirtualMachineOSImageGetDetailsResponse call() throws Exception {
+                return getDetails(imageName);
+            }
+         });
+    }
+    
+    /**
+    * Gets OS Image's properties and its replication details. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The Get Details OS Images operation response.
+    */
+    @Override
+    public VirtualMachineOSImageGetDetailsResponse getDetails(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+        // Validate
+        if (imageName == null) {
+            throw new NullPointerException("imageName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            CloudTracing.enter(invocationId, this, "getDetailsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/details";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            VirtualMachineOSImageGetDetailsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new VirtualMachineOSImageGetDetailsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+            
+            Element oSImageDetailsElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImageDetails");
+            if (oSImageDetailsElement != null) {
+                Element isCorruptedElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsCorrupted");
+                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
+                    boolean isCorruptedInstance;
+                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent().toLowerCase());
+                    result.setIsCorrupted(isCorruptedInstance);
+                }
+                
+                Element replicationProgressSequenceElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgress");
+                if (replicationProgressSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element replicationProgressElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").get(i1));
+                        VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement replicationProgressElementInstance = new VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement();
+                        result.getReplicationProgress().add(replicationProgressElementInstance);
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            replicationProgressElementInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element progressElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Progress");
+                        if (progressElement != null) {
+                            String progressInstance;
+                            progressInstance = progressElement.getTextContent();
+                            replicationProgressElementInstance.setProgress(progressInstance);
+                        }
+                    }
+                }
+                
+                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                if (affinityGroupElement != null) {
+                    String affinityGroupInstance;
+                    affinityGroupInstance = affinityGroupElement.getTextContent();
+                    result.setAffinityGroup(affinityGroupInstance);
+                }
+                
+                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Category");
+                if (categoryElement != null) {
+                    String categoryInstance;
+                    categoryInstance = categoryElement.getTextContent();
+                    result.setCategory(categoryInstance);
+                }
+                
+                Element labelElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                if (labelElement != null) {
+                    String labelInstance;
+                    labelInstance = labelElement.getTextContent();
+                    result.setLabel(labelInstance);
+                }
+                
+                Element locationElement2 = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                if (locationElement2 != null) {
+                    String locationInstance2;
+                    locationInstance2 = locationElement2.getTextContent();
+                    result.setLocation(locationInstance2);
+                }
+                
+                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                if (logicalSizeInGBElement != null) {
+                    double logicalSizeInGBInstance;
+                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
+                }
+                
+                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                if (mediaLinkElement != null) {
+                    URI mediaLinkInstance;
+                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                    result.setMediaLinkUri(mediaLinkInstance);
+                }
+                
+                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                if (nameElement != null) {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                Element osElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "OS");
+                if (osElement != null) {
+                    String osInstance;
+                    osInstance = osElement.getTextContent();
+                    result.setOperatingSystemType(osInstance);
+                }
+                
+                Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                if (eulaElement != null) {
+                    String eulaInstance;
+                    eulaInstance = eulaElement.getTextContent();
+                    result.setEula(eulaInstance);
+                }
+                
+                Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                if (descriptionElement != null) {
+                    String descriptionInstance;
+                    descriptionInstance = descriptionElement.getTextContent();
+                    result.setDescription(descriptionInstance);
+                }
+                
+                Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                if (imageFamilyElement != null) {
+                    String imageFamilyInstance;
+                    imageFamilyInstance = imageFamilyElement.getTextContent();
+                    result.setImageFamily(imageFamilyInstance);
+                }
+                
+                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
+                    boolean showInGuiInstance;
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                    result.setShowInGui(showInGuiInstance);
+                }
+                
+                Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                if (publishedDateElement != null) {
+                    Calendar publishedDateInstance;
+                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                    result.setPublishedDate(publishedDateInstance);
+                }
+                
+                Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
+                    boolean isPremiumInstance;
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
+                    result.setIsPremium(isPremiumInstance);
+                }
+                
+                Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                if (iconUriElement != null) {
+                    URI iconUriInstance;
+                    iconUriInstance = new URI(iconUriElement.getTextContent());
+                    result.setIconUri(iconUriInstance);
+                }
+                
+                Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                if (privacyUriElement != null) {
+                    URI privacyUriInstance;
+                    privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                    result.setPrivacyUri(privacyUriInstance);
+                }
+                
+                Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                if (recommendedVMSizeElement != null) {
+                    String recommendedVMSizeInstance;
+                    recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
+                    result.setRecommendedVMSize(recommendedVMSizeInstance);
+                }
+                
+                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                if (publisherNameElement != null) {
+                    String publisherNameInstance;
+                    publisherNameInstance = publisherNameElement.getTextContent();
+                    result.setPublisherName(publisherNameInstance);
+                }
+                
+                Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                if (smallIconUriElement != null) {
+                    URI smallIconUriInstance;
+                    smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
+                    result.setSmallIconUri(smallIconUriInstance);
+                }
+                
+                Element languageElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                if (languageElement != null) {
+                    String languageInstance;
+                    languageInstance = languageElement.getTextContent();
+                    result.setLanguage(languageInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * The List OS Images operation retrieves a list of the operating system
     * images from the image repository.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157191.aspx for
@@ -913,8 +1440,8 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -928,7 +1455,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1118,6 +1645,411 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     }
     
     /**
+    * Replicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine OS image to
+    * replicate.
+    * @param parameters Required. Parameters supplied to the Replicate Virtual
+    * Machine Image operation.
+    * @return The response body contains the published name of the image.
+    */
+    @Override
+    public Future<VirtualMachineOSImageReplicateResponse> replicateAsync(final String imageName, final VirtualMachineOSImageReplicateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageReplicateResponse>() { 
+            @Override
+            public VirtualMachineOSImageReplicateResponse call() throws Exception {
+                return replicate(imageName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Replicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine OS image to
+    * replicate.
+    * @param parameters Required. Parameters supplied to the Replicate Virtual
+    * Machine Image operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the published name of the image.
+    */
+    @Override
+    public VirtualMachineOSImageReplicateResponse replicate(String imageName, VirtualMachineOSImageReplicateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (imageName == null) {
+            throw new NullPointerException("imageName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "replicateAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/replicate";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element replicationInputElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReplicationInput");
+        requestDoc.appendChild(replicationInputElement);
+        
+        if (parameters.getTargetLocations() != null) {
+            Element targetLocationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetLocations");
+            for (String targetLocationsItem : parameters.getTargetLocations()) {
+                Element targetLocationsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Region");
+                targetLocationsItemElement.appendChild(requestDoc.createTextNode(targetLocationsItem));
+                targetLocationsSequenceElement.appendChild(targetLocationsItemElement);
+            }
+            replicationInputElement.appendChild(targetLocationsSequenceElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            VirtualMachineOSImageReplicateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new VirtualMachineOSImageReplicateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+            
+            Element virtualMachineOSImageReplicateResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "", "VirtualMachineOSImageReplicateResponse");
+            if (virtualMachineOSImageReplicateResponseElement != null) {
+                Element stringElement = XmlUtility.getElementByTagNameNS(virtualMachineOSImageReplicateResponseElement, "", "string");
+                if (stringElement != null) {
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Share an already replicated OS image. This operation is only for
+    * publishers. You have to be registered as image publisher with Windows
+    * Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to share.
+    * @param permission Required. The sharing permission: public, msdn, or
+    * private.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> shareAsync(final String imageName, final String permission) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return share(imageName, permission);
+            }
+         });
+    }
+    
+    /**
+    * Share an already replicated OS image. This operation is only for
+    * publishers. You have to be registered as image publisher with Windows
+    * Azure to be able to call this.
+    *
+    * @param imageName Required. The name of the virtual machine image to share.
+    * @param permission Required. The sharing permission: public, msdn, or
+    * private.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse share(String imageName, String permission) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            tracingParameters.put("permission", permission);
+            CloudTracing.enter(invocationId, this, "shareAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginSharingAsync(imageName, permission).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Unreplicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this. Note: The operation removes the
+    * published copies of the user OS Image. It does not remove the actual
+    * user OS Image. To remove the actual user OS Image, the publisher will
+    * have to call Delete OS Image.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate. Note: The OS Image Name should be the user OS Image, not the
+    * published name of the OS Image.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> unreplicateAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return unreplicate(imageName);
+            }
+         });
+    }
+    
+    /**
+    * Unreplicate an OS image to multiple target locations. This operation is
+    * only for publishers. You have to be registered as image publisher with
+    * Windows Azure to be able to call this. Note: The operation removes the
+    * published copies of the user OS Image. It does not remove the actual
+    * user OS Image. To remove the actual user OS Image, the publisher will
+    * have to call Delete OS Image.
+    *
+    * @param imageName Required. The name of the virtual machine image to
+    * replicate. Note: The OS Image Name should be the user OS Image, not the
+    * published name of the OS Image.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse unreplicate(String imageName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("imageName", imageName);
+            CloudTracing.enter(invocationId, this, "unreplicateAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginUnreplicatingAsync(imageName).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
     * The Update OS Image operation updates an OS image that in your image
     * repository.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157198.aspx for
@@ -1150,16 +2082,6 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * updated.
     * @param parameters Required. Parameters supplied to the Update Virtual
     * Machine Image operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1170,13 +2092,22 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
     @Override
-    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException {
+    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -1200,8 +2131,8 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/images/" + imageName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1216,7 +2147,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1249,6 +2180,12 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             oSImageElement.appendChild(imageFamilyElement);
         }
         
+        if (parameters.isShowInGui() != null) {
+            Element showInGuiElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
+            showInGuiElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isShowInGui()).toLowerCase()));
+            oSImageElement.appendChild(showInGuiElement);
+        }
+        
         if (parameters.getPublishedDate() != null) {
             Element publishedDateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
@@ -1257,9 +2194,11 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             oSImageElement.appendChild(publishedDateElement);
         }
         
-        Element isPremiumElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-        isPremiumElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isPremium()).toLowerCase()));
-        oSImageElement.appendChild(isPremiumElement);
+        if (parameters.isPremium() != null) {
+            Element isPremiumElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
+            isPremiumElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isPremium()).toLowerCase()));
+            oSImageElement.appendChild(isPremiumElement);
+        }
         
         if (parameters.getPrivacyUri() != null) {
             Element privacyUriElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
@@ -1424,10 +2363,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
+                Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
                     result.setShowInGui(showInGuiInstance);
                 }
                 

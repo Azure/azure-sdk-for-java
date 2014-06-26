@@ -34,7 +34,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     private ArrayList<StorageAccount> storageAccounts;
     
     /**
-    * Optional.
+    * Optional. The requested storage accounts.
     * @return The StorageAccounts value.
     */
     public ArrayList<StorageAccount> getStorageAccounts() {
@@ -42,7 +42,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     }
     
     /**
-    * Optional.
+    * Optional. The requested storage accounts.
     * @param storageAccountsValue The StorageAccounts value.
     */
     public void setStorageAccounts(final ArrayList<StorageAccount> storageAccountsValue) {
@@ -55,7 +55,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     */
     public StorageAccountListResponse() {
         super();
-        this.storageAccounts = new ArrayList<StorageAccount>();
+        this.setStorageAccounts(new ArrayList<StorageAccount>());
     }
     
     /**

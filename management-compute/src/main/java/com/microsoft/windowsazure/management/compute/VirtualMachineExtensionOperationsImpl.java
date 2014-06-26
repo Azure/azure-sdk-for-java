@@ -132,8 +132,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/resourceextensions";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -147,7 +147,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -274,6 +274,20 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         boolean isJsonExtensionInstance;
                         isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                    }
+                    
+                    Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                    if (isInternalExtensionElement != null && (isInternalExtensionElement.getTextContent() == null || isInternalExtensionElement.getTextContent().isEmpty() == true) == false) {
+                        boolean isInternalExtensionInstance;
+                        isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                    }
+                    
+                    Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                    if (disallowMajorVersionUpgradeElement != null && (disallowMajorVersionUpgradeElement.getTextContent() == null || disallowMajorVersionUpgradeElement.getTextContent().isEmpty() == true) == false) {
+                        boolean disallowMajorVersionUpgradeInstance;
+                        disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
                     }
                 }
             }
@@ -362,8 +376,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -377,7 +391,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -504,6 +518,20 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         boolean isJsonExtensionInstance;
                         isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                    }
+                    
+                    Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                    if (isInternalExtensionElement != null && (isInternalExtensionElement.getTextContent() == null || isInternalExtensionElement.getTextContent().isEmpty() == true) == false) {
+                        boolean isInternalExtensionInstance;
+                        isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                    }
+                    
+                    Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                    if (disallowMajorVersionUpgradeElement != null && (disallowMajorVersionUpgradeElement.getTextContent() == null || disallowMajorVersionUpgradeElement.getTextContent().isEmpty() == true) == false) {
+                        boolean disallowMajorVersionUpgradeInstance;
+                        disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
                     }
                 }
             }

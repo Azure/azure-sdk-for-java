@@ -219,6 +219,6 @@ public class HostedServiceProperties {
     *
     */
     public HostedServiceProperties() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

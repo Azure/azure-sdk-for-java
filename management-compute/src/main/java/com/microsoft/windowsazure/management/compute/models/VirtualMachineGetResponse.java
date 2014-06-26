@@ -219,7 +219,7 @@ public class VirtualMachineGetResponse extends OperationResponse {
     */
     public VirtualMachineGetResponse() {
         super();
-        this.configurationSets = new ArrayList<ConfigurationSet>();
-        this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
+        this.setConfigurationSets(new ArrayList<ConfigurationSet>());
+        this.setDataVirtualHardDisks(new ArrayList<DataVirtualHardDisk>());
     }
 }

@@ -130,10 +130,10 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "?";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "?";
         url = url + "op=checkavailability";
         url = url + "&" + "address=" + URLEncoder.encode(ipAddress.getHostAddress(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -147,7 +147,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;

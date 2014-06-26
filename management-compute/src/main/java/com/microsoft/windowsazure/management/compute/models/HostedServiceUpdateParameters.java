@@ -118,6 +118,6 @@ public class HostedServiceUpdateParameters {
     *
     */
     public HostedServiceUpdateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

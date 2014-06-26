@@ -197,14 +197,36 @@ public class DeploymentGetResponse extends OperationResponse {
         this.lastModifiedTime = lastModifiedTimeValue;
     }
     
-    private boolean locked;
+    private ArrayList<LoadBalancer> loadBalancers;
+    
+    /**
+    * Optional. Optional. A list of internal load balancers that each provide
+    * load balancing on a private VIP. It's created when a name is assigned in
+    * the list here.
+    * @return The LoadBalancers value.
+    */
+    public ArrayList<LoadBalancer> getLoadBalancers() {
+        return this.loadBalancers;
+    }
+    
+    /**
+    * Optional. Optional. A list of internal load balancers that each provide
+    * load balancing on a private VIP. It's created when a name is assigned in
+    * the list here.
+    * @param loadBalancersValue The LoadBalancers value.
+    */
+    public void setLoadBalancers(final ArrayList<LoadBalancer> loadBalancersValue) {
+        this.loadBalancers = loadBalancersValue;
+    }
+    
+    private Boolean locked;
     
     /**
     * Optional. Indicates whether the deployment is locked for new write
     * operations because an existing operation is updating the deployment.
     * @return The Locked value.
     */
-    public boolean isLocked() {
+    public Boolean isLocked() {
         return this.locked;
     }
     
@@ -213,7 +235,7 @@ public class DeploymentGetResponse extends OperationResponse {
     * operations because an existing operation is updating the deployment.
     * @param lockedValue The Locked value.
     */
-    public void setLocked(final boolean lockedValue) {
+    public void setLocked(final Boolean lockedValue) {
         this.locked = lockedValue;
     }
     
@@ -276,8 +298,7 @@ public class DeploymentGetResponse extends OperationResponse {
     private String reservedIPName;
     
     /**
-    * Optional. Preview Only. The name of the Reserved IP that the deployment
-    * belongs to.
+    * Optional. The name of the Reserved IP that the deployment belongs to.
     * @return The ReservedIPName value.
     */
     public String getReservedIPName() {
@@ -285,8 +306,7 @@ public class DeploymentGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Preview Only. The name of the Reserved IP that the deployment
-    * belongs to.
+    * Optional. The name of the Reserved IP that the deployment belongs to.
     * @param reservedIPNameValue The ReservedIPName value.
     */
     public void setReservedIPName(final String reservedIPNameValue) {
@@ -329,14 +349,14 @@ public class DeploymentGetResponse extends OperationResponse {
         this.roles = rolesValue;
     }
     
-    private boolean rollbackAllowed;
+    private Boolean rollbackAllowed;
     
     /**
     * Optional. Indicates whether the Rollback Update Or Upgrade operation is
     * allowed at this time.
     * @return The RollbackAllowed value.
     */
-    public boolean isRollbackAllowed() {
+    public Boolean isRollbackAllowed() {
         return this.rollbackAllowed;
     }
     
@@ -345,7 +365,7 @@ public class DeploymentGetResponse extends OperationResponse {
     * allowed at this time.
     * @param rollbackAllowedValue The RollbackAllowed value.
     */
-    public void setRollbackAllowed(final boolean rollbackAllowedValue) {
+    public void setRollbackAllowed(final Boolean rollbackAllowedValue) {
         this.rollbackAllowed = rollbackAllowedValue;
     }
     
@@ -493,9 +513,10 @@ public class DeploymentGetResponse extends OperationResponse {
     */
     public DeploymentGetResponse() {
         super();
-        this.extendedProperties = new HashMap<String, String>();
-        this.roleInstances = new ArrayList<RoleInstance>();
-        this.roles = new ArrayList<Role>();
-        this.virtualIPAddresses = new ArrayList<VirtualIPAddress>();
+        this.setExtendedProperties(new HashMap<String, String>());
+        this.setLoadBalancers(new ArrayList<LoadBalancer>());
+        this.setRoleInstances(new ArrayList<RoleInstance>());
+        this.setRoles(new ArrayList<Role>());
+        this.setVirtualIPAddresses(new ArrayList<VirtualIPAddress>());
     }
 }

@@ -26,13 +26,33 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The response returned from the Create Server operation.
+* The response returned from the Create Server operation.  This contains all
+* the information returned from the service when a server is created.
 */
 public class ServerCreateResponse extends OperationResponse {
+    private String fullyQualifiedDomainName;
+    
+    /**
+    * Optional. Gets the fully qualified domain name of the server.
+    * @return The FullyQualifiedDomainName value.
+    */
+    public String getFullyQualifiedDomainName() {
+        return this.fullyQualifiedDomainName;
+    }
+    
+    /**
+    * Optional. Gets the fully qualified domain name of the server.
+    * @param fullyQualifiedDomainNameValue The FullyQualifiedDomainName value.
+    */
+    public void setFullyQualifiedDomainName(final String fullyQualifiedDomainNameValue) {
+        this.fullyQualifiedDomainName = fullyQualifiedDomainNameValue;
+    }
+    
     private String serverName;
     
     /**
-    * Optional. Gets or sets the name of the server that was created.
+    * Optional. Gets the name of the Azure SQL Database Server that was
+    * provisioned.
     * @return The ServerName value.
     */
     public String getServerName() {
@@ -40,7 +60,8 @@ public class ServerCreateResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets the name of the server that was created.
+    * Optional. Gets the name of the Azure SQL Database Server that was
+    * provisioned.
     * @param serverNameValue The ServerName value.
     */
     public void setServerName(final String serverNameValue) {

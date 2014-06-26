@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the database create response.
+* Represents the response to a create database request from the service.
 */
 public class DatabaseCreateResponse extends OperationResponse {
     private Database database;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database that was created as a result of the
+    * call to Create Database.
     * @return The Database value.
     */
     public Database getDatabase() {
@@ -40,7 +41,8 @@ public class DatabaseCreateResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the database that was created as a result of the
+    * call to Create Database.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final Database databaseValue) {

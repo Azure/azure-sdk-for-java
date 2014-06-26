@@ -460,10 +460,10 @@ public class WebSite {
     *
     */
     public WebSite() {
-        this.enabledHostNames = new ArrayList<String>();
-        this.hostNames = new ArrayList<String>();
-        this.hostNameSslStates = new ArrayList<WebSite.WebSiteHostNameSslState>();
-        this.sslCertificates = new ArrayList<WebSite.WebSiteSslCertificate>();
+        this.setEnabledHostNames(new ArrayList<String>());
+        this.setHostNames(new ArrayList<String>());
+        this.setHostNameSslStates(new ArrayList<WebSite.WebSiteHostNameSslState>());
+        this.setSslCertificates(new ArrayList<WebSite.WebSiteSslCertificate>());
     }
     
     /**
@@ -613,9 +613,9 @@ public class WebSite {
         *
         */
         public WebSiteProperties() {
-            this.appSettings = new HashMap<String, String>();
-            this.metadata = new HashMap<String, String>();
-            this.properties = new HashMap<String, String>();
+            this.setAppSettings(new HashMap<String, String>());
+            this.setMetadata(new HashMap<String, String>());
+            this.setProperties(new HashMap<String, String>());
         }
     }
     
@@ -876,7 +876,7 @@ public class WebSite {
         *
         */
         public WebSiteSslCertificate() {
-            this.hostNames = new ArrayList<String>();
+            this.setHostNames(new ArrayList<String>());
         }
     }
 }

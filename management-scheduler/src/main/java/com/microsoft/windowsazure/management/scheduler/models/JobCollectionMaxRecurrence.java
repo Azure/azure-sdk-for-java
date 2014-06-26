@@ -61,4 +61,21 @@ public class JobCollectionMaxRecurrence {
     public void setInterval(final int intervalValue) {
         this.interval = intervalValue;
     }
+    
+    /**
+    * Initializes a new instance of the JobCollectionMaxRecurrence class.
+    *
+    */
+    public JobCollectionMaxRecurrence() {
+    }
+    
+    /**
+    * Initializes a new instance of the JobCollectionMaxRecurrence class with
+    * required arguments.
+    *
+    */
+    public JobCollectionMaxRecurrence(JobCollectionRecurrenceFrequency frequency, int interval) {
+        this.setFrequency(frequency);
+        this.setInterval(interval);
+    }
 }

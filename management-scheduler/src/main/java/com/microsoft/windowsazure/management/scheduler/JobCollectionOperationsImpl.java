@@ -164,8 +164,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -348,8 +348,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -477,8 +477,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -674,10 +674,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + "?";
         url = url + "op=checknameavailability";
         url = url + "&" + "resourceName=" + URLEncoder.encode(jobCollectionName.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1042,8 +1042,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

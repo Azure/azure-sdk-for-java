@@ -56,7 +56,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     */
     public ClientRootCertificateListResponse() {
         super();
-        this.clientRootCertificates = new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>();
+        this.setClientRootCertificates(new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>());
     }
     
     /**

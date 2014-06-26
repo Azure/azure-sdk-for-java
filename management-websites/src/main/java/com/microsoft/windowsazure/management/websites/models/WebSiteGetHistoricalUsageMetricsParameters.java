@@ -98,6 +98,6 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     *
     */
     public WebSiteGetHistoricalUsageMetricsParameters() {
-        this.metricNames = new ArrayList<String>();
+        this.setMetricNames(new ArrayList<String>());
     }
 }

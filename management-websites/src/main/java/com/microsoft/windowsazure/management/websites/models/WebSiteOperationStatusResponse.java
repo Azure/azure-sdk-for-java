@@ -188,11 +188,11 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     */
     public WebSiteOperationStatusResponse() {
         super();
-        this.errors = new ArrayList<WebSiteOperationStatusResponse.Error>();
+        this.setErrors(new ArrayList<WebSiteOperationStatusResponse.Error>());
     }
     
     /**
-    * Information about an error that occured during the operation.
+    * Information about an error that occurred during the operation.
     */
     public static class Error {
         private String code;
@@ -308,7 +308,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
         *
         */
         public Error() {
-            this.parameters = new ArrayList<String>();
+            this.setParameters(new ArrayList<String>());
         }
     }
 }

@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Specifies the edition of the SQL database.
+* Defines the valid editions of Azure SQL Databases.
 */
 public abstract class DatabaseEditions {
     /**
@@ -41,4 +41,23 @@ public abstract class DatabaseEditions {
     * in 10GB increments up to 50GB, and then 50 GB increments.
     */
     public static final String BUSINESS = "Business";
+    
+    /**
+    * The Basic Edition Database is best suited for small databases with few
+    * transactions (<100) per minute and only a couple users.
+    */
+    public static final String BASIC = "Basic";
+    
+    /**
+    * The Standard Edition Database is best suited for a group of users
+    * makingfewer than 1000 transactions per minute.
+    */
+    public static final String STANDARD = "Standard";
+    
+    /**
+    * The Premium Edition Database is for situations requiring a high number of
+    * transactionsper second (>100).  Supports more users than Basic and
+    * Standard.
+    */
+    public static final String PREMIUM = "Premium";
 }

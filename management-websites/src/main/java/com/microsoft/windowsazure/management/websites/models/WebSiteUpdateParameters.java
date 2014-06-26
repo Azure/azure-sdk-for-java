@@ -258,9 +258,9 @@ public class WebSiteUpdateParameters {
     *
     */
     public WebSiteUpdateParameters() {
-        this.hostNames = new ArrayList<String>();
-        this.hostNameSslStates = new ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>();
-        this.sslCertificates = new ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate>();
+        this.setHostNames(new ArrayList<String>());
+        this.setHostNameSslStates(new ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>());
+        this.setSslCertificates(new ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate>());
     }
     
     /**

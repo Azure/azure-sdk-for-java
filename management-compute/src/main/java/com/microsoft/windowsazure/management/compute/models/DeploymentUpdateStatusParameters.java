@@ -44,4 +44,20 @@ public class DeploymentUpdateStatusParameters {
     public void setStatus(final UpdatedDeploymentStatus statusValue) {
         this.status = statusValue;
     }
+    
+    /**
+    * Initializes a new instance of the DeploymentUpdateStatusParameters class.
+    *
+    */
+    public DeploymentUpdateStatusParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentUpdateStatusParameters class
+    * with required arguments.
+    *
+    */
+    public DeploymentUpdateStatusParameters(UpdatedDeploymentStatus status) {
+        this.setStatus(status);
+    }
 }

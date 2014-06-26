@@ -159,8 +159,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -299,8 +299,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -632,8 +632,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -827,8 +827,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

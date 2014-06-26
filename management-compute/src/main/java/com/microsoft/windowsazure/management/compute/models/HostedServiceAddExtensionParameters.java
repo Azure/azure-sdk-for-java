@@ -198,4 +198,28 @@ public class HostedServiceAddExtensionParameters {
     public void setVersion(final String versionValue) {
         this.version = versionValue;
     }
+    
+    /**
+    * Initializes a new instance of the HostedServiceAddExtensionParameters
+    * class.
+    *
+    */
+    public HostedServiceAddExtensionParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the HostedServiceAddExtensionParameters
+    * class with required arguments.
+    *
+    */
+    public HostedServiceAddExtensionParameters(String type, String id) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
+        if (id == null) {
+            throw new NullPointerException("id");
+        }
+        this.setType(type);
+        this.setId(id);
+    }
 }

@@ -108,14 +108,14 @@ public class VirtualMachineOSImageUpdateParameters {
         this.imageFamily = imageFamilyValue;
     }
     
-    private boolean isPremium;
+    private Boolean isPremium;
     
     /**
     * Optional. Indicates if the image contains software or associated services
     * that will incur charges above the core price for the virtual machine.
     * @return The IsPremium value.
     */
-    public boolean isPremium() {
+    public Boolean isPremium() {
         return this.isPremium;
     }
     
@@ -124,7 +124,7 @@ public class VirtualMachineOSImageUpdateParameters {
     * that will incur charges above the core price for the virtual machine.
     * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(final boolean isPremiumValue) {
+    public void setIsPremium(final Boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
     
@@ -230,6 +230,26 @@ public class VirtualMachineOSImageUpdateParameters {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
     
+    private Boolean showInGui;
+    
+    /**
+    * Optional. When published, should this image show up in the windows azure
+    * image gallery or not. True by default.
+    * @return The ShowInGui value.
+    */
+    public Boolean isShowInGui() {
+        return this.showInGui;
+    }
+    
+    /**
+    * Optional. When published, should this image show up in the windows azure
+    * image gallery or not. True by default.
+    * @param showInGuiValue The ShowInGui value.
+    */
+    public void setShowInGui(final Boolean showInGuiValue) {
+        this.showInGui = showInGuiValue;
+    }
+    
     private URI smallIconUri;
     
     /**
@@ -250,5 +270,25 @@ public class VirtualMachineOSImageUpdateParameters {
     */
     public void setSmallIconUri(final URI smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineOSImageUpdateParameters
+    * class.
+    *
+    */
+    public VirtualMachineOSImageUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineOSImageUpdateParameters
+    * class with required arguments.
+    *
+    */
+    public VirtualMachineOSImageUpdateParameters(String label) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setLabel(label);
     }
 }

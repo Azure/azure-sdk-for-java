@@ -68,4 +68,27 @@ public class SshSettingPublicKey {
     public void setPath(final String pathValue) {
         this.path = pathValue;
     }
+    
+    /**
+    * Initializes a new instance of the SshSettingPublicKey class.
+    *
+    */
+    public SshSettingPublicKey() {
+    }
+    
+    /**
+    * Initializes a new instance of the SshSettingPublicKey class with required
+    * arguments.
+    *
+    */
+    public SshSettingPublicKey(String fingerprint, String path) {
+        if (fingerprint == null) {
+            throw new NullPointerException("fingerprint");
+        }
+        if (path == null) {
+            throw new NullPointerException("path");
+        }
+        this.setFingerprint(fingerprint);
+        this.setPath(path);
+    }
 }

@@ -30,4 +30,10 @@ public enum SubscriptionStatus {
     Active,
     
     Disabled,
+    
+    Deleting,
+    
+    Deleted,
+    
+    Warned,
 }

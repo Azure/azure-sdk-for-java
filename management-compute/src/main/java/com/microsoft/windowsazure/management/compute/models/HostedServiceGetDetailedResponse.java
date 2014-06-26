@@ -56,7 +56,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     */
     public HostedServiceGetDetailedResponse() {
         super();
-        this.deployments = new ArrayList<HostedServiceGetDetailedResponse.Deployment>();
+        this.setDeployments(new ArrayList<HostedServiceGetDetailedResponse.Deployment>());
     }
     
     /**
@@ -494,10 +494,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         *
         */
         public Deployment() {
-            this.extendedProperties = new HashMap<String, String>();
-            this.roleInstances = new ArrayList<RoleInstance>();
-            this.roles = new ArrayList<Role>();
-            this.virtualIPAddresses = new ArrayList<VirtualIPAddress>();
+            this.setExtendedProperties(new HashMap<String, String>());
+            this.setRoleInstances(new ArrayList<RoleInstance>());
+            this.setRoles(new ArrayList<Role>());
+            this.setVirtualIPAddresses(new ArrayList<VirtualIPAddress>());
         }
     }
 }

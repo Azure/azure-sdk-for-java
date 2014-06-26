@@ -57,7 +57,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     */
     public VirtualMachineExtensionListResponse() {
         super();
-        this.resourceExtensions = new ArrayList<VirtualMachineExtensionListResponse.ResourceExtension>();
+        this.setResourceExtensions(new ArrayList<VirtualMachineExtensionListResponse.ResourceExtension>());
     }
     
     /**
@@ -88,6 +88,27 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         */
         public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
+        }
+        
+        private Boolean disallowMajorVersionUpgrade;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension allows
+        * major version upgrade.
+        * @return The DisallowMajorVersionUpgrade value.
+        */
+        public Boolean isDisallowMajorVersionUpgrade() {
+            return this.disallowMajorVersionUpgrade;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension allows
+        * major version upgrade.
+        * @param disallowMajorVersionUpgradeValue The
+        * DisallowMajorVersionUpgrade value.
+        */
+        public void setDisallowMajorVersionUpgrade(final Boolean disallowMajorVersionUpgradeValue) {
+            this.disallowMajorVersionUpgrade = disallowMajorVersionUpgradeValue;
         }
         
         private URI eula;
@@ -136,6 +157,26 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         */
         public void setHomepageUri(final URI homepageUriValue) {
             this.homepageUri = homepageUriValue;
+        }
+        
+        private Boolean isInternalExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @return The IsInternalExtension value.
+        */
+        public Boolean isInternalExtension() {
+            return this.isInternalExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @param isInternalExtensionValue The IsInternalExtension value.
+        */
+        public void setIsInternalExtension(final Boolean isInternalExtensionValue) {
+            this.isInternalExtension = isInternalExtensionValue;
         }
         
         private Boolean isJsonExtension;

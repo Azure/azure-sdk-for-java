@@ -28,14 +28,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Response containing the list of service objective for a given server.
+* Response containing the list of service objective for a given server.  This
+* is returnedfrom a call to List Service Objectives.
 */
 public class ServiceObjectiveListResponse extends OperationResponse implements Iterable<ServiceObjective> {
     private ArrayList<ServiceObjective> serviceObjectives;
     
     /**
-    * Optional. Gets or sets the list of Service Objectives that are existing
-    * in a server.
+    * Optional. Gets or sets list of all of the Service Objectives that exist
+    * in an Azure SQL Database Server.
     * @return The ServiceObjectives value.
     */
     public ArrayList<ServiceObjective> getServiceObjectives() {
@@ -43,8 +44,8 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     }
     
     /**
-    * Optional. Gets or sets the list of Service Objectives that are existing
-    * in a server.
+    * Optional. Gets or sets list of all of the Service Objectives that exist
+    * in an Azure SQL Database Server.
     * @param serviceObjectivesValue The ServiceObjectives value.
     */
     public void setServiceObjectives(final ArrayList<ServiceObjective> serviceObjectivesValue) {
@@ -57,7 +58,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     */
     public ServiceObjectiveListResponse() {
         super();
-        this.serviceObjectives = new ArrayList<ServiceObjective>();
+        this.setServiceObjectives(new ArrayList<ServiceObjective>());
     }
     
     /**

@@ -26,13 +26,15 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.net.URI;
 
 /**
-* Parameters supplied to the DAC Export operation.
+* Represents the parameters needed to initiate an Azure SQL Database Export
+* operation.
 */
 public class DacExportParameters {
     private DacExportParameters.BlobCredentialsParameter blobCredentials;
     
     /**
-    * Optional. Gets or sets credentials for getting the DAC.
+    * Optional. Gets or sets the credentials information needed for setting
+    * where the DACPAC file will be exported to in Azure Blob Storage.
     * @return The BlobCredentials value.
     */
     public DacExportParameters.BlobCredentialsParameter getBlobCredentials() {
@@ -40,7 +42,8 @@ public class DacExportParameters {
     }
     
     /**
-    * Optional. Gets or sets credentials for getting the DAC.
+    * Optional. Gets or sets the credentials information needed for setting
+    * where the DACPAC file will be exported to in Azure Blob Storage.
     * @param blobCredentialsValue The BlobCredentials value.
     */
     public void setBlobCredentials(final DacExportParameters.BlobCredentialsParameter blobCredentialsValue) {
@@ -50,7 +53,8 @@ public class DacExportParameters {
     private DacExportParameters.ConnectionInfoParameter connectionInfo;
     
     /**
-    * Optional. Gets or sets connection information for the SQL Server Database.
+    * Optional. Gets or sets the connection information needed for the Azure
+    * SQL Database.
     * @return The ConnectionInfo value.
     */
     public DacExportParameters.ConnectionInfoParameter getConnectionInfo() {
@@ -58,7 +62,8 @@ public class DacExportParameters {
     }
     
     /**
-    * Optional. Gets or sets connection information for the SQL Server Database.
+    * Optional. Gets or sets the connection information needed for the Azure
+    * SQL Database.
     * @param connectionInfoValue The ConnectionInfo value.
     */
     public void setConnectionInfo(final DacExportParameters.ConnectionInfoParameter connectionInfoValue) {
@@ -66,13 +71,14 @@ public class DacExportParameters {
     }
     
     /**
-    * Credentials for getting the DAC.
+    * The credentials needed to connect to Azure Blob Storage to export the
+    * DACPAC file.
     */
     public static class BlobCredentialsParameter {
         private String storageAccessKey;
         
         /**
-        * Required. Gets or sets the key for the Windows Azure Storage account.
+        * Required. Gets or sets the access key for the Azure Storage account.
         * @return The StorageAccessKey value.
         */
         public String getStorageAccessKey() {
@@ -80,7 +86,7 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the key for the Windows Azure Storage account.
+        * Required. Gets or sets the access key for the Azure Storage account.
         * @param storageAccessKeyValue The StorageAccessKey value.
         */
         public void setStorageAccessKey(final String storageAccessKeyValue) {
@@ -90,8 +96,8 @@ public class DacExportParameters {
         private URI uri;
         
         /**
-        * Required. Gets or sets the URI of the DAC file stored in Windows
-        * Azure Blob Storage.
+        * Required. Gets or sets the URI of where the DACPAC file should be
+        * stored in Azure Blob Storage.
         * @return The Uri value.
         */
         public URI getUri() {
@@ -99,23 +105,47 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the URI of the DAC file stored in Windows
-        * Azure Blob Storage.
+        * Required. Gets or sets the URI of where the DACPAC file should be
+        * stored in Azure Blob Storage.
         * @param uriValue The Uri value.
         */
         public void setUri(final URI uriValue) {
             this.uri = uriValue;
         }
+        
+        /**
+        * Initializes a new instance of the BlobCredentialsParameter class.
+        *
+        */
+        public BlobCredentialsParameter() {
+        }
+        
+        /**
+        * Initializes a new instance of the BlobCredentialsParameter class with
+        * required arguments.
+        *
+        */
+        public BlobCredentialsParameter(URI uri, String storageAccessKey) {
+            if (uri == null) {
+                throw new NullPointerException("uri");
+            }
+            if (storageAccessKey == null) {
+                throw new NullPointerException("storageAccessKey");
+            }
+            this.setUri(uri);
+            this.setStorageAccessKey(storageAccessKey);
+        }
     }
     
     /**
-    * Connection information for the SQL Server Database.
+    * Represents the connection information for the Azure SQL Database to
+    * export.
     */
     public static class ConnectionInfoParameter {
         private String databaseName;
         
         /**
-        * Required. Gets or sets the name of the database.
+        * Required. Gets or sets the name of the database to be exported.
         * @return The DatabaseName value.
         */
         public String getDatabaseName() {
@@ -123,7 +153,7 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the name of the database.
+        * Required. Gets or sets the name of the database to be exported.
         * @param databaseNameValue The DatabaseName value.
         */
         public void setDatabaseName(final String databaseNameValue) {
@@ -133,7 +163,8 @@ public class DacExportParameters {
         private String password;
         
         /**
-        * Required. Gets or sets the password for the database user.
+        * Required. Gets or sets the password for the database administrator
+        * user.
         * @return The Password value.
         */
         public String getPassword() {
@@ -141,7 +172,8 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the password for the database user.
+        * Required. Gets or sets the password for the database administrator
+        * user.
         * @param passwordValue The Password value.
         */
         public void setPassword(final String passwordValue) {
@@ -151,7 +183,8 @@ public class DacExportParameters {
         private String serverName;
         
         /**
-        * Required. Gets or sets the SQL server name.
+        * Required. Gets or sets the Azure SQL Database Server name where the
+        * database resides.
         * @return The ServerName value.
         */
         public String getServerName() {
@@ -159,7 +192,8 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the SQL server name.
+        * Required. Gets or sets the Azure SQL Database Server name where the
+        * database resides.
         * @param serverNameValue The ServerName value.
         */
         public void setServerName(final String serverNameValue) {
@@ -169,7 +203,8 @@ public class DacExportParameters {
         private String userName;
         
         /**
-        * Required. Gets or sets the username of the database user.
+        * Required. Gets or sets the username of the database administrator
+        * user.
         * @return The UserName value.
         */
         public String getUserName() {
@@ -177,7 +212,8 @@ public class DacExportParameters {
         }
         
         /**
-        * Required. Gets or sets the username of the database user.
+        * Required. Gets or sets the username of the database administrator
+        * user.
         * @param userNameValue The UserName value.
         */
         public void setUserName(final String userNameValue) {

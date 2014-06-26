@@ -468,11 +468,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public WebSiteGetConfigurationResponse() {
         super();
-        this.appSettings = new HashMap<String, String>();
-        this.connectionStrings = new ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo>();
-        this.defaultDocuments = new ArrayList<String>();
-        this.handlerMappings = new ArrayList<WebSiteGetConfigurationResponse.HandlerMapping>();
-        this.metadata = new HashMap<String, String>();
+        this.setAppSettings(new HashMap<String, String>());
+        this.setConnectionStrings(new ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo>());
+        this.setDefaultDocuments(new ArrayList<String>());
+        this.setHandlerMappings(new ArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
+        this.setMetadata(new HashMap<String, String>());
     }
     
     /**

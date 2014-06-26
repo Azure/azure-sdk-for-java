@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.models.ComputeCapabilities;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -119,8 +120,8 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/locations";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/locations";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -134,7 +135,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -191,6 +192,28 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableService").size(); i2 = i2 + 1) {
                             org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableService").get(i2));
                             locationInstance.getAvailableServices().add(availableServicesElement.getTextContent());
+                        }
+                    }
+                    
+                    Element computeCapabilitiesElement = XmlUtility.getElementByTagNameNS(locationsElement, "http://schemas.microsoft.com/windowsazure", "ComputeCapabilities");
+                    if (computeCapabilitiesElement != null) {
+                        ComputeCapabilities computeCapabilitiesInstance = new ComputeCapabilities();
+                        locationInstance.setComputeCapabilities(computeCapabilitiesInstance);
+                        
+                        Element virtualMachinesRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "VirtualMachinesRoleSizes");
+                        if (virtualMachinesRoleSizesSequenceElement != null) {
+                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i3 = i3 + 1) {
+                                org.w3c.dom.Element virtualMachinesRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i3));
+                                computeCapabilitiesInstance.getVirtualMachinesRoleSizes().add(virtualMachinesRoleSizesElement.getTextContent());
+                            }
+                        }
+                        
+                        Element webWorkerRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "WebWorkerRoleSizes");
+                        if (webWorkerRoleSizesSequenceElement != null) {
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element webWorkerRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i4));
+                                computeCapabilitiesInstance.getWebWorkerRoleSizes().add(webWorkerRoleSizesElement.getTextContent());
+                            }
                         }
                     }
                 }

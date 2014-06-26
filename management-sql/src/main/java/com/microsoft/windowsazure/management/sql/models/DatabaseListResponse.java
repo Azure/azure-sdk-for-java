@@ -28,14 +28,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Response containing the list of databases for a given server.
+* Contains a collection of databases for a given Azure SQL Database Server.
 */
 public class DatabaseListResponse extends OperationResponse implements Iterable<Database> {
     private ArrayList<Database> databases;
     
     /**
-    * Optional. Gets or sets the SQL Server databases that are housed in a
-    * server.
+    * Optional. Gets or sets the collection of databases that are hosted on the
+    * Azure SQL Database Server.
     * @return The Databases value.
     */
     public ArrayList<Database> getDatabases() {
@@ -43,8 +43,8 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     }
     
     /**
-    * Optional. Gets or sets the SQL Server databases that are housed in a
-    * server.
+    * Optional. Gets or sets the collection of databases that are hosted on the
+    * Azure SQL Database Server.
     * @param databasesValue The Databases value.
     */
     public void setDatabases(final ArrayList<Database> databasesValue) {
@@ -57,7 +57,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     */
     public DatabaseListResponse() {
         super();
-        this.databases = new ArrayList<Database>();
+        this.setDatabases(new ArrayList<Database>());
     }
     
     /**

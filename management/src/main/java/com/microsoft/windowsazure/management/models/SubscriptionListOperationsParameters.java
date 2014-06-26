@@ -155,4 +155,22 @@ public class SubscriptionListOperationsParameters {
     public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
+    
+    /**
+    * Initializes a new instance of the SubscriptionListOperationsParameters
+    * class.
+    *
+    */
+    public SubscriptionListOperationsParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the SubscriptionListOperationsParameters
+    * class with required arguments.
+    *
+    */
+    public SubscriptionListOperationsParameters(Calendar startTime, Calendar endTime) {
+        this.setStartTime(startTime);
+        this.setEndTime(endTime);
+    }
 }

@@ -132,4 +132,28 @@ public class VirtualMachineDiskUpdateParameters {
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskUpdateParameters
+    * class.
+    *
+    */
+    public VirtualMachineDiskUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskUpdateParameters
+    * class with required arguments.
+    *
+    */
+    public VirtualMachineDiskUpdateParameters(String label, String name) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.setLabel(label);
+        this.setName(name);
+    }
 }

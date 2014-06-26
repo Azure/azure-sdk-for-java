@@ -25,11 +25,14 @@ package com.microsoft.windowsazure.management.sql.models;
 
 import java.util.Calendar;
 
-public class DatabaseEventLog {
+/**
+* Represents the event log entry for a database.
+*/
+public class DatabaseEventLog extends SqlModelCommon {
     private String additionalData;
     
     /**
-    * Optional. Gets or sets the additional data of the event log.
+    * Optional. Gets any additional data for the event log.
     * @return The AdditionalData value.
     */
     public String getAdditionalData() {
@@ -37,7 +40,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the additional data of the event log.
+    * Optional. Gets any additional data for the event log.
     * @param additionalDataValue The AdditionalData value.
     */
     public void setAdditionalData(final String additionalDataValue) {
@@ -47,7 +50,7 @@ public class DatabaseEventLog {
     private String databaseName;
     
     /**
-    * Optional. Gets or sets the database name of the event log.
+    * Optional. Gets the name of the database pertaining to this log.
     * @return The DatabaseName value.
     */
     public String getDatabaseName() {
@@ -55,7 +58,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the database name of the event log.
+    * Optional. Gets the name of the database pertaining to this log.
     * @param databaseNameValue The DatabaseName value.
     */
     public void setDatabaseName(final String databaseNameValue) {
@@ -65,7 +68,7 @@ public class DatabaseEventLog {
     private String description;
     
     /**
-    * Optional. Gets or sets the description of the event log.
+    * Optional. Gets the description of the event log.
     * @return The Description value.
     */
     public String getDescription() {
@@ -73,7 +76,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the description of the event log.
+    * Optional. Gets the description of the event log.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -83,7 +86,7 @@ public class DatabaseEventLog {
     private String eventCategory;
     
     /**
-    * Optional. Gets or sets the event category of the event log.
+    * Optional. Gets the event category of the event log.
     * @return The EventCategory value.
     */
     public String getEventCategory() {
@@ -91,7 +94,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the event category of the event log.
+    * Optional. Gets the event category of the event log.
     * @param eventCategoryValue The EventCategory value.
     */
     public void setEventCategory(final String eventCategoryValue) {
@@ -101,7 +104,7 @@ public class DatabaseEventLog {
     private String eventSubtype;
     
     /**
-    * Optional. Gets or sets the event sub type of the event log.
+    * Optional. Gets the event sub type of the event log.
     * @return The EventSubtype value.
     */
     public String getEventSubtype() {
@@ -109,7 +112,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the event sub type of the event log.
+    * Optional. Gets the event sub type of the event log.
     * @param eventSubtypeValue The EventSubtype value.
     */
     public void setEventSubtype(final String eventSubtypeValue) {
@@ -119,7 +122,7 @@ public class DatabaseEventLog {
     private String eventSubtypeDescription;
     
     /**
-    * Optional. Gets or sets the event sub type description of the event log.
+    * Optional. Gets the event sub type description of the event log.
     * @return The EventSubtypeDescription value.
     */
     public String getEventSubtypeDescription() {
@@ -127,7 +130,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the event sub type description of the event log.
+    * Optional. Gets the event sub type description of the event log.
     * @param eventSubtypeDescriptionValue The EventSubtypeDescription value.
     */
     public void setEventSubtypeDescription(final String eventSubtypeDescriptionValue) {
@@ -137,7 +140,7 @@ public class DatabaseEventLog {
     private String eventType;
     
     /**
-    * Optional. Gets or sets the event type of the event log.
+    * Optional. Gets the event type of the event log.
     * @return The EventType value.
     */
     public String getEventType() {
@@ -145,7 +148,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the event type of the event log.
+    * Optional. Gets the event type of the event log.
     * @param eventTypeValue The EventType value.
     */
     public void setEventType(final String eventTypeValue) {
@@ -155,7 +158,7 @@ public class DatabaseEventLog {
     private int intervalSizeInMinutes;
     
     /**
-    * Optional. Gets or sets the interval size in minutes of the event log.
+    * Optional. Gets the interval size of the event log expressed in minutes.
     * @return The IntervalSizeInMinutes value.
     */
     public int getIntervalSizeInMinutes() {
@@ -163,35 +166,17 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the interval size in minutes of the event log.
+    * Optional. Gets the interval size of the event log expressed in minutes.
     * @param intervalSizeInMinutesValue The IntervalSizeInMinutes value.
     */
     public void setIntervalSizeInMinutes(final int intervalSizeInMinutesValue) {
         this.intervalSizeInMinutes = intervalSizeInMinutesValue;
     }
     
-    private String name;
-    
-    /**
-    * Optional. Gets or sets the name of the event log.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the event log.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
     private int numberOfEvents;
     
     /**
-    * Optional. Gets or sets the number of events of the event log.
+    * Optional. Gets the number of events of the event log.
     * @return The NumberOfEvents value.
     */
     public int getNumberOfEvents() {
@@ -199,53 +184,17 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the number of events of the event log.
+    * Optional. Gets the number of events of the event log.
     * @param numberOfEventsValue The NumberOfEvents value.
     */
     public void setNumberOfEvents(final int numberOfEventsValue) {
         this.numberOfEvents = numberOfEventsValue;
     }
     
-    private String parentLink;
-    
-    /**
-    * Optional. Gets or sets the self link of the event log.
-    * @return The ParentLink value.
-    */
-    public String getParentLink() {
-        return this.parentLink;
-    }
-    
-    /**
-    * Optional. Gets or sets the self link of the event log.
-    * @param parentLinkValue The ParentLink value.
-    */
-    public void setParentLink(final String parentLinkValue) {
-        this.parentLink = parentLinkValue;
-    }
-    
-    private String selfLink;
-    
-    /**
-    * Optional. Gets or sets the self link of the event log.
-    * @return The SelfLink value.
-    */
-    public String getSelfLink() {
-        return this.selfLink;
-    }
-    
-    /**
-    * Optional. Gets or sets the self link of the event log.
-    * @param selfLinkValue The SelfLink value.
-    */
-    public void setSelfLink(final String selfLinkValue) {
-        this.selfLink = selfLinkValue;
-    }
-    
     private int severity;
     
     /**
-    * Optional. Gets or sets the severity of the event log.
+    * Optional. Gets the severity of the event log.
     * @return The Severity value.
     */
     public int getSeverity() {
@@ -253,7 +202,7 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the severity of the event log.
+    * Optional. Gets the severity of the event log.
     * @param severityValue The Severity value.
     */
     public void setSeverity(final int severityValue) {
@@ -263,7 +212,7 @@ public class DatabaseEventLog {
     private Calendar startTimeUtc;
     
     /**
-    * Optional. Gets or sets the start time of the event log.
+    * Optional. Gets the start time of the event log.
     * @return The StartTimeUtc value.
     */
     public Calendar getStartTimeUtc() {
@@ -271,46 +220,10 @@ public class DatabaseEventLog {
     }
     
     /**
-    * Optional. Gets or sets the start time of the event log.
+    * Optional. Gets the start time of the event log.
     * @param startTimeUtcValue The StartTimeUtc value.
     */
     public void setStartTimeUtc(final Calendar startTimeUtcValue) {
         this.startTimeUtc = startTimeUtcValue;
-    }
-    
-    private String state;
-    
-    /**
-    * Optional. Gets or sets the state of the event log.
-    * @return The State value.
-    */
-    public String getState() {
-        return this.state;
-    }
-    
-    /**
-    * Optional. Gets or sets the state of the event log.
-    * @param stateValue The State value.
-    */
-    public void setState(final String stateValue) {
-        this.state = stateValue;
-    }
-    
-    private String type;
-    
-    /**
-    * Optional. Gets or sets the type of the event log.
-    * @return The Type value.
-    */
-    public String getType() {
-        return this.type;
-    }
-    
-    /**
-    * Optional. Gets or sets the type of the event log.
-    * @param typeValue The Type value.
-    */
-    public void setType(final String typeValue) {
-        this.type = typeValue;
     }
 }

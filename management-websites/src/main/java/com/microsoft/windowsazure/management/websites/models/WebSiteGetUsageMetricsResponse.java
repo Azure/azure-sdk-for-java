@@ -56,7 +56,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     */
     public WebSiteGetUsageMetricsResponse() {
         super();
-        this.usageMetrics = new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>();
+        this.setUsageMetrics(new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>());
     }
     
     /**

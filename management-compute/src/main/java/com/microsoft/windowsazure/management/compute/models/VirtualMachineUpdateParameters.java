@@ -221,8 +221,25 @@ public class VirtualMachineUpdateParameters {
     *
     */
     public VirtualMachineUpdateParameters() {
-        this.configurationSets = new ArrayList<ConfigurationSet>();
-        this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
-        this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();
+        this.setConfigurationSets(new ArrayList<ConfigurationSet>());
+        this.setDataVirtualHardDisks(new ArrayList<DataVirtualHardDisk>());
+        this.setResourceExtensionReferences(new ArrayList<ResourceExtensionReference>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineUpdateParameters class
+    * with required arguments.
+    *
+    */
+    public VirtualMachineUpdateParameters(String roleName, OSVirtualHardDisk oSVirtualHardDisk) {
+        this();
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (oSVirtualHardDisk == null) {
+            throw new NullPointerException("oSVirtualHardDisk");
+        }
+        this.setRoleName(roleName);
+        this.setOSVirtualHardDisk(oSVirtualHardDisk);
     }
 }

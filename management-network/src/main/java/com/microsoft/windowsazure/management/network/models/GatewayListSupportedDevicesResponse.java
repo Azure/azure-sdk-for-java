@@ -73,7 +73,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
     */
     public GatewayListSupportedDevicesResponse() {
         super();
-        this.vendors = new ArrayList<GatewayListSupportedDevicesResponse.Vendor>();
+        this.setVendors(new ArrayList<GatewayListSupportedDevicesResponse.Vendor>());
     }
     
     public static class OSFamily {
@@ -141,7 +141,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         *
         */
         public Platform() {
-            this.oSFamilies = new ArrayList<GatewayListSupportedDevicesResponse.OSFamily>();
+            this.setOSFamilies(new ArrayList<GatewayListSupportedDevicesResponse.OSFamily>());
         }
     }
     
@@ -190,7 +190,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         *
         */
         public Vendor() {
-            this.platforms = new ArrayList<GatewayListSupportedDevicesResponse.Platform>();
+            this.setPlatforms(new ArrayList<GatewayListSupportedDevicesResponse.Platform>());
         }
     }
 }

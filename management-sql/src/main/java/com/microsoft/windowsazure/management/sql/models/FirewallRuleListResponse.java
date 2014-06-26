@@ -28,13 +28,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A standard service response including an HTTP status code and request ID.
+* Contains the response from a request to List Firewall Rules.
 */
 public class FirewallRuleListResponse extends OperationResponse implements Iterable<FirewallRule> {
     private ArrayList<FirewallRule> firewallRules;
     
     /**
-    * Optional. Gets or sets the firewall rules for this SQL Database Server.
+    * Optional. Gets the collection of firewall rules returned from the List
+    * Firewall Rules operation.
     * @return The FirewallRules value.
     */
     public ArrayList<FirewallRule> getFirewallRules() {
@@ -42,7 +43,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     }
     
     /**
-    * Optional. Gets or sets the firewall rules for this SQL Database Server.
+    * Optional. Gets the collection of firewall rules returned from the List
+    * Firewall Rules operation.
     * @param firewallRulesValue The FirewallRules value.
     */
     public void setFirewallRules(final ArrayList<FirewallRule> firewallRulesValue) {
@@ -55,7 +57,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     */
     public FirewallRuleListResponse() {
         super();
-        this.firewallRules = new ArrayList<FirewallRule>();
+        this.setFirewallRules(new ArrayList<FirewallRule>());
     }
     
     /**

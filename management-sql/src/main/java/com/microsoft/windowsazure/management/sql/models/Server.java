@@ -23,16 +23,14 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import java.util.HashMap;
-
 /**
-* An individual server in your Windows Azure subscription.
+* Represents an individual Azure SQL Database Server.
 */
 public class Server {
     private String administratorUserName;
     
     /**
-    * Optional. Gets or sets the name of an administrator for this server.
+    * Optional. Gets the administrator login for the server.
     * @return The AdministratorUserName value.
     */
     public String getAdministratorUserName() {
@@ -40,38 +38,39 @@ public class Server {
     }
     
     /**
-    * Optional. Gets or sets the name of an administrator for this server.
+    * Optional. Gets the administrator login for the server.
     * @param administratorUserNameValue The AdministratorUserName value.
     */
     public void setAdministratorUserName(final String administratorUserNameValue) {
         this.administratorUserName = administratorUserNameValue;
     }
     
-    private HashMap<String, String> features;
+    private String fullyQualifiedDomainName;
     
     /**
-    * Optional. Gets or sets the list of features and the type of database
-    * server for an individual server.
-    * @return The Features value.
+    * Optional. Gets the fully qualified domain name of the Azure SQL Database
+    * Server.
+    * @return The FullyQualifiedDomainName value.
     */
-    public HashMap<String, String> getFeatures() {
-        return this.features;
+    public String getFullyQualifiedDomainName() {
+        return this.fullyQualifiedDomainName;
     }
     
     /**
-    * Optional. Gets or sets the list of features and the type of database
-    * server for an individual server.
-    * @param featuresValue The Features value.
+    * Optional. Gets the fully qualified domain name of the Azure SQL Database
+    * Server.
+    * @param fullyQualifiedDomainNameValue The FullyQualifiedDomainName value.
     */
-    public void setFeatures(final HashMap<String, String> featuresValue) {
-        this.features = featuresValue;
+    public void setFullyQualifiedDomainName(final String fullyQualifiedDomainNameValue) {
+        this.fullyQualifiedDomainName = fullyQualifiedDomainNameValue;
     }
     
     private String location;
     
     /**
-    * Optional. Gets or sets the name of a data center location that is valid
-    * for your subscription.
+    * Optional. Gets the location of this server. See
+    * http://azure.microsoft.com/en-us/regions/#services for a list of valid
+    * regions.
     * @return The Location value.
     */
     public String getLocation() {
@@ -79,8 +78,9 @@ public class Server {
     }
     
     /**
-    * Optional. Gets or sets the name of a data center location that is valid
-    * for your subscription.
+    * Optional. Gets the location of this server. See
+    * http://azure.microsoft.com/en-us/regions/#services for a list of valid
+    * regions.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
@@ -90,8 +90,7 @@ public class Server {
     private String name;
     
     /**
-    * Optional. Gets or sets the name of a SQL Server running in your
-    * subscription.
+    * Optional. Gets the name of the Azure SQL Database Server.
     * @return The Name value.
     */
     public String getName() {
@@ -99,19 +98,46 @@ public class Server {
     }
     
     /**
-    * Optional. Gets or sets the name of a SQL Server running in your
-    * subscription.
+    * Optional. Gets the name of the Azure SQL Database Server.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
+    private String state;
+    
     /**
-    * Initializes a new instance of the Server class.
-    *
+    * Optional. Gets the current state of the server.
+    * @return The State value.
     */
-    public Server() {
-        this.features = new HashMap<String, String>();
+    public String getState() {
+        return this.state;
+    }
+    
+    /**
+    * Optional. Gets the current state of the server.
+    * @param stateValue The State value.
+    */
+    public void setState(final String stateValue) {
+        this.state = stateValue;
+    }
+    
+    private String version;
+    
+    /**
+    * Optional. Gets the version of the server.
+    * @return The Version value.
+    */
+    public String getVersion() {
+        return this.version;
+    }
+    
+    /**
+    * Optional. Gets the version of the server.
+    * @param versionValue The Version value.
+    */
+    public void setVersion(final String versionValue) {
+        this.version = versionValue;
     }
 }

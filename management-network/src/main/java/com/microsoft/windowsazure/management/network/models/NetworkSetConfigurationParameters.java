@@ -44,4 +44,23 @@ public class NetworkSetConfigurationParameters {
     public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }
+    
+    /**
+    * Initializes a new instance of the NetworkSetConfigurationParameters class.
+    *
+    */
+    public NetworkSetConfigurationParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the NetworkSetConfigurationParameters class
+    * with required arguments.
+    *
+    */
+    public NetworkSetConfigurationParameters(String configuration) {
+        if (configuration == null) {
+            throw new NullPointerException("configuration");
+        }
+        this.setConfiguration(configuration);
+    }
 }

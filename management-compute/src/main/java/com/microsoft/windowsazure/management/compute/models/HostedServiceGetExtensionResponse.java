@@ -166,4 +166,24 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     public void setVersion(final String versionValue) {
         this.version = versionValue;
     }
+    
+    /**
+    * Initializes a new instance of the HostedServiceGetExtensionResponse class.
+    *
+    */
+    public HostedServiceGetExtensionResponse() {
+        super();
+    }
+    
+    /**
+    * Initializes a new instance of the HostedServiceGetExtensionResponse class
+    * with required arguments.
+    *
+    */
+    public HostedServiceGetExtensionResponse(String type) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
+        this.setType(type);
+    }
 }

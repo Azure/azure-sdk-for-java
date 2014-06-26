@@ -112,4 +112,31 @@ public class AffinityGroupCreateParameters {
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
+    
+    /**
+    * Initializes a new instance of the AffinityGroupCreateParameters class.
+    *
+    */
+    public AffinityGroupCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the AffinityGroupCreateParameters class
+    * with required arguments.
+    *
+    */
+    public AffinityGroupCreateParameters(String name, String label, String location) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (location == null) {
+            throw new NullPointerException("location");
+        }
+        this.setName(name);
+        this.setLabel(label);
+        this.setLocation(location);
+    }
 }

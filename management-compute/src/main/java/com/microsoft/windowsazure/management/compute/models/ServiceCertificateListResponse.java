@@ -56,7 +56,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     */
     public ServiceCertificateListResponse() {
         super();
-        this.certificates = new ArrayList<ServiceCertificateListResponse.Certificate>();
+        this.setCertificates(new ArrayList<ServiceCertificateListResponse.Certificate>());
     }
     
     /**

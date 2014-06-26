@@ -56,7 +56,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     */
     public CloudServiceListResponse() {
         super();
-        this.cloudServices = new ArrayList<CloudServiceListResponse.CloudService>();
+        this.setCloudServices(new ArrayList<CloudServiceListResponse.CloudService>());
     }
     
     /**
@@ -168,7 +168,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         *
         */
         public CloudService() {
-            this.resources = new ArrayList<CloudServiceListResponse.CloudService.AddOnResource>();
+            this.setResources(new ArrayList<CloudServiceListResponse.CloudService.AddOnResource>());
         }
         
         /**
@@ -362,8 +362,8 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             *
             */
             public AddOnResource() {
-                this.outputItems = new HashMap<String, String>();
-                this.usageLimits = new ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit>();
+                this.setOutputItems(new HashMap<String, String>());
+                this.setUsageLimits(new ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit>());
             }
             
             /**

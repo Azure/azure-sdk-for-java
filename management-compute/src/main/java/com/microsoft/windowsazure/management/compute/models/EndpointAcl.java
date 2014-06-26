@@ -52,6 +52,6 @@ public class EndpointAcl {
     *
     */
     public EndpointAcl() {
-        this.rules = new ArrayList<AccessControlListRule>();
+        this.setRules(new ArrayList<AccessControlListRule>());
     }
 }

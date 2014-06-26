@@ -55,7 +55,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     */
     public WebSpacesListResponse() {
         super();
-        this.webSpaces = new ArrayList<WebSpacesListResponse.WebSpace>();
+        this.setWebSpaces(new ArrayList<WebSpacesListResponse.WebSpace>());
     }
     
     /**

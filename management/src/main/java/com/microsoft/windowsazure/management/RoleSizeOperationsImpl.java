@@ -114,8 +114,8 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/rolesizes";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/rolesizes";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -129,7 +129,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -207,6 +207,27 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         boolean supportedByVirtualMachinesInstance;
                         supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent().toLowerCase());
                         roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
+                    }
+                    
+                    Element maxDataDiskCountElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MaxDataDiskCount");
+                    if (maxDataDiskCountElement != null) {
+                        int maxDataDiskCountInstance;
+                        maxDataDiskCountInstance = DatatypeConverter.parseInt(maxDataDiskCountElement.getTextContent());
+                        roleSizeInstance.setMaxDataDiskCount(maxDataDiskCountInstance);
+                    }
+                    
+                    Element webWorkerResourceDiskSizeInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "WebWorkerResourceDiskSizeInMb");
+                    if (webWorkerResourceDiskSizeInMbElement != null) {
+                        int webWorkerResourceDiskSizeInMbInstance;
+                        webWorkerResourceDiskSizeInMbInstance = DatatypeConverter.parseInt(webWorkerResourceDiskSizeInMbElement.getTextContent());
+                        roleSizeInstance.setWebWorkerResourceDiskSizeInMb(webWorkerResourceDiskSizeInMbInstance);
+                    }
+                    
+                    Element virtualMachineResourceDiskSizeInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "VirtualMachineResourceDiskSizeInMb");
+                    if (virtualMachineResourceDiskSizeInMbElement != null) {
+                        int virtualMachineResourceDiskSizeInMbInstance;
+                        virtualMachineResourceDiskSizeInMbInstance = DatatypeConverter.parseInt(virtualMachineResourceDiskSizeInMbElement.getTextContent());
+                        roleSizeInstance.setVirtualMachineResourceDiskSizeInMb(virtualMachineResourceDiskSizeInMbInstance);
                     }
                 }
             }

@@ -29,14 +29,14 @@ import java.net.URI;
 * Objects that are used to create a data disk for a virtual machine.
 */
 public class DataVirtualHardDisk {
-    private VirtualHardDiskHostCaching hostCaching;
+    private String hostCaching;
     
     /**
     * Optional. Specifies the platform caching behavior of the data disk blob
     * for read/write efficiency. The default value is ReadOnly.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public String getHostCaching() {
         return this.hostCaching;
     }
     
@@ -45,7 +45,7 @@ public class DataVirtualHardDisk {
     * for read/write efficiency. The default value is ReadOnly.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final String hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     
