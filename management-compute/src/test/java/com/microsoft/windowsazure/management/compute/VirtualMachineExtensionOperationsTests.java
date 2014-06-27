@@ -15,9 +15,12 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.management.compute.models.*;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,10 +36,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementInt
         VirtualMachineExtensionListResponse virtualMachineExtensionListResponse = computeManagementClient.getVirtualMachineExtensionsOperations().list();
         ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> virtualMachineExtensionResourceExtensionlist = virtualMachineExtensionListResponse.getResourceExtensions();
         Assert.assertNotNull(virtualMachineExtensionResourceExtensionlist);
-        for (VirtualMachineExtensionListResponse.ResourceExtension resourceExtension : virtualMachineExtensionResourceExtensionlist)
-        {
-            Assert.assertNull(resourceExtension.getSampleConfig());
-        }
+        assertTrue(virtualMachineExtensionResourceExtensionlist.size() > 0);
     }
 
     @Test
