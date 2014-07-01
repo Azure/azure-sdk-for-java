@@ -16,13 +16,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>microsoft-azure-parent</artifactId>
     <version>0.5.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-tracing-util</artifactId>
+  <artifactId>microsoft-azure-tracing-util</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Util Logger tracing</name>
@@ -57,7 +57,7 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
+      <artifactId>microsoft-azure-core</artifactId>
       <version>0.5.0</version>
     </dependency>
     <dependency>
