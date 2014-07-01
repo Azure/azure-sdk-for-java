@@ -83,6 +83,88 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         cleanStorageAccount(storageAccountName);
     }
     
+    private OSVirtualHardDisk createOSVirtualHardDisk(String osVHarddiskName, String operatingSystemName, URI mediaLinkUriValue, String sourceImageName)
+    {
+        OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
+        //required
+        oSVirtualHardDisk.setName(osVHarddiskName);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
+        oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
+        //required
+        oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
+        //required
+        oSVirtualHardDisk.setSourceImageName(sourceImageName);
+        return oSVirtualHardDisk;
+    }
+    
+    private VirtualMachineCreateParameters createVirtualMachineCreateParameter(String roleName, ArrayList<ConfigurationSet> configlist, OSVirtualHardDisk oSVirtualHardDisk, String availabilitySetNameValue) {
+        VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
+        //required
+        createParameters.setRoleName(roleName);
+        createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
+        createParameters.setProvisionGuestAgent(true);
+        createParameters.setConfigurationSets(configlist);
+        createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
+        createParameters.setAvailabilitySetName(availabilitySetNameValue);        
+        return createParameters;
+    }
+
+    private ArrayList<ConfigurationSet> createConfigList(String computerName,
+            String adminuserPassword, String adminUserName) {
+        ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
+        ConfigurationSet configset = new ConfigurationSet();
+        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
+        //required
+        configset.setComputerName(computerName);
+        //required
+        configset.setAdminPassword(adminuserPassword);
+        //required
+        configset.setAdminUserName(adminUserName);
+        configset.setEnableAutomaticUpdates(false);
+        configlist.add(configset);
+        return configlist;
+    }
+    
+    @Test
+    public void createVirtualMachineInAvailabilitySetSuccess() throws Exception {
+        int random = (int)(Math.random()* 100); 
+        String roleName = testVMPrefix + "vm3";
+        String roleNameSecond = testVMPrefix + "vm4";
+        String computerName = testVMPrefix + "vm3";
+        String computerNameSecond = testVMPrefix + "vm4";
+        String adminuserPassword = testVMPrefix + "!12";
+        String adminUserName = testVMPrefix;
+        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix +random + ".vhd");
+        URI mediaLinkUriValueSecond =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix +random + "2.vhd");
+        String osVHarddiskName =testVMPrefix + "oshdname" + random;
+        String osVHarddiskNameSecond = testVMPrefix + "oshdname2" + random;
+        String operatingSystemName ="Windows";
+        String availabilitySetNameValue = "azurejava" + random;
+
+        //required
+        ArrayList<ConfigurationSet> configlist = createConfigList(computerName, adminuserPassword, adminUserName);
+        ArrayList<ConfigurationSet> configlistSecond = createConfigList(computerNameSecond, adminuserPassword, adminUserName);
+        
+        //required
+        String sourceImageName = getOSSourceImage();
+        OSVirtualHardDisk oSVirtualHardDisk = createOSVirtualHardDisk(osVHarddiskName, operatingSystemName, mediaLinkUriValue, sourceImageName);
+        VirtualMachineCreateParameters createParameters = createVirtualMachineCreateParameter(roleName, configlist, oSVirtualHardDisk, availabilitySetNameValue);
+
+        OSVirtualHardDisk oSVirtualHardDiskSecond = createOSVirtualHardDisk(osVHarddiskNameSecond, operatingSystemName, mediaLinkUriValueSecond, sourceImageName);
+        VirtualMachineCreateParameters createParametersSecond = createVirtualMachineCreateParameter(roleNameSecond, configlistSecond, oSVirtualHardDiskSecond, availabilitySetNameValue);
+        //Act
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
+        OperationResponse operationResponseSecond = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParametersSecond);
+
+        //Assert
+        Assert.assertEquals(200, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+        Assert.assertEquals(200, operationResponseSecond.getStatusCode());
+        Assert.assertNotNull(operationResponseSecond.getRequestId());
+        
+    }
+
+
     @Test
     public void createVirtualMachines() throws Exception {
         int random = (int)(Math.random()* 100); 
@@ -95,38 +177,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String operatingSystemName ="Windows";
 
         //required
-        ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
-        ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
-        //required
-        configset.setComputerName(computerName);
-        //required
-        configset.setAdminPassword(adminuserPassword);
-        //required
-        configset.setAdminUserName(adminUserName);
-        configset.setEnableAutomaticUpdates(false);
-        configlist.add(configset);
+        ArrayList<ConfigurationSet> configlist = createConfigList(computerName, adminuserPassword, adminUserName);
 
         //required
         String sourceImageName = getOSSourceImage();
-        OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
-        //required
-        oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
-        oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
-        //required
-        oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
-        //required
-        oSVirtualHardDisk.setSourceImageName(sourceImageName);
-      
-        VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
-        //required
-        createParameters.setRoleName(roleName);
-        createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
-        createParameters.setProvisionGuestAgent(true);
-        createParameters.setConfigurationSets(configlist);
-        createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
-
+        OSVirtualHardDisk oSVirtualHardDisk = createOSVirtualHardDisk(osVHarddiskName, operatingSystemName, mediaLinkUriValue, sourceImageName);
+        VirtualMachineCreateParameters createParameters = createVirtualMachineCreateParameter(roleName, configlist, oSVirtualHardDisk, null);
+        
         //Act
         OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
 
