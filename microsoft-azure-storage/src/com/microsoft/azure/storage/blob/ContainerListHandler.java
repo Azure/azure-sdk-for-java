@@ -135,7 +135,7 @@ final class ContainerListHandler extends DefaultHandler {
                 this.containerName = value;
             }
         }
-        else if (BlobConstants.PROPERTIES.equals(parentNode)) {
+        else if (Constants.PROPERTIES.equals(parentNode)) {
             try {
                 getProperties(currentNode, value);
             }

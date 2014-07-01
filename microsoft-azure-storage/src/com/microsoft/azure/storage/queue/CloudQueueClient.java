@@ -288,7 +288,7 @@ public final class CloudQueueClient extends ServiceClient {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override

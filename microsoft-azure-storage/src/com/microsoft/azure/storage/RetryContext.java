@@ -66,7 +66,7 @@ public final class RetryContext {
      * @return An <code>int</code> which represents the number of retries for the given operation.
      */
     public int getCurrentRetryCount() {
-        return currentRetryCount;
+        return this.currentRetryCount;
     }
 
     /**
@@ -75,7 +75,7 @@ public final class RetryContext {
      * @return A {@link RequestResult} object which represents the last request's results.
      */
     public RequestResult getLastRequestResult() {
-        return lastRequestResult;
+        return this.lastRequestResult;
     }
 
     /**
@@ -84,7 +84,7 @@ public final class RetryContext {
      * @return A {@link LocationMode} value which represents the location mode for subsequent retries.
      */
     public LocationMode getLocationMode() {
-        return locationMode;
+        return this.locationMode;
     }
 
     /**

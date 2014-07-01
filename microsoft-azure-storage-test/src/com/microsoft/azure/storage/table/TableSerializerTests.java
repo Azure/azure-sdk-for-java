@@ -51,13 +51,13 @@ public class TableSerializerTests {
 
     @Before
     public void tableTestMethodSetUp() throws URISyntaxException, StorageException {
-        table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
+        this.table = TableTestHelper.getRandomTableReference();
+        this.table.createIfNotExists();
     }
 
     @After
     public void tableTestMethodTearDown() throws StorageException {
-        table.deleteIfExists();
+        this.table.deleteIfExists();
     }
 
     /**
@@ -95,9 +95,9 @@ public class TableSerializerTests {
         ignoreGetter.setRowKey(UUID.randomUUID().toString());
         ignoreGetter.setIgnoreString("ignore data");
 
-        table.execute(TableOperation.insert(ignoreGetter));
+        this.table.execute(TableOperation.insert(ignoreGetter));
 
-        TableResult res = table.execute(TableOperation.retrieve(ignoreGetter.getPartitionKey(),
+        TableResult res = this.table.execute(TableOperation.retrieve(ignoreGetter.getPartitionKey(),
                 ignoreGetter.getRowKey(), IgnoreOnGetter.class));
 
         IgnoreOnGetter retrievedIgnoreG = res.getResultAsType();
@@ -109,9 +109,9 @@ public class TableSerializerTests {
         ignoreSetter.setRowKey(UUID.randomUUID().toString());
         ignoreSetter.setIgnoreString("ignore data");
 
-        table.execute(TableOperation.insert(ignoreSetter));
+        this.table.execute(TableOperation.insert(ignoreSetter));
 
-        res = table.execute(TableOperation.retrieve(ignoreSetter.getPartitionKey(), ignoreSetter.getRowKey(),
+        res = this.table.execute(TableOperation.retrieve(ignoreSetter.getPartitionKey(), ignoreSetter.getRowKey(),
                 IgnoreOnSetter.class));
 
         IgnoreOnSetter retrievedIgnoreS = res.getResultAsType();
@@ -123,9 +123,9 @@ public class TableSerializerTests {
         ignoreGetterSetter.setRowKey(UUID.randomUUID().toString());
         ignoreGetterSetter.setIgnoreString("ignore data");
 
-        table.execute(TableOperation.insert(ignoreGetterSetter));
+        this.table.execute(TableOperation.insert(ignoreGetterSetter));
 
-        res = table.execute(TableOperation.retrieve(ignoreGetterSetter.getPartitionKey(),
+        res = this.table.execute(TableOperation.retrieve(ignoreGetterSetter.getPartitionKey(),
                 ignoreGetterSetter.getRowKey(), IgnoreOnGetterAndSetter.class));
 
         IgnoreOnGetterAndSetter retrievedIgnoreGS = res.getResultAsType();
@@ -140,21 +140,21 @@ public class TableSerializerTests {
         ref.setStoreAsString("StoreAsOverride Data");
         ref.populateEntity();
 
-        table.execute(TableOperation.insert(ref));
+        this.table.execute(TableOperation.insert(ref));
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
+        TableResult res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
                 StoreAsEntity.class));
 
         StoreAsEntity retrievedStoreAsRef = res.getResultAsType();
         assertEquals(retrievedStoreAsRef.getStoreAsString(), ref.getStoreAsString());
 
         // Same query with a class without the storeAs annotation
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class));
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class));
 
         ComplexEntity retrievedComplexRef = res.getResultAsType();
         assertEquals(retrievedComplexRef.getString(), ref.getStoreAsString());
 
-        table.execute(TableOperation.delete(retrievedComplexRef));
+        this.table.execute(TableOperation.delete(retrievedComplexRef));
     }
 
     @Test
@@ -165,9 +165,9 @@ public class TableSerializerTests {
         ref.setStoreAsString("StoreAsOverride Data");
         ref.populateEntity();
 
-        table.execute(TableOperation.insert(ref));
+        this.table.execute(TableOperation.insert(ref));
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
+        TableResult res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
                 InvalidStoreAsEntity.class));
 
         InvalidStoreAsEntity retrievedStoreAsRef = res.getResultAsType();
@@ -206,9 +206,9 @@ public class TableSerializerTests {
             options.setPropertyResolver(ref);
         }
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(
+        TableResult res = this.table.execute(
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
 
         ComplexEntity retrievedComplexRef = res.getResultAsType();
@@ -247,9 +247,9 @@ public class TableSerializerTests {
         }
 
         // try with pojo
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(
+        TableResult res = this.table.execute(
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), StrangeDoubles.class), options, null);
 
         StrangeDoubles retrievedComplexRef = res.getResultAsType();
@@ -291,10 +291,10 @@ public class TableSerializerTests {
             options.setPropertyResolver(ref);
         }
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
     }
@@ -335,14 +335,14 @@ public class TableSerializerTests {
             options.setPropertyResolver(ref);
         }
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
 
-        table.execute(TableOperation.delete(ref), options, null);
+        this.table.execute(TableOperation.delete(ref), options, null);
     }
 
     @SuppressWarnings("deprecation")
@@ -380,10 +380,10 @@ public class TableSerializerTests {
             options.setPropertyResolver(ref);
         }
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
     }
@@ -422,8 +422,8 @@ public class TableSerializerTests {
         // Binary object
         ref.setBinary(null);
 
-        table.execute(TableOperation.insert(ref));
-        TableResult res = table.execute(
+        this.table.execute(TableOperation.insert(ref));
+        TableResult res = this.table.execute(
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
         ref = res.getResultAsType();
 
@@ -431,9 +431,9 @@ public class TableSerializerTests {
 
         // Bool
         ref.setBool(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -442,9 +442,9 @@ public class TableSerializerTests {
 
         // Date
         ref.setDateTime(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -453,9 +453,9 @@ public class TableSerializerTests {
 
         // Double
         ref.setDouble(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -464,9 +464,9 @@ public class TableSerializerTests {
 
         // UUID
         ref.setGuid(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -475,9 +475,9 @@ public class TableSerializerTests {
 
         // Int32
         ref.setInt32(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -486,9 +486,9 @@ public class TableSerializerTests {
 
         // Int64
         ref.setInt64(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();
@@ -497,9 +497,9 @@ public class TableSerializerTests {
 
         // String
         ref.setString(null);
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
-        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+        res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
                 options, null);
 
         ref = res.getResultAsType();

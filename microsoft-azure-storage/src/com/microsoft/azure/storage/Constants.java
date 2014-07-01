@@ -14,6 +14,11 @@
  */
 package com.microsoft.azure.storage;
 
+import com.microsoft.azure.storage.blob.BlobInputStream;
+import com.microsoft.azure.storage.blob.BlobOutputStream;
+import com.microsoft.azure.storage.file.FileInputStream;
+import com.microsoft.azure.storage.file.FileOutputStream;
+
 /**
  * RESERVED FOR INTERNAL USE. Contains storage constants.
  */
@@ -84,6 +89,11 @@ public final class Constants {
         public static final String INCLUDE_APIS_ELEMENT = "IncludeAPIs";
 
         /**
+         * Constant for the logs container.
+         */
+        public static final String LOGS_CONTAINER = "$logs";
+
+        /**
          * The XML element for the Logging
          */
         public static final String LOGGING_ELEMENT = "Logging";
@@ -92,6 +102,71 @@ public final class Constants {
          * The XML element for the CORS Rule MaxAgeInSeconds
          */
         public static final String MAX_AGE_IN_SECONDS_ELEMENT = "MaxAgeInSeconds";
+
+        /**
+         * Constant for the blob capacity metrics table.
+         */
+        public static final String METRICS_CAPACITY_BLOB = "$MetricsCapacityBlob";
+
+        /**
+         * Constant for the blob service primary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_BLOB = "$MetricsHourPrimaryTransactionsBlob";
+
+        /**
+         * Constant for the table service primary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_TABLE = "$MetricsHourPrimaryTransactionsTable";
+
+        /**
+         * Constant for the queue service primary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_QUEUE = "$MetricsHourPrimaryTransactionsQueue";
+
+        /**
+         * Constant for the blob service primary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_PRIMARY_TRANSACTIONS_BLOB = "$MetricsMinutePrimaryTransactionsBlob";
+
+        /**
+         * Constant for the table service primary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_PRIMARY_TRANSACTIONS_TABLE = "$MetricsMinutePrimaryTransactionsTable";
+
+        /**
+         * Constant for the queue service primary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_PRIMARY_TRANSACTIONS_QUEUE = "$MetricsMinutePrimaryTransactionsQueue";
+
+        /**
+         * Constant for the blob service secondary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_BLOB = "$MetricsHourSecondaryTransactionsBlob";
+
+        /**
+         * Constant for the table service secondary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_TABLE = "$MetricsHourSecondaryTransactionsTable";
+
+        /**
+         * Constant for the queue service secondary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_QUEUE = "$MetricsHourSecondaryTransactionsQueue";
+
+        /**
+         * Constant for the blob service secondary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_SECONDARY_TRANSACTIONS_BLOB = "$MetricsMinuteSecondaryTransactionsBlob";
+
+        /**
+         * Constant for the table service secondary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_SECONDARY_TRANSACTIONS_TABLE = "$MetricsMinuteSecondaryTransactionsTable";
+
+        /**
+         * Constant for the queue service secondary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_SECONDARY_TRANSACTIONS_QUEUE = "$MetricsMinuteSecondaryTransactionsQueue";
 
         /**
          * The XML element for the Minute Metrics
@@ -435,7 +510,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "1.0.0";
+        public static final String USER_AGENT_VERSION = "1.1.0";
 
         /**
          * The default type for content-type and accept
@@ -512,6 +587,11 @@ public final class Constants {
          * Query component for resource type.
          */
         public static final String RESOURCETYPE = "restype";
+        
+        /**
+         * The query component for the api version.
+         */
+        public static final String API_VERSION = "api-version";
 
         /**
          * The query component for the SAS table name.
@@ -825,6 +905,16 @@ public final class Constants {
     public static int MAX_BLOCK_SIZE = 4 * MB;
 
     /**
+     * The default write size, in bytes, used by {@link BlobOutputStream} or {@link FileOutputStream}.
+     */
+    public static final int DEFAULT_STREAM_WRITE_IN_BYTES = Constants.MAX_BLOCK_SIZE;
+
+    /**
+     * The default minimum read size, in bytes, for a {@link BlobInputStream} or {@link FileInputStream}.
+     */
+    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = Constants.MAX_BLOCK_SIZE;
+
+    /**
      * The maximum size, in bytes, of a given stream mark operation.
      */
     // Note if BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES is updated then this needs to be as well.
@@ -861,6 +951,11 @@ public final class Constants {
     public static final String NEXT_MARKER_ELEMENT = "NextMarker";
 
     /**
+     * The size of a page, in bytes, in a page blob.
+     */
+    public static final int PAGE_SIZE = 512;
+
+    /**
      * XML element for the permission of an access policy.
      */
     public static final String PERMISSION = "Permission";
@@ -869,6 +964,11 @@ public final class Constants {
      * XML element for a prefix.
      */
     public static final String PREFIX_ELEMENT = "Prefix";
+
+    /**
+     * XML element for properties.
+     */
+    public static final String PROPERTIES = "Properties";
 
     /**
      * XML element for a signed identifier.

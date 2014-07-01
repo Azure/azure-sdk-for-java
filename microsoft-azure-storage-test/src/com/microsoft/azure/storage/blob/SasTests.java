@@ -40,6 +40,7 @@ import org.junit.experimental.categories.Category;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResponseReceivedEvent;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SecondaryTests;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -61,15 +62,41 @@ public class SasTests {
 
     @Before
     public void leaseTestMethodSetup() throws URISyntaxException, StorageException, IOException {
-        container = BlobTestHelper.getRandomContainerReference();
-        container.create();
+        this.container = BlobTestHelper.getRandomContainerReference();
+        this.container.create();
 
-        blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(container, BlobType.BLOCK_BLOB, "test", 100, null);
+        this.blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "test", 100,
+                null);
     }
 
     @After
     public void leaseTestMethodTearDown() throws StorageException {
-        container.deleteIfExists();
+        this.container.deleteIfExists();
+    }
+    
+    @Test
+    public void testApiVersion() throws InvalidKeyException, StorageException, URISyntaxException {
+        SharedAccessBlobPolicy sp1 = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
+                        SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE), 300);
+    	String sas = this.blob.generateSharedAccessSignature(sp1, null);
+    	
+    	// should not be appended before signing
+    	assertEquals(-1, sas.indexOf(Constants.QueryConstants.API_VERSION));
+    	
+        OperationContext ctx = new OperationContext();
+        ctx.getResponseReceivedEventHandler().addListener(new StorageEvent<ResponseReceivedEvent>() {
+
+            @Override
+            public void eventOccurred(ResponseReceivedEvent eventArg) {
+            	// should be appended after signing
+            	HttpURLConnection conn = (HttpURLConnection) eventArg.getConnectionObject();
+            	assertTrue(conn.getURL().toString().indexOf(Constants.QueryConstants.API_VERSION) != -1);
+            }
+        });
+
+        CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(this.blob.getUri().toString() + "?" + sas));
+        sasBlob.uploadMetadata(null, null, ctx);	    	
     }
 
     @Test
@@ -85,28 +112,28 @@ public class SasTests {
 
         perms.getSharedAccessPolicies().put("full", sp1);
         perms.getSharedAccessPolicies().put("readlist", sp2);
-        container.uploadPermissions(perms);
+        this.container.uploadPermissions(perms);
         Thread.sleep(30000);
 
-        String containerReadListSas = container.generateSharedAccessSignature(sp2, null);
-        CloudBlobContainer readListContainer = new CloudBlobContainer(PathUtility.addToQuery(container.getUri(),
+        String containerReadListSas = this.container.generateSharedAccessSignature(sp2, null);
+        CloudBlobContainer readListContainer = new CloudBlobContainer(PathUtility.addToQuery(this.container.getUri(),
                 containerReadListSas));
 
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), readListContainer.getServiceClient()
                 .getCredentials().getClass().toString());
 
-        CloudBlockBlob blobFromSasContainer = readListContainer.getBlockBlobReference(blob.getName());
+        CloudBlockBlob blobFromSasContainer = readListContainer.getBlockBlobReference(this.blob.getName());
         blobFromSasContainer.download(new ByteArrayOutputStream());
 
         // do not give the client and check that the new container's client has the correct perms
         CloudBlobContainer containerFromUri = new CloudBlobContainer(PathUtility.addToQuery(
-                readListContainer.getStorageUri(), container.generateSharedAccessSignature(null, "readlist")));
+                readListContainer.getStorageUri(), this.container.generateSharedAccessSignature(null, "readlist")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), containerFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 
         // pass in a client which will have different permissions and check the sas permissions are used
         // and that the properties set in the old service client are passed to the new client
-        CloudBlobClient bClient = container.getServiceClient();
+        CloudBlobClient bClient = this.container.getServiceClient();
 
         // set some arbitrary settings to make sure they are passed on
         bClient.getDefaultRequestOptions().setConcurrentRequestCount(5);
@@ -117,7 +144,7 @@ public class SasTests {
         bClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
 
         containerFromUri = new CloudBlobContainer(PathUtility.addToQuery(readListContainer.getStorageUri(),
-                container.generateSharedAccessSignature(null, "readlist")), container.getServiceClient());
+                this.container.generateSharedAccessSignature(null, "readlist")), this.container.getServiceClient());
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), containerFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 
@@ -144,27 +171,28 @@ public class SasTests {
         BlobContainerPermissions perms = new BlobContainerPermissions();
 
         perms.getSharedAccessPolicies().put("readwrite", policy);
-        container.uploadPermissions(perms);
+        this.container.uploadPermissions(perms);
         Thread.sleep(30000);
 
-        String sasToken = container.generateSharedAccessSignature(policy, null);
+        String sasToken = this.container.generateSharedAccessSignature(policy, null);
 
-        CloudBlockBlob blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(container, BlobType.BLOCK_BLOB,
+        CloudBlockBlob blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB,
                 "blockblob", 64, null);
         testAccess(sasToken, EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE), null,
-                container, blob);
+                this.container, blob);
 
         //Change the policy to only read and update SAS.
         SharedAccessBlobPolicy policy2 = createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 300);
         perms = new BlobContainerPermissions();
 
         perms.getSharedAccessPolicies().put("read", policy2);
-        container.uploadPermissions(perms);
+        this.container.uploadPermissions(perms);
         Thread.sleep(30000);
 
         // Extra check to make sure that we have actually updated the SAS token.
-        String sasToken2 = container.generateSharedAccessSignature(policy2, null);
-        CloudBlobContainer sasContainer = new CloudBlobContainer(PathUtility.addToQuery(container.getUri(), sasToken2));
+        String sasToken2 = this.container.generateSharedAccessSignature(policy2, null);
+        CloudBlobContainer sasContainer = new CloudBlobContainer(PathUtility.addToQuery(this.container.getUri(),
+                sasToken2));
 
         try {
             BlobTestHelper.uploadNewBlob(sasContainer, BlobType.BLOCK_BLOB, "blockblob", 64, null);
@@ -203,19 +231,19 @@ public class SasTests {
             BlobContainerPermissions perms = new BlobContainerPermissions();
 
             perms.getSharedAccessPolicies().put("readwrite" + i, policy);
-            container.uploadPermissions(perms);
+            this.container.uploadPermissions(perms);
             Thread.sleep(30000);
 
-            String sasToken = container.generateSharedAccessSignature(policy, null);
+            String sasToken = this.container.generateSharedAccessSignature(policy, null);
 
-            CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(container,
+            CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container,
                     BlobType.BLOCK_BLOB, "blockblob", 64, null);
-            testAccess(sasToken, permissions, null, container, testBlockBlob);
+            testAccess(sasToken, permissions, null, this.container, testBlockBlob);
 
-            CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(container, BlobType.PAGE_BLOB,
-                    "pageblob", 512, null);
+            CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container,
+                    BlobType.PAGE_BLOB, "pageblob", 512, null);
 
-            testAccess(sasToken, permissions, null, container, testPageBlob);
+            testAccess(sasToken, permissions, null, this.container, testPageBlob);
         }
     }
 
@@ -223,27 +251,27 @@ public class SasTests {
     @Category(SlowTests.class)
     public void testContainerPublicAccess() throws StorageException, IOException, URISyntaxException,
             InterruptedException {
-        CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(container, BlobType.BLOCK_BLOB,
-                "blockblob", 64, null);
-        CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(container, BlobType.PAGE_BLOB,
+        CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container,
+                BlobType.BLOCK_BLOB, "blockblob", 64, null);
+        CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB,
                 "pageblob", 512, null);
 
         BlobContainerPermissions permissions = new BlobContainerPermissions();
 
         permissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
-        container.uploadPermissions(permissions);
+        this.container.uploadPermissions(permissions);
         Thread.sleep(35000);
 
         testAccess(null, EnumSet.of(SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.READ), null,
-                container, testBlockBlob);
+                this.container, testBlockBlob);
         testAccess(null, EnumSet.of(SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.READ), null,
-                container, testPageBlob);
+                this.container, testPageBlob);
 
         permissions.setPublicAccess(BlobContainerPublicAccessType.BLOB);
-        container.uploadPermissions(permissions);
+        this.container.uploadPermissions(permissions);
         Thread.sleep(30000);
-        testAccess(null, EnumSet.of(SharedAccessBlobPermissions.READ), null, container, testBlockBlob);
-        testAccess(null, EnumSet.of(SharedAccessBlobPermissions.READ), null, container, testPageBlob);
+        testAccess(null, EnumSet.of(SharedAccessBlobPermissions.READ), null, this.container, testBlockBlob);
+        testAccess(null, EnumSet.of(SharedAccessBlobPermissions.READ), null, this.container, testPageBlob);
     }
 
     @Test
@@ -252,7 +280,7 @@ public class SasTests {
         for (int i = 1; i < 8; i++) {
             final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
             addPermissions(permissions, i);
-            testBlobAccess(container, BlobType.BLOCK_BLOB, permissions, null);
+            testBlobAccess(this.container, BlobType.BLOCK_BLOB, permissions, null);
         }
     }
 
@@ -262,7 +290,7 @@ public class SasTests {
         for (int i = 1; i < 8; i++) {
             final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
             addPermissions(permissions, i);
-            testBlobAccess(container, BlobType.PAGE_BLOB, permissions, null);
+            testBlobAccess(this.container, BlobType.PAGE_BLOB, permissions, null);
         }
     }
 
@@ -275,16 +303,16 @@ public class SasTests {
         BlobContainerPermissions perms = new BlobContainerPermissions();
 
         perms.getSharedAccessPolicies().put("readperm", sp);
-        container.uploadPermissions(perms);
+        this.container.uploadPermissions(perms);
         Thread.sleep(30000);
 
-        CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(blob.getUri().toString() + "?"
-                + blob.generateSharedAccessSignature(null, "readperm")));
+        CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(this.blob.getUri().toString() + "?"
+                + this.blob.generateSharedAccessSignature(null, "readperm")));
         sasBlob.download(new ByteArrayOutputStream());
 
         // do not give the client and check that the new blob's client has the correct perms
-        CloudBlob blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(blob.getStorageUri(),
-                blob.generateSharedAccessSignature(null, "readperm")), null);
+        CloudBlob blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(this.blob.getStorageUri(),
+                this.blob.generateSharedAccessSignature(null, "readperm")), null);
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), blobFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 
@@ -300,8 +328,8 @@ public class SasTests {
         bClient.getDefaultRequestOptions().setTimeoutIntervalInMs(1000);
         bClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
 
-        blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(blob.getStorageUri(),
-                blob.generateSharedAccessSignature(null, "readperm")), bClient);
+        blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(this.blob.getStorageUri(),
+                this.blob.generateSharedAccessSignature(null, "readperm")), bClient);
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), blobFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 
@@ -327,7 +355,7 @@ public class SasTests {
         BlobContainerPermissions perms = new BlobContainerPermissions();
 
         perms.getSharedAccessPolicies().put("readperm", sp);
-        container.uploadPermissions(perms);
+        this.container.uploadPermissions(perms);
         Thread.sleep(30000);
 
         SharedAccessBlobHeaders headers = new SharedAccessBlobHeaders();
@@ -337,8 +365,8 @@ public class SasTests {
         headers.setContentLanguage("da");
         headers.setContentType("text/html; charset=utf-8");
 
-        CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(blob.getUri().toString() + "?"
-                + blob.generateSharedAccessSignature(null, headers, "readperm")));
+        CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(this.blob.getUri().toString() + "?"
+                + this.blob.generateSharedAccessSignature(null, headers, "readperm")));
         OperationContext context = new OperationContext();
 
         context.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {

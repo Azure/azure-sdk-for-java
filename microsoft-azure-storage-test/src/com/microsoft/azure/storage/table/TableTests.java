@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.table;
 
 import static org.junit.Assert.*;
 
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -33,10 +34,13 @@ import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.LocationMode;
+import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
+import com.microsoft.azure.storage.SendingRequestEvent;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
@@ -246,6 +250,39 @@ public class TableTests {
         assertTrue(table.deleteIfExists());
 
         assertFalse(table.deleteIfExists());
+    }
+
+    @Test
+    public void testCloudTableDeleteIfExistsErrorCode() throws StorageException, URISyntaxException {
+        final CloudTable table = TableTestHelper.getRandomTableReference();
+
+        try {
+            assertFalse(table.deleteIfExists());
+            OperationContext ctx = new OperationContext();
+            ctx.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+                @Override
+                public void eventOccurred(SendingRequestEvent eventArg) {
+                    if (((HttpURLConnection) eventArg.getConnectionObject()).getRequestMethod().equals("DELETE")) {
+                        try {
+                            table.delete();
+                            assertFalse(table.exists());
+                        }
+                        catch (StorageException e) {
+                            fail("Delete should succeed.");
+                        }
+                    }
+                }
+            });
+
+            table.create();
+
+            // The second delete of a table will return a 404
+            assertFalse(table.deleteIfExists(null, ctx));
+        }
+        finally {
+            table.deleteIfExists();
+        }
     }
 
     @SuppressWarnings("deprecation")

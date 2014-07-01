@@ -45,7 +45,7 @@ public class GeoReplicationStats {
      * @return A <code>java.util.Date</code> object which represents the last synchronization time.
      */
     public Date getLastSyncTime() {
-        return lastSyncTime;
+        return this.lastSyncTime;
     }
 
     /**
@@ -54,7 +54,7 @@ public class GeoReplicationStats {
      * @return The <code>GeoReplicationStatus</code> status.
      */
     public GeoReplicationStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     /**

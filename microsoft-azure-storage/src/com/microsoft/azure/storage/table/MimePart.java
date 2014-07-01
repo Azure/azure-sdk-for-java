@@ -38,7 +38,8 @@ final class MimePart {
         // append mime part header
         appendHeader(builder);
 
-        builder.append(String.format("%s %s HTTP/1.1\r\n", getHttpVerbForOperation(this.op), requestIdentity.toString()));
+        builder.append(String.format("%s %s HTTP/1.1\r\n", getHttpVerbForOperation(this.op),
+                this.requestIdentity.toString()));
 
         for (Map.Entry<String, String> header : this.headers.entrySet()) {
             builder.append(String.format("%s: %s\r\n", header.getKey(), header.getValue()));
@@ -46,8 +47,8 @@ final class MimePart {
 
         builder.append("\r\n");
 
-        if (payload != null) {
-            builder.append(payload);
+        if (this.payload != null) {
+            builder.append(this.payload);
         }
 
         return builder.toString();

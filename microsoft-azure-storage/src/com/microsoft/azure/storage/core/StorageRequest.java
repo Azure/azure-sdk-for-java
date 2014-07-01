@@ -70,9 +70,9 @@ public abstract class StorageRequest<C, P, R> {
     private InputStream sendStream;
 
     /**
-     * Holds the blob offset for recovery action.
+     * Holds the blob/file offset for recovery action.
      */
-    private Long blobOffset = null;
+    private Long offset = null;
 
     /**
      * Holds the length
@@ -185,10 +185,10 @@ public abstract class StorageRequest<C, P, R> {
     }
 
     /**
-     * @return the blobOffset to start reading from
+     * @return the offset to start reading from
      */
-    public Long getBlobOffset() {
-        return this.blobOffset;
+    public Long getOffset() {
+        return this.offset;
     }
 
     /**
@@ -258,7 +258,7 @@ public abstract class StorageRequest<C, P, R> {
      * @return the currentRequestByteCount
      */
     public long getCurrentRequestByteCount() {
-        return currentRequestByteCount;
+        return this.currentRequestByteCount;
     }
 
     /**
@@ -306,7 +306,7 @@ public abstract class StorageRequest<C, P, R> {
         return StorageException.translateException(request, null, opContext);
     }
 
-    public static final void signBlobAndQueueRequest(HttpURLConnection request, ServiceClient client,
+    public static final void signBlobQueueAndFileRequest(HttpURLConnection request, ServiceClient client,
             long contentLength, OperationContext context) throws InvalidKeyException, StorageException {
         if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
             StorageCredentialsHelper.signBlobAndQueueRequest(client.getCredentials(), request, contentLength, context);
@@ -438,11 +438,11 @@ public abstract class StorageRequest<C, P, R> {
     }
 
     /**
-     * @param streamOffset
+     * @param offset
      *            the stream offset to start copying from
      */
-    public void setBlobOffset(Long blobOffset) {
-        this.blobOffset = blobOffset;
+    public void setOffset(Long offset) {
+        this.offset = offset;
     }
 
     /**
@@ -619,7 +619,6 @@ public abstract class StorageRequest<C, P, R> {
      * 
      * @throws StorageException
      */
-    @SuppressWarnings("unused")
     public void validateStreamWrite(StreamMd5AndLength descriptor) throws StorageException {
         // no-op
     }
@@ -629,7 +628,6 @@ public abstract class StorageRequest<C, P, R> {
      * 
      * @throws IOException
      */
-    @SuppressWarnings("unused")
     public void recoveryAction(OperationContext context) throws IOException {
         // no-op
     }

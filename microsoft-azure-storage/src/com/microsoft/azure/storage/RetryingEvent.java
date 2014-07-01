@@ -53,7 +53,7 @@ public final class RetryingEvent extends BaseEvent {
      * @return the retryCount
      */
     public RetryContext getRetryContext() {
-        return retryContext;
+        return this.retryContext;
     }
 
 }

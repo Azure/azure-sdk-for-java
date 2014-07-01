@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,6 @@ import com.microsoft.azure.storage.SharedAccessPolicySerializer;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCode;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -72,7 +71,7 @@ public final class CloudTable {
 
     /**
      * Gets the name of the table.
-     * 
+     *
      * @return A <code>String</code> object that represents the name of the table.
      */
     public String getName() {
@@ -81,7 +80,7 @@ public final class CloudTable {
 
     /**
      * Gets the table service client associated with this queue.
-     * 
+     *
      * @return A {@link CloudTableClient} object that represents the service client associated with this table.
      */
     public CloudTableClient getServiceClient() {
@@ -90,7 +89,7 @@ public final class CloudTable {
 
     /**
      * Returns the list of URIs for all locations.
-     * 
+     *
      * @return A {@link StorageUri} that represents the list of URIs for all locations..
      */
     public final StorageUri getStorageUri() {
@@ -99,7 +98,7 @@ public final class CloudTable {
 
     /**
      * Gets the absolute URI for this table.
-     * 
+     *
      * @return A <code>java.net.URI</code> object that represents the URI for this table.
      */
     public URI getUri() {
@@ -109,10 +108,10 @@ public final class CloudTable {
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified table URI. The table URI must
      * include a SAS token.
-     * 
+     *
      * @param uri
      *            A <code>java.net.URI</code> object that represents the absolute URI of the table.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -125,10 +124,10 @@ public final class CloudTable {
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified table URI. The table URI must
      * include a SAS token.
-     * 
+     *
      * @param uri
      *            A {@link StorageUri} object that represents the absolute URI of the table.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -140,7 +139,7 @@ public final class CloudTable {
 
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified name and client.
-     * 
+     *
      * @param tableName
      *            A <code>String</code> which represents the name of the table, which must adhere to table naming rules.
      *            The table name should not include any path separator characters (/).
@@ -150,7 +149,7 @@ public final class CloudTable {
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
-     * 
+     *
      * @throws URISyntaxException
      *             If the resource URI constructed based on the tableName is invalid.
      * @throws StorageException
@@ -159,7 +158,7 @@ public final class CloudTable {
      *      Model</a>
      */
     public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
-            StorageException {
+    StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("tableName", tableName);
 
@@ -173,13 +172,13 @@ public final class CloudTable {
 
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified table URI and client.
-     * 
+     *
      * @param uri
      *            A <code>java.net.URI</code> object that represents the absolute URI of the table.
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -191,13 +190,13 @@ public final class CloudTable {
 
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified table URI and client.
-     * 
+     *
      * @param uri
      *            A {@link StorageUri} object that represents the absolute URI of the table.
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -223,7 +222,7 @@ public final class CloudTable {
      * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/azure/dd135729.aspx">Create Table</a>
      * REST API to create the specified table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -239,10 +238,10 @@ public final class CloudTable {
      * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/azure/dd135729.aspx">Create Table</a>
      * REST API to create the specified table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
      *            settings for the operation. Specify <code>null</code> to use the request options specified on the
@@ -250,7 +249,7 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @throws StorageException
      *             If an error occurs accessing the storage service, or because the table cannot be
      *             created, or already exists.
@@ -275,9 +274,9 @@ public final class CloudTable {
 
     /**
      * Creates the table in the storage service using default request options if it does not already exist.
-     * 
+     *
      * @return <code>true</code> if the table is created in the storage service; otherwise <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -289,7 +288,7 @@ public final class CloudTable {
     /**
      * Creates the table in the storage service with the specified request options and operation context, if it does not
      * already exist.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -298,9 +297,9 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return <code>true</code> if the table did not already exist and was created; otherwise <code>false</code> .
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -331,7 +330,7 @@ public final class CloudTable {
 
     /**
      * Deletes the table from the storage service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -342,7 +341,7 @@ public final class CloudTable {
 
     /**
      * Deletes the table from the storage service, using the specified request options and operation context.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -351,7 +350,7 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -374,10 +373,10 @@ public final class CloudTable {
 
     /**
      * Deletes the table from the storage service, if it exists.
-     * 
+     *
      * @return <code>true</code> if the table existed in the storage service and has been deleted; otherwise
      *         <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -389,7 +388,7 @@ public final class CloudTable {
     /**
      * Deletes the table from the storage service using the specified request options and operation context, if it
      * exists.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -398,10 +397,10 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A value of <code>true</code> if the table existed in the storage service and has been deleted, otherwise
      *         <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -415,7 +414,7 @@ public final class CloudTable {
             }
             catch (StorageException ex) {
                 if (ex.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(ex.getErrorCode())) {
+                        && StorageErrorCodeStrings.RESOURCE_NOT_FOUND.equals(ex.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -437,14 +436,14 @@ public final class CloudTable {
      * This method invokes an <a href="http://msdn.microsoft.com/en-us/library/azure/dd894038.aspx">Entity Group
      * Transaction</a> on the REST API to execute the specified batch operation on the table as an atomic unit, using
      * the Table service endpoint and storage account credentials of this instance.
-     * 
+     *
      * @param batch
      *            The {@link TableBatchOperation} object representing the operations to execute on the table.
-     * 
+     *
      * @return
      *         A <code>java.util.ArrayList</code> of {@link TableResult} that contains the results, in order, of
      *         each {@link TableOperation} in the {@link TableBatchOperation} on the named table.
-     * 
+     *
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
@@ -462,10 +461,10 @@ public final class CloudTable {
      * This method invokes an <a href="http://msdn.microsoft.com/en-us/library/azure/dd894038.aspx">Entity Group
      * Transaction</a> on the REST API to execute the specified batch operation on the table as an atomic unit, using
      * the Table service endpoint and storage account credentials of this instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param batch
      *            The {@link TableBatchOperation} object representing the operations to execute on the table.
      * @param options
@@ -475,11 +474,11 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A <code>java.util.ArrayList</code> of {@link TableResult} that contains the results, in order, of
      *         each {@link TableOperation} in the {@link TableBatchOperation} on the named table.
-     * 
+     *
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
@@ -502,13 +501,13 @@ public final class CloudTable {
      * This method will invoke the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to execute the specified operation on the table, using the Table service endpoint and storage
      * account credentials of this instance.
-     * 
+     *
      * @param operation
      *            The {@link TableOperation} object representing the operation to execute on the table.
-     * 
+     *
      * @return
      *         A {@link TableResult} containing the result of executing the {@link TableOperation} on the table.
-     * 
+     *
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
@@ -523,10 +522,10 @@ public final class CloudTable {
      * This method will invoke the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to execute the specified operation on the table, using the Table service endpoint and storage
      * account credentials of this instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param operation
      *            The {@link TableOperation} object representing the operation to execute on the table.
      * @param options
@@ -536,10 +535,10 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A {@link TableResult} containing the result of executing the {@link TableOperation} on the table.
-     * 
+     *
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
@@ -557,13 +556,13 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
      *            An {@link EntityResolver} instance which creates a projection of the table query result entities into
      *            the specified type <code>R</code>.
-     * 
+     *
      * @return
      *         A collection implementing the <code>Iterable</code> interface containing the projection into type
      *         <code>R</code> of the results of executing the query.
@@ -581,10 +580,10 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -597,7 +596,7 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A collection implementing the <code>Iterable</code> interface containing the projection into type
      *         <code>R</code> of the results of executing the query.
@@ -619,11 +618,11 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
-     * 
+     *
      * @return
      *         A collection implementing the <code>Iterable</code> interface specialized for type T of the results of
      *         executing the query.
@@ -640,10 +639,10 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
@@ -654,7 +653,7 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A collection implementing the <code>Iterable</code> interface specialized for type T of the results of
      *         executing the query.
@@ -679,7 +678,7 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -690,11 +689,11 @@ public final class CloudTable {
      *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
      *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
      *            {@link ResultContinuation} object to use in the next call to resume the query.
-     * 
+     *
      * @return
      *         A {@link ResultSegment} containing the projection into type <code>R</code> of the results of executing
      *         the query.
-     * 
+     *
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
@@ -715,10 +714,10 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -736,11 +735,11 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A {@link ResultSegment} containing the projection into type <code>R</code> of the results of executing
      *         the query.
-     * 
+     *
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
@@ -764,7 +763,7 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
@@ -773,10 +772,10 @@ public final class CloudTable {
      *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
      *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
      *            {@link ResultContinuation} object to use in the next call to resume the query.
-     * 
+     *
      * @return
      *         A {@link ResultSegment} specialized for type T of the results of executing the query.
-     * 
+     *
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
@@ -796,10 +795,10 @@ public final class CloudTable {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/azure/dd179423.aspx">Table Service
      * REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
-     * 
+     *
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
-     * 
+     *
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
@@ -815,10 +814,10 @@ public final class CloudTable {
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
-     * 
+     *
      * @return
      *         A {@link ResultSegment} specialized for type T of the results of executing the query.
-     * 
+     *
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
@@ -835,9 +834,9 @@ public final class CloudTable {
 
     /**
      * Returns a value that indicates whether the table exists in the storage service.
-     * 
+     *
      * @return <code>true</code> if the table exists in the storage service; otherwise <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -849,7 +848,7 @@ public final class CloudTable {
     /**
      * Returns a value that indicates whether the table exists in the storage service, using the specified request
      * options and operation context.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -858,9 +857,9 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return <code>true</code> if the table exists in the storage service, otherwise <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -872,7 +871,7 @@ public final class CloudTable {
     /**
      * Returns a value that indicates whether the table exists in the storage service, using the specified request
      * options and operation context.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -881,9 +880,9 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return <code>true</code> if the table exists in the storage service, otherwise <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
@@ -920,10 +919,10 @@ public final class CloudTable {
 
     /**
      * Uploads the table's permissions.
-     * 
+     *
      * @param permissions
      *            A {@link TablePermissions} object that represents the permissions to upload.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -934,7 +933,7 @@ public final class CloudTable {
 
     /**
      * Uploads the table's permissions using the specified request options and operation context.
-     * 
+     *
      * @param permissions
      *            A {@link TablePermissions} object that represents the permissions to upload.
      * @param options
@@ -945,7 +944,7 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1023,9 +1022,9 @@ public final class CloudTable {
 
     /**
      * Downloads the permission settings for the table.
-     * 
+     *
      * @return A {@link TablePermissions} object that represents the container's permissions.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1036,7 +1035,7 @@ public final class CloudTable {
 
     /**
      * Downloads the permissions settings for the table using the specified request options and operation context.
-     * 
+     *
      * @param options
      *            A {@link TableRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client (
@@ -1045,9 +1044,9 @@ public final class CloudTable {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A {@link TablePermissions} object that represents the table's permissions.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1116,7 +1115,7 @@ public final class CloudTable {
 
     /**
      * Creates a shared access signature for the table.
-     * 
+     *
      * @param policy
      *            A {@link SharedAccessTablePolicy} object which represents the access policy for the shared access
      *            signature.
@@ -1130,9 +1129,9 @@ public final class CloudTable {
      *            A <code>String</code> which represents the ending partition key.
      * @param endRowKey
      *            A <code>String</code> which represents the ending end key.
-     * 
+     *
      * @return A <code>String</code> containing the shared access signature for the table.
-     * 
+     *
      * @throws InvalidKeyException
      *             If an invalid key was passed.
      * @throws StorageException
@@ -1170,7 +1169,7 @@ public final class CloudTable {
 
     /**
      * Returns the canonical name for shared access.
-     * 
+     *
      * @return A <code>String</code> containing the canonical name for shared access.
      */
     private String getSharedAccessCanonicalName() {
@@ -1182,18 +1181,18 @@ public final class CloudTable {
 
     /**
      * Parse Uri for SAS (Shared access signature) information.
-     * 
+     *
      * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
      * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
      * a new client is created based on SAS information or as anonymous credentials.
-     * 
+     *
      * @param completeUri
      *            A {@link StorageUri} object which represents the complete URI.
      * @param existingClient
      *            A {@link CloudTableClient} object which represents the client to use.
      * @param usePathStyleUris
      *            <code>true</code> if path-style URIs are used; otherwise <code>false</code>.
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      */

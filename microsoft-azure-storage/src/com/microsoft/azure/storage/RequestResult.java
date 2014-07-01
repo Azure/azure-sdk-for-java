@@ -78,7 +78,7 @@ public final class RequestResult {
      * @return A {@link StorageLocation} object.
      */
     public StorageLocation getTargetLocation() {
-        return targetLocation;
+        return this.targetLocation;
     }
 
     /**
@@ -91,7 +91,7 @@ public final class RequestResult {
     }
 
     /**
-     * Gets the ETag for the request. 
+     * Gets the ETag for the request.
      * 
      * @return A <code>String</code> which contains the ETag.
      */
@@ -100,7 +100,7 @@ public final class RequestResult {
     }
 
     /**
-     * Gets the <code>Exception</code> for the request.  
+     * Gets the <code>Exception</code> for the request.
      * 
      * @return An <code>Exception</code>.
      */
@@ -166,7 +166,7 @@ public final class RequestResult {
      * Sets the MD5 hash for the request.
      * 
      * @param contentMD5
-     *        A <code>String</code> object which contains the MD5 hash to set.
+     *            A <code>String</code> object which contains the MD5 hash to set.
      */
     public void setContentMD5(final String contentMD5) {
         this.contentMD5 = contentMD5;
@@ -176,7 +176,7 @@ public final class RequestResult {
      * Sets the ETag for the request.
      * 
      * @param etag
-     *        A <code>String</code> object which contains the ETag to set.
+     *            A <code>String</code> object which contains the ETag to set.
      */
     public void setEtag(final String etag) {
         this.etag = etag;
@@ -186,7 +186,7 @@ public final class RequestResult {
      * Sets the <code>Exception</code> for the request.
      * 
      * @param exception
-     *        The <code>Exception</code> to set.
+     *            The <code>Exception</code> to set.
      */
     public void setException(final Exception exception) {
         this.exception = exception;
@@ -196,7 +196,7 @@ public final class RequestResult {
      * Sets the request date.
      * 
      * @param requestDate
-     *        A <code>java.util.Date</code> object which contains the request date to set.
+     *            A <code>java.util.Date</code> object which contains the request date to set.
      */
     public void setRequestDate(final String requestDate) {
         this.requestDate = requestDate;
@@ -206,7 +206,7 @@ public final class RequestResult {
      * Sets the service request ID.
      * 
      * @param serviceRequestID
-     *        A <code>String</code> object which contains the service request ID to set.
+     *            A <code>String</code> object which contains the service request ID to set.
      */
     public void setServiceRequestID(final String serviceRequestID) {
         this.serviceRequestID = serviceRequestID;
@@ -216,7 +216,7 @@ public final class RequestResult {
      * Sets the start date for the request.
      * 
      * @param startDate
-     *        A <code>java.util.Date</code> object which contains the start date to set.
+     *            A <code>java.util.Date</code> object which contains the start date to set.
      */
     public void setStartDate(final Date startDate) {
         this.startDate = startDate;
@@ -226,7 +226,7 @@ public final class RequestResult {
      * Sets the HTTP status code for the request.
      * 
      * @param statusCode
-     *        An <code>int</code> which contains the HTTP status code to set.
+     *            An <code>int</code> which contains the HTTP status code to set.
      */
     public void setStatusCode(final int statusCode) {
         this.statusCode = statusCode;
@@ -236,7 +236,7 @@ public final class RequestResult {
      * Sets the HTTP status message for the request.
      * 
      * @param statusMessage
-     *        A <code>String</code> which contains the status message to set.
+     *            A <code>String</code> which contains the status message to set.
      */
     public void setStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
@@ -246,7 +246,7 @@ public final class RequestResult {
      * Sets the stop date for the request.
      * 
      * @param stopDate
-     *        A <code>java.util.Date</code> object which contains the stop date to set.
+     *            A <code>java.util.Date</code> object which contains the stop date to set.
      */
     public void setStopDate(final Date stopDate) {
         this.stopDate = stopDate;
@@ -256,7 +256,7 @@ public final class RequestResult {
      * Sets the location that the request was sent to.
      * 
      * @param targetLocation
-     *        A {@link StorageLocation} object to set.
+     *            A {@link StorageLocation} object to set.
      */
     public void setTargetLocation(StorageLocation targetLocation) {
         this.targetLocation = targetLocation;

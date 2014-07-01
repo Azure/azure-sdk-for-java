@@ -38,7 +38,7 @@ public final class BlockEntry {
      * {@link BlockSearchMode#LATEST}.
      * 
      * @param id
-     *        A <code>String</code> which represents the ID of the block.
+     *            A <code>String</code> which represents the ID of the block.
      */
     public BlockEntry(final String id) {
         this.setId(id);
@@ -49,9 +49,9 @@ public final class BlockEntry {
      * Creates an instance of the <code>BlockEntry</code> class with the specified id and search mode.
      * 
      * @param id
-     *        A <code>String</code> which represents the ID of the block.
+     *            A <code>String</code> which represents the ID of the block.
      * @param searchMode
-     *        A {@link BlockSearchMode} value which represents the block search mode.
+     *            A {@link BlockSearchMode} value which represents the block search mode.
      */
     public BlockEntry(final String id, final BlockSearchMode searchMode) {
         this.setId(id);
@@ -84,7 +84,7 @@ public final class BlockEntry {
      * @return A {@link BlockSearchMode} value which represents the block search mode.
      */
     public BlockSearchMode getSearchMode() {
-        return searchMode;
+        return this.searchMode;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class BlockEntry {
      * must be the same size for each block.
      * 
      * @param id
-     *        A <code>String</code> which represents the ID of the block to set.
+     *            A <code>String</code> which represents the ID of the block to set.
      */
     public void setId(final String id) {
         this.id = id;
@@ -103,7 +103,7 @@ public final class BlockEntry {
      * Sets the size, in bytes, of the block.
      * 
      * @param size
-     *        A <code>long</code> which represents the the size, in bytes, of the block to set.
+     *            A <code>long</code> which represents the the size, in bytes, of the block to set.
      */
     public void setSize(final long size) {
         this.size = size;
@@ -113,7 +113,7 @@ public final class BlockEntry {
      * Sets the {@link BlockSearchMode}.
      * 
      * @param searchMode
-     *        A {@link BlockSearchMode} value which represents the block search mode to set.
+     *            A {@link BlockSearchMode} value which represents the block search mode to set.
      */
     public void setSearchMode(BlockSearchMode searchMode) {
         this.searchMode = searchMode;

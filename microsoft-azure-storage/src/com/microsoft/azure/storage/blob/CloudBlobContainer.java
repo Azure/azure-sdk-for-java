@@ -38,7 +38,6 @@ import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCode;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -289,7 +288,7 @@ public final class CloudBlobContainer {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
                 final HttpURLConnection request = BlobRequest.createContainer(
-                        container.getStorageUri().getUri(this.getCurrentLocation()), options, context);
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context);
                 return request;
             }
 
@@ -301,7 +300,7 @@ public final class CloudBlobContainer {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -435,7 +434,7 @@ public final class CloudBlobContainer {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -497,7 +496,7 @@ public final class CloudBlobContainer {
             }
             catch (StorageException e) {
                 if (e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(e.getErrorCode())) {
+                        && StorageErrorCodeStrings.CONTAINER_NOT_FOUND.equals(e.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -566,14 +565,15 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.getContainerProperties(container.getStorageUri().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition);
+                return BlobRequest.getContainerProperties(
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context,
+                        accessCondition);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -656,14 +656,14 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.getAcl(container.getStorageUri().getUri(this.getCurrentLocation()), options,
+                return BlobRequest.getAcl(container.getTransformedAddress().getUri(this.getCurrentLocation()), options,
                         accessCondition, context);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -764,14 +764,15 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.getContainerProperties(container.getStorageUri().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition);
+                return BlobRequest.getContainerProperties(
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context,
+                        accessCondition);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1230,7 +1231,7 @@ public final class CloudBlobContainer {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1565,8 +1566,9 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.setContainerMetadata(container.getStorageUri().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition);
+                return BlobRequest.setContainerMetadata(
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context,
+                        accessCondition);
             }
 
             @Override
@@ -1577,7 +1579,7 @@ public final class CloudBlobContainer {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -1658,14 +1660,14 @@ public final class CloudBlobContainer {
                         OperationContext context) throws Exception {
                     this.setSendStream(new ByteArrayInputStream(aclBytes));
                     this.setLength((long) aclBytes.length);
-                    return BlobRequest.setAcl(container.getStorageUri().getUri(this.getCurrentLocation()), options,
-                            context, accessCondition, permissions.getPublicAccess());
+                    return BlobRequest.setAcl(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                            options, context, accessCondition, permissions.getPublicAccess());
                 }
 
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, aclBytes.length, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, aclBytes.length, null);
                 }
 
                 @Override
@@ -1779,15 +1781,15 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest
-                        .leaseContainer(container.getStorageUri().getUri(this.getCurrentLocation()), options, context,
-                                accessCondition, LeaseAction.ACQUIRE, leaseTimeInSeconds, proposedLeaseId, null /* breakPeriodInSeconds */);
+                return BlobRequest.leaseContainer(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, LeaseAction.ACQUIRE, leaseTimeInSeconds, proposedLeaseId,
+                        null /* breakPeriodInSeconds */);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -1868,15 +1870,15 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.leaseContainer(container.getStorageUri().getUri(this.getCurrentLocation()), options,
-                        context, accessCondition, LeaseAction.RENEW, null /* leaseTimeInSeconds */,
+                return BlobRequest.leaseContainer(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, LeaseAction.RENEW, null /* leaseTimeInSeconds */,
                         null /* proposedLeaseId */, null /* breakPeriodInseconds */);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -1956,14 +1958,14 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.leaseContainer(container.getStorageUri().getUri(this.getCurrentLocation()), options,
-                        context, accessCondition, LeaseAction.RELEASE, null, null, null);
+                return BlobRequest.leaseContainer(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, LeaseAction.RELEASE, null, null, null);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -2053,14 +2055,14 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.leaseContainer(container.getStorageUri().getUri(this.getCurrentLocation()), options,
-                        context, accessCondition, LeaseAction.BREAK, null, null, breakPeriodInSeconds);
+                return BlobRequest.leaseContainer(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, LeaseAction.BREAK, null, null, breakPeriodInSeconds);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -2153,14 +2155,14 @@ public final class CloudBlobContainer {
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
-                return BlobRequest.leaseContainer(container.getStorageUri().getUri(this.getCurrentLocation()), options,
-                        context, accessCondition, LeaseAction.CHANGE, null, proposedLeaseId, null);
+                return BlobRequest.leaseContainer(container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, LeaseAction.CHANGE, null, proposedLeaseId, null);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override

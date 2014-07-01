@@ -179,7 +179,7 @@ public final class BlobProperties {
     /**
      * Gets the content language value for the blob.
      * 
-     * @return A <code>String</code> which represents the contentt language, or <code>null</code> if content language has not been set on
+     * @return A <code>String</code> which represents the content language, or <code>null</code> if content language has not been set on
      *         the blob.
      */
     public String getContentLanguage() {

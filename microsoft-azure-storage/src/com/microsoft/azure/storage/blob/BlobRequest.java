@@ -117,14 +117,12 @@ final class BlobRequest {
     }
 
     /**
-     * Adds the metadata.
+     * Adds the properties.
      * 
      * @param request
      *            The request.
-     * @param name
-     *            The metadata name.
-     * @param value
-     *            The metadata value.
+     * @param properties
+     *            The properties object.
      */
     private static void addProperties(final HttpURLConnection request, BlobProperties properties) {
         BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
@@ -1148,8 +1146,10 @@ final class BlobRequest {
      *            the operation.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
-     * @param properties
-     *            the page properties
+     * @param pageRange
+     *            A {@link PageRange} object that represents the page range.
+     * @param operationType
+     *            A {@link PageOperationType} object that represents the page range operation type.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -1160,8 +1160,8 @@ final class BlobRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection putPage(final URI uri, final BlobRequestOptions blobOptions,
-            final OperationContext opContext, final AccessCondition accessCondition, final PageProperties properties)
-            throws IOException, URISyntaxException, StorageException {
+            final OperationContext opContext, final AccessCondition accessCondition, final PageRange pageRange,
+            final PageOperationType operationType) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add(Constants.QueryConstants.COMPONENT, PAGE_QUERY_ELEMENT_NAME);
 
@@ -1170,13 +1170,13 @@ final class BlobRequest {
         request.setDoOutput(true);
         request.setRequestMethod(Constants.HTTP_PUT);
 
-        if (properties.getPageOperation() == PageOperationType.CLEAR) {
+        if (operationType == PageOperationType.CLEAR) {
             request.setFixedLengthStreamingMode(0);
         }
 
         // Page write is either update or clean; required
-        request.setRequestProperty(BlobConstants.PAGE_WRITE, properties.getPageOperation().toString());
-        request.setRequestProperty(Constants.HeaderConstants.STORAGE_RANGE_HEADER, properties.getRange().toString());
+        request.setRequestProperty(BlobConstants.PAGE_WRITE, operationType.toString());
+        request.setRequestProperty(Constants.HeaderConstants.STORAGE_RANGE_HEADER, pageRange.toString());
 
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);

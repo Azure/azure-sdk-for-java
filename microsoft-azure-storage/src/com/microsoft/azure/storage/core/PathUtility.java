@@ -232,6 +232,46 @@ public final class PathUtility {
     }
 
     /**
+     * Gets the file name from the URI.
+     * 
+     * @param inURI
+     *            the resource address
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return the file's name
+     */
+    public static String getFileNameFromURI(final URI inURI, final boolean usePathStyleUris) {
+        final String[] pathSegments = inURI.getRawPath().split("/");
+
+        final int shareIndex = usePathStyleUris ? 2 : 1;
+
+        if (pathSegments.length - 1 < shareIndex) {
+            throw new IllegalArgumentException(String.format("Invalid file address '%s'.", inURI));
+        }
+        else if (pathSegments.length - 1 == shareIndex) {
+            return "";
+        }
+        else {
+            return pathSegments[pathSegments.length - 1];
+        }
+    }
+
+    /**
+     * Get the share name from address from the URI.
+     * 
+     * @param resourceAddress
+     *            The share Uri.
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return share name from address from the URI.
+     * @throws IllegalArgumentException
+     */
+    public static String getShareNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
+        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
+                String.format("Invalid file address '%s', missing share information", resourceAddress));
+    }
+
+    /**
      * Get the table name from address from the URI.
      * 
      * @param resourceAddress
@@ -290,6 +330,25 @@ public final class PathUtility {
         final StorageUri containerUri = appendPathToUri(getServiceClientBaseAddress(blobAddress, usePathStyleUris),
                 containerName);
         return containerUri;
+    }
+
+    /**
+     * Gets the share URI from a file address
+     * 
+     * @param fileAddress
+     *            the file address
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return the share URI from a file address
+     * @throws URISyntaxException
+     */
+    public static StorageUri getShareURI(final StorageUri fileAddress, final boolean usePathStyleUris)
+            throws URISyntaxException {
+        final String shareName = getShareNameFromUri(fileAddress.getPrimaryUri(), usePathStyleUris);
+
+        final StorageUri shareUri = appendPathToUri(getServiceClientBaseAddress(fileAddress, usePathStyleUris),
+                shareName);
+        return shareUri;
     }
 
     /**

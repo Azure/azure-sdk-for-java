@@ -55,13 +55,13 @@ public class CloudPageBlobTests {
 
     @Before
     public void pageBlobTestMethodSetup() throws URISyntaxException, StorageException {
-        container = BlobTestHelper.getRandomContainerReference();
-        container.create();
+        this.container = BlobTestHelper.getRandomContainerReference();
+        this.container.create();
     }
 
     @After
     public void pageBlobTestMethodTearDown() throws StorageException {
-        container.deleteIfExists();
+        this.container.deleteIfExists();
     }
 
     /**
@@ -75,9 +75,9 @@ public class CloudPageBlobTests {
     @Test
     public void testCopyFromPageBlobAbortTest() throws StorageException, URISyntaxException, IOException {
         final int length = 512;
-        CloudBlob originalBlob = BlobTestHelper.uploadNewBlob(container, BlobType.PAGE_BLOB, "originalBlob", length,
-                null);
-        CloudBlob copyBlob = container.getPageBlobReference(originalBlob.getName() + "copyed");
+        CloudBlob originalBlob = BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB, "originalBlob",
+                length, null);
+        CloudBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
         copyBlob.startCopyFromBlob(originalBlob);
 
         try {
@@ -101,11 +101,12 @@ public class CloudPageBlobTests {
     @Test
     public void testPageBlobSnapshotValidationTest() throws StorageException, URISyntaxException, IOException {
         final int length = 1024;
-        CloudPageBlob blockBlobRef = (CloudPageBlob) BlobTestHelper.uploadNewBlob(container, BlobType.PAGE_BLOB,
+        CloudPageBlob blockBlobRef = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB,
                 "originalBlob", length, null);
         final CloudBlob blobSnapshot = blockBlobRef.createSnapshot();
 
-        for (ListBlobItem blob : container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null, null)) {
+        for (ListBlobItem blob : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                null)) {
             final ByteArrayOutputStream outStream = new ByteArrayOutputStream(length);
             ((CloudBlob) blob).download(outStream);
         }
@@ -119,7 +120,7 @@ public class CloudPageBlobTests {
         // Read operation should work fine.
         blobSnapshot.downloadAttributes();
 
-        final CloudPageBlob blobSnapshotUsingRootUri = container.getPageBlobReference(blockBlobRef.getName(),
+        final CloudPageBlob blobSnapshotUsingRootUri = this.container.getPageBlobReference(blockBlobRef.getName(),
                 blobSnapshot.getSnapshotID());
         outStream = new ByteArrayOutputStream(length);
 
@@ -181,7 +182,7 @@ public class CloudPageBlobTests {
         final int length = 5 * 1024 * 1024;
 
         final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
-        final CloudPageBlob pageBlobRef = container.getPageBlobReference(blockBlobName);
+        final CloudPageBlob pageBlobRef = this.container.getPageBlobReference(blockBlobName);
 
         pageBlobRef.upload(BlobTestHelper.getRandomDataStream(length), length);
 
@@ -199,7 +200,7 @@ public class CloudPageBlobTests {
     @Test
     public void testPageBlobUploadFromStreamTest() throws URISyntaxException, StorageException, IOException {
         final String pageBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testPageBlob");
-        final CloudPageBlob pageBlobRef = container.getPageBlobReference(pageBlobName);
+        final CloudPageBlob pageBlobRef = this.container.getPageBlobReference(pageBlobName);
 
         int length = 2 * 1024;
         ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
@@ -219,7 +220,7 @@ public class CloudPageBlobTests {
     @Test
     public void testBlobUploadWithoutMD5Validation() throws URISyntaxException, StorageException, IOException {
         final String pageBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testPageBlob");
-        final CloudPageBlob pageBlobRef = container.getPageBlobReference(pageBlobName);
+        final CloudPageBlob pageBlobRef = this.container.getPageBlobReference(pageBlobName);
 
         final int length = 2 * 1024;
         ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
@@ -248,7 +249,7 @@ public class CloudPageBlobTests {
     @Test
     public void testBlobEmptyHeaderSigningTest() throws URISyntaxException, StorageException, IOException {
         final String pageBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testPageBlob");
-        final CloudPageBlob pageBlobRef = container.getPageBlobReference(pageBlobName);
+        final CloudPageBlob pageBlobRef = this.container.getPageBlobReference(pageBlobName);
 
         final int length = 2 * 1024;
         ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
@@ -271,7 +272,7 @@ public class CloudPageBlobTests {
     public void testPageBlobDownloadRangeTest() throws URISyntaxException, StorageException, IOException {
         byte[] buffer = BlobTestHelper.getRandomBuffer(2 * 1024);
 
-        CloudPageBlob blob = container.getPageBlobReference("blob1");
+        CloudPageBlob blob = this.container.getPageBlobReference("blob1");
         ByteArrayInputStream wholeBlob = new ByteArrayInputStream(buffer);
         blob.upload(wholeBlob, 2 * 1024);
 
@@ -288,7 +289,7 @@ public class CloudPageBlobTests {
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream.toByteArray()), wholeBlob, 0,
                 0, 1024, 2 * 1024);
 
-        CloudPageBlob blob2 = container.getPageBlobReference("blob1");
+        CloudPageBlob blob2 = this.container.getPageBlobReference("blob1");
         try {
             blob.downloadRange(1024, new Long(0), blobStream);
         }
@@ -306,7 +307,7 @@ public class CloudPageBlobTests {
 
     @Test
     public void testCloudPageBlobDownloadToByteArray() throws URISyntaxException, StorageException, IOException {
-        CloudPageBlob blob = container.getPageBlobReference("blob1");
+        CloudPageBlob blob = this.container.getPageBlobReference("blob1");
         BlobTestHelper.doDownloadTest(blob, 1 * 512, 2 * 512, 0);
         BlobTestHelper.doDownloadTest(blob, 1 * 512, 2 * 512, 1 * 512);
         BlobTestHelper.doDownloadTest(blob, 2 * 512, 4 * 512, 1 * 512);
@@ -316,7 +317,7 @@ public class CloudPageBlobTests {
 
     @Test
     public void testCloudPageBlobDownloadRangeToByteArray() throws URISyntaxException, StorageException, IOException {
-        CloudPageBlob blob = container.getPageBlobReference(BlobTestHelper
+        CloudPageBlob blob = this.container.getPageBlobReference(BlobTestHelper
                 .generateRandomBlobNameWithPrefix("downloadrange"));
 
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * 1024 * 1024, 8 * 1024 * 1024, 1 * 1024 * 1024,
@@ -346,7 +347,7 @@ public class CloudPageBlobTests {
     @Test
     public void testCloudPageBlobDownloadRangeToByteArrayNegativeTest() throws URISyntaxException, StorageException,
             IOException {
-        CloudPageBlob blob = container.getPageBlobReference(BlobTestHelper
+        CloudPageBlob blob = this.container.getPageBlobReference(BlobTestHelper
                 .generateRandomBlobNameWithPrefix("downloadrangenegative"));
         BlobTestHelper.doDownloadRangeToByteArrayNegativeTests(blob);
     }
@@ -354,7 +355,7 @@ public class CloudPageBlobTests {
     @Test
     public void testCloudPageBlobUploadFromStreamWithAccessCondition() throws URISyntaxException, StorageException,
             IOException {
-        CloudPageBlob blob1 = container.getPageBlobReference("blob1");
+        CloudPageBlob blob1 = this.container.getPageBlobReference("blob1");
         AccessCondition accessCondition = AccessCondition.generateIfNoneMatchCondition("\"*\"");
         final int length = 6 * 512;
         ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
@@ -375,7 +376,7 @@ public class CloudPageBlobTests {
         blob1.upload(srcStream, length, accessCondition, null, null);
 
         srcStream.reset();
-        CloudPageBlob blob2 = container.getPageBlobReference("blob2");
+        CloudPageBlob blob2 = this.container.getPageBlobReference("blob2");
         blob2.create(1024);
         accessCondition = AccessCondition.generateIfMatchCondition(blob1.getProperties().getEtag());
         try {
@@ -401,9 +402,9 @@ public class CloudPageBlobTests {
             InterruptedException {
         final int length = 1 * 1024;
 
-        final CloudPageBlob originalBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(container, BlobType.PAGE_BLOB,
-                "a+b.txt", length, null);
-        final CloudBlob copyBlob = container.getPageBlobReference(originalBlob.getName() + "copyed");
+        final CloudPageBlob originalBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container,
+                BlobType.PAGE_BLOB, "a+b.txt", length, null);
+        final CloudBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
 
         copyBlob.startCopyFromBlob(originalBlob);
         BlobTestHelper.waitForCopy(copyBlob);
@@ -420,7 +421,7 @@ public class CloudPageBlobTests {
         final int blobLength = 16 * 1024;
         final Random randGenerator = new Random();
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
 
         final byte[] buff = new byte[blobLength];
         randGenerator.nextBytes(buff);
@@ -450,7 +451,7 @@ public class CloudPageBlobTests {
     @Test
     public void testUploadFromByteArray() throws Exception {
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blob = container.getPageBlobReference(blobName);
+        final CloudPageBlob blob = this.container.getPageBlobReference(blobName);
 
         this.doUploadFromByteArrayTest(blob, 4 * 512, 0, 4 * 512);
         this.doUploadFromByteArrayTest(blob, 4 * 512, 0, 2 * 512);
@@ -461,7 +462,7 @@ public class CloudPageBlobTests {
     @Test
     public void testUploadDownloadFromFile() throws IOException, StorageException, URISyntaxException {
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blob = container.getPageBlobReference(blobName);
+        final CloudPageBlob blob = this.container.getPageBlobReference(blobName);
 
         this.doUploadDownloadFileTest(blob, 512);
         this.doUploadDownloadFileTest(blob, 4096);
@@ -473,7 +474,7 @@ public class CloudPageBlobTests {
     public void testPageBlobCopyTest() throws URISyntaxException, StorageException, InterruptedException, IOException {
         Calendar calendar = Calendar.getInstance(Utility.UTC_ZONE);
 
-        CloudPageBlob source = container.getPageBlobReference("source");
+        CloudPageBlob source = this.container.getPageBlobReference("source");
 
         byte[] buffer = BlobTestHelper.getRandomBuffer(512);
         ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
@@ -481,7 +482,7 @@ public class CloudPageBlobTests {
         source.getMetadata().put("Test", "value");
         source.uploadMetadata();
 
-        CloudPageBlob copy = container.getPageBlobReference("copy");
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
         String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(source));
         BlobTestHelper.waitForCopy(copy);
 
@@ -528,7 +529,7 @@ public class CloudPageBlobTests {
     public void testPageBlobCopyWithMetadataOverride() throws URISyntaxException, StorageException, IOException,
             InterruptedException {
         Calendar calendar = Calendar.getInstance(Utility.UTC_ZONE);
-        CloudPageBlob source = container.getPageBlobReference("source");
+        CloudPageBlob source = this.container.getPageBlobReference("source");
 
         byte[] buffer = BlobTestHelper.getRandomBuffer(512);
         ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
@@ -538,7 +539,7 @@ public class CloudPageBlobTests {
         source.getMetadata().put("Test", "value");
         source.uploadMetadata();
 
-        CloudPageBlob copy = container.getPageBlobReference("copy");
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
         copy.getMetadata().put("Test2", "value2");
         String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(source));
         BlobTestHelper.waitForCopy(copy);
@@ -575,7 +576,7 @@ public class CloudPageBlobTests {
     @Test
     public void testPageBlobCopyFromSnapshot() throws StorageException, IOException, URISyntaxException,
             InterruptedException {
-        CloudPageBlob source = container.getPageBlobReference("source");
+        CloudPageBlob source = this.container.getPageBlobReference("source");
 
         byte[] buffer = BlobTestHelper.getRandomBuffer(512);
         ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
@@ -607,7 +608,7 @@ public class CloudPageBlobTests {
         snapshot.downloadAttributes();
         assertFalse(source.getMetadata().get("Test").equals(snapshot.getMetadata().get("Test")));
 
-        CloudPageBlob copy = container.getPageBlobReference("copy");
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
         String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(snapshot));
         BlobTestHelper.waitForCopy(copy);
 
@@ -694,7 +695,7 @@ public class CloudPageBlobTests {
         byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
         // Upload one page (page 0)
@@ -754,7 +755,7 @@ public class CloudPageBlobTests {
         byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
         // Upload one page (page 0)
@@ -799,8 +800,8 @@ public class CloudPageBlobTests {
 
     @Test
     public void testResize() throws StorageException, URISyntaxException {
-        CloudPageBlob blob = container.getPageBlobReference("blob1");
-        CloudPageBlob blob2 = container.getPageBlobReference("blob1");
+        CloudPageBlob blob = this.container.getPageBlobReference("blob1");
+        CloudPageBlob blob2 = this.container.getPageBlobReference("blob1");
 
         blob.create(1024);
         assertEquals(1024, blob.getProperties().getLength());
@@ -827,7 +828,7 @@ public class CloudPageBlobTests {
         byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
         // Upload one page (page 0)
@@ -865,7 +866,7 @@ public class CloudPageBlobTests {
 
         // with explicit upload/download of properties 
         String pageBlobName1 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
-        CloudPageBlob pageBlobRef1 = container.getPageBlobReference(pageBlobName1);
+        CloudPageBlob pageBlobRef1 = this.container.getPageBlobReference(pageBlobName1);
 
         pageBlobRef1.upload(BlobTestHelper.getRandomDataStream(length), length);
 
@@ -880,7 +881,7 @@ public class CloudPageBlobTests {
 
         // by uploading/downloading the blob   
         pageBlobName1 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
-        pageBlobRef1 = container.getPageBlobReference(pageBlobName1);
+        pageBlobRef1 = this.container.getPageBlobReference(pageBlobName1);
 
         BlobTestHelper.setBlobProperties(pageBlobRef1);
         props1 = pageBlobRef1.getProperties();
@@ -899,7 +900,7 @@ public class CloudPageBlobTests {
         byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
         try {
@@ -930,7 +931,7 @@ public class CloudPageBlobTests {
         byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        final CloudPageBlob blobRef = container.getPageBlobReference(blobName);
+        final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
         BlobOutputStream blobOutputStream = blobRef.openWriteNew(blobLengthToUse);
@@ -961,7 +962,7 @@ public class CloudPageBlobTests {
     @Test
     public void testOpenOutputStreamNoArgs() throws URISyntaxException, StorageException {
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
-        CloudPageBlob pageBlob = container.getPageBlobReference(blobName);
+        CloudPageBlob pageBlob = this.container.getPageBlobReference(blobName);
 
         try {
             pageBlob.openWriteExisting();
@@ -974,7 +975,7 @@ public class CloudPageBlobTests {
         pageBlob.openWriteNew(1024);
         pageBlob.openWriteExisting();
 
-        CloudPageBlob pageBlob2 = container.getPageBlobReference(blobName);
+        CloudPageBlob pageBlob2 = this.container.getPageBlobReference(blobName);
         pageBlob2.downloadAttributes();
         assertEquals(1024, pageBlob2.getProperties().getLength());
         assertEquals(BlobType.PAGE_BLOB, pageBlob2.getProperties().getBlobType());

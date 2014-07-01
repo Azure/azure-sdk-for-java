@@ -34,6 +34,11 @@ public enum ResultContinuationType {
     CONTAINER,
 
     /**
+     * Specifies the token is a file listing continuation token.
+     */
+    FILE,
+
+    /**
      * Specifies the token is a queue listing continuation token (reserved for future use).
      */
     QUEUE,
@@ -41,5 +46,10 @@ public enum ResultContinuationType {
     /**
      * Specifies the token is a table query continuation token (reserved for future use).
      */
-    TABLE
+    TABLE,
+
+    /**
+     * Specifies the token is a share listing continuation token.
+     */
+    SHARE,
 }

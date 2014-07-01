@@ -55,7 +55,7 @@ public class CorsRule {
      * @return A <code>List</code> object which contains the allowed origins.
      */
     public List<String> getAllowedOrigins() {
-        return allowedOrigins;
+        return this.allowedOrigins;
     }
 
     /**
@@ -64,7 +64,7 @@ public class CorsRule {
      * Limited to 64 origins OR "*" to allow all origins, no more than 256 characters each.
      * 
      * @param allowedOrigins
-     *        A <code>List</code> object which contains the allowed origins.
+     *            A <code>List</code> object which contains the allowed origins.
      */
     public void setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
@@ -73,10 +73,10 @@ public class CorsRule {
     /**
      * Gets the exposed headers.
      * 
-     * @return A <code>List</code> object which contains the exposed headers. 
+     * @return A <code>List</code> object which contains the exposed headers.
      */
     public List<String> getExposedHeaders() {
-        return exposedHeaders;
+        return this.exposedHeaders;
     }
 
     /**
@@ -85,7 +85,7 @@ public class CorsRule {
      * Limited to 64 defined headers and two prefixed headers, no more than 256 characters each.
      * 
      * @param exposedHeaders
-     *        A <code>List</code> object which contains the exposed headers.
+     *            A <code>List</code> object which contains the exposed headers.
      */
     public void setExposedHeaders(List<String> exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
@@ -97,7 +97,7 @@ public class CorsRule {
      * @return A <code>List</code> object which contains the allowed headers.
      */
     public List<String> getAllowedHeaders() {
-        return allowedHeaders;
+        return this.allowedHeaders;
     }
 
     /**
@@ -106,7 +106,7 @@ public class CorsRule {
      * Limited to 64 defined headers and two prefixed headers, no more than 256 characters each.
      * 
      * @param allowedHeaders
-     *        A <code>List</code> object which contains the allowed headers.
+     *            A <code>List</code> object which contains the allowed headers.
      */
     public void setAllowedHeaders(List<String> allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
@@ -118,14 +118,14 @@ public class CorsRule {
      * @return A <code>List</code> object which contains the allowed methods.
      */
     public EnumSet<CorsHttpMethods> getAllowedMethods() {
-        return allowedMethods;
+        return this.allowedMethods;
     }
 
     /**
      * Sets the allowed methods.
      * 
      * @param allowedMethods
-     *        A <code>List</code> object which contains the allowed methods.
+     *            A <code>List</code> object which contains the allowed methods.
      */
     public void setAllowedMethods(EnumSet<CorsHttpMethods> allowedMethods) {
         this.allowedMethods = allowedMethods;
@@ -137,14 +137,14 @@ public class CorsRule {
      * @return An <code>int</code> which represents the the maximum age in seconds.
      */
     public int getMaxAgeInSeconds() {
-        return maxAgeInSeconds;
+        return this.maxAgeInSeconds;
     }
 
     /**
      * Sets the maximum age in seconds.
      * 
      * @param maxAgeInSeconds
-     *        An <code>int</code> which represents the the maximum age in seconds.
+     *            An <code>int</code> which represents the the maximum age in seconds.
      */
     public void setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;

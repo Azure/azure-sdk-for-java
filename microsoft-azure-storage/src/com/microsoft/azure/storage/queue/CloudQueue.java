@@ -34,7 +34,6 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCode;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -207,7 +206,8 @@ public final class CloudQueue {
 
         this.storageUri = uri;
 
-        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client.isUsePathStyleUris();
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri())
+                : client.isUsePathStyleUris();
 
         this.name = PathUtility.getQueueNameFromUri(uri.getPrimaryUri(), usePathStyleUris);
         this.queueServiceClient = client;
@@ -308,7 +308,7 @@ public final class CloudQueue {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, messageBytes.length, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, messageBytes.length, null);
                 }
 
                 @Override
@@ -385,7 +385,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -460,7 +460,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -589,7 +589,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -650,7 +650,7 @@ public final class CloudQueue {
             }
             catch (StorageException e) {
                 if (e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(e.getErrorCode())) {
+                        && StorageErrorCodeStrings.QUEUE_NOT_FOUND.equals(e.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -734,7 +734,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -810,7 +810,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -901,7 +901,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1138,7 +1138,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1282,7 +1282,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1427,11 +1427,11 @@ public final class CloudQueue {
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, this.getLength(), null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, this.getLength(), null);
                 }
                 else {
                     connection.setFixedLengthStreamingMode(0);
-                    StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
                 }
             }
 
@@ -1516,7 +1516,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -1605,7 +1605,7 @@ public final class CloudQueue {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, aclBytes.length, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, aclBytes.length, null);
                 }
 
                 @Override
@@ -1704,7 +1704,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override

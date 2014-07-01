@@ -27,8 +27,8 @@ public final class BlobRequestOptions extends RequestOptions {
 
     /**
      * Represents the concurrent number of simultaneous requests per operation. If it's null, it will be set to the
-     * value specified by the cloud blob client's {@link CloudBlobClient#getConcurrentRequestCount} method during upload
-     * operations.
+     * value specified by the cloud blob client's default request options
+     * {@link CloudBlobClient#getDefaultRequestOptions} during upload operations.
      */
     private Integer concurrentRequestCount = null;
 
@@ -67,7 +67,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <code>BlobRequestOptions</code> instance.
      * 
      * @param other
-     *        A {@link BlobRequestOptions} object which represents the blob request options to copy.
+     *            A {@link BlobRequestOptions} object which represents the blob request options to copy.
      */
     public BlobRequestOptions(final BlobRequestOptions other) {
         super(other);

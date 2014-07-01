@@ -40,13 +40,13 @@ public class TableEscapingTests {
 
     @Before
     public void tableTestMethodSetUp() throws URISyntaxException, StorageException {
-        table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
+        this.table = TableTestHelper.getRandomTableReference();
+        this.table.createIfNotExists();
     }
 
     @After
     public void tableTestMethodTearDown() throws StorageException {
-        table.deleteIfExists();
+        this.table.deleteIfExists();
     }
 
     @Test
@@ -186,10 +186,10 @@ public class TableEscapingTests {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.insert(ref);
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
         }
         else {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
         }
 
         TableResult res = null;
@@ -197,11 +197,11 @@ public class TableEscapingTests {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = table.execute(batch, options, null).get(0);
+            res = this.table.execute(batch, options, null).get(0);
         }
         else {
-            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
-                    null);
+            res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                    options, null);
         }
 
         Class1 retObj = res.getResultAsType();
@@ -215,20 +215,20 @@ public class TableEscapingTests {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.merge(ref);
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
         }
         else {
-            table.execute(TableOperation.merge(ref), options, null);
+            this.table.execute(TableOperation.merge(ref), options, null);
         }
 
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = table.execute(batch, options, null).get(0);
+            res = this.table.execute(batch, options, null).get(0);
         }
         else {
-            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
-                    null);
+            res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                    options, null);
         }
 
         retObj = res.getResultAsType();
@@ -242,20 +242,20 @@ public class TableEscapingTests {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.replace(ref);
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
         }
         else {
-            table.execute(TableOperation.replace(ref), options, null);
+            this.table.execute(TableOperation.replace(ref), options, null);
         }
 
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = table.execute(batch, options, null).get(0);
+            res = this.table.execute(batch, options, null).get(0);
         }
         else {
-            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
-                    null);
+            res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                    options, null);
         }
 
         retObj = res.getResultAsType();
@@ -266,10 +266,10 @@ public class TableEscapingTests {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.delete(retObj);
-            res = table.execute(batch, options, null).get(0);
+            res = this.table.execute(batch, options, null).get(0);
         }
         else {
-            res = table.execute(TableOperation.delete(retObj), options, null);
+            res = this.table.execute(TableOperation.delete(retObj), options, null);
         }
     }
 
@@ -300,13 +300,13 @@ public class TableEscapingTests {
         ref.setPartitionKey(UUID.randomUUID().toString());
         ref.setRowKey("foo");
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
         TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                 String.format("(PartitionKey eq '%s') and (A eq '%s')", ref.getPartitionKey(), data));
 
         int count = 0;
 
-        for (Class1 ent : table.execute(query, options, null)) {
+        for (Class1 ent : this.table.execute(query, options, null)) {
             count++;
             assertEquals(ent.getA(), ref.getA());
             assertEquals(ent.getB(), ref.getB());

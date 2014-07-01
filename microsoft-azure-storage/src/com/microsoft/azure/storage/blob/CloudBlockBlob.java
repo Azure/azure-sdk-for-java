@@ -283,7 +283,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, this.getLength(), null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, this.getLength(), null);
                 }
 
                 @Override
@@ -405,7 +405,7 @@ public final class CloudBlockBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -742,7 +742,7 @@ public final class CloudBlockBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, length, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, length, null);
             }
 
             @Override
@@ -866,7 +866,7 @@ public final class CloudBlockBlob extends CloudBlob {
      */
     @Override
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > BlobConstants.MAX_COMMIT_SIZE_4_MB || streamWriteSizeInBytes < 16 * Constants.KB) {
+        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 
