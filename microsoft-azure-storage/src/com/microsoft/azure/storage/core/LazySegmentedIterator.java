@@ -110,8 +110,7 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
                         this.segmentGenerator, this.policyFactory, this.opContext);
             }
             catch (final StorageException e) {
-                final NoSuchElementException ex = new NoSuchElementException(
-                        "An error occurred while enumerating the result, check the original exception for details.");
+                final NoSuchElementException ex = new NoSuchElementException(SR.ENUMERATION_ERROR);
                 ex.initCause(e);
                 throw ex;
             }

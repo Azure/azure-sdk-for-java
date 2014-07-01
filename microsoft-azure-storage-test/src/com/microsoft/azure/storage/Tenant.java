@@ -21,46 +21,56 @@ public class Tenant {
     private String accountName;
     private String accountKey;
     private URI blobServiceEndpoint;
+    private URI fileServiceEndpoint;
     private URI queueServiceEndpoint;
     private URI tableServiceEndpoint;
     private URI blobServiceSecondaryEndpoint;
+    private URI fileServiceSecondaryEndpoint;
     private URI queueServiceSecondaryEndpoint;
     private URI tableServiceSecondaryEndpoint;
 
     public String getTenantName() {
-        return tenantName;
+        return this.tenantName;
     }
 
     public String getAccountName() {
-        return accountName;
+        return this.accountName;
     }
 
     public String getAccountKey() {
-        return accountKey;
+        return this.accountKey;
     }
 
     public URI getBlobServiceEndpoint() {
-        return blobServiceEndpoint;
+        return this.blobServiceEndpoint;
+    }
+
+    public URI getFileServiceEndpoint() {
+        return this.fileServiceEndpoint;
     }
 
     public URI getQueueServiceEndpoint() {
-        return queueServiceEndpoint;
+        return this.queueServiceEndpoint;
     }
 
     public URI getTableServiceEndpoint() {
-        return tableServiceEndpoint;
+        return this.tableServiceEndpoint;
     }
 
     public URI getBlobServiceSecondaryEndpoint() {
-        return blobServiceSecondaryEndpoint;
+        return this.blobServiceSecondaryEndpoint;
+    }
+
+    public URI getFileServiceSecondaryEndpoint() {
+        return this.fileServiceSecondaryEndpoint;
     }
 
     public URI getQueueServiceSecondaryEndpoint() {
-        return queueServiceSecondaryEndpoint;
+        return this.queueServiceSecondaryEndpoint;
     }
 
     public URI getTableServiceSecondaryEndpoint() {
-        return tableServiceSecondaryEndpoint;
+        return this.tableServiceSecondaryEndpoint;
     }
 
     void setTenantName(String tenantName) {
@@ -79,6 +89,10 @@ public class Tenant {
         this.blobServiceEndpoint = blobServiceEndpoint;
     }
 
+    void setFileServiceEndpoint(URI fileServiceEndpoint) {
+        this.fileServiceEndpoint = fileServiceEndpoint;
+    }
+
     void setQueueServiceEndpoint(URI queueServiceEndpoint) {
         this.queueServiceEndpoint = queueServiceEndpoint;
     }
@@ -89,6 +103,10 @@ public class Tenant {
 
     void setBlobServiceSecondaryEndpoint(URI blobServiceSecondaryEndpoint) {
         this.blobServiceSecondaryEndpoint = blobServiceSecondaryEndpoint;
+    }
+
+    void setFileServiceSecondaryEndpoint(URI fileServiceSecondaryEndpoint) {
+        this.fileServiceSecondaryEndpoint = fileServiceSecondaryEndpoint;
     }
 
     void setQueueServiceSecondaryEndpoint(URI queueServiceSecondaryEndpoint) {

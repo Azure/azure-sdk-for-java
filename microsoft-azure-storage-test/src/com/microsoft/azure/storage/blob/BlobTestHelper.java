@@ -102,13 +102,6 @@ public class BlobTestHelper extends TestHelper {
         return blob;
     }
 
-    public static ByteArrayInputStream getRandomDataStream(int length) {
-        final Random randGenerator = new Random();
-        final byte[] buff = new byte[length];
-        randGenerator.nextBytes(buff);
-        return new ByteArrayInputStream(buff);
-    }
-
     protected static void doDownloadTest(CloudBlob blob, int blobSize, int bufferSize, int bufferOffset)
             throws StorageException, IOException {
         final Random randGenerator = new Random();
@@ -230,33 +223,6 @@ public class BlobTestHelper extends TestHelper {
         }
     }
 
-    protected static void assertStreamsAreEqual(ByteArrayInputStream src, ByteArrayInputStream dst) {
-        dst.reset();
-        src.reset();
-        Assert.assertEquals(src.available(), dst.available());
-
-        while (src.available() > 0) {
-            Assert.assertEquals(src.read(), dst.read());
-        }
-    }
-
-    protected static void assertStreamsAreEqualAtIndex(ByteArrayInputStream src, ByteArrayInputStream dst,
-            int srcIndex, int dstIndex, int length, int bufferSize) throws IOException {
-        dst.reset();
-        src.reset();
-
-        dst.skip(dstIndex);
-        src.skip(srcIndex);
-        byte[] origBuffer = new byte[bufferSize];
-        byte[] retrBuffer = new byte[bufferSize];
-        src.read(origBuffer);
-        dst.read(retrBuffer);
-
-        for (int i = 0; i < length; i++) {
-            Assert.assertEquals(src.read(), dst.read());
-        }
-    }
-
     public static CloudBlockBlob defiddler(CloudBlockBlob blob) throws URISyntaxException, StorageException {
         URI oldUri = blob.getUri();
         URI newUri = defiddler(oldUri);
@@ -282,19 +248,6 @@ public class BlobTestHelper extends TestHelper {
         }
         else {
             return blob;
-        }
-    }
-
-    public static URI defiddler(URI uri) throws URISyntaxException {
-        String fiddlerString = "ipv4.fiddler";
-        String replacementString = "127.0.0.1";
-
-        String uriString = uri.toString();
-        if (uriString.contains(fiddlerString)) {
-            return new URI(uriString.replace(fiddlerString, replacementString));
-        }
-        else {
-            return uri;
         }
     }
 

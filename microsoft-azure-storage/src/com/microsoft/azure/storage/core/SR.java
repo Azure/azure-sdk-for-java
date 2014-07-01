@@ -38,6 +38,7 @@ public class SR {
     public static final String DEFAULT_SERVICE_VERSION_ONLY_SET_FOR_BLOB_SERVICE = "DefaultServiceVersion can only be set for the Blob service.";
     public static final String DELETE_SNAPSHOT_NOT_VALID_ERROR = "The option '%s' must be 'None' to delete a specific snapshot specified by '%s'.";
     public static final String EDMTYPE_WAS_NULL = "EdmType cannot be null.";
+    public static final String ENUMERATION_ERROR = "An error occurred while enumerating the result, check the original exception for details.";
     public static final String EMPTY_BATCH_NOT_ALLOWED = "Cannot execute an empty batch operation.";
     public static final String ENDPOINT_INFORMATION_UNAVAILABLE = "Endpoint information not available for Account using Shared Access Credentials.";
     public static final String ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES = "EntityProperty cannot be set to null for primitive value types.";
@@ -53,6 +54,9 @@ public class SR {
     public static final String EXPECTED_START_ELEMENT_TO_EQUAL_ERROR = "Expected START_ELEMENT to equal error.";
     public static final String EXPECTED_START_OBJECT = "Expected the start of a JSON Object.";
     public static final String FAILED_TO_PARSE_PROPERTY = "Failed to parse property '%s' with value '%s' as type '%s'";
+    public static final String FILE_ENDPOINT_NOT_CONFIGURED = "No file endpoint configured.";
+    public static final String FILE_HASH_MISMATCH = "File hash mismatch (integrity check failed), Expected value is %s, retrieved %s.";
+    public static final String FILE_MD5_NOT_POSSIBLE = "MD5 cannot be calculated for an existing file because it would require reading the existing data. Please disable StoreFileContentMD5.";
     public static final String INCORRECT_STREAM_LENGTH = "An incorrect stream length was specified, resulting in an authentication failure. Please specify correct length, or -1.";
     public static final String INPUT_STREAM_SHOULD_BE_MARKABLE = "Input stream must be markable.";
     public static final String INVALID_ACCOUNT_NAME = "Invalid account name.";
@@ -67,8 +71,11 @@ public class SR {
     public static final String INVALID_CORS_RULE = "A CORS rule must contain at least one allowed origin and allowed method, and MaxAgeInSeconds cannot have a value less than zero.";
     public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     public static final String INVALID_EDMTYPE_VALUE = "Invalid value '%s' for EdmType.";
+    public static final String INVALID_FILE_LENGTH = "File length must be greater than 0 bytes.";
     public static final String INVALID_GEO_REPLICATION_STATUS = "Null or Invalid geo-replication status in response: %s.";
     public static final String INVALID_KEY = "Storage Key is not a valid base64 encoded string.";
+    public static final String INVALID_LISTING_DETAILS = "Invalid blob listing details specified.";
+    public static final String INVALID_LOGGING_LEVEL = "Invalid logging operations specified.";
     public static final String INVALID_MAX_WRITE_SIZE = "Max write size is 4MB. Please specify a smaller range.";
     public static final String INVALID_MESSAGE_LENGTH = "The message size cannot be larger than %s bytes.";
     public static final String INVALID_MIME_RESPONSE = "Invalid MIME response received.";
@@ -79,9 +86,15 @@ public class SR {
     public static final String INVALID_RANGE_CONTENT_MD5_HEADER = "Cannot specify x-ms-range-get-content-md5 header on ranges larger than 4 MB. Either use a BlobReadStream via openRead, or disable TransactionalMD5 via the BlobRequestOptions.";
     public static final String INVALID_RESPONSE_RECEIVED = "The response received is invalid or improperly formatted.";
     public static final String INVALID_STORAGE_PROTOCOL_VERSION = "Storage protocol version prior to 2009-09-19 do not support shared key authentication.";
+    public static final String INVALID_STORAGE_SERVICE = "Invalid storage service specified.";
     public static final String INVALID_STREAM_LENGTH = "Invalid stream length; stream must be between 0 and %s MB in length.";
+    public static final String ITERATOR_EMPTY = "There are no more elements in this enumeration.";
     public static final String KEY_NULL = "Key invalid. Cannot be null.";
     public static final String LEASE_CONDITION_ON_SOURCE = "A lease condition cannot be specified on the source of a copy.";
+    public static final String LOG_STREAM_END_ERROR = "Error parsing log record: unexpected end of stream.";
+    public static final String LOG_STREAM_DELIMITER_ERROR = "Error parsing log record: unexpected delimiter encountered.";
+    public static final String LOG_STREAM_QUOTE_ERROR = "Error parsing log record: unexpected quote character encountered.";
+    public static final String LOG_VERSION_UNSUPPORTED = "A storage log version of %s is unsupported.";
     public static final String MARK_EXPIRED = "Stream mark expired.";
     public static final String MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION = "The client could not finish the operation within specified maximum execution timeout.";
     public static final String METADATA_KEY_INVALID = "The key for one of the metadata key-value pairs is null, empty, or whitespace.";

@@ -50,13 +50,13 @@ public class TableBatchOperationTests {
 
     @Before
     public void tableTestMethodSetUp() throws URISyntaxException, StorageException {
-        table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
+        this.table = TableTestHelper.getRandomTableReference();
+        this.table.createIfNotExists();
     }
 
     @After
     public void tableTestMethodTearDown() throws StorageException {
-        table.deleteIfExists();
+        this.table.deleteIfExists();
     }
 
     @Test
@@ -67,7 +67,7 @@ public class TableBatchOperationTests {
         boolean added = batch.addAll(ops);
         assertTrue(added);
 
-        ArrayList<TableResult> results = table.execute(batch, null, null);
+        ArrayList<TableResult> results = this.table.execute(batch, null, null);
         assertEquals(8, results.size());
 
         Iterator<TableResult> iter = results.iterator();
@@ -109,7 +109,7 @@ public class TableBatchOperationTests {
         boolean added = batch.addAll(0, ops);
         assertTrue(added);
 
-        ArrayList<TableResult> results = table.execute(batch, null, null);
+        ArrayList<TableResult> results = this.table.execute(batch, null, null);
         assertEquals(8, results.size());
 
         Iterator<TableResult> iter = results.iterator();
@@ -151,7 +151,7 @@ public class TableBatchOperationTests {
 
         // Insert entity to retrieve
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), null, null);
+        this.table.execute(TableOperation.insert(baseEntity), null, null);
         ops.add(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(), Class1.class));
 
         try {
@@ -343,7 +343,7 @@ public class TableBatchOperationTests {
         TableBatchOperation batch = new TableBatchOperation();
 
         try {
-            table.execute(batch, null, null);
+            this.table.execute(batch, null, null);
             fail(SR.EMPTY_BATCH_NOT_ALLOWED);
         }
         catch (IllegalArgumentException ex) {
@@ -382,7 +382,7 @@ public class TableBatchOperationTests {
             TableRequestOptions options = new TableRequestOptions();
             options.setLocationMode(LocationMode.SECONDARY_ONLY);
             options.setRetryPolicyFactory(new RetryNoRetry());
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail("Should not be able to make a request to secondary as there are writes.");
         }
         catch (StorageException e) {
@@ -396,7 +396,7 @@ public class TableBatchOperationTests {
     public void testBatchSecondaryNoWrite() throws StorageException {
         // create and insert an entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(ref));
+        this.table.execute(TableOperation.insert(ref));
 
         // create a batch and add a query for this entity
         TableBatchOperation batch = new TableBatchOperation();
@@ -407,7 +407,7 @@ public class TableBatchOperationTests {
         TableRequestOptions options = new TableRequestOptions();
         options.setLocationMode(LocationMode.SECONDARY_ONLY);
         options.setRetryPolicyFactory(new RetryNoRetry());
-        table.execute(batch, options, null);
+        this.table.execute(batch, options, null);
     }
 
     @SuppressWarnings("deprecation")
@@ -429,7 +429,7 @@ public class TableBatchOperationTests {
                 batch.insert(TableTestHelper.generateRandomEntity("jxscl_odata"));
             }
 
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail("Batch with over 100 entities should fail.");
         }
         catch (TableServiceException ex) {
@@ -478,7 +478,7 @@ public class TableBatchOperationTests {
         }
 
         try {
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -528,7 +528,7 @@ public class TableBatchOperationTests {
         }
 
         try {
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -572,7 +572,7 @@ public class TableBatchOperationTests {
                 batch.insert(ref);
             }
 
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (StorageException ex) {
@@ -600,19 +600,19 @@ public class TableBatchOperationTests {
 
         // Insert entity to delete
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class1 updatedEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
         updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
         updatedEntity.setRowKey(baseEntity.getRowKey());
         updatedEntity.setEtag(baseEntity.getEtag());
-        table.execute(TableOperation.replace(updatedEntity), options, null);
+        this.table.execute(TableOperation.replace(updatedEntity), options, null);
 
         // add delete to fail
         batch.delete(baseEntity);
 
         try {
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -638,11 +638,11 @@ public class TableBatchOperationTests {
     private void testBatchInsertFail(TableRequestOptions options) throws StorageException {
         // insert entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
         try {
             TableBatchOperation batch = new TableBatchOperation();
             batch.insert(ref);
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -670,19 +670,19 @@ public class TableBatchOperationTests {
 
         // Insert entity to merge
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class1 updatedEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
         updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
         updatedEntity.setRowKey(baseEntity.getRowKey());
         updatedEntity.setEtag(baseEntity.getEtag());
-        table.execute(TableOperation.replace(updatedEntity), options, null);
+        this.table.execute(TableOperation.replace(updatedEntity), options, null);
 
         // add merge to fail
         addReplaceToBatch(baseEntity, batch);
 
         try {
-            table.execute(batch);
+            this.table.execute(batch);
             fail();
         }
         catch (TableServiceException ex) {
@@ -711,19 +711,19 @@ public class TableBatchOperationTests {
 
         // Insert entity to merge
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class1 updatedEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
         updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
         updatedEntity.setRowKey(baseEntity.getRowKey());
         updatedEntity.setEtag(baseEntity.getEtag());
-        table.execute(TableOperation.replace(updatedEntity), options, null);
+        this.table.execute(TableOperation.replace(updatedEntity), options, null);
 
         // add merge to fail
         addMergeToBatch(baseEntity, batch);
 
         try {
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -755,7 +755,7 @@ public class TableBatchOperationTests {
         TableBatchOperation batch = new TableBatchOperation();
         batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
 
         assertEquals(results.size(), 1);
         assertNull(results.get(0).getResult());
@@ -788,39 +788,39 @@ public class TableBatchOperationTests {
         {
             // insert entity to delete
             Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(delRef), options, null);
+            this.table.execute(TableOperation.insert(delRef), options, null);
             batch.delete(delRef);
         }
 
         {
             // Insert entity to replace
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity), options, null);
+            this.table.execute(TableOperation.insert(baseEntity), options, null);
             addReplaceToBatch(baseEntity, batch);
         }
 
         {
             // Insert entity to insert or replace
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity), options, null);
+            this.table.execute(TableOperation.insert(baseEntity), options, null);
             addInsertOrReplaceToBatch(baseEntity, batch);
         }
 
         {
             // Insert entity to merge
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity), options, null);
+            this.table.execute(TableOperation.insert(baseEntity), options, null);
             addMergeToBatch(baseEntity, batch);
         }
 
         {
             // Insert entity to merge, no pre-existing entity
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity), options, null);
+            this.table.execute(TableOperation.insert(baseEntity), options, null);
             addInsertOrMergeToBatch(baseEntity, batch);
         }
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         assertEquals(results.size(), 6);
 
         Iterator<TableResult> iter = results.iterator();
@@ -867,18 +867,18 @@ public class TableBatchOperationTests {
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
 
         // insert entity  
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
         TableBatchOperation batch = new TableBatchOperation();
         batch.delete(ref);
 
-        ArrayList<TableResult> delResults = table.execute(batch, options, null);
+        ArrayList<TableResult> delResults = this.table.execute(batch, options, null);
         for (TableResult r : delResults) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
 
         try {
-            table.execute(batch, options, null);
+            this.table.execute(batch, options, null);
             fail();
         }
         catch (StorageException ex) {
@@ -911,12 +911,12 @@ public class TableBatchOperationTests {
     private void testBatchRetrieve(TableRequestOptions options) throws StorageException {
         // insert entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
         TableBatchOperation batch = new TableBatchOperation();
         batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         assertEquals(results.size(), 1);
 
         assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_OK);
@@ -927,7 +927,7 @@ public class TableBatchOperationTests {
         assertEquals(ref.getC(), retrievedRef.getC());
         assertTrue(Arrays.equals(ref.getD(), retrievedRef.getD()));
 
-        table.execute(TableOperation.delete(ref), options, null);
+        this.table.execute(TableOperation.delete(ref), options, null);
     }
 
     @SuppressWarnings("deprecation")
@@ -955,7 +955,7 @@ public class TableBatchOperationTests {
     private void tableBatchRetrieveWithEntityResolver(TableRequestOptions options) throws StorageException {
         // insert entity
         Class1 randEnt = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(randEnt), options, null);
+        this.table.execute(TableOperation.insert(randEnt), options, null);
 
         TableBatchOperation batch = new TableBatchOperation();
         batch.retrieve(randEnt.getPartitionKey(), randEnt.getRowKey(), new EntityResolver<Class1>() {
@@ -972,7 +972,7 @@ public class TableBatchOperationTests {
             }
         });
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         assertEquals(results.size(), 1);
 
         Class1 ent = (Class1) results.get(0).getResult();
@@ -1012,10 +1012,10 @@ public class TableBatchOperationTests {
 
         // insert entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
         batch.delete(ref);
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         assertEquals(results.size(), 4);
 
         Iterator<TableResult> iter = results.iterator();
@@ -1057,15 +1057,15 @@ public class TableBatchOperationTests {
 
         // insert entity to delete
         Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(delRef));
+        this.table.execute(TableOperation.insert(delRef));
         batch.delete(delRef);
 
         // Insert entity to merge
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
         addMergeToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = table.execute(batch);
+        ArrayList<TableResult> results = this.table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -1104,15 +1104,15 @@ public class TableBatchOperationTests {
 
         // insert entity to delete
         Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(delRef), options, null);
+        this.table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to replace
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
         addReplaceToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = table.execute(batch);
+        ArrayList<TableResult> results = this.table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -1151,15 +1151,15 @@ public class TableBatchOperationTests {
 
         // insert entity to delete
         Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(delRef), options, null);
+        this.table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to merge
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
         addInsertOrMergeToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = table.execute(batch);
+        ArrayList<TableResult> results = this.table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -1198,15 +1198,15 @@ public class TableBatchOperationTests {
 
         // insert entity to delete
         Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(delRef), options, null);
+        this.table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to replace
         Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
         addInsertOrReplaceToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -1372,13 +1372,13 @@ public class TableBatchOperationTests {
         }
 
         TableBatchOperation delBatch = new TableBatchOperation();
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         for (TableResult r : results) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
             delBatch.delete((Class1) r.getResult());
         }
 
-        ArrayList<TableResult> delResults = table.execute(delBatch, options, null);
+        ArrayList<TableResult> delResults = this.table.execute(delBatch, options, null);
         for (TableResult r : delResults) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
@@ -1391,13 +1391,13 @@ public class TableBatchOperationTests {
         }
 
         TableBatchOperation delBatch = new TableBatchOperation();
-        ArrayList<TableResult> results = table.execute(batch, options, null);
+        ArrayList<TableResult> results = this.table.execute(batch, options, null);
         for (TableResult r : results) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
             delBatch.delete((Class2) r.getResult());
         }
 
-        ArrayList<TableResult> delResults = table.execute(delBatch, options, null);
+        ArrayList<TableResult> delResults = this.table.execute(delBatch, options, null);
         for (TableResult r : delResults) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
@@ -1412,21 +1412,21 @@ public class TableBatchOperationTests {
         {
             // Insert entity to delete
             Class1 delRef = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(delRef));
+            this.table.execute(TableOperation.insert(delRef));
             ops.add(TableOperation.delete(delRef));
         }
 
         {
             // Insert entity to replace
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity));
+            this.table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.replace(createEntityToReplaceOrMerge(baseEntity)));
         }
 
         {
             // Insert entity to insert or replace
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity));
+            this.table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.insertOrReplace(createEntityToReplaceOrMerge(baseEntity)));
         }
 
@@ -1439,14 +1439,14 @@ public class TableBatchOperationTests {
         {
             // Insert entity to merge
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity));
+            this.table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.merge(createEntityToReplaceOrMerge(baseEntity)));
         }
 
         {
             // Insert entity to insert or merge
             Class1 baseEntity = TableTestHelper.generateRandomEntity("jxscl_odata");
-            table.execute(TableOperation.insert(baseEntity));
+            this.table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.insertOrMerge(baseEntity));
         }
 

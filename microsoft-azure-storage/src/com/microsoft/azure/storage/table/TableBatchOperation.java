@@ -57,7 +57,8 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * Adds the table operation at the specified index in the batch operation <code>ArrayList</code>.
      * 
      * @param index
-     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add the table operation at.
+     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add
+     *            the table operation at.
      * @param element
      *            The {@link TableOperation} to add to the batch operation.
      */
@@ -107,7 +108,8 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * index.
      * 
      * @param index
-     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add the table operation at.
+     *            An <code>int</code> which represents the index in the batch operation <code>ArrayList</code> to add
+     *            the table operation at.
      * @param c
      *            A <code>java.util.Collection</code> of {@link TableOperation} objects to add to the batch operation.
      * @return
@@ -276,7 +278,8 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * Removes the table operation at the specified index from the batch operation.
      * 
      * @param index
-     *            An <code>int</code> which represents the index in the <code>ArrayList</code> of the table operation to remove from the batch operation.
+     *            An <code>int</code> which represents the index in the <code>ArrayList</code> of the table operation to
+     *            remove from the batch operation.
      */
     @Override
     public TableOperation remove(int index) {
@@ -432,7 +435,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
 
                 @Override
                 public void setRequestLocationMode() {
-                    this.setRequestLocationMode(containsWrites ? RequestLocationMode.PRIMARY_ONLY
+                    this.setRequestLocationMode(TableBatchOperation.this.containsWrites ? RequestLocationMode.PRIMARY_ONLY
                             : RequestLocationMode.PRIMARY_OR_SECONDARY);
                 }
 
@@ -588,11 +591,11 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
      * operation <code>ArrayList</code>.
      * 
      * @param fromIndex
-     *            An <code>int</code> which represents the inclusive lower bound of the range of
-     *            {@link TableOperation} objects to remove from the batch operation <code>ArrayList</code>.
+     *            An <code>int</code> which represents the inclusive lower bound of the range of {@link TableOperation}
+     *            objects to remove from the batch operation <code>ArrayList</code>.
      * @param toIndex
-     *            An <code>int</code> which represents the exclusive upper bound of the range of
-     *            {@link TableOperation} objects to remove from the batch operation <code>ArrayList</code>.
+     *            An <code>int</code> which represents the exclusive upper bound of the range of {@link TableOperation}
+     *            objects to remove from the batch operation <code>ArrayList</code>.
      */
     @Override
     protected void removeRange(int fromIndex, int toIndex) {

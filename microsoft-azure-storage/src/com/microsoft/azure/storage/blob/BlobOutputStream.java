@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import com.microsoft.azure.storage.AccessCondition;
+import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
@@ -139,7 +140,7 @@ public final class BlobOutputStream extends OutputStream {
     AccessCondition accessCondition = null;
 
     /**
-     * Initializes a new instance of the BlobWriteStream class.
+     * Initializes a new instance of the BlobOutputStream class.
      * 
      * @param parentBlob
      *            A {@link CloudBlob} object which represents the blob that this stream is associated with.
@@ -183,7 +184,7 @@ public final class BlobOutputStream extends OutputStream {
     }
 
     /**
-     * Initializes a new instance of the BlobWriteStream class for a CloudBlockBlob
+     * Initializes a new instance of the BlobOutputStream class for a CloudBlockBlob
      * 
      * @param parentBlob
      *            A {@link CloudBlockBlob} object which represents the blob that this stream is associated with.
@@ -209,7 +210,7 @@ public final class BlobOutputStream extends OutputStream {
     }
 
     /**
-     * Initializes a new instance of the BlobWriteStream class for a CloudPageBlob
+     * Initializes a new instance of the BlobOutputStream class for a CloudPageBlob
      * 
      * @param parentBlob
      *            A {@link CloudBlockBlob} object which represents the blob that this stream is associated with.
@@ -296,7 +297,7 @@ public final class BlobOutputStream extends OutputStream {
 
             // if an exception was thrown and the executor was not yet closed, call shutDownNow() to cancel all tasks 
             // and shutdown the ExecutorService
-            if (!threadExecutor.isShutdown()) {
+            if (!this.threadExecutor.isShutdown()) {
                 this.threadExecutor.shutdownNow();
             }
         }
@@ -430,7 +431,7 @@ public final class BlobOutputStream extends OutputStream {
         this.checkStreamState();
 
         if (this.streamType == BlobType.PAGE_BLOB && this.currentBufferedBytes > 0
-                && (this.currentBufferedBytes % BlobConstants.PAGE_SIZE != 0)) {
+                && (this.currentBufferedBytes % Constants.PAGE_SIZE != 0)) {
             throw new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, this.currentBufferedBytes));
 
             // Non 512 byte remainder, uncomment to pad with bytes and commit.
@@ -519,7 +520,7 @@ public final class BlobOutputStream extends OutputStream {
      */
     @DoesServiceRequest
     public void write(final InputStream sourceStream, final long writeLength) throws IOException, StorageException {
-        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, options);
+        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options);
     }
 
     /**

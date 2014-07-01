@@ -1,3 +1,12 @@
+2014.07.01 Version 1.1.0
+ * Changed the maven group id and artifact id. The new group id is com.microsoft.azure and the new artifact id is azure-storage.
+ * Added File Service support. The File Service and the associated SDK APIs are in preview. 
+ * Added CloudAnalyticsClient and related methods to simplify Storage Analytics logging and metrics use case scenarios.
+ * Fixed a bug where an empty file would be left over during the downloadToFile error case.
+ * Updated StorageErrorCodeStrings class. 
+ * Requests made using SAS credentials have the api-version query parameter appended to the URI.
+ * Fixed a null pointer exception that resulted when the first request was made with a blob created using the uri-only constructor (no sas creds appended). 
+
 2014.05.12 Version 1.0.0
  * Updated service version to 2014-02-14
  * Fixed null-reference when null listingDetails are passed to listBlobsSegmented(String, boolean, EnumSet<BlobListingDetails>, int, ResultContinuation, BlobRequestOptions, OperationContext) overload
@@ -38,7 +47,8 @@
  * Added support for secondary location access in Azure Storage Emulator
  * Removed unnecessary exceptions specified in the throws clause of method declarations
  * Fixed issue with path-style uris and sas credentials
- 
+ * Added CloudAnalyticsClient class to simplify storage account analytics logging and metrics scenarios.
+
 2014.02.19 Version 0.6.0
  * Removed OperationContext getCurrentOperationByteCount/setCurrentOperationByteCount and getIntermediateMD5/setIntermediateMD5 methods
  * Deprecated OperationContext getCurrentRequestObject/setCurrentReqestObject methods

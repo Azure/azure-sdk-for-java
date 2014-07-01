@@ -32,6 +32,8 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.core.Base64;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.file.CloudFileClient;
+import com.microsoft.azure.storage.file.CloudFileShare;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.table.CloudTable;
@@ -76,7 +78,7 @@ public class StorageAccountTests {
 
     @Test
     public void testStorageCredentialsSAS() throws URISyntaxException, StorageException {
-        String token = "?sp=abcde&sig=1";
+        String token = "?sp=abcde&api-version=2014-02-14&sig=1";
 
         StorageCredentialsSharedAccessSignature cred = new StorageCredentialsSharedAccessSignature(token);
 
@@ -86,7 +88,7 @@ public class StorageAccountTests {
         assertEquals(testUri + token, cred.transformUri(testUri).toString());
 
         testUri = new URI("http://test/abc?query=a&query2=b");
-        String expectedUri = "http://test/abc?sp=abcde&query=a&query2=b&sig=1";
+        String expectedUri = "http://test/abc?sp=abcde&query=a&api-version=2014-02-14&query2=b&sig=1";
         assertEquals(expectedUri, cred.transformUri(testUri).toString());
     }
 
@@ -159,11 +161,13 @@ public class StorageAccountTests {
         assertEquals(a.getBlobEndpoint(), b.getBlobEndpoint());
         assertEquals(a.getQueueEndpoint(), b.getQueueEndpoint());
         assertEquals(a.getTableEndpoint(), b.getTableEndpoint());
+        assertEquals(a.getFileEndpoint(), b.getFileEndpoint());
 
         // storage uris are the same
         assertEquals(a.getBlobStorageUri(), b.getBlobStorageUri());
         assertEquals(a.getQueueStorageUri(), b.getQueueStorageUri());
         assertEquals(a.getTableStorageUri(), b.getTableStorageUri());
+        assertEquals(a.getFileStorageUri(), b.getFileStorageUri());
 
         // seralized representatons are the same.
         String aToStringNoSecrets = a.toString();
@@ -220,12 +224,16 @@ public class StorageAccountTests {
                 new URI(String.format("http://%s.queue.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getTableEndpoint(),
                 new URI(String.format("http://%s.table.core.windows.net", accountName)));
+        assertEquals(cloudStorageAccount.getFileEndpoint(),
+                new URI(String.format("http://%s.file.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getBlobStorageUri().getSecondaryUri(),
                 new URI(String.format("http://%s-secondary.blob.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getQueueStorageUri().getSecondaryUri(),
                 new URI(String.format("http://%s-secondary.queue.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getTableStorageUri().getSecondaryUri(),
                 new URI(String.format("http://%s-secondary.table.core.windows.net", accountName)));
+        assertEquals(cloudStorageAccount.getFileStorageUri().getSecondaryUri(),
+                new URI(String.format("http://%s-secondary.file.core.windows.net", accountName)));
 
         String cloudStorageAccountToStringWithSecrets = cloudStorageAccount.toString(true);
         CloudStorageAccount testAccount = CloudStorageAccount.parse(cloudStorageAccountToStringWithSecrets);
@@ -243,12 +251,16 @@ public class StorageAccountTests {
                 new URI(String.format("https://%s.queue.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getTableEndpoint(),
                 new URI(String.format("https://%s.table.core.windows.net", accountName)));
+        assertEquals(cloudStorageAccount.getFileEndpoint(),
+                new URI(String.format("https://%s.file.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getBlobStorageUri().getSecondaryUri(),
                 new URI(String.format("https://%s-secondary.blob.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getQueueStorageUri().getSecondaryUri(),
                 new URI(String.format("https://%s-secondary.queue.core.windows.net", accountName)));
         assertEquals(cloudStorageAccount.getTableStorageUri().getSecondaryUri(),
                 new URI(String.format("https://%s-secondary.table.core.windows.net", accountName)));
+        assertEquals(cloudStorageAccount.getFileStorageUri().getSecondaryUri(),
+                new URI(String.format("https://%s-secondary.file.core.windows.net", accountName)));
 
         String cloudStorageAccountToStringWithSecrets = cloudStorageAccount.toString(true);
         CloudStorageAccount testAccount = CloudStorageAccount.parse(cloudStorageAccountToStringWithSecrets);
@@ -287,21 +299,25 @@ public class StorageAccountTests {
         CloudBlobClient blob = account.createCloudBlobClient();
         CloudQueueClient queue = account.createCloudQueueClient();
         CloudTableClient table = account.createCloudTableClient();
+        CloudFileClient file = account.createCloudFileClient();
 
         // check endpoints  
         assertEquals("Blob endpoint doesn't match account", account.getBlobEndpoint(), blob.getEndpoint());
         assertEquals("Queue endpoint doesn't match account", account.getQueueEndpoint(), queue.getEndpoint());
         assertEquals("Table endpoint doesn't match account", account.getTableEndpoint(), table.getEndpoint());
+        assertEquals("File endpoint doesn't match account", account.getFileEndpoint(), file.getEndpoint());
 
         // check storage uris
         assertEquals("Blob endpoint doesn't match account", account.getBlobStorageUri(), blob.getStorageUri());
         assertEquals("Queue endpoint doesn't match account", account.getQueueStorageUri(), queue.getStorageUri());
         assertEquals("Table endpoint doesn't match account", account.getTableStorageUri(), table.getStorageUri());
+        assertEquals("File endpoint doesn't match account", account.getFileStorageUri(), file.getStorageUri());
 
         // check creds
         assertEquals("Blob creds don't match account", account.getCredentials(), blob.getCredentials());
         assertEquals("Queue creds don't match account", account.getCredentials(), queue.getCredentials());
         assertEquals("Table creds don't match account", account.getCredentials(), table.getCredentials());
+        assertEquals("File creds don't match account", account.getCredentials(), file.getCredentials());
     }
 
     @Test
@@ -320,6 +336,10 @@ public class StorageAccountTests {
         CloudTableClient tableClient = cloudStorageAccount.createCloudTableClient();
         CloudTable table = tableClient.getTableReference("table1");
         assertEquals(cloudStorageAccount.getTableEndpoint().toString() + "/table1", table.getUri().toString());
+
+        CloudFileClient fileClient = cloudStorageAccount.createCloudFileClient();
+        CloudFileShare share = fileClient.getShareReference("share1");
+        assertEquals(cloudStorageAccount.getFileEndpoint().toString() + "/share1", share.getUri().toString());
     }
 
     @Test
@@ -463,7 +483,7 @@ public class StorageAccountTests {
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
 
         CloudStorageAccount account = new CloudStorageAccount(null, new StorageUri(new URI("http://blobs/")), null,
-                null);
+                null, null);
 
         AccountsAreEqual(account, CloudStorageAccount.parse(account.toString(true)));
     }
@@ -493,6 +513,13 @@ public class StorageAccountTests {
     @Test
     public void testCloudStorageAccountJustTableToString() throws InvalidKeyException, URISyntaxException {
         String accountString = "TableEndpoint=http://table/;AccountName=test;AccountKey=abc=";
+
+        assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
+    }
+
+    @Test
+    public void testCloudStorageAccountJustFileToString() throws InvalidKeyException, URISyntaxException {
+        String accountString = "FileEndpoint=http://file/;AccountName=test;AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }

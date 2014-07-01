@@ -233,7 +233,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
                     this.blobServiceClient.getDirectoryDelimiter(), this.getContainer());
 
             if (parentName != null) {
-                StorageUri parentURI = PathUtility.appendPathToUri(container.getStorageUri(), parentName);
+                StorageUri parentURI = PathUtility.appendPathToUri(this.container.getStorageUri(), parentName);
                 this.parent = new CloudBlobDirectory(parentURI, parentName, this.blobServiceClient, this.getContainer());
             }
         }

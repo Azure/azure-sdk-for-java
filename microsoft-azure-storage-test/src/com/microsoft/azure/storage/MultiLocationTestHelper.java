@@ -40,16 +40,16 @@ public class MultiLocationTestHelper {
 
             @Override
             public void eventOccurred(SendingRequestEvent eventArg) {
-                if (error == null) {
-                    StorageLocation location = (requestCounter == 0) ? initialLocation : retryInfoList.get(
-                            requestCounter - 1).getTargetLocation();
+                if (MultiLocationTestHelper.this.error == null) {
+                    StorageLocation location = (MultiLocationTestHelper.this.requestCounter == 0) ? initialLocation : retryInfoList.get(
+                            MultiLocationTestHelper.this.requestCounter - 1).getTargetLocation();
                     if (!eventArg.getRequestResult().getTargetLocation().equals(location)) {
-                        error = String.format("Request %s was sent to %s while the location should have been %s",
-                                requestCounter, eventArg.getRequestResult().getTargetLocation(), location);
+                        MultiLocationTestHelper.this.error = String.format("Request %s was sent to %s while the location should have been %s",
+                                MultiLocationTestHelper.this.requestCounter, eventArg.getRequestResult().getTargetLocation(), location);
                     }
                 }
 
-                requestCounter++;
+                MultiLocationTestHelper.this.requestCounter++;
             }
         });
 

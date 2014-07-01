@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.microsoft.azure.storage.analytics.CloudAnalyticsClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobContainerTests;
 import com.microsoft.azure.storage.blob.CloudBlobDirectoryTests;
@@ -14,6 +15,10 @@ import com.microsoft.azure.storage.blob.CloudBlockBlobTests;
 import com.microsoft.azure.storage.blob.CloudPageBlobTests;
 import com.microsoft.azure.storage.blob.LeaseTests;
 import com.microsoft.azure.storage.blob.SasTests;
+import com.microsoft.azure.storage.file.CloudFileClientTests;
+import com.microsoft.azure.storage.file.CloudFileDirectoryTests;
+import com.microsoft.azure.storage.file.CloudFileShareTests;
+import com.microsoft.azure.storage.file.CloudFileTests;
 import com.microsoft.azure.storage.queue.CloudQueueClientGB18030Test;
 import com.microsoft.azure.storage.queue.CloudQueueClientTests;
 import com.microsoft.azure.storage.queue.CloudQueueTests;
@@ -104,7 +109,19 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ CoreTestSuite.class, BlobTestSuite.class, QueueTestSuite.class, TableTestSuite.class })
+    @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileShareTests.class,
+            CloudFileTests.class })
+    public static class FileTestSuite {
+    }
+
+    @RunWith(Suite.class)
+    @SuiteClasses({ CloudAnalyticsClientTests.class })
+    public static class AnalyticsTestSuite {
+    }
+
+    @RunWith(Suite.class)
+    @SuiteClasses({ CoreTestSuite.class, BlobTestSuite.class, QueueTestSuite.class, TableTestSuite.class,
+            FileTestSuite.class, AnalyticsTestSuite.class })
     public static class AllTestSuite {
     }
 

@@ -19,11 +19,6 @@ import java.util.ArrayList;
 /**
  * RESERVED FOR INTERNAL USE. A class used to parse a list of objects.
  */
-/**
- * @author emgerner
- * 
- * @param <T>
- */
 public class ListResponse<T> {
 
     public static final String ENUMERATION_RESULTS = "EnumerationResults";

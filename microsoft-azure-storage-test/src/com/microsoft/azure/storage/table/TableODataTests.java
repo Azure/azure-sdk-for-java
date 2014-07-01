@@ -41,29 +41,29 @@ public class TableODataTests {
 
     @Before
     public void tableODataTestsBeforeMethod() throws StorageException, URISyntaxException {
-        table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
+        this.table = TableTestHelper.getRandomTableReference();
+        this.table.createIfNotExists();
 
         final CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         this.options = TableRequestOptions.applyDefaults(this.options, tClient);
         this.options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
 
         // Insert Entity
-        ent = new DynamicTableEntity();
-        ent.setPartitionKey("jxscl_odata");
-        ent.setRowKey(UUID.randomUUID().toString());
+        this.ent = new DynamicTableEntity();
+        this.ent.setPartitionKey("jxscl_odata");
+        this.ent.setRowKey(UUID.randomUUID().toString());
 
-        ent.getProperties().put("foo2", new EntityProperty("bar2"));
-        ent.getProperties().put("foo", new EntityProperty("bar"));
-        ent.getProperties().put("fooint", new EntityProperty(1234));
+        this.ent.getProperties().put("foo2", new EntityProperty("bar2"));
+        this.ent.getProperties().put("foo", new EntityProperty("bar"));
+        this.ent.getProperties().put("fooint", new EntityProperty(1234));
 
-        table.execute(TableOperation.insert(ent), options, null);
+        this.table.execute(TableOperation.insert(this.ent), this.options, null);
     }
 
     @After
     public void tableODataTestsAfterMethod() throws StorageException {
-        table.execute(TableOperation.delete(ent), options, null);
-        table.deleteIfExists();
+        this.table.execute(TableOperation.delete(this.ent), this.options, null);
+        this.table.deleteIfExists();
     }
 
     @Test
@@ -73,7 +73,8 @@ public class TableODataTests {
         this.options.setPropertyResolver(new CustomPropertyResolver());
 
         try {
-            table.execute(TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
+            this.table.execute(TableOperation.retrieve(this.ent.getPartitionKey(), this.ent.getRowKey(), Class1.class),
+                    this.options, null);
             fail("Invalid property resolver should throw");
         }
         catch (StorageException e) {
@@ -88,7 +89,8 @@ public class TableODataTests {
         this.options.setPropertyResolver(new ThrowingPropertyResolver());
 
         try {
-            table.execute(TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
+            this.table.execute(TableOperation.retrieve(this.ent.getPartitionKey(), this.ent.getRowKey(), Class1.class),
+                    this.options, null);
             fail("Invalid property resolver should throw");
         }
         catch (StorageException e) {

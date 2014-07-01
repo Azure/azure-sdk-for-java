@@ -403,7 +403,7 @@ public final class EntityProperty {
      *         The <code>Class<?></code> of the {@link EntityProperty}.
      */
     public Class<?> getType() {
-        return type;
+        return this.type;
     }
 
     /**

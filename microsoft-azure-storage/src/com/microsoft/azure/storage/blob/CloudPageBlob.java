@@ -237,11 +237,11 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public void clearPages(final long offset, final long length, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
-        if (offset % BlobConstants.PAGE_SIZE != 0) {
+        if (offset % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_START_OFFSET);
         }
 
-        if (length % BlobConstants.PAGE_SIZE != 0) {
+        if (length % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
 
@@ -250,12 +250,9 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
-        final PageProperties pageProps = new PageProperties();
-        pageProps.setPageOperation(PageOperationType.CLEAR);
-        pageProps.getRange().setStartOffset(offset);
-        pageProps.getRange().setEndOffset(offset + length - 1);
+        PageRange range = new PageRange(offset, offset + length - 1);
 
-        this.putPagesInternal(pageProps, null, length, null, accessCondition, options, opContext);
+        this.putPagesInternal(range, PageOperationType.CLEAR, null, length, null, accessCondition, options, opContext);
     }
 
     /**
@@ -301,7 +298,7 @@ public final class CloudPageBlob extends CloudBlob {
             OperationContext opContext) throws StorageException {
         assertNoWriteOperationForSnapshot();
 
-        if (length % BlobConstants.PAGE_SIZE != 0) {
+        if (length % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
 
@@ -335,7 +332,7 @@ public final class CloudPageBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -426,7 +423,7 @@ public final class CloudPageBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -583,7 +580,7 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         if (length != null) {
-            if (length % BlobConstants.PAGE_SIZE != 0) {
+            if (length % Constants.PAGE_SIZE != 0) {
                 throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
             }
 
@@ -604,8 +601,10 @@ public final class CloudPageBlob extends CloudBlob {
     /**
      * Used for both uploadPages and clearPages.
      * 
-     * @param pageProperties
-     *            A {@link PageProperties} object that specifies the page properties.
+     * @param pageRange
+     *            A {@link PageRange} object that specifies the page range.
+     * @param operationType
+     *            A {@link PageOperationType} enumeration value that specifies the page operation type.
      * @param data
      *            A <code>byte</code> array which represents the data to write.
      * @param length
@@ -627,35 +626,35 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    private void putPagesInternal(final PageProperties pageProperties, final byte[] data, final long length,
-            final String md5, final AccessCondition accessCondition, final BlobRequestOptions options,
-            final OperationContext opContext) throws StorageException {
+    private void putPagesInternal(final PageRange pageRange, final PageOperationType operationType, final byte[] data,
+            final long length, final String md5, final AccessCondition accessCondition,
+            final BlobRequestOptions options, final OperationContext opContext) throws StorageException {
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                putPagesImpl(pageProperties, data, length, md5, accessCondition, options, opContext),
+                putPagesImpl(pageRange, operationType, data, length, md5, accessCondition, options, opContext),
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> putPagesImpl(final PageProperties pageProperties,
-            final byte[] data, final long length, final String md5, final AccessCondition accessCondition,
-            final BlobRequestOptions options, final OperationContext opContext) {
+    private StorageRequest<CloudBlobClient, CloudBlob, Void> putPagesImpl(final PageRange pageRange,
+            final PageOperationType operationType, final byte[] data, final long length, final String md5,
+            final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext) {
         final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
                 options, this.getStorageUri()) {
 
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
-                if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
+                if (operationType == PageOperationType.UPDATE) {
                     this.setSendStream(new ByteArrayInputStream(data));
                     this.setLength(length);
                 }
 
                 return BlobRequest.putPage(blob.getTransformedAddress(opContext).getUri(this.getCurrentLocation()),
-                        options, opContext, accessCondition, pageProperties);
+                        options, opContext, accessCondition, pageRange, operationType);
             }
 
             @Override
             public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
-                if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
+                if (operationType == PageOperationType.UPDATE) {
                     if (options.getUseTransactionalContentMD5()) {
                         connection.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                     }
@@ -665,11 +664,11 @@ public final class CloudPageBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, length, null);
+                if (operationType == PageOperationType.UPDATE) {
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, length, null);
                 }
                 else {
-                    StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
                 }
             }
 
@@ -725,7 +724,7 @@ public final class CloudPageBlob extends CloudBlob {
             OperationContext opContext) throws StorageException {
         assertNoWriteOperationForSnapshot();
 
-        if (size % BlobConstants.PAGE_SIZE != 0) {
+        if (size % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
 
@@ -755,7 +754,7 @@ public final class CloudPageBlob extends CloudBlob {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -832,7 +831,7 @@ public final class CloudPageBlob extends CloudBlob {
 
         options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
 
-        if (length <= 0 || length % BlobConstants.PAGE_SIZE != 0) {
+        if (length <= 0 || length % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
 
@@ -916,11 +915,11 @@ public final class CloudPageBlob extends CloudBlob {
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, IOException {
 
-        if (offset % BlobConstants.PAGE_SIZE != 0) {
+        if (offset % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_START_OFFSET);
         }
 
-        if (length == 0 || length % BlobConstants.PAGE_SIZE != 0) {
+        if (length == 0 || length % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
 
@@ -936,10 +935,7 @@ public final class CloudPageBlob extends CloudBlob {
 
         options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
 
-        final PageProperties pageProps = new PageProperties();
-        pageProps.setPageOperation(PageOperationType.UPDATE);
-        pageProps.getRange().setStartOffset(offset);
-        pageProps.getRange().setEndOffset(offset + length - 1);
+        final PageRange pageRange = new PageRange(offset, offset + length - 1);
         final byte[] data = new byte[(int) length];
         String md5 = null;
 
@@ -962,7 +958,8 @@ public final class CloudPageBlob extends CloudBlob {
             }
         }
 
-        this.putPagesInternal(pageProps, data, length, md5, accessCondition, options, opContext);
+        this.putPagesInternal(pageRange, PageOperationType.UPDATE, data, length, md5, accessCondition, options,
+                opContext);
     }
 
     /**
@@ -979,9 +976,8 @@ public final class CloudPageBlob extends CloudBlob {
      */
     @Override
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > BlobConstants.MAX_COMMIT_SIZE_4_MB
-                || streamWriteSizeInBytes < BlobConstants.PAGE_SIZE
-                || streamWriteSizeInBytes % BlobConstants.PAGE_SIZE != 0) {
+        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < Constants.PAGE_SIZE
+                || streamWriteSizeInBytes % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 

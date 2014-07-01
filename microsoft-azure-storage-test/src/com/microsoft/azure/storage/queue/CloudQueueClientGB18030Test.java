@@ -45,43 +45,43 @@ public class CloudQueueClientGB18030Test {
 
     @Before
     public void queueClientGBTestMethodSetUp() throws URISyntaxException, StorageException {
-        queue = QueueTestHelper.getRandomQueueReference();
-        queue.createIfNotExists();
+        this.queue = QueueTestHelper.getRandomQueueReference();
+        this.queue.createIfNotExists();
     }
 
     @After
     public void queueClientGBTestMethodTearDown() throws StorageException {
-        queue.deleteIfExists();
+        this.queue.deleteIfExists();
     }
 
     @Test
     public void testGB18030TestForSingleMessage() throws StorageException {
         String messageContent = GB18030CharSet;
         CloudQueueMessage cqm = new CloudQueueMessage(messageContent);
-        queue.addMessage(cqm);
+        this.queue.addMessage(cqm);
 
-        CloudQueueMessage messageFromPeekMessage = queue.peekMessage();
+        CloudQueueMessage messageFromPeekMessage = this.queue.peekMessage();
         assertEquals(messageContent, messageFromPeekMessage.getMessageContentAsString());
 
-        CloudQueueMessage messageFromRetrieveMessage = queue.retrieveMessage();
+        CloudQueueMessage messageFromRetrieveMessage = this.queue.retrieveMessage();
         assertEquals(messageContent, messageFromRetrieveMessage.getMessageContentAsString());
 
         String messageContentUpdated = messageContent + " updated";
         messageFromRetrieveMessage.setMessageContent(messageContentUpdated);
-        queue.updateMessage(messageFromRetrieveMessage, 0);
+        this.queue.updateMessage(messageFromRetrieveMessage, 0);
 
-        messageFromPeekMessage = queue.peekMessage(null, null);
+        messageFromPeekMessage = this.queue.peekMessage(null, null);
         assertEquals(messageContent, messageFromPeekMessage.getMessageContentAsString());
 
         messageContentUpdated = messageContent + " updated again";
         messageFromRetrieveMessage.setMessageContent(messageContentUpdated);
-        queue.updateMessage(messageFromRetrieveMessage, 0,
+        this.queue.updateMessage(messageFromRetrieveMessage, 0,
                 EnumSet.of(MessageUpdateFields.VISIBILITY, MessageUpdateFields.CONTENT), null, null);
 
-        messageFromRetrieveMessage = queue.retrieveMessage(5, null, null);
+        messageFromRetrieveMessage = this.queue.retrieveMessage(5, null, null);
         assertEquals(messageContentUpdated, messageFromRetrieveMessage.getMessageContentAsString());
 
-        queue.deleteMessage(messageFromRetrieveMessage);
+        this.queue.deleteMessage(messageFromRetrieveMessage);
     }
 
     @Test
@@ -90,38 +90,38 @@ public class CloudQueueClientGB18030Test {
         String[] messageContents = new String[messageLength];
         for (int i = 0; i < messageLength; i++) {
             messageContents[i] = GB18030CharSet + i;
-            queue.addMessage(new CloudQueueMessage(messageContents[i]), 600, 0, null, null);
+            this.queue.addMessage(new CloudQueueMessage(messageContents[i]), 600, 0, null, null);
         }
 
-        Iterable<CloudQueueMessage> messagesFromPeekMessages = queue.peekMessages(messageLength);
+        Iterable<CloudQueueMessage> messagesFromPeekMessages = this.queue.peekMessages(messageLength);
         int count = 0;
         for (CloudQueueMessage message : messagesFromPeekMessages) {
             assertEquals(messageContents[count], message.getMessageContentAsString());
             count++;
         }
 
-        Iterable<CloudQueueMessage> messagesFromRetrieveMessages = queue.retrieveMessages(messageLength);
+        Iterable<CloudQueueMessage> messagesFromRetrieveMessages = this.queue.retrieveMessages(messageLength);
         count = 0;
         for (CloudQueueMessage message : messagesFromRetrieveMessages) {
             assertEquals(messageContents[count], message.getMessageContentAsString());
             message.setMessageContent(message.getMessageContentAsString() + " updated");
-            queue.updateMessage(message, 0, EnumSet.of(MessageUpdateFields.VISIBILITY, MessageUpdateFields.CONTENT),
-                    null, null);
+            this.queue.updateMessage(message, 0,
+                    EnumSet.of(MessageUpdateFields.VISIBILITY, MessageUpdateFields.CONTENT), null, null);
             count++;
         }
 
-        messagesFromPeekMessages = queue.peekMessages(messageLength, null, null);
+        messagesFromPeekMessages = this.queue.peekMessages(messageLength, null, null);
         count = 0;
         for (CloudQueueMessage message : messagesFromPeekMessages) {
             assertEquals(messageContents[count] + " updated", message.getMessageContentAsString());
             count++;
         }
 
-        messagesFromRetrieveMessages = queue.retrieveMessages(messageLength, 5, null, null);
+        messagesFromRetrieveMessages = this.queue.retrieveMessages(messageLength, 5, null, null);
         count = 0;
         for (CloudQueueMessage message : messagesFromRetrieveMessages) {
             assertEquals(messageContents[count] + " updated", message.getMessageContentAsString());
-            queue.deleteMessage(message, null, null);
+            this.queue.deleteMessage(message, null, null);
             count++;
         }
     }

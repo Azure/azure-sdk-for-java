@@ -35,7 +35,7 @@ public final class CorsProperties {
      * @return the corsRules
      */
     public List<CorsRule> getCorsRules() {
-        return corsRules;
+        return this.corsRules;
     }
 
     /**

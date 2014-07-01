@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
+import com.microsoft.azure.storage.table.TableServiceEntity;
 
 /**
  * Represents a continuation token for listing operations. Continuation tokens are used in methods that return a
@@ -106,10 +107,10 @@ public final class ResultContinuation {
     /**
      * Gets the location that the token applies to.
      * 
-     * @return A {@link StorageLocation} value which indicates the location. 
+     * @return A {@link StorageLocation} value which indicates the location.
      */
     public StorageLocation getTargetLocation() {
-        return targetLocation;
+        return this.targetLocation;
     }
 
     /**
@@ -126,7 +127,7 @@ public final class ResultContinuation {
      * Sets the type of the continuation token.
      * 
      * @param continuationType
-     *        The {@link ResultContinuationType} value to set.
+     *            The {@link ResultContinuationType} value to set.
      */
     public void setContinuationType(final ResultContinuationType continuationType) {
         this.continuationType = continuationType;
@@ -136,7 +137,7 @@ public final class ResultContinuation {
      * Sets the next marker for continuing results of listing operations.
      * 
      * @param nextMarker
-     *        A <code>String</code> which represents the the next marker to set.
+     *            A <code>String</code> which represents the the next marker to set.
      */
     public void setNextMarker(final String nextMarker) {
         this.nextMarker = nextMarker;
@@ -146,7 +147,7 @@ public final class ResultContinuation {
      * Sets the next partition key for {@link TableServiceEntity} enumeration operations.
      * 
      * @param nextPartitionKey
-     *        A <code>String</code> which represents the the next partition key to set.
+     *            A <code>String</code> which represents the the next partition key to set.
      */
     public void setNextPartitionKey(final String nextPartitionKey) {
         this.nextPartitionKey = nextPartitionKey;
@@ -156,7 +157,7 @@ public final class ResultContinuation {
      * Sets the next row key for {@link TableServiceEntity} enumeration operations.
      * 
      * @param nextRowKey
-     *        A <code>String</code> which represents the the next row key to set.
+     *            A <code>String</code> which represents the the next row key to set.
      */
     public void setNextRowKey(final String nextRowKey) {
         this.nextRowKey = nextRowKey;
@@ -166,7 +167,7 @@ public final class ResultContinuation {
      * Sets the next table name for Table enumeration operations.
      * 
      * @param nextTableName
-     *        A <code>String</code> which represents the the next table name to set.
+     *            A <code>String</code> which represents the the next table name to set.
      */
     public void setNextTableName(final String nextTableName) {
         this.nextTableName = nextTableName;
@@ -176,7 +177,7 @@ public final class ResultContinuation {
      * Sets the location that the token applies to.
      * 
      * @param targetLocation
-     *        A {@link StorageLocation} value which indicates the location to set.
+     *            A {@link StorageLocation} value which indicates the location to set.
      */
     public void setTargetLocation(StorageLocation targetLocation) {
         this.targetLocation = targetLocation;

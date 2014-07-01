@@ -50,13 +50,13 @@ public class TableOperationTests {
 
     @Before
     public void tableTestMethodSetUp() throws URISyntaxException, StorageException {
-        table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
+        this.table = TableTestHelper.getRandomTableReference();
+        this.table.createIfNotExists();
     }
 
     @After
     public void tableTestMethodTearDown() throws StorageException {
-        table.deleteIfExists();
+        this.table.deleteIfExists();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class TableOperationTests {
         ref.setPartitionKey("jxscl_odata");
 
         try {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
             fail("Inserts should not allow null row keys.");
         }
         catch (IllegalArgumentException e) {
@@ -118,7 +118,7 @@ public class TableOperationTests {
         ref.setPartitionKey(null);
         ref.setRowKey(UUID.randomUUID().toString());
         try {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
             fail("Inserts should not allow null partition keys.");
         }
         catch (IllegalArgumentException e) {
@@ -154,7 +154,7 @@ public class TableOperationTests {
         ref.setRowKey(UUID.randomUUID().toString());
 
         try {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -188,7 +188,7 @@ public class TableOperationTests {
         ref.setRowKey(UUID.randomUUID().toString());
 
         try {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -225,7 +225,7 @@ public class TableOperationTests {
         ref.setRowKey(UUID.randomUUID().toString());
 
         try {
-            table.execute(TableOperation.insert(ref), options, null);
+            this.table.execute(TableOperation.insert(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -267,17 +267,17 @@ public class TableOperationTests {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
         String oldEtag = ref.getEtag();
 
         // update entity
         ref.setA("updated");
-        table.execute(TableOperation.replace(ref), options, null);
+        this.table.execute(TableOperation.replace(ref), options, null);
 
         ref.setEtag(oldEtag);
 
         try {
-            table.execute(TableOperation.delete(ref), options, null);
+            this.table.execute(TableOperation.delete(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -287,16 +287,16 @@ public class TableOperationTests {
             assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
         }
 
-        TableResult res2 = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res2 = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         ref = res2.getResultAsType();
         // actually delete it
-        table.execute(TableOperation.delete(ref), options, null);
+        this.table.execute(TableOperation.delete(ref), options, null);
 
         // now try to delete it and fail
         try {
-            table.execute(TableOperation.delete(ref), options, null);
+            this.table.execute(TableOperation.delete(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -329,7 +329,7 @@ public class TableOperationTests {
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class2 secondEntity = new Class2();
         secondEntity.setL("foo_L");
@@ -341,12 +341,12 @@ public class TableOperationTests {
         secondEntity.setEtag(baseEntity.getEtag());
         String oldEtag = baseEntity.getEtag();
 
-        table.execute(TableOperation.merge(secondEntity), options, null);
+        this.table.execute(TableOperation.merge(secondEntity), options, null);
 
         secondEntity.setEtag(oldEtag);
         secondEntity.setL("updated");
         try {
-            table.execute(TableOperation.merge(secondEntity), options, null);
+            this.table.execute(TableOperation.merge(secondEntity), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -357,15 +357,15 @@ public class TableOperationTests {
         }
 
         // retrieve entity
-        TableResult queryResult = table
+        TableResult queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
         DynamicTableEntity retrievedEntity = queryResult.getResultAsType();
-        table.execute(TableOperation.delete(retrievedEntity), options, null);
+        this.table.execute(TableOperation.delete(retrievedEntity), options, null);
 
         try {
-            table.execute(TableOperation.merge(secondEntity), options, null);
+            this.table.execute(TableOperation.merge(secondEntity), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -399,9 +399,9 @@ public class TableOperationTests {
 
         TableOperation op = TableOperation.insert(ref);
 
-        table.execute(op, options, null);
+        this.table.execute(op, options, null);
         try {
-            table.execute(op, options, null);
+            this.table.execute(op, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -434,11 +434,11 @@ public class TableOperationTests {
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
         // Insert entity
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         String oldEtag = baseEntity.getEtag();
 
-        TableResult queryResult = table
+        TableResult queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
@@ -450,12 +450,12 @@ public class TableOperationTests {
         // Remove property and update
         retrievedEntity.getProperties().remove("D");
 
-        table.execute(TableOperation.replace(retrievedEntity), options, null);
+        this.table.execute(TableOperation.replace(retrievedEntity), options, null);
 
         retrievedEntity.setEtag(oldEtag);
 
         try {
-            table.execute(TableOperation.replace(retrievedEntity), options, null);
+            this.table.execute(TableOperation.replace(retrievedEntity), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -466,14 +466,14 @@ public class TableOperationTests {
         }
 
         // delete entity
-        queryResult = table
+        queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
-        table.execute(TableOperation.delete((DynamicTableEntity) queryResult.getResultAsType()), options, null);
+        this.table.execute(TableOperation.delete((DynamicTableEntity) queryResult.getResultAsType()), options, null);
 
         try {
-            table.execute(TableOperation.replace(retrievedEntity), options, null);
+            this.table.execute(TableOperation.replace(retrievedEntity), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -505,8 +505,8 @@ public class TableOperationTests {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         assertNull(res.getResult());
         assertEquals(res.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
@@ -529,14 +529,14 @@ public class TableOperationTests {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey("echo_default" + UUID.randomUUID().toString());
 
-        TableResult res = table.execute(TableOperation.insert(ref), options, null);
+        TableResult res = this.table.execute(TableOperation.insert(ref), options, null);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
 
         EmptyClassDynamic refDynamic = new EmptyClassDynamic();
         refDynamic.setPartitionKey("jxscl_odata");
         refDynamic.setRowKey("echo_default" + UUID.randomUUID().toString());
 
-        res = table.execute(TableOperation.insert(refDynamic), options, null);
+        res = this.table.execute(TableOperation.insert(refDynamic), options, null);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
     }
 
@@ -569,11 +569,11 @@ public class TableOperationTests {
 
         TableOperation op = TableOperation.insert(ref);
 
-        table.execute(op, options, null);
-        table.execute(TableOperation.delete(ref), options, null);
+        this.table.execute(op, options, null);
+        this.table.execute(TableOperation.delete(ref), options, null);
 
-        TableResult res2 = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res2 = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         assertTrue(res2.getResult() == null);
     }
@@ -618,13 +618,13 @@ public class TableOperationTests {
         secondEntity.setEtag(baseEntity.getEtag());
 
         // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
-        TableResult insertResult = table.execute(TableOperation.insertOrMerge(baseEntity), options, null);
+        TableResult insertResult = this.table.execute(TableOperation.insertOrMerge(baseEntity), options, null);
 
         assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL MERGE
-        table.execute(TableOperation.insertOrMerge(secondEntity), options, null);
+        this.table.execute(TableOperation.insertOrMerge(secondEntity), options, null);
 
         // Retrieve entity
         if (usePropertyResolver) {
@@ -632,7 +632,7 @@ public class TableOperationTests {
             options.setPropertyResolver(resolver);
         }
 
-        TableResult queryResult = table
+        TableResult queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
@@ -701,16 +701,16 @@ public class TableOperationTests {
         secondEntity.setEtag(baseEntity.getEtag());
 
         // Insert or replace Entity - ENTITY DOES NOT EXIST NOW.
-        TableResult insertResult = table.execute(TableOperation.insertOrReplace(baseEntity), options, null);
+        TableResult insertResult = this.table.execute(TableOperation.insertOrReplace(baseEntity), options, null);
 
         assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
-        table.execute(TableOperation.insertOrReplace(secondEntity), options, null);
+        this.table.execute(TableOperation.insertOrReplace(secondEntity), options, null);
 
         // Retrieve entity
-        TableResult queryResult = table
+        TableResult queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
@@ -767,7 +767,7 @@ public class TableOperationTests {
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class2 secondEntity = new Class2();
         secondEntity.setL("foo_L");
@@ -778,7 +778,7 @@ public class TableOperationTests {
         secondEntity.setRowKey(baseEntity.getRowKey());
         secondEntity.setEtag(baseEntity.getEtag());
 
-        TableResult mergeResult = table.execute(TableOperation.merge(secondEntity), options, null);
+        TableResult mergeResult = this.table.execute(TableOperation.merge(secondEntity), options, null);
 
         assertEquals(mergeResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(mergeResult.getEtag());
@@ -789,7 +789,7 @@ public class TableOperationTests {
             options.setPropertyResolver(resolver);
         }
 
-        TableResult res2 = table.execute(TableOperation.retrieve(secondEntity.getPartitionKey(),
+        TableResult res2 = this.table.execute(TableOperation.retrieve(secondEntity.getPartitionKey(),
                 secondEntity.getRowKey(), DynamicTableEntity.class), options, null);
         DynamicTableEntity mergedEntity = (DynamicTableEntity) res2.getResult();
 
@@ -846,9 +846,9 @@ public class TableOperationTests {
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
         // Insert entity
-        table.execute(TableOperation.insert(baseEntity), options, null);
+        this.table.execute(TableOperation.insert(baseEntity), options, null);
 
-        TableResult queryResult = table
+        TableResult queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
         // Retrieve entity
@@ -859,13 +859,13 @@ public class TableOperationTests {
         // Remove property and update
         retrievedEntity.getProperties().remove("D");
 
-        TableResult replaceResult = table.execute(TableOperation.replace(retrievedEntity), options, null);
+        TableResult replaceResult = this.table.execute(TableOperation.replace(retrievedEntity), options, null);
 
         assertEquals(replaceResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(replaceResult.getEtag());
 
         // Retrieve Entity
-        queryResult = table
+        queryResult = this.table
                 .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
                         DynamicTableEntity.class), options, null);
 
@@ -912,15 +912,15 @@ public class TableOperationTests {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey("echo_default" + UUID.randomUUID().toString());
 
-        TableResult res = table.execute(TableOperation.insert(ref), options, null);
+        TableResult res = this.table.execute(TableOperation.insert(ref), options, null);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
 
         ref.setRowKey("echo" + UUID.randomUUID().toString());
-        res = table.execute(TableOperation.insert(ref, true), options, null);
+        res = this.table.execute(TableOperation.insert(ref, true), options, null);
         assertEquals(HttpURLConnection.HTTP_CREATED, res.getHttpStatusCode());
 
         ref.setRowKey("echo_off" + UUID.randomUUID().toString());
-        res = table.execute(TableOperation.insert(ref, false), options, null);
+        res = this.table.execute(TableOperation.insert(ref, false), options, null);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
     }
 
@@ -960,10 +960,10 @@ public class TableOperationTests {
         }
 
         // with cache on
-        table.execute(TableOperation.insert(ref), options, null);
+        this.table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
-                options, null);
+        TableResult res = this.table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
 
         Class1 retrievedEnt = res.getResultAsType();
 
@@ -973,8 +973,8 @@ public class TableOperationTests {
         // with cache off
         TableServiceEntity.setReflectedEntityCacheDisabled(true);
         try {
-            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
-                    null);
+            res = this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                    options, null);
 
             retrievedEnt = res.getResultAsType();
 
@@ -1024,9 +1024,9 @@ public class TableOperationTests {
         // with cache on
         TableOperation op = TableOperation.insert(ref);
 
-        table.execute(op, options, null);
+        this.table.execute(op, options, null);
 
-        TableResult res4 = table.execute(
+        TableResult res4 = this.table.execute(
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                     @Override
                     public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
@@ -1045,7 +1045,7 @@ public class TableOperationTests {
         // with cache off
         TableServiceEntity.setReflectedEntityCacheDisabled(true);
         try {
-            res4 = table.execute(
+            res4 = this.table.execute(
                     TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                         @Override
                         public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,

@@ -341,75 +341,75 @@ public class TableTestHelper extends TestHelper {
         }
 
         public double getRegularPrimDouble() {
-            return regularPrimDouble;
+            return this.regularPrimDouble;
         }
 
         public double getNanPrimDouble() {
-            return nanPrimDouble;
+            return this.nanPrimDouble;
         }
 
         public double getPositiveInfinityPrimDouble() {
-            return positiveInfinityPrimDouble;
+            return this.positiveInfinityPrimDouble;
         }
 
         public double getNegativeInfinityPrimDouble() {
-            return negativeInfinityPrimDouble;
+            return this.negativeInfinityPrimDouble;
         }
 
         public double getMinValuePrimDouble() {
-            return minValuePrimDouble;
+            return this.minValuePrimDouble;
         }
 
         public double getMaxValuePrimDouble() {
-            return maxValuePrimDouble;
+            return this.maxValuePrimDouble;
         }
 
         public double getMinExponentValuePrimDouble() {
-            return minExponentValuePrimDouble;
+            return this.minExponentValuePrimDouble;
         }
 
         public double getMaxExponentValuePrimDouble() {
-            return maxExponentValuePrimDouble;
+            return this.maxExponentValuePrimDouble;
         }
 
         public double getMinNormalValuePrimDouble() {
-            return minNormalValuePrimDouble;
+            return this.minNormalValuePrimDouble;
         }
 
         public Double getRegularDouble() {
-            return regularDouble;
+            return this.regularDouble;
         }
 
         public Double getNanDouble() {
-            return nanDouble;
+            return this.nanDouble;
         }
 
         public Double getPositiveInfinityDouble() {
-            return positiveInfinityDouble;
+            return this.positiveInfinityDouble;
         }
 
         public Double getNegativeInfinityDouble() {
-            return negativeInfinityDouble;
+            return this.negativeInfinityDouble;
         }
 
         public Double getMinValueDouble() {
-            return minValueDouble;
+            return this.minValueDouble;
         }
 
         public Double getMaxValueDouble() {
-            return maxValueDouble;
+            return this.maxValueDouble;
         }
 
         public Double getMinExponentValueDouble() {
-            return minExponentValueDouble;
+            return this.minExponentValueDouble;
         }
 
         public Double getMaxExponentValueDouble() {
-            return maxExponentValueDouble;
+            return this.maxExponentValueDouble;
         }
 
         public Double getMinNormalValueDouble() {
-            return minNormalValueDouble;
+            return this.minNormalValueDouble;
         }
 
         public void setRegularPrimDouble(double regularPrimDouble) {
@@ -485,19 +485,19 @@ public class TableTestHelper extends TestHelper {
         }
 
         public double getZeroValuePrimDouble() {
-            return zeroValuePrimDouble;
+            return this.zeroValuePrimDouble;
         }
 
         public double getNegativeZeroValuePrimDouble() {
-            return negativeZeroValuePrimDouble;
+            return this.negativeZeroValuePrimDouble;
         }
 
         public Double getZeroValueDouble() {
-            return zeroValueDouble;
+            return this.zeroValueDouble;
         }
 
         public Double getNegativeZeroValueDouble() {
-            return negativeZeroValueDouble;
+            return this.negativeZeroValueDouble;
         }
 
         public void setZeroValuePrimDouble(double zeroValuePrimDouble) {

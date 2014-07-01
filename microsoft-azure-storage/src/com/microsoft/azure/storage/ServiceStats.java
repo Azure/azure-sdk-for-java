@@ -34,14 +34,14 @@ public class ServiceStats {
      * @return The <code>GeoReplicationStats</code> for the cloud storage service.
      */
     public GeoReplicationStats getGeoReplication() {
-        return geoReplication;
+        return this.geoReplication;
     }
 
     /**
      * Sets the <code>{@link GeoReplicationStats}</code> for a cloud storage service.
      * 
      * @param geoReplication
-     *        The <code>GeoReplicationStats</code> to set for the cloud storage service.
+     *            The <code>GeoReplicationStats</code> to set for the cloud storage service.
      */
     protected void setGeoReplication(GeoReplicationStats geoReplication) {
         this.geoReplication = geoReplication;

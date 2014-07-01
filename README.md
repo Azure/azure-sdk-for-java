@@ -26,9 +26,9 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 
 ```xml
 <dependency>
-	<groupId>com.microsoft.windowsazure.storage</groupId>
-	<artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-	<version>1.0.0</version>
+	<groupId>com.microsoft.azure</groupId>
+	<artifactId>azure-storage</artifactId>
+	<version>1.1.0</version>
 </dependency>
 ```
 

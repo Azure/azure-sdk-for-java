@@ -166,7 +166,7 @@ public abstract class RequestOptions {
      * @return The current maximum execution time, in milliseconds, for this request.
      */
     public Integer getMaximumExecutionTimeInMs() {
-        return maximumExecutionTimeInMs;
+        return this.maximumExecutionTimeInMs;
     }
 
     /**
@@ -232,7 +232,7 @@ public abstract class RequestOptions {
      * @param locationMode
      *            the locationMode to set
      */
-    public final void setLocationMode(final LocationMode locationMode) {
+    public void setLocationMode(final LocationMode locationMode) {
         this.locationMode = locationMode;
     }
 

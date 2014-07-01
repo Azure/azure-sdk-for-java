@@ -88,7 +88,12 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
             return null;
         }
 
-        return PathUtility.addToQuery(resourceUri, this.token);
+        // append the sas token to the resource uri
+        URI sasUri = PathUtility.addToQuery(resourceUri, this.token);
+        
+        // append the api version parameter to the sas uri
+        String apiVersion = Constants.QueryConstants.API_VERSION + "=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        return PathUtility.addToQuery(sasUri, apiVersion);
     }
 
     /**

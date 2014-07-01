@@ -174,7 +174,7 @@ final class BlobListHandler extends DefaultHandler {
                 this.blobName = value;
             }
         }
-        else if (BlobConstants.PROPERTIES.equals(parentNode)) {
+        else if (Constants.PROPERTIES.equals(parentNode)) {
             try {
                 this.setProperties(currentNode, value);
             }

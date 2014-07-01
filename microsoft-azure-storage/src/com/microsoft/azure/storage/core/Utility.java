@@ -55,8 +55,6 @@ import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCode;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlob;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
 
 /**
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
@@ -995,8 +993,7 @@ public final class Utility {
      */
     public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
-            final RequestOptions options, StorageRequest<CloudBlobClient, CloudBlob, Integer> request)
-            throws IOException, StorageException {
+            final RequestOptions options, StorageRequest<?, ?, Integer> request) throws IOException, StorageException {
         if (rewindSourceStream && sourceStream.markSupported()) {
             sourceStream.reset();
             sourceStream.mark(Constants.MAX_MARK_LENGTH);

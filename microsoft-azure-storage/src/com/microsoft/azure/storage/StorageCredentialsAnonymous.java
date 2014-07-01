@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,8 +17,7 @@ package com.microsoft.azure.storage;
 import java.net.URI;
 
 /**
- * *RESERVED FOR INTERNAL USE* Represents credentials for anonymous access. This class is used by the internal
- * implementation (not a public class, so its comments are not built into the Javadoc output).
+ * Represents credentials for anonymous access.
  */
 public final class StorageCredentialsAnonymous extends StorageCredentials {
 
@@ -29,7 +28,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
 
     /**
      * Returns the singleton instance of the <code>StorageCredentials</code> class.
-     * 
+     *
      * @return the singleton instance of this class
      */
     protected static StorageCredentials getInstance() {
@@ -45,7 +44,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
 
     /**
      * Returns a <code>String</code> object that represents this instance.
-     * 
+     *
      * @param exportSecrets
      *            <code>true</code> to include sensitive data in the string; otherwise, <code>false</code>
      * @return a string representation of the credentials, optionally including sensitive data.

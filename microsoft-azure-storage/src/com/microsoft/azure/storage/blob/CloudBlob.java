@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -95,19 +95,19 @@ public abstract class CloudBlob implements ListBlobItem {
     protected CloudBlobDirectory parent;
 
     /**
-     * Holds the blobs name.
+     * Holds the blob's name.
      */
     private String name;
 
     /**
      * Holds the number of bytes to buffer when writing to a {@link BlobOutputStream} (block and page blobs).
      */
-    protected int streamWriteSizeInBytes = BlobConstants.DEFAULT_STREAM_WRITE_IN_BYTES;
+    protected int streamWriteSizeInBytes = Constants.DEFAULT_STREAM_WRITE_IN_BYTES;
 
     /**
      * Holds the minimum read size when using a {@link BlobInputStream}.
      */
-    protected int streamMinimumReadSizeInBytes = BlobConstants.DEFAULT_MINIMUM_READ_SIZE_IN_BYTES;
+    protected int streamMinimumReadSizeInBytes = Constants.DEFAULT_MINIMUM_READ_SIZE_IN_BYTES;
 
     /**
      * Represents the blob client.
@@ -116,7 +116,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates an instance of the <code>CloudBlob</code> class.
-     * 
+     *
      * @param type
      *            A {@link BlobType} value which represents the type of the blob.
      */
@@ -127,14 +127,14 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates an instance of the <code>CloudBlob</code> class using the specified URI and cloud blob client.
-     * 
+     *
      * @param type
      *            A {@link BlobType} value which represents the type of the blob.
      * @param uri
      *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
      * @param client
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -157,7 +157,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Creates an instance of the <code>CloudBlob</code> class using the specified URI, cloud blob client, and cloud
      * blob container.
-     * 
+     *
      * @param type
      *            A {@link BlobType} value which represents the type of the blob.
      * @param uri
@@ -166,7 +166,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      * @param container
      *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -179,7 +179,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Creates an instance of the <code>CloudBlob</code> class using the specified URI, snapshot ID, and cloud blob
      * client.
-     * 
+     *
      * @param type
      *            A {@link BlobType} value which represents the type of the blob.
      * @param uri
@@ -188,7 +188,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A <code>String</code> that represents the snapshot version, if applicable.
      * @param client
      *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -207,7 +207,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates an instance of the <code>CloudBlob</code> class by copying values from another blob.
-     * 
+     *
      * @param otherBlob
      *            A <code>CloudBlob</code> object that represents the blob to copy.
      */
@@ -234,10 +234,10 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Aborts an ongoing blob copy operation.
-     * 
+     *
      * @param copyId
      *            A <code>String</code> object that identifying the copy operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -248,10 +248,10 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Aborts an ongoing blob copy operation.
-     * 
+     *
      * @param copyId
      *            A <code>String</code> object that identifying the copy operation.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -262,7 +262,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -297,7 +297,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, null);
             }
 
             @Override
@@ -317,18 +317,18 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Acquires a new lease on the blob with the specified lease time and proposed lease ID.
-     * 
+     *
      * @param leaseTimeInSeconds
      *            An <code>Integer</code> which specifies the span of time for which to acquire the lease, in seconds.
      *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
-     * 
+     *
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
-     * 
+     *
      * @return A <code>String</code> that represents the lease ID.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -342,31 +342,31 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Acquires a new lease on the blob with the specified lease time, proposed lease ID, request
      * options, and operation context.
-     * 
+     *
      * @param leaseTimeInSeconds
      *            An <code>Integer</code> which specifies the span of time for which to acquire the lease, in seconds.
      *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
-     * 
+     *
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
-     * 
+     *
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     * 
+     *
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>String</code> that represents the lease ID.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -402,7 +402,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -425,7 +425,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Asserts that the blob has the correct blob type specified in the blob attributes.
-     * 
+     *
      * @throws StorageException
      *             If an incorrect blob type is used.
      */
@@ -455,13 +455,13 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease period
      * has expired.
-     * 
+     *
      * @param breakPeriodInSeconds
      *            Specifies the time to wait, in seconds, until the current lease is broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * 
+     *
      * @return An <code>long</code> which specifies the time, in seconds, remaining in the lease period.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -474,12 +474,12 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Breaks the existing lease, using the specified request options and operation context, and ensures that another
      * client cannot acquire a new lease until the current lease period has expired.
-     * 
+     *
      * @param breakPeriodInSeconds
      *            An <code>Integer</code> which specifies the time to wait, in seconds, until the current lease is
      *            broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -490,9 +490,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return An <code>long</code> which represents the time, in seconds, remaining in the lease period.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -531,7 +531,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -556,16 +556,16 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Changes the existing lease ID to the proposed lease ID.
-     * 
+     *
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
      *            required to be set with an access condition.
-     * 
+     *
      * @return A <code>String</code> that represents the new lease ID.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -578,11 +578,11 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Changes the existing lease ID to the proposed lease Id with the specified access conditions, request options,
      * and operation context.
-     * 
+     *
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
      *            required to be set with an access condition.
@@ -594,9 +594,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>String</code> that represents the new lease ID.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -633,7 +633,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -655,12 +655,12 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Requests the service to start copying a blob's contents, properties, and metadata to a new blob.
-     * 
+     *
      * @param sourceBlob
      *            A <code>CloudBlob</code> object that represents the source blob to copy.
-     * 
+     *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -674,7 +674,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
      * specified access conditions, lease ID, request options, and operation context.
-     * 
+     *
      * @param sourceBlob
      *            A <code>CloudBlob</code> object that represents the source blob to copy.
      * @param sourceAccessCondition
@@ -689,13 +689,13 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
-     * 
+     *
      */
     @DoesServiceRequest
     public final String startCopyFromBlob(final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
@@ -710,12 +710,12 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Requests the service to start copying a blob's contents, properties, and metadata to a new blob.
-     * 
+     *
      * @param source
      *            A <code>java.net.URI</code> The URI of a source blob.
-     * 
+     *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -728,7 +728,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
      * specified access conditions, lease ID, request options, and operation context.
-     * 
+     *
      * @param source
      *            A <code>java.net.URI</code> The URI of a source blob.
      * @param sourceAccessCondition
@@ -743,12 +743,12 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
-     * 
+     *
      */
     @DoesServiceRequest
     public final String startCopyFromBlob(final URI source, final AccessCondition sourceAccessCondition,
@@ -793,7 +793,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, null);
             }
 
             @Override
@@ -816,9 +816,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates a snapshot of the blob.
-     * 
+     *
      * @return A <code>CloudBlob</code> object that represents the snapshot of the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -830,7 +830,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates a snapshot of the blob using the specified request options and operation context.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -841,9 +841,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>CloudBlob</code> object that represents the snapshot of the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -855,7 +855,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Creates a snapshot of the blob using the specified request options and operation context.
-     * 
+     *
      * @param metadata
      *            A collection of name-value pairs defining the metadata of the snapshot, or null.
      * @param accessCondition
@@ -868,9 +868,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A <code>CloudBlob</code> object that represents the snapshot of the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -916,7 +916,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -950,7 +950,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Deletes the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -966,7 +966,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * the {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value
      * in the <code>deleteSnapshotsOption</code> parameter to specify how the snapshots should be handled when the blob
      * is deleted.
-     * 
+     *
      * @param deleteSnapshotsOption
      *            A {@link DeleteSnapshotsOption} object that indicates whether to delete only snapshots, or the blob
      *            and its snapshots.
@@ -980,7 +980,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1008,12 +1008,12 @@ public abstract class CloudBlob implements ListBlobItem {
      * the {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value
      * in the <code>deleteSnapshotsOption</code> parameter to specify how the snapshots should be handled when the blob
      * is deleted.
-     * 
+     *
      * @return <code>true</code> if the blob was deleted; otherwise, <code>false</code>.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
-     * 
+     *
      */
     @DoesServiceRequest
     public final boolean deleteIfExists() throws StorageException {
@@ -1028,7 +1028,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * the {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value
      * in the <code>deleteSnapshotsOption</code> parameter to specify how the snapshots should be handled when the blob
      * is deleted.
-     * 
+     *
      * @param deleteSnapshotsOption
      *            A {@link DeleteSnapshotsOption} object that indicates whether to delete only snapshots, or the blob
      *            and its snapshots.
@@ -1042,9 +1042,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return <code>true</code> if the blob existed and was deleted; otherwise, <code>false</code>
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1092,7 +1092,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1112,7 +1112,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads the contents of a blob to a stream.
-     * 
+     *
      * @param outStream
      *            An <code>{@link OutputStream}</code> object that represents the target stream.
      * @throws StorageException
@@ -1125,7 +1125,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads the contents of a blob to a stream using the specified request options and operation context.
-     * 
+     *
      * @param outStream
      *            An <code>OutputStream</code> object that represents the target stream.
      * @param accessCondition
@@ -1158,7 +1158,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads the contents of a blob to a stream.
-     * 
+     *
      * @param offset
      *            A <code>long</code> which represents the offset to use as the starting point for the source.
      * @param length
@@ -1176,7 +1176,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads the contents of a blob to a stream using the specified request options and operation context.
-     * 
+     *
      * @param offset
      *            A <code>long</code> which represents the offset to use as the starting point for the source.
      * @param length
@@ -1226,7 +1226,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * This method populates the blob's system properties and user-defined metadata. Before reading or modifying a
      * blob's properties or metadata, call this method or its overload to retrieve the latest values for the blob's
      * properties and metadata from the Microsoft Azure storage service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1241,7 +1241,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * This method populates the blob's system properties and user-defined metadata. Before reading or modifying a
      * blob's properties or metadata, call this method or its overload to retrieve the latest values for the blob's
      * properties and metadata from the Microsoft Azure storage service.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -1252,7 +1252,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1290,7 +1290,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1341,8 +1341,8 @@ public abstract class CloudBlob implements ListBlobItem {
                     throws Exception {
 
                 // The first time this is called, we have to set the length and blob offset. On retries, these will already have values and need not be called.
-                if (this.getBlobOffset() == null) {
-                    this.setBlobOffset(blobOffset);
+                if (this.getOffset() == null) {
+                    this.setOffset(blobOffset);
                 }
 
                 if (this.getLength() == null) {
@@ -1353,14 +1353,14 @@ public abstract class CloudBlob implements ListBlobItem {
                         : accessCondition;
 
                 return BlobRequest.getBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, tempCondition, blob.snapshotID, this.getBlobOffset(), this.getLength(),
+                        options, context, tempCondition, blob.snapshotID, this.getOffset(), this.getLength(),
                         (options.getUseTransactionalContentMD5() && !this.getArePropertiesPopulated()));
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1394,7 +1394,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     }
                 }
                 finally {
-                    // Close the stream and return. Closing an already closed stream is harmless. So its fine to try 
+                    // Close the stream and return. Closing an already closed stream is harmless. So its fine to try
                     // to drain the response and close the stream again in the executor.
                     streamRef.close();
                 }
@@ -1414,7 +1414,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 if (this.getCurrentRequestByteCount() > 0) {
-                    this.setBlobOffset(startingOffset + this.getCurrentRequestByteCount());
+                    this.setOffset(startingOffset + this.getCurrentRequestByteCount());
                     if (length != null) {
                         this.setLength(length - this.getCurrentRequestByteCount());
                     }
@@ -1428,7 +1428,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads a range of bytes from the blob to the given byte buffer.
-     * 
+     *
      * @param blobOffset
      *            A <code>long</code> which represents the offset within the blob to begin downloading.
      * @param length
@@ -1472,7 +1472,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads a range of bytes from the blob to the given byte buffer.
-     * 
+     *
      * @param offset
      *            A <code>long</code> which represents the byte offset to use as the starting point for the source.
      * @param length
@@ -1481,7 +1481,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
      * @param bufferOffet
      *            An <code>int</code> which represents the byte offset to use as the starting point for the target.
-     * 
+     *
      * @throws StorageException
      */
     @DoesServiceRequest
@@ -1494,7 +1494,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Downloads a range of bytes from the blob to the given byte buffer, using the specified request options and
      * operation context.
-     * 
+     *
      * @param offset
      *            A <code>long</code> which represents the byte offset to use as the starting point for the source.
      * @param length
@@ -1513,7 +1513,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1541,12 +1541,12 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads a range of bytes from the blob to the given byte buffer.
-     * 
+     *
      * @param buffer
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
      * @param bufferOffet
      *            An <code>int</code> which represents the byte offset to use as the starting point for the target.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1559,7 +1559,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Downloads a range of bytes from the blob to the given byte buffer, using the specified request options and
      * operation context.
-     * 
+     *
      * @param buffer
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
      * @param bufferOffet
@@ -1574,7 +1574,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1621,8 +1621,8 @@ public abstract class CloudBlob implements ListBlobItem {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
                 // The first time this is called, we have to set the length and blob offset. On retries, these will already have values and need not be called.
-                if (this.getBlobOffset() == null) {
-                    this.setBlobOffset(blobOffset);
+                if (this.getOffset() == null) {
+                    this.setOffset(blobOffset);
                 }
 
                 if (this.getLength() == null) {
@@ -1632,14 +1632,14 @@ public abstract class CloudBlob implements ListBlobItem {
                 AccessCondition tempCondition = (this.getETagLockCondition() != null) ? this.getETagLockCondition()
                         : accessCondition;
                 return BlobRequest.getBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, tempCondition, blob.snapshotID, this.getBlobOffset(), this.getLength(),
+                        options, context, tempCondition, blob.snapshotID, this.getOffset(), this.getLength(),
                         (options.getUseTransactionalContentMD5() && !this.getArePropertiesPopulated()));
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1697,7 +1697,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     }
                 }
                 finally {
-                    // Close the stream. Closing an already closed stream is harmless. So its fine to try 
+                    // Close the stream. Closing an already closed stream is harmless. So its fine to try
                     // to drain the response and close the stream again in the executor.
                     sourceStream.close();
                 }
@@ -1737,7 +1737,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 if (this.getCurrentRequestByteCount() > 0) {
-                    this.setBlobOffset(startingOffset + this.getCurrentRequestByteCount());
+                    this.setOffset(startingOffset + this.getCurrentRequestByteCount());
                     if (length != null) {
                         this.setLength(length - this.getCurrentRequestByteCount());
                     }
@@ -1749,14 +1749,14 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads a blob from data in a byte array.
-     * 
+     *
      * @param buffer
      *            A <code>byte</code> array which represents the data to write to the blob.
      * @param offset
      *            A <code>int</code> which represents the offset of the byte array from which to start the data upload.
      * @param length
      *            An <code>int</code> which represents the number of bytes to upload from the input buffer.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1768,7 +1768,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads a blob from data in a byte array.
-     * 
+     *
      * @param buffer
      *            A <code>byte</code> array which represents the data to write to the blob.
      * @param offset
@@ -1785,7 +1785,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1795,14 +1795,15 @@ public abstract class CloudBlob implements ListBlobItem {
             throws StorageException, IOException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer, offset, length);
         this.upload(inputStream, length, accessCondition, options, opContext);
+        inputStream.close();
     }
 
     /**
      * Uploads a blob from a file.
-     * 
+     *
      * @param path
      *            A <code>String</code> which represents the path to the file to be uploaded.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1813,7 +1814,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads a blob from a file.
-     * 
+     *
      * @param path
      *            A <code>String</code> which represents the path to the file to be uploaded.
      * @param accessCondition
@@ -1826,7 +1827,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1837,15 +1838,16 @@ public abstract class CloudBlob implements ListBlobItem {
         long fileLength = file.length();
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         this.upload(inputStream, fileLength, accessCondition, options, opContext);
+        inputStream.close();
     }
 
     /**
      * Downloads a blob, storing the contents in a file.
-     * 
+     *
      * @param path
      *            A <code>String</code> which represents the path to the file that will be created with the contents of
      *            the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1856,7 +1858,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Downloads a blob, storing the contents in a file.
-     * 
+     *
      * @param path
      *            A <code>String</code> which represents the path to the file that will be created with the contents of
      *            the blob.
@@ -1870,7 +1872,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws IOException
@@ -1878,14 +1880,42 @@ public abstract class CloudBlob implements ListBlobItem {
     public void downloadToFile(final String path, final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException, IOException {
         OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
-        this.download(outputStream, accessCondition, options, opContext);
-        outputStream.close();
+        try {
+            this.download(outputStream, accessCondition, options, opContext);
+            outputStream.close();
+        }
+        catch (StorageException e) {
+            deleteEmptyFileOnException(outputStream, path);
+            throw e;
+        }
+        catch (IOException e) {
+            deleteEmptyFileOnException(outputStream, path);
+            throw e;
+        }
+    }
+
+    /**
+     * Helper to delete an empty file in the case of an exception
+     * 
+     * @param outputStream
+     * @param path
+     * @throws IOException
+     */
+    private void deleteEmptyFileOnException(OutputStream outputStream, String path) {
+        try {
+            outputStream.close();
+            File fileToDelete = new File(path);
+            fileToDelete.delete();
+        }
+        catch (Exception e) {
+            // Best effort delete.
+        }
     }
 
     /**
      * Checks to see if the blob exists.
-     * 
-     * @return <code>true</code> if the blob exists, other wise <code>false</code>.
+     *
+     * @return <code>true</code> if the blob exists, otherwise <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1897,7 +1927,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Checks to see if the blob exists, using the specified request options and operation context.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -1908,11 +1938,11 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return <code>true</code> if the blob exists, other wise <code>false</code>.
-     * 
+     *
      * @throws StorageException
-     *             f a storage service error occurred.
+     *             If a storage service error occurred.
      */
     @DoesServiceRequest
     public final boolean exists(final AccessCondition accessCondition, BlobRequestOptions options,
@@ -1955,7 +1985,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override
@@ -1986,15 +2016,15 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
      * Note this does not contain the leading "?".
-     * 
+     *
      * @param policy
      *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
      *            signature.
      * @param groupPolicyIdentifier
      *            A <code>String</code> that represents the container-level access policy.
-     * 
+     *
      * @return A <code>String</code> that represents the shared access signature.
-     * 
+     *
      * @throws IllegalArgumentException
      *             If the credentials are invalid or the blob is a snapshot.
      * @throws InvalidKeyException
@@ -2011,7 +2041,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
      * Note this does not contain the leading "?".
-     * 
+     *
      * @param policy
      *            A <code>{@link SharedAccessPolicy}</code> object that represents the access policy for the shared
      *            access
@@ -2021,9 +2051,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            set for a blob accessed with this shared access signature.
      * @param groupPolicyIdentifier
      *            A <code>String</code> that represents the container-level access policy.
-     * 
+     *
      * @return A <code>String</code> that represents the shared access signature.
-     * 
+     *
      * @throws IllegalArgumentException
      *             If the credentials are invalid or the blob is a snapshot.
      * @throws InvalidKeyException
@@ -2059,10 +2089,10 @@ public abstract class CloudBlob implements ListBlobItem {
      * <i>/&lt;account-name&gt;/&lt;container-name&gt;/&lt;blob-name&gt;</i>.
      * <p>
      * This format is used by both Shared Access and Copy blob operations.
-     * 
+     *
      * @param ignoreSnapshotTime
      *            <code>true</code> if the snapshot time is ignored; otherwise, <code>false</code>.
-     * 
+     *
      * @return The canonical name in the format of <i>/&lt;account-name&gt;/&lt;container
      *         -name&gt;/&lt;blob-name&gt;</i>.
      */
@@ -2086,7 +2116,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the blob's container.
-     * 
+     *
      * @return A {@link CloudBlobContainer} object that represents the container of the blob.
      * @throws StorageException
      *             If a storage service error occurred.
@@ -2106,7 +2136,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the metadata for the blob.
-     * 
+     *
      * @return A <code>java.util.HashMap</code> object that represents the metadata for the blob.
      */
     public final HashMap<String, String> getMetadata() {
@@ -2115,9 +2145,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the name of the blob.
-     * 
+     *
      * @return A <code>String</code> that represents the name of the blob.
-     * 
+     *
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
@@ -2130,9 +2160,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the blob item's parent.
-     * 
+     *
      * @return A {@link CloudBlobDirectory} object that represents the parent directory for the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -2145,7 +2175,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     this.blobServiceClient.getDirectoryDelimiter(), this.getContainer());
 
             if (parentName != null) {
-                StorageUri parentURI = PathUtility.appendPathToUri(container.getStorageUri(), parentName);
+                StorageUri parentURI = PathUtility.appendPathToUri(this.container.getStorageUri(), parentName);
                 this.parent = new CloudBlobDirectory(parentURI, parentName, this.blobServiceClient, this.getContainer());
             }
         }
@@ -2154,7 +2184,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the blob's properties.
-     * 
+     *
      * @return A {@link BlobProperties} object that represents the properties of the blob.
      */
     public final BlobProperties getProperties() {
@@ -2163,7 +2193,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the blob's copy state.
-     * 
+     *
      * @return A {@link CopyState} object that represents the copy state of the blob.
      */
     public CopyState getCopyState() {
@@ -2172,9 +2202,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the snapshot or shared access signature qualified URI for this blob.
-     * 
+     *
      * @return A {@link StorageUri} object that represents the snapshot or shared access signature.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -2191,9 +2221,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the snapshot or shared access signature qualified URI for this blob.
-     * 
+     *
      * @return A <code>java.net.URI</code> object that represents the snapshot or shared access signature.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
@@ -2208,7 +2238,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the Blob service client associated with the blob.
-     * 
+     *
      * @return A {@link CloudBlobClient} object that represents the client.
      */
     public final CloudBlobClient getServiceClient() {
@@ -2217,7 +2247,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Gets the Blob Snapshot ID.
-     * 
+     *
      * @return A <code>String</code> which represents the Blob Snapshot ID.
      */
     public final String getSnapshotID() {
@@ -2226,7 +2256,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the list of URIs for all locations.
-     * 
+     *
      * @return A {@link StorageUri} that represents the list of URIs for all locations..
      */
     @Override
@@ -2236,7 +2266,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Gets the number of bytes to buffer when writing to a {@link BlobOutputStream} (block and page blobs).
-     * 
+     *
      * @return
      *         A <code>int</code> which represents the number of bytes to buffer or the size of a block, in bytes.
      */
@@ -2246,7 +2276,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the minimum read size when using a {@link BlobInputStream}.
-     * 
+     *
      * @return A <code>int</code> which represents the minimum read size, in bytes, when using a {@link BlobInputStream}
      *         object.
      */
@@ -2256,14 +2286,14 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the transformed URI for the resource if the given credentials require transformation.
-     * 
+     *
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return A {@link StorageUri} object that represents the transformed URI.
-     * 
+     *
      * @throws IllegalArgumentException
      *             If the URI is not absolute.
      * @throws StorageException
@@ -2278,7 +2308,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the URI for this blob.
-     * 
+     *
      * @return A <code>java.net.URI</code> object that represents the URI for the blob.
      */
     @Override
@@ -2288,9 +2318,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Indicates whether this blob is a snapshot.
-     * 
+     *
      * @return <code>true</code> if the blob is a snapshot, otherwise <code>false</code>.
-     * 
+     *
      * @see DeleteSnapshotsOption
      */
     public final boolean isSnapshot() {
@@ -2301,9 +2331,9 @@ public abstract class CloudBlob implements ListBlobItem {
      * Opens a blob input stream to download the blob.
      * <p>
      * Use {@link CloudBlobClient#setStreamMinimumReadSizeInBytes} to configure the read size.
-     * 
+     *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2316,7 +2346,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * Opens a blob input stream to download the blob using the specified request options and operation context.
      * <p>
      * Use {@link CloudBlobClient#setStreamMinimumReadSizeInBytes} to configure the read size.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -2327,9 +2357,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2349,11 +2379,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Parse Uri for SAS (Shared access signature) information.
-     * 
+     *
      * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
      * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
      * a new client is created based on SAS information or as anonymous credentials.
-     * 
+     *
      * @param completeUri
      *            A {@link StorageUri} object which represents the complete Uri.
      * @param existingClient
@@ -2384,7 +2414,7 @@ public abstract class CloudBlob implements ListBlobItem {
             this.snapshotID = snapshotIDs[0];
         }
 
-        if (sasCreds == null) {
+        if (sasCreds == null && existingClient != null) {
             return;
         }
 
@@ -2410,11 +2440,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Releases the lease on the blob.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
      *            required to be set on the AccessCondition.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2425,7 +2455,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Releases the lease on the blob using the specified request options and operation context.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.The LeaseID is
      *            required to be set on the AccessCondition.
@@ -2437,7 +2467,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2474,7 +2504,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -2497,11 +2527,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Renews an existing lease.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
      *            required to be set on the AccessCondition.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2512,7 +2542,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Renews an existing lease using the specified request options and operation context.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
      *            required to be set on the AccessCondition.
@@ -2524,7 +2554,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2560,7 +2590,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -2582,7 +2612,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the container for the blob.
-     * 
+     *
      * @param container
      *            A {@link CloudBlobContainer} object that represents the container being assigned to the blob.
      */
@@ -2592,7 +2622,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the metadata for the blob.
-     * 
+     *
      * @param metadata
      *            A <code>java.util.HashMap</code> object that contains the metadata being assigned to the blob.
      */
@@ -2602,7 +2632,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the properties for the blob.
-     * 
+     *
      * @param properties
      *            A {@link BlobProperties} object that represents the properties being assigned to the blob.
      */
@@ -2612,7 +2642,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the blob snapshot ID.
-     * 
+     *
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot ID being assigned to the blob.
      */
@@ -2622,7 +2652,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the list of URIs for all locations.
-     * 
+     *
      * @param storageUri
      *            A {@link StorageUri} that represents the list of URIs for all locations.
      */
@@ -2632,7 +2662,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the number of bytes to buffer when writing to a {@link BlobOutputStream} (block and page blobs).
-     * 
+     *
      * @param streamWriteSizeInBytes
      *            An <code>int</code> that represents the number of bytes to buffer or the size of a block, in bytes.
      */
@@ -2640,7 +2670,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Sets the minimum read size when using a {@link BlobInputStream}.
-     * 
+     *
      * @param minimumReadSize
      *            An <code>int</code> that represents the minimum block size, in bytes, for reading from a blob while
      *            using a {@link BlobInputStream} object. Must be greater than or equal to 16 KB.
@@ -2677,28 +2707,28 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads the source stream data to the blob.
-     * 
+     *
      * @param sourceStream
      *            An <code>InputStream</code> object that represents the source stream to upload.
-     * 
+     *
      * @param length
      *            An <code>long</code> that represents the length of the stream data in bytes, or -1 if unknown. The
      *            length must be greater than zero and a
      *            multiple of 512 for page blobs.
-     * 
+     *
      * @throws IOException
      *             If an I/O exception occurred.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
-     * 
+     *
      */
     @DoesServiceRequest
     public abstract void upload(InputStream sourceStream, long length) throws StorageException, IOException;
 
     /**
      * Uploads the source stream data to the blob using the specified lease ID, request options, and operation context.
-     * 
+     *
      * @param sourceStream
      *            An <code>InputStream</code> object that represents the source stream to upload.
      * @param length
@@ -2714,7 +2744,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws IOException
      *             If an I/O exception occurred.
      * @throws StorageException
@@ -2726,7 +2756,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads a blob in a single operation.
-     * 
+     *
      * @param sourceStream
      *            A <code>InputStream</code> object that represents the source stream to upload.
      * @param length
@@ -2787,7 +2817,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, length, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, length, null);
             }
 
             @Override
@@ -2827,7 +2857,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * <p>
      * Use {@link CloudBlob#downloadAttributes} to retrieve the latest values for the blob's properties and metadata
      * from the Microsoft Azure storage service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2842,7 +2872,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * <p>
      * Use {@link CloudBlob#downloadAttributes} to retrieve the latest values for the blob's properties and metadata
      * from the Microsoft Azure storage service.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -2853,7 +2883,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2893,7 +2923,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
             }
 
             @Override
@@ -2917,7 +2947,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * <p>
      * Use {@link CloudBlob#downloadAttributes} to retrieve the latest values for the blob's properties and metadata
      * from the Microsoft Azure storage service.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2931,7 +2961,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * <p>
      * Use {@link CloudBlob#downloadAttributes} to retrieve the latest values for the blob's properties and metadata
      * from the Microsoft Azure storage service.
-     * 
+     *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
@@ -2942,7 +2972,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -2983,7 +3013,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
 
             }
 
@@ -3019,7 +3049,7 @@ public abstract class CloudBlob implements ListBlobItem {
             final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(request.getConnection(),
                     blob.getStorageUri(), blob.snapshotID);
 
-            // Do not update Content-MD5 if it is a range get. 
+            // Do not update Content-MD5 if it is a range get.
             if (isRangeGet) {
                 originalContentMD5 = blob.properties.getContentMD5();
             }
@@ -3050,16 +3080,16 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Retrieves the parent name for a blob URI.
-     * 
+     *
      * @param resourceAddress
      *            A {@link StorageUri} object which represents the resource URI.
      * @param delimiter
      *            A <code>String</code> which specifies the directory delimiter to use.
      * @param usePathStyleUris
      *            A {@link CloudBlobContainer} object which represents the blob container.
-     * 
+     *
      * @return A <code>String</code> which represents the parent address for a blob URI.
-     * 
+     *
      * @throws URISyntaxException
      */
     protected static String getParentNameFromURI(final StorageUri resourceAddress, final String delimiter,

@@ -28,11 +28,6 @@ import com.microsoft.azure.storage.table.TableStorageErrorDeserializer;
 public class StorageException extends Exception {
 
     /**
-     * The Content-Type header for JSON.
-     */
-    private static final String JSON_CONTENT_TYPE = "application/json";
-
-    /**
      * Represents the serialization version number.
      */
     private static final long serialVersionUID = 7972747254288274928L;
@@ -131,7 +126,7 @@ public class StorageException extends Exception {
             final String server = request.getHeaderField("Server");
             if (server != null && server.startsWith("Windows-Azure-Table")) {
                 final String type = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
-                if (JSON_CONTENT_TYPE.equals(type)) {
+                if (type != null && type.startsWith("application/json")) {
                     extendedError = getErrorDetailsFromTableRequest(request, TablePayloadFormat.Json, opContext);
                 }
                 else {
