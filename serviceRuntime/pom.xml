@@ -25,7 +25,7 @@
   <artifactId>azure-serviceruntime</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for service runtime</name>
+  <name>Microsoft Azure SDK for Service Runtime</name>
   <description>This package contains Microsoft Azure SDK for service runtime.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
