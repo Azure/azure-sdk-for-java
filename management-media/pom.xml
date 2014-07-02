@@ -25,8 +25,8 @@
   <artifactId>azure-management-media</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Media Services Management SDK</name>
-  <description>Microsoft Azure Media Services Management SDK</description>
+  <name>Microsoft Azure SDK for Media Services Management</name>
+  <description>This package contains Microsoft Azure SDK for Media Services Management.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
