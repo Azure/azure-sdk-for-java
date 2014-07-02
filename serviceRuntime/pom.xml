@@ -17,12 +17,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>microsoft-azure-parent</artifactId>
+    <artifactId>azure-parent</artifactId>
     <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-serviceruntime</artifactId>
+  <artifactId>azure-serviceruntime</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for service runtime</name>
@@ -57,7 +57,7 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-core</artifactId>
+      <artifactId>azure-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

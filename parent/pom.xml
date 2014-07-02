@@ -18,10 +18,10 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <version>0.6.0</version>
-    <artifactId>microsoft-azure-bom</artifactId>
+    <artifactId>azure-bom</artifactId>
   </parent>
 
-  <artifactId>microsoft-azure-parent</artifactId>
+  <artifactId>azure-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK Parent</name>

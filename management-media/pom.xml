@@ -17,12 +17,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>microsoft-azure-parent</artifactId>
+    <artifactId>azure-parent</artifactId>
     <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-management-media</artifactId>
+  <artifactId>azure-management-media</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Media Services Management SDK</name>
@@ -60,7 +60,7 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-core</artifactId>
+      <artifactId>azure-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -76,13 +76,13 @@
 
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>microsoft-azure-management</artifactId>
+        <artifactId>azure-management</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>microsoft-azure-management-storage</artifactId>
+        <artifactId>azure-management-storage</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
