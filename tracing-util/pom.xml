@@ -18,15 +18,15 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>microsoft-azure-parent</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>microsoft-azure-tracing-util</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Util Logger tracing</name>
-  <description>API for Tracing with util logger in the Microsoft Azure Clients</description>
+  <name>Microsoft Azure SDK tracing logger utility</name>
+  <description>This package contains tracing with util logger in the Microsoft Azure SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -58,7 +58,7 @@
     <dependency> 
       <groupId>${project.groupId}</groupId>
       <artifactId>microsoft-azure-core</artifactId>
-      <version>0.5.0</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

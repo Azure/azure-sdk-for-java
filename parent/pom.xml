@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <artifactId>microsoft-azure-bom</artifactId>
   </parent>
 

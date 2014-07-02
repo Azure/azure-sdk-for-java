@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>microsoft-azure-bom</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK</name>
@@ -38,7 +38,7 @@
   </scm>
 
   <properties>
-    <projectVersion>0.5.0</projectVersion>
+    <projectVersion>0.6.0</projectVersion>
   </properties>
 
   <developers>

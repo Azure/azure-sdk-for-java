@@ -18,15 +18,15 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>microsoft-azure-parent</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>microsoft-azure-serviceruntime</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Service Runtime Client API</name>
-  <description>Microsoft Azure Service Runtime SDK Clients</description>
+  <name>Microsoft Azure SDK for service runtime</name>
+  <description>This package contains Microsoft Azure SDK for service runtime.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -58,7 +58,7 @@
     <dependency> 
       <groupId>${project.groupId}</groupId>
       <artifactId>microsoft-azure-core</artifactId>
-      <version>0.5.0</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
