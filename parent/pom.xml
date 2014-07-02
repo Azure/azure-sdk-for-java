@@ -16,16 +16,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <version>0.5.0</version>
-    <artifactId>microsoft-azure-api-bom</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <version>0.6.0</version>
+    <artifactId>azure-bom</artifactId>
   </parent>
 
-  <artifactId>microsoft-azure-api-parent</artifactId>
+  <artifactId>azure-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>Microsoft Azure Client API Parent</name>
-  <description>API for Microsoft Azure Clients</description>
+  <name>Microsoft Azure SDK Parent</name>
+  <description>This package contains the parent module of Microsoft Azure SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -298,7 +298,6 @@
     <module>../management-sql</module>
     <module>../management-storage</module>
     <module>../management-network</module>
-    <module>../management-resources</module>
     <module>../management-websites</module>
     <module>../media</module>
     <module>../serviceBus</module>

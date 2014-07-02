@@ -16,17 +16,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
-    <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-parent</artifactId>
+    <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-network</artifactId>
+  <artifactId>azure-management-network</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Network Management Client API</name>
-  <description>Microsoft Azure Network Management SDK Clients</description>
+  <name>Microsoft Azure SDK for Network Management.</name>
+  <description>This package contains Microsoft Azure SDK for Network Management module.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -60,8 +60,8 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
