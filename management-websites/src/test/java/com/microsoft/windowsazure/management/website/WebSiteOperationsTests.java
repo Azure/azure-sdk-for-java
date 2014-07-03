@@ -164,9 +164,13 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteGetResponse webSiteGetResponse = webSiteManagementClient.getWebSitesOperations().get(webSpaceName, websiteName, webSiteGetParameters);
         Assert.assertEquals(200, webSiteGetResponse.getStatusCode());
         
+        
+        ArrayList<String> hostNamesValue = new ArrayList<String>();
+        hostNamesValue.add(websiteName+hostName);
         WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters(); 
         updateParameters.setAvailabilityState(WebSpaceAvailabilityState.Limited);
         updateParameters.setSiteMode(WebSiteMode.Limited);
+        updateParameters.setHostNames(hostNamesValue);
 
         OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);	        
         //Assert
