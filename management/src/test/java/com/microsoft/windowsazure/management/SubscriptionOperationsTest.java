@@ -43,7 +43,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	        Assert.assertNotNull(subscriptionGetResponse.getAccountAdminLiveEmailId()); 
 	        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionID()); 
 	        
-	        Assert.assertEquals("Azure SDK sandbox", subscriptionGetResponse.getSubscriptionName()); 	       
+	        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionName()); 	       
 	        Assert.assertEquals(10, subscriptionGetResponse.getMaximumVirtualNetworkSites()); 
 	        Assert.assertEquals(10, subscriptionGetResponse.getMaximumLocalNetworkSites()); 
 	        Assert.assertEquals(9, subscriptionGetResponse.getMaximumDnsServers()); 
