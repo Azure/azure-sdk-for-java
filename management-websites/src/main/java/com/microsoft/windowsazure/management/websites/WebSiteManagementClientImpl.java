@@ -216,7 +216,6 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**

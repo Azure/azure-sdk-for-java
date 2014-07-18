@@ -241,7 +241,6 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**
