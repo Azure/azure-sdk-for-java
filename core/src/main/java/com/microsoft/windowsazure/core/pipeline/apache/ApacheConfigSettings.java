@@ -16,10 +16,12 @@
 package com.microsoft.windowsazure.core.pipeline.apache;
 
 import java.util.Map;
+
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 public class ApacheConfigSettings {
@@ -77,6 +79,14 @@ public class ApacheConfigSettings {
             return (HttpClientBuilder) properties
                     .get(profile
                             + ApacheConfigurationProperties.PROPERTY_HTTP_CLIENT_BUILDER);
+        }
+        
+        if (properties.containsKey(profile
+        		+ ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY)) {
+            httpClientBuilder
+            .setRedirectStrategy((DefaultRedirectStrategy) properties
+                    .get(profile
+                            + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY));
         }
 
         return httpClientBuilder;

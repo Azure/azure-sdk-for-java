@@ -188,7 +188,6 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**

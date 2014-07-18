@@ -47,7 +47,7 @@ public class Exports implements Builder.Exports {
                 if (properties
                         .containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS)) {
                     CloudCredentials cloudCredentials = (CloudCredentials) properties
-                            .get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
+							.get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
                     cloudCredentials.applyConfig(profile, properties);
                 }
 
@@ -64,6 +64,7 @@ public class Exports implements Builder.Exports {
                 HttpClientBuilder httpClientBuilder = HttpClients.custom();
                 ApacheConfigSettings settings = builder.build(profile, service,
                         ApacheConfigSettings.class, properties);
+
                 return settings.applyConfig(httpClientBuilder);
             }
         });

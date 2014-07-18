@@ -188,7 +188,6 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**

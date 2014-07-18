@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
@@ -21,6 +22,8 @@ import com.microsoft.windowsazure.Configuration;
 
 import java.io.IOException;
 import java.net.URI;
+
+import org.apache.http.impl.client.LaxRedirectStrategy;
 
 /**
  * Provides functionality to create a service management configuration.
@@ -201,6 +204,9 @@ public final class ManagementConfiguration {
                         new KeyStoreCredential(keyStoreLocation,
                                 keyStorePassword)));
 
+        configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
+                new LaxRedirectStrategy());
+        
         return configuration;
     }
 
@@ -245,6 +251,9 @@ public final class ManagementConfiguration {
                 subscriptionId, keyStoreCredential);
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
                 cloudCredentials);
+        
+        configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
+                new LaxRedirectStrategy());
 
         return configuration;
     }
