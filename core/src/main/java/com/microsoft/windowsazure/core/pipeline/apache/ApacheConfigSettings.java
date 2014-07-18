@@ -87,6 +87,12 @@ public class ApacheConfigSettings {
             .setRedirectStrategy((DefaultRedirectStrategy) properties
                     .get(profile
                             + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY));
+            
+            // Currently the redirect strategy, due to what seems to be a bug,
+            // fails for post requests since it tries do double
+            // add the content-length header. This workaround makes sure this header is always
+            // removed before it is actually processed by apache
+            httpClientBuilder.addInterceptorFirst(new HttpHeaderRemovalFilter());
         }
 
         return httpClientBuilder;

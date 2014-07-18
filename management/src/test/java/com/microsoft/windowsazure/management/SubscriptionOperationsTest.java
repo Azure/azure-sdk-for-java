@@ -44,10 +44,10 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionID()); 
 	        
 	        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionName()); 	       
-	        Assert.assertEquals(10, subscriptionGetResponse.getMaximumVirtualNetworkSites()); 
-	        Assert.assertEquals(10, subscriptionGetResponse.getMaximumLocalNetworkSites()); 
-	        Assert.assertEquals(9, subscriptionGetResponse.getMaximumDnsServers()); 
-	        Assert.assertEquals(20, subscriptionGetResponse.getMaximumStorageAccounts()); 
+	        Assert.assertTrue(subscriptionGetResponse.getMaximumVirtualNetworkSites() > 0); 
+	        Assert.assertTrue(subscriptionGetResponse.getMaximumLocalNetworkSites() > 0); 
+	        Assert.assertTrue(subscriptionGetResponse.getMaximumDnsServers() > 0); 
+	        Assert.assertTrue(subscriptionGetResponse.getMaximumStorageAccounts() > 0); 
 	    }
 	    
 	    @Test
