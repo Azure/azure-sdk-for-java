@@ -16,13 +16,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
-    <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-parent</artifactId>
+    <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-core-test</artifactId>
+  <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Core Test Client API</name>
@@ -57,28 +57,28 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management-websites</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management-websites</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management-storage</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management-storage</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management-sql</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management-sql</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>

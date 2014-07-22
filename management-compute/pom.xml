@@ -16,17 +16,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
-    <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-parent</artifactId>
+    <version>0.6.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-compute</artifactId>
+  <artifactId>azure-management-compute</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Compute Management Client API</name>
-  <description>Microsoft Azure Compute Management SDK Clients</description>
+  <name>Microsoft Azure SDK for Compute Management</name>
+  <description>This package contains Microsoft Azure Compute Management SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -60,8 +60,8 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -75,8 +75,8 @@
     <!-- Test dependencies -->
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management-storage</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management-storage</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -87,8 +87,8 @@
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
