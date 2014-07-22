@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.util.TestRequestFilter;
 import com.microsoft.windowsazure.management.util.TestResponseFilter;
@@ -230,6 +231,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
     public void getUri() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
+        config.setProperty(ManagementConfiguration.URI, null);
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();

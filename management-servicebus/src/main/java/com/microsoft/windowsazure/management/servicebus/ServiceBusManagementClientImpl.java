@@ -21,7 +21,7 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network;
+package com.microsoft.windowsazure.management.servicebus;
 
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -31,7 +31,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.network.models.LocalNetworkConnectionType;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusLocation;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusRegionsResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,12 +56,12 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for managing the virtual
-* networks for your subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
+* The Service Bus Management API is a REST API for managing Service Bus queues,
+* topics, rules and subscriptions.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/hh780776.aspx for more
 * information)
 */
-public class NetworkManagementClientImpl extends ServiceClient<NetworkManagementClient> implements NetworkManagementClient {
+public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusManagementClient> implements ServiceBusManagementClient {
     private String apiVersion;
     
     /**
@@ -131,87 +132,81 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
-    private ClientRootCertificateOperations clientRootCertificates;
+    private NamespaceOperations namespaces;
     
     /**
-    * The Network Management API includes operations for managing the client
-    * root certificates for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
-    * more information)
-    * @return The ClientRootCertificatesOperations value.
+    * The Service Bus Management API includes operations for managing Service
+    * Bus namespaces.
+    * @return The NamespacesOperations value.
     */
-    public ClientRootCertificateOperations getClientRootCertificatesOperations() {
-        return this.clientRootCertificates;
+    public NamespaceOperations getNamespacesOperations() {
+        return this.namespaces;
     }
     
-    private GatewayOperations gateways;
+    private NotificationHubOperations notificationHubs;
     
     /**
-    * The Network Management API includes operations for managing the gateways
-    * for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
-    * more information)
-    * @return The GatewaysOperations value.
+    * The Service Bus Management API includes operations for managing Service
+    * Bus notification hubs.
+    * @return The NotificationHubsOperations value.
     */
-    public GatewayOperations getGatewaysOperations() {
-        return this.gateways;
+    public NotificationHubOperations getNotificationHubsOperations() {
+        return this.notificationHubs;
     }
     
-    private NetworkOperations networks;
+    private QueueOperations queues;
     
     /**
-    * The Network Management API includes operations for managing the virtual
-    * networks for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for
-    * more information)
-    * @return The NetworksOperations value.
+    * The Service Bus Management API includes operations for managing Service
+    * Bus queues.
+    * @return The QueuesOperations value.
     */
-    public NetworkOperations getNetworksOperations() {
-        return this.networks;
+    public QueueOperations getQueuesOperations() {
+        return this.queues;
     }
     
-    private ReservedIPOperations reservedIPs;
+    private RelayOperations relays;
     
     /**
-    * The Network Management API includes operations for managing the reserved
-    * IPs for your subscription.
-    * @return The ReservedIPsOperations value.
+    * The Service Bus Management API includes operations for managing Service
+    * Bus relays.
+    * @return The RelaysOperations value.
     */
-    public ReservedIPOperations getReservedIPsOperations() {
-        return this.reservedIPs;
+    public RelayOperations getRelaysOperations() {
+        return this.relays;
     }
     
-    private StaticIPOperations staticIPs;
+    private TopicOperations topics;
     
     /**
-    * The Network Management API includes operations for managing the static
-    * IPs for your subscription.
-    * @return The StaticIPsOperations value.
+    * The Service Bus Management API includes operations for managing Service
+    * Bus topics for a namespace.
+    * @return The TopicsOperations value.
     */
-    public StaticIPOperations getStaticIPsOperations() {
-        return this.staticIPs;
+    public TopicOperations getTopicsOperations() {
+        return this.topics;
     }
     
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
+    * Initializes a new instance of the ServiceBusManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    private ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
-        this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
-        this.gateways = new GatewayOperationsImpl(this);
-        this.networks = new NetworkOperationsImpl(this);
-        this.reservedIPs = new ReservedIPOperationsImpl(this);
-        this.staticIPs = new StaticIPOperationsImpl(this);
-        this.apiVersion = "2014-05-01";
+        this.namespaces = new NamespaceOperationsImpl(this);
+        this.notificationHubs = new NotificationHubOperationsImpl(this);
+        this.queues = new QueueOperationsImpl(this);
+        this.relays = new RelayOperationsImpl(this);
+        this.topics = new TopicOperationsImpl(this);
+        this.apiVersion = "2013-08-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
+    * Initializes a new instance of the ServiceBusManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
@@ -222,7 +217,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * service requests.
     */
     @Inject
-    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -242,7 +237,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
+    * Initializes a new instance of the ServiceBusManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
@@ -252,7 +247,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
-    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials) throws URISyntaxException {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials) throws URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -262,7 +257,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
+    * Initializes a new instance of the ServiceBusManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
@@ -277,7 +272,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
     * timeout for Long Running Operations.
     */
-    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
         this(httpBuilder, executorService);
         this.credentials = credentials;
         this.baseUri = baseUri;
@@ -287,17 +282,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
+    * Initializes a new instance of the ServiceBusManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected NetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    protected ServiceBusManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+        return new ServiceBusManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
     }
     
     /**
-    * The Get Operation Status operation returns the status of the specified
+    * The Get Operation Status operation returns the status of thespecified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -312,7 +307,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request. If the asynchronous
+    * HTTP status code for the successful request.  If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -328,7 +323,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of the specified
+    * The Get Operation Status operation returns the status of thespecified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
     * failed, or is still in progress.  (see
@@ -351,7 +346,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request. If the asynchronous
+    * HTTP status code for the successful request.  If the asynchronous
     * operation failed, the response body includes the HTTP status code for
     * the failed request, and also includes error information regarding the
     * failure.
@@ -384,12 +379,13 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -481,34 +477,146 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     }
     
     /**
-    * Parse enum values for type LocalNetworkConnectionType.
+    * Retrieves the list of regions that support the creation and management of
+    * Service Bus service namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
+    * more information)
     *
-    * @param value The value to parse.
-    * @return The enum value.
+    * @return A response to a request for a list of regions.
     */
-     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
-        if ("IPsec".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.IPSecurity;
-        }
-        if ("Dedicated".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.Dedicated;
-        }
-        throw new IllegalArgumentException("value");
+    @Override
+    public Future<ServiceBusRegionsResponse> getServiceBusRegionsAsync() {
+        return this.getExecutorService().submit(new Callable<ServiceBusRegionsResponse>() { 
+            @Override
+            public ServiceBusRegionsResponse call() throws Exception {
+                return getServiceBusRegions();
+            }
+         });
     }
     
     /**
-    * Convert an enum of type LocalNetworkConnectionType to a string.
+    * Retrieves the list of regions that support the creation and management of
+    * Service Bus service namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
+    * more information)
     *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A response to a request for a list of regions.
     */
-     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
-        if (value == LocalNetworkConnectionType.IPSecurity) {
-            return "IPsec";
+    @Override
+    public ServiceBusRegionsResponse getServiceBusRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            CloudTracing.enter(invocationId, this, "getServiceBusRegionsAsync", tracingParameters);
         }
-        if (value == LocalNetworkConnectionType.Dedicated) {
-            return "Dedicated";
+        
+        // Construct URL
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services/servicebus/regions";
+        String baseUrl = this.getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
         }
-        throw new IllegalArgumentException("value");
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Accept", "application/atom+xml");
+        httpRequest.setHeader("Content-Type", "application/atom+xml");
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceBusRegionsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceBusRegionsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+            
+            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
+            if (feedElement != null) {
+                if (feedElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
+                        ServiceBusLocation entryInstance = new ServiceBusLocation();
+                        result.getRegions().add(entryInstance);
+                        
+                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
+                        if (contentElement != null) {
+                            Element regionCodeDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
+                            if (regionCodeDescriptionElement != null) {
+                                Element codeElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
+                                if (codeElement != null) {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    entryInstance.setCode(codeInstance);
+                                }
+                                
+                                Element fullNameElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
+                                if (fullNameElement != null) {
+                                    String fullNameInstance;
+                                    fullNameInstance = fullNameElement.getTextContent();
+                                    entryInstance.setFullName(fullNameInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
 }
