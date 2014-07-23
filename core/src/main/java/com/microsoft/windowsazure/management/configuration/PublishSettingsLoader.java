@@ -106,7 +106,10 @@ public abstract class PublishSettingsLoader {
         String outputKeyStore = System.getProperty("user.home") + File.separator
                 + ".azure" + File.separator + subscriptionId + ".out";
         URI managementUrl = createCertficateFromPublishSettingsFile(publishSettingsFile, subscriptionId, outputKeyStore);
-        return ManagementConfiguration.configure(managementUrl, subscriptionId, outputKeyStore, "",
+        
+        // create new configuration object
+        Configuration configuration = Configuration.load();
+        return ManagementConfiguration.configure(null, configuration, managementUrl, subscriptionId, outputKeyStore, "",
                 KeyStoreType.pkcs12);
     }
 
