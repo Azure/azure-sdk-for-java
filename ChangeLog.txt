@@ -1,3 +1,8 @@
+2014.08.01 Version 1.2.0
+ * Added the NameValidator class which contains helpers that check to see if resource names are valid.
+ * Fixed a bug where the RequestUrl of a LogRecord was not correctly HTML4 decoded. Added a dependency on Apache Commons Lang3.  
+ * Made FileRange class and ListFilesAndDirectories method in the CloudFileDirectory class public. 
+
 2014.07.01 Version 1.1.0
  * Changed the maven group id and artifact id. The new group id is com.microsoft.azure and the new artifact id is azure-storage.
  * Added File Service support. The File Service and the associated SDK APIs are in preview. 

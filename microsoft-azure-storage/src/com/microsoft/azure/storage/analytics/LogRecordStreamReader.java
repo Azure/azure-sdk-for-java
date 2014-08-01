@@ -25,6 +25,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 
@@ -253,7 +255,7 @@ class LogRecordStreamReader extends InputStreamReader {
             return null;
         }
         else {
-            return new URI(temp);
+            return new URI(StringEscapeUtils.unescapeHtml4(temp));
         }
     }
 

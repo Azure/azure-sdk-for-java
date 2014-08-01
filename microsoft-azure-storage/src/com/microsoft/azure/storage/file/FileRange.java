@@ -15,9 +15,9 @@
 package com.microsoft.azure.storage.file;
 
 /**
- * RESERVED FOR INTERNAL USE. Represents a range of bytes in a file.
+ * Represents a range of bytes in a file.
  */
-final class FileRange {
+public final class FileRange {
     /**
      * Represents the ending offset of the file range.
      */

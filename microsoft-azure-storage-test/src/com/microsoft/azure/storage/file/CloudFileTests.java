@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -65,6 +66,42 @@ public class CloudFileTests {
         this.share.deleteIfExists();
     }
 
+    /**
+     * Test file name validation.
+     */
+    @Test
+    public void CloudFileNameValidation()
+    {
+        NameValidator.validateFileName("alpha");
+        NameValidator.validateFileName("4lphanum3r1c");
+        NameValidator.validateFileName("middle-dash");
+        NameValidator.validateFileName("CAPS");
+        NameValidator.validateFileName("$root");
+
+        invalidFileTestHelper(null, "No null.", "Invalid file name. The name may not be null, empty, or whitespace only.");
+        invalidFileTestHelper("..", "Reserved.", "Invalid file name. This name is reserved.");
+        invalidFileTestHelper("Clock$", "Reserved.", "Invalid file name. This name is reserved.");
+        invalidFileTestHelper("endslash/", "No slashes.", "Invalid file name. Check MSDN for more information about valid naming.");
+        invalidFileTestHelper("middle/slash", "No slashes.", "Invalid file name. Check MSDN for more information about valid naming.");
+        invalidFileTestHelper("illegal\"char", "Illegal characters.", "Invalid file name. Check MSDN for more information about valid naming.");
+        invalidFileTestHelper("illegal:char?", "Illegal characters.", "Invalid file name. Check MSDN for more information about valid naming.");
+        invalidFileTestHelper("", "Between 1 and 255 characters.", "Invalid file name. The name may not be null, empty, or whitespace only.");
+        invalidFileTestHelper(new String(new char[256]).replace("\0", "n"), "Between 1 and 255 characters.", "Invalid file name length. The name must be between 1 and 255 characters long.");
+    }
+    
+    private void invalidFileTestHelper(String fileName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateFileName(fileName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
+    }
+    
     /**
      * Test file creation and deletion.
      * 

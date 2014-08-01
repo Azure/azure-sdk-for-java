@@ -45,6 +45,7 @@ import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -75,6 +76,38 @@ public class CloudBlockBlobTests {
     @After
     public void blockBlobTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
+    }
+
+    /**
+     * Test blob name validation.
+     */
+    @Test
+    public void testCloudBlobNameValidation()
+    {
+        NameValidator.validateBlobName("alpha");
+        NameValidator.validateBlobName("4lphanum3r1c");
+        NameValidator.validateBlobName("CAPSLOCK");
+        NameValidator.validateBlobName("white space");
+        NameValidator.validateBlobName("ºth3r(h@racter$");
+        NameValidator.validateBlobName(new String(new char[253]).replace("\0", "a/a"));
+        
+        invalidBlobTestHelper("", "No empty strings.", "Invalid blob name. The name may not be null, empty, or whitespace only.");
+        invalidBlobTestHelper(null, "No null strings.", "Invalid blob name. The name may not be null, empty, or whitespace only.");
+        invalidBlobTestHelper(new String(new char[1025]).replace("\0", "n"), "Maximum 1024 characters.", "Invalid blob name length. The name must be between 1 and 1024 characters long.");
+        invalidBlobTestHelper(new String(new char[254]).replace("\0", "a/a"), "Maximum 254 path segments.", "The count of URL path segments (strings between '/' characters) as part of the blob name cannot exceed 254.");
+    }
+
+    private void invalidBlobTestHelper(String blobName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateBlobName(blobName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
     }
 
     @Test

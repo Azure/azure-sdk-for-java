@@ -23,6 +23,7 @@ public class SR {
     public static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
     public static final String ARGUMENT_OUT_OF_RANGE_ERROR = "The argument is out of range. Argument name: %s, Value passed: %s.";
     public static final String ATTEMPTED_TO_SERIALIZE_INACCESSIBLE_PROPERTY = "An attempt was made to access an inaccessible member of the entity during serialization.";
+    public static final String BLOB = "blob";
     public static final String BLOB_DATA_CORRUPTED = "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s";
     public static final String BLOB_ENDPOINT_NOT_CONFIGURED = "No blob endpoint configured.";
     public static final String BLOB_HASH_MISMATCH = "Blob hash mismatch (integrity check failed), Expected value is %s, retrieved %s.";
@@ -31,12 +32,14 @@ public class SR {
     public static final String CANNOT_CREATE_SAS_FOR_GIVEN_CREDENTIALS = "Cannot create Shared Access Signature as the credentials does not have account name information. Please check that the credentials provided support creating Shared Access Signature.";
     public static final String CANNOT_CREATE_SAS_FOR_SNAPSHOTS = "Cannot create Shared Access Signature via references to blob snapshots. Please perform the given operation on the root blob instead.";
     public static final String CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY = "Cannot create Shared Access Signature unless the Account Key credentials are used by the ServiceClient.";
+    public static final String CONTAINER = "container";
     public static final String CONTENT_LENGTH_MISMATCH = "An incorrect number of bytes was read from the connection. The connection may have been closed.";
     public static final String CREATING_NETWORK_STREAM = "Creating a NetworkInputStream and expecting to read %s bytes.";
     public static final String CREDENTIALS_CANNOT_SIGN_REQUEST = "CloudBlobClient, CloudQueueClient and CloudTableClient require credentials that can sign a request.";
     public static final String CUSTOM_RESOLVER_THREW = "The custom property resolver delegate threw an exception. Check the inner exception for more details.";
     public static final String DEFAULT_SERVICE_VERSION_ONLY_SET_FOR_BLOB_SERVICE = "DefaultServiceVersion can only be set for the Blob service.";
     public static final String DELETE_SNAPSHOT_NOT_VALID_ERROR = "The option '%s' must be 'None' to delete a specific snapshot specified by '%s'.";
+    public static final String DIRECTORY = "directory";
     public static final String EDMTYPE_WAS_NULL = "EdmType cannot be null.";
     public static final String ENUMERATION_ERROR = "An error occurred while enumerating the result, check the original exception for details.";
     public static final String EMPTY_BATCH_NOT_ALLOWED = "Cannot execute an empty batch operation.";
@@ -54,6 +57,7 @@ public class SR {
     public static final String EXPECTED_START_ELEMENT_TO_EQUAL_ERROR = "Expected START_ELEMENT to equal error.";
     public static final String EXPECTED_START_OBJECT = "Expected the start of a JSON Object.";
     public static final String FAILED_TO_PARSE_PROPERTY = "Failed to parse property '%s' with value '%s' as type '%s'";
+    public static final String FILE = "file";
     public static final String FILE_ENDPOINT_NOT_CONFIGURED = "No file endpoint configured.";
     public static final String FILE_HASH_MISMATCH = "File hash mismatch (integrity check failed), Expected value is %s, retrieved %s.";
     public static final String FILE_MD5_NOT_POSSIBLE = "MD5 cannot be calculated for an existing file because it would require reading the existing data. Please disable StoreFileContentMD5.";
@@ -84,6 +88,9 @@ public class SR {
     public static final String INVALID_PAGE_BLOB_LENGTH = "Page blob length must be multiple of 512.";
     public static final String INVALID_PAGE_START_OFFSET = "Page start offset must be multiple of 512.";
     public static final String INVALID_RANGE_CONTENT_MD5_HEADER = "Cannot specify x-ms-range-get-content-md5 header on ranges larger than 4 MB. Either use a BlobReadStream via openRead, or disable TransactionalMD5 via the BlobRequestOptions.";
+    public static final String INVALID_RESOURCE_NAME = "Invalid %s name. Check MSDN for more information about valid naming.";
+    public static final String INVALID_RESOURCE_NAME_LENGTH = "Invalid %s name length. The name must be between %s and %s characters long.";
+    public static final String INVALID_RESOURCE_RESERVED_NAME = "Invalid %s name. This name is reserved.";
     public static final String INVALID_RESPONSE_RECEIVED = "The response received is invalid or improperly formatted.";
     public static final String INVALID_STORAGE_PROTOCOL_VERSION = "Storage protocol version prior to 2009-09-19 do not support shared key authentication.";
     public static final String INVALID_STORAGE_SERVICE = "Invalid storage service specified.";
@@ -117,8 +124,10 @@ public class SR {
     public static final String PROPERTY_CANNOT_BE_SERIALIZED_AS_GIVEN_EDMTYPE = "Property %s with Edm Type %s cannot be de-serialized.";
     public static final String QUERY_PARAMETER_NULL_OR_EMPTY = "Cannot encode a query parameter with a null or empty key.";
     public static final String QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER = "Query requires a valid class type or resolver.";
+    public static final String QUEUE = "queue";
     public static final String QUEUE_ENDPOINT_NOT_CONFIGURED = "No queue endpoint configured.";
     public static final String RELATIVE_ADDRESS_NOT_PERMITTED = "Address %s is a relative address. Only absolute addresses are permitted.";
+    public static final String RESOURCE_NAME_EMPTY = "Invalid %s name. The name may not be null, empty, or whitespace only.";
     public static final String RESPONSE_RECEIVED_IS_INVALID = "The response received is invalid or improperly formatted.";
     public static final String RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH = "A batch transaction with a retrieve operation cannot contain any other operations.";
     public static final String ROWKEY_MISSING_FOR_DELETE = "Delete requires a row key.";
@@ -127,6 +136,7 @@ public class SR {
     public static final String ROWKEY_MISSING_FOR_INSERT = "Insert requires a row key.";
     public static final String SCHEME_NULL_OR_EMPTY = "The protocol to use is null. Please specify whether to use http or https.";
     public static final String SECONDARY_ONLY_COMMAND = "This operation can only be executed against the secondary storage location.";
+    public static final String SHARE = "share";
     public static final String SNAPSHOT_LISTING_ERROR = "Listing snapshots is only supported in flat mode (no delimiter). Consider setting useFlatBlobListing to true.";
     public static final String SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED = "Snapshot query parameter is already defined in the blob URI. Either pass in a snapshotTime parameter or use a full URL with a snapshot query parameter.";
     public static final String STORAGE_QUEUE_CREDENTIALS_NULL = "StorageCredentials cannot be null for the Queue service.";
@@ -141,9 +151,11 @@ public class SR {
     public static final String STREAM_LENGTH_GREATER_THAN_4MB = "Invalid stream length, length must be less than or equal to 4 MB in size.";
     public static final String STREAM_LENGTH_NEGATIVE = "Invalid stream length, specify -1 for unknown length stream, or a positive number of bytes.";
     public static final String STRING_NOT_VALID = "The String is not a valid Base64-encoded string.";
+    public static final String TABLE = "table";
     public static final String TABLE_ENDPOINT_NOT_CONFIGURED = "No table endpoint configured.";
     public static final String TABLE_OBJECT_RELATIVE_URIS_NOT_SUPPORTED = "Table Object relative URIs not supported.";
     public static final String TAKE_COUNT_ZERO_OR_NEGATIVE = "Take count must be positive and greater than 0.";
+    public static final String TOO_MANY_PATH_SEGMENTS = "The count of URL path segments (strings between '/' characters) as part of the blob name cannot exceed 254.";
     public static final String TOO_MANY_SHARED_ACCESS_POLICY_IDENTIFIERS = "Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container, queue, or table.";
     public static final String TOO_MANY_SHARED_ACCESS_POLICY_IDS = "Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container.";
     public static final String TYPE_NOT_SUPPORTED = "Type %s is not supported.";

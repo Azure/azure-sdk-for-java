@@ -220,7 +220,7 @@ public class CloudAnalyticsClientTests {
     @Test
     public void testCloudAnalyticsClientParseExLogs() throws ParseException, URISyntaxException, StorageException,
             IOException {
-        String logText = "1.0;2011-08-09T18:52:40.9241789Z;GetBlob;AnonymousSuccess;200;18;10;anonymous;;myaccount;blob;\"https://myaccount.blob.core.windows.net/thumbnails/lake.jpg?timeout=30000\";\"/myaccount/thumbnails/lake.jpg\";a84aa705-8a85-48c5-b064-b43bd22979c3;0;123.100.2.10;2009-09-19;252;0;265;100;0;;;\"0x8CE1B6EA95033D5\";Tuesday, 09-Aug-11 18:52:40 GMT;;;;\"8/9/2011 6:52:40 PM ba98eb12-700b-4d53-9230-33a3330571fc\""
+        String logText = "1.0;2011-08-09T18:52:40.9241789Z;GetBlob;AnonymousSuccess;200;18;10;anonymous;;myaccount;blob;\"https://myaccount.blob.core.windows.net/thumb&amp;nails/lake.jpg?timeout=30000\";\"/myaccount/thumbnails/lake.jpg\";a84aa705-8a85-48c5-b064-b43bd22979c3;0;123.100.2.10;2009-09-19;252;0;265;100;0;;;\"0x8CE1B6EA95033D5\";Tuesday, 09-Aug-11 18:52:40 GMT;;;;\"8/9/2011 6:52:40 PM ba98eb12-700b-4d53-9230-33a3330571fc\""
                 + '\n'
                 + "1.0;2011-08-09T18:02:40.6271789Z;PutBlob;Success;201;28;21;authenticated;myaccount;myaccount;blob;\"https://myaccount.blob.core.windows.net/thumbnails/lake.jpg?timeout=30000\";\"/myaccount/thumbnails/lake.jpg\";fb658ee6-6123-41f5-81e2-4bfdc178fea3;0;201.9.10.20;2009-09-19;438;100;223;0;100;;\"66CbMXKirxDeTr82SXBKbg==\";\"0x8CE1B67AD25AA05\";Tuesday, 09-Aug-11 18:02:40 GMT;;;;\"8/9/2011 6:02:40 PM ab970a57-4a49-45c4-baa9-20b687941e32\""
                 + '\n';
@@ -247,7 +247,7 @@ public class CloudAnalyticsClientTests {
         expectedItemOne.setOwnerAccountName("myaccount");
         expectedItemOne.setServiceType("blob");
         expectedItemOne.setRequestUrl(new URI(
-                "https://myaccount.blob.core.windows.net/thumbnails/lake.jpg?timeout=30000"));
+                "https://myaccount.blob.core.windows.net/thumb&nails/lake.jpg?timeout=30000"));
         expectedItemOne.setRequestedObjectKey("/myaccount/thumbnails/lake.jpg");
         expectedItemOne.setRequestIdHeader(UUID.fromString("a84aa705-8a85-48c5-b064-b43bd22979c3"));
         expectedItemOne.setOperationCount(0);
