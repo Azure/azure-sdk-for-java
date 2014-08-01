@@ -34,6 +34,7 @@ import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.LocationMode;
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -51,7 +52,45 @@ import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableTests {
+	
+	/**
+	 * Tests name validation of tables. 
+	 */
+	@Test
+    public void testCloudTableNameValidation()
+    {
+        NameValidator.validateTableName("alpha");
+        NameValidator.validateTableName("alphanum3r1c");
+        NameValidator.validateTableName("CapsLock");
+        NameValidator.validateTableName("$MetricsTransactionsBlob");
+        NameValidator.validateTableName("$MetricsHourPrimaryTransactionsTable");
+        NameValidator.validateTableName("$MetricsMinuteSecondaryTransactionsQueue");
+        NameValidator.validateTableName("tables");
+        NameValidator.validateTableName("$MetricsCapacityBlob");
 
+        invalidTableTestHelper(null, "Null not allowed.", "Invalid table name. The name may not be null, empty, or whitespace only.");
+        invalidTableTestHelper("1numberstart", "Must start with a letter.", "Invalid table name. Check MSDN for more information about valid naming.");
+        invalidTableTestHelper("middle-dash", "Alphanumeric only.", "Invalid table name. Check MSDN for more information about valid naming.");
+        invalidTableTestHelper("illegal$char", "Alphanumeric only.", "Invalid table name. Check MSDN for more information about valid naming.");
+        invalidTableTestHelper("illegal!char", "Alphanumeric only.", "Invalid table name. Check MSDN for more information about valid naming.");
+        invalidTableTestHelper("white space", "Alphanumeric only.", "Invalid table name. Check MSDN for more information about valid naming.");
+        invalidTableTestHelper("cc", "Between 3 and 63 characters.", "Invalid table name length. The name must be between 3 and 63 characters long.");
+        invalidTableTestHelper(new String(new char[64]).replace("\0", "n"), "Between 3 and 63 characters.", "Invalid table name length. The name must be between 3 and 63 characters long.");
+    }
+
+    private void invalidTableTestHelper(String tableName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateTableName(tableName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
+    }
+    
     @Test
     public void testIsUsePathStyleUri() throws InvalidKeyException, URISyntaxException, StorageException {
         // normal account

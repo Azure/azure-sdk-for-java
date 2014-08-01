@@ -37,6 +37,7 @@ import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.AuthenticationScheme;
 import com.microsoft.azure.storage.LocationMode;
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -70,6 +71,40 @@ public class CloudQueueTests {
         this.queue.deleteIfExists();
     }
 
+    /**
+     * Tests queue name validation.
+     */
+    @Test
+    public void testCloudQueueNameValidation()
+    {
+        NameValidator.validateQueueName("alpha");
+        NameValidator.validateQueueName("4lphanum3r1c");
+        NameValidator.validateQueueName("middle-dash");
+
+        invalidQueueTestHelper(null, "Null not allowed.", "Invalid queue name. The name may not be null, empty, or whitespace only.");
+        invalidQueueTestHelper("$root", "Alphanumeric or dashes only.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("double--dash", "No double dash.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("CapsLock", "Lowercase only.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("illegal$char", "Alphanumeric or dashes only.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("illegal!char", "Alphanumeric or dashes only.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("white space", "Alphanumeric or dashes only.", "Invalid queue name. Check MSDN for more information about valid naming.");
+        invalidQueueTestHelper("2c", "Between 3 and 63 characters.", "Invalid queue name length. The name must be between 3 and 63 characters long.");
+        invalidQueueTestHelper(new String(new char[64]).replace("\0", "n"), "Between 3 and 63 characters.", "Invalid queue name length. The name must be between 3 and 63 characters long.");
+    }
+
+    private void invalidQueueTestHelper(String queueName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateQueueName(queueName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
+    }
+    
     /**
      * Get permissions from string
      */

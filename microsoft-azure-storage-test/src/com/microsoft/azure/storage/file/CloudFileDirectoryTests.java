@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SendingRequestEvent;
@@ -55,6 +56,42 @@ public class CloudFileDirectoryTests {
     @After
     public void fileTestMethodTearDown() throws StorageException {
         this.share.deleteIfExists();
+    }
+    
+    /**
+     * Test directory name validation.
+     */
+    @Test
+    public void testCloudFileDirectoryNameValidation()
+    {
+        NameValidator.validateDirectoryName("alpha");
+        NameValidator.validateDirectoryName("4lphanum3r1c");
+        NameValidator.validateDirectoryName("middle-dash");
+        NameValidator.validateDirectoryName("CAPS");
+        NameValidator.validateDirectoryName("$root");
+        NameValidator.validateDirectoryName("..");
+        NameValidator.validateDirectoryName("CLOCK$");
+        NameValidator.validateDirectoryName("endslash/");
+
+        invalidDirectoryTestHelper(null, "No null.", "Invalid directory name. The name may not be null, empty, or whitespace only.");
+        invalidDirectoryTestHelper("middle/slash", "Slashes only at the end.", "Invalid directory name. Check MSDN for more information about valid naming.");
+        invalidDirectoryTestHelper("illegal\"char", "Illegal character.", "Invalid directory name. Check MSDN for more information about valid naming.");
+        invalidDirectoryTestHelper("illegal:char?", "Illegal character.", "Invalid directory name. Check MSDN for more information about valid naming.");
+        invalidDirectoryTestHelper("", "Between 1 and 255 characters.", "Invalid directory name. The name may not be null, empty, or whitespace only.");
+        invalidDirectoryTestHelper(new String(new char[256]).replace("\0", "n"), "Between 1 and 255 characters.", "Invalid directory name length. The name must be between 1 and 255 characters long.");
+    }
+
+    private void invalidDirectoryTestHelper(String directoryName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateDirectoryName(directoryName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
     }
 
     private boolean CloudFileDirectorySetup(CloudFileShare share) throws URISyntaxException, StorageException {

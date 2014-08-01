@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SendingRequestEvent;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -52,6 +53,40 @@ public class CloudFileShareTests {
     @After
     public void fileShareTestMethodTearDown() throws StorageException {
         this.share.deleteIfExists();
+    }
+    
+    /**
+     * Test share name validation.
+     */
+    @Test
+    public void testCloudShareNameValidation()
+    {
+        NameValidator.validateShareName("alpha");
+        NameValidator.validateShareName("4lphanum3r1c");
+        NameValidator.validateShareName("middle-dash");
+
+        invalidShareTestHelper(null, "Null not allowed.", "Invalid share name. The name may not be null, empty, or whitespace only.");
+        invalidShareTestHelper("$root", "Alphanumeric or dashes only.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("double--dash", "No double dash.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("CapsLock", "Lowercase only.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("illegal$char", "Alphanumeric or dashes only.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("illegal!char", "Alphanumeric or dashes only.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("white space", "Alphanumeric or dashes only.", "Invalid share name. Check MSDN for more information about valid naming.");
+        invalidShareTestHelper("2c", "Between 3 and 63 characters.", "Invalid share name length. The name must be between 3 and 63 characters long.");
+        invalidShareTestHelper(new String(new char[64]).replace("\0", "n"), "Between 3 and 63 characters.", "Invalid share name length. The name must be between 3 and 63 characters long.");
+    }
+
+    private void invalidShareTestHelper(String shareName, String failMessage, String exceptionMessage)
+    {
+        try
+        {
+            NameValidator.validateShareName(shareName);
+            fail(failMessage);
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(exceptionMessage, e.getMessage());
+        }
     }
 
     /**
