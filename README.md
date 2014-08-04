@@ -87,63 +87,63 @@ within your project you can also have them installed by the Java package manager
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management-compute</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management-network</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management-sql</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management-storage</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-management-websites</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-media</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-servicebus</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-serviceruntime</artifactId>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 

@@ -1,4 +1,4 @@
-2014.04.2 Version 0.5.0
+2014.04.2 Version 0.6.0
  * Add multiple service management modules
  * Split the SDK into multiple sub-modules
 
