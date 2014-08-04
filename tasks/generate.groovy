@@ -191,6 +191,7 @@ hydraSpecs.each {
 }
 // Wait for all generations to finish
 processes.each() {
+    it.consumeProcessErrorStream(System.err)
     it.waitFor()
 }
 System.out.println("Finished generating")
