@@ -28,11 +28,6 @@ import org.apache.http.HttpResponse;
 
 import com.microsoft.windowsazure.tracing.CloudTracingInterceptor;
 
-/**
- * 
- * @author andrerod
- *
- */
 /// <summary>
 /// Implementation for CloudTracingInterceptor that works using log4net framework.
 /// </summary>
