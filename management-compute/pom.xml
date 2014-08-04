@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.microsoft.windowsazure.storage</groupId>
       <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency> 
