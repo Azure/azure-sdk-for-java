@@ -85,64 +85,64 @@ within your project you can also have them installed by the Java package manager
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-compute</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-compute</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-network</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-network</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-sql</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-sql</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-storage</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-storage</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-websites</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-websites</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-media</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-media</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-servicebus</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-serviceruntime</artifactId>
   <version>0.6.0</version>
 </dependency>
 ```
