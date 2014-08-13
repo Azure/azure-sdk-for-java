@@ -34,13 +34,12 @@ import com.microsoft.windowsazure.management.models.LocationsListResponse;
 public class LocationOperationsTest extends ManagementIntegrationTestBase {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(80);
+    public WireMockRule wireMockRule = new WireMockRule(8089);
 
     private String locationListRequestId = "4297edd3ce9dca4fb1ccab3760162d2e";
     private String subscriptionId = System
             .getenv(ManagementConfiguration.SUBSCRIPTION_ID);
-    private Boolean mocked = Boolean.getBoolean(System
-            .getenv(managementMockedConfiguration));
+    private Boolean mocked = new Boolean(System.getenv(managementMockedConfiguration));
 
     @BeforeClass
     public static void setup() throws Exception {

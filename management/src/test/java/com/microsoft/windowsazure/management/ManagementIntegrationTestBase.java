@@ -53,7 +53,8 @@ public abstract class ManagementIntegrationTestBase {
     }
 
     protected static Configuration createConfiguration() throws Exception {
-        Boolean mocked = Boolean.getBoolean(System.getenv(managementMockedConfiguration));
+        Boolean mocked = new Boolean(System.getenv(managementMockedConfiguration));
+        System.out.println(mocked);
         if (!mocked) {
             String baseUri = System.getenv(ManagementConfiguration.URI);
             return ManagementConfiguration.configure(
@@ -64,7 +65,7 @@ public abstract class ManagementIntegrationTestBase {
                 KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
             );
         } else {
-            String baseUri = "http://localhost/";
+            String baseUri = "http://localhost:8089/";
             return ManagementConfiguration.configure(
                 baseUri != null ? new URI(baseUri) : null,
                 System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
