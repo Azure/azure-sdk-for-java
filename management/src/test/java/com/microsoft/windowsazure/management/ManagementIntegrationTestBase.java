@@ -32,6 +32,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 public abstract class ManagementIntegrationTestBase {
 
     protected static ManagementClient managementClient;
+    protected static String managementMockedConfiguration = "management.mocked";
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -52,13 +53,25 @@ public abstract class ManagementIntegrationTestBase {
     }
 
     protected static Configuration createConfiguration() throws Exception {
-        String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );
+        Boolean mocked = Boolean.getBoolean(System.getenv(managementMockedConfiguration));
+        if (!mocked) {
+            String baseUri = System.getenv(ManagementConfiguration.URI);
+            return ManagementConfiguration.configure(
+                baseUri != null ? new URI(baseUri) : null,
+                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        } else {
+            String baseUri = "http://localhost/";
+            return ManagementConfiguration.configure(
+                baseUri != null ? new URI(baseUri) : null,
+                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
 }
