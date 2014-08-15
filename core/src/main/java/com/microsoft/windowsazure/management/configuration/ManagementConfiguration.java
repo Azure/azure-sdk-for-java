@@ -57,6 +57,18 @@ public final class ManagementConfiguration {
      * 
      */
     public static final String URI = "management.uri";
+    
+    /**
+     * Defines the if the tests are run mocked.
+     * 
+     */
+    public static final String MOCKED = "management.mocked";
+
+    /**
+     * Defines the if the HTTP responses are recorded.
+     * 
+     */
+    public static final String RECORDING = "management.recording";
 
     /**
      * Defines the subscription ID of the Windows Azure account.

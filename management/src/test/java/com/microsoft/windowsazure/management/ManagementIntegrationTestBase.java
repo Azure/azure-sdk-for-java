@@ -32,7 +32,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 public abstract class ManagementIntegrationTestBase {
 
     protected static ManagementClient managementClient;
-    protected static String managementMockedConfiguration = "management.mocked";
+    protected static String recordFolder = "__files/";
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -53,8 +53,7 @@ public abstract class ManagementIntegrationTestBase {
     }
 
     protected static Configuration createConfiguration() throws Exception {
-        Boolean mocked = new Boolean(System.getenv(managementMockedConfiguration));
-        System.out.println(mocked);
+        Boolean mocked = new Boolean(System.getenv(ManagementConfiguration.MOCKED));
         if (!mocked) {
             String baseUri = System.getenv(ManagementConfiguration.URI);
             return ManagementConfiguration.configure(
@@ -65,7 +64,7 @@ public abstract class ManagementIntegrationTestBase {
                 KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
             );
         } else {
-            String baseUri = "http://localhost:8089/";
+            String baseUri = "http://localhost:8043/";
             return ManagementConfiguration.configure(
                 baseUri != null ? new URI(baseUri) : null,
                 System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
