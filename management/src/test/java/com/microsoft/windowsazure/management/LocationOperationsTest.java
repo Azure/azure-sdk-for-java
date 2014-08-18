@@ -48,14 +48,6 @@ import com.microsoft.windowsazure.management.models.LocationsListResponse;
 
 public class LocationOperationsTest extends ManagementIntegrationTestBase {
 
-    private String locationListRequestId = "4297edd3ce9dca4fb1ccab3760162d2e";
-    private String subscriptionId = System.getenv(ManagementConfiguration.SUBSCRIPTION_ID);
-    private Boolean mocked = new Boolean(System.getenv(ManagementConfiguration.MOCKED));
-    private Boolean recording = new Boolean(System.getenv(ManagementConfiguration.RECORDING));
-
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8043));
-
     @BeforeClass
     public static void setup() throws Exception {
         createService();
@@ -67,32 +59,7 @@ public class LocationOperationsTest extends ManagementIntegrationTestBase {
             setupListLocationSuccessMocked();
         }
         
-        LocationsListResponse locationsListResponse;
-
-        if (recording) {
-            ServiceResponseFilter filter = new ServiceResponseFilter() {
-                @Override
-                public void filter(ServiceRequestContext request, ServiceResponseContext response) {
-                    InputStream is = new BufferedInputStream(response.getEntityInputStream());
-                    try {
-                        is.mark(Integer.MAX_VALUE);
-                        URL url = this.getClass().getClassLoader().getResource(recordFolder);
-                        File tape = new File(url.getPath() + getClass().getName() + ".xml");
-                        tape.createNewFile();
-                        ByteStreams.copy(is, new FileOutputStream(tape));
-                        is.reset();
-                        response.setEntityInputStream(is);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            managementClient.withResponseFilterLast(filter);
-        }
-        
-        locationsListResponse = managementClient.getLocationsOperations().list();
+        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         Assert.assertEquals(200, locationsListResponse.getStatusCode());
         Assert.assertNotNull(locationsListResponse.getRequestId());
         Assert.assertTrue(locationsListResponse.getLocations().size() > 0);
