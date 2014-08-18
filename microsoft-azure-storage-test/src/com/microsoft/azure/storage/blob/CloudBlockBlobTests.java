@@ -88,7 +88,7 @@ public class CloudBlockBlobTests {
         NameValidator.validateBlobName("4lphanum3r1c");
         NameValidator.validateBlobName("CAPSLOCK");
         NameValidator.validateBlobName("white space");
-        NameValidator.validateBlobName("ºth3r(h@racter$");
+        NameValidator.validateBlobName("0th3r(h@racter$");
         NameValidator.validateBlobName(new String(new char[253]).replace("\0", "a/a"));
         
         invalidBlobTestHelper("", "No empty strings.", "Invalid blob name. The name may not be null, empty, or whitespace only.");
