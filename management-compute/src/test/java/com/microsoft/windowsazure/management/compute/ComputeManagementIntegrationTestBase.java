@@ -17,18 +17,22 @@ package com.microsoft.windowsazure.management.compute;
 
 import java.net.URI;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
-import com.microsoft.windowsazure.management.configuration.*;
-import com.microsoft.windowsazure.management.*;
+import com.microsoft.windowsazure.management.ManagementClient;
+import com.microsoft.windowsazure.management.ManagementService;
+import com.microsoft.windowsazure.management.MockIntegrationTestBase;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
-import com.microsoft.windowsazure.*;
 
-public abstract class ComputeManagementIntegrationTestBase {
+public abstract class ComputeManagementIntegrationTestBase extends MockIntegrationTestBase {
     protected static String testVMPrefix = "aztst";
     protected static String testStoragePrefix = "aztst";
     protected static String testHostedServicePrefix = "azhst";
@@ -36,15 +40,31 @@ public abstract class ComputeManagementIntegrationTestBase {
     protected static ComputeManagementClient computeManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static ManagementClient managementClient;
-
+    
     protected static void createComputeManagementClient() throws Exception {
         Configuration config = createConfiguration();
         computeManagementClient = ComputeManagementService.create(config);
+        addClient((ServiceClient<?>) computeManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createComputeManagementClient();
+                return null;
+            }
+        });
+        addRegexRule("hostedservices/azhst[a-z]{10}");
     }
     
     protected static void createStorageManagementClient() throws Exception {
         Configuration config = createConfiguration();
         storageManagementClient = StorageManagementService.create(config);
+        addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createStorageManagementClient();
+                return null;
+            }
+        });
+        addRegexRule("storageservices/aztst[a-z]{10}");
     }
     
     protected static void createManagementClient() throws Exception {
@@ -52,6 +72,13 @@ public abstract class ComputeManagementIntegrationTestBase {
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         managementClient = ManagementService.create(config);
+        addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createManagementClient();
+                return null;
+            }
+        });
     }
    
     protected static Configuration createConfiguration() throws Exception {

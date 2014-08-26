@@ -18,7 +18,9 @@ package com.microsoft.windowsazure.management;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

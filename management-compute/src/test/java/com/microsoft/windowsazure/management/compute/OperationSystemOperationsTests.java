@@ -18,7 +18,10 @@ package com.microsoft.windowsazure.management.compute;
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.management.compute.models.*;
+
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,6 +29,16 @@ public class OperationSystemOperationsTests extends ComputeManagementIntegration
     @BeforeClass
     public static void setup() throws Exception {
         createComputeManagementClient();
+    }
+
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
 
     @Test

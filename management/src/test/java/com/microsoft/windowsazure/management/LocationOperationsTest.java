@@ -15,35 +15,12 @@
 
 package com.microsoft.windowsazure.management;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.common.base.Charsets;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 
 public class LocationOperationsTest extends ManagementIntegrationTestBase {
@@ -52,35 +29,22 @@ public class LocationOperationsTest extends ManagementIntegrationTestBase {
     public static void setup() throws Exception {
         createService();
     }
-
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listLocationSuccess() throws Exception {
-        if (mocked) {
-            setupListLocationSuccessMocked();
-        }
-        
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         Assert.assertEquals(200, locationsListResponse.getStatusCode());
         Assert.assertNotNull(locationsListResponse.getRequestId());
         Assert.assertTrue(locationsListResponse.getLocations().size() > 0);
-
-        if (mocked) {
-            verifyListLocationSuccessMocked();
-        }
-    }
-
-    private void setupListLocationSuccessMocked() throws Exception {
-        URL url = this.getClass().getClassLoader().getResource(recordFolder + this.getClass().getName() + ".xml");
-        stubFor(get(urlEqualTo("/" + subscriptionId + "/locations"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/xml")
-                        .withHeader("x-ms-servedbyregion", "ussouth2")
-                        .withHeader("x-ms-request-id", locationListRequestId)
-                        .withBody(Files.toString(new File(url.getPath()), Charsets.UTF_8))));
-    }
-
-    private void verifyListLocationSuccessMocked() throws Exception {
-        verify(getRequestedFor(urlEqualTo("/" + subscriptionId + "/locations")));
     }
 }
