@@ -47,7 +47,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         
         cleanup();
         
-        setupTest("AffinityGroup");
+        setupTest("AffinityGroupSetup");
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName1);
         createParameters.setLocation(affinityGroupLocation1);
@@ -55,7 +55,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setDescription(affinityGroupDescription1);
 
         managementClient.getAffinityGroupsOperations().create(createParameters);
-        resetTest("AffinityGroup");
+        resetTest();
     }
 
     @AfterClass
@@ -73,7 +73,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
        catch (ServiceException e) {
            e.printStackTrace();
        }
-       resetTest("AffinityGroupCleanup");
+       resetTest();
     }
 
     @Before
