@@ -99,6 +99,8 @@ public class MockIntegrationTestBase {
             currentTestName = testName;
             responseCount = 0;
         }
+        resetTest();
+        
         ServiceRequestFilter requestFilter = null;
         ServiceResponseFilter responseFilter = null;
         
@@ -219,7 +221,7 @@ public class MockIntegrationTestBase {
         String url = headers.get(0).get("Uri");
         for (Entry<String, String> rule : regexRules.entrySet()) {
             if (rule.getValue() != null) {
-                url.replaceAll(rule.getKey(), rule.getValue());
+                url = url.replaceAll(rule.getKey(), rule.getValue());
             }
         }
         UrlMatchingStrategy urlStrategy = urlEqualTo(url);
