@@ -7,8 +7,6 @@ This project provides a client library in Java that makes it easy to consume Mic
 
 
 * Service Bus
-	* Storage
-		* The Azure Storage SDK is maintained in a separate repository. You can find the Azure Storage Java SDK at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
     * Queues
         * Create/Read/Update/Delete queues
         * Send/Receive/Unlock/Delete messages
@@ -68,7 +66,8 @@ This project provides a client library in Java that makes it easy to consume Mic
       * Get/List service objective
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
-
+* Storage
+	* The Azure Storage SDK is maintained in a separate repository. You can find the Azure Storage Java SDK at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
 
 #Getting Started
 
