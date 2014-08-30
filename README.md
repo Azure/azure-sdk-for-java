@@ -67,7 +67,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
 * Storage
-	* The Azure Storage SDK is maintained in a separate repository. You can find the Azure Storage Java SDK at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
+	* The Azure Storage SDK for Java is maintained in a separate repository. You can find the Azure Storage SDK for Java at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
 
 #Getting Started
 
