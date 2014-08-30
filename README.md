@@ -2,10 +2,13 @@
 
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/).
 
+
 #Features
 
 
 * Service Bus
+	* Storage
+		* The Azure Storage SDK is maintained in a separate repository. You can find the Azure Storage Java SDK at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
     * Queues
         * Create/Read/Update/Delete queues
         * Send/Receive/Unlock/Delete messages
