@@ -63,11 +63,6 @@
   <version>1.6.4</version>
   <scope>compile</scope>
 </dependency>
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock</artifactId>
-      <version>1.47</version>
-    </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
       <artifactId>microsoft-azure-api-core</artifactId>

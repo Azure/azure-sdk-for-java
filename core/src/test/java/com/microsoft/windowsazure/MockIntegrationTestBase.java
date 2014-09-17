@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.management;
+package com.microsoft.windowsazure;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -10,12 +10,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,6 +23,7 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -55,23 +56,22 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 public class MockIntegrationTestBase {
-    protected static Boolean isMocked = Boolean.parseBoolean(System.getenv(ManagementConfiguration.MOCKED));
-    protected static Boolean isRecording = Boolean.parseBoolean(System.getenv(ManagementConfiguration.RECORDING));
+    protected static Boolean isMocked = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
+    protected static Boolean isRecording = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record");
     
     private static List<ServiceClient<?>> clients = new ArrayList<ServiceClient<?>>();
     private static List<Callable<?>> funcs = new ArrayList<Callable<?>>();
     
     private static Map<String, String> regexRules = new HashMap<String, String>();
-    private static List<Map<String, String>> context;
+    private static LinkedList<Map<String, String>> context;
     
     @ClassRule
     @Rule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8043);
     @Rule
     public static TestName name = new TestName();
-    private static String recordFolder = "__records/";
+    private static String recordFolder = "session-records/";
     private static String currentTestName = null;
-    private static int responseCount;
     
     protected static void addClient(ServiceClient<?> client, Callable<?> func) {
         for (int i = 0; i < clients.size(); i++) {
@@ -95,16 +95,23 @@ public class MockIntegrationTestBase {
     }
     
     protected static void setupTest(String testName) throws Exception {
-        if (currentTestName == null) {
-            currentTestName = testName;
-            responseCount = 0;
+        WireMock.reset();
+        for (Callable<?> func : funcs) {
+            func.call();
         }
-        resetTest();
+        if (currentTestName == null) {
+            currentTestName = testName != null ? testName : name.getMethodName();
+        }
         
         ServiceRequestFilter requestFilter = null;
         ServiceResponseFilter responseFilter = null;
         
         if (isMocked) {
+            URL recordFileUrl = MockIntegrationTestBase.class.getClassLoader().getResource(recordFolder + currentTestName + ".json");
+            File recordFile = new File(recordFileUrl.getPath());
+            ObjectMapper mapper = new ObjectMapper();
+            context = mapper.readValue(recordFile, new TypeReference<LinkedList<Map<String, String>>>() {});
+
             requestFilter = new ServiceRequestFilter() {
                 @Override
                 public void filter(ServiceRequestContext request) {
@@ -130,14 +137,10 @@ public class MockIntegrationTestBase {
         }
         
         if (isRecording) {
+            context = new LinkedList<Map<String, String>>();
             requestFilter = new ServiceRequestFilter() {
                 @Override
                 public void filter(ServiceRequestContext request) {
-                    if (currentTestName == null) {
-                        currentTestName = name.getMethodName();
-                    }
-
-                    context = new ArrayList<Map<String, String>>();
                     Map<String, String> requestHeader = new HashMap<String, String>();
                     requestHeader.put("Xmsversion", request.getHeader("x-ms-version"));
                     requestHeader.put("Method", request.getMethod());
@@ -148,32 +151,23 @@ public class MockIntegrationTestBase {
             responseFilter = new ServiceResponseFilter() {
                 @Override
                 public void filter(ServiceRequestContext request, ServiceResponseContext response) {
-                    Map<String, String> responseHeader = new HashMap<String, String>();
+                    Map<String, String> responseData = new HashMap<String, String>();
                     try {
                         Field f = response.getClass().getDeclaredField("clientResponse");
                         f.setAccessible(true);
                         HttpResponse clientResponse = (HttpResponse) f.get(response);
-                        responseHeader.put("StatusCode", Integer.toString(response.getStatus()));
+                        responseData.put("StatusCode", Integer.toString(response.getStatus()));
                         for (Header header : clientResponse.getAllHeaders()) {
-                            responseHeader.put(header.getName(), header.getValue());
+                            responseData.put(header.getName(), header.getValue());
                         }
-                        context.add(responseHeader);
                         
-                        ObjectMapper mapper = new ObjectMapper();
-                        URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(recordFolder);
-                        File folderFile = new File(folderUrl.getPath());
-                        if (!folderFile.exists()) folderFile.mkdir();
-                        String headerFilePath = folderUrl.getPath() + "/" + currentTestName + "_" + responseCount + ".json";
-                        File headerFile = new File(headerFilePath);
-                        headerFile.createNewFile();
-                        mapper.writeValue(headerFile, context);
-                        
-                        File bodyFile = new File(headerFilePath.replaceAll(".json", ".xml"));
                         BufferedHttpEntity entity = new BufferedHttpEntity(clientResponse.getEntity());
-                        entity.writeTo(new FileOutputStream(bodyFile));
+                        responseData.put("Body", IOUtils.toString(entity.getContent()));
+                        
+                        // Set entity to be buffered otherwise it can't be consumed again
                         clientResponse.setEntity(entity);
                         
-                        responseCount++;
+                        context.add(responseData);
                     } catch (Exception e) {
                         Log.warn("Fail to register recorder. " + e.getMessage());
                     }
@@ -184,6 +178,18 @@ public class MockIntegrationTestBase {
     }
     
     protected static void resetTest() throws Exception {
+        if (isRecording) {
+            // Write current context to file
+            ObjectMapper mapper = new ObjectMapper();
+            URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(".");
+            File folderFile = new File(folderUrl.getPath() + recordFolder);
+            if (!folderFile.exists()) folderFile.mkdir();
+            String filePath = folderFile.getPath() + "/" + currentTestName + ".json";
+            File recordFile = new File(filePath);
+            recordFile.createNewFile();
+            mapper.writeValue(recordFile, context);
+        }
+        
         WireMock.reset();
         currentTestName = null;
         for (Callable<?> func : funcs) {
@@ -214,18 +220,16 @@ public class MockIntegrationTestBase {
     }
     
     private static void registerStub() throws Exception {
-        URL headerUrl = MockIntegrationTestBase.class.getClassLoader().getResource(recordFolder + currentTestName + "_" + responseCount + ".json");
-        File headerFile = new File(headerUrl.getPath());
-        ObjectMapper mapper = new ObjectMapper();
-        List<Map<String, String>> headers = mapper.readValue(headerFile, new TypeReference<List<Map<String, String>>>() {});
-        String url = headers.get(0).get("Uri");
+        Map<String, String> requestHeader = context.remove();
+        Map<String, String> responseData = context.remove();
+        String url = requestHeader.get("Uri");
         for (Entry<String, String> rule : regexRules.entrySet()) {
             if (rule.getValue() != null) {
                 url = url.replaceAll(rule.getKey(), rule.getValue());
             }
         }
         UrlMatchingStrategy urlStrategy = urlEqualTo(url);
-        String method = headers.get(0).get("Method");
+        String method = requestHeader.get("Method");
         MappingBuilder mBuilder = null;
         if (method.equals("GET")) {
             mBuilder = get(urlStrategy);
@@ -238,22 +242,19 @@ public class MockIntegrationTestBase {
         } else {
             throw new Exception("Invalid HTTP method.");
         }
-        mBuilder.withHeader("x-ms-version", equalTo(headers.get(0).get("Xmsversion")));
+        mBuilder.withHeader("x-ms-version", equalTo(requestHeader.get("Xmsversion")));
         
-        ResponseDefinitionBuilder rBuilder = aResponse().withStatus(Integer.parseInt(headers.get(1).get("StatusCode")));
-        for (Entry<String, String> header : headers.get(1).entrySet()) {
-            if (!header.getKey().equals("StatusCode")) {
+        ResponseDefinitionBuilder rBuilder = aResponse().withStatus(Integer.parseInt(responseData.get("StatusCode")));
+        for (Entry<String, String> header : responseData.entrySet()) {
+            if (!header.getKey().equals("StatusCode") && !header.getKey().equals("Body")) {
                 rBuilder.withHeader(header.getKey(), header.getValue());
             }
         }
         
-        File bodyFile = new File(headerUrl.getPath().replaceAll(".json", ".xml"));
-        rBuilder.withBody(Files.toString(bodyFile, Charsets.UTF_8));
+        rBuilder.withBody(responseData.get("Body"));
         
         mBuilder.willReturn(rBuilder);
         stubFor(mBuilder);
-        
-        responseCount++;
     }
     
     private static class MockHttpRequestInspector implements HttpRequestInterceptor {

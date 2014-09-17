@@ -21,6 +21,7 @@ import java.util.concurrent.Callable;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
@@ -49,7 +50,10 @@ public abstract class ManagementIntegrationTestBase extends MockIntegrationTestB
                 return client;
             }
         });
-
+        createManagementClient(config);
+    }
+    
+    protected static void createManagementClient(Configuration config) {
         managementClient = ManagementService.create(config);
         addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
             @Override

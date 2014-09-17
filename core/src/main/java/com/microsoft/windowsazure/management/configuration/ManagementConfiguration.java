@@ -62,13 +62,7 @@ public final class ManagementConfiguration {
      * Defines the if the tests are run mocked.
      * 
      */
-    public static final String MOCKED = "management.mocked";
-
-    /**
-     * Defines the if the HTTP responses are recorded.
-     * 
-     */
-    public static final String RECORDING = "management.recording";
+    public static final String AZURE_TEST_MODE = "test.mode";
 
     /**
      * Defines the subscription ID of the Windows Azure account.
