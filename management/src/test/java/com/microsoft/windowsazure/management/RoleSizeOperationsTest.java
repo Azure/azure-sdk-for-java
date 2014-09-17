@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.management;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,6 +29,16 @@ public class RoleSizeOperationsTest  extends ManagementIntegrationTestBase {
         createService();
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listRoleSizeSuccess() throws Exception {
         RoleSizeListResponse roleSizeListResponse = managementClient.getRoleSizesOperations().list();
