@@ -35,10 +35,8 @@ import com.microsoft.windowsazure.management.storage.models.*;
 import com.microsoft.windowsazure.storage.*;
 import com.microsoft.windowsazure.storage.blob.*;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -83,23 +81,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @AfterClass   
-    public static void cleanup() throws Exception {        
+    public static void cleanup() {        
         cleanDeployment();
         cleanHostedService();
         cleanBlob();
         cleanStorageAccount();
     }
     
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-
     @Test
     public void createVirtualMachines() throws Exception {
         int random = (int)(Math.random()* 100); 
