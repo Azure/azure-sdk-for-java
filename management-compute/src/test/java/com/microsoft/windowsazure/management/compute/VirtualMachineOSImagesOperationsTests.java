@@ -36,11 +36,11 @@ import org.junit.Test;
 import org.junit.Ignore;
 
 public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {
-	static int random = (int)(Math.random()* 100);
-	static String virtualMachineOSImageName = testVMPrefix + "OSImage" + random; 
+    static int random = (int)(Math.random()* 100);
+    static String virtualMachineOSImageName = testVMPrefix + "OSImage" + random; 
 
-	static String storageAccountName = testStoragePrefix + "vmo" + randomString(7);
-	static String storageContainer = "image-store";
+    static String storageAccountName = testStoragePrefix + "vmo" + randomString(7);
+    static String storageContainer = "image-store";
 
     static String vhdfileName = "oneGBFixedWS2008R2.vhd";
     static String filePath = "D:\\test\\vhdfile\\";
@@ -65,40 +65,40 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     //@AfterClass
     @Ignore
     public static void cleanup() throws Exception {
-    	deleteVirtualMachineOSImages();
-    	cleanBlob(storageAccountName, storageContainer);
-    	cleanStorageAccount(storageAccountName);
+        deleteVirtualMachineOSImages();
+        cleanBlob(storageAccountName, storageContainer);
+        cleanStorageAccount(storageAccountName);
     }
     
     private static void deleteVirtualMachineOSImages() throws Exception {
-    	try
-    	{
-    		VirtualMachineOSImageListResponse virtualMachineOSImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
-    		ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage> virtualMachineOSImagelist = virtualMachineOSImageListResponse.getImages();
-    		for (VirtualMachineOSImageListResponse.VirtualMachineOSImage virtualMachineOSImage : virtualMachineOSImagelist)
-    		{
-    			if (virtualMachineOSImage.getName().contains(virtualMachineOSImageName))
-    			{
-    				computeManagementClient.getVirtualMachineOSImagesOperations().delete(virtualMachineOSImage.getName(), true);
-    			}
-    		}
-    	}
-    	catch (ServiceException e) {
-    		e.printStackTrace();
-    	}
+        try
+        {
+            VirtualMachineOSImageListResponse virtualMachineOSImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
+            ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage> virtualMachineOSImagelist = virtualMachineOSImageListResponse.getImages();
+            for (VirtualMachineOSImageListResponse.VirtualMachineOSImage virtualMachineOSImage : virtualMachineOSImagelist)
+            {
+                if (virtualMachineOSImage.getName().contains(virtualMachineOSImageName))
+                {
+                    computeManagementClient.getVirtualMachineOSImagesOperations().delete(virtualMachineOSImage.getName(), true);
+                }
+            }
+        }
+        catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void createVirtualMachineOSImage() throws Exception {
-     	String virtualMachineOSImageDescription =  virtualMachineOSImageName + "Description";
-     	URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);
-     	
-    	//Arrange
-    	VirtualMachineOSImageCreateParameters createParameters = new VirtualMachineOSImageCreateParameters();
-    	createParameters.setName(virtualMachineOSImageName);
-    	createParameters.setLabel(virtualMachineOSImageDescription);
-    	createParameters.setMediaLinkUri(mediaLinkUriValue);
-    	createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS);
-    	
+         String virtualMachineOSImageDescription =  virtualMachineOSImageName + "Description";
+         URI mediaLinkUriValue =  new URI("http://"+ blobhost+ "/" +storageContainer+ "/" + vhdfileName);
+         
+        //Arrange
+        VirtualMachineOSImageCreateParameters createParameters = new VirtualMachineOSImageCreateParameters();
+        createParameters.setName(virtualMachineOSImageName);
+        createParameters.setLabel(virtualMachineOSImageDescription);
+        createParameters.setMediaLinkUri(mediaLinkUriValue);
+        createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS);
+        
         //Act
         OperationResponse operationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().create(createParameters);        
         //Assert
@@ -109,7 +109,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     //@Test
     @Ignore
     public void getVirtualMachineOSImages() throws Exception {
-    	//Act
+        //Act
         VirtualMachineOSImageGetResponse virtualMachineOSImageResponse = computeManagementClient.getVirtualMachineOSImagesOperations().get(virtualMachineOSImageName);
 
         //Assert
@@ -121,28 +121,28 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
     //@Test
     @Ignore
     public void listVirtualMachineOSImagesSuccess() throws Exception {
-    	//Arrange
-    	VirtualMachineOSImageListResponse virtualMachineOSImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
-    	ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage> virtualMachineOSImagelist = virtualMachineOSImageListResponse.getImages();
-    	Assert.assertTrue(virtualMachineOSImagelist.size() >= 1);
+        //Arrange
+        VirtualMachineOSImageListResponse virtualMachineOSImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
+        ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage> virtualMachineOSImagelist = virtualMachineOSImageListResponse.getImages();
+        Assert.assertTrue(virtualMachineOSImagelist.size() >= 1);
     }
 
     //@Test
     @Ignore
     public void updateVirtualMachineOSImagesuccess() throws Exception {
-    	//Arrange
-    	String virtualMachineOSImageLabel = virtualMachineOSImageName + "Label";
-    	String expectedUpdatedVirtualMachineOSImageLabel = virtualMachineOSImageLabel + "updated";    	
-    	String expectedDescription = "updateVirtualMachineOSImagesuccess";
+        //Arrange
+        String virtualMachineOSImageLabel = virtualMachineOSImageName + "Label";
+        String expectedUpdatedVirtualMachineOSImageLabel = virtualMachineOSImageLabel + "updated";        
+        String expectedDescription = "updateVirtualMachineOSImagesuccess";
 
-    	//Act
-    	VirtualMachineOSImageUpdateParameters updateParameters = new VirtualMachineOSImageUpdateParameters();      
-    	updateParameters.setLabel(expectedUpdatedVirtualMachineOSImageLabel);
-    	updateParameters.setDescription(expectedDescription);
-    	OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().update(virtualMachineOSImageName, updateParameters);
+        //Act
+        VirtualMachineOSImageUpdateParameters updateParameters = new VirtualMachineOSImageUpdateParameters();      
+        updateParameters.setLabel(expectedUpdatedVirtualMachineOSImageLabel);
+        updateParameters.setDescription(expectedDescription);
+        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().update(virtualMachineOSImageName, updateParameters);
  
-    	//Assert
-    	Assert.assertEquals(200, updateoperationResponse.getStatusCode());
-    	Assert.assertNotNull(updateoperationResponse.getRequestId());
+        //Assert
+        Assert.assertEquals(200, updateoperationResponse.getStatusCode());
+        Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
 }

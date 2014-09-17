@@ -119,23 +119,23 @@ public abstract class ComputeManagementIntegrationTestBase {
         //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
         boolean found = false;
         while(found == false) {
-        	Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
-        	for (CloudBlobContainer item : listContainerResult) {
-        		blobhost =item.getUri().getHost();
-        		if (item.getName().contains(storageContainer) == true) {
-        			blobhost =item.getUri().getHost();
-        			found = true;
-        		}
-        	}
+            Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
+            for (CloudBlobContainer item : listContainerResult) {
+                blobhost =item.getUri().getHost();
+                if (item.getName().contains(storageContainer) == true) {
+                    blobhost =item.getUri().getHost();
+                    found = true;
+                }
+            }
 
-        	if (found == false) {
-        		Thread.sleep(1000 * 30);
-        	}
-        	else {
-        		Thread.sleep(1000 * 60);
-        	}
+            if (found == false) {
+                Thread.sleep(1000 * 30);
+            }
+            else {
+                Thread.sleep(1000 * 60);
+            }
         }
-	}
+    }
 
     protected static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException {
         String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey;
@@ -147,30 +147,30 @@ public abstract class ComputeManagementIntegrationTestBase {
     }
 
     protected static void uploadFileToBlob(String storageAccountName, String storageContainer, String fileName, String filePath) throws InvalidKeyException, URISyntaxException, StorageException, InterruptedException, IOException {
-    	CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
-    	CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
+        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
+        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
 
-    	CloudPageBlob pageblob = container.getPageBlobReference(fileName);
-    	File source = new File(filePath + fileName);
-    	pageblob.upload(new FileInputStream(source), source.length());
+        CloudPageBlob pageblob = container.getPageBlobReference(fileName);
+        File source = new File(filePath + fileName);
+        pageblob.upload(new FileInputStream(source), source.length());
 
-    	//make sure it created and available, otherwise vm deployment will fail with storage/container still creating
-    	boolean found = false;
-    	while(found == false) {
-    		// Loop over blobs within the container and output the URI to each of them
-    		for (ListBlobItem item : container.listBlobs()) {
-    			if (item.getUri().getPath().contains(fileName) == true) {
-    				found = true;
-    			}
-    		}
+        //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
+        boolean found = false;
+        while(found == false) {
+            // Loop over blobs within the container and output the URI to each of them
+            for (ListBlobItem item : container.listBlobs()) {
+                if (item.getUri().getPath().contains(fileName) == true) {
+                    found = true;
+                }
+            }
   
-    		if (found == false) {
-    			Thread.sleep(1000 * 10);
-    		}
-    		else {
-    			Thread.sleep(1000 * 20);
-    		}
-    	}
+            if (found == false) {
+                Thread.sleep(1000 * 10);
+            }
+            else {
+                Thread.sleep(1000 * 20);
+            }
+        }
     }
 
     protected static void getLocation() throws Exception {
@@ -210,24 +210,24 @@ public abstract class ComputeManagementIntegrationTestBase {
 
         if (blobClient != null)
         {
-        	CloudBlobContainer container = null;
-        	try {
-        		container = blobClient.getContainerReference(storageContainer);
-        	} catch (URISyntaxException e) {
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
-        		container.breakLease(0);
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
-        		container.delete();
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
+            CloudBlobContainer container = null;
+            try {
+                container = blobClient.getContainerReference(storageContainer);
+            } catch (URISyntaxException e) {
+            } catch (StorageException e) {
+            }
+            
+            try {
+                container.breakLease(0);
+            } catch (StorageException e) {
+            }
+            
+            try {
+                container.delete();
+            } catch (StorageException e) {
+            }
+            
+            try {
                 while (container.exists())
                 {
                     Thread.sleep(1000);
@@ -237,7 +237,7 @@ public abstract class ComputeManagementIntegrationTestBase {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        	
+            
         }
     }
 

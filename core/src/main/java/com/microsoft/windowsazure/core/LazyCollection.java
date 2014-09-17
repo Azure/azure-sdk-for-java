@@ -16,5 +16,5 @@
 package com.microsoft.windowsazure.core;
 
 public interface LazyCollection {
-	boolean isInitialized();
+    boolean isInitialized();
 }

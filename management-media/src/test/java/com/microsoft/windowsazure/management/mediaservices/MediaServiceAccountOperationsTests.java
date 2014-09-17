@@ -45,7 +45,7 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
     }
 
     @AfterClass
-    public static void cleanup() {    	
+    public static void cleanup() {        
         cleanMediaServicesAccount();
         cleanStorageAccount(storageAccountName);
     }    
