@@ -16,20 +16,23 @@ package com.microsoft.windowsazure.management;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 
-import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
-import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
-public abstract class ManagementIntegrationTestBase {
+public abstract class ManagementIntegrationTestBase extends MockIntegrationTestBase {
 
     protected static ManagementClient managementClient;
 
@@ -47,10 +50,20 @@ public abstract class ManagementIntegrationTestBase {
                 return client;
             }
         });
-
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
     }
-
+    
+    protected static void createManagementClient(Configuration config) {
+        managementClient = ManagementService.create(config);
+        addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createService();
+                return null;
+            }
+        });
+    }
+    
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
         return ManagementConfiguration.configure(

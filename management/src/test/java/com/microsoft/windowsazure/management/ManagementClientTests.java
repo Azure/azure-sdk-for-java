@@ -38,8 +38,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("createWithRequestFilterLast");
         TestRequestFilter testFilter = new TestRequestFilter("filter1a");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
         
@@ -54,6 +55,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter.getCalled());
+        resetTest();
     }
     
     @Test
@@ -71,8 +73,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("createWithRequestLastRespectsOrder");
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1b");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2b");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter1);
@@ -91,6 +94,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -108,8 +112,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("createWithRequestFirstRespectsOrder");
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1c");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2c");
         ManagementClient filteredService = managementClient.withRequestFilterFirst(testFilter1);
@@ -128,6 +133,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -145,8 +151,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("createWithResponseLastRespectsOrder");
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1b");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2b");
         ManagementClient filteredService = managementClient.withResponseFilterLast(testFilter1);
@@ -165,6 +172,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -182,8 +190,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("createWithResponseFirstRespectsOrder");
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1c");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2c");
         ManagementClient filteredService = managementClient.withResponseFilterFirst(testFilter1);
@@ -202,6 +211,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -219,11 +229,13 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest("getCredential");
         SubscriptionCloudCredentials subscriptionCloudCredentials = managementClient.getCredentials();      
         
         Assert.assertNotNull(subscriptionCloudCredentials.getSubscriptionId());          
+        resetTest();
     }
     
     @Test
@@ -241,7 +253,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
         URI uri = managementClient.getBaseUri(); 
         URI expectUri = new URI("https://management.core.windows.net");

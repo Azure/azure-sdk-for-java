@@ -17,8 +17,10 @@ package com.microsoft.windowsazure.management;
 
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,33 +44,48 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        
         cleanup();
         
+        setupTest("AffinityGroupSetup");
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
-        createParameters.setName(affinityGroupName1);        
+        createParameters.setName(affinityGroupName1);
         createParameters.setLocation(affinityGroupLocation1);
         createParameters.setLabel(affinityGrouplabel1);
         createParameters.setDescription(affinityGroupDescription1);
 
         managementClient.getAffinityGroupsOperations().create(createParameters);
+        resetTest();
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest("AffinityGroupCleanup");
         try {
-        	 AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
-        	 ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
-        	 for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist) { 
-            	 if (affinitygroup.getName().contains("testAffinityGroup")) {
-                    managementClient.getAffinityGroupsOperations().delete(affinitygroup.getName());
-            	 }
-        	 }
-        }
-        catch (ServiceException e) {
-            e.printStackTrace();
-        }
+            AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
+            ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
+            for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist) { 
+                if (affinitygroup.getName().contains("testAffinityGroup")) {
+                   managementClient.getAffinityGroupsOperations().delete(affinitygroup.getName());
+                }
+            }
+       }
+       catch (ServiceException e) {
+           e.printStackTrace();
+       }
+       resetTest();
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void createAffinityGroup() throws Exception {
         // Arrange

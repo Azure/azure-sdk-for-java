@@ -57,6 +57,12 @@
   </developers>
 
   <dependencies>
+  <dependency>
+  <groupId>org.codehaus.jackson</groupId>
+  <artifactId>jackson-mapper-asl</artifactId>
+  <version>1.6.4</version>
+  <scope>compile</scope>
+</dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
       <artifactId>microsoft-azure-api-core</artifactId>
