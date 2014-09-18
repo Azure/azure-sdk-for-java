@@ -146,11 +146,11 @@ public class JobRecurrenceSchedule {
     *
     */
     public JobRecurrenceSchedule() {
-        this.setDays(new ArrayList<JobScheduleDay>());
-        this.setHours(new ArrayList<Integer>());
-        this.setMinutes(new ArrayList<Integer>());
-        this.setMonthDays(new ArrayList<Integer>());
-        this.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
-        this.setMonths(new ArrayList<Integer>());
+        this.setDays(new java.util.ArrayList<com.microsoft.windowsazure.scheduler.models.JobScheduleDay>());
+        this.setHours(new java.util.ArrayList<java.lang.Integer>());
+        this.setMinutes(new java.util.ArrayList<java.lang.Integer>());
+        this.setMonthDays(new java.util.ArrayList<java.lang.Integer>());
+        this.setMonthlyOccurrences(new java.util.ArrayList<com.microsoft.windowsazure.scheduler.models.JobScheduleMonthlyOccurrence>());
+        this.setMonths(new java.util.ArrayList<java.lang.Integer>());
     }
 }

@@ -251,7 +251,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * more information)
     *
     * @param namespaceName Required. The namespace name.
-    * @param region Required. The namespace region.
+    * @param region Optional. The namespace region.
     * @return The response to a request for a particular namespace.
     */
     @Override
@@ -271,7 +271,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * more information)
     *
     * @param namespaceName Required. The namespace name.
-    * @param region Required. The namespace region.
+    * @param region Optional. The namespace region.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

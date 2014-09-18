@@ -68,6 +68,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -226,7 +227,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
         
         // Serialize Request
@@ -428,7 +429,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -714,6 +715,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode minutesArray2 = scheduleValue2.get("minutes");
                         if (minutesArray2 != null) {
+                            scheduleInstance.setMinutes(new ArrayList<Integer>());
                             for (JsonNode minutesValue : ((ArrayNode) minutesArray2)) {
                                 scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                             }
@@ -721,6 +723,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode hoursArray2 = scheduleValue2.get("hours");
                         if (hoursArray2 != null) {
+                            scheduleInstance.setHours(new ArrayList<Integer>());
                             for (JsonNode hoursValue : ((ArrayNode) hoursArray2)) {
                                 scheduleInstance.getHours().add(hoursValue.getIntValue());
                             }
@@ -728,6 +731,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode weekDaysArray2 = scheduleValue2.get("weekDays");
                         if (weekDaysArray2 != null) {
+                            scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                             for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray2)) {
                                 scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                             }
@@ -735,6 +739,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthsArray2 = scheduleValue2.get("months");
                         if (monthsArray2 != null) {
+                            scheduleInstance.setMonths(new ArrayList<Integer>());
                             for (JsonNode monthsValue : ((ArrayNode) monthsArray2)) {
                                 scheduleInstance.getMonths().add(monthsValue.getIntValue());
                             }
@@ -742,6 +747,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthDaysArray2 = scheduleValue2.get("monthDays");
                         if (monthDaysArray2 != null) {
+                            scheduleInstance.setMonthDays(new ArrayList<Integer>());
                             for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray2)) {
                                 scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                             }
@@ -749,6 +755,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthlyOccurrencesArray2 = scheduleValue2.get("monthlyOccurrences");
                         if (monthlyOccurrencesArray2 != null) {
+                            scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                             for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray2)) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                 scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -958,7 +965,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
         
         // Serialize Request
@@ -1160,7 +1167,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1446,6 +1453,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode minutesArray2 = scheduleValue2.get("minutes");
                         if (minutesArray2 != null) {
+                            scheduleInstance.setMinutes(new ArrayList<Integer>());
                             for (JsonNode minutesValue : ((ArrayNode) minutesArray2)) {
                                 scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                             }
@@ -1453,6 +1461,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode hoursArray2 = scheduleValue2.get("hours");
                         if (hoursArray2 != null) {
+                            scheduleInstance.setHours(new ArrayList<Integer>());
                             for (JsonNode hoursValue : ((ArrayNode) hoursArray2)) {
                                 scheduleInstance.getHours().add(hoursValue.getIntValue());
                             }
@@ -1460,6 +1469,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode weekDaysArray2 = scheduleValue2.get("weekDays");
                         if (weekDaysArray2 != null) {
+                            scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                             for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray2)) {
                                 scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                             }
@@ -1467,6 +1477,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthsArray2 = scheduleValue2.get("months");
                         if (monthsArray2 != null) {
+                            scheduleInstance.setMonths(new ArrayList<Integer>());
                             for (JsonNode monthsValue : ((ArrayNode) monthsArray2)) {
                                 scheduleInstance.getMonths().add(monthsValue.getIntValue());
                             }
@@ -1474,6 +1485,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthDaysArray2 = scheduleValue2.get("monthDays");
                         if (monthDaysArray2 != null) {
+                            scheduleInstance.setMonthDays(new ArrayList<Integer>());
                             for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray2)) {
                                 scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                             }
@@ -1481,6 +1493,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthlyOccurrencesArray2 = scheduleValue2.get("monthlyOccurrences");
                         if (monthlyOccurrencesArray2 != null) {
+                            scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                             for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray2)) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                 scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -2021,6 +2034,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode minutesArray = scheduleValue.get("minutes");
                         if (minutesArray != null) {
+                            scheduleInstance.setMinutes(new ArrayList<Integer>());
                             for (JsonNode minutesValue : ((ArrayNode) minutesArray)) {
                                 scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                             }
@@ -2028,6 +2042,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode hoursArray = scheduleValue.get("hours");
                         if (hoursArray != null) {
+                            scheduleInstance.setHours(new ArrayList<Integer>());
                             for (JsonNode hoursValue : ((ArrayNode) hoursArray)) {
                                 scheduleInstance.getHours().add(hoursValue.getIntValue());
                             }
@@ -2035,6 +2050,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode weekDaysArray = scheduleValue.get("weekDays");
                         if (weekDaysArray != null) {
+                            scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                             for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray)) {
                                 scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                             }
@@ -2042,6 +2058,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthsArray = scheduleValue.get("months");
                         if (monthsArray != null) {
+                            scheduleInstance.setMonths(new ArrayList<Integer>());
                             for (JsonNode monthsValue : ((ArrayNode) monthsArray)) {
                                 scheduleInstance.getMonths().add(monthsValue.getIntValue());
                             }
@@ -2049,6 +2066,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthDaysArray = scheduleValue.get("monthDays");
                         if (monthDaysArray != null) {
+                            scheduleInstance.setMonthDays(new ArrayList<Integer>());
                             for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray)) {
                                 scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                             }
@@ -2056,6 +2074,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthlyOccurrencesArray = scheduleValue.get("monthlyOccurrences");
                         if (monthlyOccurrencesArray != null) {
+                            scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                             for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray)) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                 scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -2197,8 +2216,12 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         // Construct URL
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + this.getClient().getCloudServiceName().trim() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName().trim() + "/jobs/" + jobId.trim() + "/history" + "?";
         url = url + "api-version=" + "2014-04-01";
-        url = url + "&" + "$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
-        url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        if (parameters.getSkip() != null) {
+            url = url + "&" + "$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
+        }
+        if (parameters.getTop() != null) {
+            url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -2397,8 +2420,12 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + this.getClient().getCloudServiceName().trim() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName().trim() + "/jobs/" + jobId.trim() + "/history" + "?";
         url = url + "api-version=" + "2014-04-01";
         url = url + "&" + "$filter=status eq " + URLEncoder.encode(SchedulerClientImpl.jobHistoryStatusToString(parameters.getStatus()), "UTF-8");
-        url = url + "&" + "$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
-        url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        if (parameters.getSkip() != null) {
+            url = url + "&" + "$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
+        }
+        if (parameters.getTop() != null) {
+            url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -2903,6 +2930,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode minutesArray = scheduleValue.get("minutes");
                                 if (minutesArray != null) {
+                                    scheduleInstance.setMinutes(new ArrayList<Integer>());
                                     for (JsonNode minutesValue : ((ArrayNode) minutesArray)) {
                                         scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                                     }
@@ -2910,6 +2938,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode hoursArray = scheduleValue.get("hours");
                                 if (hoursArray != null) {
+                                    scheduleInstance.setHours(new ArrayList<Integer>());
                                     for (JsonNode hoursValue : ((ArrayNode) hoursArray)) {
                                         scheduleInstance.getHours().add(hoursValue.getIntValue());
                                     }
@@ -2917,6 +2946,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode weekDaysArray = scheduleValue.get("weekDays");
                                 if (weekDaysArray != null) {
+                                    scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                                     for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray)) {
                                         scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                                     }
@@ -2924,6 +2954,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthsArray = scheduleValue.get("months");
                                 if (monthsArray != null) {
+                                    scheduleInstance.setMonths(new ArrayList<Integer>());
                                     for (JsonNode monthsValue : ((ArrayNode) monthsArray)) {
                                         scheduleInstance.getMonths().add(monthsValue.getIntValue());
                                     }
@@ -2931,6 +2962,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthDaysArray = scheduleValue.get("monthDays");
                                 if (monthDaysArray != null) {
+                                    scheduleInstance.setMonthDays(new ArrayList<Integer>());
                                     for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray)) {
                                         scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                                     }
@@ -2938,6 +2970,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthlyOccurrencesArray = scheduleValue.get("monthlyOccurrences");
                                 if (monthlyOccurrencesArray != null) {
+                                    scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                                     for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray)) {
                                         JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                         scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -3389,6 +3422,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode minutesArray = scheduleValue.get("minutes");
                                 if (minutesArray != null) {
+                                    scheduleInstance.setMinutes(new ArrayList<Integer>());
                                     for (JsonNode minutesValue : ((ArrayNode) minutesArray)) {
                                         scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                                     }
@@ -3396,6 +3430,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode hoursArray = scheduleValue.get("hours");
                                 if (hoursArray != null) {
+                                    scheduleInstance.setHours(new ArrayList<Integer>());
                                     for (JsonNode hoursValue : ((ArrayNode) hoursArray)) {
                                         scheduleInstance.getHours().add(hoursValue.getIntValue());
                                     }
@@ -3403,6 +3438,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode weekDaysArray = scheduleValue.get("weekDays");
                                 if (weekDaysArray != null) {
+                                    scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                                     for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray)) {
                                         scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                                     }
@@ -3410,6 +3446,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthsArray = scheduleValue.get("months");
                                 if (monthsArray != null) {
+                                    scheduleInstance.setMonths(new ArrayList<Integer>());
                                     for (JsonNode monthsValue : ((ArrayNode) monthsArray)) {
                                         scheduleInstance.getMonths().add(monthsValue.getIntValue());
                                     }
@@ -3417,6 +3454,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthDaysArray = scheduleValue.get("monthDays");
                                 if (monthDaysArray != null) {
+                                    scheduleInstance.setMonthDays(new ArrayList<Integer>());
                                     for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray)) {
                                         scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                                     }
@@ -3424,6 +3462,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthlyOccurrencesArray = scheduleValue.get("monthlyOccurrences");
                                 if (monthlyOccurrencesArray != null) {
+                                    scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                                     for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray)) {
                                         JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                         scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -3577,7 +3616,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         HttpPatch httpRequest = new HttpPatch(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
         
         // Serialize Request
@@ -3597,7 +3636,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3886,6 +3925,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode minutesArray = scheduleValue.get("minutes");
                                 if (minutesArray != null) {
+                                    scheduleInstance.setMinutes(new ArrayList<Integer>());
                                     for (JsonNode minutesValue : ((ArrayNode) minutesArray)) {
                                         scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                                     }
@@ -3893,6 +3933,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode hoursArray = scheduleValue.get("hours");
                                 if (hoursArray != null) {
+                                    scheduleInstance.setHours(new ArrayList<Integer>());
                                     for (JsonNode hoursValue : ((ArrayNode) hoursArray)) {
                                         scheduleInstance.getHours().add(hoursValue.getIntValue());
                                     }
@@ -3900,6 +3941,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode weekDaysArray = scheduleValue.get("weekDays");
                                 if (weekDaysArray != null) {
+                                    scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                                     for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray)) {
                                         scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                                     }
@@ -3907,6 +3949,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthsArray = scheduleValue.get("months");
                                 if (monthsArray != null) {
+                                    scheduleInstance.setMonths(new ArrayList<Integer>());
                                     for (JsonNode monthsValue : ((ArrayNode) monthsArray)) {
                                         scheduleInstance.getMonths().add(monthsValue.getIntValue());
                                     }
@@ -3914,6 +3957,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthDaysArray = scheduleValue.get("monthDays");
                                 if (monthDaysArray != null) {
+                                    scheduleInstance.setMonthDays(new ArrayList<Integer>());
                                     for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray)) {
                                         scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                                     }
@@ -3921,6 +3965,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 
                                 JsonNode monthlyOccurrencesArray = scheduleValue.get("monthlyOccurrences");
                                 if (monthlyOccurrencesArray != null) {
+                                    scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                                     for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray)) {
                                         JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                         scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
@@ -4081,7 +4126,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         HttpPatch httpRequest = new HttpPatch(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
         
         // Serialize Request
@@ -4103,7 +4148,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4389,6 +4434,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode minutesArray = scheduleValue.get("minutes");
                         if (minutesArray != null) {
+                            scheduleInstance.setMinutes(new ArrayList<Integer>());
                             for (JsonNode minutesValue : ((ArrayNode) minutesArray)) {
                                 scheduleInstance.getMinutes().add(minutesValue.getIntValue());
                             }
@@ -4396,6 +4442,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode hoursArray = scheduleValue.get("hours");
                         if (hoursArray != null) {
+                            scheduleInstance.setHours(new ArrayList<Integer>());
                             for (JsonNode hoursValue : ((ArrayNode) hoursArray)) {
                                 scheduleInstance.getHours().add(hoursValue.getIntValue());
                             }
@@ -4403,6 +4450,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode weekDaysArray = scheduleValue.get("weekDays");
                         if (weekDaysArray != null) {
+                            scheduleInstance.setDays(new ArrayList<JobScheduleDay>());
                             for (JsonNode weekDaysValue : ((ArrayNode) weekDaysArray)) {
                                 scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
                             }
@@ -4410,6 +4458,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthsArray = scheduleValue.get("months");
                         if (monthsArray != null) {
+                            scheduleInstance.setMonths(new ArrayList<Integer>());
                             for (JsonNode monthsValue : ((ArrayNode) monthsArray)) {
                                 scheduleInstance.getMonths().add(monthsValue.getIntValue());
                             }
@@ -4417,6 +4466,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthDaysArray = scheduleValue.get("monthDays");
                         if (monthDaysArray != null) {
+                            scheduleInstance.setMonthDays(new ArrayList<Integer>());
                             for (JsonNode monthDaysValue : ((ArrayNode) monthDaysArray)) {
                                 scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
                             }
@@ -4424,6 +4474,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         JsonNode monthlyOccurrencesArray = scheduleValue.get("monthlyOccurrences");
                         if (monthlyOccurrencesArray != null) {
+                            scheduleInstance.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
                             for (JsonNode monthlyOccurrencesValue : ((ArrayNode) monthlyOccurrencesArray)) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
                                 scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);

@@ -34,8 +34,8 @@ public class RestorableDroppedDatabaseListResponse extends OperationResponse imp
     private ArrayList<RestorableDroppedDatabase> databases;
     
     /**
-    * Optional. Gets the collection of restorable dropped databases that has
-    * been returned from a List Restorable Dropped Databases request.
+    * Optional. Gets or sets the collection of restorable dropped databases
+    * that has been returned from a List Restorable Dropped Databases request.
     * @return The Databases value.
     */
     public ArrayList<RestorableDroppedDatabase> getDatabases() {
@@ -43,8 +43,8 @@ public class RestorableDroppedDatabaseListResponse extends OperationResponse imp
     }
     
     /**
-    * Optional. Gets the collection of restorable dropped databases that has
-    * been returned from a List Restorable Dropped Databases request.
+    * Optional. Gets or sets the collection of restorable dropped databases
+    * that has been returned from a List Restorable Dropped Databases request.
     * @param databasesValue The Databases value.
     */
     public void setDatabases(final ArrayList<RestorableDroppedDatabase> databasesValue) {

@@ -206,10 +206,6 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         } else {
             this.baseUri = baseUri;
         }
-        this.cloudServiceName = cloudServiceName;
-        this.jobCollectionName = jobCollectionName;
-        this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**
@@ -364,6 +360,9 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         if ("failed".equalsIgnoreCase(value)) {
             return JobHistoryStatus.Failed;
         }
+        if ("postponed".equalsIgnoreCase(value)) {
+            return JobHistoryStatus.Postponed;
+        }
         throw new IllegalArgumentException("value");
     }
     
@@ -379,6 +378,9 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         if (value == JobHistoryStatus.Failed) {
             return "failed";
+        }
+        if (value == JobHistoryStatus.Postponed) {
+            return "postponed";
         }
         throw new IllegalArgumentException("value");
     }

@@ -147,6 +147,17 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         return this.deployments;
     }
     
+    private DNSServerOperations dnsServer;
+    
+    /**
+    * The Compute Management API includes operations for managing the dns
+    * servers for your subscription.
+    * @return The DnsServerOperations value.
+    */
+    public DNSServerOperations getDnsServerOperations() {
+        return this.dnsServer;
+    }
+    
     private ExtensionImageOperations extensionImages;
     
     /**
@@ -279,6 +290,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     private ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.deployments = new DeploymentOperationsImpl(this);
+        this.dnsServer = new DNSServerOperationsImpl(this);
         this.extensionImages = new ExtensionImageOperationsImpl(this);
         this.hostedServices = new HostedServiceOperationsImpl(this);
         this.loadBalancers = new LoadBalancerOperationsImpl(this);
@@ -289,7 +301,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
         this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
-        this.apiVersion = "2014-05-01";
+        this.apiVersion = "2014-06-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -322,7 +334,6 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
@@ -466,12 +477,13 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;

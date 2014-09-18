@@ -124,6 +124,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

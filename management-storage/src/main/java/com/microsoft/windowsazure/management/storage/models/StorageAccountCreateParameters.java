@@ -29,6 +29,30 @@ import java.util.HashMap;
 * Parameters supplied to the Create Storage Account operation.
 */
 public class StorageAccountCreateParameters {
+    private String accountType;
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @return The AccountType value.
+    */
+    public String getAccountType() {
+        return this.accountType;
+    }
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @param accountTypeValue The AccountType value.
+    */
+    public void setAccountType(final String accountTypeValue) {
+        this.accountType = accountTypeValue;
+    }
+    
     private String affinityGroup;
     
     /**
@@ -109,32 +133,6 @@ public class StorageAccountCreateParameters {
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
-    }
-    
-    private boolean geoReplicationEnabled;
-    
-    /**
-    * Optional. Specifies whether the storage account is created with
-    * geo-replication enabled. If the element is not included in the request
-    * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location to enable
-    * resilience in the face of catastrophic service loss.
-    * @return The GeoReplicationEnabled value.
-    */
-    public boolean isGeoReplicationEnabled() {
-        return this.geoReplicationEnabled;
-    }
-    
-    /**
-    * Optional. Specifies whether the storage account is created with
-    * geo-replication enabled. If the element is not included in the request
-    * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location to enable
-    * resilience in the face of catastrophic service loss.
-    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
-    */
-    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
-        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String label;

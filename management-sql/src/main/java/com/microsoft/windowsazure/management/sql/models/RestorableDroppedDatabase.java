@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.util.Calendar;
 
 /**
-* A dropped Azure SQL Database that can be restored.
+* Represents a dropped Azure SQL Database that can be restored.
 */
 public class RestorableDroppedDatabase extends SqlModelCommon {
     private Calendar creationDate;

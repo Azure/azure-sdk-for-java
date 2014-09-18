@@ -178,8 +178,6 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**
@@ -325,6 +323,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -476,6 +475,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -590,6 +590,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -687,6 +688,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

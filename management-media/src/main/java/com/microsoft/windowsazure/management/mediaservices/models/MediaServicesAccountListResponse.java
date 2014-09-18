@@ -56,7 +56,7 @@ public class MediaServicesAccountListResponse extends OperationResponse implemen
     */
     public MediaServicesAccountListResponse() {
         super();
-        this.accounts = new ArrayList<MediaServicesAccountListResponse.MediaServiceAccount>();
+        this.setAccounts(new ArrayList<MediaServicesAccountListResponse.MediaServiceAccount>());
     }
     
     /**

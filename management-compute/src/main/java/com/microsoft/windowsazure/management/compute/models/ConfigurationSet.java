@@ -490,6 +490,24 @@ public class ConfigurationSet {
     * addressable via the default deployment VIP.
     */
     public static class PublicIP {
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+        }
+        
         private String name;
         
         /**

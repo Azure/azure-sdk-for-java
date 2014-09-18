@@ -370,6 +370,24 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             * The operation status of an individual resource item.
             */
             public static class OperationStatus {
+                private Error error;
+                
+                /**
+                * Optional. The error details for operations that failed.
+                * @return The Error value.
+                */
+                public Error getError() {
+                    return this.error;
+                }
+                
+                /**
+                * Optional. The error details for operations that failed.
+                * @param errorValue The Error value.
+                */
+                public void setError(final Error errorValue) {
+                    this.error = errorValue;
+                }
+                
                 private String result;
                 
                 /**

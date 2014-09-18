@@ -60,9 +60,7 @@ public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters {
     * with required arguments.
     *
     */
-    public JobGetHistoryWithFilterParameters(JobHistoryStatus status, int skip, int top) {
+    public JobGetHistoryWithFilterParameters(JobHistoryStatus status) {
         this.setStatus(status);
-        this.setSkip(skip);
-        this.setTop(top);
     }
 }

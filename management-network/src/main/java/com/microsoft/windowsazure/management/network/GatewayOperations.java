@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.network;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.GatewayConnectDisconnectOrTestParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayCreateParameters;
+import com.microsoft.windowsazure.management.network.models.GatewayDiagnosticsStatus;
 import com.microsoft.windowsazure.management.network.models.GatewayGenerateVpnClientPackageParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayGetDeviceConfigurationScriptParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayGetDeviceConfigurationScriptResponse;
@@ -37,6 +38,7 @@ import com.microsoft.windowsazure.management.network.models.GatewayListSupported
 import com.microsoft.windowsazure.management.network.models.GatewayOperationResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayResetSharedKeyParameters;
 import com.microsoft.windowsazure.management.network.models.GatewaySetSharedKeyParameters;
+import com.microsoft.windowsazure.management.network.models.UpdateGatewayPublicDiagnostics;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -202,6 +204,46 @@ public interface GatewayOperations {
     Future<GatewayOperationResponse> beginFailoverAsync(String networkName);
     
     /**
+    * The Generate VPN Client Package operation creates a VPN client package
+    * for the specified virtual network and gateway in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Generate VPN
+    * Client Package operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    GatewayOperationResponse beginGenerateVpnClientPackage(String networkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Generate VPN Client Package operation creates a VPN client package
+    * for the specified virtual network and gateway in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Generate VPN
+    * Client Package operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<GatewayOperationResponse> beginGenerateVpnClientPackageAsync(String networkName, GatewayGenerateVpnClientPackageParameters parameters);
+    
+    /**
     * The Begin Reset Virtual Network Gateway Shared Key operation resets the
     * shared key on the virtual network gateway for the specified virtual
     * network connection to the specified local network in Azure.  (see
@@ -288,6 +330,48 @@ public interface GatewayOperations {
     * request ID.
     */
     Future<GatewayOperationResponse> beginSetSharedKeyAsync(String networkName, String localNetworkName, GatewaySetSharedKeyParameters parameters);
+    
+    /**
+    * The Begin Update Diagnostics operation begins an asynchronous operation
+    * to starta diagnostics session for the specified virtual network gateway
+    * in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    GatewayOperationResponse beginUpdateDiagnostics(String networkName, UpdateGatewayPublicDiagnostics parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Begin Update Diagnostics operation begins an asynchronous operation
+    * to starta diagnostics session for the specified virtual network gateway
+    * in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<GatewayOperationResponse> beginUpdateDiagnosticsAsync(String networkName, UpdateGatewayPublicDiagnostics parameters);
     
     /**
     * To connect to, disconnect from, or test your connection to a local
@@ -522,42 +606,58 @@ public interface GatewayOperations {
     /**
     * The Generate VPN Client Package operation creates a VPN client package
     * for the specified virtual network and gateway in Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param parameters Required. Parameters supplied to the Generate VPN
     * Client Package operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
-    GatewayOperationResponse generateVpnClientPackage(String networkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    GatewayGetOperationStatusResponse generateVpnClientPackage(String networkName, GatewayGenerateVpnClientPackageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Generate VPN Client Package operation creates a VPN client package
     * for the specified virtual network and gateway in Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param parameters Required. Parameters supplied to the Generate VPN
     * Client Package operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
-    Future<GatewayOperationResponse> generateVpnClientPackageAsync(String networkName, GatewayGenerateVpnClientPackageParameters parameters);
+    Future<GatewayGetOperationStatusResponse> generateVpnClientPackageAsync(String networkName, GatewayGenerateVpnClientPackageParameters parameters);
     
     /**
     * The Get Virtual Network Gateway operation gets information about the
@@ -626,6 +726,38 @@ public interface GatewayOperations {
     * configuration script operation.
     */
     Future<GatewayGetDeviceConfigurationScriptResponse> getDeviceConfigurationScriptAsync(String networkName, GatewayGetDeviceConfigurationScriptParameters parameters);
+    
+    /**
+    * The Get Diagnostics operation gets information about the current gateway
+    * diagnostics session for the specified virtual network in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The status of a gateway diagnostics operation.
+    */
+    GatewayDiagnosticsStatus getDiagnostics(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * The Get Diagnostics operation gets information about the current gateway
+    * diagnostics session for the specified virtual network in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @return The status of a gateway diagnostics operation.
+    */
+    Future<GatewayDiagnosticsStatus> getDiagnosticsAsync(String networkName);
     
     /**
     * The Get Virtual Network Gateway Operation Status gets information on the
@@ -890,4 +1022,60 @@ public interface GatewayOperations {
     * failure.
     */
     Future<GatewayGetOperationStatusResponse> setSharedKeyAsync(String networkName, String localNetworkName, GatewaySetSharedKeyParameters parameters);
+    
+    /**
+    * The Update Diagnostics operation starts a diagnostics session for the
+    * specified virtual network gateway in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Update Diagnostics
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    GatewayGetOperationStatusResponse updateDiagnostics(String networkName, UpdateGatewayPublicDiagnostics parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Update Diagnostics operation starts a diagnostics session for the
+    * specified virtual network gateway in Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Update Diagnostics
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<GatewayGetOperationStatusResponse> updateDiagnosticsAsync(String networkName, UpdateGatewayPublicDiagnostics parameters);
 }

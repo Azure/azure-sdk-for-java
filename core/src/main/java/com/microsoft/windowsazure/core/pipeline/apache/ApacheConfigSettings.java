@@ -18,6 +18,7 @@
 
 package com.microsoft.windowsazure.core.pipeline.apache;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
@@ -26,6 +27,8 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
+
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 
 public class ApacheConfigSettings {
     private final String profile;
@@ -96,6 +99,14 @@ public class ApacheConfigSettings {
             // add the content-length header. This workaround makes sure this header is always
             // removed before it is actually processed by apache
             httpClientBuilder.addInterceptorFirst(new HttpHeaderRemovalFilter());
+        }
+        
+        if (properties.containsKey("RequestFilters"))
+        {
+        	ArrayList<ServiceRequestFilter> filters = (ArrayList<ServiceRequestFilter>)properties.get("RequestFilters");
+        	for (ServiceRequestFilter filter : filters) {
+        		httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptorAdapter(filter));
+        	}
         }
 
         return httpClientBuilder;
