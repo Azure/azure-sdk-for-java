@@ -164,12 +164,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -280,12 +281,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -395,12 +397,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -626,12 +629,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1034,12 +1038,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1422,13 +1427,14 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1843,13 +1849,14 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;

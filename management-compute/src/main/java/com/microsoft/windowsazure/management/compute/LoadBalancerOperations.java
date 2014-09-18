@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.LoadBalancerUpdateParameters;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -131,6 +132,54 @@ public interface LoadBalancerOperations {
     Future<OperationStatusResponse> beginDeletingAsync(String serviceName, String deploymentName, String loadBalancerName);
     
     /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse beginUpdating(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> beginUpdatingAsync(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters);
+    
+    /**
     * Add an internal load balancer to a an existing deployment. When used by
     * an input endpoint, the internal load balancer will provide an additional
     * private VIP that can be used for load balancing to the roles in this
@@ -228,4 +277,63 @@ public interface LoadBalancerOperations {
     * request ID.
     */
     Future<OperationResponse> deleteAsync(String serviceName, String deploymentName, String loadBalancerName);
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse update(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> updateAsync(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters);
 }

@@ -270,13 +270,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -536,13 +537,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -810,13 +812,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1049,12 +1052,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1167,12 +1171,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1292,13 +1297,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1445,13 +1451,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1493,6 +1500,283 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Package By Name operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Name operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginGettingPackageByNameAsync(final String serviceName, final String deploymentName, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginGettingPackageByName(serviceName, deploymentName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Get Package By Name operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Name operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginGettingPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getContainerUri() == null) {
+            throw new NullPointerException("parameters.ContainerUri");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginGettingPackageByNameAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/package" + "?";
+        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
+        if (parameters.isOverwriteExisting() != null) {
+            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Package By Slot operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Slot operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginGettingPackageBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginGettingPackageBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Get Package By Slot operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Slot operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginGettingPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getContainerUri() == null) {
+            throw new NullPointerException("parameters.ContainerUri");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentSlot", deploymentSlot);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginGettingPackageBySlotAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/package" + "?";
+        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
+        if (parameters.isOverwriteExisting() != null) {
+            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
@@ -1602,13 +1886,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1729,13 +2014,300 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName, final String resources) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginRebuildingRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName, resources);
+            }
+         });
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginRebuildingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleInstanceName == null) {
+            throw new NullPointerException("roleInstanceName");
+        }
+        if (resources == null) {
+            throw new NullPointerException("resources");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleInstanceName", roleInstanceName);
+            tracingParameters.put("resources", resources);
+            CloudTracing.enter(invocationId, this, "beginRebuildingRoleInstanceByDeploymentNameAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + roleInstanceName.trim() + "?";
+        url = url + "comp=rebuild";
+        url = url + "&" + "resources=" + URLEncoder.encode(resources.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentSlotAsync(final String serviceName, final String deploymentSlot, final String roleInstanceName, final String resources) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginRebuildingRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName, resources);
+            }
+         });
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginRebuildingRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentSlot == null) {
+            throw new NullPointerException("deploymentSlot");
+        }
+        if (roleInstanceName == null) {
+            throw new NullPointerException("roleInstanceName");
+        }
+        if (resources == null) {
+            throw new NullPointerException("resources");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentSlot", deploymentSlot);
+            tracingParameters.put("roleInstanceName", roleInstanceName);
+            tracingParameters.put("resources", resources);
+            CloudTracing.enter(invocationId, this, "beginRebuildingRoleInstanceByDeploymentSlotAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot.trim() + "/roleinstances/" + roleInstanceName.trim() + "?";
+        url = url + "comp=rebuild";
+        url = url + "&" + "resources=" + URLEncoder.encode(resources.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1859,13 +2431,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1986,13 +2559,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2124,13 +2698,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2295,13 +2870,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2457,13 +3033,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2708,13 +3285,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3039,13 +3617,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3326,13 +3905,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3527,13 +4107,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4465,10 +5046,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationStatusResponse response = client2.getDeploymentsOperations().deleteRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
-                return response;
-            }
+            OperationResponse response = client2.getDeploymentsOperations().beginDeletingRoleInstanceByBeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -4585,12 +5163,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4782,6 +5361,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     InetAddress vipInstance;
                                     vipInstance = InetAddress.getByName(vipElement.getTextContent());
                                     instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                }
+                                
+                                Element idleTimeoutInMinutesElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement != null && (idleTimeoutInMinutesElement.getTextContent() == null || idleTimeoutInMinutesElement.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance;
+                                    idleTimeoutInMinutesInstance = DatatypeConverter.parseInt(idleTimeoutInMinutesElement.getTextContent());
+                                    instanceEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
                                 }
                             }
                         }
@@ -5147,6 +5733,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     addressInstance = InetAddress.getByName(addressElement.getTextContent());
                                     publicIPInstance.setAddress(addressInstance);
                                 }
+                                
+                                Element idleTimeoutInMinutesElement2 = XmlUtility.getElementByTagNameNS(publicIPsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement2 != null && (idleTimeoutInMinutesElement2.getTextContent() == null || idleTimeoutInMinutesElement2.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance2;
+                                    idleTimeoutInMinutesInstance2 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement2.getTextContent());
+                                    publicIPInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
+                                }
                             }
                         }
                     }
@@ -5374,6 +5967,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                             }
                                         }
+                                        
+                                        Element idleTimeoutInMinutesElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                        if (idleTimeoutInMinutesElement3 != null && (idleTimeoutInMinutesElement3.getTextContent() == null || idleTimeoutInMinutesElement3.getTextContent().isEmpty() == true) == false) {
+                                            int idleTimeoutInMinutesInstance3;
+                                            idleTimeoutInMinutesInstance3 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement3.getTextContent());
+                                            inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance3);
+                                        }
                                     }
                                 }
                                 
@@ -5404,6 +6004,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             String nameInstance7;
                                             nameInstance7 = nameElement7.getTextContent();
                                             publicIPInstance2.setName(nameInstance7);
+                                        }
+                                        
+                                        Element idleTimeoutInMinutesElement4 = XmlUtility.getElementByTagNameNS(publicIPsElement2, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                        if (idleTimeoutInMinutesElement4 != null && (idleTimeoutInMinutesElement4.getTextContent() == null || idleTimeoutInMinutesElement4.getTextContent().isEmpty() == true) == false) {
+                                            int idleTimeoutInMinutesInstance4;
+                                            idleTimeoutInMinutesInstance4 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement4.getTextContent());
+                                            publicIPInstance2.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance4);
                                         }
                                     }
                                 }
@@ -6214,12 +6821,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -6411,6 +7019,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     InetAddress vipInstance;
                                     vipInstance = InetAddress.getByName(vipElement.getTextContent());
                                     instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                }
+                                
+                                Element idleTimeoutInMinutesElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement != null && (idleTimeoutInMinutesElement.getTextContent() == null || idleTimeoutInMinutesElement.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance;
+                                    idleTimeoutInMinutesInstance = DatatypeConverter.parseInt(idleTimeoutInMinutesElement.getTextContent());
+                                    instanceEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
                                 }
                             }
                         }
@@ -6776,6 +7391,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     addressInstance = InetAddress.getByName(addressElement.getTextContent());
                                     publicIPInstance.setAddress(addressInstance);
                                 }
+                                
+                                Element idleTimeoutInMinutesElement2 = XmlUtility.getElementByTagNameNS(publicIPsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement2 != null && (idleTimeoutInMinutesElement2.getTextContent() == null || idleTimeoutInMinutesElement2.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance2;
+                                    idleTimeoutInMinutesInstance2 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement2.getTextContent());
+                                    publicIPInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
+                                }
                             }
                         }
                     }
@@ -7003,6 +7625,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                             }
                                         }
+                                        
+                                        Element idleTimeoutInMinutesElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                        if (idleTimeoutInMinutesElement3 != null && (idleTimeoutInMinutesElement3.getTextContent() == null || idleTimeoutInMinutesElement3.getTextContent().isEmpty() == true) == false) {
+                                            int idleTimeoutInMinutesInstance3;
+                                            idleTimeoutInMinutesInstance3 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement3.getTextContent());
+                                            inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance3);
+                                        }
                                     }
                                 }
                                 
@@ -7033,6 +7662,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             String nameInstance7;
                                             nameInstance7 = nameElement7.getTextContent();
                                             publicIPInstance2.setName(nameInstance7);
+                                        }
+                                        
+                                        Element idleTimeoutInMinutesElement4 = XmlUtility.getElementByTagNameNS(publicIPsElement2, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                        if (idleTimeoutInMinutesElement4 != null && (idleTimeoutInMinutesElement4.getTextContent() == null || idleTimeoutInMinutesElement4.getTextContent().isEmpty() == true) == false) {
+                                            int idleTimeoutInMinutesInstance4;
+                                            idleTimeoutInMinutesInstance4 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement4.getTextContent());
+                                            publicIPInstance2.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance4);
                                         }
                                     }
                                 }
@@ -7789,14 +8425,20 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName Required. The name of your deployment.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Name operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public Future<OperationResponse> getPackageByNameAsync(final String serviceName, final String deploymentName, final DeploymentGetPackageParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<OperationStatusResponse> getPackageByNameAsync(final String serviceName, final String deploymentName, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getPackageByName(serviceName, deploymentName, parameters);
             }
          });
@@ -7817,30 +8459,30 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName Required. The name of your deployment.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Name operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public OperationResponse getPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
-        // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
-        }
-        if (deploymentName == null) {
-            throw new NullPointerException("deploymentName");
-        }
-        if (parameters == null) {
-            throw new NullPointerException("parameters");
-        }
-        if (parameters.getContainerUri() == null) {
-            throw new NullPointerException("parameters.ContainerUri");
-        }
-        
-        // Tracing
+    public OperationStatusResponse getPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
@@ -7851,63 +8493,52 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "getPackageByNameAsync", tracingParameters);
         }
-        
-        // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/package" + "?";
-        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
-        if (parameters.isOverwriteExisting() != null) {
-            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
-        }
-        String baseUrl = this.getClient().getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        
-        // Create HTTP transport objects
-        HttpGet httpRequest = new HttpGet(url);
-        
-        // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            OperationResponse response = client2.getDeploymentsOperations().beginGettingPackageByNameAsync(serviceName, deploymentName, parameters).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
             return result;
         } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -7927,14 +8558,20 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot Required. The deployment slot.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Slot operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public Future<OperationResponse> getPackageBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentGetPackageParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<OperationStatusResponse> getPackageBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getPackageBySlot(serviceName, deploymentSlot, parameters);
             }
          });
@@ -7955,27 +8592,30 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot Required. The deployment slot.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Slot operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
     @Override
-    public OperationResponse getPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
-        // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
-        }
-        if (parameters == null) {
-            throw new NullPointerException("parameters");
-        }
-        if (parameters.getContainerUri() == null) {
-            throw new NullPointerException("parameters.ContainerUri");
-        }
-        
-        // Tracing
+    public OperationStatusResponse getPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
@@ -7986,63 +8626,52 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "getPackageBySlotAsync", tracingParameters);
         }
-        
-        // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/package" + "?";
-        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
-        if (parameters.isOverwriteExisting() != null) {
-            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
-        }
-        String baseUrl = this.getClient().getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        
-        // Create HTTP transport objects
-        HttpGet httpRequest = new HttpGet(url);
-        
-        // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            OperationResponse response = client2.getDeploymentsOperations().beginGettingPackageBySlotAsync(serviceName, deploymentSlot, parameters).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
             return result;
         } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8265,6 +8894,282 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginRebootingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> rebuildRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName, final String resources) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return rebuildRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName, resources);
+            }
+         });
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse rebuildRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleInstanceName", roleInstanceName);
+            tracingParameters.put("resources", resources);
+            CloudTracing.enter(invocationId, this, "rebuildRoleInstanceByDeploymentNameAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginRebuildingRoleInstanceByDeploymentNameAsync(serviceName, deploymentName, roleInstanceName, resources).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> rebuildRoleInstanceByDeploymentSlotAsync(final String serviceName, final String deploymentSlot, final String roleInstanceName, final String resources) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return rebuildRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName, resources);
+            }
+         });
+    }
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse rebuildRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentSlot", deploymentSlot);
+            tracingParameters.put("roleInstanceName", roleInstanceName);
+            tracingParameters.put("resources", resources);
+            CloudTracing.enter(invocationId, this, "rebuildRoleInstanceByDeploymentSlotAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginRebuildingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName, resources).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -8664,13 +9569,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -8828,13 +9734,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;

@@ -47,6 +47,26 @@ public class DatabaseCopyCreateParameters {
         this.isContinuous = isContinuousValue;
     }
     
+    private boolean isOfflineSecondary;
+    
+    /**
+    * Optional. Gets a value that indicates whether it is an offline secondary
+    * copy.
+    * @return The IsOfflineSecondary value.
+    */
+    public boolean isOfflineSecondary() {
+        return this.isOfflineSecondary;
+    }
+    
+    /**
+    * Optional. Gets a value that indicates whether it is an offline secondary
+    * copy.
+    * @param isOfflineSecondaryValue The IsOfflineSecondary value.
+    */
+    public void setIsOfflineSecondary(final boolean isOfflineSecondaryValue) {
+        this.isOfflineSecondary = isOfflineSecondaryValue;
+    }
+    
     private String partnerDatabase;
     
     /**

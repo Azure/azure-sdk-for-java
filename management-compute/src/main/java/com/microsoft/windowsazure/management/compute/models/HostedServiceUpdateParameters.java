@@ -113,6 +113,26 @@ public class HostedServiceUpdateParameters {
         this.label = labelValue;
     }
     
+    private String reverseDnsFqdn;
+    
+    /**
+    * Optional. Dns address to which the cloud service's IP address resolves
+    * when queried using a reverse Dns query.
+    * @return The ReverseDnsFqdn value.
+    */
+    public String getReverseDnsFqdn() {
+        return this.reverseDnsFqdn;
+    }
+    
+    /**
+    * Optional. Dns address to which the cloud service's IP address resolves
+    * when queried using a reverse Dns query.
+    * @param reverseDnsFqdnValue The ReverseDnsFqdn value.
+    */
+    public void setReverseDnsFqdn(final String reverseDnsFqdnValue) {
+        this.reverseDnsFqdn = reverseDnsFqdnValue;
+    }
+    
     /**
     * Initializes a new instance of the HostedServiceUpdateParameters class.
     *

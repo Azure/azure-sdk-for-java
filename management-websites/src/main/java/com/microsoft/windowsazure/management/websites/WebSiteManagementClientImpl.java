@@ -30,6 +30,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.ConnectionStringType;
+import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -137,16 +139,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
-    private ServerFarmOperations serverFarms;
+    private WebHostingPlanOperations webHostingPlans;
     
     /**
-    * Operations for managing the server farm in a web space.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    * @return The ServerFarmsOperations value.
+    * Operations for managing web hosting plans beneath your subscription.
+    * @return The WebHostingPlansOperations value.
     */
-    public ServerFarmOperations getServerFarmsOperations() {
-        return this.serverFarms;
+    public WebHostingPlanOperations getWebHostingPlansOperations() {
+        return this.webHostingPlans;
     }
     
     private WebSiteOperations webSites;
@@ -179,10 +179,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
-        this.serverFarms = new ServerFarmOperationsImpl(this);
+        this.webHostingPlans = new WebHostingPlanOperationsImpl(this);
         this.webSites = new WebSiteOperationsImpl(this);
         this.webSpaces = new WebSpaceOperationsImpl(this);
-        this.apiVersion = "2013-08-01";
+        this.apiVersion = "2014-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -215,7 +215,6 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
@@ -371,12 +370,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -653,13 +653,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -751,13 +752,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -795,5 +797,81 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
+    }
+    
+    /**
+    * Parse enum values for type ConnectionStringType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ConnectionStringType parseConnectionStringType(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ConnectionStringType.MySql;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlServer;
+        }
+        if ("2".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlAzure;
+        }
+        if ("3".equalsIgnoreCase(value)) {
+            return ConnectionStringType.Custom;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ConnectionStringType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String connectionStringTypeToString(ConnectionStringType value) {
+        if (value == ConnectionStringType.MySql) {
+            return "0";
+        }
+        if (value == ConnectionStringType.SqlServer) {
+            return "1";
+        }
+        if (value == ConnectionStringType.SqlAzure) {
+            return "2";
+        }
+        if (value == ConnectionStringType.Custom) {
+            return "3";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type ManagedPipelineMode.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ManagedPipelineMode parseManagedPipelineMode(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Integrated;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Classic;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ManagedPipelineMode to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String managedPipelineModeToString(ManagedPipelineMode value) {
+        if (value == ManagedPipelineMode.Integrated) {
+            return "0";
+        }
+        if (value == ManagedPipelineMode.Classic) {
+            return "1";
+        }
+        throw new IllegalArgumentException("value");
     }
 }

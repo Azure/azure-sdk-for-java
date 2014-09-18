@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 /**
@@ -72,6 +73,26 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     * An extension available to add to your virtual machine.
     */
     public static class ResourceExtension {
+        private String companyName;
+        
+        /**
+        * Optional. String property containing the name of the
+        * company/organization who publishes the extension.
+        * @return The CompanyName value.
+        */
+        public String getCompanyName() {
+            return this.companyName;
+        }
+        
+        /**
+        * Optional. String property containing the name of the
+        * company/organization who publishes the extension.
+        * @param companyNameValue The CompanyName value.
+        */
+        public void setCompanyName(final String companyNameValue) {
+            this.companyName = companyNameValue;
+        }
+        
         private String description;
         
         /**
@@ -301,6 +322,30 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
             this.publicConfigurationSchema = publicConfigurationSchemaValue;
         }
         
+        private Calendar publishedDate;
+        
+        /**
+        * Optional. Publisher can set it to any arbitrary date, and this is
+        * only for display purpose. If not specified by publisher, Azure will
+        * automatically assign the UTC time when the extension request was
+        * received.
+        * @return The PublishedDate value.
+        */
+        public Calendar getPublishedDate() {
+            return this.publishedDate;
+        }
+        
+        /**
+        * Optional. Publisher can set it to any arbitrary date, and this is
+        * only for display purpose. If not specified by publisher, Azure will
+        * automatically assign the UTC time when the extension request was
+        * received.
+        * @param publishedDateValue The PublishedDate value.
+        */
+        public void setPublishedDate(final Calendar publishedDateValue) {
+            this.publishedDate = publishedDateValue;
+        }
+        
         private String publisher;
         
         /**
@@ -367,6 +412,26 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         */
         public void setSampleConfig(final String sampleConfigValue) {
             this.sampleConfig = sampleConfigValue;
+        }
+        
+        private String supportedOS;
+        
+        /**
+        * Optional. String property indicating the OS which the extension
+        * supports. Current values are 'Windows' or 'Linux'.
+        * @return The SupportedOS value.
+        */
+        public String getSupportedOS() {
+            return this.supportedOS;
+        }
+        
+        /**
+        * Optional. String property indicating the OS which the extension
+        * supports. Current values are 'Windows' or 'Linux'.
+        * @param supportedOSValue The SupportedOS value.
+        */
+        public void setSupportedOS(final String supportedOSValue) {
+            this.supportedOS = supportedOSValue;
         }
         
         private String version;

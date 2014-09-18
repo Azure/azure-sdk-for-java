@@ -202,13 +202,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -223,10 +224,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         createStorageServiceInputElement.appendChild(serviceNameElement);
         
-        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
-        createStorageServiceInputElement.appendChild(labelElement);
-        
         if (parameters.getDescription() != null) {
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
@@ -239,11 +236,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             createStorageServiceInputElement.appendChild(emptyElement);
         }
         
-        if (parameters.getLocation() != null) {
-            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
-            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
-            createStorageServiceInputElement.appendChild(locationElement);
-        }
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
+        createStorageServiceInputElement.appendChild(labelElement);
         
         if (parameters.getAffinityGroup() != null) {
             Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
@@ -251,9 +246,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             createStorageServiceInputElement.appendChild(affinityGroupElement);
         }
         
-        Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-        geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
-        createStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
+        if (parameters.getLocation() != null) {
+            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
+            createStorageServiceInputElement.appendChild(locationElement);
+        }
         
         if (parameters.getExtendedProperties() != null) {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
@@ -272,6 +269,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
             createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
+        }
+        
+        if (parameters.getAccountType() != null) {
+            Element accountTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountType");
+            accountTypeElement.appendChild(requestDoc.createTextNode(parameters.getAccountType()));
+            createStorageServiceInputElement.appendChild(accountTypeElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -389,12 +392,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -646,12 +650,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -759,12 +764,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -869,13 +875,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         }
                     }
                     
-                    Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                    if (geoReplicationEnabledElement != null) {
-                        boolean geoReplicationEnabledInstance;
-                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
-                        storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
-                    }
-                    
                     Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                     if (geoPrimaryRegionElement != null) {
                         String geoPrimaryRegionInstance;
@@ -909,6 +908,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         GeoRegionStatus statusOfSecondaryInstance;
                         statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
                         storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                    }
+                    
+                    Element accountTypeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AccountType");
+                    if (accountTypeElement != null) {
+                        String accountTypeInstance;
+                        accountTypeInstance = accountTypeElement.getTextContent();
+                        storageServicePropertiesInstance.setAccountType(accountTypeInstance);
                     }
                 }
                 
@@ -1005,12 +1011,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1144,12 +1151,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1256,13 +1264,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             }
                         }
                         
-                        Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                        if (geoReplicationEnabledElement != null) {
-                            boolean geoReplicationEnabledInstance;
-                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
-                            storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
-                        }
-                        
                         Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                         if (geoPrimaryRegionElement != null) {
                             String geoPrimaryRegionInstance;
@@ -1296,6 +1297,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             GeoRegionStatus statusOfSecondaryInstance;
                             statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
                             storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                        }
+                        
+                        Element accountTypeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AccountType");
+                        if (accountTypeElement != null) {
+                            String accountTypeInstance;
+                            accountTypeInstance = accountTypeElement.getTextContent();
+                            storageServicePropertiesInstance.setAccountType(accountTypeInstance);
                         }
                     }
                     
@@ -1400,13 +1408,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1597,13 +1606,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1632,12 +1642,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             updateStorageServiceInputElement.appendChild(labelElement);
         }
         
-        if (parameters.isGeoReplicationEnabled() != null) {
-            Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-            geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
-            updateStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
-        }
-        
         if (parameters.getExtendedProperties() != null) {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
             for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
@@ -1655,6 +1659,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
             updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
+        }
+        
+        if (parameters.getAccountType() != null) {
+            Element accountTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountType");
+            accountTypeElement.appendChild(requestDoc.createTextNode(parameters.getAccountType()));
+            updateStorageServiceInputElement.appendChild(accountTypeElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);

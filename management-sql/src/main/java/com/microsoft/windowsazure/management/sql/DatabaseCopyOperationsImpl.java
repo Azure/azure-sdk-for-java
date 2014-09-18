@@ -199,6 +199,10 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isContinuous()).toLowerCase()));
         serviceResourceElement.appendChild(isContinuousElement);
         
+        Element isOfflineSecondaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsOfflineSecondary");
+        isOfflineSecondaryElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isOfflineSecondary()).toLowerCase()));
+        serviceResourceElement.appendChild(isOfflineSecondaryElement);
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
@@ -333,6 +337,20 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                     float percentCompleteInstance;
                     percentCompleteInstance = DatatypeConverter.parseFloat(percentCompleteElement.getTextContent());
                     serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                }
+                
+                Element isOfflineSecondaryElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsOfflineSecondary");
+                if (isOfflineSecondaryElement2 != null) {
+                    boolean isOfflineSecondaryInstance;
+                    isOfflineSecondaryInstance = DatatypeConverter.parseBoolean(isOfflineSecondaryElement2.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsOfflineSecondary(isOfflineSecondaryInstance);
+                }
+                
+                Element isTerminationAllowedElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsTerminationAllowed");
+                if (isTerminationAllowedElement != null) {
+                    boolean isTerminationAllowedInstance;
+                    isTerminationAllowedInstance = DatatypeConverter.parseBoolean(isTerminationAllowedElement.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsTerminationAllowed(isTerminationAllowedInstance);
                 }
                 
                 Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
@@ -699,6 +717,20 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                     serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                 }
                 
+                Element isOfflineSecondaryElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsOfflineSecondary");
+                if (isOfflineSecondaryElement != null) {
+                    boolean isOfflineSecondaryInstance;
+                    isOfflineSecondaryInstance = DatatypeConverter.parseBoolean(isOfflineSecondaryElement.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsOfflineSecondary(isOfflineSecondaryInstance);
+                }
+                
+                Element isTerminationAllowedElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsTerminationAllowed");
+                if (isTerminationAllowedElement != null) {
+                    boolean isTerminationAllowedInstance;
+                    isTerminationAllowedInstance = DatatypeConverter.parseBoolean(isTerminationAllowedElement.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsTerminationAllowed(isTerminationAllowedInstance);
+                }
+                
                 Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
@@ -936,6 +968,20 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                         float percentCompleteInstance;
                         percentCompleteInstance = DatatypeConverter.parseFloat(percentCompleteElement.getTextContent());
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                    }
+                    
+                    Element isOfflineSecondaryElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsOfflineSecondary");
+                    if (isOfflineSecondaryElement != null) {
+                        boolean isOfflineSecondaryInstance;
+                        isOfflineSecondaryInstance = DatatypeConverter.parseBoolean(isOfflineSecondaryElement.getTextContent().toLowerCase());
+                        serviceResourceInstance.setIsOfflineSecondary(isOfflineSecondaryInstance);
+                    }
+                    
+                    Element isTerminationAllowedElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsTerminationAllowed");
+                    if (isTerminationAllowedElement != null) {
+                        boolean isTerminationAllowedInstance;
+                        isTerminationAllowedInstance = DatatypeConverter.parseBoolean(isTerminationAllowedElement.getTextContent().toLowerCase());
+                        serviceResourceInstance.setIsTerminationAllowed(isTerminationAllowedInstance);
                     }
                     
                     Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
@@ -1219,6 +1265,20 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                     float percentCompleteInstance;
                     percentCompleteInstance = DatatypeConverter.parseFloat(percentCompleteElement.getTextContent());
                     serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                }
+                
+                Element isOfflineSecondaryElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsOfflineSecondary");
+                if (isOfflineSecondaryElement != null) {
+                    boolean isOfflineSecondaryInstance;
+                    isOfflineSecondaryInstance = DatatypeConverter.parseBoolean(isOfflineSecondaryElement.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsOfflineSecondary(isOfflineSecondaryInstance);
+                }
+                
+                Element isTerminationAllowedElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsTerminationAllowed");
+                if (isTerminationAllowedElement != null) {
+                    boolean isTerminationAllowedInstance;
+                    isTerminationAllowedInstance = DatatypeConverter.parseBoolean(isTerminationAllowedElement.getTextContent().toLowerCase());
+                    serviceResourceInstance.setIsTerminationAllowed(isTerminationAllowedInstance);
                 }
                 
                 Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");

@@ -452,8 +452,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private ArrayList<VirtualIPAddress> virtualIPAddresses;
         
         /**
-        * Optional. The virtual IP addresses that are specified for
-        * thedeployment.
+        * Optional. The virtual IP addresses that are specified for the
+        * deployment.
         * @return The VirtualIPAddresses value.
         */
         public ArrayList<VirtualIPAddress> getVirtualIPAddresses() {
@@ -461,8 +461,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional. The virtual IP addresses that are specified for
-        * thedeployment.
+        * Optional. The virtual IP addresses that are specified for the
+        * deployment.
         * @param virtualIPAddressesValue The VirtualIPAddresses value.
         */
         public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue) {

@@ -67,6 +67,24 @@ public class InputEndpoint {
         this.endpointAcl = endpointAclValue;
     }
     
+    private Integer idleTimeoutInMinutes;
+    
+    /**
+    * Optional. The idle timeout in minutes for this endpoint.
+    * @return The IdleTimeoutInMinutes value.
+    */
+    public Integer getIdleTimeoutInMinutes() {
+        return this.idleTimeoutInMinutes;
+    }
+    
+    /**
+    * Optional. The idle timeout in minutes for this endpoint.
+    * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+    */
+    public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+        this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+    }
+    
     private String loadBalancedEndpointSetName;
     
     /**

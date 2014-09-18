@@ -238,7 +238,6 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
@@ -384,6 +383,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

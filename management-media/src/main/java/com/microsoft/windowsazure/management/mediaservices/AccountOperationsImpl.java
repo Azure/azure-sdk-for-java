@@ -187,8 +187,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -197,6 +197,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -369,8 +370,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -379,6 +380,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -474,8 +476,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -484,6 +486,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -642,8 +645,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -652,6 +655,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -812,8 +816,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim() + "/AccountKeys/" + keyType + "/Regenerate";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -822,6 +826,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);

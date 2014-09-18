@@ -367,6 +367,94 @@ public interface DeploymentOperations {
     Future<OperationResponse> beginDeletingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentDeleteRoleInstanceParameters parameters);
     
     /**
+    * The Get Package By Name operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Name operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginGettingPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * The Get Package By Name operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Name operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginGettingPackageByNameAsync(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters);
+    
+    /**
+    * The Get Package By Slot operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Slot operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginGettingPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * The Get Package By Slot operation retrieves a cloud service package for a
+    * deployment and stores the package files in Azure Blob storage. The
+    * following package files are placed in storage: the cloud service
+    * configuration file (.cscfg), providing configuration settings for the
+    * cloud service and individual roles, including the number of role
+    * instances; and the service package (.cspkg), containing the application
+    * code and the service definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package By
+    * Slot operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginGettingPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
+    
+    /**
     * The Begin Rebooting Role Instance By Deployment Name operation requests a
     * reboot of a role instance that is running in a deployment. This
     * operation is an asynchronous operation. To determine whether the
@@ -449,6 +537,102 @@ public interface DeploymentOperations {
     * request ID.
     */
     Future<OperationResponse> beginRebootingRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginRebuildingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws IOException, ServiceException;
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName, String resources);
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginRebuildingRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws IOException, ServiceException;
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentSlotAsync(String serviceName, String deploymentSlot, String roleInstanceName, String resources);
     
     /**
     * The Begin Reimaging Role Instance By Deployment Name operation requests a
@@ -1586,14 +1770,28 @@ public interface DeploymentOperations {
     * @param deploymentName Required. The name of your deployment.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Name operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
-    OperationResponse getPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    OperationStatusResponse getPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Get Package By Name operation retrieves a cloud service package for a
@@ -1610,10 +1808,16 @@ public interface DeploymentOperations {
     * @param deploymentName Required. The name of your deployment.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Name operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
-    Future<OperationResponse> getPackageByNameAsync(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters);
+    Future<OperationStatusResponse> getPackageByNameAsync(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters);
     
     /**
     * The Get Package By Slot operation retrieves a cloud service package for a
@@ -1630,14 +1834,28 @@ public interface DeploymentOperations {
     * @param deploymentSlot Required. The deployment slot.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Slot operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
-    OperationResponse getPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    OperationStatusResponse getPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Get Package By Slot operation retrieves a cloud service package for a
@@ -1654,10 +1872,16 @@ public interface DeploymentOperations {
     * @param deploymentSlot Required. The deployment slot.
     * @param parameters Required. Parameters supplied to the Get Package By
     * Slot operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
-    Future<OperationResponse> getPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
+    Future<OperationStatusResponse> getPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
     
     /**
     * The Reboot Role Instance By Deployment Name operation requests a reboot
@@ -1782,6 +2006,142 @@ public interface DeploymentOperations {
     * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse rebuildRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> rebuildRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName, String resources);
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse rebuildRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Rebuild Role Instance asynchronous operation reinstalls the operating
+    * system on instances of web roles or worker roles and initializes the
+    * storage resources that are used by them. If you do not want to
+    * initialize storage resources, you can use Reimage Role Instance
+    * athttp://msdn.microsoft.com/en-us/library/azure/gg441292.aspx.For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests at
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460791.aspx.
+    * (see http://msdn.microsoft.com/en-us/library/azure/dn627518.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
+    * @param resources Required. Specifies the resources that must be rebuilt.
+    * Currently, the only supported value is 'allLocalDrives'.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> rebuildRoleInstanceByDeploymentSlotAsync(String serviceName, String deploymentSlot, String roleInstanceName, String resources);
     
     /**
     * The Reimage Role Instance By Deployment Name operation requests a reimage

@@ -304,13 +304,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -461,6 +462,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             endpointAclElement.appendChild(rulesSequenceElement);
                         }
                     }
+                    
+                    if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
+                        Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                        idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
+                        inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
+                    }
                 }
                 provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
             }
@@ -491,6 +498,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                         nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
                         publicIPElement.appendChild(nameElement2);
+                    }
+                    
+                    if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
+                        Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                        idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
+                        publicIPElement.appendChild(idleTimeoutInMinutesElement2);
                     }
                 }
                 provisioningConfigurationElement.appendChild(publicIPsSequenceElement);
@@ -835,13 +848,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1090,13 +1104,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1249,6 +1264,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 endpointAclElement.appendChild(rulesSequenceElement);
                             }
                         }
+                        
+                        if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
+                            Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                            idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
+                            inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
+                        }
                     }
                     configurationSetElement.appendChild(inputEndpointsSequenceElement);
                 }
@@ -1279,6 +1300,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                             nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
                             publicIPElement.appendChild(nameElement2);
+                        }
+                        
+                        if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
+                            Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                            idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
+                            publicIPElement.appendChild(idleTimeoutInMinutesElement2);
                         }
                     }
                     configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -1887,13 +1914,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1913,7 +1941,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         deploymentElement.appendChild(deploymentSlotElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
+        labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
         deploymentElement.appendChild(labelElement);
         
         Element roleListSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleList");
@@ -2073,6 +2101,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     endpointAclElement.appendChild(rulesSequenceElement);
                                 }
                             }
+                            
+                            if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
+                                Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
+                                inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
+                            }
                         }
                         configurationSetElement.appendChild(inputEndpointsSequenceElement);
                     }
@@ -2103,6 +2137,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                                 nameElement3.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
                                 publicIPElement.appendChild(nameElement3);
+                            }
+                            
+                            if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
+                                Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
+                                publicIPElement.appendChild(idleTimeoutInMinutesElement2);
                             }
                         }
                         configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -2717,12 +2757,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2838,13 +2879,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
@@ -2976,13 +3018,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3132,13 +3175,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3292,13 +3336,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
@@ -3426,13 +3471,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3664,13 +3710,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3823,6 +3870,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 endpointAclElement.appendChild(rulesSequenceElement);
                             }
                         }
+                        
+                        if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
+                            Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                            idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
+                            inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
+                        }
                     }
                     configurationSetElement.appendChild(inputEndpointsSequenceElement);
                 }
@@ -3853,6 +3906,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                             nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
                             publicIPElement.appendChild(nameElement2);
+                        }
+                        
+                        if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
+                            Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                            idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
+                            publicIPElement.appendChild(idleTimeoutInMinutesElement2);
                         }
                     }
                     configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -4058,12 +4117,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
         }
         
-        if (parameters.getAvailabilitySetName() != null) {
-            Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
-            availabilitySetNameElement.appendChild(requestDoc.createTextNode(parameters.getAvailabilitySetName()));
-            persistentVMRoleElement.appendChild(availabilitySetNameElement);
-        }
-        
         if (parameters.getResourceExtensionReferences() != null) {
             Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
             for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
@@ -4128,6 +4181,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+        }
+        
+        if (parameters.getAvailabilitySetName() != null) {
+            Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
+            availabilitySetNameElement.appendChild(requestDoc.createTextNode(parameters.getAvailabilitySetName()));
+            persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
         if (parameters.getDataVirtualHardDisks() != null) {
@@ -4374,13 +4433,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4507,6 +4567,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
                     loadBalancerNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerName()));
                     inputEndpointElement.appendChild(loadBalancerNameElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getIdleTimeoutInMinutes() != null) {
+                    Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                    idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getIdleTimeoutInMinutes())));
+                    inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
                 }
             }
         }
@@ -5316,12 +5382,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5556,6 +5623,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                 }
+                                
+                                Element idleTimeoutInMinutesElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement != null && (idleTimeoutInMinutesElement.getTextContent() == null || idleTimeoutInMinutesElement.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance;
+                                    idleTimeoutInMinutesInstance = DatatypeConverter.parseInt(idleTimeoutInMinutesElement.getTextContent());
+                                    inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
+                                }
                             }
                         }
                         
@@ -5586,6 +5660,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     String nameInstance2;
                                     nameInstance2 = nameElement2.getTextContent();
                                     publicIPInstance.setName(nameInstance2);
+                                }
+                                
+                                Element idleTimeoutInMinutesElement2 = XmlUtility.getElementByTagNameNS(publicIPsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
+                                if (idleTimeoutInMinutesElement2 != null && (idleTimeoutInMinutesElement2.getTextContent() == null || idleTimeoutInMinutesElement2.getTextContent().isEmpty() == true) == false) {
+                                    int idleTimeoutInMinutesInstance2;
+                                    idleTimeoutInMinutesInstance2 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement2.getTextContent());
+                                    publicIPInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
                                 }
                             }
                         }
@@ -6032,12 +6113,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;

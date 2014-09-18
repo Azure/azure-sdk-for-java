@@ -63,24 +63,6 @@ public class RecoverDatabaseOperation extends SqlModelCommon {
         this.sourceDatabaseName = sourceDatabaseNameValue;
     }
     
-    private String sourceServerName;
-    
-    /**
-    * Optional. Gets the name of the source Azure SQL Database Server.
-    * @return The SourceServerName value.
-    */
-    public String getSourceServerName() {
-        return this.sourceServerName;
-    }
-    
-    /**
-    * Optional. Gets the name of the source Azure SQL Database Server.
-    * @param sourceServerNameValue The SourceServerName value.
-    */
-    public void setSourceServerName(final String sourceServerNameValue) {
-        this.sourceServerName = sourceServerNameValue;
-    }
-    
     private String targetDatabaseName;
     
     /**
@@ -97,5 +79,23 @@ public class RecoverDatabaseOperation extends SqlModelCommon {
     */
     public void setTargetDatabaseName(final String targetDatabaseNameValue) {
         this.targetDatabaseName = targetDatabaseNameValue;
+    }
+    
+    private String targetServerName;
+    
+    /**
+    * Optional. Gets the name of the target Azure SQL Database Server.
+    * @return The TargetServerName value.
+    */
+    public String getTargetServerName() {
+        return this.targetServerName;
+    }
+    
+    /**
+    * Optional. Gets the name of the target Azure SQL Database Server.
+    * @param targetServerNameValue The TargetServerName value.
+    */
+    public void setTargetServerName(final String targetServerNameValue) {
+        this.targetServerName = targetServerNameValue;
     }
 }
