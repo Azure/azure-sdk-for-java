@@ -29,6 +29,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.HttpStatus;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
@@ -105,18 +106,14 @@ public class MockIntegrationTestBase {
         ServiceResponseFilter responseFilter = null;
         
         if (isMocked) {
-            URL recordFileUrl = MockIntegrationTestBase.class.getClassLoader().getResource(recordFolder + currentTestName + ".json");
-            File recordFile = new File(recordFileUrl.getPath());
+            File recordFile = getRecordFile();
             ObjectMapper mapper = new ObjectMapper();
             context = mapper.readValue(recordFile, new TypeReference<LinkedList<Map<String, String>>>() {});
+            mockBaseUri();
 
             requestFilter = new ServiceRequestFilter() {
                 @Override
-                public void filter(ServiceRequestContext request) {
-                    if (currentTestName == null) {
-                        currentTestName = name.getMethodName();
-                    }
-                    
+                public void filter(ServiceRequestContext request) {                    
                     try {
                         String url = request.getURI().toString();
                         for (Entry<String, String> rule : regexRules.entrySet()) {
@@ -131,7 +128,6 @@ public class MockIntegrationTestBase {
                     }
                 }
             };
-            mockBaseUri();
         }
         
         if (isRecording) {
@@ -151,21 +147,16 @@ public class MockIntegrationTestBase {
                 public void filter(ServiceRequestContext request, ServiceResponseContext response) {
                     Map<String, String> responseData = new HashMap<String, String>();
                     try {
-                        Field f = response.getClass().getDeclaredField("clientResponse");
-                        f.setAccessible(true);
-                        HttpResponse clientResponse = (HttpResponse) f.get(response);
                         responseData.put("StatusCode", Integer.toString(response.getStatus()));
-                        for (Header header : clientResponse.getAllHeaders()) {
-                            responseData.put(header.getName(), header.getValue());
+                        extractResponseData(responseData, response);
+                        
+                        // remove pre-added header if this is a waiting or redirection
+                        if (responseData.get("Body").contains("<Status>InProgress</Status>") ||
+                                Integer.parseInt(responseData.get("StatusCode")) == HttpStatus.SC_TEMPORARY_REDIRECT) {
+                            context.removeLast();
+                        } else {
+                            context.add(responseData);
                         }
-                        
-                        BufferedHttpEntity entity = new BufferedHttpEntity(clientResponse.getEntity());
-                        responseData.put("Body", IOUtils.toString(entity.getContent()));
-                        
-                        // Set entity to be buffered otherwise it can't be consumed again
-                        clientResponse.setEntity(entity);
-                        
-                        context.add(responseData);
                     } catch (Exception e) {
                         Log.warn("Fail to register recorder. " + e.getMessage());
                     }
@@ -179,11 +170,7 @@ public class MockIntegrationTestBase {
         if (isRecording) {
             // Write current context to file
             ObjectMapper mapper = new ObjectMapper();
-            URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(".");
-            File folderFile = new File(folderUrl.getPath() + recordFolder);
-            if (!folderFile.exists()) folderFile.mkdir();
-            String filePath = folderFile.getPath() + "/" + currentTestName + ".json";
-            File recordFile = new File(filePath);
+            File recordFile = getRecordFile();
             recordFile.createNewFile();
             mapper.writeValue(recordFile, context);
         }
@@ -193,6 +180,29 @@ public class MockIntegrationTestBase {
         for (Callable<?> func : funcs) {
             func.call();
         }
+    }
+    
+    private static void extractResponseData(Map<String, String> responseData, ServiceResponseContext response) throws Exception {
+        Field f = response.getClass().getDeclaredField("clientResponse");
+        f.setAccessible(true);
+        HttpResponse clientResponse = (HttpResponse) f.get(response);
+        for (Header header : clientResponse.getAllHeaders()) {
+            responseData.put(header.getName(), header.getValue());
+        }
+        
+        BufferedHttpEntity entity = new BufferedHttpEntity(clientResponse.getEntity());
+        responseData.put("Body", IOUtils.toString(entity.getContent()));
+        
+        // Set entity to be buffered otherwise it can't be consumed again
+        clientResponse.setEntity(entity);
+    }
+    
+    private static File getRecordFile() {
+        URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(".");
+        File folderFile = new File(folderUrl.getPath() + recordFolder);
+        if (!folderFile.exists()) folderFile.mkdir();
+        String filePath = folderFile.getPath() + "/" + currentTestName + ".json";
+        return new File(filePath);
     }
     
     private static void mockBaseUri() throws Exception {

@@ -17,10 +17,14 @@ package com.microsoft.windowsazure.management.compute;
 
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.management.compute.models.*;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
+import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
 
 public class OperationSystemOperationsTests extends ComputeManagementIntegrationTestBase {
     @BeforeClass
@@ -44,6 +48,16 @@ public class OperationSystemOperationsTests extends ComputeManagementIntegration
         }
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listOperationSystemFamiliesSuccess() throws Exception {
         //Arrange

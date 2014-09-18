@@ -21,7 +21,9 @@ import java.util.ArrayList;
 
 import com.microsoft.windowsazure.management.compute.models.*;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,6 +33,16 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementInt
         createComputeManagementClient();
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listVirtualMachineExtensionSuccess() throws Exception {        
         VirtualMachineExtensionListResponse virtualMachineExtensionListResponse = computeManagementClient.getVirtualMachineExtensionsOperations().list();

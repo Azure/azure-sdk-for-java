@@ -31,8 +31,10 @@ import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -64,6 +66,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //create management service for accessing management operation
         createManagementClient();
         
+        setupTest("VirtualMachineOperationsTests");
         hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
@@ -72,14 +75,27 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
+        resetTest();
     }
 
     @AfterClass   
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest("VirtualMachineOperationsTestsCleanup");
         cleanHostedService();
         cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
+        resetTest();
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     private OSVirtualHardDisk createOSVirtualHardDisk(String osVHarddiskName, String operatingSystemName, URI mediaLinkUriValue, String sourceImageName)
@@ -501,7 +517,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         
         try {
-            Thread.sleep(3*60*1000);
+            if (!isMocked) {
+                Thread.sleep(3*60*1000);
+            }
         } catch (InterruptedException e) {
         }
     }
