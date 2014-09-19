@@ -65,10 +65,12 @@ public class MockIntegrationTestBase {
     private static LinkedList<Map<String, String>> context;
     
     @ClassRule
-    @Rule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8043);
+
     @Rule
-    public static TestName name = new TestName();
+    public WireMockClassRule instanceRule = wireMockRule;
+    @Rule
+    public TestName name = new TestName();
     private static String recordFolder = "session-records/";
     private static String currentTestName = null;
     
@@ -89,8 +91,8 @@ public class MockIntegrationTestBase {
         regexRules.put(regex, null);
     }
     
-    protected static void setupTest() throws Exception {
-        setupTest(null);
+    protected void setupTest() throws Exception {
+        setupTest(name.getMethodName());
     }
     
     protected static void setupTest(String testName) throws Exception {
@@ -99,7 +101,7 @@ public class MockIntegrationTestBase {
             func.call();
         }
         if (currentTestName == null) {
-            currentTestName = testName != null ? testName : name.getMethodName();
+            currentTestName = testName;
         }
         
         ServiceRequestFilter requestFilter = null;

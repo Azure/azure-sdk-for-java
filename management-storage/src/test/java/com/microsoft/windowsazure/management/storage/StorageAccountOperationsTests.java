@@ -160,7 +160,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         //Assert  
         Assert.assertEquals(200, storageAccountGetKeysResponse.getStatusCode());
         Assert.assertNotNull(storageAccountGetKeysResponse.getRequestId());
-        Assert.assertFalse(storageAccountGetKeysResponse.getPrimaryKey().equals(storageAccountRegenerateKeysResponse.getPrimaryKey())); 
+        Assert.assertNotEquals(storageAccountGetKeysResponse.getPrimaryKey(), storageAccountRegenerateKeysResponse.getPrimaryKey()); 
     } 
     
     @Test
