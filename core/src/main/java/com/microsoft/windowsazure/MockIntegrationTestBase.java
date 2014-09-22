@@ -96,12 +96,15 @@ public class MockIntegrationTestBase {
     }
     
     protected static void setupTest(String testName) throws Exception {
+        if (currentTestName == null) {
+            currentTestName = testName;
+        } else {
+            return;
+        }
+        
         WireMock.reset();
         for (Callable<?> func : funcs) {
             func.call();
-        }
-        if (currentTestName == null) {
-            currentTestName = testName;
         }
         
         ServiceRequestFilter requestFilter = null;
@@ -140,7 +143,7 @@ public class MockIntegrationTestBase {
                     Map<String, String> requestHeader = new HashMap<String, String>();
                     requestHeader.put("Xmsversion", request.getHeader("x-ms-version"));
                     requestHeader.put("Method", request.getMethod());
-                    requestHeader.put("Uri", request.getURI().toString());
+                    requestHeader.put("Uri", request.getURI().toString().replaceAll("\\?$", ""));
                     context.add(requestHeader);
                 }
             };
@@ -168,7 +171,15 @@ public class MockIntegrationTestBase {
         attachFilters(requestFilter, responseFilter);
     }
     
-    protected static void resetTest() throws Exception {
+    protected void resetTest() throws Exception {
+        resetTest(name.getMethodName());
+    }
+    
+    protected static void resetTest(String testName) throws Exception {
+        if (!currentTestName.equals(testName)) {
+            return;
+        }
+        
         if (isRecording) {
             // Write current context to file
             ObjectMapper mapper = new ObjectMapper();
@@ -261,7 +272,13 @@ public class MockIntegrationTestBase {
             }
         }
         
-        rBuilder.withBody(responseData.get("Body"));
+        String rawBody = responseData.get("Body");
+        for (Entry<String, String> rule : regexRules.entrySet()) {
+            if (rule.getValue() != null) {
+                rawBody = rawBody.replaceAll(rule.getKey(), rule.getValue());
+            }
+        }
+        rBuilder.withBody(rawBody);
         
         mBuilder.willReturn(rBuilder);
         stubFor(mBuilder);

@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.management.sql;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -36,16 +37,19 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        getLocation();       
         createStorageService();
+        setupTest("DacOperationsIntegrationTest");
+        getLocation();       
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         dacOperations = sqlManagementClient.getDacOperations();
         storageAccount = createStorageAccount(testStorageAccountPrefix+randomString(10));
+        resetTest("DacOperationsIntegrationTest");
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest("DacOperationsIntegrationTestCleanup");
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             try {
@@ -71,6 +75,8 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
             storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
         } catch (IOException e) {
         } catch (ServiceException e) {
+        } finally {
+            resetTest("DacOperationsIntegrationTestCleanup");
         }
     }
 

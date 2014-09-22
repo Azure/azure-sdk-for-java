@@ -75,7 +75,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
-        resetTest();
+        resetTest("VirtualMachineOperationsTests");
     }
 
     @AfterClass   
@@ -85,7 +85,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
-        resetTest();
+        resetTest("VirtualMachineOperationsTestsCleanup");
     }
     
     @Before

@@ -24,8 +24,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.*;
+
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -39,14 +42,18 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     public static void setup() throws Exception {
         storageAccountName = testStorageAccountPrefix + randomString(10);
         createManagementClient();
-        getLocation();
-        
         createService(); 
+        
+        setupTest("StorageAccountOperationsTests");
+        
+        getLocation();
         createStorageAccount(); 
+        resetTest("StorageAccountOperationsTests");
     }
 
     @AfterClass
-    public static void cleanup() {       
+    public static void cleanup() throws Exception {       
+        setupTest("StorageAccountOperationsTestsCleanup");
         StorageAccountListResponse storageServiceListResponse = null;
         try {
             storageServiceListResponse = storageManagementClient.getStorageAccountsOperations().list();
@@ -69,8 +76,19 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
                 }
             }
         }
+        resetTest("StorageAccountOperationsTestsCleanup");
     }    
    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     private static void createStorageAccount() throws Exception {
         String storageAccountDescription = "Description1";
         
@@ -127,7 +145,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     
     @Test
     public void checkAvailabilitySuccess() throws Exception {
-        String expectedStorageAccountName = testStorageAccountPrefix + "cas"+randomString(8);
+        String expectedStorageAccountName = testStorageAccountPrefix + "cas"+randomString(7);
         //Act       
         CheckNameAvailabilityResponse checkNameAvailabilityResponse = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(expectedStorageAccountName);
                
@@ -174,7 +192,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     @Test
     public void updateStorageAccountSuccess() throws Exception {
         //Arrange 
-        String expectedStorageAccountName = testStorageAccountPrefix + "usas"+randomString(7);
+        String expectedStorageAccountName = testStorageAccountPrefix + "usas"+randomString(6);
         String expectedStorageAccountLabel =  "testUpdateLabel3";
         
         String expectedUpdatedStorageAccountLabel = "testStorageAccountUpdatedLabel3";	        

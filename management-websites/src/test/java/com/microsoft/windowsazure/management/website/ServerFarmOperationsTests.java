@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -43,13 +45,17 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        setupTest("ServerFarmOperationsTests");
         cleanup();
+        resetTest("ServerFarmOperationsTests");
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-         deleteServerFarm("northcentraluswebspace");
-         deleteServerFarm("eastuswebspace");
+        setupTest("ServerFarmOperationsTestsCleanup");
+        deleteServerFarm("northcentraluswebspace");
+        deleteServerFarm("eastuswebspace");
+        resetTest("ServerFarmOperationsTestsCleanup");
     }
     
     private static void deleteServerFarm(String webSpaceName) throws IOException, ParserConfigurationException, SAXException {
@@ -73,6 +79,16 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
         webSiteManagementClient.getServerFarmsOperations().create(webSpaceName, createParameters);
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void createServerFarmSuccess() throws Exception {
         String webSpaceName = "northcentraluswebspace";

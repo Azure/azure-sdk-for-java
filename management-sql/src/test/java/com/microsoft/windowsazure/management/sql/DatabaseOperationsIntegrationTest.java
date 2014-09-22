@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -38,13 +39,16 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        getLocation();  
+        setupTest("DatabaseOperationsIntegrationTest");
+        getLocation();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
+        resetTest("DatabaseOperationsIntegrationTest");
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest("DatabaseOperationsIntegrationTestCleanup");
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
 
@@ -65,6 +69,17 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
         }
 
         serverToBeRemoved.clear();
+        resetTest("DatabaseOperationsIntegrationTestCleanup");
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test

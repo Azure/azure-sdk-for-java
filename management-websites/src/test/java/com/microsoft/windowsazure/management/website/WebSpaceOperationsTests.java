@@ -17,8 +17,10 @@ package com.microsoft.windowsazure.management.website;
 
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -41,11 +43,14 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        setupTest("WebSpaceOperationsTests");
         cleanup();
+        resetTest("WebSpaceOperationsTests");
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest("WebSpaceOperationsTestsCleanup");
         String webSpaceName = "northcentraluswebspace"; 
         try {
             webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
@@ -53,8 +58,19 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         catch (ServiceException e) {
             e.printStackTrace();
         }
+        resetTest("WebSpaceOperationsTestsCleanup");
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     @Ignore("Currently, when there are co-admin on the subscription, this test cannot pass.")
     public void createWebSpaceSuccess() throws Exception {
