@@ -23,12 +23,15 @@ import java.util.ArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -38,15 +41,22 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        networkOperations = networkManagementClient.getNetworksOperations();
-        gatewayOperations = networkManagementClient.getGatewaysOperations();
         testNetworkName = testNetworkPrefix + "got" + randomString(10);
         testGatewayName = testGatewayPrefix + "got" + randomString(10);
+        
+        addRegexRule(testNetworkPrefix + "got[a-z]{10}");
+        addRegexRule(testGatewayPrefix + "got[a-z]{10}");
+        
+        setupTest("GatewayOperationsTests");
+        networkOperations = networkManagementClient.getNetworksOperations();
+        gatewayOperations = networkManagementClient.getGatewaysOperations();
         createNetwork(testNetworkName);
+        resetTest("GatewayOperationsTests");
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest("GatewayOperationsTestsCleanup");
         deleteNetwork(testNetworkName);
         
         try {
@@ -63,7 +73,19 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
             e.printStackTrace();
         } catch (ServiceException e) {
             e.printStackTrace();
+        } finally {
+            resetTest("GatewayOperationsTestsCleanup");
         }
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test(expected = ExecutionException.class)

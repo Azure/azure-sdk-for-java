@@ -32,7 +32,9 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.management.network.models.*;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -42,7 +44,9 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService(); 
+        setupTest("NetworkOperationsTests");
         networkOperations = networkManagementClient.getNetworksOperations();
+        resetTest("NetworkOperationsTests");
     }
 
     @Test
@@ -53,6 +57,16 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
         Assert.assertNotNull(operationResponse.getConfiguration());
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test
