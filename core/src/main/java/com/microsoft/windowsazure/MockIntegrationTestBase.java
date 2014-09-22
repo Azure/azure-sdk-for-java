@@ -4,6 +4,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -66,7 +67,6 @@ public class MockIntegrationTestBase {
     
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8043);
-
     @Rule
     public WireMockClassRule instanceRule = wireMockRule;
     @Rule
@@ -95,6 +95,24 @@ public class MockIntegrationTestBase {
         setupTest(name.getMethodName());
     }
     
+    /**
+     * Only change the current test name if there's no other tests running.
+     * 
+     * Example:
+     * public void setup() {
+     *   setupTest("testA");
+     *   cleanup();
+     *   resetTest("testA");
+     * }
+     * 
+     * public void cleanup() {
+     *   setupTest("testB");
+     *   getSomeTraffic();
+     *   resetTest("testB");
+     * }
+     * 
+     * The traffic from getSomeTraffic will be stored in testA.json.
+     */
     protected static void setupTest(String testName) throws Exception {
         if (currentTestName == null) {
             currentTestName = testName;
@@ -175,6 +193,12 @@ public class MockIntegrationTestBase {
         resetTest(name.getMethodName());
     }
     
+    /**
+     * Resets the test with name @testName.
+     * This reset call is only valid for tests setup earlier with the same testName.
+     * @param testName
+     * @throws Exception
+     */
     protected static void resetTest(String testName) throws Exception {
         if (!currentTestName.equals(testName)) {
             return;
@@ -260,6 +284,8 @@ public class MockIntegrationTestBase {
             mBuilder = put(urlStrategy);
         } else if (method.equals("DELETE")) {
             mBuilder = delete(urlStrategy);
+        } else if (method.equals("PATCH")) {
+            mBuilder = patch(urlStrategy);
         } else {
             throw new Exception("Invalid HTTP method.");
         }
