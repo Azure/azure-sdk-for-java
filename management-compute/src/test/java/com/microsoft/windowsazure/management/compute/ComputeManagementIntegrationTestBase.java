@@ -119,7 +119,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i=0; i<length; i++) {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
@@ -148,7 +148,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
         
         createStorageContainer(storageAccountName, storageContainer);
-	}
+    }
     
     protected static void createStorageContainer(String storageAccountName, String storageContainer) throws Exception {
         MockCloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
@@ -190,26 +190,26 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         MockCloudBlobContainer container = blobClient.getContainerReference(storageContainer);
 
         MockCloudPageBlob pageblob = container.getPageBlobReference(fileName);
-    	File source = new File(filePath + fileName);
-    	pageblob.upload(new FileInputStream(source), source.length());
+        File source = new File(filePath + fileName);
+        pageblob.upload(new FileInputStream(source), source.length());
 
-    	//make sure it created and available, otherwise vm deployment will fail with storage/container still creating
-    	boolean found = false;
-    	while(found == false) {
-    		// Loop over blobs within the container and output the URI to each of them
-    		for (MockListBlobItem item : container.listBlobs()) {
-    			if (item.getUri().getPath().contains(fileName) == true) {
-    				found = true;
-    			}
-    		}
+        //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
+        boolean found = false;
+        while(found == false) {
+            // Loop over blobs within the container and output the URI to each of them
+            for (MockListBlobItem item : container.listBlobs()) {
+                if (item.getUri().getPath().contains(fileName) == true) {
+                    found = true;
+                }
+            }
   
-    		if (found == false) {
-    			Thread.sleep(1000 * 10);
-    		}
-    		else if (!isMocked) {
-    			Thread.sleep(1000 * 20);
-    		}
-    	}
+            if (found == false) {
+                Thread.sleep(1000 * 10);
+            }
+            else if (!isMocked) {
+                Thread.sleep(1000 * 20);
+            }
+        }
     }
 
     protected static void getLocation() throws Exception {
@@ -250,23 +250,23 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         if (blobClient != null)
         {
             MockCloudBlobContainer container = null;
-        	try {
-        		container = blobClient.getContainerReference(storageContainer);
-        	} catch (URISyntaxException e) {
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
-        		container.breakLease(0);
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
-        		container.delete();
-        	} catch (StorageException e) {
-        	}
-        	
-        	try {
+            try {
+                container = blobClient.getContainerReference(storageContainer);
+            } catch (URISyntaxException e) {
+            } catch (StorageException e) {
+            }
+            
+            try {
+                container.breakLease(0);
+            } catch (StorageException e) {
+            }
+            
+            try {
+                container.delete();
+            } catch (StorageException e) {
+            }
+            
+            try {
                 while (container.exists())
                 {
                     Thread.sleep(1000);
@@ -276,7 +276,6 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        	
         }
     }
 

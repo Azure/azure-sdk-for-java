@@ -31,8 +31,8 @@ import com.microsoft.windowsazure.management.models.SubscriptionListOperationsRe
 public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase { 
     @BeforeClass
     public static void setup() throws Exception {
-        createService();	      
-    }	   
+        createService();          
+    }       
 
     @Before
     public void beforeTest() throws Exception {
@@ -47,14 +47,14 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
     @Test
     public void getSubscriptionSuccess() throws Exception {
         // Act
-	    SubscriptionGetResponse subscriptionGetResponse = managementClient.getSubscriptionsOperations().get();
+        SubscriptionGetResponse subscriptionGetResponse = managementClient.getSubscriptionsOperations().get();
         // Assert
         Assert.assertEquals(200, subscriptionGetResponse.getStatusCode());
-        Assert.assertNotNull(subscriptionGetResponse.getRequestId());	        
+        Assert.assertNotNull(subscriptionGetResponse.getRequestId());            
         Assert.assertNotNull(subscriptionGetResponse.getAccountAdminLiveEmailId()); 
         Assert.assertNotNull(subscriptionGetResponse.getSubscriptionID()); 
         
-        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionName()); 	       
+        Assert.assertNotNull(subscriptionGetResponse.getSubscriptionName());            
         Assert.assertTrue(subscriptionGetResponse.getMaximumVirtualNetworkSites() > 0); 
         Assert.assertTrue(subscriptionGetResponse.getMaximumLocalNetworkSites() > 0); 
         Assert.assertTrue(subscriptionGetResponse.getMaximumDnsServers() > 0); 
@@ -63,22 +63,22 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
     
     @Test
     public void listSubscriptionsSuccess() throws Exception {
-    	 // Arrange  
-    	 SubscriptionListOperationsParameters parameters = new SubscriptionListOperationsParameters();
+         // Arrange  
+         SubscriptionListOperationsParameters parameters = new SubscriptionListOperationsParameters();
 
-    	 Calendar now = Calendar.getInstance();
-    	 Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    	 startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));
+         Calendar now = Calendar.getInstance();
+         Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+         startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));
          Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
          endTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 1));
          parameters.setStartTime(startTime);
          parameters.setEndTime(endTime);
-    	 
+         
          addRegexRule("StartTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z&EndTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z");
-    	 SubscriptionListOperationsResponse subscriptionListOperationsResponse = managementClient.getSubscriptionsOperations().listOperations(parameters);
-    	
-    	 Assert.assertEquals(200, subscriptionListOperationsResponse.getStatusCode());	    	 
-	     Assert.assertNotNull(subscriptionListOperationsResponse.getRequestId());		
+         SubscriptionListOperationsResponse subscriptionListOperationsResponse = managementClient.getSubscriptionsOperations().listOperations(parameters);
+        
+         Assert.assertEquals(200, subscriptionListOperationsResponse.getStatusCode());
+         Assert.assertNotNull(subscriptionListOperationsResponse.getRequestId());
     }
 }
     
