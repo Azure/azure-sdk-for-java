@@ -3,6 +3,7 @@ Feature: ServerFarm should work
 Background: 
     Given I create a "WebSiteManagementClient" with name "management"
 
+@ignore
 Scenario: Create Server Farm
     Given I create a "Microsoft.WindowsAzure.Management.WebSites.Models.ServerFarmCreateParameters" with name "parameters"
     And set "parameters.NumberOfWorkers" with value "1" of type "System.Int32"
@@ -18,6 +19,7 @@ Scenario: List Server Farm
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200" 
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
 
+@ignore
 Scenario: Delete Server Farm
     When I invoke "management.ServerFarmsOperations.Delete" with parameter value "eastuswebspace" of type "System.String" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
