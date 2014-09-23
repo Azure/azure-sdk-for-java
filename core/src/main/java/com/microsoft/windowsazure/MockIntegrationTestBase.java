@@ -73,6 +73,7 @@ public class MockIntegrationTestBase {
     public TestName name = new TestName();
     private static String recordFolder = "session-records/";
     private static String currentTestName = null;
+    private static String subscriptionRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     
     protected static void addClient(ServiceClient<?> client, Callable<?> func) {
         for (int i = 0; i < clients.size(); i++) {
@@ -127,6 +128,8 @@ public class MockIntegrationTestBase {
         
         ServiceRequestFilter requestFilter = null;
         ServiceResponseFilter responseFilter = null;
+        
+        regexRules.put(subscriptionRegex, null);
         
         if (isMocked) {
             File recordFile = getRecordFile();
