@@ -170,7 +170,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
             if (found == false) {
                 Thread.sleep(1000 * 30);
             }
-            else if (!isMocked) {
+            else if (!IS_MOCKED) {
                 Thread.sleep(1000 * 60);
             }
         }
@@ -182,7 +182,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
 
         // Create the blob client
         CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-        return new MockCloudBlobClient(blobClient, isMocked);
+        return new MockCloudBlobClient(blobClient, IS_MOCKED);
     }
 
     protected static void uploadFileToBlob(String storageAccountName, String storageContainer, String fileName, String filePath) throws InvalidKeyException, URISyntaxException, StorageException, InterruptedException, IOException {
@@ -206,7 +206,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
             if (found == false) {
                 Thread.sleep(1000 * 10);
             }
-            else if (!isMocked) {
+            else if (!IS_MOCKED) {
                 Thread.sleep(1000 * 20);
             }
         }

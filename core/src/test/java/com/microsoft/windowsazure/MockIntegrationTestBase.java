@@ -56,14 +56,17 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 public class MockIntegrationTestBase {
-    protected static Boolean isMocked = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
-    protected static Boolean isRecording = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record");
+    protected final static Boolean IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
+    protected final static Boolean IS_RECORD = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record");
+    private final static String RECORD_FOLDER = "session-records/";
+    private final static String SUBSCRIPTION_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    protected final static String CLEANUP_SUFFIX = "Cleanup";
     
     private static List<ServiceClient<?>> clients = new ArrayList<ServiceClient<?>>();
     private static List<Callable<?>> funcs = new ArrayList<Callable<?>>();
-    
     private static Map<String, String> regexRules = new HashMap<String, String>();
     private static LinkedList<Map<String, String>> context;
+    private static String currentTestName = null;
     
     @ClassRule
     public static WireMockClassRule wireMockRule = new WireMockClassRule(8043);
@@ -71,9 +74,6 @@ public class MockIntegrationTestBase {
     public WireMockClassRule instanceRule = wireMockRule;
     @Rule
     public TestName name = new TestName();
-    private static String recordFolder = "session-records/";
-    private static String currentTestName = null;
-    private static String subscriptionRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     
     protected static void addClient(ServiceClient<?> client, Callable<?> func) {
         for (int i = 0; i < clients.size(); i++) {
@@ -129,9 +129,9 @@ public class MockIntegrationTestBase {
         ServiceRequestFilter requestFilter = null;
         ServiceResponseFilter responseFilter = null;
         
-        regexRules.put(subscriptionRegex, null);
+        regexRules.put(SUBSCRIPTION_REGEX, null);
         
-        if (isMocked) {
+        if (IS_MOCKED) {
             File recordFile = getRecordFile();
             ObjectMapper mapper = new ObjectMapper();
             context = mapper.readValue(recordFile, new TypeReference<LinkedList<Map<String, String>>>() {});
@@ -156,7 +156,7 @@ public class MockIntegrationTestBase {
             };
         }
         
-        if (isRecording) {
+        if (IS_RECORD) {
             context = new LinkedList<Map<String, String>>();
             requestFilter = new ServiceRequestFilter() {
                 @Override
@@ -207,7 +207,7 @@ public class MockIntegrationTestBase {
             return;
         }
         
-        if (isRecording) {
+        if (IS_RECORD) {
             // Write current context to file
             ObjectMapper mapper = new ObjectMapper();
             File recordFile = getRecordFile();
@@ -239,7 +239,7 @@ public class MockIntegrationTestBase {
     
     private static File getRecordFile() {
         URL folderUrl = MockIntegrationTestBase.class.getClassLoader().getResource(".");
-        File folderFile = new File(folderUrl.getPath() + recordFolder);
+        File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
         if (!folderFile.exists()) folderFile.mkdir();
         String filePath = folderFile.getPath() + "/" + currentTestName + ".json";
         return new File(filePath);

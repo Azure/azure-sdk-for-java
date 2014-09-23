@@ -517,7 +517,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         
         try {
-            if (!isMocked) {
+            if (!IS_MOCKED) {
                 Thread.sleep(3*60*1000);
             }
         } catch (InterruptedException e) {
