@@ -38,16 +38,16 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
         
         createService();
         
-        setupTest("ClientRootCertificateOperationsTests");
+        setupTest(ClientRootCertificateOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
         createNetwork(testNetworkName);
         clientRootCertificateOperations = networkManagementClient.getClientRootCertificatesOperations();
-        resetTest("ClientRootCertificateOperationsTests");
+        resetTest(ClientRootCertificateOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("ClientRootCertificateOperationsTestsCleanup");
+        setupTest(ClientRootCertificateOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         try {
             ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
@@ -57,7 +57,7 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
         } catch (ServiceException e) {
         }
         deleteNetwork(testNetworkName);
-        resetTest("ClientRootCertificateOperationsTestsCleanup");
+        resetTest(ClientRootCertificateOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     @Before

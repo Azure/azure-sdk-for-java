@@ -41,7 +41,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
         
-        setupTest("createWithRequestFilterLast");
+        setupTest();
         TestRequestFilter testFilter = new TestRequestFilter("filter1a");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
         
@@ -76,7 +76,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
         
-        setupTest("createWithRequestLastRespectsOrder");
+        setupTest();
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1b");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2b");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter1);
@@ -115,7 +115,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
         
-        setupTest("createWithRequestFirstRespectsOrder");
+        setupTest();
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1c");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2c");
         ManagementClient filteredService = managementClient.withRequestFilterFirst(testFilter1);
@@ -154,7 +154,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
         
-        setupTest("createWithResponseLastRespectsOrder");
+        setupTest();
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1b");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2b");
         ManagementClient filteredService = managementClient.withResponseFilterLast(testFilter1);
@@ -193,7 +193,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
         
-        setupTest("createWithResponseFirstRespectsOrder");
+        setupTest();
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1c");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2c");
         ManagementClient filteredService = managementClient.withResponseFilterFirst(testFilter1);

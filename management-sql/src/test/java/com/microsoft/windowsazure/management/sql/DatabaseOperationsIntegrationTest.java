@@ -39,16 +39,16 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        setupTest("DatabaseOperationsIntegrationTest");
+        setupTest(DatabaseOperationsIntegrationTest.class.getSimpleName());
         getLocation();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
-        resetTest("DatabaseOperationsIntegrationTest");
+        resetTest(DatabaseOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("DatabaseOperationsIntegrationTestCleanup");
+        setupTest(DatabaseOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
 
@@ -69,7 +69,7 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
         }
 
         serverToBeRemoved.clear();
-        resetTest("DatabaseOperationsIntegrationTestCleanup");
+        resetTest(DatabaseOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     @Before

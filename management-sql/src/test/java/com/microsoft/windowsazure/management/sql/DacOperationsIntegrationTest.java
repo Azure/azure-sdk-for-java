@@ -38,18 +38,18 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         createService();
         createManagementClient();
         createStorageService();
-        setupTest("DacOperationsIntegrationTest");
+        setupTest(DacOperationsIntegrationTest.class.getSimpleName());
         getLocation();       
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         dacOperations = sqlManagementClient.getDacOperations();
         storageAccount = createStorageAccount(testStorageAccountPrefix+randomString(10));
-        resetTest("DacOperationsIntegrationTest");
+        resetTest(DacOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("DacOperationsIntegrationTestCleanup");
+        setupTest(DacOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             try {
@@ -76,7 +76,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         } catch (IOException e) {
         } catch (ServiceException e) {
         } finally {
-            resetTest("DacOperationsIntegrationTestCleanup");
+            resetTest(DacOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         }
     }
 

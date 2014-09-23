@@ -43,19 +43,19 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
         createStorageManagementClient();
         createMediaServiceManagementClient();
         
-        setupTest("MediaServiceAccountOperationsTests");
+        setupTest(MediaServiceAccountOperationsTests.class.getSimpleName());
         getLocation(); 
         createStorageAccount(storageAccountName); 
         createMediaServicesAccount();
-        resetTest("MediaServiceAccountOperationsTests");
+        resetTest(MediaServiceAccountOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {    	
-        setupTest("MediaServiceAccountOperationsTestsCleanup");
+        setupTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanMediaServicesAccount();
         cleanStorageAccount(storageAccountName);
-        resetTest("MediaServiceAccountOperationsTestsCleanup");
+        resetTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }    
    
     private static void createMediaServicesAccount() throws Exception { 

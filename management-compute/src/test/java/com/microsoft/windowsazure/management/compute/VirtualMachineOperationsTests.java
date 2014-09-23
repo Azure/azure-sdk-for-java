@@ -66,7 +66,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //create management service for accessing management operation
         createManagementClient();
         
-        setupTest("VirtualMachineOperationsTests");
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName());
         hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
@@ -75,17 +75,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
-        resetTest("VirtualMachineOperationsTests");
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName());
     }
 
     @AfterClass   
     public static void cleanup() throws Exception {
-        setupTest("VirtualMachineOperationsTestsCleanup");
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanHostedService();
         cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
-        resetTest("VirtualMachineOperationsTestsCleanup");
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     @Before

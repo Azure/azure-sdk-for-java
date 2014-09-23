@@ -44,15 +44,15 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        setupTest("WebSiteOperationsTests");
+        setupTest(WebSiteOperationsTests.class.getSimpleName());
         cleanup();
         createWebSite();
-        resetTest("WebSiteOperationsTests");
+        resetTest(WebSiteOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("WebSiteOperationsTestsCleanup");
+        setupTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
         ArrayList<String> propertiesToInclude = new ArrayList<String>();
         webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
@@ -93,7 +93,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
                 }
             }  
         }
-        resetTest("WebSiteOperationsTestsCleanup");
+        resetTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     private static void createWebSite() throws Exception {

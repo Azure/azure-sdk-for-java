@@ -43,14 +43,14 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        setupTest("WebSpaceOperationsTests");
+        setupTest(WebSpaceOperationsTests.class.getSimpleName());
         cleanup();
-        resetTest("WebSpaceOperationsTests");
+        resetTest(WebSpaceOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("WebSpaceOperationsTestsCleanup");
+        setupTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         String webSpaceName = "northcentraluswebspace"; 
         try {
             webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
@@ -58,7 +58,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         catch (ServiceException e) {
             e.printStackTrace();
         }
-        resetTest("WebSpaceOperationsTestsCleanup");
+        resetTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

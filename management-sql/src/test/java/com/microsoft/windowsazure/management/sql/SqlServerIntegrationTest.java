@@ -41,15 +41,15 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     public static void setup() throws Exception {
         createService();
         createManagementClient();       
-        setupTest("SqlServerIntegrationTest");
+        setupTest(SqlServerIntegrationTest.class.getSimpleName());
         getLocation();
         serverOperations = sqlManagementClient.getServersOperations();
-        resetTest("SqlServerIntegrationTest");
+        resetTest(SqlServerIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("SqlServerIntegrationTestCleanup");
+        setupTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String serverName : serverToBeRemoved) {
             try {
                 serverOperations.delete(serverName);
@@ -69,7 +69,7 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
                 Thread.sleep(100);
             }
         }
-        resetTest("SqlServerIntegrationTestCleanup");
+        resetTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

@@ -44,16 +44,16 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createManagementClient();
         createService(); 
         
-        setupTest("StorageAccountOperationsTests");
+        setupTest(StorageAccountOperationsTests.class.getSimpleName());
         
         getLocation();
         createStorageAccount(); 
-        resetTest("StorageAccountOperationsTests");
+        resetTest(StorageAccountOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {       
-        setupTest("StorageAccountOperationsTestsCleanup");
+        setupTest(StorageAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         StorageAccountListResponse storageServiceListResponse = null;
         try {
             storageServiceListResponse = storageManagementClient.getStorageAccountsOperations().list();
@@ -76,7 +76,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
                 }
             }
         }
-        resetTest("StorageAccountOperationsTestsCleanup");
+        resetTest(StorageAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }    
    
     @Before

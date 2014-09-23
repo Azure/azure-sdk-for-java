@@ -41,16 +41,16 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        setupTest("FirewallRuleOperationsIntegrationTest");
+        setupTest(FirewallRuleOperationsIntegrationTest.class.getSimpleName());
         getLocation();  
         firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
-        resetTest("FirewallRuleOperationsIntegrationTest");
+        resetTest(FirewallRuleOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("FirewallRuleOperationsIntegrationTestCleanup");
+        setupTest(FirewallRuleOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String firewallRuleName : firewallRuleToBeRemoved.keySet()) {
             String serverName = firewallRuleToBeRemoved.get(firewallRuleName);
             try {
@@ -71,7 +71,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
         }
 
         serverToBeRemoved.clear();
-        resetTest("FirewallRuleOperationsIntegrationTestCleanup");
+        resetTest(FirewallRuleOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

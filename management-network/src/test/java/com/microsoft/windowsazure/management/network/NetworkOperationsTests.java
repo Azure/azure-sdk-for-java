@@ -44,9 +44,9 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService(); 
-        setupTest("NetworkOperationsTests");
+        setupTest(NetworkOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
-        resetTest("NetworkOperationsTests");
+        resetTest(NetworkOperationsTests.class.getSimpleName());
     }
 
     @Test

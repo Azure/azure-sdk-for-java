@@ -33,18 +33,18 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
         testNetworkName = testNetworkPrefix + "sio" + randomString(10);
         addRegexRule(testNetworkPrefix + "sio[a-z]{10}");
         
-        setupTest("StaticIPOperationsTests");
+        setupTest(StaticIPOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
         createNetwork(testNetworkName);
         staticIPOperations = networkManagementClient.getStaticIPsOperations();
-        resetTest("StaticIPOperationsTests");
+        resetTest(StaticIPOperationsTests.class.getSimpleName());
     }
     
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("StaticIPOperationsTestsCleanup");
+        setupTest(StaticIPOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         deleteNetwork(testNetworkName);
-        resetTest("StaticIPOperationsTestsCleanup");
+        resetTest(StaticIPOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

@@ -47,16 +47,16 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
         addRegexRule(testNetworkPrefix + "got[a-z]{10}");
         addRegexRule(testGatewayPrefix + "got[a-z]{10}");
         
-        setupTest("GatewayOperationsTests");
+        setupTest(GatewayOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
         gatewayOperations = networkManagementClient.getGatewaysOperations();
         createNetwork(testNetworkName);
-        resetTest("GatewayOperationsTests");
+        resetTest(GatewayOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("GatewayOperationsTestsCleanup");
+        setupTest(GatewayOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         deleteNetwork(testNetworkName);
         
         try {
@@ -74,7 +74,7 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
         } catch (ServiceException e) {
             e.printStackTrace();
         } finally {
-            resetTest("GatewayOperationsTestsCleanup");
+            resetTest(GatewayOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         }
     }
     

@@ -44,7 +44,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createService();        
         cleanup();
         
-        setupTest("AffinityGroupSetup");
+        setupTest(AffinityGroupOperationsTests.class.getSimpleName());
         getLocation();
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName1);        
@@ -53,12 +53,12 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setDescription(affinityGroupDescription1);
 
         managementClient.getAffinityGroupsOperations().create(createParameters);
-        resetTest("AffinityGroupSetup");
+        resetTest(AffinityGroupOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("AffinityGroupCleanup");
+        setupTest(AffinityGroupOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         try {
             AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
             ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
@@ -67,11 +67,11 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
                    managementClient.getAffinityGroupsOperations().delete(affinitygroup.getName());
                 }
             }
-       }
-       catch (ServiceException e) {
-           e.printStackTrace();
-       }
-       resetTest("AffinityGroupCleanup");
+        }
+        catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        resetTest(AffinityGroupOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

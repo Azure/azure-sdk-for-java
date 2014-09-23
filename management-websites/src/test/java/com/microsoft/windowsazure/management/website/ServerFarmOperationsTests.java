@@ -45,17 +45,17 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        setupTest("ServerFarmOperationsTests");
+        setupTest(ServerFarmOperationsTests.class.getSimpleName());
         cleanup();
-        resetTest("ServerFarmOperationsTests");
+        resetTest(ServerFarmOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("ServerFarmOperationsTestsCleanup");
+        setupTest(ServerFarmOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         deleteServerFarm("northcentraluswebspace");
         deleteServerFarm("eastuswebspace");
-        resetTest("ServerFarmOperationsTestsCleanup");
+        resetTest(ServerFarmOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     private static void deleteServerFarm(String webSpaceName) throws IOException, ParserConfigurationException, SAXException {

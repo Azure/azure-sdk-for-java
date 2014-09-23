@@ -40,17 +40,17 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        setupTest("ServiceObjectiveIntegrationTest");
+        setupTest(ServiceObjectiveIntegrationTest.class.getSimpleName());
         getLocation();  
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
-        resetTest("ServiceObjectiveIntegrationTest");
+        resetTest(ServiceObjectiveIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("ServiceObjectiveIntegrationTestCleanup");
+        setupTest(ServiceObjectiveIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             try {
@@ -68,7 +68,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
             } catch (ServiceException e) {
             }
         }
-        resetTest("ServiceObjectiveIntegrationTestCleanup");
+        resetTest(ServiceObjectiveIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before

@@ -56,21 +56,21 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         createSchedulerManagementService();
         createSchedulerService(cloudServiceName, jobCollectionName);
 
-        setupTest("JobOperationsTests");
+        setupTest(JobOperationsTests.class.getSimpleName());
         getLocation();
         createCloudService();
         createJobCollection();
         createjob();
-        resetTest("JobOperationsTests");
+        resetTest(JobOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest("JobOperationsTestsCleanup");
+        setupTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanjob();
         cleanJobCollection();
         cleanCloudService();
-        resetTest("JobOperationsTestsCleanup");
+        resetTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void cleanjob() {
