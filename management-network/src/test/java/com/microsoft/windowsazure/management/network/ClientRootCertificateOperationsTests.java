@@ -23,8 +23,10 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,14 +34,20 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
     @BeforeClass
     public static void setup() throws Exception {
         testNetworkName =  testNetworkPrefix + "clrcot" + randomString(10);;
+        addRegexRule(testNetworkPrefix + "clrcot[a-z]{10}");
+        
         createService();
+        
+        setupTest(ClientRootCertificateOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
         createNetwork(testNetworkName);
         clientRootCertificateOperations = networkManagementClient.getClientRootCertificatesOperations();
+        resetTest(ClientRootCertificateOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest(ClientRootCertificateOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         try {
             ClientRootCertificateListResponse ClientRootCertificateListResponse = clientRootCertificateOperations.list(testNetworkName);
             ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatelist = ClientRootCertificateListResponse.getClientRootCertificates();
@@ -49,6 +57,17 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
         } catch (ServiceException e) {
         }
         deleteNetwork(testNetworkName);
+        resetTest(ClientRootCertificateOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test(expected = ServiceException.class)

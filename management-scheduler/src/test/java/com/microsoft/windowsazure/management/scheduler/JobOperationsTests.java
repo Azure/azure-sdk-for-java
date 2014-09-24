@@ -28,8 +28,10 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 import com.microsoft.windowsazure.scheduler.models.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -45,25 +47,30 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         cloudServiceName = testJobCollectionPrefix + "jobcls" + randomString(5);
         jobCollectionName = testJobCollectionPrefix + "jobcl" + randomString(7);
         jobName = testSchedulerPrefix + "job" + randomString(7);
+        addRegexRule(testJobCollectionPrefix + "jobcls[a-z]{5}");
+        addRegexRule(testJobCollectionPrefix + "jobcl[a-z]{7}");
+        addRegexRule(testSchedulerPrefix + "job[a-z]{7}");
 
         createManagementClient();
-        getLocation();
-
         createCloudServiceManagementService();
-        createCloudService();
-
         createSchedulerManagementService();
-        createJobCollection();
-
         createSchedulerService(cloudServiceName, jobCollectionName);
+
+        setupTest(JobOperationsTests.class.getSimpleName());
+        getLocation();
+        createCloudService();
+        createJobCollection();
         createjob();
+        resetTest(JobOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanjob();
         cleanJobCollection();
         cleanCloudService();
+        resetTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void cleanjob() {
@@ -167,6 +174,16 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         Assert.assertEquals(operationResponse.getJob().getState(), JobState.Enabled);
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void getjobSuccess() throws Exception {
         //Act

@@ -16,11 +16,14 @@
 package com.microsoft.windowsazure.management.mediaservices;
 
 import java.util.ArrayList;
+
 import com.microsoft.windowsazure.management.mediaservices.models.*;
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountListResponse.MediaServiceAccount;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,22 +35,27 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
     @BeforeClass
     public static void setup() throws Exception {
         mediaServicesAccountName = testMediaServicesAccountPrefix + randomString(10);
-        storageAccountName = testStoragePrefix + randomString(5);        
+        storageAccountName = testStoragePrefix + randomString(5);      
+        addRegexRule(testMediaServicesAccountPrefix + "[a-z]{10}");
+        addRegexRule(testStoragePrefix + "[a-z]{5}");
        
         createManagementClient();
-        getLocation(); 
-        
         createStorageManagementClient();
-        createStorageAccount(storageAccountName); 
-        
         createMediaServiceManagementClient();
+        
+        setupTest(MediaServiceAccountOperationsTests.class.getSimpleName());
+        getLocation(); 
+        createStorageAccount(storageAccountName); 
         createMediaServicesAccount();
+        resetTest(MediaServiceAccountOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() {    	
+    public static void cleanup() throws Exception {    	
+        setupTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanMediaServicesAccount();
         cleanStorageAccount(storageAccountName);
+        resetTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }    
    
     private static void createMediaServicesAccount() throws Exception { 
@@ -61,6 +69,16 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
         //act
         MediaServicesAccountCreateResponse operationResponse = mediaServicesManagementClient.getAccountsOperations().create(createParameters);       
      }    
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
     
     @Test
     public void createMediaServicesAccountSuccess() throws Exception { 

@@ -19,11 +19,14 @@
 package com.microsoft.windowsazure.management.compute;
 
 import java.util.ArrayList;
+
 import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,7 +35,17 @@ public class VirtualMachineVMImagesOperationsTests extends ComputeManagementInte
     public static void setup() throws Exception {
         createComputeManagementClient();
     }
-
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listVirtualMachineVMImagesSuccess() throws Exception {
         VirtualMachineVMImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineVMImagesOperations().list();
