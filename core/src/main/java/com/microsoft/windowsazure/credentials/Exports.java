@@ -21,7 +21,6 @@ public class Exports implements Builder.Exports {
 
     @Override
     public void register(Registry registry) {
-        
         registry.add(SubscriptionCloudCredentials.class, CertificateCloudCredentials.class);
     }
 }

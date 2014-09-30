@@ -81,7 +81,7 @@ public final class ARMManagementConfiguration {
             Configuration configuration, URI uri, String subscriptionId,
             String username, String password,
             String authorityUrl, String tenantId, String resourceId,
-            String clientId)
+            String clientId, String clientSecret)
             throws IOException {
 
         if (profile == null) {
@@ -94,7 +94,7 @@ public final class ARMManagementConfiguration {
 
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
                 new TokenCloudCredentials(uri, subscriptionId,
-                        new AdalAuthConfig(authorityUrl, tenantId, resourceId, clientId)));
+                        new AdalAuthConfig(authorityUrl, tenantId, resourceId, clientId, clientSecret)));
 
         configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
                 new LaxRedirectStrategy());

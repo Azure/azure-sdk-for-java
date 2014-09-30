@@ -45,14 +45,14 @@ public class AdalAuthFilter implements ServiceRequestFilter {
 				true,
 		        service);
             Future<AuthenticationResult> future = authenticationContext.acquireToken(
-                    this.adalAuthConfig.getResourceId(),
+                    this.adalAuthConfig.getResource(),
                     new ClientCredential(this.adalAuthConfig.getClientId(),
                             this.adalAuthConfig.getClientSecret()), null);
             AuthenticationResult result = future.get();
             
             // TODO: missing a step here. Need to get access token from soemthing else
             
-            request.setHeader("Authorization", result.getAccessToken());
+            request.setHeader("Authorization", "Bearer " + result.getAccessToken());
 		} catch (InterruptedException e) {
 			// Do nothing.
 		} catch (ExecutionException e) {

@@ -18,16 +18,17 @@ package com.microsoft.windowsazure.credentials;
 public class AdalAuthConfig {
 	private String authorityUrl;
 	private String tenantId;
-	private String resourceId;
+	private String resource;
 	private String clientId;
 	private String clientSecret;
 	
-	public AdalAuthConfig(String authorityUrl, String tenantId, String resourceId, String clientId)
+	public AdalAuthConfig(String authorityUrl, String tenantId, String resource, String clientId, String clientSecret)
 	{
 		this.authorityUrl = authorityUrl;
 		this.tenantId = tenantId;
-		this.resourceId = resourceId;
+		this.resource = resource;
 		this.clientId = clientId;
+		this.clientSecret = clientSecret;
 	}
 	
 	public String getAuthorityUrl()
@@ -40,9 +41,9 @@ public class AdalAuthConfig {
 		return this.tenantId;
 	}
 	
-	public String getResourceId()
+	public String getResource()
 	{
-		return this.resourceId;
+		return this.resource;
 	}
 	
 	public String getClientId()
