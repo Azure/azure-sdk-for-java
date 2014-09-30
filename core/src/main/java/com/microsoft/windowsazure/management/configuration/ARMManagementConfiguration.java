@@ -80,7 +80,7 @@ public final class ARMManagementConfiguration {
     public static Configuration configure(String profile,
             Configuration configuration, URI uri, String subscriptionId,
             String username, String password,
-            String authorityUrl, String tenantId, String resourceId,
+            String authorityUrl, String tenantId, String resource,
             String clientId, String clientSecret)
             throws IOException {
 
@@ -94,7 +94,7 @@ public final class ARMManagementConfiguration {
 
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
                 new TokenCloudCredentials(uri, subscriptionId,
-                        new AdalAuthConfig(authorityUrl, tenantId, resourceId, clientId, clientSecret)));
+                        new AdalAuthConfig(authorityUrl, tenantId, resource, clientId, clientSecret)));
 
         configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
                 new LaxRedirectStrategy());

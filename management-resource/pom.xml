@@ -74,17 +74,6 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>oauth2-oidc-sdk</artifactId>
-      <version>3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
