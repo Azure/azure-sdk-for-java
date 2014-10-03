@@ -32,6 +32,24 @@ import java.util.HashMap;
 * The Get Configuration Web Site operation response.
 */
 public class WebSiteGetConfigurationResponse extends OperationResponse {
+    private Boolean alwaysOn;
+    
+    /**
+    * Optional. Indicates if site's Always On feature is enabled.
+    * @return The AlwaysOn value.
+    */
+    public Boolean isAlwaysOn() {
+        return this.alwaysOn;
+    }
+    
+    /**
+    * Optional. Indicates if site's Always On feature is enabled.
+    * @param alwaysOnValue The AlwaysOn value.
+    */
+    public void setAlwaysOn(final Boolean alwaysOnValue) {
+        this.alwaysOn = alwaysOnValue;
+    }
+    
     private HashMap<String, String> appSettings;
     
     /**
@@ -404,6 +422,24 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.requestTracingExpirationTime = requestTracingExpirationTimeValue;
     }
     
+    private ArrayList<RoutingRule> routingRules;
+    
+    /**
+    * Optional. List of routing rules for the website.
+    * @return The RoutingRules value.
+    */
+    public ArrayList<RoutingRule> getRoutingRules() {
+        return this.routingRules;
+    }
+    
+    /**
+    * Optional. List of routing rules for the website.
+    * @param routingRulesValue The RoutingRules value.
+    */
+    public void setRoutingRules(final ArrayList<RoutingRule> routingRulesValue) {
+        this.routingRules = routingRulesValue;
+    }
+    
     private String scmType;
     
     /**
@@ -473,6 +509,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.setDefaultDocuments(new ArrayList<String>());
         this.setHandlerMappings(new ArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
         this.setMetadata(new HashMap<String, String>());
+        this.setRoutingRules(new ArrayList<RoutingRule>());
     }
     
     /**
@@ -515,13 +552,13 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
             this.name = nameValue;
         }
         
-        private String type;
+        private ConnectionStringType type;
         
         /**
         * Optional. The type of the connection string (for example, "MySQL").
         * @return The Type value.
         */
-        public String getType() {
+        public ConnectionStringType getType() {
             return this.type;
         }
         
@@ -529,7 +566,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         * Optional. The type of the connection string (for example, "MySQL").
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue) {
+        public void setType(final ConnectionStringType typeValue) {
             this.type = typeValue;
         }
     }

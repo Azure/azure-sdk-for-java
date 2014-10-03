@@ -234,6 +234,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
+        this.baseUri = baseUri;
     }
     
     /**
@@ -379,7 +380,6 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -534,7 +534,6 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

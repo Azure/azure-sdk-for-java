@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.websites.models;
+package com.microsoft.windowsazure.management.servicebus.models;
 
-public enum ServerFarmWorkerSize {
-    Small,
+import com.microsoft.windowsazure.core.OperationResponse;
+
+/**
+* A standard service response including an HTTP status code and request ID.
+*/
+public class ServiceBusNotificationHubResponse extends OperationResponse {
+    private ServiceBusNotificationHub notificationHub;
     
-    Medium,
+    /**
+    * Optional.
+    * @return The NotificationHub value.
+    */
+    public ServiceBusNotificationHub getNotificationHub() {
+        return this.notificationHub;
+    }
     
-    Large,
+    /**
+    * Optional.
+    * @param notificationHubValue The NotificationHub value.
+    */
+    public void setNotificationHub(final ServiceBusNotificationHub notificationHubValue) {
+        this.notificationHub = notificationHubValue;
+    }
 }

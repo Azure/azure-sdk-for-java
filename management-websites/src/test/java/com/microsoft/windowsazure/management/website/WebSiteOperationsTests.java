@@ -101,12 +101,8 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         
         //Arrange
         WebSiteCreateParameters createParameters = new WebSiteCreateParameters();
-        createParameters.setName(websiteName); 
-        createParameters.setWebSpaceName(webSpaceName);
+        createParameters.setName(websiteName);
         createParameters.setWebSpace(webSpaceDetails);
-        createParameters.setSiteMode(WebSiteMode.Basic);
-        createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -128,11 +124,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Arrange
         WebSiteCreateParameters createParameters = new WebSiteCreateParameters();
         createParameters.setName(webSiteName); 
-        createParameters.setWebSpaceName(webSpaceName);
         createParameters.setWebSpace(webSpaceDetails);
-        createParameters.setSiteMode(WebSiteMode.Basic);
-        createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -167,9 +159,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         
         ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(websiteName+hostName);
-        WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters(); 
-        updateParameters.setAvailabilityState(WebSpaceAvailabilityState.Limited);
-        updateParameters.setSiteMode(WebSiteMode.Limited);
+        WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters();
         updateParameters.setHostNames(hostNamesValue);
 
         OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);	        

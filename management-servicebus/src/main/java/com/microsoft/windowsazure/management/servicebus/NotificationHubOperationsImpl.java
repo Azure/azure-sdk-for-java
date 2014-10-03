@@ -142,7 +142,6 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -256,7 +255,6 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -462,7 +460,6 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -623,7 +620,6 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
