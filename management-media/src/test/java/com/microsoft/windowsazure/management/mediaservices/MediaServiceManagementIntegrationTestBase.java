@@ -157,7 +157,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
     public static void cleanMediaServicesAccount() {
         MediaServicesAccountListResponse mediaServicesAccountListResponse = null;
         try {
-        	mediaServicesAccountListResponse  = mediaServicesManagementClient.getAccountsOperations().list();
+            mediaServicesAccountListResponse  = mediaServicesManagementClient.getAccountsOperations().list();
         } catch (IOException e) {
         } catch (ServiceException e) {
         } catch (ParserConfigurationException e) {

@@ -188,7 +188,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         updateParameters.setSiteMode(WebSiteMode.Limited);
         updateParameters.setHostNames(hostNamesValue);
 
-        OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);	        
+        OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);            
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
@@ -210,7 +210,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     }
         
     @Test
-    public void isHostnameAvailableSuccess() throws Exception {    	
+    public void isHostnameAvailableSuccess() throws Exception {        
         String webSiteNameInValid = websiteName;       
         String webSiteNameValid =testWebsitePrefix + "invalidsite"; 
       
@@ -238,7 +238,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     }
     
     @Test
-    public void generatePasswordSuccess() throws Exception {    	
+    public void generatePasswordSuccess() throws Exception {        
         OperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().generatePassword(webSpaceName, websiteName);
         
         //Assert
@@ -273,7 +273,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         
         Calendar now = Calendar.getInstance();
         Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));	    	
+        startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));            
         Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         endTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 1));
         parameters.setStartTime(startTime);

@@ -117,7 +117,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     }
 
     @Test
-    public void getDnsSuffixSuccess() throws Exception {    	
+    public void getDnsSuffixSuccess() throws Exception {
         WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
         // Assert
         Assert.assertEquals(200, webSpacesGetDnsSuffixResponse.getStatusCode());

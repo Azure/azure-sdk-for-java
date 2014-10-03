@@ -51,30 +51,30 @@ public class MediaServiceAccountOperationsTests extends MediaServiceManagementIn
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {    	
+    public static void cleanup() throws Exception {
         setupTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanMediaServicesAccount();
         cleanStorageAccount(storageAccountName);
         resetTest(MediaServiceAccountOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
-    }    
-   
+    }
+
     private static void createMediaServicesAccount() throws Exception { 
         //Arrange
         MediaServicesAccountCreateParameters createParameters = new MediaServicesAccountCreateParameters();
         createParameters.setAccountName(mediaServicesAccountName);
         createParameters.setRegion(storageLocation);
-        createParameters.setStorageAccountName(storageAccountName); 
+        createParameters.setStorageAccountName(storageAccountName);
         createParameters.setStorageAccountKey(storageAccountKey);
-        createParameters.setBlobStorageEndpointUri(storageEndpointUri);     
+        createParameters.setBlobStorageEndpointUri(storageEndpointUri);
         //act
         MediaServicesAccountCreateResponse operationResponse = mediaServicesManagementClient.getAccountsOperations().create(createParameters);       
-     }    
+    }
     
     @Before
     public void beforeTest() throws Exception {
         setupTest();
     }
-    
+
     @After
     public void afterTest() throws Exception {
         resetTest();

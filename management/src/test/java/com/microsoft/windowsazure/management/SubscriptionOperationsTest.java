@@ -31,8 +31,8 @@ import com.microsoft.windowsazure.management.models.SubscriptionListOperationsRe
 public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase { 
     @BeforeClass
     public static void setup() throws Exception {
-        createService();          
-    }       
+        createService();
+    }
 
     @Before
     public void beforeTest() throws Exception {
@@ -43,7 +43,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
     public void afterTest() throws Exception {
         resetTest();
     }
-    
+
     @Test
     public void getSubscriptionSuccess() throws Exception {
         // Act
@@ -81,4 +81,3 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
          Assert.assertNotNull(subscriptionListOperationsResponse.getRequestId());
     }
 }
-    

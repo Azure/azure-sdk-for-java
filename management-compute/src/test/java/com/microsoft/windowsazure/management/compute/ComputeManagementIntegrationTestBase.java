@@ -169,8 +169,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
 
             if (found == false) {
                 Thread.sleep(1000 * 30);
-            }
-            else if (!IS_MOCKED) {
+            } else if (!IS_MOCKED) {
                 Thread.sleep(1000 * 60);
             }
         }
@@ -190,6 +189,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         MockCloudBlobContainer container = blobClient.getContainerReference(storageContainer);
 
         MockCloudPageBlob pageblob = container.getPageBlobReference(fileName);
+
         File source = new File(filePath + fileName);
         pageblob.upload(new FileInputStream(source), source.length());
 
@@ -205,8 +205,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
   
             if (found == false) {
                 Thread.sleep(1000 * 10);
-            }
-            else if (!IS_MOCKED) {
+            } else if (!IS_MOCKED) {
                 Thread.sleep(1000 * 20);
             }
         }
@@ -288,7 +287,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         } catch (ServiceException e) {
             e.printStackTrace();
         }
-        
+
         if (operationResponse != null) {
             Assert.assertEquals(200, operationResponse.getStatusCode());
         }

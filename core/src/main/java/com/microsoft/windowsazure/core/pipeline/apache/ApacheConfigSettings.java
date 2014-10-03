@@ -85,7 +85,7 @@ public class ApacheConfigSettings {
         }
         
         if (properties.containsKey(profile
-        		+ ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY)) {
+                + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY)) {
             httpClientBuilder
             .setRedirectStrategy((DefaultRedirectStrategy) properties
                     .get(profile
