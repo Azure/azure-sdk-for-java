@@ -28,8 +28,10 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.websites.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -42,12 +44,15 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        setupTest(WebSiteOperationsTests.class.getSimpleName());
         cleanup();
         createWebSite();
+        resetTest(WebSiteOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
         ArrayList<String> propertiesToInclude = new ArrayList<String>();
         webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
@@ -88,6 +93,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
                 }
             }  
         }
+        resetTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
     private static void createWebSite() throws Exception {
@@ -112,6 +118,16 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
         Assert.assertEquals(200,  webSiteCreateResponse.getStatusCode());
         Assert.assertNotNull( webSiteCreateResponse.getRequestId());
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test
@@ -263,7 +279,8 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         parameters.setStartTime(startTime);
         parameters.setEndTime(endTime);
         
-        //Act           
+        addRegexRule("StartTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z&EndTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z");
+       //Act           
         WebSiteGetHistoricalUsageMetricsResponse webSiteGetHistoricalUsageMetricsResponse = webSiteManagementClient.getWebSitesOperations().getHistoricalUsageMetrics(webSpaceName, websiteName, parameters);
         
         //Assert

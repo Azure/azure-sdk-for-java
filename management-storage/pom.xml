@@ -73,6 +73,13 @@
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-core</artifactId>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
@@ -97,6 +104,16 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-management</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
