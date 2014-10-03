@@ -39,7 +39,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
