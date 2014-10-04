@@ -299,8 +299,6 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**

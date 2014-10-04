@@ -142,6 +142,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -378,6 +379,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
