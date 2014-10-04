@@ -166,6 +166,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -250,7 +251,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * more information)
     *
     * @param namespaceName Required. The namespace name.
-    * @param region Required. The namespace region.
+    * @param region Optional. The namespace region.
     * @return The response to a request for a particular namespace.
     */
     @Override
@@ -270,7 +271,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * more information)
     *
     * @param namespaceName Required. The namespace name.
-    * @param region Required. The namespace region.
+    * @param region Optional. The namespace region.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -314,6 +315,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -541,6 +543,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -816,6 +819,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -927,6 +931,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1036,6 +1041,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1228,6 +1234,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1424,6 +1431,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1589,6 +1597,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1778,6 +1787,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1978,6 +1988,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

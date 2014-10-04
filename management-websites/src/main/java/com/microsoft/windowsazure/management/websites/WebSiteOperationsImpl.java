@@ -112,6 +112,7 @@ import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -216,6 +217,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -589,6 +591,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -912,6 +915,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -1282,6 +1286,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -1410,6 +1415,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1531,6 +1537,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1666,6 +1673,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -1949,6 +1957,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -2072,6 +2081,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2388,6 +2398,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2615,6 +2626,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2653,9 +2665,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc.getClass() != NullNode.class) {
                 JsonNode appSettingsSequenceElement = ((JsonNode) responseDoc.get("AppSettings"));
-                if (appSettingsSequenceElement != null) {
+                if (appSettingsSequenceElement != null && appSettingsSequenceElement.getClass() != NullNode.class) {
                     for (JsonNode appSettingsElement : ((ArrayNode) appSettingsSequenceElement)) {
                         String appSettingsKey = appSettingsElement.get("Name").getTextValue();
                         String appSettingsValue = appSettingsElement.get("Value").getTextValue();
@@ -2664,77 +2676,77 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode connectionStringsArray = responseDoc.get("ConnectionStrings");
-                if (connectionStringsArray != null) {
+                if (connectionStringsArray != null && connectionStringsArray.getClass() != NullNode.class) {
                     for (JsonNode connectionStringsValue : ((ArrayNode) connectionStringsArray)) {
                         WebSiteGetConfigurationResponse.ConnectionStringInfo connectionStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
                         result.getConnectionStrings().add(connectionStringInfoInstance);
                         
                         JsonNode connectionStringValue = connectionStringsValue.get("ConnectionString");
-                        if (connectionStringValue != null) {
+                        if (connectionStringValue != null && connectionStringValue.getClass() != NullNode.class) {
                             String connectionStringInstance;
                             connectionStringInstance = connectionStringValue.getTextValue();
                             connectionStringInfoInstance.setConnectionString(connectionStringInstance);
                         }
                         
                         JsonNode nameValue = connectionStringsValue.get("Name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue.getClass() != NullNode.class) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             connectionStringInfoInstance.setName(nameInstance);
                         }
                         
                         JsonNode typeValue = connectionStringsValue.get("Type");
-                        if (typeValue != null) {
+                        if (typeValue != null && typeValue.getClass() != NullNode.class) {
                             ConnectionStringType typeInstance;
-                            typeInstance = WebSiteManagementClientImpl.parseConnectionStringType(typeValue.getTextValue());
+                            typeInstance = typeValue.isNumber() ? ConnectionStringType.values()[typeValue.getIntValue()] : WebSiteManagementClientImpl.parseConnectionStringType(typeValue.getTextValue());
                             connectionStringInfoInstance.setType(typeInstance);
                         }
                     }
                 }
                 
                 JsonNode defaultDocumentsArray = responseDoc.get("DefaultDocuments");
-                if (defaultDocumentsArray != null) {
+                if (defaultDocumentsArray != null && defaultDocumentsArray.getClass() != NullNode.class) {
                     for (JsonNode defaultDocumentsValue : ((ArrayNode) defaultDocumentsArray)) {
                         result.getDefaultDocuments().add(defaultDocumentsValue.getTextValue());
                     }
                 }
                 
                 JsonNode detailedErrorLoggingEnabledValue = responseDoc.get("DetailedErrorLoggingEnabled");
-                if (detailedErrorLoggingEnabledValue != null) {
+                if (detailedErrorLoggingEnabledValue != null && detailedErrorLoggingEnabledValue.getClass() != NullNode.class) {
                     boolean detailedErrorLoggingEnabledInstance;
                     detailedErrorLoggingEnabledInstance = detailedErrorLoggingEnabledValue.getBooleanValue();
                     result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
                 }
                 
                 JsonNode documentRootValue = responseDoc.get("DocumentRoot");
-                if (documentRootValue != null) {
+                if (documentRootValue != null && documentRootValue.getClass() != NullNode.class) {
                     String documentRootInstance;
                     documentRootInstance = documentRootValue.getTextValue();
                     result.setDocumentRoot(documentRootInstance);
                 }
                 
                 JsonNode handlerMappingsArray = responseDoc.get("HandlerMappings");
-                if (handlerMappingsArray != null) {
+                if (handlerMappingsArray != null && handlerMappingsArray.getClass() != NullNode.class) {
                     for (JsonNode handlerMappingsValue : ((ArrayNode) handlerMappingsArray)) {
                         WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
                         result.getHandlerMappings().add(handlerMappingInstance);
                         
                         JsonNode argumentsValue = handlerMappingsValue.get("Arguments");
-                        if (argumentsValue != null) {
+                        if (argumentsValue != null && argumentsValue.getClass() != NullNode.class) {
                             String argumentsInstance;
                             argumentsInstance = argumentsValue.getTextValue();
                             handlerMappingInstance.setArguments(argumentsInstance);
                         }
                         
                         JsonNode extensionValue = handlerMappingsValue.get("Extension");
-                        if (extensionValue != null) {
+                        if (extensionValue != null && extensionValue.getClass() != NullNode.class) {
                             String extensionInstance;
                             extensionInstance = extensionValue.getTextValue();
                             handlerMappingInstance.setExtension(extensionInstance);
                         }
                         
                         JsonNode scriptProcessorValue = handlerMappingsValue.get("ScriptProcessor");
-                        if (scriptProcessorValue != null) {
+                        if (scriptProcessorValue != null && scriptProcessorValue.getClass() != NullNode.class) {
                             String scriptProcessorInstance;
                             scriptProcessorInstance = scriptProcessorValue.getTextValue();
                             handlerMappingInstance.setScriptProcessor(scriptProcessorInstance);
@@ -2743,28 +2755,28 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode httpLoggingEnabledValue = responseDoc.get("HttpLoggingEnabled");
-                if (httpLoggingEnabledValue != null) {
+                if (httpLoggingEnabledValue != null && httpLoggingEnabledValue.getClass() != NullNode.class) {
                     boolean httpLoggingEnabledInstance;
                     httpLoggingEnabledInstance = httpLoggingEnabledValue.getBooleanValue();
                     result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
                 }
                 
                 JsonNode logsDirectorySizeLimitValue = responseDoc.get("LogsDirectorySizeLimit");
-                if (logsDirectorySizeLimitValue != null) {
+                if (logsDirectorySizeLimitValue != null && logsDirectorySizeLimitValue.getClass() != NullNode.class) {
                     int logsDirectorySizeLimitInstance;
                     logsDirectorySizeLimitInstance = logsDirectorySizeLimitValue.getIntValue();
                     result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
                 }
                 
                 JsonNode managedPipelineModeValue = responseDoc.get("ManagedPipelineMode");
-                if (managedPipelineModeValue != null) {
+                if (managedPipelineModeValue != null && managedPipelineModeValue.getClass() != NullNode.class) {
                     ManagedPipelineMode managedPipelineModeInstance;
-                    managedPipelineModeInstance = WebSiteManagementClientImpl.parseManagedPipelineMode(managedPipelineModeValue.getTextValue());
+                    managedPipelineModeInstance = managedPipelineModeValue.isNumber() ? ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()] : WebSiteManagementClientImpl.parseManagedPipelineMode(managedPipelineModeValue.getTextValue());
                     result.setManagedPipelineMode(managedPipelineModeInstance);
                 }
                 
                 JsonNode metadataSequenceElement = ((JsonNode) responseDoc.get("Metadata"));
-                if (metadataSequenceElement != null) {
+                if (metadataSequenceElement != null && metadataSequenceElement.getClass() != NullNode.class) {
                     for (JsonNode metadataElement : ((ArrayNode) metadataSequenceElement)) {
                         String metadataKey = metadataElement.get("Name").getTextValue();
                         String metadataValue = metadataElement.get("Value").getTextValue();
@@ -2773,154 +2785,154 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode netFrameworkVersionValue = responseDoc.get("NetFrameworkVersion");
-                if (netFrameworkVersionValue != null) {
+                if (netFrameworkVersionValue != null && netFrameworkVersionValue.getClass() != NullNode.class) {
                     String netFrameworkVersionInstance;
                     netFrameworkVersionInstance = netFrameworkVersionValue.getTextValue();
                     result.setNetFrameworkVersion(netFrameworkVersionInstance);
                 }
                 
                 JsonNode numberOfWorkersValue = responseDoc.get("NumberOfWorkers");
-                if (numberOfWorkersValue != null) {
+                if (numberOfWorkersValue != null && numberOfWorkersValue.getClass() != NullNode.class) {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
                 JsonNode phpVersionValue = responseDoc.get("PhpVersion");
-                if (phpVersionValue != null) {
+                if (phpVersionValue != null && phpVersionValue.getClass() != NullNode.class) {
                     String phpVersionInstance;
                     phpVersionInstance = phpVersionValue.getTextValue();
                     result.setPhpVersion(phpVersionInstance);
                 }
                 
                 JsonNode publishingPasswordValue = responseDoc.get("PublishingPassword");
-                if (publishingPasswordValue != null) {
+                if (publishingPasswordValue != null && publishingPasswordValue.getClass() != NullNode.class) {
                     String publishingPasswordInstance;
                     publishingPasswordInstance = publishingPasswordValue.getTextValue();
                     result.setPublishingPassword(publishingPasswordInstance);
                 }
                 
                 JsonNode publishingUsernameValue = responseDoc.get("PublishingUsername");
-                if (publishingUsernameValue != null) {
+                if (publishingUsernameValue != null && publishingUsernameValue.getClass() != NullNode.class) {
                     String publishingUsernameInstance;
                     publishingUsernameInstance = publishingUsernameValue.getTextValue();
                     result.setPublishingUserName(publishingUsernameInstance);
                 }
                 
                 JsonNode remoteDebuggingEnabledValue = responseDoc.get("RemoteDebuggingEnabled");
-                if (remoteDebuggingEnabledValue != null) {
+                if (remoteDebuggingEnabledValue != null && remoteDebuggingEnabledValue.getClass() != NullNode.class) {
                     boolean remoteDebuggingEnabledInstance;
                     remoteDebuggingEnabledInstance = remoteDebuggingEnabledValue.getBooleanValue();
                     result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
                 }
                 
                 JsonNode remoteDebuggingVersionValue = responseDoc.get("RemoteDebuggingVersion");
-                if (remoteDebuggingVersionValue != null) {
+                if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue.getClass() != NullNode.class) {
                     RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                    remoteDebuggingVersionInstance = RemoteDebuggingVersion.valueOf(remoteDebuggingVersionValue.getTextValue());
+                    remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
                     result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                 }
                 
                 JsonNode requestTracingEnabledValue = responseDoc.get("RequestTracingEnabled");
-                if (requestTracingEnabledValue != null) {
+                if (requestTracingEnabledValue != null && requestTracingEnabledValue.getClass() != NullNode.class) {
                     boolean requestTracingEnabledInstance;
                     requestTracingEnabledInstance = requestTracingEnabledValue.getBooleanValue();
                     result.setRequestTracingEnabled(requestTracingEnabledInstance);
                 }
                 
                 JsonNode requestTracingExpirationTimeValue = responseDoc.get("RequestTracingExpirationTime");
-                if (requestTracingExpirationTimeValue != null) {
+                if (requestTracingExpirationTimeValue != null && requestTracingExpirationTimeValue.getClass() != NullNode.class) {
                     Calendar requestTracingExpirationTimeInstance;
                     requestTracingExpirationTimeInstance = DatatypeConverter.parseDateTime(requestTracingExpirationTimeValue.getTextValue());
                     result.setRequestTracingExpirationTime(requestTracingExpirationTimeInstance);
                 }
                 
                 JsonNode scmTypeValue = responseDoc.get("ScmType");
-                if (scmTypeValue != null) {
+                if (scmTypeValue != null && scmTypeValue.getClass() != NullNode.class) {
                     String scmTypeInstance;
                     scmTypeInstance = scmTypeValue.getTextValue();
                     result.setScmType(scmTypeInstance);
                 }
                 
                 JsonNode use32BitWorkerProcessValue = responseDoc.get("Use32BitWorkerProcess");
-                if (use32BitWorkerProcessValue != null) {
+                if (use32BitWorkerProcessValue != null && use32BitWorkerProcessValue.getClass() != NullNode.class) {
                     boolean use32BitWorkerProcessInstance;
                     use32BitWorkerProcessInstance = use32BitWorkerProcessValue.getBooleanValue();
                     result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
                 }
                 
                 JsonNode webSocketsEnabledValue = responseDoc.get("WebSocketsEnabled");
-                if (webSocketsEnabledValue != null) {
+                if (webSocketsEnabledValue != null && webSocketsEnabledValue.getClass() != NullNode.class) {
                     boolean webSocketsEnabledInstance;
                     webSocketsEnabledInstance = webSocketsEnabledValue.getBooleanValue();
                     result.setWebSocketsEnabled(webSocketsEnabledInstance);
                 }
                 
                 JsonNode alwaysOnValue = responseDoc.get("AlwaysOn");
-                if (alwaysOnValue != null) {
+                if (alwaysOnValue != null && alwaysOnValue.getClass() != NullNode.class) {
                     boolean alwaysOnInstance;
                     alwaysOnInstance = alwaysOnValue.getBooleanValue();
                     result.setAlwaysOn(alwaysOnInstance);
                 }
                 
                 JsonNode routingRulesArray = responseDoc.get("RoutingRules");
-                if (routingRulesArray != null) {
+                if (routingRulesArray != null && routingRulesArray.getClass() != NullNode.class) {
                     for (JsonNode routingRulesValue : ((ArrayNode) routingRulesArray)) {
                         String typeName = routingRulesValue.get("__type").getTextValue();
                         if ("RampUpRule:http://schemas.microsoft.com/windowsazure".equals(typeName)) {
                             RampUpRule rampUpRuleInstance = new RampUpRule();
                             
                             JsonNode actionHostNameValue = routingRulesValue.get("ActionHostName");
-                            if (actionHostNameValue != null) {
+                            if (actionHostNameValue != null && actionHostNameValue.getClass() != NullNode.class) {
                                 String actionHostNameInstance;
                                 actionHostNameInstance = actionHostNameValue.getTextValue();
                                 rampUpRuleInstance.setActionHostName(actionHostNameInstance);
                             }
                             
                             JsonNode reroutePercentageValue = routingRulesValue.get("ReroutePercentage");
-                            if (reroutePercentageValue != null) {
+                            if (reroutePercentageValue != null && reroutePercentageValue.getClass() != NullNode.class) {
                                 double reroutePercentageInstance;
                                 reroutePercentageInstance = reroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setReroutePercentage(reroutePercentageInstance);
                             }
                             
                             JsonNode changeStepValue = routingRulesValue.get("ChangeStep");
-                            if (changeStepValue != null) {
+                            if (changeStepValue != null && changeStepValue.getClass() != NullNode.class) {
                                 double changeStepInstance;
                                 changeStepInstance = changeStepValue.getDoubleValue();
                                 rampUpRuleInstance.setChangeStep(changeStepInstance);
                             }
                             
                             JsonNode changeIntervalInMinutesValue = routingRulesValue.get("ChangeIntervalInMinutes");
-                            if (changeIntervalInMinutesValue != null) {
+                            if (changeIntervalInMinutesValue != null && changeIntervalInMinutesValue.getClass() != NullNode.class) {
                                 int changeIntervalInMinutesInstance;
                                 changeIntervalInMinutesInstance = changeIntervalInMinutesValue.getIntValue();
                                 rampUpRuleInstance.setChangeIntervalInMinutes(changeIntervalInMinutesInstance);
                             }
                             
                             JsonNode minReroutePercentageValue = routingRulesValue.get("MinReroutePercentage");
-                            if (minReroutePercentageValue != null) {
+                            if (minReroutePercentageValue != null && minReroutePercentageValue.getClass() != NullNode.class) {
                                 double minReroutePercentageInstance;
                                 minReroutePercentageInstance = minReroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setMinReroutePercentage(minReroutePercentageInstance);
                             }
                             
                             JsonNode maxReroutePercentageValue = routingRulesValue.get("MaxReroutePercentage");
-                            if (maxReroutePercentageValue != null) {
+                            if (maxReroutePercentageValue != null && maxReroutePercentageValue.getClass() != NullNode.class) {
                                 double maxReroutePercentageInstance;
                                 maxReroutePercentageInstance = maxReroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setMaxReroutePercentage(maxReroutePercentageInstance);
                             }
                             
                             JsonNode changeDecisionCallbackUrlValue = routingRulesValue.get("ChangeDecisionCallbackUrl");
-                            if (changeDecisionCallbackUrlValue != null) {
+                            if (changeDecisionCallbackUrlValue != null && changeDecisionCallbackUrlValue.getClass() != NullNode.class) {
                                 String changeDecisionCallbackUrlInstance;
                                 changeDecisionCallbackUrlInstance = changeDecisionCallbackUrlValue.getTextValue();
                                 rampUpRuleInstance.setChangeDecisionCallbackUrl(changeDecisionCallbackUrlInstance);
                             }
                             
                             JsonNode nameValue2 = routingRulesValue.get("Name");
-                            if (nameValue2 != null) {
+                            if (nameValue2 != null && nameValue2.getClass() != NullNode.class) {
                                 String nameInstance2;
                                 nameInstance2 = nameValue2.getTextValue();
                                 rampUpRuleInstance.setName(nameInstance2);
@@ -3043,6 +3055,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3310,6 +3323,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3442,6 +3456,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3670,6 +3685,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3803,6 +3819,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3988,6 +4005,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -4111,6 +4129,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -4354,6 +4373,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -4473,6 +4493,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -4806,6 +4827,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -4943,6 +4965,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -5345,6 +5368,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -5575,6 +5599,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

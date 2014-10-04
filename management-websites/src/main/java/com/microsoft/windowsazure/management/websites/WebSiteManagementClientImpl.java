@@ -215,8 +215,6 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**
@@ -272,6 +270,82 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type ConnectionStringType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ConnectionStringType parseConnectionStringType(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ConnectionStringType.MySql;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlServer;
+        }
+        if ("2".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlAzure;
+        }
+        if ("3".equalsIgnoreCase(value)) {
+            return ConnectionStringType.Custom;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ConnectionStringType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String connectionStringTypeToString(ConnectionStringType value) {
+        if (value == ConnectionStringType.MySql) {
+            return "0";
+        }
+        if (value == ConnectionStringType.SqlServer) {
+            return "1";
+        }
+        if (value == ConnectionStringType.SqlAzure) {
+            return "2";
+        }
+        if (value == ConnectionStringType.Custom) {
+            return "3";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type ManagedPipelineMode.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ManagedPipelineMode parseManagedPipelineMode(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Integrated;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Classic;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ManagedPipelineMode to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String managedPipelineModeToString(ManagedPipelineMode value) {
+        if (value == ManagedPipelineMode.Integrated) {
+            return "0";
+        }
+        if (value == ManagedPipelineMode.Classic) {
+            return "1";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -372,6 +446,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -654,6 +729,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -752,6 +828,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -796,81 +873,5 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
-    }
-    
-    /**
-    * Parse enum values for type ConnectionStringType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static ConnectionStringType parseConnectionStringType(String value) {
-        if ("0".equalsIgnoreCase(value)) {
-            return ConnectionStringType.MySql;
-        }
-        if ("1".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SqlServer;
-        }
-        if ("2".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SqlAzure;
-        }
-        if ("3".equalsIgnoreCase(value)) {
-            return ConnectionStringType.Custom;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type ConnectionStringType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String connectionStringTypeToString(ConnectionStringType value) {
-        if (value == ConnectionStringType.MySql) {
-            return "0";
-        }
-        if (value == ConnectionStringType.SqlServer) {
-            return "1";
-        }
-        if (value == ConnectionStringType.SqlAzure) {
-            return "2";
-        }
-        if (value == ConnectionStringType.Custom) {
-            return "3";
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Parse enum values for type ManagedPipelineMode.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static ManagedPipelineMode parseManagedPipelineMode(String value) {
-        if ("0".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.Integrated;
-        }
-        if ("1".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.Classic;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type ManagedPipelineMode to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String managedPipelineModeToString(ManagedPipelineMode value) {
-        if (value == ManagedPipelineMode.Integrated) {
-            return "0";
-        }
-        if (value == ManagedPipelineMode.Classic) {
-            return "1";
-        }
-        throw new IllegalArgumentException("value");
     }
 }
