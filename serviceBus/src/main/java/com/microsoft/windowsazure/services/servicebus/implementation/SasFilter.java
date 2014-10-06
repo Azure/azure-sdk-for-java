@@ -34,7 +34,7 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 public class SasFilter extends ClientFilter {
 	private String key;
 	private String value;
-	private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
+	private static final String HMAC_SHA256_ALG = "HmacSHA256";
 	
     public SasFilter(String key, String value) {
         this.key = key;
@@ -78,22 +78,16 @@ public class SasFilter extends ClientFilter {
 	private String calculateHmac(String data)
 			throws java.security.SignatureException
 	{
-		String result;
 		try {
-
-			SecretKeySpec signingKey = new SecretKeySpec(value.getBytes(), HMAC_SHA256_ALGORITHM);
-			Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
+			
+			SecretKeySpec signingKey = new SecretKeySpec(value.getBytes(), HMAC_SHA256_ALG);
+			Mac mac = Mac.getInstance(HMAC_SHA256_ALG);
 			mac.init(signingKey);
-	
-			// compute the hmac on input data bytes
 			byte[] rawHmac = mac.doFinal(data.getBytes());
-	
-			// base64-encode the hmac
-			result = Base64.getEncoder().encodeToString(rawHmac);
+			return Base64.getEncoder().encodeToString(rawHmac);
 			
 			} catch (Exception e) {
 				throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
 			}
-		return result;
 	}
 }
