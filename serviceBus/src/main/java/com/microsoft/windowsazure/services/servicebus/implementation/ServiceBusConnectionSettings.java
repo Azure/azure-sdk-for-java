@@ -32,9 +32,12 @@ class ServiceBusConnectionSettings {
     private String wrapUri;
     private String wrapName;
     private String wrapPassword;
+    private String sharedAccessKeyName;
+    private String sharedAccessKey;
 
     public ServiceBusConnectionSettings(String connectionString, String uri,
-            String wrapUri, String wrapName, String wrapPassword)
+            String wrapUri, String wrapName, String wrapPassword,
+            String sharedAccessKeyName, String sharedAccessKey)
             throws ConnectionStringSyntaxException, URISyntaxException {
         if (connectionString != null) {
             parseConnectionString(connectionString);
@@ -43,6 +46,8 @@ class ServiceBusConnectionSettings {
             this.wrapUri = wrapUri;
             this.wrapName = wrapName;
             this.wrapPassword = wrapPassword;
+            this.sharedAccessKey = sharedAccessKey;
+            this.sharedAccessKeyName = sharedAccessKeyName;
         }
     }
 
@@ -62,6 +67,18 @@ class ServiceBusConnectionSettings {
         return wrapPassword;
     }
 
+    public String getSharedAccessKeyName() {
+    	return sharedAccessKeyName;
+    }
+    
+    public String getSharedAccessKey() {
+    	return sharedAccessKey;
+    }
+    
+    public boolean isSasAuthentication() {
+    	return sharedAccessKeyName != null && sharedAccessKey != null;
+    }
+    
     private boolean parseConnectionString(String connectionString)
             throws URISyntaxException, ConnectionStringSyntaxException {
         ServiceBusConnectionString cs = new ServiceBusConnectionString(
@@ -70,6 +87,8 @@ class ServiceBusConnectionSettings {
         setWrapUri(cs);
         wrapName = cs.getSharedSecretIssuer();
         wrapPassword = cs.getSharedSecretValue();
+        sharedAccessKeyName = cs.getSharedAccessKeyName();
+        sharedAccessKey = cs.getSharedAccessKey();
         return true;
     }
 

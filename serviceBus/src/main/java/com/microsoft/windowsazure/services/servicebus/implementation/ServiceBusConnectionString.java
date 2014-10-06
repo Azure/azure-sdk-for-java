@@ -42,7 +42,9 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
     private String stsEndpoint;
     private String sharedSecretIssuer;
     private String sharedSecretValue;
-
+    private String sharedAccessKeyName;
+    private String sharedAccessKey;
+    
     /**
      * Get the endpoint from the connection string
      * 
@@ -114,4 +116,34 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
     public void setSharedSecretValue(String sharedSecretValue) {
         this.sharedSecretValue = sharedSecretValue;
     }
+
+	/**
+	 * @return the sharedAccessKeyName
+	 */
+	public String getSharedAccessKeyName() {
+		return sharedAccessKeyName;
+	}
+
+	/**
+	 * @param sharedAccessKeyName the sharedAccessKeyName to set
+	 */
+	public void setSharedAccessKeyName(String sharedAccessKeyName) {
+		this.sharedAccessKeyName = sharedAccessKeyName;
+	}
+
+	/**
+	 * @return the sharedAccessKey
+	 */
+	public String getSharedAccessKey() {
+		return sharedAccessKey;
+	}
+
+	/**
+	 * @param sharedAccessKey the sharedAccessKey to set
+	 */
+	public void setSharedAccessKey(String sharedAccessKey) {
+		this.sharedAccessKey = sharedAccessKey;
+	}
+    
+    
 }

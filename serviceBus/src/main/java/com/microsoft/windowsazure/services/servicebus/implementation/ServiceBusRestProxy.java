@@ -76,6 +76,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Inject
     public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
+    		SasFilter sasAuthFilter,
             UserAgentFilter userAgentFilter,
             ServiceBusConnectionSettings connectionSettings,
             BrokerPropertiesMapper mapper) {

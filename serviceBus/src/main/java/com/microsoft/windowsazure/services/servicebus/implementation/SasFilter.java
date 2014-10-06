@@ -39,9 +39,9 @@ public class SasFilter extends ClientFilter {
 	private static final String HMAC_SHA256_ALG = "HmacSHA256";
 	private final long FIVE_MINUTES = 5*60*1000; //milliseconds
 	
-    public SasFilter(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public SasFilter(ServiceBusConnectionSettings connectionSettings) {
+        this.key = connectionSettings.getSharedAccessKeyName();
+        this.value = connectionSettings.getSharedAccessKey();
     }
 
 	@Override
