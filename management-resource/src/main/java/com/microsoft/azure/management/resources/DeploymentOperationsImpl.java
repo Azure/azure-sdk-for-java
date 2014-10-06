@@ -65,6 +65,7 @@ import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
@@ -381,99 +382,99 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 Deployment deploymentInstance = new Deployment();
                 result.setDeployment(deploymentInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     deploymentInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     deploymentInstance.setName(nameInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     DeploymentProperties propertiesInstance = new DeploymentProperties();
                     deploymentInstance.setProperties(propertiesInstance);
                     
                     JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         propertiesInstance.setProvisioningState(provisioningStateInstance);
                     }
                     
                     JsonNode correlationIdValue = propertiesValue2.get("correlationId");
-                    if (correlationIdValue != null) {
+                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
                         String correlationIdInstance;
                         correlationIdInstance = correlationIdValue.getTextValue();
                         propertiesInstance.setCorrelationId(correlationIdInstance);
                     }
                     
                     JsonNode timestampValue = propertiesValue2.get("timestamp");
-                    if (timestampValue != null) {
+                    if (timestampValue != null && timestampValue instanceof NullNode == false) {
                         Calendar timestampInstance;
                         timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
                         propertiesInstance.setTimestamp(timestampInstance);
                     }
                     
                     JsonNode outputsValue = propertiesValue2.get("outputs");
-                    if (outputsValue != null) {
+                    if (outputsValue != null && outputsValue instanceof NullNode == false) {
                         String outputsInstance;
                         outputsInstance = outputsValue.getTextValue();
                         propertiesInstance.setOutputs(outputsInstance);
                     }
                     
                     JsonNode providersArray = propertiesValue2.get("providers");
-                    if (providersArray != null) {
+                    if (providersArray != null && providersArray instanceof NullNode == false) {
                         for (JsonNode providersValue : ((ArrayNode) providersArray)) {
                             Provider providerInstance = new Provider();
                             propertiesInstance.getProviders().add(providerInstance);
                             
                             JsonNode idValue2 = providersValue.get("id");
-                            if (idValue2 != null) {
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                 String idInstance2;
                                 idInstance2 = idValue2.getTextValue();
                                 providerInstance.setId(idInstance2);
                             }
                             
                             JsonNode namespaceValue = providersValue.get("namespace");
-                            if (namespaceValue != null) {
+                            if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                                 String namespaceInstance;
                                 namespaceInstance = namespaceValue.getTextValue();
                                 providerInstance.setNamespace(namespaceInstance);
                             }
                             
                             JsonNode registrationStateValue = providersValue.get("registrationState");
-                            if (registrationStateValue != null) {
+                            if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                                 String registrationStateInstance;
                                 registrationStateInstance = registrationStateValue.getTextValue();
                                 providerInstance.setRegistrationState(registrationStateInstance);
                             }
                             
                             JsonNode resourceTypesArray = providersValue.get("resourceTypes");
-                            if (resourceTypesArray != null) {
+                            if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                                 for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                     ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                     providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                     
                                     JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                    if (resourceTypeValue != null) {
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                         String resourceTypeInstance;
                                         resourceTypeInstance = resourceTypeValue.getTextValue();
                                         providerResourceTypeInstance.setName(resourceTypeInstance);
                                     }
                                     
                                     JsonNode locationsArray = resourceTypesValue.get("locations");
-                                    if (locationsArray != null) {
+                                    if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                         for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                             providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                         }
@@ -484,33 +485,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode dependenciesArray = propertiesValue2.get("dependencies");
-                    if (dependenciesArray != null) {
+                    if (dependenciesArray != null && dependenciesArray instanceof NullNode == false) {
                         for (JsonNode dependenciesValue : ((ArrayNode) dependenciesArray)) {
                             Dependency dependencyInstance = new Dependency();
                             propertiesInstance.getDependencies().add(dependencyInstance);
                             
                             JsonNode dependsOnArray = dependenciesValue.get("dependsOn");
-                            if (dependsOnArray != null) {
+                            if (dependsOnArray != null && dependsOnArray instanceof NullNode == false) {
                                 for (JsonNode dependsOnValue : ((ArrayNode) dependsOnArray)) {
                                     BasicDependency basicDependencyInstance = new BasicDependency();
                                     dependencyInstance.getDependsOn().add(basicDependencyInstance);
                                     
                                     JsonNode idValue3 = dependsOnValue.get("id");
-                                    if (idValue3 != null) {
+                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
                                         String idInstance3;
                                         idInstance3 = idValue3.getTextValue();
                                         basicDependencyInstance.setId(idInstance3);
                                     }
                                     
                                     JsonNode resourceTypeValue2 = dependsOnValue.get("resourceType");
-                                    if (resourceTypeValue2 != null) {
+                                    if (resourceTypeValue2 != null && resourceTypeValue2 instanceof NullNode == false) {
                                         String resourceTypeInstance2;
                                         resourceTypeInstance2 = resourceTypeValue2.getTextValue();
                                         basicDependencyInstance.setResourceType(resourceTypeInstance2);
                                     }
                                     
                                     JsonNode resourceNameValue = dependsOnValue.get("resourceName");
-                                    if (resourceNameValue != null) {
+                                    if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
                                         String resourceNameInstance;
                                         resourceNameInstance = resourceNameValue.getTextValue();
                                         basicDependencyInstance.setResourceName(resourceNameInstance);
@@ -519,21 +520,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode idValue4 = dependenciesValue.get("id");
-                            if (idValue4 != null) {
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                 String idInstance4;
                                 idInstance4 = idValue4.getTextValue();
                                 dependencyInstance.setId(idInstance4);
                             }
                             
                             JsonNode resourceTypeValue3 = dependenciesValue.get("resourceType");
-                            if (resourceTypeValue3 != null) {
+                            if (resourceTypeValue3 != null && resourceTypeValue3 instanceof NullNode == false) {
                                 String resourceTypeInstance3;
                                 resourceTypeInstance3 = resourceTypeValue3.getTextValue();
                                 dependencyInstance.setResourceType(resourceTypeInstance3);
                             }
                             
                             JsonNode resourceNameValue2 = dependenciesValue.get("resourceName");
-                            if (resourceNameValue2 != null) {
+                            if (resourceNameValue2 != null && resourceNameValue2 instanceof NullNode == false) {
                                 String resourceNameInstance2;
                                 resourceNameInstance2 = resourceNameValue2.getTextValue();
                                 dependencyInstance.setResourceName(resourceNameInstance2);
@@ -542,26 +543,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode templateValue = propertiesValue2.get("template");
-                    if (templateValue != null) {
+                    if (templateValue != null && templateValue instanceof NullNode == false) {
                         String templateInstance;
                         templateInstance = templateValue.getTextValue();
                         propertiesInstance.setTemplate(templateInstance);
                     }
                     
                     JsonNode templateLinkValue2 = propertiesValue2.get("templateLink");
-                    if (templateLinkValue2 != null) {
+                    if (templateLinkValue2 != null && templateLinkValue2 instanceof NullNode == false) {
                         TemplateLink templateLinkInstance = new TemplateLink();
                         propertiesInstance.setTemplateLink(templateLinkInstance);
                         
                         JsonNode uriValue = templateLinkValue2.get("uri");
-                        if (uriValue != null) {
+                        if (uriValue != null && uriValue instanceof NullNode == false) {
                             URI uriInstance;
                             uriInstance = new URI(uriValue.getTextValue());
                             templateLinkInstance.setUri(uriInstance);
                         }
                         
                         JsonNode contentVersionValue = templateLinkValue2.get("contentVersion");
-                        if (contentVersionValue != null) {
+                        if (contentVersionValue != null && contentVersionValue instanceof NullNode == false) {
                             String contentVersionInstance;
                             contentVersionInstance = contentVersionValue.getTextValue();
                             templateLinkInstance.setContentVersion(contentVersionInstance);
@@ -569,26 +570,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode parametersValue = propertiesValue2.get("parameters");
-                    if (parametersValue != null) {
+                    if (parametersValue != null && parametersValue instanceof NullNode == false) {
                         String parametersInstance;
                         parametersInstance = parametersValue.getTextValue();
                         propertiesInstance.setParameters(parametersInstance);
                     }
                     
                     JsonNode parametersLinkValue2 = propertiesValue2.get("parametersLink");
-                    if (parametersLinkValue2 != null) {
+                    if (parametersLinkValue2 != null && parametersLinkValue2 instanceof NullNode == false) {
                         ParametersLink parametersLinkInstance = new ParametersLink();
                         propertiesInstance.setParametersLink(parametersLinkInstance);
                         
                         JsonNode uriValue2 = parametersLinkValue2.get("uri");
-                        if (uriValue2 != null) {
+                        if (uriValue2 != null && uriValue2 instanceof NullNode == false) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             parametersLinkInstance.setUri(uriInstance2);
                         }
                         
                         JsonNode contentVersionValue2 = parametersLinkValue2.get("contentVersion");
-                        if (contentVersionValue2 != null) {
+                        if (contentVersionValue2 != null && contentVersionValue2 instanceof NullNode == false) {
                             String contentVersionInstance2;
                             contentVersionInstance2 = contentVersionValue2.getTextValue();
                             parametersLinkInstance.setContentVersion(contentVersionInstance2);
@@ -596,9 +597,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode modeValue = propertiesValue2.get("mode");
-                    if (modeValue != null) {
+                    if (modeValue != null && modeValue instanceof NullNode == false) {
                         DeploymentMode modeInstance;
-                        modeInstance = DeploymentMode.valueOf(modeValue.getTextValue());
+                        modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
                         propertiesInstance.setMode(modeInstance);
                     }
                 }
@@ -729,99 +730,99 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 Deployment deploymentInstance = new Deployment();
                 result.setDeployment(deploymentInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     deploymentInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     deploymentInstance.setName(nameInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     DeploymentProperties propertiesInstance = new DeploymentProperties();
                     deploymentInstance.setProperties(propertiesInstance);
                     
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         propertiesInstance.setProvisioningState(provisioningStateInstance);
                     }
                     
                     JsonNode correlationIdValue = propertiesValue.get("correlationId");
-                    if (correlationIdValue != null) {
+                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
                         String correlationIdInstance;
                         correlationIdInstance = correlationIdValue.getTextValue();
                         propertiesInstance.setCorrelationId(correlationIdInstance);
                     }
                     
                     JsonNode timestampValue = propertiesValue.get("timestamp");
-                    if (timestampValue != null) {
+                    if (timestampValue != null && timestampValue instanceof NullNode == false) {
                         Calendar timestampInstance;
                         timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
                         propertiesInstance.setTimestamp(timestampInstance);
                     }
                     
                     JsonNode outputsValue = propertiesValue.get("outputs");
-                    if (outputsValue != null) {
+                    if (outputsValue != null && outputsValue instanceof NullNode == false) {
                         String outputsInstance;
                         outputsInstance = outputsValue.getTextValue();
                         propertiesInstance.setOutputs(outputsInstance);
                     }
                     
                     JsonNode providersArray = propertiesValue.get("providers");
-                    if (providersArray != null) {
+                    if (providersArray != null && providersArray instanceof NullNode == false) {
                         for (JsonNode providersValue : ((ArrayNode) providersArray)) {
                             Provider providerInstance = new Provider();
                             propertiesInstance.getProviders().add(providerInstance);
                             
                             JsonNode idValue2 = providersValue.get("id");
-                            if (idValue2 != null) {
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                 String idInstance2;
                                 idInstance2 = idValue2.getTextValue();
                                 providerInstance.setId(idInstance2);
                             }
                             
                             JsonNode namespaceValue = providersValue.get("namespace");
-                            if (namespaceValue != null) {
+                            if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                                 String namespaceInstance;
                                 namespaceInstance = namespaceValue.getTextValue();
                                 providerInstance.setNamespace(namespaceInstance);
                             }
                             
                             JsonNode registrationStateValue = providersValue.get("registrationState");
-                            if (registrationStateValue != null) {
+                            if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                                 String registrationStateInstance;
                                 registrationStateInstance = registrationStateValue.getTextValue();
                                 providerInstance.setRegistrationState(registrationStateInstance);
                             }
                             
                             JsonNode resourceTypesArray = providersValue.get("resourceTypes");
-                            if (resourceTypesArray != null) {
+                            if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                                 for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                     ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                     providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                     
                                     JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                    if (resourceTypeValue != null) {
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                         String resourceTypeInstance;
                                         resourceTypeInstance = resourceTypeValue.getTextValue();
                                         providerResourceTypeInstance.setName(resourceTypeInstance);
                                     }
                                     
                                     JsonNode locationsArray = resourceTypesValue.get("locations");
-                                    if (locationsArray != null) {
+                                    if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                         for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                             providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                         }
@@ -832,33 +833,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode dependenciesArray = propertiesValue.get("dependencies");
-                    if (dependenciesArray != null) {
+                    if (dependenciesArray != null && dependenciesArray instanceof NullNode == false) {
                         for (JsonNode dependenciesValue : ((ArrayNode) dependenciesArray)) {
                             Dependency dependencyInstance = new Dependency();
                             propertiesInstance.getDependencies().add(dependencyInstance);
                             
                             JsonNode dependsOnArray = dependenciesValue.get("dependsOn");
-                            if (dependsOnArray != null) {
+                            if (dependsOnArray != null && dependsOnArray instanceof NullNode == false) {
                                 for (JsonNode dependsOnValue : ((ArrayNode) dependsOnArray)) {
                                     BasicDependency basicDependencyInstance = new BasicDependency();
                                     dependencyInstance.getDependsOn().add(basicDependencyInstance);
                                     
                                     JsonNode idValue3 = dependsOnValue.get("id");
-                                    if (idValue3 != null) {
+                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
                                         String idInstance3;
                                         idInstance3 = idValue3.getTextValue();
                                         basicDependencyInstance.setId(idInstance3);
                                     }
                                     
                                     JsonNode resourceTypeValue2 = dependsOnValue.get("resourceType");
-                                    if (resourceTypeValue2 != null) {
+                                    if (resourceTypeValue2 != null && resourceTypeValue2 instanceof NullNode == false) {
                                         String resourceTypeInstance2;
                                         resourceTypeInstance2 = resourceTypeValue2.getTextValue();
                                         basicDependencyInstance.setResourceType(resourceTypeInstance2);
                                     }
                                     
                                     JsonNode resourceNameValue = dependsOnValue.get("resourceName");
-                                    if (resourceNameValue != null) {
+                                    if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
                                         String resourceNameInstance;
                                         resourceNameInstance = resourceNameValue.getTextValue();
                                         basicDependencyInstance.setResourceName(resourceNameInstance);
@@ -867,21 +868,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode idValue4 = dependenciesValue.get("id");
-                            if (idValue4 != null) {
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                 String idInstance4;
                                 idInstance4 = idValue4.getTextValue();
                                 dependencyInstance.setId(idInstance4);
                             }
                             
                             JsonNode resourceTypeValue3 = dependenciesValue.get("resourceType");
-                            if (resourceTypeValue3 != null) {
+                            if (resourceTypeValue3 != null && resourceTypeValue3 instanceof NullNode == false) {
                                 String resourceTypeInstance3;
                                 resourceTypeInstance3 = resourceTypeValue3.getTextValue();
                                 dependencyInstance.setResourceType(resourceTypeInstance3);
                             }
                             
                             JsonNode resourceNameValue2 = dependenciesValue.get("resourceName");
-                            if (resourceNameValue2 != null) {
+                            if (resourceNameValue2 != null && resourceNameValue2 instanceof NullNode == false) {
                                 String resourceNameInstance2;
                                 resourceNameInstance2 = resourceNameValue2.getTextValue();
                                 dependencyInstance.setResourceName(resourceNameInstance2);
@@ -890,26 +891,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode templateValue = propertiesValue.get("template");
-                    if (templateValue != null) {
+                    if (templateValue != null && templateValue instanceof NullNode == false) {
                         String templateInstance;
                         templateInstance = templateValue.getTextValue();
                         propertiesInstance.setTemplate(templateInstance);
                     }
                     
                     JsonNode templateLinkValue = propertiesValue.get("templateLink");
-                    if (templateLinkValue != null) {
+                    if (templateLinkValue != null && templateLinkValue instanceof NullNode == false) {
                         TemplateLink templateLinkInstance = new TemplateLink();
                         propertiesInstance.setTemplateLink(templateLinkInstance);
                         
                         JsonNode uriValue = templateLinkValue.get("uri");
-                        if (uriValue != null) {
+                        if (uriValue != null && uriValue instanceof NullNode == false) {
                             URI uriInstance;
                             uriInstance = new URI(uriValue.getTextValue());
                             templateLinkInstance.setUri(uriInstance);
                         }
                         
                         JsonNode contentVersionValue = templateLinkValue.get("contentVersion");
-                        if (contentVersionValue != null) {
+                        if (contentVersionValue != null && contentVersionValue instanceof NullNode == false) {
                             String contentVersionInstance;
                             contentVersionInstance = contentVersionValue.getTextValue();
                             templateLinkInstance.setContentVersion(contentVersionInstance);
@@ -917,26 +918,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode parametersValue = propertiesValue.get("parameters");
-                    if (parametersValue != null) {
+                    if (parametersValue != null && parametersValue instanceof NullNode == false) {
                         String parametersInstance;
                         parametersInstance = parametersValue.getTextValue();
                         propertiesInstance.setParameters(parametersInstance);
                     }
                     
                     JsonNode parametersLinkValue = propertiesValue.get("parametersLink");
-                    if (parametersLinkValue != null) {
+                    if (parametersLinkValue != null && parametersLinkValue instanceof NullNode == false) {
                         ParametersLink parametersLinkInstance = new ParametersLink();
                         propertiesInstance.setParametersLink(parametersLinkInstance);
                         
                         JsonNode uriValue2 = parametersLinkValue.get("uri");
-                        if (uriValue2 != null) {
+                        if (uriValue2 != null && uriValue2 instanceof NullNode == false) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             parametersLinkInstance.setUri(uriInstance2);
                         }
                         
                         JsonNode contentVersionValue2 = parametersLinkValue.get("contentVersion");
-                        if (contentVersionValue2 != null) {
+                        if (contentVersionValue2 != null && contentVersionValue2 instanceof NullNode == false) {
                             String contentVersionInstance2;
                             contentVersionInstance2 = contentVersionValue2.getTextValue();
                             parametersLinkInstance.setContentVersion(contentVersionInstance2);
@@ -944,9 +945,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode modeValue = propertiesValue.get("mode");
-                    if (modeValue != null) {
+                    if (modeValue != null && modeValue instanceof NullNode == false) {
                         DeploymentMode modeInstance;
-                        modeInstance = DeploymentMode.valueOf(modeValue.getTextValue());
+                        modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
                         propertiesInstance.setMode(modeInstance);
                     }
                 }
@@ -1080,102 +1081,102 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Deployment deploymentInstance = new Deployment();
                         result.getDeployments().add(deploymentInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             deploymentInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             deploymentInstance.setName(nameInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             DeploymentProperties propertiesInstance = new DeploymentProperties();
                             deploymentInstance.setProperties(propertiesInstance);
                             
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 propertiesInstance.setProvisioningState(provisioningStateInstance);
                             }
                             
                             JsonNode correlationIdValue = propertiesValue.get("correlationId");
-                            if (correlationIdValue != null) {
+                            if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
                                 String correlationIdInstance;
                                 correlationIdInstance = correlationIdValue.getTextValue();
                                 propertiesInstance.setCorrelationId(correlationIdInstance);
                             }
                             
                             JsonNode timestampValue = propertiesValue.get("timestamp");
-                            if (timestampValue != null) {
+                            if (timestampValue != null && timestampValue instanceof NullNode == false) {
                                 Calendar timestampInstance;
                                 timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
                                 propertiesInstance.setTimestamp(timestampInstance);
                             }
                             
                             JsonNode outputsValue = propertiesValue.get("outputs");
-                            if (outputsValue != null) {
+                            if (outputsValue != null && outputsValue instanceof NullNode == false) {
                                 String outputsInstance;
                                 outputsInstance = outputsValue.getTextValue();
                                 propertiesInstance.setOutputs(outputsInstance);
                             }
                             
                             JsonNode providersArray = propertiesValue.get("providers");
-                            if (providersArray != null) {
+                            if (providersArray != null && providersArray instanceof NullNode == false) {
                                 for (JsonNode providersValue : ((ArrayNode) providersArray)) {
                                     Provider providerInstance = new Provider();
                                     propertiesInstance.getProviders().add(providerInstance);
                                     
                                     JsonNode idValue2 = providersValue.get("id");
-                                    if (idValue2 != null) {
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                         String idInstance2;
                                         idInstance2 = idValue2.getTextValue();
                                         providerInstance.setId(idInstance2);
                                     }
                                     
                                     JsonNode namespaceValue = providersValue.get("namespace");
-                                    if (namespaceValue != null) {
+                                    if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                                         String namespaceInstance;
                                         namespaceInstance = namespaceValue.getTextValue();
                                         providerInstance.setNamespace(namespaceInstance);
                                     }
                                     
                                     JsonNode registrationStateValue = providersValue.get("registrationState");
-                                    if (registrationStateValue != null) {
+                                    if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                                         String registrationStateInstance;
                                         registrationStateInstance = registrationStateValue.getTextValue();
                                         providerInstance.setRegistrationState(registrationStateInstance);
                                     }
                                     
                                     JsonNode resourceTypesArray = providersValue.get("resourceTypes");
-                                    if (resourceTypesArray != null) {
+                                    if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                                         for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                             ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                             providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                             
                                             JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                            if (resourceTypeValue != null) {
+                                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                                 String resourceTypeInstance;
                                                 resourceTypeInstance = resourceTypeValue.getTextValue();
                                                 providerResourceTypeInstance.setName(resourceTypeInstance);
                                             }
                                             
                                             JsonNode locationsArray = resourceTypesValue.get("locations");
-                                            if (locationsArray != null) {
+                                            if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                                 for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                                     providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                                 }
@@ -1186,33 +1187,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode dependenciesArray = propertiesValue.get("dependencies");
-                            if (dependenciesArray != null) {
+                            if (dependenciesArray != null && dependenciesArray instanceof NullNode == false) {
                                 for (JsonNode dependenciesValue : ((ArrayNode) dependenciesArray)) {
                                     Dependency dependencyInstance = new Dependency();
                                     propertiesInstance.getDependencies().add(dependencyInstance);
                                     
                                     JsonNode dependsOnArray = dependenciesValue.get("dependsOn");
-                                    if (dependsOnArray != null) {
+                                    if (dependsOnArray != null && dependsOnArray instanceof NullNode == false) {
                                         for (JsonNode dependsOnValue : ((ArrayNode) dependsOnArray)) {
                                             BasicDependency basicDependencyInstance = new BasicDependency();
                                             dependencyInstance.getDependsOn().add(basicDependencyInstance);
                                             
                                             JsonNode idValue3 = dependsOnValue.get("id");
-                                            if (idValue3 != null) {
+                                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
                                                 String idInstance3;
                                                 idInstance3 = idValue3.getTextValue();
                                                 basicDependencyInstance.setId(idInstance3);
                                             }
                                             
                                             JsonNode resourceTypeValue2 = dependsOnValue.get("resourceType");
-                                            if (resourceTypeValue2 != null) {
+                                            if (resourceTypeValue2 != null && resourceTypeValue2 instanceof NullNode == false) {
                                                 String resourceTypeInstance2;
                                                 resourceTypeInstance2 = resourceTypeValue2.getTextValue();
                                                 basicDependencyInstance.setResourceType(resourceTypeInstance2);
                                             }
                                             
                                             JsonNode resourceNameValue = dependsOnValue.get("resourceName");
-                                            if (resourceNameValue != null) {
+                                            if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
                                                 String resourceNameInstance;
                                                 resourceNameInstance = resourceNameValue.getTextValue();
                                                 basicDependencyInstance.setResourceName(resourceNameInstance);
@@ -1221,21 +1222,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                     }
                                     
                                     JsonNode idValue4 = dependenciesValue.get("id");
-                                    if (idValue4 != null) {
+                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                         String idInstance4;
                                         idInstance4 = idValue4.getTextValue();
                                         dependencyInstance.setId(idInstance4);
                                     }
                                     
                                     JsonNode resourceTypeValue3 = dependenciesValue.get("resourceType");
-                                    if (resourceTypeValue3 != null) {
+                                    if (resourceTypeValue3 != null && resourceTypeValue3 instanceof NullNode == false) {
                                         String resourceTypeInstance3;
                                         resourceTypeInstance3 = resourceTypeValue3.getTextValue();
                                         dependencyInstance.setResourceType(resourceTypeInstance3);
                                     }
                                     
                                     JsonNode resourceNameValue2 = dependenciesValue.get("resourceName");
-                                    if (resourceNameValue2 != null) {
+                                    if (resourceNameValue2 != null && resourceNameValue2 instanceof NullNode == false) {
                                         String resourceNameInstance2;
                                         resourceNameInstance2 = resourceNameValue2.getTextValue();
                                         dependencyInstance.setResourceName(resourceNameInstance2);
@@ -1244,26 +1245,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode templateValue = propertiesValue.get("template");
-                            if (templateValue != null) {
+                            if (templateValue != null && templateValue instanceof NullNode == false) {
                                 String templateInstance;
                                 templateInstance = templateValue.getTextValue();
                                 propertiesInstance.setTemplate(templateInstance);
                             }
                             
                             JsonNode templateLinkValue = propertiesValue.get("templateLink");
-                            if (templateLinkValue != null) {
+                            if (templateLinkValue != null && templateLinkValue instanceof NullNode == false) {
                                 TemplateLink templateLinkInstance = new TemplateLink();
                                 propertiesInstance.setTemplateLink(templateLinkInstance);
                                 
                                 JsonNode uriValue = templateLinkValue.get("uri");
-                                if (uriValue != null) {
+                                if (uriValue != null && uriValue instanceof NullNode == false) {
                                     URI uriInstance;
                                     uriInstance = new URI(uriValue.getTextValue());
                                     templateLinkInstance.setUri(uriInstance);
                                 }
                                 
                                 JsonNode contentVersionValue = templateLinkValue.get("contentVersion");
-                                if (contentVersionValue != null) {
+                                if (contentVersionValue != null && contentVersionValue instanceof NullNode == false) {
                                     String contentVersionInstance;
                                     contentVersionInstance = contentVersionValue.getTextValue();
                                     templateLinkInstance.setContentVersion(contentVersionInstance);
@@ -1271,26 +1272,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode parametersValue = propertiesValue.get("parameters");
-                            if (parametersValue != null) {
+                            if (parametersValue != null && parametersValue instanceof NullNode == false) {
                                 String parametersInstance;
                                 parametersInstance = parametersValue.getTextValue();
                                 propertiesInstance.setParameters(parametersInstance);
                             }
                             
                             JsonNode parametersLinkValue = propertiesValue.get("parametersLink");
-                            if (parametersLinkValue != null) {
+                            if (parametersLinkValue != null && parametersLinkValue instanceof NullNode == false) {
                                 ParametersLink parametersLinkInstance = new ParametersLink();
                                 propertiesInstance.setParametersLink(parametersLinkInstance);
                                 
                                 JsonNode uriValue2 = parametersLinkValue.get("uri");
-                                if (uriValue2 != null) {
+                                if (uriValue2 != null && uriValue2 instanceof NullNode == false) {
                                     URI uriInstance2;
                                     uriInstance2 = new URI(uriValue2.getTextValue());
                                     parametersLinkInstance.setUri(uriInstance2);
                                 }
                                 
                                 JsonNode contentVersionValue2 = parametersLinkValue.get("contentVersion");
-                                if (contentVersionValue2 != null) {
+                                if (contentVersionValue2 != null && contentVersionValue2 instanceof NullNode == false) {
                                     String contentVersionInstance2;
                                     contentVersionInstance2 = contentVersionValue2.getTextValue();
                                     parametersLinkInstance.setContentVersion(contentVersionInstance2);
@@ -1298,9 +1299,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode modeValue = propertiesValue.get("mode");
-                            if (modeValue != null) {
+                            if (modeValue != null && modeValue instanceof NullNode == false) {
                                 DeploymentMode modeInstance;
-                                modeInstance = DeploymentMode.valueOf(modeValue.getTextValue());
+                                modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
                                 propertiesInstance.setMode(modeInstance);
                             }
                         }
@@ -1308,7 +1309,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -1417,102 +1418,102 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Deployment deploymentInstance = new Deployment();
                         result.getDeployments().add(deploymentInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             deploymentInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             deploymentInstance.setName(nameInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             DeploymentProperties propertiesInstance = new DeploymentProperties();
                             deploymentInstance.setProperties(propertiesInstance);
                             
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 propertiesInstance.setProvisioningState(provisioningStateInstance);
                             }
                             
                             JsonNode correlationIdValue = propertiesValue.get("correlationId");
-                            if (correlationIdValue != null) {
+                            if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
                                 String correlationIdInstance;
                                 correlationIdInstance = correlationIdValue.getTextValue();
                                 propertiesInstance.setCorrelationId(correlationIdInstance);
                             }
                             
                             JsonNode timestampValue = propertiesValue.get("timestamp");
-                            if (timestampValue != null) {
+                            if (timestampValue != null && timestampValue instanceof NullNode == false) {
                                 Calendar timestampInstance;
                                 timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
                                 propertiesInstance.setTimestamp(timestampInstance);
                             }
                             
                             JsonNode outputsValue = propertiesValue.get("outputs");
-                            if (outputsValue != null) {
+                            if (outputsValue != null && outputsValue instanceof NullNode == false) {
                                 String outputsInstance;
                                 outputsInstance = outputsValue.getTextValue();
                                 propertiesInstance.setOutputs(outputsInstance);
                             }
                             
                             JsonNode providersArray = propertiesValue.get("providers");
-                            if (providersArray != null) {
+                            if (providersArray != null && providersArray instanceof NullNode == false) {
                                 for (JsonNode providersValue : ((ArrayNode) providersArray)) {
                                     Provider providerInstance = new Provider();
                                     propertiesInstance.getProviders().add(providerInstance);
                                     
                                     JsonNode idValue2 = providersValue.get("id");
-                                    if (idValue2 != null) {
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                         String idInstance2;
                                         idInstance2 = idValue2.getTextValue();
                                         providerInstance.setId(idInstance2);
                                     }
                                     
                                     JsonNode namespaceValue = providersValue.get("namespace");
-                                    if (namespaceValue != null) {
+                                    if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                                         String namespaceInstance;
                                         namespaceInstance = namespaceValue.getTextValue();
                                         providerInstance.setNamespace(namespaceInstance);
                                     }
                                     
                                     JsonNode registrationStateValue = providersValue.get("registrationState");
-                                    if (registrationStateValue != null) {
+                                    if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                                         String registrationStateInstance;
                                         registrationStateInstance = registrationStateValue.getTextValue();
                                         providerInstance.setRegistrationState(registrationStateInstance);
                                     }
                                     
                                     JsonNode resourceTypesArray = providersValue.get("resourceTypes");
-                                    if (resourceTypesArray != null) {
+                                    if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                                         for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                             ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                             providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                             
                                             JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                            if (resourceTypeValue != null) {
+                                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                                 String resourceTypeInstance;
                                                 resourceTypeInstance = resourceTypeValue.getTextValue();
                                                 providerResourceTypeInstance.setName(resourceTypeInstance);
                                             }
                                             
                                             JsonNode locationsArray = resourceTypesValue.get("locations");
-                                            if (locationsArray != null) {
+                                            if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                                 for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                                     providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                                 }
@@ -1523,33 +1524,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode dependenciesArray = propertiesValue.get("dependencies");
-                            if (dependenciesArray != null) {
+                            if (dependenciesArray != null && dependenciesArray instanceof NullNode == false) {
                                 for (JsonNode dependenciesValue : ((ArrayNode) dependenciesArray)) {
                                     Dependency dependencyInstance = new Dependency();
                                     propertiesInstance.getDependencies().add(dependencyInstance);
                                     
                                     JsonNode dependsOnArray = dependenciesValue.get("dependsOn");
-                                    if (dependsOnArray != null) {
+                                    if (dependsOnArray != null && dependsOnArray instanceof NullNode == false) {
                                         for (JsonNode dependsOnValue : ((ArrayNode) dependsOnArray)) {
                                             BasicDependency basicDependencyInstance = new BasicDependency();
                                             dependencyInstance.getDependsOn().add(basicDependencyInstance);
                                             
                                             JsonNode idValue3 = dependsOnValue.get("id");
-                                            if (idValue3 != null) {
+                                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
                                                 String idInstance3;
                                                 idInstance3 = idValue3.getTextValue();
                                                 basicDependencyInstance.setId(idInstance3);
                                             }
                                             
                                             JsonNode resourceTypeValue2 = dependsOnValue.get("resourceType");
-                                            if (resourceTypeValue2 != null) {
+                                            if (resourceTypeValue2 != null && resourceTypeValue2 instanceof NullNode == false) {
                                                 String resourceTypeInstance2;
                                                 resourceTypeInstance2 = resourceTypeValue2.getTextValue();
                                                 basicDependencyInstance.setResourceType(resourceTypeInstance2);
                                             }
                                             
                                             JsonNode resourceNameValue = dependsOnValue.get("resourceName");
-                                            if (resourceNameValue != null) {
+                                            if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
                                                 String resourceNameInstance;
                                                 resourceNameInstance = resourceNameValue.getTextValue();
                                                 basicDependencyInstance.setResourceName(resourceNameInstance);
@@ -1558,21 +1559,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                     }
                                     
                                     JsonNode idValue4 = dependenciesValue.get("id");
-                                    if (idValue4 != null) {
+                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                         String idInstance4;
                                         idInstance4 = idValue4.getTextValue();
                                         dependencyInstance.setId(idInstance4);
                                     }
                                     
                                     JsonNode resourceTypeValue3 = dependenciesValue.get("resourceType");
-                                    if (resourceTypeValue3 != null) {
+                                    if (resourceTypeValue3 != null && resourceTypeValue3 instanceof NullNode == false) {
                                         String resourceTypeInstance3;
                                         resourceTypeInstance3 = resourceTypeValue3.getTextValue();
                                         dependencyInstance.setResourceType(resourceTypeInstance3);
                                     }
                                     
                                     JsonNode resourceNameValue2 = dependenciesValue.get("resourceName");
-                                    if (resourceNameValue2 != null) {
+                                    if (resourceNameValue2 != null && resourceNameValue2 instanceof NullNode == false) {
                                         String resourceNameInstance2;
                                         resourceNameInstance2 = resourceNameValue2.getTextValue();
                                         dependencyInstance.setResourceName(resourceNameInstance2);
@@ -1581,26 +1582,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode templateValue = propertiesValue.get("template");
-                            if (templateValue != null) {
+                            if (templateValue != null && templateValue instanceof NullNode == false) {
                                 String templateInstance;
                                 templateInstance = templateValue.getTextValue();
                                 propertiesInstance.setTemplate(templateInstance);
                             }
                             
                             JsonNode templateLinkValue = propertiesValue.get("templateLink");
-                            if (templateLinkValue != null) {
+                            if (templateLinkValue != null && templateLinkValue instanceof NullNode == false) {
                                 TemplateLink templateLinkInstance = new TemplateLink();
                                 propertiesInstance.setTemplateLink(templateLinkInstance);
                                 
                                 JsonNode uriValue = templateLinkValue.get("uri");
-                                if (uriValue != null) {
+                                if (uriValue != null && uriValue instanceof NullNode == false) {
                                     URI uriInstance;
                                     uriInstance = new URI(uriValue.getTextValue());
                                     templateLinkInstance.setUri(uriInstance);
                                 }
                                 
                                 JsonNode contentVersionValue = templateLinkValue.get("contentVersion");
-                                if (contentVersionValue != null) {
+                                if (contentVersionValue != null && contentVersionValue instanceof NullNode == false) {
                                     String contentVersionInstance;
                                     contentVersionInstance = contentVersionValue.getTextValue();
                                     templateLinkInstance.setContentVersion(contentVersionInstance);
@@ -1608,26 +1609,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode parametersValue = propertiesValue.get("parameters");
-                            if (parametersValue != null) {
+                            if (parametersValue != null && parametersValue instanceof NullNode == false) {
                                 String parametersInstance;
                                 parametersInstance = parametersValue.getTextValue();
                                 propertiesInstance.setParameters(parametersInstance);
                             }
                             
                             JsonNode parametersLinkValue = propertiesValue.get("parametersLink");
-                            if (parametersLinkValue != null) {
+                            if (parametersLinkValue != null && parametersLinkValue instanceof NullNode == false) {
                                 ParametersLink parametersLinkInstance = new ParametersLink();
                                 propertiesInstance.setParametersLink(parametersLinkInstance);
                                 
                                 JsonNode uriValue2 = parametersLinkValue.get("uri");
-                                if (uriValue2 != null) {
+                                if (uriValue2 != null && uriValue2 instanceof NullNode == false) {
                                     URI uriInstance2;
                                     uriInstance2 = new URI(uriValue2.getTextValue());
                                     parametersLinkInstance.setUri(uriInstance2);
                                 }
                                 
                                 JsonNode contentVersionValue2 = parametersLinkValue.get("contentVersion");
-                                if (contentVersionValue2 != null) {
+                                if (contentVersionValue2 != null && contentVersionValue2 instanceof NullNode == false) {
                                     String contentVersionInstance2;
                                     contentVersionInstance2 = contentVersionValue2.getTextValue();
                                     parametersLinkInstance.setContentVersion(contentVersionInstance2);
@@ -1635,9 +1636,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode modeValue = propertiesValue.get("mode");
-                            if (modeValue != null) {
+                            if (modeValue != null && modeValue instanceof NullNode == false) {
                                 DeploymentMode modeInstance;
-                                modeInstance = DeploymentMode.valueOf(modeValue.getTextValue());
+                                modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
                                 propertiesInstance.setMode(modeInstance);
                             }
                         }
@@ -1645,7 +1646,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -1840,34 +1841,34 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode errorValue = responseDoc.get("error");
-                if (errorValue != null) {
+                if (errorValue != null && errorValue instanceof NullNode == false) {
                     ResourceManagementErrorWithDetails errorInstance = new ResourceManagementErrorWithDetails();
                     result.setError(errorInstance);
                     
                     JsonNode detailsArray = errorValue.get("details");
-                    if (detailsArray != null) {
+                    if (detailsArray != null && detailsArray instanceof NullNode == false) {
                         for (JsonNode detailsValue : ((ArrayNode) detailsArray)) {
                             ResourceManagementError resourceManagementErrorInstance = new ResourceManagementError();
                             errorInstance.getDetails().add(resourceManagementErrorInstance);
                             
                             JsonNode codeValue = detailsValue.get("code");
-                            if (codeValue != null) {
+                            if (codeValue != null && codeValue instanceof NullNode == false) {
                                 String codeInstance;
                                 codeInstance = codeValue.getTextValue();
                                 resourceManagementErrorInstance.setCode(codeInstance);
                             }
                             
                             JsonNode messageValue = detailsValue.get("message");
-                            if (messageValue != null) {
+                            if (messageValue != null && messageValue instanceof NullNode == false) {
                                 String messageInstance;
                                 messageInstance = messageValue.getTextValue();
                                 resourceManagementErrorInstance.setMessage(messageInstance);
                             }
                             
                             JsonNode targetValue = detailsValue.get("target");
-                            if (targetValue != null) {
+                            if (targetValue != null && targetValue instanceof NullNode == false) {
                                 String targetInstance;
                                 targetInstance = targetValue.getTextValue();
                                 resourceManagementErrorInstance.setTarget(targetInstance);
@@ -1876,21 +1877,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode codeValue2 = errorValue.get("code");
-                    if (codeValue2 != null) {
+                    if (codeValue2 != null && codeValue2 instanceof NullNode == false) {
                         String codeInstance2;
                         codeInstance2 = codeValue2.getTextValue();
                         errorInstance.setCode(codeInstance2);
                     }
                     
                     JsonNode messageValue2 = errorValue.get("message");
-                    if (messageValue2 != null) {
+                    if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
                         String messageInstance2;
                         messageInstance2 = messageValue2.getTextValue();
                         errorInstance.setMessage(messageInstance2);
                     }
                     
                     JsonNode targetValue2 = errorValue.get("target");
-                    if (targetValue2 != null) {
+                    if (targetValue2 != null && targetValue2 instanceof NullNode == false) {
                         String targetInstance2;
                         targetInstance2 = targetValue2.getTextValue();
                         errorInstance.setTarget(targetInstance2);
@@ -1898,80 +1899,80 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     DeploymentProperties propertiesInstance = new DeploymentProperties();
                     result.setProperties(propertiesInstance);
                     
                     JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         propertiesInstance.setProvisioningState(provisioningStateInstance);
                     }
                     
                     JsonNode correlationIdValue = propertiesValue2.get("correlationId");
-                    if (correlationIdValue != null) {
+                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
                         String correlationIdInstance;
                         correlationIdInstance = correlationIdValue.getTextValue();
                         propertiesInstance.setCorrelationId(correlationIdInstance);
                     }
                     
                     JsonNode timestampValue = propertiesValue2.get("timestamp");
-                    if (timestampValue != null) {
+                    if (timestampValue != null && timestampValue instanceof NullNode == false) {
                         Calendar timestampInstance;
                         timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
                         propertiesInstance.setTimestamp(timestampInstance);
                     }
                     
                     JsonNode outputsValue = propertiesValue2.get("outputs");
-                    if (outputsValue != null) {
+                    if (outputsValue != null && outputsValue instanceof NullNode == false) {
                         String outputsInstance;
                         outputsInstance = outputsValue.getTextValue();
                         propertiesInstance.setOutputs(outputsInstance);
                     }
                     
                     JsonNode providersArray = propertiesValue2.get("providers");
-                    if (providersArray != null) {
+                    if (providersArray != null && providersArray instanceof NullNode == false) {
                         for (JsonNode providersValue : ((ArrayNode) providersArray)) {
                             Provider providerInstance = new Provider();
                             propertiesInstance.getProviders().add(providerInstance);
                             
                             JsonNode idValue = providersValue.get("id");
-                            if (idValue != null) {
+                            if (idValue != null && idValue instanceof NullNode == false) {
                                 String idInstance;
                                 idInstance = idValue.getTextValue();
                                 providerInstance.setId(idInstance);
                             }
                             
                             JsonNode namespaceValue = providersValue.get("namespace");
-                            if (namespaceValue != null) {
+                            if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                                 String namespaceInstance;
                                 namespaceInstance = namespaceValue.getTextValue();
                                 providerInstance.setNamespace(namespaceInstance);
                             }
                             
                             JsonNode registrationStateValue = providersValue.get("registrationState");
-                            if (registrationStateValue != null) {
+                            if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                                 String registrationStateInstance;
                                 registrationStateInstance = registrationStateValue.getTextValue();
                                 providerInstance.setRegistrationState(registrationStateInstance);
                             }
                             
                             JsonNode resourceTypesArray = providersValue.get("resourceTypes");
-                            if (resourceTypesArray != null) {
+                            if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                                 for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                     ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                     providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                     
                                     JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                    if (resourceTypeValue != null) {
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                         String resourceTypeInstance;
                                         resourceTypeInstance = resourceTypeValue.getTextValue();
                                         providerResourceTypeInstance.setName(resourceTypeInstance);
                                     }
                                     
                                     JsonNode locationsArray = resourceTypesValue.get("locations");
-                                    if (locationsArray != null) {
+                                    if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                         for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                             providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                         }
@@ -1982,33 +1983,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode dependenciesArray = propertiesValue2.get("dependencies");
-                    if (dependenciesArray != null) {
+                    if (dependenciesArray != null && dependenciesArray instanceof NullNode == false) {
                         for (JsonNode dependenciesValue : ((ArrayNode) dependenciesArray)) {
                             Dependency dependencyInstance = new Dependency();
                             propertiesInstance.getDependencies().add(dependencyInstance);
                             
                             JsonNode dependsOnArray = dependenciesValue.get("dependsOn");
-                            if (dependsOnArray != null) {
+                            if (dependsOnArray != null && dependsOnArray instanceof NullNode == false) {
                                 for (JsonNode dependsOnValue : ((ArrayNode) dependsOnArray)) {
                                     BasicDependency basicDependencyInstance = new BasicDependency();
                                     dependencyInstance.getDependsOn().add(basicDependencyInstance);
                                     
                                     JsonNode idValue2 = dependsOnValue.get("id");
-                                    if (idValue2 != null) {
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                         String idInstance2;
                                         idInstance2 = idValue2.getTextValue();
                                         basicDependencyInstance.setId(idInstance2);
                                     }
                                     
                                     JsonNode resourceTypeValue2 = dependsOnValue.get("resourceType");
-                                    if (resourceTypeValue2 != null) {
+                                    if (resourceTypeValue2 != null && resourceTypeValue2 instanceof NullNode == false) {
                                         String resourceTypeInstance2;
                                         resourceTypeInstance2 = resourceTypeValue2.getTextValue();
                                         basicDependencyInstance.setResourceType(resourceTypeInstance2);
                                     }
                                     
                                     JsonNode resourceNameValue = dependsOnValue.get("resourceName");
-                                    if (resourceNameValue != null) {
+                                    if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
                                         String resourceNameInstance;
                                         resourceNameInstance = resourceNameValue.getTextValue();
                                         basicDependencyInstance.setResourceName(resourceNameInstance);
@@ -2017,21 +2018,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                             }
                             
                             JsonNode idValue3 = dependenciesValue.get("id");
-                            if (idValue3 != null) {
+                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
                                 String idInstance3;
                                 idInstance3 = idValue3.getTextValue();
                                 dependencyInstance.setId(idInstance3);
                             }
                             
                             JsonNode resourceTypeValue3 = dependenciesValue.get("resourceType");
-                            if (resourceTypeValue3 != null) {
+                            if (resourceTypeValue3 != null && resourceTypeValue3 instanceof NullNode == false) {
                                 String resourceTypeInstance3;
                                 resourceTypeInstance3 = resourceTypeValue3.getTextValue();
                                 dependencyInstance.setResourceType(resourceTypeInstance3);
                             }
                             
                             JsonNode resourceNameValue2 = dependenciesValue.get("resourceName");
-                            if (resourceNameValue2 != null) {
+                            if (resourceNameValue2 != null && resourceNameValue2 instanceof NullNode == false) {
                                 String resourceNameInstance2;
                                 resourceNameInstance2 = resourceNameValue2.getTextValue();
                                 dependencyInstance.setResourceName(resourceNameInstance2);
@@ -2040,26 +2041,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode templateValue = propertiesValue2.get("template");
-                    if (templateValue != null) {
+                    if (templateValue != null && templateValue instanceof NullNode == false) {
                         String templateInstance;
                         templateInstance = templateValue.getTextValue();
                         propertiesInstance.setTemplate(templateInstance);
                     }
                     
                     JsonNode templateLinkValue2 = propertiesValue2.get("templateLink");
-                    if (templateLinkValue2 != null) {
+                    if (templateLinkValue2 != null && templateLinkValue2 instanceof NullNode == false) {
                         TemplateLink templateLinkInstance = new TemplateLink();
                         propertiesInstance.setTemplateLink(templateLinkInstance);
                         
                         JsonNode uriValue = templateLinkValue2.get("uri");
-                        if (uriValue != null) {
+                        if (uriValue != null && uriValue instanceof NullNode == false) {
                             URI uriInstance;
                             uriInstance = new URI(uriValue.getTextValue());
                             templateLinkInstance.setUri(uriInstance);
                         }
                         
                         JsonNode contentVersionValue = templateLinkValue2.get("contentVersion");
-                        if (contentVersionValue != null) {
+                        if (contentVersionValue != null && contentVersionValue instanceof NullNode == false) {
                             String contentVersionInstance;
                             contentVersionInstance = contentVersionValue.getTextValue();
                             templateLinkInstance.setContentVersion(contentVersionInstance);
@@ -2067,26 +2068,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode parametersValue = propertiesValue2.get("parameters");
-                    if (parametersValue != null) {
+                    if (parametersValue != null && parametersValue instanceof NullNode == false) {
                         String parametersInstance;
                         parametersInstance = parametersValue.getTextValue();
                         propertiesInstance.setParameters(parametersInstance);
                     }
                     
                     JsonNode parametersLinkValue2 = propertiesValue2.get("parametersLink");
-                    if (parametersLinkValue2 != null) {
+                    if (parametersLinkValue2 != null && parametersLinkValue2 instanceof NullNode == false) {
                         ParametersLink parametersLinkInstance = new ParametersLink();
                         propertiesInstance.setParametersLink(parametersLinkInstance);
                         
                         JsonNode uriValue2 = parametersLinkValue2.get("uri");
-                        if (uriValue2 != null) {
+                        if (uriValue2 != null && uriValue2 instanceof NullNode == false) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             parametersLinkInstance.setUri(uriInstance2);
                         }
                         
                         JsonNode contentVersionValue2 = parametersLinkValue2.get("contentVersion");
-                        if (contentVersionValue2 != null) {
+                        if (contentVersionValue2 != null && contentVersionValue2 instanceof NullNode == false) {
                             String contentVersionInstance2;
                             contentVersionInstance2 = contentVersionValue2.getTextValue();
                             parametersLinkInstance.setContentVersion(contentVersionInstance2);
@@ -2094,9 +2095,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                     }
                     
                     JsonNode modeValue = propertiesValue2.get("mode");
-                    if (modeValue != null) {
+                    if (modeValue != null && modeValue instanceof NullNode == false) {
                         DeploymentMode modeInstance;
-                        modeInstance = DeploymentMode.valueOf(modeValue.getTextValue());
+                        modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
                         propertiesInstance.setMode(modeInstance);
                     }
                 }

@@ -48,6 +48,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 
 /**
 * Operations for managing tags.
@@ -168,38 +169,38 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 TagDetails tagInstance = new TagDetails();
                 result.setTag(tagInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     tagInstance.setId(idInstance);
                 }
                 
                 JsonNode tagNameValue = responseDoc.get("tagName");
-                if (tagNameValue != null) {
+                if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
                     String tagNameInstance;
                     tagNameInstance = tagNameValue.getTextValue();
                     tagInstance.setName(tagNameInstance);
                 }
                 
                 JsonNode countValue = responseDoc.get("count");
-                if (countValue != null) {
+                if (countValue != null && countValue instanceof NullNode == false) {
                     TagCount countInstance = new TagCount();
                     tagInstance.setCount(countInstance);
                     
                     JsonNode typeValue = countValue.get("type");
-                    if (typeValue != null) {
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
                         String typeInstance;
                         typeInstance = typeValue.getTextValue();
                         countInstance.setType(typeInstance);
                     }
                     
                     JsonNode valueValue = countValue.get("value");
-                    if (valueValue != null) {
+                    if (valueValue != null && valueValue instanceof NullNode == false) {
                         String valueInstance;
                         valueInstance = valueValue.getTextValue();
                         countInstance.setValue(valueInstance);
@@ -207,39 +208,39 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 }
                 
                 JsonNode valuesArray = responseDoc.get("values");
-                if (valuesArray != null) {
+                if (valuesArray != null && valuesArray instanceof NullNode == false) {
                     for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
                         TagValue tagValueInstance = new TagValue();
                         tagInstance.getValues().add(tagValueInstance);
                         
                         JsonNode idValue2 = valuesValue.get("id");
-                        if (idValue2 != null) {
+                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
                             String idInstance2;
                             idInstance2 = idValue2.getTextValue();
                             tagValueInstance.setId(idInstance2);
                         }
                         
                         JsonNode tagValueValue = valuesValue.get("tagValue");
-                        if (tagValueValue != null) {
+                        if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
                             String tagValueInstance2;
                             tagValueInstance2 = tagValueValue.getTextValue();
                             tagValueInstance.setValue(tagValueInstance2);
                         }
                         
                         JsonNode countValue2 = valuesValue.get("count");
-                        if (countValue2 != null) {
+                        if (countValue2 != null && countValue2 instanceof NullNode == false) {
                             TagCount countInstance2 = new TagCount();
                             tagValueInstance.setCount(countInstance2);
                             
                             JsonNode typeValue2 = countValue2.get("type");
-                            if (typeValue2 != null) {
+                            if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
                                 String typeInstance2;
                                 typeInstance2 = typeValue2.getTextValue();
                                 countInstance2.setType(typeInstance2);
                             }
                             
                             JsonNode valueValue2 = countValue2.get("value");
-                            if (valueValue2 != null) {
+                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
                                 String valueInstance2;
                                 valueInstance2 = valueValue2.getTextValue();
                                 countInstance2.setValue(valueInstance2);
@@ -364,38 +365,38 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 TagValue valueInstance = new TagValue();
                 result.setValue(valueInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     valueInstance.setId(idInstance);
                 }
                 
                 JsonNode tagValueValue = responseDoc.get("tagValue");
-                if (tagValueValue != null) {
+                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
                     String tagValueInstance;
                     tagValueInstance = tagValueValue.getTextValue();
                     valueInstance.setValue(tagValueInstance);
                 }
                 
                 JsonNode countValue = responseDoc.get("count");
-                if (countValue != null) {
+                if (countValue != null && countValue instanceof NullNode == false) {
                     TagCount countInstance = new TagCount();
                     valueInstance.setCount(countInstance);
                     
                     JsonNode typeValue = countValue.get("type");
-                    if (typeValue != null) {
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
                         String typeInstance;
                         typeInstance = typeValue.getTextValue();
                         countInstance.setType(typeInstance);
                     }
                     
                     JsonNode valueValue = countValue.get("value");
-                    if (valueValue != null) {
+                    if (valueValue != null && valueValue instanceof NullNode == false) {
                         String valueInstance2;
                         valueInstance2 = valueValue.getTextValue();
                         countInstance.setValue(valueInstance2);
@@ -727,41 +728,41 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         TagDetails tagDetailsInstance = new TagDetails();
                         result.getTags().add(tagDetailsInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             tagDetailsInstance.setId(idInstance);
                         }
                         
                         JsonNode tagNameValue = valueValue.get("tagName");
-                        if (tagNameValue != null) {
+                        if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
                             String tagNameInstance;
                             tagNameInstance = tagNameValue.getTextValue();
                             tagDetailsInstance.setName(tagNameInstance);
                         }
                         
                         JsonNode countValue = valueValue.get("count");
-                        if (countValue != null) {
+                        if (countValue != null && countValue instanceof NullNode == false) {
                             TagCount countInstance = new TagCount();
                             tagDetailsInstance.setCount(countInstance);
                             
                             JsonNode typeValue = countValue.get("type");
-                            if (typeValue != null) {
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
                                 String typeInstance;
                                 typeInstance = typeValue.getTextValue();
                                 countInstance.setType(typeInstance);
                             }
                             
                             JsonNode valueValue2 = countValue.get("value");
-                            if (valueValue2 != null) {
+                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
                                 String valueInstance;
                                 valueInstance = valueValue2.getTextValue();
                                 countInstance.setValue(valueInstance);
@@ -769,39 +770,39 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                         }
                         
                         JsonNode valuesArray = valueValue.get("values");
-                        if (valuesArray != null) {
+                        if (valuesArray != null && valuesArray instanceof NullNode == false) {
                             for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
                                 TagValue tagValueInstance = new TagValue();
                                 tagDetailsInstance.getValues().add(tagValueInstance);
                                 
                                 JsonNode idValue2 = valuesValue.get("id");
-                                if (idValue2 != null) {
+                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                     String idInstance2;
                                     idInstance2 = idValue2.getTextValue();
                                     tagValueInstance.setId(idInstance2);
                                 }
                                 
                                 JsonNode tagValueValue = valuesValue.get("tagValue");
-                                if (tagValueValue != null) {
+                                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
                                     String tagValueInstance2;
                                     tagValueInstance2 = tagValueValue.getTextValue();
                                     tagValueInstance.setValue(tagValueInstance2);
                                 }
                                 
                                 JsonNode countValue2 = valuesValue.get("count");
-                                if (countValue2 != null) {
+                                if (countValue2 != null && countValue2 instanceof NullNode == false) {
                                     TagCount countInstance2 = new TagCount();
                                     tagValueInstance.setCount(countInstance2);
                                     
                                     JsonNode typeValue2 = countValue2.get("type");
-                                    if (typeValue2 != null) {
+                                    if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
                                         String typeInstance2;
                                         typeInstance2 = typeValue2.getTextValue();
                                         countInstance2.setType(typeInstance2);
                                     }
                                     
                                     JsonNode valueValue3 = countValue2.get("value");
-                                    if (valueValue3 != null) {
+                                    if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
                                         String valueInstance2;
                                         valueInstance2 = valueValue3.getTextValue();
                                         countInstance2.setValue(valueInstance2);
@@ -813,7 +814,7 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -922,41 +923,41 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         TagDetails tagDetailsInstance = new TagDetails();
                         result.getTags().add(tagDetailsInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             tagDetailsInstance.setId(idInstance);
                         }
                         
                         JsonNode tagNameValue = valueValue.get("tagName");
-                        if (tagNameValue != null) {
+                        if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
                             String tagNameInstance;
                             tagNameInstance = tagNameValue.getTextValue();
                             tagDetailsInstance.setName(tagNameInstance);
                         }
                         
                         JsonNode countValue = valueValue.get("count");
-                        if (countValue != null) {
+                        if (countValue != null && countValue instanceof NullNode == false) {
                             TagCount countInstance = new TagCount();
                             tagDetailsInstance.setCount(countInstance);
                             
                             JsonNode typeValue = countValue.get("type");
-                            if (typeValue != null) {
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
                                 String typeInstance;
                                 typeInstance = typeValue.getTextValue();
                                 countInstance.setType(typeInstance);
                             }
                             
                             JsonNode valueValue2 = countValue.get("value");
-                            if (valueValue2 != null) {
+                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
                                 String valueInstance;
                                 valueInstance = valueValue2.getTextValue();
                                 countInstance.setValue(valueInstance);
@@ -964,39 +965,39 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                         }
                         
                         JsonNode valuesArray = valueValue.get("values");
-                        if (valuesArray != null) {
+                        if (valuesArray != null && valuesArray instanceof NullNode == false) {
                             for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
                                 TagValue tagValueInstance = new TagValue();
                                 tagDetailsInstance.getValues().add(tagValueInstance);
                                 
                                 JsonNode idValue2 = valuesValue.get("id");
-                                if (idValue2 != null) {
+                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
                                     String idInstance2;
                                     idInstance2 = idValue2.getTextValue();
                                     tagValueInstance.setId(idInstance2);
                                 }
                                 
                                 JsonNode tagValueValue = valuesValue.get("tagValue");
-                                if (tagValueValue != null) {
+                                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
                                     String tagValueInstance2;
                                     tagValueInstance2 = tagValueValue.getTextValue();
                                     tagValueInstance.setValue(tagValueInstance2);
                                 }
                                 
                                 JsonNode countValue2 = valuesValue.get("count");
-                                if (countValue2 != null) {
+                                if (countValue2 != null && countValue2 instanceof NullNode == false) {
                                     TagCount countInstance2 = new TagCount();
                                     tagValueInstance.setCount(countInstance2);
                                     
                                     JsonNode typeValue2 = countValue2.get("type");
-                                    if (typeValue2 != null) {
+                                    if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
                                         String typeInstance2;
                                         typeInstance2 = typeValue2.getTextValue();
                                         countInstance2.setType(typeInstance2);
                                     }
                                     
                                     JsonNode valueValue3 = countValue2.get("value");
-                                    if (valueValue3 != null) {
+                                    if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
                                         String valueInstance2;
                                         valueInstance2 = valueValue3.getTextValue();
                                         countInstance2.setValue(valueInstance2);
@@ -1008,7 +1009,7 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);

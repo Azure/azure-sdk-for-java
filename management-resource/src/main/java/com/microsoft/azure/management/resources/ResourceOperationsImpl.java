@@ -56,6 +56,7 @@ import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
@@ -378,35 +379,35 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 Resource resourceInstance = new Resource();
                 result.setResource(resourceInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     resourceInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     resourceInstance.setName(nameInstance);
                 }
                 
                 JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null) {
+                if (typeValue != null && typeValue instanceof NullNode == false) {
                     String typeInstance;
                     typeInstance = typeValue.getTextValue();
                     resourceInstance.setType(typeInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         resourceInstance.setProvisioningState(provisioningStateInstance);
@@ -414,21 +415,21 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null) {
+                if (locationValue != null && locationValue instanceof NullNode == false) {
                     String locationInstance;
                     locationInstance = locationValue.getTextValue();
                     resourceInstance.setLocation(locationInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     String propertiesInstance;
                     propertiesInstance = propertiesValue2.getTextValue();
                     resourceInstance.setProperties(propertiesInstance);
                 }
                 
                 JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null) {
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                     Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                     while (itr.hasNext()) {
                         Map.Entry<String, JsonNode> property = itr.next();
@@ -439,7 +440,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null) {
+                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
                     provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                     resourceInstance.setProvisioningState(provisioningStateInstance2);
@@ -719,35 +720,35 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 Resource resourceInstance = new Resource();
                 result.setResource(resourceInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     resourceInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     resourceInstance.setName(nameInstance);
                 }
                 
                 JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null) {
+                if (typeValue != null && typeValue instanceof NullNode == false) {
                     String typeInstance;
                     typeInstance = typeValue.getTextValue();
                     resourceInstance.setType(typeInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         resourceInstance.setProvisioningState(provisioningStateInstance);
@@ -755,21 +756,21 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null) {
+                if (locationValue != null && locationValue instanceof NullNode == false) {
                     String locationInstance;
                     locationInstance = locationValue.getTextValue();
                     resourceInstance.setLocation(locationInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     String propertiesInstance;
                     propertiesInstance = propertiesValue2.getTextValue();
                     resourceInstance.setProperties(propertiesInstance);
                 }
                 
                 JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null) {
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                     Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                     while (itr.hasNext()) {
                         Map.Entry<String, JsonNode> property = itr.next();
@@ -780,7 +781,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null) {
+                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
                     provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                     resourceInstance.setProvisioningState(provisioningStateInstance2);
@@ -927,38 +928,38 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Resource resourceJsonFormatInstance = new Resource();
                         result.getResources().add(resourceJsonFormatInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             resourceJsonFormatInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             resourceJsonFormatInstance.setName(nameInstance);
                         }
                         
                         JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null) {
+                        if (typeValue != null && typeValue instanceof NullNode == false) {
                             String typeInstance;
                             typeInstance = typeValue.getTextValue();
                             resourceJsonFormatInstance.setType(typeInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
@@ -966,21 +967,21 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                         
                         JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null) {
+                        if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             resourceJsonFormatInstance.setLocation(locationInstance);
                         }
                         
                         JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null) {
+                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                             String propertiesInstance;
                             propertiesInstance = propertiesValue2.getTextValue();
                             resourceJsonFormatInstance.setProperties(propertiesInstance);
                         }
                         
                         JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null) {
+                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
                                 Map.Entry<String, JsonNode> property = itr.next();
@@ -991,7 +992,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                         
                         JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null) {
+                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
                             provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                             resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
@@ -1000,7 +1001,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -1109,38 +1110,38 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Resource resourceJsonFormatInstance = new Resource();
                         result.getResources().add(resourceJsonFormatInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             resourceJsonFormatInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             resourceJsonFormatInstance.setName(nameInstance);
                         }
                         
                         JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null) {
+                        if (typeValue != null && typeValue instanceof NullNode == false) {
                             String typeInstance;
                             typeInstance = typeValue.getTextValue();
                             resourceJsonFormatInstance.setType(typeInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
@@ -1148,21 +1149,21 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                         
                         JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null) {
+                        if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             resourceJsonFormatInstance.setLocation(locationInstance);
                         }
                         
                         JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null) {
+                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                             String propertiesInstance;
                             propertiesInstance = propertiesValue2.getTextValue();
                             resourceJsonFormatInstance.setProperties(propertiesInstance);
                         }
                         
                         JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null) {
+                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
                                 Map.Entry<String, JsonNode> property = itr.next();
@@ -1173,7 +1174,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                         
                         JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null) {
+                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
                             provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                             resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
@@ -1182,7 +1183,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);

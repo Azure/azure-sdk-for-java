@@ -62,6 +62,7 @@ import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
@@ -471,28 +472,28 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 ResourceGroup resourceGroupInstance = new ResourceGroup();
                 result.setResourceGroup(resourceGroupInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     resourceGroupInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     resourceGroupInstance.setName(nameInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         resourceGroupInstance.setProvisioningState(provisioningStateInstance);
@@ -500,21 +501,21 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null) {
+                if (locationValue != null && locationValue instanceof NullNode == false) {
                     String locationInstance;
                     locationInstance = locationValue.getTextValue();
                     resourceGroupInstance.setLocation(locationInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     String propertiesInstance;
                     propertiesInstance = propertiesValue2.getTextValue();
                     resourceGroupInstance.setProperties(propertiesInstance);
                 }
                 
                 JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null) {
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                     Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                     while (itr.hasNext()) {
                         Map.Entry<String, JsonNode> property = itr.next();
@@ -525,7 +526,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null) {
+                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
                     provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                     resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
@@ -737,28 +738,28 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 ResourceGroup resourceGroupInstance = new ResourceGroup();
                 result.setResourceGroup(resourceGroupInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     resourceGroupInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     resourceGroupInstance.setName(nameInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         resourceGroupInstance.setProvisioningState(provisioningStateInstance);
@@ -766,21 +767,21 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null) {
+                if (locationValue != null && locationValue instanceof NullNode == false) {
                     String locationInstance;
                     locationInstance = locationValue.getTextValue();
                     resourceGroupInstance.setLocation(locationInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     String propertiesInstance;
                     propertiesInstance = propertiesValue2.getTextValue();
                     resourceGroupInstance.setProperties(propertiesInstance);
                 }
                 
                 JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null) {
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                     Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                     while (itr.hasNext()) {
                         Map.Entry<String, JsonNode> property = itr.next();
@@ -791,7 +792,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null) {
+                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
                     provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                     resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
@@ -925,31 +926,31 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         ResourceGroup resourceGroupJsonFormatInstance = new ResourceGroup();
                         result.getResourceGroups().add(resourceGroupJsonFormatInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             resourceGroupJsonFormatInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             resourceGroupJsonFormatInstance.setName(nameInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
@@ -957,21 +958,21 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                         
                         JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null) {
+                        if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             resourceGroupJsonFormatInstance.setLocation(locationInstance);
                         }
                         
                         JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null) {
+                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                             String propertiesInstance;
                             propertiesInstance = propertiesValue2.getTextValue();
                             resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
                         }
                         
                         JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null) {
+                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
                                 Map.Entry<String, JsonNode> property = itr.next();
@@ -982,7 +983,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                         
                         JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null) {
+                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
                             provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                             resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
@@ -991,7 +992,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -1100,31 +1101,31 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         ResourceGroup resourceGroupJsonFormatInstance = new ResourceGroup();
                         result.getResourceGroups().add(resourceGroupJsonFormatInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             resourceGroupJsonFormatInstance.setId(idInstance);
                         }
                         
                         JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             resourceGroupJsonFormatInstance.setName(nameInstance);
                         }
                         
                         JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null) {
+                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null) {
+                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                 String provisioningStateInstance;
                                 provisioningStateInstance = provisioningStateValue.getTextValue();
                                 resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
@@ -1132,21 +1133,21 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                         
                         JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null) {
+                        if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             resourceGroupJsonFormatInstance.setLocation(locationInstance);
                         }
                         
                         JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null) {
+                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                             String propertiesInstance;
                             propertiesInstance = propertiesValue2.getTextValue();
                             resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
                         }
                         
                         JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null) {
+                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
                                 Map.Entry<String, JsonNode> property = itr.next();
@@ -1157,7 +1158,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                         
                         JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null) {
+                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
                             provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                             resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
@@ -1166,7 +1167,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -1341,28 +1342,28 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 ResourceGroup resourceGroupInstance = new ResourceGroup();
                 result.setResourceGroup(resourceGroupInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     resourceGroupInstance.setId(idInstance);
                 }
                 
                 JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null) {
+                if (nameValue != null && nameValue instanceof NullNode == false) {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     resourceGroupInstance.setName(nameInstance);
                 }
                 
                 JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null) {
+                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                     JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null) {
+                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                         String provisioningStateInstance;
                         provisioningStateInstance = provisioningStateValue.getTextValue();
                         resourceGroupInstance.setProvisioningState(provisioningStateInstance);
@@ -1370,21 +1371,21 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null) {
+                if (locationValue != null && locationValue instanceof NullNode == false) {
                     String locationInstance;
                     locationInstance = locationValue.getTextValue();
                     resourceGroupInstance.setLocation(locationInstance);
                 }
                 
                 JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null) {
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                     String propertiesInstance;
                     propertiesInstance = propertiesValue2.getTextValue();
                     resourceGroupInstance.setProperties(propertiesInstance);
                 }
                 
                 JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null) {
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                     Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                     while (itr.hasNext()) {
                         Map.Entry<String, JsonNode> property = itr.next();
@@ -1395,7 +1396,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 }
                 
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null) {
+                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
                     provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                     resourceGroupInstance.setProvisioningState(provisioningStateInstance2);

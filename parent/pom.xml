@@ -304,6 +304,8 @@
     <module>../management-storage</module>
     <module>../management-network</module>
     <module>../management-websites</module>
+    <module>../management-resource</module>
+    <module>../management-resource-websites</module>
     <module>../media</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>

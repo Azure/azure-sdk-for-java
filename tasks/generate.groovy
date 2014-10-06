@@ -84,7 +84,7 @@ def hydraSpecs = [
     [
         specificationDllFileName: "Microsoft.Azure.Management.WebSites.Specification.dll",
         clientType: "Microsoft.Azure.Management.WebSites.WebSiteManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-websites2"
+        generatedCodeDestinationRootDirectoryName: "management-resource-websites"
     ]
 ]
 

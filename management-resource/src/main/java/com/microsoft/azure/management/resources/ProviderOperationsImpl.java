@@ -46,6 +46,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
 
 /**
 * Operations for managing providers.
@@ -168,46 +169,46 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 Provider providerInstance = new Provider();
                 result.setProvider(providerInstance);
                 
                 JsonNode idValue = responseDoc.get("id");
-                if (idValue != null) {
+                if (idValue != null && idValue instanceof NullNode == false) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     providerInstance.setId(idInstance);
                 }
                 
                 JsonNode namespaceValue = responseDoc.get("namespace");
-                if (namespaceValue != null) {
+                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                     String namespaceInstance;
                     namespaceInstance = namespaceValue.getTextValue();
                     providerInstance.setNamespace(namespaceInstance);
                 }
                 
                 JsonNode registrationStateValue = responseDoc.get("registrationState");
-                if (registrationStateValue != null) {
+                if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                     String registrationStateInstance;
                     registrationStateInstance = registrationStateValue.getTextValue();
                     providerInstance.setRegistrationState(registrationStateInstance);
                 }
                 
                 JsonNode resourceTypesArray = responseDoc.get("resourceTypes");
-                if (resourceTypesArray != null) {
+                if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                     for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                         ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                         providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                         
                         JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                        if (resourceTypeValue != null) {
+                        if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                             String resourceTypeInstance;
                             resourceTypeInstance = resourceTypeValue.getTextValue();
                             providerResourceTypeInstance.setName(resourceTypeInstance);
                         }
                         
                         JsonNode locationsArray = resourceTypesValue.get("locations");
-                        if (locationsArray != null) {
+                        if (locationsArray != null && locationsArray instanceof NullNode == false) {
                             for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                 providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                             }
@@ -329,49 +330,49 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Provider providerInstance = new Provider();
                         result.getProviders().add(providerInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             providerInstance.setId(idInstance);
                         }
                         
                         JsonNode namespaceValue = valueValue.get("namespace");
-                        if (namespaceValue != null) {
+                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                             String namespaceInstance;
                             namespaceInstance = namespaceValue.getTextValue();
                             providerInstance.setNamespace(namespaceInstance);
                         }
                         
                         JsonNode registrationStateValue = valueValue.get("registrationState");
-                        if (registrationStateValue != null) {
+                        if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                             String registrationStateInstance;
                             registrationStateInstance = registrationStateValue.getTextValue();
                             providerInstance.setRegistrationState(registrationStateInstance);
                         }
                         
                         JsonNode resourceTypesArray = valueValue.get("resourceTypes");
-                        if (resourceTypesArray != null) {
+                        if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                             for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                 ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                 providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                 
                                 JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                if (resourceTypeValue != null) {
+                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                     String resourceTypeInstance;
                                     resourceTypeInstance = resourceTypeValue.getTextValue();
                                     providerResourceTypeInstance.setName(resourceTypeInstance);
                                 }
                                 
                                 JsonNode locationsArray = resourceTypesValue.get("locations");
-                                if (locationsArray != null) {
+                                if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                     for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                         providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                     }
@@ -382,7 +383,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
@@ -491,49 +492,49 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null) {
+                if (valueArray != null && valueArray instanceof NullNode == false) {
                     for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Provider providerInstance = new Provider();
                         result.getProviders().add(providerInstance);
                         
                         JsonNode idValue = valueValue.get("id");
-                        if (idValue != null) {
+                        if (idValue != null && idValue instanceof NullNode == false) {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             providerInstance.setId(idInstance);
                         }
                         
                         JsonNode namespaceValue = valueValue.get("namespace");
-                        if (namespaceValue != null) {
+                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
                             String namespaceInstance;
                             namespaceInstance = namespaceValue.getTextValue();
                             providerInstance.setNamespace(namespaceInstance);
                         }
                         
                         JsonNode registrationStateValue = valueValue.get("registrationState");
-                        if (registrationStateValue != null) {
+                        if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
                             String registrationStateInstance;
                             registrationStateInstance = registrationStateValue.getTextValue();
                             providerInstance.setRegistrationState(registrationStateInstance);
                         }
                         
                         JsonNode resourceTypesArray = valueValue.get("resourceTypes");
-                        if (resourceTypesArray != null) {
+                        if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
                             for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
                                 ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
                                 providerInstance.getResourceTypes().add(providerResourceTypeInstance);
                                 
                                 JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                if (resourceTypeValue != null) {
+                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
                                     String resourceTypeInstance;
                                     resourceTypeInstance = resourceTypeValue.getTextValue();
                                     providerResourceTypeInstance.setName(resourceTypeInstance);
                                 }
                                 
                                 JsonNode locationsArray = resourceTypesValue.get("locations");
-                                if (locationsArray != null) {
+                                if (locationsArray != null && locationsArray instanceof NullNode == false) {
                                     for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
                                         providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
                                     }
@@ -544,7 +545,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
                 }
                 
                 JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null) {
+                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
                     String odatanextLinkInstance;
                     odatanextLinkInstance = odatanextLinkValue.getTextValue();
                     result.setNextLink(odatanextLinkInstance);
