@@ -16,8 +16,10 @@ package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.SignatureException;
 import java.util.Base64;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class SasFilter extends ClientFilter {
 	private String key;
 	private String value;
 	private static final String HMAC_SHA256_ALG = "HmacSHA256";
+	private final long FIVE_MINUTES = 5*60*1000; //milliseconds
 	
     public SasFilter(String key, String value) {
         this.key = key;
@@ -42,10 +45,34 @@ public class SasFilter extends ClientFilter {
     }
 
 	@Override
-	public ClientResponse handle(ClientRequest arg0)
+	public ClientResponse handle(ClientRequest cr)
 			throws ClientHandlerException {
 		
-		// TODO Auto-generated method stub
+		String targetUri;
+		try {
+			targetUri = URLEncoder.encode(cr.getURI().toString().toLowerCase(), "UTF-8").toLowerCase();
+		} catch (UnsupportedEncodingException e) {
+			throw new ClientHandlerException(e);
+		}
+		
+		int expiration = Math.round((new Date(System.currentTimeMillis() + FIVE_MINUTES)).getTime() / 1000);
+		String signature = valueToSign(targetUri, expiration);
+		
+		String hmac;
+		try {
+			hmac = URLEncoder.encode(calculateHmac(signature), "UTF-8");
+		} catch (SignatureException e) {
+			throw new ClientHandlerException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new ClientHandlerException(e);
+		}
+		
+		cr.getHeaders().remove("Authorization");
+        cr.getHeaders().add("Authorization", 
+        		String.format("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s", hmac, expiration, this.key, targetUri));
+        
+        return this.getNext().handle(cr);
+		
 		  /*var targetUri = encodeURIComponent(webResource.uri.toLowerCase()).toLowerCase();
 
 		  var expirationDate = Math.round(date.minutesFromNow(5) / 1000);
@@ -57,21 +84,15 @@ public class SasFilter extends ClientFilter {
 		  callback(null);*/
 		
         /*Date expiresUtc = new Date(now.getTime() + wrapResponse.getExpiresIn()
-                * Timer.ONE_SECOND / 2);*/
-		
-		return null;
+                * Timer.ONE_SECOND / 2);*/		
 	}
 
-	private String valueToSign(String targetUri, String expiration) {
+	private String valueToSign(String targetUri, int expiration) {
 		StringBuilder sb = new StringBuilder();
 		if (targetUri != null) {
 			sb.append(targetUri);
 		}
-		sb.append("\n");
-		if (expiration != null) {
-			sb.append(expiration);
-		}
-		
+		sb.append("\n" + expiration);
 		return sb.toString();
 	}
 	
