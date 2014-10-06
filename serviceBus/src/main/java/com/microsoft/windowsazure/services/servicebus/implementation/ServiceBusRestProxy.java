@@ -86,7 +86,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.uri = connectionSettings.getUri();
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
-        channel.addFilter(authFilter);
+        if (connectionSettings.isSasAuthentication()) {
+        	channel.addFilter(sasAuthFilter);
+        } else {
+        	channel.addFilter(authFilter);
+        }
         channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
