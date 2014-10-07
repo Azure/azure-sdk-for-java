@@ -28,10 +28,10 @@ public class WrapTokenManagerIntegrationTest {
     public void wrapClientWillAcquireAccessToken() throws Exception {
         // Arrange
         Configuration config = Configuration.load();
-        overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
-        WrapTokenManager client = config.create(WrapTokenManager.class);
+        overrideWithEnv(config, "wrapTest." + ServiceBusConfiguration.CONNECTION_STRING);
+        WrapTokenManager client = config.create("wrapTest", WrapTokenManager.class);
         ServiceBusConnectionSettings settings = config
-                .create(ServiceBusConnectionSettings.class);
+                .create("wrapTest", ServiceBusConnectionSettings.class);
         // Act
         URI serviceBusURI = new URI(settings.getUri());
         String accessToken = client.getAccessToken(serviceBusURI);

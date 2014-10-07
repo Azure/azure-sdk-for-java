@@ -53,6 +53,17 @@ public abstract class ServiceBusConfiguration {
     public static final String WRAP_PASSWORD = "serviceBus.wrap.password";
 
     /**
+     * Defines the configuration SAS Access Key name constant. This is the
+     * value of the SharedAccessKeyName field in the connection string.
+     */
+    public static final String SAS_KEY_NAME = "serviceBus.sas.keyname";
+    
+    /**
+     * Defines the configuration SAS Access key value constant. This is the actual token.
+     */
+    public static final String SAS_KEY = "serviceBus.sas.key";
+    
+    /**
      * Creates a service bus configuration using the specified namespace, name,
      * and password.
      * 

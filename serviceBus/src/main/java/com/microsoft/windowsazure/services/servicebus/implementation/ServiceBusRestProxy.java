@@ -76,6 +76,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Inject
     public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
+    		SasFilter sasAuthFilter,
             UserAgentFilter userAgentFilter,
             ServiceBusConnectionSettings connectionSettings,
             BrokerPropertiesMapper mapper) {
@@ -85,7 +86,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.uri = connectionSettings.getUri();
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
-        channel.addFilter(authFilter);
+        if (connectionSettings.isSasAuthentication()) {
+        	channel.addFilter(sasAuthFilter);
+        } else {
+        	channel.addFilter(authFilter);
+        }
         channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
@@ -159,7 +164,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     private WebResource getResource() {
         WebResource resource = getChannel().resource(uri).queryParam(
-                "api-version", "2012-08");
+                "api-version", "2013-07");
         for (ClientFilter filter : filters) {
             resource.addFilter(filter);
         }
