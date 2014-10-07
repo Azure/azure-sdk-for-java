@@ -43,9 +43,26 @@ public class SasFilter extends ClientFilter {
     public ClientResponse handle(ClientRequest cr)
             throws ClientHandlerException {
 
-        String targetUri;
+        String targetUri = cr.getURI().toString();
+
+        cr.getHeaders().remove("Authorization");
+        cr.getHeaders().add("Authorization", createSignature(targetUri));
+
+        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst(
+                "ServiceBusSupplementaryAuthorization");
+        if ((secondaryAuthorizationUri != null)
+                && (!secondaryAuthorizationUri.isEmpty())) {
+            cr.getHeaders().remove("ServiceBusSupplementaryAuthorization");
+            cr.getHeaders().add("ServiceBusSupplementaryAuthorization",
+                    createSignature(secondaryAuthorizationUri));
+        }
+
+        return this.getNext().handle(cr);
+    }
+
+    private String createSignature(String targetUri) {
         try {
-            targetUri = URLEncoder.encode(cr.getURI().toString().toLowerCase(), "UTF-8").toLowerCase();
+            targetUri = URLEncoder.encode(targetUri.toLowerCase(), "UTF-8").toLowerCase();
         } catch (UnsupportedEncodingException e) {
             throw new ClientHandlerException(e);
         }
@@ -56,30 +73,13 @@ public class SasFilter extends ClientFilter {
         String hmac;
         try {
             hmac = URLEncoder.encode(calculateHmac(signature), "UTF-8");
+            return String.format("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s",
+                    hmac, expiration, this.key, targetUri);
         } catch (SignatureException e) {
             throw new ClientHandlerException(e);
         } catch (UnsupportedEncodingException e) {
             throw new ClientHandlerException(e);
         }
-
-        cr.getHeaders().remove("Authorization");
-        cr.getHeaders().add("Authorization",
-                String.format("SharedAccessSignature sig=%s&se=%d&skn=%s&sr=%s", hmac, expiration, this.key, targetUri));
-
-        return this.getNext().handle(cr);
-
-          /*var targetUri = encodeURIComponent(webResource.uri.toLowerCase()).toLowerCase();
-
-          var expirationDate = Math.round(date.minutesFromNow(5) / 1000);
-          var signature = this._generateSignature(targetUri, expirationDate);
-
-          webResource.withHeader(HeaderConstants.AUTHORIZATION,
-            util.format('SharedAccessSignature sig=%s&se=%s&skn=%s&sr=%s', signature, expirationDate, this.keyName, targetUri));
-
-          callback(null);*/
-
-        /*Date expiresUtc = new Date(now.getTime() + wrapResponse.getExpiresIn()
-                * Timer.ONE_SECOND / 2);*/
     }
 
     private String valueToSign(String targetUri, int expiration) {
