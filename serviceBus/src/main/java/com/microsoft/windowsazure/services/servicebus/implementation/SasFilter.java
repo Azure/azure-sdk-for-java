@@ -21,10 +21,11 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SignatureException;
-import java.util.Base64;
+
 import java.util.Date;
 
 public class SasFilter extends ClientFilter {
@@ -86,7 +87,7 @@ public class SasFilter extends ClientFilter {
         if (targetUri != null) {
             sb.append(targetUri);
         }
-        sb.append("\n" + expiration);
+        sb.append("\n").append(expiration);
         return sb.toString();
     }
 
@@ -99,7 +100,7 @@ public class SasFilter extends ClientFilter {
             Mac mac = Mac.getInstance(HMAC_SHA256_ALG);
             mac.init(signingKey);
             byte[] rawHmac = mac.doFinal(data.getBytes());
-            return Base64.getEncoder().encodeToString(rawHmac);
+            return DatatypeConverter.printBase64Binary(rawHmac);
 
             } catch (Exception e) {
                 throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
