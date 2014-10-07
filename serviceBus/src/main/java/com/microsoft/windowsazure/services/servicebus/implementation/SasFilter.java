@@ -15,9 +15,6 @@
 package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientRequest;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.filter.ClientFilter;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,7 +25,7 @@ import java.security.SignatureException;
 
 import java.util.Date;
 
-public class SasFilter extends ClientFilter {
+public class SasFilter extends AuthorizationFilter {
     private String key;
     private String value;
     private static final String HMAC_SHA256_ALG = "HmacSHA256";
@@ -40,27 +37,7 @@ public class SasFilter extends ClientFilter {
     }
 
     @Override
-    public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException {
-
-        String targetUri = cr.getURI().toString();
-
-        cr.getHeaders().remove("Authorization");
-        cr.getHeaders().add("Authorization", createSignature(targetUri));
-
-        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst(
-                "ServiceBusSupplementaryAuthorization");
-        if ((secondaryAuthorizationUri != null)
-                && (!secondaryAuthorizationUri.isEmpty())) {
-            cr.getHeaders().remove("ServiceBusSupplementaryAuthorization");
-            cr.getHeaders().add("ServiceBusSupplementaryAuthorization",
-                    createSignature(secondaryAuthorizationUri));
-        }
-
-        return this.getNext().handle(cr);
-    }
-
-    private String createSignature(String targetUri) {
+    protected String createAuthorization(String targetUri) {
         try {
             targetUri = URLEncoder.encode(targetUri.toLowerCase(), "UTF-8").toLowerCase();
         } catch (UnsupportedEncodingException e) {
