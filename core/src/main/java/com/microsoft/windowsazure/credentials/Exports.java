@@ -14,13 +14,30 @@
  */
 package com.microsoft.windowsazure.credentials;
 
+import java.util.Map;
+
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientConfigSettings;
+import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.sun.jersey.api.client.config.ClientConfig;
 
 public class Exports implements Builder.Exports {
 
     @Override
     public void register(Registry registry) {
         registry.add(SubscriptionCloudCredentials.class, CertificateCloudCredentials.class);
+        registry.add(SubscriptionCloudCredentials.class, TokenCloudCredentials.class);
+        
+        registry.add(new Builder.Factory<AdalAuthConfig>() {
+            @Override
+            public <S> AdalAuthConfig create(String profile,
+                    Class<S> service, Builder builder,
+                    Map<String, Object> properties) {
+                TokenCloudCredentials credential = (TokenCloudCredentials)properties.get(profile);
+                credential.applyConfig(profile, properties);
+                return credential.getAdalAuthConfig();
+            }
+        });
     }
 }

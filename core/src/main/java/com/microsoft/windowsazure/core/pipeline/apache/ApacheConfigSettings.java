@@ -29,6 +29,7 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.credentials.AdalAuthFilter;
 
 public class ApacheConfigSettings {
     private final String profile;
@@ -101,11 +102,11 @@ public class ApacheConfigSettings {
             httpClientBuilder.addInterceptorFirst(new HttpHeaderRemovalFilter());
         }
         
-        if (properties.containsKey("RequestFilters"))
+        if (properties.containsKey("AuthFilters"))
         {
-        	ArrayList<ServiceRequestFilter> filters = (ArrayList<ServiceRequestFilter>)properties.get("RequestFilters");
-        	for (ServiceRequestFilter filter : filters) {
-        		httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptorAdapter(filter));
+        	ArrayList<AdalAuthFilter> filters = (ArrayList<AdalAuthFilter>)properties.get("AuthFilters");
+        	for (AdalAuthFilter filter : filters) {
+        		httpClientBuilder.addInterceptorFirst(new AdalAuthInterceptor(filter));
         	}
         }
 

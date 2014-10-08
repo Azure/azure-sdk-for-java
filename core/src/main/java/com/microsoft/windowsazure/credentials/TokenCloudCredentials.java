@@ -15,18 +15,14 @@
 
 package com.microsoft.windowsazure.credentials;
 
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 /**
  * The Class CertificateCloudCredentials.
@@ -120,13 +116,13 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
      */
     @Override
     public <T> void applyConfig(String profile, Map<String, Object> properties) {
-    	ArrayList<ServiceRequestFilter> filters;
-    	if (!properties.containsKey("RequestFilters"))
+    	ArrayList<AdalAuthFilter> filters;
+    	if (!properties.containsKey("AuthFilters"))
     	{
-    		filters = new ArrayList<ServiceRequestFilter>();
-    		properties.put("RequestFilters", filters);
+    		filters = new ArrayList<AdalAuthFilter>();
+    		properties.put("AuthFilters", filters);
     	} else {
-    		filters = (ArrayList<ServiceRequestFilter>)properties.get("RequestFilters");
+    		filters = (ArrayList<AdalAuthFilter>)properties.get("AuthFilters");
     	}
     	
     	filters.add(new AdalAuthFilter(this.adalAuthConfig));
