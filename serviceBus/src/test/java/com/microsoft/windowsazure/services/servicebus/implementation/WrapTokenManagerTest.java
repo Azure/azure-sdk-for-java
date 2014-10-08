@@ -46,7 +46,7 @@ public class WrapTokenManagerTest {
         dateFactory = mock(DateFactory.class);
         contract = mock(WrapContract.class);
         ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
-                null, null, "testurl", "testname", "testpassword");
+                null, null, "testurl", "testname", "testpassword", null, null);
         client = new WrapTokenManager(contract, dateFactory, settings);
 
         when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
