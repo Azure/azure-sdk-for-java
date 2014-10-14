@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class ServiceBusNamespaceDescriptionResponse extends OperationResponse im
     */
     public ServiceBusNamespaceDescriptionResponse() {
         super();
-        this.setNamespaceDescriptions(new ArrayList<NamespaceDescription>());
+        this.setNamespaceDescriptions(new LazyArrayList<NamespaceDescription>());
     }
     
     /**

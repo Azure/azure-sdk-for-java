@@ -153,7 +153,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -323,7 +323,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;

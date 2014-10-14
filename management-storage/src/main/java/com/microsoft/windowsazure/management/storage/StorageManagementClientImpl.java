@@ -154,7 +154,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     private StorageManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.storageAccounts = new StorageAccountOperationsImpl(this);
-        this.apiVersion = "2014-06-01";
+        this.apiVersion = "2014-10-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -336,7 +336,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;

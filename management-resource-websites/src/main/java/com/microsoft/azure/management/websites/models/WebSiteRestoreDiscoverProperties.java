@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -159,6 +160,6 @@ public class WebSiteRestoreDiscoverProperties {
     *
     */
     public WebSiteRestoreDiscoverProperties() {
-        this.setDatabases(new ArrayList<DatabaseBackupSetting>());
+        this.setDatabases(new LazyArrayList<DatabaseBackupSetting>());
     }
 }

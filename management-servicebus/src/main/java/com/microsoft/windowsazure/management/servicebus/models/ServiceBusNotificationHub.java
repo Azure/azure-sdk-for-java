@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 public class ServiceBusNotificationHub {
@@ -85,6 +86,6 @@ public class ServiceBusNotificationHub {
     *
     */
     public ServiceBusNotificationHub() {
-        this.setAuthorizationRules(new ArrayList<ServiceBusSharedAccessAuthorizationRule>());
+        this.setAuthorizationRules(new LazyArrayList<ServiceBusSharedAccessAuthorizationRule>());
     }
 }

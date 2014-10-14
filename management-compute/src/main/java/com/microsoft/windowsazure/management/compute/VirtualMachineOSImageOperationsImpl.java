@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -177,7 +178,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -293,7 +294,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -433,7 +434,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -802,7 +803,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -914,7 +915,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1086,6 +1087,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     languageInstance = languageElement.getTextContent();
                     result.setLanguage(languageInstance);
                 }
+                
+                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                if (iOTypeElement != null) {
+                    String iOTypeInstance;
+                    iOTypeInstance = iOTypeElement.getTextContent();
+                    result.setIOType(iOTypeInstance);
+                }
             }
             
             result.setStatusCode(statusCode);
@@ -1176,7 +1184,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1378,6 +1386,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     languageInstance = languageElement.getTextContent();
                     result.setLanguage(languageInstance);
                 }
+                
+                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                if (iOTypeElement != null) {
+                    String iOTypeInstance;
+                    iOTypeInstance = iOTypeElement.getTextContent();
+                    result.setIOType(iOTypeInstance);
+                }
             }
             
             result.setStatusCode(statusCode);
@@ -1462,7 +1477,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1577,6 +1592,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                         oSImageInstance.setImageFamily(imageFamilyInstance);
                     }
                     
+                    Element showInGuiElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                    if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
+                        boolean showInGuiInstance;
+                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                        oSImageInstance.setShowInGui(showInGuiInstance);
+                    }
+                    
                     Element publishedDateElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                     if (publishedDateElement != null) {
                         Calendar publishedDateInstance;
@@ -1631,6 +1653,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                         String languageInstance;
                         languageInstance = languageElement.getTextContent();
                         oSImageInstance.setLanguage(languageInstance);
+                    }
+                    
+                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                    if (iOTypeElement != null) {
+                        String iOTypeInstance;
+                        iOTypeInstance = iOTypeElement.getTextContent();
+                        oSImageInstance.setIOType(iOTypeInstance);
                     }
                 }
             }
@@ -1732,7 +1761,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1744,13 +1773,15 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         requestDoc.appendChild(replicationInputElement);
         
         if (parameters.getTargetLocations() != null) {
-            Element targetLocationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetLocations");
-            for (String targetLocationsItem : parameters.getTargetLocations()) {
-                Element targetLocationsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Region");
-                targetLocationsItemElement.appendChild(requestDoc.createTextNode(targetLocationsItem));
-                targetLocationsSequenceElement.appendChild(targetLocationsItemElement);
+            if (parameters.getTargetLocations() instanceof LazyCollection == false || ((LazyCollection) parameters.getTargetLocations()).isInitialized()) {
+                Element targetLocationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetLocations");
+                for (String targetLocationsItem : parameters.getTargetLocations()) {
+                    Element targetLocationsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Region");
+                    targetLocationsItemElement.appendChild(requestDoc.createTextNode(targetLocationsItem));
+                    targetLocationsSequenceElement.appendChild(targetLocationsItemElement);
+                }
+                replicationInputElement.appendChild(targetLocationsSequenceElement);
             }
-            replicationInputElement.appendChild(targetLocationsSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -2156,7 +2187,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;

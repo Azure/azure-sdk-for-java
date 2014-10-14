@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     */
     public VirtualMachineExtensionListResponse() {
         super();
-        this.setResourceExtensions(new ArrayList<VirtualMachineExtensionListResponse.ResourceExtension>());
+        this.setResourceExtensions(new LazyArrayList<VirtualMachineExtensionListResponse.ResourceExtension>());
     }
     
     /**

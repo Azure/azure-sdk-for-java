@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
@@ -161,6 +162,6 @@ public class WebSiteRestoreDiscoverResponse extends OperationResponse {
     */
     public WebSiteRestoreDiscoverResponse() {
         super();
-        this.setDatabases(new ArrayList<DatabaseBackupSetting>());
+        this.setDatabases(new LazyArrayList<DatabaseBackupSetting>());
     }
 }

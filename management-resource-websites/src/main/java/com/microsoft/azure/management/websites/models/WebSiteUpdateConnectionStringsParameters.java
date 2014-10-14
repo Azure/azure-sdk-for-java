@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * The Update Web Site connection strings operation parameters.
@@ -55,8 +55,7 @@ public class WebSiteUpdateConnectionStringsParameters extends ResourceBase {
     */
     public WebSiteUpdateConnectionStringsParameters() {
         super();
-        this.setProperties(new ArrayList<ConnectionStringInfo>());
-        this.setTags(new HashMap<String, String>());
+        this.setProperties(new LazyArrayList<ConnectionStringInfo>());
     }
     
     /**

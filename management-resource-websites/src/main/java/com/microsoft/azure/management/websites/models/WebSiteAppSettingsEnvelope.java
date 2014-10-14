@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * List of app settings for the website.
@@ -54,8 +54,7 @@ public class WebSiteAppSettingsEnvelope extends ResourceBase {
     */
     public WebSiteAppSettingsEnvelope() {
         super();
-        this.setProperties(new ArrayList<NameValuePair>());
-        this.setTags(new HashMap<String, String>());
+        this.setProperties(new LazyArrayList<NameValuePair>());
     }
     
     /**

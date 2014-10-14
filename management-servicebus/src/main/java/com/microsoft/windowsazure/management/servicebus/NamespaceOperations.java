@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.CheckNamespaceAvailabilityResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRuleResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRulesResponse;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceCreateParameters;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceDescriptionResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespacesResponse;
@@ -143,6 +144,42 @@ public interface NamespaceOperations {
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
+    
+    /**
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName Required. The namespace name.
+    * @param namespaceEntity Required. The service bus namespace.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to a request for a particular namespace.
+    */
+    ServiceBusNamespaceResponse createNamespace(String namespaceName, ServiceBusNamespaceCreateParameters namespaceEntity) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
+    
+    /**
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName Required. The namespace name.
+    * @param namespaceEntity Required. The service bus namespace.
+    * @return The response to a request for a particular namespace.
+    */
+    Future<ServiceBusNamespaceResponse> createNamespaceAsync(String namespaceName, ServiceBusNamespaceCreateParameters namespaceEntity);
     
     /**
     * Deletes an existing namespace. This operation also removes all associated

@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import java.util.HashMap;
-
 /**
 * Resource group information.
 */
@@ -71,7 +69,6 @@ public class ResourceGroup extends BasicResourceGroup {
     */
     public ResourceGroup() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

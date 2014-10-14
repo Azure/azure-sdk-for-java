@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -277,7 +278,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -305,22 +306,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getExtensionConfiguration() != null) {
@@ -328,40 +331,46 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             changeConfigurationElement.appendChild(extensionConfigurationElement);
             
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                    allRolesSequenceElement.appendChild(extensionElement);
-                    
-                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
-                    extensionElement.appendChild(idElement);
+                if (parameters.getExtensionConfiguration().getAllRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getAllRoles()).isInitialized()) {
+                    Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                    for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                        Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        allRolesSequenceElement.appendChild(extensionElement);
+                        
+                        Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
+                        extensionElement.appendChild(idElement);
+                    }
+                    extensionConfigurationElement.appendChild(allRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
             
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                    namedRolesSequenceElement.appendChild(roleElement);
-                    
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                    
-                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                        extensionsSequenceElement.appendChild(extensionElement2);
+                if (parameters.getExtensionConfiguration().getNamedRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getNamedRoles()).isInitialized()) {
+                    Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                    for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                        Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+                        namedRolesSequenceElement.appendChild(roleElement);
                         
-                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
-                        extensionElement2.appendChild(idElement2);
+                        Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                        roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
+                        roleElement.appendChild(roleNameElement);
+                        
+                        if (namedRolesItem.getExtensions() instanceof LazyCollection == false || ((LazyCollection) namedRolesItem.getExtensions()).isInitialized()) {
+                            Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                            for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                                Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                                extensionsSequenceElement.appendChild(extensionElement2);
+                                
+                                Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                                idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
+                                extensionElement2.appendChild(idElement2);
+                            }
+                            roleElement.appendChild(extensionsSequenceElement);
+                        }
                     }
-                    roleElement.appendChild(extensionsSequenceElement);
+                    extensionConfigurationElement.appendChild(namedRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
         
@@ -544,7 +553,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -572,22 +581,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getExtensionConfiguration() != null) {
@@ -595,40 +606,46 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             changeConfigurationElement.appendChild(extensionConfigurationElement);
             
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                    allRolesSequenceElement.appendChild(extensionElement);
-                    
-                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
-                    extensionElement.appendChild(idElement);
+                if (parameters.getExtensionConfiguration().getAllRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getAllRoles()).isInitialized()) {
+                    Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                    for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                        Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        allRolesSequenceElement.appendChild(extensionElement);
+                        
+                        Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
+                        extensionElement.appendChild(idElement);
+                    }
+                    extensionConfigurationElement.appendChild(allRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
             
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                    namedRolesSequenceElement.appendChild(roleElement);
-                    
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                    
-                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                        extensionsSequenceElement.appendChild(extensionElement2);
+                if (parameters.getExtensionConfiguration().getNamedRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getNamedRoles()).isInitialized()) {
+                    Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                    for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                        Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+                        namedRolesSequenceElement.appendChild(roleElement);
                         
-                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
-                        extensionElement2.appendChild(idElement2);
+                        Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                        roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
+                        roleElement.appendChild(roleNameElement);
+                        
+                        if (namedRolesItem.getExtensions() instanceof LazyCollection == false || ((LazyCollection) namedRolesItem.getExtensions()).isInitialized()) {
+                            Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                            for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                                Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                                extensionsSequenceElement.appendChild(extensionElement2);
+                                
+                                Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                                idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
+                                extensionElement2.appendChild(idElement2);
+                            }
+                            roleElement.appendChild(extensionsSequenceElement);
+                        }
                     }
-                    roleElement.appendChild(extensionsSequenceElement);
+                    extensionConfigurationElement.appendChild(namedRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
         
@@ -819,7 +836,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -859,22 +876,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                createDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            createDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getExtensionConfiguration() != null) {
@@ -882,40 +901,46 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             createDeploymentElement.appendChild(extensionConfigurationElement);
             
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                    allRolesSequenceElement.appendChild(extensionElement);
-                    
-                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
-                    extensionElement.appendChild(idElement);
+                if (parameters.getExtensionConfiguration().getAllRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getAllRoles()).isInitialized()) {
+                    Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                    for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                        Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        allRolesSequenceElement.appendChild(extensionElement);
+                        
+                        Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
+                        extensionElement.appendChild(idElement);
+                    }
+                    extensionConfigurationElement.appendChild(allRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
             
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                    namedRolesSequenceElement.appendChild(roleElement);
-                    
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                    
-                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                        extensionsSequenceElement.appendChild(extensionElement2);
+                if (parameters.getExtensionConfiguration().getNamedRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getNamedRoles()).isInitialized()) {
+                    Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                    for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                        Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+                        namedRolesSequenceElement.appendChild(roleElement);
                         
-                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
-                        extensionElement2.appendChild(idElement2);
+                        Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                        roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
+                        roleElement.appendChild(roleNameElement);
+                        
+                        if (namedRolesItem.getExtensions() instanceof LazyCollection == false || ((LazyCollection) namedRolesItem.getExtensions()).isInitialized()) {
+                            Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                            for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                                Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                                extensionsSequenceElement.appendChild(extensionElement2);
+                                
+                                Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                                idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
+                                extensionElement2.appendChild(idElement2);
+                            }
+                            roleElement.appendChild(extensionsSequenceElement);
+                        }
                     }
-                    roleElement.appendChild(extensionsSequenceElement);
+                    extensionConfigurationElement.appendChild(namedRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
         
@@ -1058,7 +1083,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1177,7 +1202,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1304,7 +1329,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1313,13 +1338,15 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         Document requestDoc = documentBuilder.newDocument();
         
         if (parameters.getName() != null) {
-            Element roleInstancesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleInstances");
-            for (String roleInstancesItem : parameters.getName()) {
-                Element roleInstancesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                roleInstancesItemElement.appendChild(requestDoc.createTextNode(roleInstancesItem));
-                roleInstancesSequenceElement.appendChild(roleInstancesItemElement);
+            if (parameters.getName() instanceof LazyCollection == false || ((LazyCollection) parameters.getName()).isInitialized()) {
+                Element roleInstancesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleInstances");
+                for (String roleInstancesItem : parameters.getName()) {
+                    Element roleInstancesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    roleInstancesItemElement.appendChild(requestDoc.createTextNode(roleInstancesItem));
+                    roleInstancesSequenceElement.appendChild(roleInstancesItemElement);
+                }
+                requestDoc.appendChild(roleInstancesSequenceElement);
             }
-            requestDoc.appendChild(roleInstancesSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -1458,7 +1485,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1467,13 +1494,15 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         Document requestDoc = documentBuilder.newDocument();
         
         if (parameters.getName() != null) {
-            Element roleInstancesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleInstances");
-            for (String roleInstancesItem : parameters.getName()) {
-                Element roleInstancesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                roleInstancesItemElement.appendChild(requestDoc.createTextNode(roleInstancesItem));
-                roleInstancesSequenceElement.appendChild(roleInstancesItemElement);
+            if (parameters.getName() instanceof LazyCollection == false || ((LazyCollection) parameters.getName()).isInitialized()) {
+                Element roleInstancesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleInstances");
+                for (String roleInstancesItem : parameters.getName()) {
+                    Element roleInstancesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    roleInstancesItemElement.appendChild(requestDoc.createTextNode(roleInstancesItem));
+                    roleInstancesSequenceElement.appendChild(roleInstancesItemElement);
+                }
+                requestDoc.appendChild(roleInstancesSequenceElement);
             }
-            requestDoc.appendChild(roleInstancesSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -1625,7 +1654,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1762,7 +1791,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1893,7 +1922,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2021,7 +2050,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2164,7 +2193,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2307,7 +2336,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2438,7 +2467,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2566,7 +2595,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2705,7 +2734,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2877,7 +2906,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3040,7 +3069,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3292,7 +3321,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3330,22 +3359,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         upgradeDeploymentElement.appendChild(forceElement);
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getExtensionConfiguration() != null) {
@@ -3353,40 +3384,46 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             upgradeDeploymentElement.appendChild(extensionConfigurationElement);
             
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                    allRolesSequenceElement.appendChild(extensionElement);
-                    
-                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
-                    extensionElement.appendChild(idElement);
+                if (parameters.getExtensionConfiguration().getAllRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getAllRoles()).isInitialized()) {
+                    Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                    for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                        Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        allRolesSequenceElement.appendChild(extensionElement);
+                        
+                        Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
+                        extensionElement.appendChild(idElement);
+                    }
+                    extensionConfigurationElement.appendChild(allRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
             
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                    namedRolesSequenceElement.appendChild(roleElement);
-                    
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                    
-                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                        extensionsSequenceElement.appendChild(extensionElement2);
+                if (parameters.getExtensionConfiguration().getNamedRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getNamedRoles()).isInitialized()) {
+                    Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                    for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                        Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+                        namedRolesSequenceElement.appendChild(roleElement);
                         
-                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
-                        extensionElement2.appendChild(idElement2);
+                        Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                        roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
+                        roleElement.appendChild(roleNameElement);
+                        
+                        if (namedRolesItem.getExtensions() instanceof LazyCollection == false || ((LazyCollection) namedRolesItem.getExtensions()).isInitialized()) {
+                            Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                            for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                                Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                                extensionsSequenceElement.appendChild(extensionElement2);
+                                
+                                Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                                idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
+                                extensionElement2.appendChild(idElement2);
+                            }
+                            roleElement.appendChild(extensionsSequenceElement);
+                        }
                     }
-                    roleElement.appendChild(extensionsSequenceElement);
+                    extensionConfigurationElement.appendChild(namedRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
         
@@ -3624,7 +3661,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3662,22 +3699,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         upgradeDeploymentElement.appendChild(forceElement);
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getExtensionConfiguration() != null) {
@@ -3685,40 +3724,46 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             upgradeDeploymentElement.appendChild(extensionConfigurationElement);
             
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                    allRolesSequenceElement.appendChild(extensionElement);
-                    
-                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
-                    extensionElement.appendChild(idElement);
+                if (parameters.getExtensionConfiguration().getAllRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getAllRoles()).isInitialized()) {
+                    Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                    for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                        Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        allRolesSequenceElement.appendChild(extensionElement);
+                        
+                        Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
+                        extensionElement.appendChild(idElement);
+                    }
+                    extensionConfigurationElement.appendChild(allRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
             
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                    namedRolesSequenceElement.appendChild(roleElement);
-                    
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                    
-                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
-                        extensionsSequenceElement.appendChild(extensionElement2);
+                if (parameters.getExtensionConfiguration().getNamedRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionConfiguration().getNamedRoles()).isInitialized()) {
+                    Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                    for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                        Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+                        namedRolesSequenceElement.appendChild(roleElement);
                         
-                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
-                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
-                        extensionElement2.appendChild(idElement2);
+                        Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                        roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
+                        roleElement.appendChild(roleNameElement);
+                        
+                        if (namedRolesItem.getExtensions() instanceof LazyCollection == false || ((LazyCollection) namedRolesItem.getExtensions()).isInitialized()) {
+                            Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                            for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                                Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                                extensionsSequenceElement.appendChild(extensionElement2);
+                                
+                                Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                                idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
+                                extensionElement2.appendChild(idElement2);
+                            }
+                            roleElement.appendChild(extensionsSequenceElement);
+                        }
                     }
-                    roleElement.appendChild(extensionsSequenceElement);
+                    extensionConfigurationElement.appendChild(namedRolesSequenceElement);
                 }
-                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
         
@@ -3912,7 +3957,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4114,7 +4159,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -5169,7 +5214,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5974,6 +6019,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             idleTimeoutInMinutesInstance3 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement3.getTextContent());
                                             inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance3);
                                         }
+                                        
+                                        Element loadBalancerDistributionElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
+                                        if (loadBalancerDistributionElement != null) {
+                                            String loadBalancerDistributionInstance;
+                                            loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
+                                        }
                                     }
                                 }
                                 
@@ -6412,6 +6464,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
                                     dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                                 }
+                                
+                                Element iOTypeElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                                if (iOTypeElement != null) {
+                                    String iOTypeInstance;
+                                    iOTypeInstance = iOTypeElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setIOType(iOTypeInstance);
+                                }
                             }
                         }
                         
@@ -6467,6 +6526,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
                                 oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                            }
+                            
+                            Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                            if (iOTypeElement2 != null) {
+                                String iOTypeInstance2;
+                                iOTypeInstance2 = iOTypeElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setIOType(iOTypeInstance2);
                             }
                         }
                         
@@ -6827,7 +6893,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -7632,6 +7698,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             idleTimeoutInMinutesInstance3 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement3.getTextContent());
                                             inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance3);
                                         }
+                                        
+                                        Element loadBalancerDistributionElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
+                                        if (loadBalancerDistributionElement != null) {
+                                            String loadBalancerDistributionInstance;
+                                            loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
+                                        }
                                     }
                                 }
                                 
@@ -8070,6 +8143,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
                                     dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                                 }
+                                
+                                Element iOTypeElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                                if (iOTypeElement != null) {
+                                    String iOTypeInstance;
+                                    iOTypeInstance = iOTypeElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setIOType(iOTypeInstance);
+                                }
                             }
                         }
                         
@@ -8125,6 +8205,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
                                 oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                            }
+                            
+                            Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                            if (iOTypeElement2 != null) {
+                                String iOTypeInstance2;
+                                iOTypeInstance2 = iOTypeElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setIOType(iOTypeInstance2);
                             }
                         }
                         
@@ -9576,7 +9663,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -9741,7 +9828,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;

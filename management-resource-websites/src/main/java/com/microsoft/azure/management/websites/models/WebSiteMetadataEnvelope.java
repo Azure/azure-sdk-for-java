@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * List of metadata for the website.
@@ -54,8 +54,7 @@ public class WebSiteMetadataEnvelope extends ResourceBase {
     */
     public WebSiteMetadataEnvelope() {
         super();
-        this.setProperties(new ArrayList<NameValuePair>());
-        this.setTags(new HashMap<String, String>());
+        this.setProperties(new LazyArrayList<NameValuePair>());
     }
     
     /**

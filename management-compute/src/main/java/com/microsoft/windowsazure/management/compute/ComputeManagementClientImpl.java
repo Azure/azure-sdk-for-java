@@ -301,7 +301,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
         this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
-        this.apiVersion = "2014-06-01";
+        this.apiVersion = "2014-10-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -389,6 +389,70 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
     protected ComputeManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new ComputeManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type CertificateFormat.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static CertificateFormat parseCertificateFormat(String value) {
+        if ("pfx".equalsIgnoreCase(value)) {
+            return CertificateFormat.Pfx;
+        }
+        if ("cer".equalsIgnoreCase(value)) {
+            return CertificateFormat.Cer;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type CertificateFormat to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String certificateFormatToString(CertificateFormat value) {
+        if (value == CertificateFormat.Pfx) {
+            return "pfx";
+        }
+        if (value == CertificateFormat.Cer) {
+            return "cer";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type LoadBalancerProbeTransportProtocol.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
+        if ("tcp".equalsIgnoreCase(value)) {
+            return LoadBalancerProbeTransportProtocol.Tcp;
+        }
+        if ("http".equalsIgnoreCase(value)) {
+            return LoadBalancerProbeTransportProtocol.Http;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type LoadBalancerProbeTransportProtocol to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
+        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
+            return "tcp";
+        }
+        if (value == LoadBalancerProbeTransportProtocol.Http) {
+            return "http";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -483,7 +547,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -572,69 +636,5 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
-    }
-    
-    /**
-    * Parse enum values for type CertificateFormat.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static CertificateFormat parseCertificateFormat(String value) {
-        if ("pfx".equalsIgnoreCase(value)) {
-            return CertificateFormat.Pfx;
-        }
-        if ("cer".equalsIgnoreCase(value)) {
-            return CertificateFormat.Cer;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type CertificateFormat to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String certificateFormatToString(CertificateFormat value) {
-        if (value == CertificateFormat.Pfx) {
-            return "pfx";
-        }
-        if (value == CertificateFormat.Cer) {
-            return "cer";
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Parse enum values for type LoadBalancerProbeTransportProtocol.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
-        if ("tcp".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Tcp;
-        }
-        if ("http".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Http;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type LoadBalancerProbeTransportProtocol to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
-        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
-            return "tcp";
-        }
-        if (value == LoadBalancerProbeTransportProtocol.Http) {
-            return "http";
-        }
-        throw new IllegalArgumentException("value");
     }
 }

@@ -28,6 +28,8 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.TimeSpan8601Converter;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.scheduler.models.ClientCertAuthentication;
+import com.microsoft.windowsazure.scheduler.models.HttpAuthenticationType;
 import com.microsoft.windowsazure.scheduler.models.Job;
 import com.microsoft.windowsazure.scheduler.models.JobAction;
 import com.microsoft.windowsazure.scheduler.models.JobActionType;
@@ -291,6 +293,39 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 if (parameters.getAction().getErrorAction().getRequest().getBody() != null) {
                     ((ObjectNode) requestValue).put("body", parameters.getAction().getErrorAction().getRequest().getBody());
                 }
+                
+                if (parameters.getAction().getErrorAction().getRequest().getAuthentication() != null) {
+                    ObjectNode authenticationValue = objectMapper.createObjectNode();
+                    ((ObjectNode) requestValue).put("authentication", authenticationValue);
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication().getClass().isInstance(ClientCertAuthentication.class)) {
+                        ((ObjectNode) authenticationValue).put("type", "ClientCertificate");
+                        ClientCertAuthentication derived = ((ClientCertAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        if (derived.getPassword() != null) {
+                            ((ObjectNode) authenticationValue).put("password", derived.getPassword());
+                        }
+                        
+                        if (derived.getPfx() != null) {
+                            ((ObjectNode) authenticationValue).put("pfx", derived.getPfx());
+                        }
+                        
+                        if (derived.getCertificateThumbprint() != null) {
+                            ((ObjectNode) authenticationValue).put("certificateThumbprint", derived.getCertificateThumbprint());
+                        }
+                        
+                        if (derived.getCertificateExpiration() != null) {
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                            simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                            ((ObjectNode) authenticationValue).put("certificateExpiration", simpleDateFormat2.format(derived.getCertificateExpiration().getTime()));
+                        }
+                        
+                        if (derived.getCertificateSubjectName() != null) {
+                            ((ObjectNode) authenticationValue).put("certificateSubjectName", derived.getCertificateSubjectName());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived.getType()));
+                    }
+                }
             }
             
             if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
@@ -328,6 +363,39 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             if (parameters.getAction().getRequest().getBody() != null) {
                 ((ObjectNode) requestValue2).put("body", parameters.getAction().getRequest().getBody());
             }
+            
+            if (parameters.getAction().getRequest().getAuthentication() != null) {
+                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
+                ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
+                if (parameters.getAction().getRequest().getAuthentication().getClass().isInstance(ClientCertAuthentication.class)) {
+                    ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
+                    ClientCertAuthentication derived2 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    if (derived2.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived2.getPassword());
+                    }
+                    
+                    if (derived2.getPfx() != null) {
+                        ((ObjectNode) authenticationValue2).put("pfx", derived2.getPfx());
+                    }
+                    
+                    if (derived2.getCertificateThumbprint() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived2.getCertificateThumbprint());
+                    }
+                    
+                    if (derived2.getCertificateExpiration() != null) {
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived2.getCertificateExpiration().getTime()));
+                    }
+                    
+                    if (derived2.getCertificateSubjectName() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived2.getCertificateSubjectName());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                }
+            }
         }
         
         if (parameters.getAction().getQueueMessage() != null) {
@@ -358,9 +426,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getRecurrence().getEndTime() != null) {
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat2.format(parameters.getRecurrence().getEndTime().getTime()));
+                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat4.format(parameters.getRecurrence().getEndTime().getTime()));
             }
             
             if (parameters.getRecurrence().getSchedule() != null) {
@@ -565,6 +633,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
+                            
+                            JsonNode authenticationValue3 = requestValue3.get("authentication");
+                            if (authenticationValue3 != null) {
+                                String typeName = authenticationValue3.get("type").getTextValue();
+                                if ("ClientCertificate".equals(typeName)) {
+                                    ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                    
+                                    JsonNode passwordValue = authenticationValue3.get("password");
+                                    if (passwordValue != null) {
+                                        String passwordInstance;
+                                        passwordInstance = passwordValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                    }
+                                    
+                                    JsonNode pfxValue = authenticationValue3.get("pfx");
+                                    if (pfxValue != null) {
+                                        String pfxInstance;
+                                        pfxInstance = pfxValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                    }
+                                    
+                                    JsonNode certificateThumbprintValue = authenticationValue3.get("certificateThumbprint");
+                                    if (certificateThumbprintValue != null) {
+                                        String certificateThumbprintInstance;
+                                        certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    }
+                                    
+                                    JsonNode certificateExpirationValue = authenticationValue3.get("certificateExpiration");
+                                    if (certificateExpirationValue != null) {
+                                        Calendar certificateExpirationInstance;
+                                        certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                        clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                    }
+                                    
+                                    JsonNode certificateSubjectNameValue = authenticationValue3.get("certificateSubjectName");
+                                    if (certificateSubjectNameValue != null) {
+                                        String certificateSubjectNameInstance;
+                                        certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                    }
+                                    
+                                    JsonNode typeValue3 = authenticationValue3.get("type");
+                                    if (typeValue3 != null) {
+                                        HttpAuthenticationType typeInstance3;
+                                        typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                        clientCertAuthenticationInstance.setType(typeInstance3);
+                                    }
+                                    requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                }
+                            }
                         }
                         
                         JsonNode queueMessageValue3 = errorActionValue2.get("queueMessage");
@@ -637,6 +756,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
+                        }
+                        
+                        JsonNode authenticationValue4 = requestValue4.get("authentication");
+                        if (authenticationValue4 != null) {
+                            String typeName2 = authenticationValue4.get("type").getTextValue();
+                            if ("ClientCertificate".equals(typeName2)) {
+                                ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                
+                                JsonNode passwordValue2 = authenticationValue4.get("password");
+                                if (passwordValue2 != null) {
+                                    String passwordInstance2;
+                                    passwordInstance2 = passwordValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                }
+                                
+                                JsonNode pfxValue2 = authenticationValue4.get("pfx");
+                                if (pfxValue2 != null) {
+                                    String pfxInstance2;
+                                    pfxInstance2 = pfxValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                }
+                                
+                                JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
+                                if (certificateThumbprintValue2 != null) {
+                                    String certificateThumbprintInstance2;
+                                    certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                }
+                                
+                                JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
+                                if (certificateExpirationValue2 != null) {
+                                    Calendar certificateExpirationInstance2;
+                                    certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                    clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                }
+                                
+                                JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
+                                if (certificateSubjectNameValue2 != null) {
+                                    String certificateSubjectNameInstance2;
+                                    certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                }
+                                
+                                JsonNode typeValue4 = authenticationValue4.get("type");
+                                if (typeValue4 != null) {
+                                    HttpAuthenticationType typeInstance4;
+                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                }
+                                requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
                         }
                     }
                     
@@ -1029,6 +1199,39 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 if (parameters.getAction().getErrorAction().getRequest().getBody() != null) {
                     ((ObjectNode) requestValue).put("body", parameters.getAction().getErrorAction().getRequest().getBody());
                 }
+                
+                if (parameters.getAction().getErrorAction().getRequest().getAuthentication() != null) {
+                    ObjectNode authenticationValue = objectMapper.createObjectNode();
+                    ((ObjectNode) requestValue).put("authentication", authenticationValue);
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication().getClass().isInstance(ClientCertAuthentication.class)) {
+                        ((ObjectNode) authenticationValue).put("type", "ClientCertificate");
+                        ClientCertAuthentication derived = ((ClientCertAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        if (derived.getPassword() != null) {
+                            ((ObjectNode) authenticationValue).put("password", derived.getPassword());
+                        }
+                        
+                        if (derived.getPfx() != null) {
+                            ((ObjectNode) authenticationValue).put("pfx", derived.getPfx());
+                        }
+                        
+                        if (derived.getCertificateThumbprint() != null) {
+                            ((ObjectNode) authenticationValue).put("certificateThumbprint", derived.getCertificateThumbprint());
+                        }
+                        
+                        if (derived.getCertificateExpiration() != null) {
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                            simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                            ((ObjectNode) authenticationValue).put("certificateExpiration", simpleDateFormat2.format(derived.getCertificateExpiration().getTime()));
+                        }
+                        
+                        if (derived.getCertificateSubjectName() != null) {
+                            ((ObjectNode) authenticationValue).put("certificateSubjectName", derived.getCertificateSubjectName());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived.getType()));
+                    }
+                }
             }
             
             if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
@@ -1066,6 +1269,39 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             if (parameters.getAction().getRequest().getBody() != null) {
                 ((ObjectNode) requestValue2).put("body", parameters.getAction().getRequest().getBody());
             }
+            
+            if (parameters.getAction().getRequest().getAuthentication() != null) {
+                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
+                ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
+                if (parameters.getAction().getRequest().getAuthentication().getClass().isInstance(ClientCertAuthentication.class)) {
+                    ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
+                    ClientCertAuthentication derived2 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    if (derived2.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived2.getPassword());
+                    }
+                    
+                    if (derived2.getPfx() != null) {
+                        ((ObjectNode) authenticationValue2).put("pfx", derived2.getPfx());
+                    }
+                    
+                    if (derived2.getCertificateThumbprint() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived2.getCertificateThumbprint());
+                    }
+                    
+                    if (derived2.getCertificateExpiration() != null) {
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived2.getCertificateExpiration().getTime()));
+                    }
+                    
+                    if (derived2.getCertificateSubjectName() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived2.getCertificateSubjectName());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                }
+            }
         }
         
         if (parameters.getAction().getQueueMessage() != null) {
@@ -1096,9 +1332,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getRecurrence().getEndTime() != null) {
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat2.format(parameters.getRecurrence().getEndTime().getTime()));
+                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat4.format(parameters.getRecurrence().getEndTime().getTime()));
             }
             
             if (parameters.getRecurrence().getSchedule() != null) {
@@ -1303,6 +1539,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
+                            
+                            JsonNode authenticationValue3 = requestValue3.get("authentication");
+                            if (authenticationValue3 != null) {
+                                String typeName = authenticationValue3.get("type").getTextValue();
+                                if ("ClientCertificate".equals(typeName)) {
+                                    ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                    
+                                    JsonNode passwordValue = authenticationValue3.get("password");
+                                    if (passwordValue != null) {
+                                        String passwordInstance;
+                                        passwordInstance = passwordValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                    }
+                                    
+                                    JsonNode pfxValue = authenticationValue3.get("pfx");
+                                    if (pfxValue != null) {
+                                        String pfxInstance;
+                                        pfxInstance = pfxValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                    }
+                                    
+                                    JsonNode certificateThumbprintValue = authenticationValue3.get("certificateThumbprint");
+                                    if (certificateThumbprintValue != null) {
+                                        String certificateThumbprintInstance;
+                                        certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    }
+                                    
+                                    JsonNode certificateExpirationValue = authenticationValue3.get("certificateExpiration");
+                                    if (certificateExpirationValue != null) {
+                                        Calendar certificateExpirationInstance;
+                                        certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                        clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                    }
+                                    
+                                    JsonNode certificateSubjectNameValue = authenticationValue3.get("certificateSubjectName");
+                                    if (certificateSubjectNameValue != null) {
+                                        String certificateSubjectNameInstance;
+                                        certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                    }
+                                    
+                                    JsonNode typeValue3 = authenticationValue3.get("type");
+                                    if (typeValue3 != null) {
+                                        HttpAuthenticationType typeInstance3;
+                                        typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                        clientCertAuthenticationInstance.setType(typeInstance3);
+                                    }
+                                    requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                }
+                            }
                         }
                         
                         JsonNode queueMessageValue3 = errorActionValue2.get("queueMessage");
@@ -1375,6 +1662,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
+                        }
+                        
+                        JsonNode authenticationValue4 = requestValue4.get("authentication");
+                        if (authenticationValue4 != null) {
+                            String typeName2 = authenticationValue4.get("type").getTextValue();
+                            if ("ClientCertificate".equals(typeName2)) {
+                                ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                
+                                JsonNode passwordValue2 = authenticationValue4.get("password");
+                                if (passwordValue2 != null) {
+                                    String passwordInstance2;
+                                    passwordInstance2 = passwordValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                }
+                                
+                                JsonNode pfxValue2 = authenticationValue4.get("pfx");
+                                if (pfxValue2 != null) {
+                                    String pfxInstance2;
+                                    pfxInstance2 = pfxValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                }
+                                
+                                JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
+                                if (certificateThumbprintValue2 != null) {
+                                    String certificateThumbprintInstance2;
+                                    certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                }
+                                
+                                JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
+                                if (certificateExpirationValue2 != null) {
+                                    Calendar certificateExpirationInstance2;
+                                    certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                    clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                }
+                                
+                                JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
+                                if (certificateSubjectNameValue2 != null) {
+                                    String certificateSubjectNameInstance2;
+                                    certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                }
+                                
+                                JsonNode typeValue4 = authenticationValue4.get("type");
+                                if (typeValue4 != null) {
+                                    HttpAuthenticationType typeInstance4;
+                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                }
+                                requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
                         }
                     }
                     
@@ -1884,6 +2222,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
+                            
+                            JsonNode authenticationValue = requestValue.get("authentication");
+                            if (authenticationValue != null) {
+                                String typeName = authenticationValue.get("type").getTextValue();
+                                if ("ClientCertificate".equals(typeName)) {
+                                    ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                    
+                                    JsonNode passwordValue = authenticationValue.get("password");
+                                    if (passwordValue != null) {
+                                        String passwordInstance;
+                                        passwordInstance = passwordValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                    }
+                                    
+                                    JsonNode pfxValue = authenticationValue.get("pfx");
+                                    if (pfxValue != null) {
+                                        String pfxInstance;
+                                        pfxInstance = pfxValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                    }
+                                    
+                                    JsonNode certificateThumbprintValue = authenticationValue.get("certificateThumbprint");
+                                    if (certificateThumbprintValue != null) {
+                                        String certificateThumbprintInstance;
+                                        certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    }
+                                    
+                                    JsonNode certificateExpirationValue = authenticationValue.get("certificateExpiration");
+                                    if (certificateExpirationValue != null) {
+                                        Calendar certificateExpirationInstance;
+                                        certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                        clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                    }
+                                    
+                                    JsonNode certificateSubjectNameValue = authenticationValue.get("certificateSubjectName");
+                                    if (certificateSubjectNameValue != null) {
+                                        String certificateSubjectNameInstance;
+                                        certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                    }
+                                    
+                                    JsonNode typeValue3 = authenticationValue.get("type");
+                                    if (typeValue3 != null) {
+                                        HttpAuthenticationType typeInstance3;
+                                        typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                        clientCertAuthenticationInstance.setType(typeInstance3);
+                                    }
+                                    requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                }
+                            }
                         }
                         
                         JsonNode queueMessageValue = errorActionValue.get("queueMessage");
@@ -1956,6 +2345,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
+                        }
+                        
+                        JsonNode authenticationValue2 = requestValue2.get("authentication");
+                        if (authenticationValue2 != null) {
+                            String typeName2 = authenticationValue2.get("type").getTextValue();
+                            if ("ClientCertificate".equals(typeName2)) {
+                                ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                
+                                JsonNode passwordValue2 = authenticationValue2.get("password");
+                                if (passwordValue2 != null) {
+                                    String passwordInstance2;
+                                    passwordInstance2 = passwordValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                }
+                                
+                                JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                if (pfxValue2 != null) {
+                                    String pfxInstance2;
+                                    pfxInstance2 = pfxValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                }
+                                
+                                JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                if (certificateThumbprintValue2 != null) {
+                                    String certificateThumbprintInstance2;
+                                    certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                }
+                                
+                                JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                if (certificateExpirationValue2 != null) {
+                                    Calendar certificateExpirationInstance2;
+                                    certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                    clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                }
+                                
+                                JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                if (certificateSubjectNameValue2 != null) {
+                                    String certificateSubjectNameInstance2;
+                                    certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                }
+                                
+                                JsonNode typeValue4 = authenticationValue2.get("type");
+                                if (typeValue4 != null) {
+                                    HttpAuthenticationType typeInstance4;
+                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                }
+                                requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
                         }
                     }
                     
@@ -2780,6 +3220,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         bodyInstance = bodyValue.getTextValue();
                                         requestInstance.setBody(bodyInstance);
                                     }
+                                    
+                                    JsonNode authenticationValue = requestValue.get("authentication");
+                                    if (authenticationValue != null) {
+                                        String typeName = authenticationValue.get("type").getTextValue();
+                                        if ("ClientCertificate".equals(typeName)) {
+                                            ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                            
+                                            JsonNode passwordValue = authenticationValue.get("password");
+                                            if (passwordValue != null) {
+                                                String passwordInstance;
+                                                passwordInstance = passwordValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                            }
+                                            
+                                            JsonNode pfxValue = authenticationValue.get("pfx");
+                                            if (pfxValue != null) {
+                                                String pfxInstance;
+                                                pfxInstance = pfxValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                            }
+                                            
+                                            JsonNode certificateThumbprintValue = authenticationValue.get("certificateThumbprint");
+                                            if (certificateThumbprintValue != null) {
+                                                String certificateThumbprintInstance;
+                                                certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            }
+                                            
+                                            JsonNode certificateExpirationValue = authenticationValue.get("certificateExpiration");
+                                            if (certificateExpirationValue != null) {
+                                                Calendar certificateExpirationInstance;
+                                                certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                                clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                            }
+                                            
+                                            JsonNode certificateSubjectNameValue = authenticationValue.get("certificateSubjectName");
+                                            if (certificateSubjectNameValue != null) {
+                                                String certificateSubjectNameInstance;
+                                                certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                            }
+                                            
+                                            JsonNode typeValue3 = authenticationValue.get("type");
+                                            if (typeValue3 != null) {
+                                                HttpAuthenticationType typeInstance3;
+                                                typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                                clientCertAuthenticationInstance.setType(typeInstance3);
+                                            }
+                                            requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode queueMessageValue = errorActionValue.get("queueMessage");
@@ -2852,6 +3343,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     String bodyInstance2;
                                     bodyInstance2 = bodyValue2.getTextValue();
                                     requestInstance2.setBody(bodyInstance2);
+                                }
+                                
+                                JsonNode authenticationValue2 = requestValue2.get("authentication");
+                                if (authenticationValue2 != null) {
+                                    String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    if ("ClientCertificate".equals(typeName2)) {
+                                        ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                        
+                                        JsonNode passwordValue2 = authenticationValue2.get("password");
+                                        if (passwordValue2 != null) {
+                                            String passwordInstance2;
+                                            passwordInstance2 = passwordValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        }
+                                        
+                                        JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                        if (pfxValue2 != null) {
+                                            String pfxInstance2;
+                                            pfxInstance2 = pfxValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                        }
+                                        
+                                        JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                        if (certificateThumbprintValue2 != null) {
+                                            String certificateThumbprintInstance2;
+                                            certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                        }
+                                        
+                                        JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                        if (certificateExpirationValue2 != null) {
+                                            Calendar certificateExpirationInstance2;
+                                            certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                            clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                        }
+                                        
+                                        JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                        if (certificateSubjectNameValue2 != null) {
+                                            String certificateSubjectNameInstance2;
+                                            certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue4 = authenticationValue2.get("type");
+                                        if (typeValue4 != null) {
+                                            HttpAuthenticationType typeInstance4;
+                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        }
+                                        requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
                                 }
                             }
                             
@@ -3272,6 +3814,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         bodyInstance = bodyValue.getTextValue();
                                         requestInstance.setBody(bodyInstance);
                                     }
+                                    
+                                    JsonNode authenticationValue = requestValue.get("authentication");
+                                    if (authenticationValue != null) {
+                                        String typeName = authenticationValue.get("type").getTextValue();
+                                        if ("ClientCertificate".equals(typeName)) {
+                                            ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                            
+                                            JsonNode passwordValue = authenticationValue.get("password");
+                                            if (passwordValue != null) {
+                                                String passwordInstance;
+                                                passwordInstance = passwordValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                            }
+                                            
+                                            JsonNode pfxValue = authenticationValue.get("pfx");
+                                            if (pfxValue != null) {
+                                                String pfxInstance;
+                                                pfxInstance = pfxValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                            }
+                                            
+                                            JsonNode certificateThumbprintValue = authenticationValue.get("certificateThumbprint");
+                                            if (certificateThumbprintValue != null) {
+                                                String certificateThumbprintInstance;
+                                                certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            }
+                                            
+                                            JsonNode certificateExpirationValue = authenticationValue.get("certificateExpiration");
+                                            if (certificateExpirationValue != null) {
+                                                Calendar certificateExpirationInstance;
+                                                certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                                clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                            }
+                                            
+                                            JsonNode certificateSubjectNameValue = authenticationValue.get("certificateSubjectName");
+                                            if (certificateSubjectNameValue != null) {
+                                                String certificateSubjectNameInstance;
+                                                certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                            }
+                                            
+                                            JsonNode typeValue3 = authenticationValue.get("type");
+                                            if (typeValue3 != null) {
+                                                HttpAuthenticationType typeInstance3;
+                                                typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                                clientCertAuthenticationInstance.setType(typeInstance3);
+                                            }
+                                            requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode queueMessageValue = errorActionValue.get("queueMessage");
@@ -3344,6 +3937,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     String bodyInstance2;
                                     bodyInstance2 = bodyValue2.getTextValue();
                                     requestInstance2.setBody(bodyInstance2);
+                                }
+                                
+                                JsonNode authenticationValue2 = requestValue2.get("authentication");
+                                if (authenticationValue2 != null) {
+                                    String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    if ("ClientCertificate".equals(typeName2)) {
+                                        ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                        
+                                        JsonNode passwordValue2 = authenticationValue2.get("password");
+                                        if (passwordValue2 != null) {
+                                            String passwordInstance2;
+                                            passwordInstance2 = passwordValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        }
+                                        
+                                        JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                        if (pfxValue2 != null) {
+                                            String pfxInstance2;
+                                            pfxInstance2 = pfxValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                        }
+                                        
+                                        JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                        if (certificateThumbprintValue2 != null) {
+                                            String certificateThumbprintInstance2;
+                                            certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                        }
+                                        
+                                        JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                        if (certificateExpirationValue2 != null) {
+                                            Calendar certificateExpirationInstance2;
+                                            certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                            clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                        }
+                                        
+                                        JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                        if (certificateSubjectNameValue2 != null) {
+                                            String certificateSubjectNameInstance2;
+                                            certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue4 = authenticationValue2.get("type");
+                                        if (typeValue4 != null) {
+                                            HttpAuthenticationType typeInstance4;
+                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        }
+                                        requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
                                 }
                             }
                             
@@ -3775,6 +4419,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         bodyInstance = bodyValue.getTextValue();
                                         requestInstance.setBody(bodyInstance);
                                     }
+                                    
+                                    JsonNode authenticationValue = requestValue.get("authentication");
+                                    if (authenticationValue != null) {
+                                        String typeName = authenticationValue.get("type").getTextValue();
+                                        if ("ClientCertificate".equals(typeName)) {
+                                            ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                            
+                                            JsonNode passwordValue = authenticationValue.get("password");
+                                            if (passwordValue != null) {
+                                                String passwordInstance;
+                                                passwordInstance = passwordValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                            }
+                                            
+                                            JsonNode pfxValue = authenticationValue.get("pfx");
+                                            if (pfxValue != null) {
+                                                String pfxInstance;
+                                                pfxInstance = pfxValue.getTextValue();
+                                                clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                            }
+                                            
+                                            JsonNode certificateThumbprintValue = authenticationValue.get("certificateThumbprint");
+                                            if (certificateThumbprintValue != null) {
+                                                String certificateThumbprintInstance;
+                                                certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            }
+                                            
+                                            JsonNode certificateExpirationValue = authenticationValue.get("certificateExpiration");
+                                            if (certificateExpirationValue != null) {
+                                                Calendar certificateExpirationInstance;
+                                                certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                                clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                            }
+                                            
+                                            JsonNode certificateSubjectNameValue = authenticationValue.get("certificateSubjectName");
+                                            if (certificateSubjectNameValue != null) {
+                                                String certificateSubjectNameInstance;
+                                                certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                                clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                            }
+                                            
+                                            JsonNode typeValue3 = authenticationValue.get("type");
+                                            if (typeValue3 != null) {
+                                                HttpAuthenticationType typeInstance3;
+                                                typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                                clientCertAuthenticationInstance.setType(typeInstance3);
+                                            }
+                                            requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode queueMessageValue = errorActionValue.get("queueMessage");
@@ -3847,6 +4542,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     String bodyInstance2;
                                     bodyInstance2 = bodyValue2.getTextValue();
                                     requestInstance2.setBody(bodyInstance2);
+                                }
+                                
+                                JsonNode authenticationValue2 = requestValue2.get("authentication");
+                                if (authenticationValue2 != null) {
+                                    String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    if ("ClientCertificate".equals(typeName2)) {
+                                        ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                        
+                                        JsonNode passwordValue2 = authenticationValue2.get("password");
+                                        if (passwordValue2 != null) {
+                                            String passwordInstance2;
+                                            passwordInstance2 = passwordValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        }
+                                        
+                                        JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                        if (pfxValue2 != null) {
+                                            String pfxInstance2;
+                                            pfxInstance2 = pfxValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                        }
+                                        
+                                        JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                        if (certificateThumbprintValue2 != null) {
+                                            String certificateThumbprintInstance2;
+                                            certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                        }
+                                        
+                                        JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                        if (certificateExpirationValue2 != null) {
+                                            Calendar certificateExpirationInstance2;
+                                            certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                            clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                        }
+                                        
+                                        JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                        if (certificateSubjectNameValue2 != null) {
+                                            String certificateSubjectNameInstance2;
+                                            certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                            clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue4 = authenticationValue2.get("type");
+                                        if (typeValue4 != null) {
+                                            HttpAuthenticationType typeInstance4;
+                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        }
+                                        requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
                                 }
                             }
                             
@@ -4284,6 +5030,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
+                            
+                            JsonNode authenticationValue = requestValue.get("authentication");
+                            if (authenticationValue != null) {
+                                String typeName = authenticationValue.get("type").getTextValue();
+                                if ("ClientCertificate".equals(typeName)) {
+                                    ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
+                                    
+                                    JsonNode passwordValue = authenticationValue.get("password");
+                                    if (passwordValue != null) {
+                                        String passwordInstance;
+                                        passwordInstance = passwordValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPassword(passwordInstance);
+                                    }
+                                    
+                                    JsonNode pfxValue = authenticationValue.get("pfx");
+                                    if (pfxValue != null) {
+                                        String pfxInstance;
+                                        pfxInstance = pfxValue.getTextValue();
+                                        clientCertAuthenticationInstance.setPfx(pfxInstance);
+                                    }
+                                    
+                                    JsonNode certificateThumbprintValue = authenticationValue.get("certificateThumbprint");
+                                    if (certificateThumbprintValue != null) {
+                                        String certificateThumbprintInstance;
+                                        certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    }
+                                    
+                                    JsonNode certificateExpirationValue = authenticationValue.get("certificateExpiration");
+                                    if (certificateExpirationValue != null) {
+                                        Calendar certificateExpirationInstance;
+                                        certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
+                                        clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
+                                    }
+                                    
+                                    JsonNode certificateSubjectNameValue = authenticationValue.get("certificateSubjectName");
+                                    if (certificateSubjectNameValue != null) {
+                                        String certificateSubjectNameInstance;
+                                        certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
+                                        clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
+                                    }
+                                    
+                                    JsonNode typeValue3 = authenticationValue.get("type");
+                                    if (typeValue3 != null) {
+                                        HttpAuthenticationType typeInstance3;
+                                        typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
+                                        clientCertAuthenticationInstance.setType(typeInstance3);
+                                    }
+                                    requestInstance.setAuthentication(clientCertAuthenticationInstance);
+                                }
+                            }
                         }
                         
                         JsonNode queueMessageValue = errorActionValue.get("queueMessage");
@@ -4356,6 +5153,57 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
+                        }
+                        
+                        JsonNode authenticationValue2 = requestValue2.get("authentication");
+                        if (authenticationValue2 != null) {
+                            String typeName2 = authenticationValue2.get("type").getTextValue();
+                            if ("ClientCertificate".equals(typeName2)) {
+                                ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
+                                
+                                JsonNode passwordValue2 = authenticationValue2.get("password");
+                                if (passwordValue2 != null) {
+                                    String passwordInstance2;
+                                    passwordInstance2 = passwordValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                }
+                                
+                                JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                if (pfxValue2 != null) {
+                                    String pfxInstance2;
+                                    pfxInstance2 = pfxValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setPfx(pfxInstance2);
+                                }
+                                
+                                JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                if (certificateThumbprintValue2 != null) {
+                                    String certificateThumbprintInstance2;
+                                    certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
+                                }
+                                
+                                JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                if (certificateExpirationValue2 != null) {
+                                    Calendar certificateExpirationInstance2;
+                                    certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
+                                    clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
+                                }
+                                
+                                JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                if (certificateSubjectNameValue2 != null) {
+                                    String certificateSubjectNameInstance2;
+                                    certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
+                                    clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
+                                }
+                                
+                                JsonNode typeValue4 = authenticationValue2.get("type");
+                                if (typeValue4 != null) {
+                                    HttpAuthenticationType typeInstance4;
+                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                }
+                                requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
                         }
                     }
                     

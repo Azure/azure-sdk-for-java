@@ -108,6 +108,24 @@ public class InputEndpoint {
         this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
     }
     
+    private String loadBalancerDistribution;
+    
+    /**
+    * Optional. Load Balancer Distribution for this endpoint.
+    * @return The LoadBalancerDistribution value.
+    */
+    public String getLoadBalancerDistribution() {
+        return this.loadBalancerDistribution;
+    }
+    
+    /**
+    * Optional. Load Balancer Distribution for this endpoint.
+    * @param loadBalancerDistributionValue The LoadBalancerDistribution value.
+    */
+    public void setLoadBalancerDistribution(final String loadBalancerDistributionValue) {
+        this.loadBalancerDistribution = loadBalancerDistributionValue;
+    }
+    
     private String loadBalancerName;
     
     /**

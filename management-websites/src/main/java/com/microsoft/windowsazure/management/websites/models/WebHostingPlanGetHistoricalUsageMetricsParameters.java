@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -141,6 +142,6 @@ public class WebHostingPlanGetHistoricalUsageMetricsParameters {
     *
     */
     public WebHostingPlanGetHistoricalUsageMetricsParameters() {
-        this.setMetricNames(new ArrayList<String>());
+        this.setMetricNames(new LazyArrayList<String>());
     }
 }

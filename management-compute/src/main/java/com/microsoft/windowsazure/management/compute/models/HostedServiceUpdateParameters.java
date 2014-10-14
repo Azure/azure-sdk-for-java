@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
@@ -138,6 +139,6 @@ public class HostedServiceUpdateParameters {
     *
     */
     public HostedServiceUpdateParameters() {
-        this.setExtendedProperties(new HashMap<String, String>());
+        this.setExtendedProperties(new LazyHashMap<String, String>());
     }
 }

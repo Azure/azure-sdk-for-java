@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
@@ -112,7 +113,7 @@ public class BasicResourceGroup {
     *
     */
     public BasicResourceGroup() {
-        this.setTags(new HashMap<String, String>());
+        this.setTags(new LazyHashMap<String, String>());
     }
     
     /**

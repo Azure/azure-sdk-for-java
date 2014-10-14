@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -291,6 +292,6 @@ public class StorageAccountProperties {
     *
     */
     public StorageAccountProperties() {
-        this.setEndpoints(new ArrayList<URI>());
+        this.setEndpoints(new LazyArrayList<URI>());
     }
 }

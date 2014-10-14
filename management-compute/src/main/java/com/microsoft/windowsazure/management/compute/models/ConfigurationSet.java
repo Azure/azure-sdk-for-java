@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -478,10 +479,10 @@ public class ConfigurationSet {
     *
     */
     public ConfigurationSet() {
-        this.setInputEndpoints(new ArrayList<InputEndpoint>());
-        this.setPublicIPs(new ArrayList<ConfigurationSet.PublicIP>());
-        this.setStoredCertificateSettings(new ArrayList<StoredCertificateSettings>());
-        this.setSubnetNames(new ArrayList<String>());
+        this.setInputEndpoints(new LazyArrayList<InputEndpoint>());
+        this.setPublicIPs(new LazyArrayList<ConfigurationSet.PublicIP>());
+        this.setStoredCertificateSettings(new LazyArrayList<StoredCertificateSettings>());
+        this.setSubnetNames(new LazyArrayList<String>());
     }
     
     /**

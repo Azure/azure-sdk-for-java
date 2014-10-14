@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -83,8 +84,8 @@ public class ExtensionEndpointConfiguration {
     *
     */
     public ExtensionEndpointConfiguration() {
-        this.setInputEndpoints(new ArrayList<ExtensionEndpointConfiguration.InputEndpoint>());
-        this.setInternalEndpoints(new ArrayList<ExtensionEndpointConfiguration.InternalEndpoint>());
+        this.setInputEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InputEndpoint>());
+        this.setInternalEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InternalEndpoint>());
     }
     
     /**

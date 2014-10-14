@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * A specific backup.
 */
@@ -53,7 +51,6 @@ public class BackupRequestEnvelope extends ResourceBase {
     */
     public BackupRequestEnvelope() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

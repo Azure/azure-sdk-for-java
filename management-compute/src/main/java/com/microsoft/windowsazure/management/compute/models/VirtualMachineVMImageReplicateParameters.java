@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -61,6 +62,6 @@ public class VirtualMachineVMImageReplicateParameters {
     *
     */
     public VirtualMachineVMImageReplicateParameters() {
-        this.setTargetLocations(new ArrayList<String>());
+        this.setTargetLocations(new LazyArrayList<String>());
     }
 }

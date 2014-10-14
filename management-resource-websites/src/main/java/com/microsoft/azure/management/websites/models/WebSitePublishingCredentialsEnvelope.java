@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * Publishing credentials for the website.
 */
@@ -54,7 +52,6 @@ public class WebSitePublishingCredentialsEnvelope extends ResourceBase {
     */
     public WebSitePublishingCredentialsEnvelope() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

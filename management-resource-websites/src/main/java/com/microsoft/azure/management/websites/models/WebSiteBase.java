@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * Describes a website.
 */
@@ -53,7 +51,6 @@ public class WebSiteBase extends ResourceBase {
     */
     public WebSiteBase() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

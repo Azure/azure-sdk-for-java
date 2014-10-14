@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     */
     public ServiceBusAuthorizationRulesResponse() {
         super();
-        this.setAuthorizationRules(new ArrayList<ServiceBusSharedAccessAuthorizationRule>());
+        this.setAuthorizationRules(new LazyArrayList<ServiceBusSharedAccessAuthorizationRule>());
     }
     
     /**

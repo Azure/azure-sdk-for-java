@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
@@ -72,6 +73,6 @@ public class DeploymentListResult extends OperationResponse {
     */
     public DeploymentListResult() {
         super();
-        this.setDeployments(new ArrayList<Deployment>());
+        this.setDeployments(new LazyArrayList<Deployment>());
     }
 }

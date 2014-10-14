@@ -84,6 +84,7 @@ import com.microsoft.azure.management.websites.models.WebSiteUpdateConfiguration
 import com.microsoft.azure.management.websites.models.WebSiteUpdateConnectionStringsParameters;
 import com.microsoft.azure.management.websites.models.WebSiteUsageState;
 import com.microsoft.azure.management.websites.models.WebSpaceAvailabilityState;
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -275,28 +276,30 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             if (backupRequestEnvelope.getRequest().getDatabases() != null) {
-                ArrayNode databasesArray = objectMapper.createArrayNode();
-                for (DatabaseBackupSetting databasesItem : backupRequestEnvelope.getRequest().getDatabases()) {
-                    ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
-                    databasesArray.add(databaseBackupSettingValue);
-                    
-                    if (databasesItem.getConnectionString() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                if (backupRequestEnvelope.getRequest().getDatabases() instanceof LazyCollection == false || ((LazyCollection) backupRequestEnvelope.getRequest().getDatabases()).isInitialized()) {
+                    ArrayNode databasesArray = objectMapper.createArrayNode();
+                    for (DatabaseBackupSetting databasesItem : backupRequestEnvelope.getRequest().getDatabases()) {
+                        ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
+                        databasesArray.add(databaseBackupSettingValue);
+                        
+                        if (databasesItem.getConnectionString() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                        }
+                        
+                        if (databasesItem.getConnectionStringName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
+                        }
+                        
+                        if (databasesItem.getDatabaseType() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
+                        }
+                        
+                        if (databasesItem.getName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
+                        }
                     }
-                    
-                    if (databasesItem.getConnectionStringName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
-                    }
-                    
-                    if (databasesItem.getDatabaseType() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
-                    }
-                    
-                    if (databasesItem.getName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
-                    }
+                    ((ObjectNode) propertiesValue).put("databases", databasesArray);
                 }
-                ((ObjectNode) propertiesValue).put("databases", databasesArray);
             }
             
             if (backupRequestEnvelope.getRequest().isEnabled() != null) {
@@ -322,15 +325,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) backupRequestEnvelopeValue).put("location", backupRequestEnvelope.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (backupRequestEnvelope.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : backupRequestEnvelope.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) backupRequestEnvelopeValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) backupRequestEnvelopeValue).put("tags", tagsDictionary);
         
         if (backupRequestEnvelope.getType() != null) {
             ((ObjectNode) backupRequestEnvelopeValue).put("type", backupRequestEnvelope.getType());
@@ -677,15 +680,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) webSiteCreateOrUpdateParametersValue).put("location", parameters.getWebSite().getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getWebSite().getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : parameters.getWebSite().getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) webSiteCreateOrUpdateParametersValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) webSiteCreateOrUpdateParametersValue).put("tags", tagsDictionary);
         
         if (parameters.getWebSite().getType() != null) {
             ((ObjectNode) webSiteCreateOrUpdateParametersValue).put("type", parameters.getWebSite().getType());
@@ -1256,28 +1259,30 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             if (restoreRequestEnvelope.getRequest().getDatabases() != null) {
-                ArrayNode databasesArray = objectMapper.createArrayNode();
-                for (DatabaseBackupSetting databasesItem : restoreRequestEnvelope.getRequest().getDatabases()) {
-                    ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
-                    databasesArray.add(databaseBackupSettingValue);
-                    
-                    if (databasesItem.getConnectionString() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                if (restoreRequestEnvelope.getRequest().getDatabases() instanceof LazyCollection == false || ((LazyCollection) restoreRequestEnvelope.getRequest().getDatabases()).isInitialized()) {
+                    ArrayNode databasesArray = objectMapper.createArrayNode();
+                    for (DatabaseBackupSetting databasesItem : restoreRequestEnvelope.getRequest().getDatabases()) {
+                        ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
+                        databasesArray.add(databaseBackupSettingValue);
+                        
+                        if (databasesItem.getConnectionString() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                        }
+                        
+                        if (databasesItem.getConnectionStringName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
+                        }
+                        
+                        if (databasesItem.getDatabaseType() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
+                        }
+                        
+                        if (databasesItem.getName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
+                        }
                     }
-                    
-                    if (databasesItem.getConnectionStringName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
-                    }
-                    
-                    if (databasesItem.getDatabaseType() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
-                    }
-                    
-                    if (databasesItem.getName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
-                    }
+                    ((ObjectNode) propertiesValue).put("Databases", databasesArray);
                 }
-                ((ObjectNode) propertiesValue).put("Databases", databasesArray);
             }
             
             ((ObjectNode) propertiesValue).put("IgnoreConflictingHostNames", restoreRequestEnvelope.getRequest().isIgnoreConflictingHostNames());
@@ -1299,15 +1304,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) restoreRequestEnvelopeValue).put("location", restoreRequestEnvelope.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (restoreRequestEnvelope.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : restoreRequestEnvelope.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) restoreRequestEnvelopeValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) restoreRequestEnvelopeValue).put("tags", tagsDictionary);
         
         if (restoreRequestEnvelope.getType() != null) {
             ((ObjectNode) restoreRequestEnvelopeValue).put("type", restoreRequestEnvelope.getType());
@@ -5124,28 +5129,30 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             if (restoreRequestEnvelope.getRequest().getDatabases() != null) {
-                ArrayNode databasesArray = objectMapper.createArrayNode();
-                for (DatabaseBackupSetting databasesItem : restoreRequestEnvelope.getRequest().getDatabases()) {
-                    ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
-                    databasesArray.add(databaseBackupSettingValue);
-                    
-                    if (databasesItem.getConnectionString() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                if (restoreRequestEnvelope.getRequest().getDatabases() instanceof LazyCollection == false || ((LazyCollection) restoreRequestEnvelope.getRequest().getDatabases()).isInitialized()) {
+                    ArrayNode databasesArray = objectMapper.createArrayNode();
+                    for (DatabaseBackupSetting databasesItem : restoreRequestEnvelope.getRequest().getDatabases()) {
+                        ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
+                        databasesArray.add(databaseBackupSettingValue);
+                        
+                        if (databasesItem.getConnectionString() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                        }
+                        
+                        if (databasesItem.getConnectionStringName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
+                        }
+                        
+                        if (databasesItem.getDatabaseType() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
+                        }
+                        
+                        if (databasesItem.getName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
+                        }
                     }
-                    
-                    if (databasesItem.getConnectionStringName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
-                    }
-                    
-                    if (databasesItem.getDatabaseType() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
-                    }
-                    
-                    if (databasesItem.getName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
-                    }
+                    ((ObjectNode) propertiesValue).put("Databases", databasesArray);
                 }
-                ((ObjectNode) propertiesValue).put("Databases", databasesArray);
             }
             
             ((ObjectNode) propertiesValue).put("IgnoreConflictingHostNames", restoreRequestEnvelope.getRequest().isIgnoreConflictingHostNames());
@@ -5167,15 +5174,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) restoreRequestEnvelopeValue).put("location", restoreRequestEnvelope.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (restoreRequestEnvelope.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : restoreRequestEnvelope.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) restoreRequestEnvelopeValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) restoreRequestEnvelopeValue).put("tags", tagsDictionary);
         
         if (restoreRequestEnvelope.getType() != null) {
             ((ObjectNode) restoreRequestEnvelopeValue).put("type", restoreRequestEnvelope.getType());
@@ -5580,20 +5587,22 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         requestDoc = webSiteNameValueParametersValue;
         
         if (parameters.getProperties() != null) {
-            ArrayNode propertiesArray = objectMapper.createArrayNode();
-            for (NameValuePair propertiesItem : parameters.getProperties()) {
-                ObjectNode nameValuePairValue = objectMapper.createObjectNode();
-                propertiesArray.add(nameValuePairValue);
-                
-                if (propertiesItem.getName() != null) {
-                    ((ObjectNode) nameValuePairValue).put("name", propertiesItem.getName());
+            if (parameters.getProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getProperties()).isInitialized()) {
+                ArrayNode propertiesArray = objectMapper.createArrayNode();
+                for (NameValuePair propertiesItem : parameters.getProperties()) {
+                    ObjectNode nameValuePairValue = objectMapper.createObjectNode();
+                    propertiesArray.add(nameValuePairValue);
+                    
+                    if (propertiesItem.getName() != null) {
+                        ((ObjectNode) nameValuePairValue).put("name", propertiesItem.getName());
+                    }
+                    
+                    if (propertiesItem.getValue() != null) {
+                        ((ObjectNode) nameValuePairValue).put("value", propertiesItem.getValue());
+                    }
                 }
-                
-                if (propertiesItem.getValue() != null) {
-                    ((ObjectNode) nameValuePairValue).put("value", propertiesItem.getValue());
-                }
+                ((ObjectNode) webSiteNameValueParametersValue).put("properties", propertiesArray);
             }
-            ((ObjectNode) webSiteNameValueParametersValue).put("properties", propertiesArray);
         }
         
         if (parameters.getId() != null) {
@@ -5606,15 +5615,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) webSiteNameValueParametersValue).put("location", parameters.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) webSiteNameValueParametersValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) webSiteNameValueParametersValue).put("tags", tagsDictionary);
         
         if (parameters.getType() != null) {
             ((ObjectNode) webSiteNameValueParametersValue).put("type", parameters.getType());
@@ -5864,28 +5873,30 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             if (backupRequestEnvelope.getRequest().getDatabases() != null) {
-                ArrayNode databasesArray = objectMapper.createArrayNode();
-                for (DatabaseBackupSetting databasesItem : backupRequestEnvelope.getRequest().getDatabases()) {
-                    ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
-                    databasesArray.add(databaseBackupSettingValue);
-                    
-                    if (databasesItem.getConnectionString() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                if (backupRequestEnvelope.getRequest().getDatabases() instanceof LazyCollection == false || ((LazyCollection) backupRequestEnvelope.getRequest().getDatabases()).isInitialized()) {
+                    ArrayNode databasesArray = objectMapper.createArrayNode();
+                    for (DatabaseBackupSetting databasesItem : backupRequestEnvelope.getRequest().getDatabases()) {
+                        ObjectNode databaseBackupSettingValue = objectMapper.createObjectNode();
+                        databasesArray.add(databaseBackupSettingValue);
+                        
+                        if (databasesItem.getConnectionString() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionString", databasesItem.getConnectionString());
+                        }
+                        
+                        if (databasesItem.getConnectionStringName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
+                        }
+                        
+                        if (databasesItem.getDatabaseType() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
+                        }
+                        
+                        if (databasesItem.getName() != null) {
+                            ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
+                        }
                     }
-                    
-                    if (databasesItem.getConnectionStringName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("connectionStringName", databasesItem.getConnectionStringName());
-                    }
-                    
-                    if (databasesItem.getDatabaseType() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("databaseType", databasesItem.getDatabaseType());
-                    }
-                    
-                    if (databasesItem.getName() != null) {
-                        ((ObjectNode) databaseBackupSettingValue).put("name", databasesItem.getName());
-                    }
+                    ((ObjectNode) propertiesValue).put("databases", databasesArray);
                 }
-                ((ObjectNode) propertiesValue).put("databases", databasesArray);
             }
             
             if (backupRequestEnvelope.getRequest().isEnabled() != null) {
@@ -5911,15 +5922,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) backupRequestEnvelopeValue).put("location", backupRequestEnvelope.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (backupRequestEnvelope.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : backupRequestEnvelope.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) backupRequestEnvelopeValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) backupRequestEnvelopeValue).put("tags", tagsDictionary);
         
         if (backupRequestEnvelope.getType() != null) {
             ((ObjectNode) backupRequestEnvelopeValue).put("type", backupRequestEnvelope.getType());
@@ -6071,41 +6082,47 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         requestDoc = objectMapper.createObjectNode();
         ((ObjectNode) requestDoc).put("siteConfig", siteConfigValue);
         
-        ObjectNode appSettingsDictionary = objectMapper.createObjectNode();
         if (parameters.getAppSettings() != null) {
-            for (Map.Entry<String, String> entry : parameters.getAppSettings().entrySet()) {
-                String appSettingsKey = entry.getKey();
-                String appSettingsValue = entry.getValue();
-                ((ObjectNode) appSettingsDictionary).put(appSettingsKey, appSettingsValue);
+            if (parameters.getAppSettings() instanceof LazyCollection == false || ((LazyCollection) parameters.getAppSettings()).isInitialized()) {
+                ObjectNode appSettingsDictionary = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry : parameters.getAppSettings().entrySet()) {
+                    String appSettingsKey = entry.getKey();
+                    String appSettingsValue = entry.getValue();
+                    ((ObjectNode) appSettingsDictionary).put(appSettingsKey, appSettingsValue);
+                }
+                ((ObjectNode) siteConfigValue).put("appSettings", appSettingsDictionary);
             }
         }
-        ((ObjectNode) siteConfigValue).put("appSettings", appSettingsDictionary);
         
         if (parameters.getConnectionStrings() != null) {
-            ArrayNode connectionStringsArray = objectMapper.createArrayNode();
-            for (ConnectionStringInfo connectionStringsItem : parameters.getConnectionStrings()) {
-                ObjectNode connStringInfoValue = objectMapper.createObjectNode();
-                connectionStringsArray.add(connStringInfoValue);
-                
-                if (connectionStringsItem.getConnectionString() != null) {
-                    ((ObjectNode) connStringInfoValue).put("connectionString", connectionStringsItem.getConnectionString());
+            if (parameters.getConnectionStrings() instanceof LazyCollection == false || ((LazyCollection) parameters.getConnectionStrings()).isInitialized()) {
+                ArrayNode connectionStringsArray = objectMapper.createArrayNode();
+                for (ConnectionStringInfo connectionStringsItem : parameters.getConnectionStrings()) {
+                    ObjectNode connStringInfoValue = objectMapper.createObjectNode();
+                    connectionStringsArray.add(connStringInfoValue);
+                    
+                    if (connectionStringsItem.getConnectionString() != null) {
+                        ((ObjectNode) connStringInfoValue).put("connectionString", connectionStringsItem.getConnectionString());
+                    }
+                    
+                    if (connectionStringsItem.getName() != null) {
+                        ((ObjectNode) connStringInfoValue).put("name", connectionStringsItem.getName());
+                    }
+                    
+                    ((ObjectNode) connStringInfoValue).put("type", connectionStringsItem.getType().toString());
                 }
-                
-                if (connectionStringsItem.getName() != null) {
-                    ((ObjectNode) connStringInfoValue).put("name", connectionStringsItem.getName());
-                }
-                
-                ((ObjectNode) connStringInfoValue).put("type", connectionStringsItem.getType().toString());
+                ((ObjectNode) siteConfigValue).put("connectionStrings", connectionStringsArray);
             }
-            ((ObjectNode) siteConfigValue).put("connectionStrings", connectionStringsArray);
         }
         
         if (parameters.getDefaultDocuments() != null) {
-            ArrayNode defaultDocumentsArray = objectMapper.createArrayNode();
-            for (String defaultDocumentsItem : parameters.getDefaultDocuments()) {
-                defaultDocumentsArray.add(defaultDocumentsItem);
+            if (parameters.getDefaultDocuments() instanceof LazyCollection == false || ((LazyCollection) parameters.getDefaultDocuments()).isInitialized()) {
+                ArrayNode defaultDocumentsArray = objectMapper.createArrayNode();
+                for (String defaultDocumentsItem : parameters.getDefaultDocuments()) {
+                    defaultDocumentsArray.add(defaultDocumentsItem);
+                }
+                ((ObjectNode) siteConfigValue).put("defaultDocuments", defaultDocumentsArray);
             }
-            ((ObjectNode) siteConfigValue).put("defaultDocuments", defaultDocumentsArray);
         }
         
         if (parameters.isDetailedErrorLoggingEnabled() != null) {
@@ -6117,24 +6134,26 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getHandlerMappings() != null) {
-            ArrayNode handlerMappingsArray = objectMapper.createArrayNode();
-            for (WebSiteUpdateConfigurationParameters.HandlerMapping handlerMappingsItem : parameters.getHandlerMappings()) {
-                ObjectNode handlerMappingValue = objectMapper.createObjectNode();
-                handlerMappingsArray.add(handlerMappingValue);
-                
-                if (handlerMappingsItem.getArguments() != null) {
-                    ((ObjectNode) handlerMappingValue).put("arguments", handlerMappingsItem.getArguments());
+            if (parameters.getHandlerMappings() instanceof LazyCollection == false || ((LazyCollection) parameters.getHandlerMappings()).isInitialized()) {
+                ArrayNode handlerMappingsArray = objectMapper.createArrayNode();
+                for (WebSiteUpdateConfigurationParameters.HandlerMapping handlerMappingsItem : parameters.getHandlerMappings()) {
+                    ObjectNode handlerMappingValue = objectMapper.createObjectNode();
+                    handlerMappingsArray.add(handlerMappingValue);
+                    
+                    if (handlerMappingsItem.getArguments() != null) {
+                        ((ObjectNode) handlerMappingValue).put("arguments", handlerMappingsItem.getArguments());
+                    }
+                    
+                    if (handlerMappingsItem.getExtension() != null) {
+                        ((ObjectNode) handlerMappingValue).put("extension", handlerMappingsItem.getExtension());
+                    }
+                    
+                    if (handlerMappingsItem.getScriptProcessor() != null) {
+                        ((ObjectNode) handlerMappingValue).put("scriptProcessor", handlerMappingsItem.getScriptProcessor());
+                    }
                 }
-                
-                if (handlerMappingsItem.getExtension() != null) {
-                    ((ObjectNode) handlerMappingValue).put("extension", handlerMappingsItem.getExtension());
-                }
-                
-                if (handlerMappingsItem.getScriptProcessor() != null) {
-                    ((ObjectNode) handlerMappingValue).put("scriptProcessor", handlerMappingsItem.getScriptProcessor());
-                }
+                ((ObjectNode) siteConfigValue).put("handlerMappings", handlerMappingsArray);
             }
-            ((ObjectNode) siteConfigValue).put("handlerMappings", handlerMappingsArray);
         }
         
         if (parameters.isHttpLoggingEnabled() != null) {
@@ -6149,15 +6168,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             ((ObjectNode) siteConfigValue).put("managedPipelineMode", parameters.getManagedPipelineMode().toString());
         }
         
-        ObjectNode metadataDictionary = objectMapper.createObjectNode();
         if (parameters.getMetadata() != null) {
-            for (Map.Entry<String, String> entry2 : parameters.getMetadata().entrySet()) {
-                String metadataKey = entry2.getKey();
-                String metadataValue = entry2.getValue();
-                ((ObjectNode) metadataDictionary).put(metadataKey, metadataValue);
+            if (parameters.getMetadata() instanceof LazyCollection == false || ((LazyCollection) parameters.getMetadata()).isInitialized()) {
+                ObjectNode metadataDictionary = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry2 : parameters.getMetadata().entrySet()) {
+                    String metadataKey = entry2.getKey();
+                    String metadataValue = entry2.getValue();
+                    ((ObjectNode) metadataDictionary).put(metadataKey, metadataValue);
+                }
+                ((ObjectNode) siteConfigValue).put("metadata", metadataDictionary);
             }
         }
-        ((ObjectNode) siteConfigValue).put("metadata", metadataDictionary);
         
         if (parameters.getNetFrameworkVersion() != null) {
             ((ObjectNode) siteConfigValue).put("netFrameworkVersion", parameters.getNetFrameworkVersion());
@@ -6355,22 +6376,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         requestDoc = webSiteUpdateConnectionStringsParametersValue;
         
         if (parameters.getProperties() != null) {
-            ArrayNode propertiesArray = objectMapper.createArrayNode();
-            for (ConnectionStringInfo propertiesItem : parameters.getProperties()) {
-                ObjectNode connStringInfoValue = objectMapper.createObjectNode();
-                propertiesArray.add(connStringInfoValue);
-                
-                if (propertiesItem.getConnectionString() != null) {
-                    ((ObjectNode) connStringInfoValue).put("connectionString", propertiesItem.getConnectionString());
+            if (parameters.getProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getProperties()).isInitialized()) {
+                ArrayNode propertiesArray = objectMapper.createArrayNode();
+                for (ConnectionStringInfo propertiesItem : parameters.getProperties()) {
+                    ObjectNode connStringInfoValue = objectMapper.createObjectNode();
+                    propertiesArray.add(connStringInfoValue);
+                    
+                    if (propertiesItem.getConnectionString() != null) {
+                        ((ObjectNode) connStringInfoValue).put("connectionString", propertiesItem.getConnectionString());
+                    }
+                    
+                    if (propertiesItem.getName() != null) {
+                        ((ObjectNode) connStringInfoValue).put("name", propertiesItem.getName());
+                    }
+                    
+                    ((ObjectNode) connStringInfoValue).put("type", propertiesItem.getType().toString());
                 }
-                
-                if (propertiesItem.getName() != null) {
-                    ((ObjectNode) connStringInfoValue).put("name", propertiesItem.getName());
-                }
-                
-                ((ObjectNode) connStringInfoValue).put("type", propertiesItem.getType().toString());
+                ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("properties", propertiesArray);
             }
-            ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("properties", propertiesArray);
         }
         
         if (parameters.getId() != null) {
@@ -6383,15 +6406,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("location", parameters.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("tags", tagsDictionary);
         
         if (parameters.getType() != null) {
             ((ObjectNode) webSiteUpdateConnectionStringsParametersValue).put("type", parameters.getType());
@@ -6627,20 +6650,22 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         requestDoc = webSiteNameValueParametersValue;
         
         if (parameters.getProperties() != null) {
-            ArrayNode propertiesArray = objectMapper.createArrayNode();
-            for (NameValuePair propertiesItem : parameters.getProperties()) {
-                ObjectNode nameValuePairValue = objectMapper.createObjectNode();
-                propertiesArray.add(nameValuePairValue);
-                
-                if (propertiesItem.getName() != null) {
-                    ((ObjectNode) nameValuePairValue).put("name", propertiesItem.getName());
+            if (parameters.getProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getProperties()).isInitialized()) {
+                ArrayNode propertiesArray = objectMapper.createArrayNode();
+                for (NameValuePair propertiesItem : parameters.getProperties()) {
+                    ObjectNode nameValuePairValue = objectMapper.createObjectNode();
+                    propertiesArray.add(nameValuePairValue);
+                    
+                    if (propertiesItem.getName() != null) {
+                        ((ObjectNode) nameValuePairValue).put("name", propertiesItem.getName());
+                    }
+                    
+                    if (propertiesItem.getValue() != null) {
+                        ((ObjectNode) nameValuePairValue).put("value", propertiesItem.getValue());
+                    }
                 }
-                
-                if (propertiesItem.getValue() != null) {
-                    ((ObjectNode) nameValuePairValue).put("value", propertiesItem.getValue());
-                }
+                ((ObjectNode) webSiteNameValueParametersValue).put("properties", propertiesArray);
             }
-            ((ObjectNode) webSiteNameValueParametersValue).put("properties", propertiesArray);
         }
         
         if (parameters.getId() != null) {
@@ -6653,15 +6678,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         ((ObjectNode) webSiteNameValueParametersValue).put("location", parameters.getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) webSiteNameValueParametersValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) webSiteNameValueParametersValue).put("tags", tagsDictionary);
         
         if (parameters.getType() != null) {
             ((ObjectNode) webSiteNameValueParametersValue).put("type", parameters.getType());

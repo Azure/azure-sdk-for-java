@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,6 @@ public class Dependency extends BasicDependency {
     */
     public Dependency() {
         super();
-        this.setDependsOn(new ArrayList<BasicDependency>());
+        this.setDependsOn(new LazyArrayList<BasicDependency>());
     }
 }

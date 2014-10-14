@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -263,6 +264,6 @@ public class BackupItem {
     *
     */
     public BackupItem() {
-        this.setDatabases(new ArrayList<DatabaseBackupSetting>());
+        this.setDatabases(new LazyArrayList<DatabaseBackupSetting>());
     }
 }

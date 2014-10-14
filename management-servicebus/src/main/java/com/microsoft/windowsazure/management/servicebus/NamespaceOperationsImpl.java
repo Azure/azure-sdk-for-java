@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -35,6 +36,7 @@ import com.microsoft.windowsazure.management.servicebus.models.NamespaceDescript
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRuleResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRulesResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespace;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceCreateParameters;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceDescriptionResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespacesResponse;
@@ -586,13 +588,15 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         }
         
         if (rule.getRights() != null) {
-            Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-            for (AccessRight rightsItem : rule.getRights()) {
-                Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                rightsSequenceElement.appendChild(rightsItemElement);
+            if (rule.getRights() instanceof LazyCollection == false || ((LazyCollection) rule.getRights()).isInitialized()) {
+                Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                for (AccessRight rightsItem : rule.getRights()) {
+                    Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                    rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                    rightsSequenceElement.appendChild(rightsItemElement);
+                }
+                sharedAccessAuthorizationRuleElement.appendChild(rightsSequenceElement);
             }
-            sharedAccessAuthorizationRuleElement.appendChild(rightsSequenceElement);
         }
         
         Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
@@ -734,6 +738,251 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             int revisionInstance;
                             revisionInstance = DatatypeConverter.parseInt(revisionElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
+                        }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName Required. The namespace name.
+    * @param namespaceEntity Required. The service bus namespace.
+    * @return The response to a request for a particular namespace.
+    */
+    @Override
+    public Future<ServiceBusNamespaceResponse> createNamespaceAsync(final String namespaceName, final ServiceBusNamespaceCreateParameters namespaceEntity) {
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { 
+            @Override
+            public ServiceBusNamespaceResponse call() throws Exception {
+                return createNamespace(namespaceName, namespaceEntity);
+            }
+         });
+    }
+    
+    /**
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName Required. The namespace name.
+    * @param namespaceEntity Required. The service bus namespace.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to a request for a particular namespace.
+    */
+    @Override
+    public ServiceBusNamespaceResponse createNamespace(String namespaceName, ServiceBusNamespaceCreateParameters namespaceEntity) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+        // Validate
+        if (namespaceName == null) {
+            throw new NullPointerException("namespaceName");
+        }
+        if (namespaceEntity == null) {
+            throw new NullPointerException("namespaceEntity");
+        }
+        if (namespaceEntity.getRegion() == null) {
+            throw new NullPointerException("namespaceEntity.Region");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("namespaceName", namespaceName);
+            tracingParameters.put("namespaceEntity", namespaceEntity);
+            CloudTracing.enter(invocationId, this, "createNamespaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/servicebus/namespaces/" + namespaceName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Accept", "application/atom+xml");
+        httpRequest.setHeader("Content-Type", "application/atom+xml");
+        httpRequest.setHeader("type", "entry");
+        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
+        requestDoc.appendChild(entryElement);
+        
+        Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
+        entryElement.appendChild(contentElement);
+        
+        Attr typeAttribute = requestDoc.createAttribute("type");
+        typeAttribute.setValue("application/atom+xml;type=entry;charset=utf-8");
+        contentElement.setAttributeNode(typeAttribute);
+        
+        Element namespaceDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
+        contentElement.appendChild(namespaceDescriptionElement);
+        
+        if (namespaceEntity.getRegion() != null) {
+            Element regionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
+            regionElement.appendChild(requestDoc.createTextNode(namespaceEntity.getRegion()));
+            namespaceDescriptionElement.appendChild(regionElement);
+        }
+        
+        Element createACSNamespaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreateACSNamespace");
+        createACSNamespaceElement.appendChild(requestDoc.createTextNode(Boolean.toString(namespaceEntity.isCreateACSNamespace()).toLowerCase()));
+        namespaceDescriptionElement.appendChild(createACSNamespaceElement);
+        
+        Element namespaceTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
+        namespaceTypeElement.appendChild(requestDoc.createTextNode(namespaceEntity.getNamespaceType().toString()));
+        namespaceDescriptionElement.appendChild(namespaceTypeElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/atom+xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceBusNamespaceResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceBusNamespaceResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+            
+            Element entryElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "entry");
+            if (entryElement2 != null) {
+                Element contentElement2 = XmlUtility.getElementByTagNameNS(entryElement2, "http://www.w3.org/2005/Atom", "content");
+                if (contentElement2 != null) {
+                    Element namespaceDescriptionElement2 = XmlUtility.getElementByTagNameNS(contentElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
+                    if (namespaceDescriptionElement2 != null) {
+                        ServiceBusNamespace namespaceDescriptionInstance = new ServiceBusNamespace();
+                        result.setNamespace(namespaceDescriptionInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            namespaceDescriptionInstance.setName(nameInstance);
+                        }
+                        
+                        Element regionElement2 = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
+                        if (regionElement2 != null) {
+                            String regionInstance;
+                            regionInstance = regionElement2.getTextContent();
+                            namespaceDescriptionInstance.setRegion(regionInstance);
+                        }
+                        
+                        Element statusElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
+                        if (statusElement != null) {
+                            String statusInstance;
+                            statusInstance = statusElement.getTextContent();
+                            namespaceDescriptionInstance.setStatus(statusInstance);
+                        }
+                        
+                        Element createdAtElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
+                        if (createdAtElement != null) {
+                            Calendar createdAtInstance;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
+                            namespaceDescriptionInstance.setCreatedAt(createdAtInstance);
+                        }
+                        
+                        Element acsManagementEndpointElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AcsManagementEndpoint");
+                        if (acsManagementEndpointElement != null) {
+                            URI acsManagementEndpointInstance;
+                            acsManagementEndpointInstance = new URI(acsManagementEndpointElement.getTextContent());
+                            namespaceDescriptionInstance.setAcsManagementEndpoint(acsManagementEndpointInstance);
+                        }
+                        
+                        Element serviceBusEndpointElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ServiceBusEndpoint");
+                        if (serviceBusEndpointElement != null) {
+                            URI serviceBusEndpointInstance;
+                            serviceBusEndpointInstance = new URI(serviceBusEndpointElement.getTextContent());
+                            namespaceDescriptionInstance.setServiceBusEndpoint(serviceBusEndpointInstance);
+                        }
+                        
+                        Element subscriptionIdElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionId");
+                        if (subscriptionIdElement != null) {
+                            String subscriptionIdInstance;
+                            subscriptionIdInstance = subscriptionIdElement.getTextContent();
+                            namespaceDescriptionInstance.setSubscriptionId(subscriptionIdInstance);
+                        }
+                        
+                        Element enabledElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
+                        if (enabledElement != null) {
+                            boolean enabledInstance;
+                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
+                            namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
                     }
                 }
@@ -2033,13 +2282,15 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             if (rule.getRights() != null) {
-                Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                for (AccessRight rightsItem : rule.getRights()) {
-                    Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                    rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                    rightsSequenceElement.appendChild(rightsItemElement);
+                if (rule.getRights() instanceof LazyCollection == false || ((LazyCollection) rule.getRights()).isInitialized()) {
+                    Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                    for (AccessRight rightsItem : rule.getRights()) {
+                        Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                        rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                        rightsSequenceElement.appendChild(rightsItemElement);
+                    }
+                    sharedAccessAuthorizationRuleElement.appendChild(rightsSequenceElement);
                 }
-                sharedAccessAuthorizationRuleElement.appendChild(rightsSequenceElement);
             }
             
             Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");

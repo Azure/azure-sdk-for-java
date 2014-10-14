@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class WebSiteGetBackupsResponse extends OperationResponse implements Iter
     */
     public WebSiteGetBackupsResponse() {
         super();
-        this.setBackupItems(new ArrayList<BackupItem>());
+        this.setBackupItems(new LazyArrayList<BackupItem>());
     }
     
     /**

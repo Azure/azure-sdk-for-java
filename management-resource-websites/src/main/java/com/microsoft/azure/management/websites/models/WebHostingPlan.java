@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * Describes a Web Hosting Plan.
 */
@@ -53,7 +51,6 @@ public class WebHostingPlan extends ResourceBase {
     */
     public WebHostingPlan() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

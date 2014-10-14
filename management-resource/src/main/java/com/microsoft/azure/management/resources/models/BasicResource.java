@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
@@ -45,6 +46,24 @@ public class BasicResource {
     */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
+    }
+    
+    private Plan plan;
+    
+    /**
+    * Optional. Gets or sets the plan of the resource.
+    * @return The Plan value.
+    */
+    public Plan getPlan() {
+        return this.plan;
+    }
+    
+    /**
+    * Optional. Gets or sets the plan of the resource.
+    * @param planValue The Plan value.
+    */
+    public void setPlan(final Plan planValue) {
+        this.plan = planValue;
     }
     
     private String properties;
@@ -106,7 +125,7 @@ public class BasicResource {
     *
     */
     public BasicResource() {
-        this.setTags(new HashMap<String, String>());
+        this.setTags(new LazyHashMap<String, String>());
     }
     
     /**

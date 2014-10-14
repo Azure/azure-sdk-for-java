@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -370,7 +371,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -544,7 +545,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -661,7 +662,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -774,7 +775,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -938,7 +939,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -976,22 +977,24 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                createHostedServiceElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            createHostedServiceElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getReverseDnsFqdn() != null) {
@@ -1127,7 +1130,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1480,7 +1483,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1716,7 +1719,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2528,6 +2531,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     idleTimeoutInMinutesInstance3 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement3.getTextContent());
                                                     inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance3);
                                                 }
+                                                
+                                                Element loadBalancerDistributionElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
+                                                if (loadBalancerDistributionElement != null) {
+                                                    String loadBalancerDistributionInstance;
+                                                    loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
+                                                    inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
+                                                }
                                             }
                                         }
                                         
@@ -2966,6 +2976,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
                                             dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                                         }
+                                        
+                                        Element iOTypeElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                                        if (iOTypeElement != null) {
+                                            String iOTypeInstance;
+                                            iOTypeInstance = iOTypeElement.getTextContent();
+                                            dataVirtualHardDiskInstance.setIOType(iOTypeInstance);
+                                        }
                                     }
                                 }
                                 
@@ -3021,6 +3038,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         String osInstance;
                                         osInstance = osElement.getTextContent();
                                         oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                                    }
+                                    
+                                    Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                                    if (iOTypeElement2 != null) {
+                                        String iOTypeInstance2;
+                                        iOTypeInstance2 = iOTypeElement2.getTextContent();
+                                        oSVirtualHardDiskInstance.setIOType(iOTypeInstance2);
                                     }
                                 }
                                 
@@ -3391,7 +3415,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3556,7 +3580,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3792,7 +3816,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4203,7 +4227,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4392,7 +4416,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4834,7 +4858,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4864,22 +4888,24 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                updateHostedServiceElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            updateHostedServiceElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);

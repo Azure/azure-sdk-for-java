@@ -30,10 +30,28 @@ import java.util.HashMap;
 * Request for an http or https action type.
 */
 public class JobHttpRequest {
+    private HttpAuthentication authentication;
+    
+    /**
+    * Optional. Gets or sets the request authentication.
+    * @return The Authentication value.
+    */
+    public HttpAuthentication getAuthentication() {
+        return this.authentication;
+    }
+    
+    /**
+    * Optional. Gets or sets the request authentication.
+    * @param authenticationValue The Authentication value.
+    */
+    public void setAuthentication(final HttpAuthentication authenticationValue) {
+        this.authentication = authenticationValue;
+    }
+    
     private String body;
     
     /**
-    * Optional. Request body.
+    * Optional. Gets or sets the request body.
     * @return The Body value.
     */
     public String getBody() {
@@ -41,7 +59,7 @@ public class JobHttpRequest {
     }
     
     /**
-    * Optional. Request body.
+    * Optional. Gets or sets the request body.
     * @param bodyValue The Body value.
     */
     public void setBody(final String bodyValue) {
@@ -51,7 +69,8 @@ public class JobHttpRequest {
     private HashMap<String, String> headers;
     
     /**
-    * Optional. Header name value pairs to supply with the http/https action.
+    * Optional. Gets or sets Header name value pairs to supply with the
+    * http/https action.
     * @return The Headers value.
     */
     public HashMap<String, String> getHeaders() {
@@ -59,7 +78,8 @@ public class JobHttpRequest {
     }
     
     /**
-    * Optional. Header name value pairs to supply with the http/https action.
+    * Optional. Gets or sets Header name value pairs to supply with the
+    * http/https action.
     * @param headersValue The Headers value.
     */
     public void setHeaders(final HashMap<String, String> headersValue) {
@@ -69,7 +89,7 @@ public class JobHttpRequest {
     private String method;
     
     /**
-    * Required. Http method e.g. GET, PUT, POST, DELETE.
+    * Required. Gets or sets Http method e.g. GET, PUT, POST, DELETE.
     * @return The Method value.
     */
     public String getMethod() {
@@ -77,7 +97,7 @@ public class JobHttpRequest {
     }
     
     /**
-    * Required. Http method e.g. GET, PUT, POST, DELETE.
+    * Required. Gets or sets Http method e.g. GET, PUT, POST, DELETE.
     * @param methodValue The Method value.
     */
     public void setMethod(final String methodValue) {
@@ -87,7 +107,7 @@ public class JobHttpRequest {
     private URI uri;
     
     /**
-    * Required. Uri of the endpoint to invoke.
+    * Required. Gets or sets Uri of the endpoint to invoke.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -95,7 +115,7 @@ public class JobHttpRequest {
     }
     
     /**
-    * Required. Uri of the endpoint to invoke.
+    * Required. Gets or sets Uri of the endpoint to invoke.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {

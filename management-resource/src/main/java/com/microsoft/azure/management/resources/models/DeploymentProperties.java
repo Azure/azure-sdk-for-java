@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -144,7 +145,7 @@ public class DeploymentProperties extends BasicDeployment {
     */
     public DeploymentProperties() {
         super();
-        this.setDependencies(new ArrayList<Dependency>());
-        this.setProviders(new ArrayList<Provider>());
+        this.setDependencies(new LazyArrayList<Dependency>());
+        this.setProviders(new LazyArrayList<Provider>());
     }
 }

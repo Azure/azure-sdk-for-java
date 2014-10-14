@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class WebHostingPlanListResponse extends OperationResponse implements Ite
     */
     public WebHostingPlanListResponse() {
         super();
-        this.setWebHostingPlans(new ArrayList<WebHostingPlan>());
+        this.setWebHostingPlans(new LazyArrayList<WebHostingPlan>());
     }
     
     /**

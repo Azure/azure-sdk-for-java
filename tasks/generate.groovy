@@ -146,7 +146,7 @@ def hydra(String hydraExePath, String... args)
 def generate(hydraExePath, specInfo)
 {
     def specDLL = findFileInPackagesDirectory(specInfo.specificationDllFileName)
-    return hydra(hydraExePath, '-f', 'java', '-s', 'namespace',
+    return hydra(hydraExePath, '-f', 'JavaEE.Azure', '-s', 'namespace',
         '-c', specInfo.clientType,
         '-d', "../${specInfo.generatedCodeDestinationRootDirectoryName}/src/main/java/com",
         specDLL)

@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * The Update Web Site key value pair operation parameters.
@@ -54,8 +54,7 @@ public class WebSiteNameValueParameters extends ResourceBase {
     */
     public WebSiteNameValueParameters() {
         super();
-        this.setProperties(new ArrayList<NameValuePair>());
-        this.setTags(new HashMap<String, String>());
+        this.setProperties(new LazyArrayList<NameValuePair>());
     }
     
     /**

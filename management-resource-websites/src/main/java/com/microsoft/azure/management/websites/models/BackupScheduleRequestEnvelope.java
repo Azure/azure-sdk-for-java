@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * TODO
 */
@@ -53,7 +51,6 @@ public class BackupScheduleRequestEnvelope extends ResourceBase {
     */
     public BackupScheduleRequestEnvelope() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

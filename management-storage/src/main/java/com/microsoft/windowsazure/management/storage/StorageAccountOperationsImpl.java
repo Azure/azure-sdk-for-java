@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -209,7 +210,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -253,22 +254,24 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getAccountType() != null) {
@@ -398,7 +401,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -656,7 +659,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -770,7 +773,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1017,7 +1020,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1157,7 +1160,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1415,7 +1418,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1613,7 +1616,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-06-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1643,22 +1646,24 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
         }
         
         if (parameters.getAccountType() != null) {

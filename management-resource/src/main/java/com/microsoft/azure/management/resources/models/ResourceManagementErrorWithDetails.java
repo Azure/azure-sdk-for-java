@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 public class ResourceManagementErrorWithDetails extends ResourceManagementError {
@@ -51,7 +52,7 @@ public class ResourceManagementErrorWithDetails extends ResourceManagementError 
     */
     public ResourceManagementErrorWithDetails() {
         super();
-        this.setDetails(new ArrayList<ResourceManagementError>());
+        this.setDetails(new LazyArrayList<ResourceManagementError>());
     }
     
     /**

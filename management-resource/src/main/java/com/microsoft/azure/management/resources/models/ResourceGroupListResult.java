@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class ResourceGroupListResult extends OperationResponse {
     */
     public ResourceGroupListResult() {
         super();
-        this.setResourceGroups(new ArrayList<ResourceGroup>());
+        this.setResourceGroups(new LazyArrayList<ResourceGroup>());
     }
     
     /**

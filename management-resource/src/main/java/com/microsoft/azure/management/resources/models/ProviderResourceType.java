@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -72,6 +73,6 @@ public class ProviderResourceType {
     *
     */
     public ProviderResourceType() {
-        this.setLocations(new ArrayList<String>());
+        this.setLocations(new LazyArrayList<String>());
     }
 }

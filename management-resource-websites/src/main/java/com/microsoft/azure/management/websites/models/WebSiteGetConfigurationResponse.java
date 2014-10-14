@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -468,11 +470,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public WebSiteGetConfigurationResponse() {
         super();
-        this.setAppSettings(new HashMap<String, String>());
-        this.setConnectionStrings(new ArrayList<ConnectionStringInfo>());
-        this.setDefaultDocuments(new ArrayList<String>());
-        this.setHandlerMappings(new ArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
-        this.setMetadata(new HashMap<String, String>());
+        this.setAppSettings(new LazyHashMap<String, String>());
+        this.setConnectionStrings(new LazyArrayList<ConnectionStringInfo>());
+        this.setDefaultDocuments(new LazyArrayList<String>());
+        this.setHandlerMappings(new LazyArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
+        this.setMetadata(new LazyHashMap<String, String>());
     }
     
     /**

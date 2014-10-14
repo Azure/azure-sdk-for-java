@@ -144,6 +144,24 @@ public class LocationsListResponse extends OperationResponse implements Iterable
             this.name = nameValue;
         }
         
+        private StorageCapabilities storageCapabilities;
+        
+        /**
+        * Optional. The storage capabilities in this location.
+        * @return The StorageCapabilities value.
+        */
+        public StorageCapabilities getStorageCapabilities() {
+            return this.storageCapabilities;
+        }
+        
+        /**
+        * Optional. The storage capabilities in this location.
+        * @param storageCapabilitiesValue The StorageCapabilities value.
+        */
+        public void setStorageCapabilities(final StorageCapabilities storageCapabilitiesValue) {
+            this.storageCapabilities = storageCapabilitiesValue;
+        }
+        
         /**
         * Initializes a new instance of the Location class.
         *

@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.BasicResource;
+import com.microsoft.azure.management.resources.models.Plan;
 import com.microsoft.azure.management.resources.models.Resource;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
@@ -31,6 +32,7 @@ import com.microsoft.azure.management.resources.models.ResourceGetResult;
 import com.microsoft.azure.management.resources.models.ResourceIdentity;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.management.resources.models.ResourceListResult;
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -329,15 +331,38 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             ((ObjectNode) basicResourceValue).put("properties", parameters.getProperties());
         }
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
-            for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
-                String tagsKey = entry.getKey();
-                String tagsValue = entry.getValue();
-                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+            if (parameters.getTags() instanceof LazyCollection == false || ((LazyCollection) parameters.getTags()).isInitialized()) {
+                ObjectNode tagsDictionary = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
+                    String tagsKey = entry.getKey();
+                    String tagsValue = entry.getValue();
+                    ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+                }
+                ((ObjectNode) basicResourceValue).put("tags", tagsDictionary);
             }
         }
-        ((ObjectNode) basicResourceValue).put("tags", tagsDictionary);
+        
+        if (parameters.getPlan() != null) {
+            ObjectNode planValue = objectMapper.createObjectNode();
+            ((ObjectNode) basicResourceValue).put("plan", planValue);
+            
+            if (parameters.getPlan().getName() != null) {
+                ((ObjectNode) planValue).put("name", parameters.getPlan().getName());
+            }
+            
+            if (parameters.getPlan().getPublisher() != null) {
+                ((ObjectNode) planValue).put("publisher", parameters.getPlan().getPublisher());
+            }
+            
+            if (parameters.getPlan().getProduct() != null) {
+                ((ObjectNode) planValue).put("product", parameters.getPlan().getProduct());
+            }
+            
+            if (parameters.getPlan().getPromotionCode() != null) {
+                ((ObjectNode) planValue).put("promotionCode", parameters.getPlan().getPromotionCode());
+            }
+        }
         
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) basicResourceValue).put("provisioningState", parameters.getProvisioningState());
@@ -436,6 +461,40 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         String tagsKey2 = property.getKey();
                         String tagsValue2 = property.getValue().getTextValue();
                         resourceInstance.getTags().put(tagsKey2, tagsValue2);
+                    }
+                }
+                
+                JsonNode planValue2 = responseDoc.get("plan");
+                if (planValue2 != null && planValue2 instanceof NullNode == false) {
+                    Plan planInstance = new Plan();
+                    resourceInstance.setPlan(planInstance);
+                    
+                    JsonNode nameValue2 = planValue2.get("name");
+                    if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                        String nameInstance2;
+                        nameInstance2 = nameValue2.getTextValue();
+                        planInstance.setName(nameInstance2);
+                    }
+                    
+                    JsonNode publisherValue = planValue2.get("publisher");
+                    if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                        String publisherInstance;
+                        publisherInstance = publisherValue.getTextValue();
+                        planInstance.setPublisher(publisherInstance);
+                    }
+                    
+                    JsonNode productValue = planValue2.get("product");
+                    if (productValue != null && productValue instanceof NullNode == false) {
+                        String productInstance;
+                        productInstance = productValue.getTextValue();
+                        planInstance.setProduct(productInstance);
+                    }
+                    
+                    JsonNode promotionCodeValue = planValue2.get("promotionCode");
+                    if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                        String promotionCodeInstance;
+                        promotionCodeInstance = promotionCodeValue.getTextValue();
+                        planInstance.setPromotionCode(promotionCodeInstance);
                     }
                 }
                 
@@ -780,6 +839,40 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                     }
                 }
                 
+                JsonNode planValue = responseDoc.get("plan");
+                if (planValue != null && planValue instanceof NullNode == false) {
+                    Plan planInstance = new Plan();
+                    resourceInstance.setPlan(planInstance);
+                    
+                    JsonNode nameValue2 = planValue.get("name");
+                    if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                        String nameInstance2;
+                        nameInstance2 = nameValue2.getTextValue();
+                        planInstance.setName(nameInstance2);
+                    }
+                    
+                    JsonNode publisherValue = planValue.get("publisher");
+                    if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                        String publisherInstance;
+                        publisherInstance = publisherValue.getTextValue();
+                        planInstance.setPublisher(publisherInstance);
+                    }
+                    
+                    JsonNode productValue = planValue.get("product");
+                    if (productValue != null && productValue instanceof NullNode == false) {
+                        String productInstance;
+                        productInstance = productValue.getTextValue();
+                        planInstance.setProduct(productInstance);
+                    }
+                    
+                    JsonNode promotionCodeValue = planValue.get("promotionCode");
+                    if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                        String promotionCodeInstance;
+                        promotionCodeInstance = promotionCodeValue.getTextValue();
+                        planInstance.setPromotionCode(promotionCodeInstance);
+                    }
+                }
+                
                 JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
                 if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                     String provisioningStateInstance2;
@@ -991,6 +1084,40 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                             }
                         }
                         
+                        JsonNode planValue = valueValue.get("plan");
+                        if (planValue != null && planValue instanceof NullNode == false) {
+                            Plan planInstance = new Plan();
+                            resourceJsonFormatInstance.setPlan(planInstance);
+                            
+                            JsonNode nameValue2 = planValue.get("name");
+                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                                String nameInstance2;
+                                nameInstance2 = nameValue2.getTextValue();
+                                planInstance.setName(nameInstance2);
+                            }
+                            
+                            JsonNode publisherValue = planValue.get("publisher");
+                            if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                                String publisherInstance;
+                                publisherInstance = publisherValue.getTextValue();
+                                planInstance.setPublisher(publisherInstance);
+                            }
+                            
+                            JsonNode productValue = planValue.get("product");
+                            if (productValue != null && productValue instanceof NullNode == false) {
+                                String productInstance;
+                                productInstance = productValue.getTextValue();
+                                planInstance.setProduct(productInstance);
+                            }
+                            
+                            JsonNode promotionCodeValue = planValue.get("promotionCode");
+                            if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                                String promotionCodeInstance;
+                                promotionCodeInstance = promotionCodeValue.getTextValue();
+                                planInstance.setPromotionCode(promotionCodeInstance);
+                            }
+                        }
+                        
                         JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
                         if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
@@ -1170,6 +1297,40 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                                 String tagsKey = property.getKey();
                                 String tagsValue = property.getValue().getTextValue();
                                 resourceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                            }
+                        }
+                        
+                        JsonNode planValue = valueValue.get("plan");
+                        if (planValue != null && planValue instanceof NullNode == false) {
+                            Plan planInstance = new Plan();
+                            resourceJsonFormatInstance.setPlan(planInstance);
+                            
+                            JsonNode nameValue2 = planValue.get("name");
+                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                                String nameInstance2;
+                                nameInstance2 = nameValue2.getTextValue();
+                                planInstance.setName(nameInstance2);
+                            }
+                            
+                            JsonNode publisherValue = planValue.get("publisher");
+                            if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                                String publisherInstance;
+                                publisherInstance = publisherValue.getTextValue();
+                                planInstance.setPublisher(publisherInstance);
+                            }
+                            
+                            JsonNode productValue = planValue.get("product");
+                            if (productValue != null && productValue instanceof NullNode == false) {
+                                String productInstance;
+                                productInstance = productValue.getTextValue();
+                                planInstance.setProduct(productInstance);
+                            }
+                            
+                            JsonNode promotionCodeValue = planValue.get("promotionCode");
+                            if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                                String promotionCodeInstance;
+                                promotionCodeInstance = promotionCodeValue.getTextValue();
+                                planInstance.setPromotionCode(promotionCodeInstance);
                             }
                         }
                         

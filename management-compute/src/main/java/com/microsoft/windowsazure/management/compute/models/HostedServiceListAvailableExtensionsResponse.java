@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     */
     public HostedServiceListAvailableExtensionsResponse() {
         super();
-        this.setExtensionImages(new ArrayList<ExtensionImage>());
+        this.setExtensionImages(new LazyArrayList<ExtensionImage>());
     }
     
     /**

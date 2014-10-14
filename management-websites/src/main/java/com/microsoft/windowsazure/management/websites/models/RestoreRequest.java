@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -159,6 +160,6 @@ public class RestoreRequest {
     *
     */
     public RestoreRequest() {
-        this.setDatabases(new ArrayList<DatabaseBackupSetting>());
+        this.setDatabases(new LazyArrayList<DatabaseBackupSetting>());
     }
 }

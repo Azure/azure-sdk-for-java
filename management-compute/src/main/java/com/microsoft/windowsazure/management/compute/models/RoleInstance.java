@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -351,9 +352,9 @@ public class RoleInstance {
     *
     */
     public RoleInstance() {
-        this.setInstanceEndpoints(new ArrayList<InstanceEndpoint>());
-        this.setPublicIPs(new ArrayList<RoleInstance.PublicIP>());
-        this.setResourceExtensionStatusList(new ArrayList<ResourceExtensionStatus>());
+        this.setInstanceEndpoints(new LazyArrayList<InstanceEndpoint>());
+        this.setPublicIPs(new LazyArrayList<RoleInstance.PublicIP>());
+        this.setResourceExtensionStatusList(new LazyArrayList<ResourceExtensionStatus>());
     }
     
     /**

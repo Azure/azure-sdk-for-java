@@ -211,15 +211,15 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         
         ((ObjectNode) webHostingPlanCreateOrUpdateParametersValue).put("location", parameters.getWebHostingPlan().getLocation());
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getWebHostingPlan().getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : parameters.getWebHostingPlan().getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
                 ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) webHostingPlanCreateOrUpdateParametersValue).put("tags", tagsDictionary);
         }
-        ((ObjectNode) webHostingPlanCreateOrUpdateParametersValue).put("tags", tagsDictionary);
         
         if (parameters.getWebHostingPlan().getType() != null) {
             ((ObjectNode) webHostingPlanCreateOrUpdateParametersValue).put("type", parameters.getWebHostingPlan().getType());

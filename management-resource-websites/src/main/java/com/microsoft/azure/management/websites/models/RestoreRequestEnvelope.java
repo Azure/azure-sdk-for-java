@@ -23,8 +23,6 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import java.util.HashMap;
-
 /**
 * Restore request to either a new or an existing site.
 */
@@ -53,7 +51,6 @@ public class RestoreRequestEnvelope extends ResourceBase {
     */
     public RestoreRequestEnvelope() {
         super();
-        this.setTags(new HashMap<String, String>());
     }
     
     /**

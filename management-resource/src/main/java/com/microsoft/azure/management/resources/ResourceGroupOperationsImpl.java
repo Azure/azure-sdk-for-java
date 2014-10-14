@@ -32,6 +32,7 @@ import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -422,15 +423,17 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
         }
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
-            for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
-                String tagsKey = entry.getKey();
-                String tagsValue = entry.getValue();
-                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+            if (parameters.getTags() instanceof LazyCollection == false || ((LazyCollection) parameters.getTags()).isInitialized()) {
+                ObjectNode tagsDictionary = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
+                    String tagsKey = entry.getKey();
+                    String tagsValue = entry.getValue();
+                    ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+                }
+                ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
             }
         }
-        ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
         
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());
@@ -1292,15 +1295,17 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
         }
         
-        ObjectNode tagsDictionary = objectMapper.createObjectNode();
         if (parameters.getTags() != null) {
-            for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
-                String tagsKey = entry.getKey();
-                String tagsValue = entry.getValue();
-                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+            if (parameters.getTags() instanceof LazyCollection == false || ((LazyCollection) parameters.getTags()).isInitialized()) {
+                ObjectNode tagsDictionary = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
+                    String tagsKey = entry.getKey();
+                    String tagsValue = entry.getValue();
+                    ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+                }
+                ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
             }
         }
-        ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
         
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());

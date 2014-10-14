@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * List of backups for the website.
@@ -54,8 +54,7 @@ public class WebSiteConnectionStringsEnvelope extends ResourceBase {
     */
     public WebSiteConnectionStringsEnvelope() {
         super();
-        this.setProperties(new ArrayList<ConnectionStringInfo>());
-        this.setTags(new HashMap<String, String>());
+        this.setProperties(new LazyArrayList<ConnectionStringInfo>());
     }
     
     /**

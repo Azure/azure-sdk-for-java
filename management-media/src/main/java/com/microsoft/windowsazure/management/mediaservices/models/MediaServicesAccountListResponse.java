@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.mediaservices.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class MediaServicesAccountListResponse extends OperationResponse implemen
     */
     public MediaServicesAccountListResponse() {
         super();
-        this.setAccounts(new ArrayList<MediaServicesAccountListResponse.MediaServiceAccount>());
+        this.setAccounts(new LazyArrayList<MediaServicesAccountListResponse.MediaServiceAccount>());
     }
     
     /**

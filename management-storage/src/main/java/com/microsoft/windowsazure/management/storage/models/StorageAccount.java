@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -135,6 +136,6 @@ public class StorageAccount {
     *
     */
     public StorageAccount() {
-        this.setExtendedProperties(new HashMap<String, String>());
+        this.setExtendedProperties(new LazyHashMap<String, String>());
     }
 }

@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 public class ResourceBase {
@@ -121,7 +122,7 @@ public class ResourceBase {
     *
     */
     public ResourceBase() {
-        this.setTags(new HashMap<String, String>());
+        this.setTags(new LazyHashMap<String, String>());
     }
     
     /**

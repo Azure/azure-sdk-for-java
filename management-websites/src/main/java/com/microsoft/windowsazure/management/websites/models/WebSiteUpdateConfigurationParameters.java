@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -190,6 +192,66 @@ public class WebSiteUpdateConfigurationParameters {
     */
     public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
         this.httpLoggingEnabled = httpLoggingEnabledValue;
+    }
+    
+    private String javaContainer;
+    
+    /**
+    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
+    * @return The JavaContainer value.
+    */
+    public String getJavaContainer() {
+        return this.javaContainer;
+    }
+    
+    /**
+    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
+    * @param javaContainerValue The JavaContainer value.
+    */
+    public void setJavaContainer(final String javaContainerValue) {
+        this.javaContainer = javaContainerValue;
+    }
+    
+    private String javaContainerVersion;
+    
+    /**
+    * Optional. The web site Java Container Version. Supported values are
+    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
+    * is JETTY
+    * @return The JavaContainerVersion value.
+    */
+    public String getJavaContainerVersion() {
+        return this.javaContainerVersion;
+    }
+    
+    /**
+    * Optional. The web site Java Container Version. Supported values are
+    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
+    * is JETTY
+    * @param javaContainerVersionValue The JavaContainerVersion value.
+    */
+    public void setJavaContainerVersion(final String javaContainerVersionValue) {
+        this.javaContainerVersion = javaContainerVersionValue;
+    }
+    
+    private String javaVersion;
+    
+    /**
+    * Optional. The web site JDK version. Supported values are an empty string
+    * (an empty string disables Java), 1.7.0_51
+    * @return The JavaVersion value.
+    */
+    public String getJavaVersion() {
+        return this.javaVersion;
+    }
+    
+    /**
+    * Optional. The web site JDK version. Supported values are an empty string
+    * (an empty string disables Java), 1.7.0_51
+    * @param javaVersionValue The JavaVersion value.
+    */
+    public void setJavaVersion(final String javaVersionValue) {
+        this.javaVersion = javaVersionValue;
     }
     
     private Integer logsDirectorySizeLimit;
@@ -463,12 +525,12 @@ public class WebSiteUpdateConfigurationParameters {
     *
     */
     public WebSiteUpdateConfigurationParameters() {
-        this.setAppSettings(new HashMap<String, String>());
-        this.setConnectionStrings(new ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>());
-        this.setDefaultDocuments(new ArrayList<String>());
-        this.setHandlerMappings(new ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>());
-        this.setMetadata(new HashMap<String, String>());
-        this.setRoutingRules(new ArrayList<RoutingRule>());
+        this.setAppSettings(new LazyHashMap<String, String>());
+        this.setConnectionStrings(new LazyArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>());
+        this.setDefaultDocuments(new LazyArrayList<String>());
+        this.setHandlerMappings(new LazyArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>());
+        this.setMetadata(new LazyHashMap<String, String>());
+        this.setRoutingRules(new LazyArrayList<RoutingRule>());
     }
     
     /**

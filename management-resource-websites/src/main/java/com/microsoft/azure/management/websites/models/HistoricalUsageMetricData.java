@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -183,6 +184,6 @@ public class HistoricalUsageMetricData {
     *
     */
     public HistoricalUsageMetricData() {
-        this.setValues(new ArrayList<HistoricalUsageMetricSample>());
+        this.setValues(new LazyArrayList<HistoricalUsageMetricSample>());
     }
 }
