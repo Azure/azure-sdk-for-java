@@ -25,10 +25,13 @@ public class TestRequestFilter implements ServiceRequestFilter
 {
     private int called;
     private String identifier;
+    private String userAgent;
     
     public int getCalled() { return this.called; }
     
     public String getIdentifier() { return this.identifier; }
+    
+    public String getUserAgent() { return this.userAgent; }
     
     public TestRequestFilter(String identifier)
     {
@@ -44,6 +47,8 @@ public class TestRequestFilter implements ServiceRequestFilter
     @Override
     public void filter (ServiceRequestContext request)
     {
+        this.userAgent = request.getHeader("User-Agent");
+        
         if (request.getProperty("executed") == null)
         {
             request.setProperty("executed", true);
