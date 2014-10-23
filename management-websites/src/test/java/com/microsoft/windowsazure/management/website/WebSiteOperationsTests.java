@@ -15,18 +15,13 @@
 
 package com.microsoft.windowsazure.management.website;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.TimeZone;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.websites.models.*;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -34,7 +29,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
@@ -65,17 +59,9 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = null;
         try {
             webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (ServiceException e1) {
-            e1.printStackTrace();
-        } catch (ParserConfigurationException e1) {
-            e1.printStackTrace();
-        } catch (SAXException e1) {
-            e1.printStackTrace();
-        } catch (URISyntaxException e1) {
-            e1.printStackTrace();
+        } catch (Exception e1) {
         }
+        
         if (webSpacesListWebSitesResponse != null) {
             ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
             for (WebSite  webSite : webSiteslist)
@@ -85,20 +71,27 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
                     String websitename = webSite.getName().replaceFirst(hostName, "");
                     try {
                         webSiteManagementClient.getWebSitesOperations().delete(webSpaceName, websitename, webSiteDeleteParameters);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ServiceException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
                     }
                 }
             }  
         }
-        resetTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+
+        try {
+            webSiteManagementClient.getWebHostingPlansOperations().delete(webSpaceName, "DefaultSF");
+        } catch (Exception e) {
+            // fine if it fails.
+        }
     }
     
     private static void createWebSite() throws Exception {
         ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(websiteName + hostName); 
+        
+        WebHostingPlanCreateParameters params = new WebHostingPlanCreateParameters();
+        params.setName("DefaultSF");
+        params.setSKU(SkuOptions.Free);
+        webSiteManagementClient.getWebHostingPlansOperations().create(webSpaceName, params);
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
         webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
@@ -107,12 +100,9 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         
         //Arrange
         WebSiteCreateParameters createParameters = new WebSiteCreateParameters();
-        createParameters.setName(websiteName); 
-        createParameters.setWebSpaceName(webSpaceName);
+        createParameters.setName(websiteName);
+        createParameters.setServerFarm("DefaultSF");
         createParameters.setWebSpace(webSpaceDetails);
-        createParameters.setSiteMode(WebSiteMode.Basic);
-        createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -135,20 +125,17 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         String webSiteName = testWebsitePrefix  + "02";
         ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(webSiteName + hostName); 
-        
+
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
         webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
         webSpaceDetails.setPlan(WebSpacePlanNames.VIRTUALDEDICATEDPLAN);
         webSpaceDetails.setName(webSpaceName);
-        
+
         //Arrange
         WebSiteCreateParameters createParameters = new WebSiteCreateParameters();
-        createParameters.setName(webSiteName); 
-        createParameters.setWebSpaceName(webSpaceName);
+        createParameters.setName(webSiteName);
+        createParameters.setServerFarm("DefaultSF");
         createParameters.setWebSpace(webSpaceDetails);
-        createParameters.setSiteMode(WebSiteMode.Basic);
-        createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -183,9 +170,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         
         ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(websiteName+hostName);
-        WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters(); 
-        updateParameters.setAvailabilityState(WebSpaceAvailabilityState.Limited);
-        updateParameters.setSiteMode(WebSiteMode.Limited);
+        WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters();
         updateParameters.setHostNames(hostNamesValue);
 
         OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);            
@@ -256,7 +241,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         Assert.assertEquals(200, webSiteGetConfigurationResponse.getStatusCode());
         Assert.assertNotNull(webSiteGetConfigurationResponse.getRequestId()); 
         Assert.assertEquals(false, webSiteGetConfigurationResponse.isWebSocketsEnabled());  
-        Assert.assertEquals("", webSiteGetConfigurationResponse.getDocumentRoot()); 
+        Assert.assertEquals(null, webSiteGetConfigurationResponse.getDocumentRoot()); 
         Assert.assertEquals(35, webSiteGetConfigurationResponse.getLogsDirectorySizeLimit().intValue());  
         
         Assert.assertEquals(Calendar.YEAR, webSiteGetConfigurationResponse.getRequestTracingExpirationTime().YEAR);

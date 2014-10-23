@@ -23,8 +23,27 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public enum ServerFarmStatus {
-    Ready,
+import com.microsoft.windowsazure.core.OperationResponse;
+
+/**
+* Restore operation information.
+*/
+public class WebSiteRestoreResponse extends OperationResponse {
+    private String operationId;
     
-    Pending,
+    /**
+    * Optional. OperationId for the restore operation.
+    * @return The OperationId value.
+    */
+    public String getOperationId() {
+        return this.operationId;
+    }
+    
+    /**
+    * Optional. OperationId for the restore operation.
+    * @param operationIdValue The OperationId value.
+    */
+    public void setOperationId(final String operationIdValue) {
+        this.operationId = operationIdValue;
+    }
 }

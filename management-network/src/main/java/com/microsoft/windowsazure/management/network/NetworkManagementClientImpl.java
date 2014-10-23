@@ -239,6 +239,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
+        this.baseUri = baseUri;
     }
     
     /**

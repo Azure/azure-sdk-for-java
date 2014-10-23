@@ -17,8 +17,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
-    <version>0.6.0</version>
+    <artifactId>azure-parent</artifactId>
+    <version>0.6.5</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -45,9 +45,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-
-    <jackson.version>2.1.1</jackson.version>
-    <spring.version>3.0.7.RELEASE</spring.version>
   </properties>
 
   <developers>

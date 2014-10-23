@@ -17,8 +17,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
-    <version>0.6.0</version>
+    <artifactId>azure-parent</artifactId>
+    <version>0.6.5</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 

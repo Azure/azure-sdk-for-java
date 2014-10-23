@@ -323,6 +323,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             this.baseUri = baseUri;
         }
         this.credentials = credentials;
+        this.baseUri = baseUri;
     }
     
     /**
