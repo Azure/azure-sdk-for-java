@@ -52,6 +52,24 @@ public class ServiceBusNamespace {
         this.acsManagementEndpoint = acsManagementEndpointValue;
     }
     
+    private boolean createACSNamespace;
+    
+    /**
+    * Optional. Whether or not ACS authentication is needed for ServiceBus.
+    * @return The CreateACSNamespace value.
+    */
+    public boolean isCreateACSNamespace() {
+        return this.createACSNamespace;
+    }
+    
+    /**
+    * Optional. Whether or not ACS authentication is needed for ServiceBus.
+    * @param createACSNamespaceValue The CreateACSNamespace value.
+    */
+    public void setCreateACSNamespace(final boolean createACSNamespaceValue) {
+        this.createACSNamespace = createACSNamespaceValue;
+    }
+    
     private Calendar createdAt;
     
     /**
@@ -104,6 +122,24 @@ public class ServiceBusNamespace {
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
+    }
+    
+    private NamespaceType namespaceType;
+    
+    /**
+    * Optional. Gets or sets the namespace type.
+    * @return The NamespaceType value.
+    */
+    public NamespaceType getNamespaceType() {
+        return this.namespaceType;
+    }
+    
+    /**
+    * Optional. Gets or sets the namespace type.
+    * @param namespaceTypeValue The NamespaceType value.
+    */
+    public void setNamespaceType(final NamespaceType namespaceTypeValue) {
+        this.namespaceType = namespaceTypeValue;
     }
     
     private String region;

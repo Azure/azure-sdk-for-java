@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     */
     public WebSiteGetHistoricalUsageMetricsResponse() {
         super();
-        this.setUsageMetrics(new ArrayList<HistoricalUsageMetric>());
+        this.setUsageMetrics(new LazyArrayList<HistoricalUsageMetric>());
     }
     
     /**

@@ -142,12 +142,13 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;

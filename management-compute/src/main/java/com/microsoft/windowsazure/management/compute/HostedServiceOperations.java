@@ -154,9 +154,10 @@ public interface HostedServiceOperations {
     Future<OperationResponse> beginAddingExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
     
     /**
-    * The Begin Deleting All Hosted Service operation deletes the specified
-    * cloud service from Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
+    * The DeleteAll Hosted Service operation deletes the specified cloud
+    * service as well as operating system disk, attached data disks, and the
+    * source blobs for the disks from storage from Microsoft Azure. (see
+    * 'http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx' for
     * more information)
     *
     * @param serviceName Required. The name of the cloud service.
@@ -170,9 +171,10 @@ public interface HostedServiceOperations {
     OperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException;
     
     /**
-    * The Begin Deleting All Hosted Service operation deletes the specified
-    * cloud service from Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
+    * The DeleteAll Hosted Service operation deletes the specified cloud
+    * service as well as operating system disk, attached data disks, and the
+    * source blobs for the disks from storage from Microsoft Azure. (see
+    * 'http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx' for
     * more information)
     *
     * @param serviceName Required. The name of the cloud service.
@@ -329,9 +331,10 @@ public interface HostedServiceOperations {
     Future<OperationResponse> deleteAsync(String serviceName);
     
     /**
-    * The Delete All Hosted Service operation deletes the specified cloud
-    * service from Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
+    * The DeleteAll Hosted Service operation deletes the specified cloud
+    * service as well as operating system disk, attached data disks, and the
+    * source blobs for the disks from storage from Microsoft Azure. (see
+    * 'http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx' for
     * more information)
     *
     * @param serviceName Required. The name of the cloud service.
@@ -359,9 +362,10 @@ public interface HostedServiceOperations {
     OperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
-    * The Delete All Hosted Service operation deletes the specified cloud
-    * service from Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
+    * The DeleteAll Hosted Service operation deletes the specified cloud
+    * service as well as operating system disk, attached data disks, and the
+    * source blobs for the disks from storage from Microsoft Azure. (see
+    * 'http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx' for
     * more information)
     *
     * @param serviceName Required. The name of the cloud service.

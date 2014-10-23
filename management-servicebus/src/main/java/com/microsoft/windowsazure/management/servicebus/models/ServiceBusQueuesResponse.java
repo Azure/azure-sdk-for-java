@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     */
     public ServiceBusQueuesResponse() {
         super();
-        this.setQueues(new ArrayList<ServiceBusQueue>());
+        this.setQueues(new LazyArrayList<ServiceBusQueue>());
     }
     
     /**

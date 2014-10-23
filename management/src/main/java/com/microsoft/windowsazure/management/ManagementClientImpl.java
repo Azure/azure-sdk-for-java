@@ -207,7 +207,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         this.managementCertificates = new ManagementCertificateOperationsImpl(this);
         this.roleSizes = new RoleSizeOperationsImpl(this);
         this.subscriptions = new SubscriptionOperationsImpl(this);
-        this.apiVersion = "2014-05-01";
+        this.apiVersion = "2014-10-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -240,8 +240,6 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
-        this.baseUri = baseUri;
     }
     
     /**
@@ -387,12 +385,13 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;

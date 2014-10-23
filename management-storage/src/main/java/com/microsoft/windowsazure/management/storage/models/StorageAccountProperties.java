@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +32,30 @@ import java.util.Calendar;
 * Details about a storage account.
 */
 public class StorageAccountProperties {
+    private String accountType;
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @return The AccountType value.
+    */
+    public String getAccountType() {
+        return this.accountType;
+    }
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @param accountTypeValue The AccountType value.
+    */
+    public void setAccountType(final String accountTypeValue) {
+        this.accountType = accountTypeValue;
+    }
+    
     private String affinityGroup;
     
     /**
@@ -107,30 +132,6 @@ public class StorageAccountProperties {
     */
     public void setGeoPrimaryRegion(final String geoPrimaryRegionValue) {
         this.geoPrimaryRegion = geoPrimaryRegionValue;
-    }
-    
-    private boolean geoReplicationEnabled;
-    
-    /**
-    * Optional. Indicates whether geo-replication is enabled.Geo-replication
-    * means data in the storage account is replicated across more than one
-    * geographic location so as to enable resilience in the face of
-    * catastrophic service loss.
-    * @return The GeoReplicationEnabled value.
-    */
-    public boolean isGeoReplicationEnabled() {
-        return this.geoReplicationEnabled;
-    }
-    
-    /**
-    * Optional. Indicates whether geo-replication is enabled.Geo-replication
-    * means data in the storage account is replicated across more than one
-    * geographic location so as to enable resilience in the face of
-    * catastrophic service loss.
-    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
-    */
-    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
-        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String geoSecondaryRegion;
@@ -291,6 +292,6 @@ public class StorageAccountProperties {
     *
     */
     public StorageAccountProperties() {
-        this.setEndpoints(new ArrayList<URI>());
+        this.setEndpoints(new LazyArrayList<URI>());
     }
 }

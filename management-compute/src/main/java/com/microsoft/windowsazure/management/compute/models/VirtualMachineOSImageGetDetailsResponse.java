@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +73,7 @@ public class VirtualMachineOSImageGetDetailsResponse extends VirtualMachineOSIma
     */
     public VirtualMachineOSImageGetDetailsResponse() {
         super();
-        this.setReplicationProgress(new ArrayList<VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement>());
+        this.setReplicationProgress(new LazyArrayList<VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement>());
     }
     
     /**

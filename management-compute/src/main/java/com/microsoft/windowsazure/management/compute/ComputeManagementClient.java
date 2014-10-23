@@ -97,6 +97,13 @@ public interface ComputeManagementClient extends Closeable, FilterableService<Co
     DeploymentOperations getDeploymentsOperations();
     
     /**
+    * The Compute Management API includes operations for managing the dns
+    * servers for your subscription.
+    * @return The DnsServerOperations value.
+    */
+    DNSServerOperations getDnsServerOperations();
+    
+    /**
     * The Service Management API includes operations for managing the service
     * and virtual machine extension images in your publisher subscription.
     * @return The ExtensionImagesOperations value.

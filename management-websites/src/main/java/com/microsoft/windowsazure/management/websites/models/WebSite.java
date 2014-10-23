@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.InetAddress;
 import java.net.URI;
 import java.util.ArrayList;
@@ -400,9 +402,9 @@ public class WebSite {
     *
     */
     public WebSite() {
-        this.setEnabledHostNames(new ArrayList<String>());
-        this.setHostNames(new ArrayList<String>());
-        this.setHostNameSslStates(new ArrayList<WebSite.WebSiteHostNameSslState>());
+        this.setEnabledHostNames(new LazyArrayList<String>());
+        this.setHostNames(new LazyArrayList<String>());
+        this.setHostNameSslStates(new LazyArrayList<WebSite.WebSiteHostNameSslState>());
     }
     
     /**
@@ -552,9 +554,9 @@ public class WebSite {
         *
         */
         public WebSiteProperties() {
-            this.setAppSettings(new HashMap<String, String>());
-            this.setMetadata(new HashMap<String, String>());
-            this.setProperties(new HashMap<String, String>());
+            this.setAppSettings(new LazyHashMap<String, String>());
+            this.setMetadata(new LazyHashMap<String, String>());
+            this.setProperties(new LazyHashMap<String, String>());
         }
     }
 }

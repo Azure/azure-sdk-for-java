@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetRes
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceListResponse;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatus;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
+import com.microsoft.windowsazure.management.scheduler.models.Error;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -169,6 +170,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -309,6 +311,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -642,6 +645,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -837,6 +841,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1028,6 +1033,33 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                                     String resultInstance;
                                     resultInstance = resultElement.getTextContent();
                                     operationStatusInstance.setResult(resultInstance);
+                                }
+                                
+                                Element errorElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                                if (errorElement != null) {
+                                    Error errorInstance = new Error();
+                                    operationStatusInstance.setError(errorInstance);
+                                    
+                                    Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
+                                    if (httpCodeElement != null) {
+                                        String httpCodeInstance;
+                                        httpCodeInstance = httpCodeElement.getTextContent();
+                                        errorInstance.setHttpCode(httpCodeInstance);
+                                    }
+                                    
+                                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement != null) {
+                                        String messageInstance;
+                                        messageInstance = messageElement.getTextContent();
+                                        errorInstance.setMessage(messageInstance);
+                                    }
+                                    
+                                    Element extendedCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
+                                    if (extendedCodeElement != null) {
+                                        String extendedCodeInstance;
+                                        extendedCodeInstance = extendedCodeElement.getTextContent();
+                                        errorInstance.setExtendedCode(extendedCodeInstance);
+                                    }
                                 }
                             }
                         }

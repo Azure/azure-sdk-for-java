@@ -27,6 +27,8 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.BackupRequest;
 import com.microsoft.windowsazure.management.websites.models.RestoreRequest;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNames;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNamesUpdate;
 import com.microsoft.windowsazure.management.websites.models.WebSiteBackupResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateResponse;
@@ -593,6 +595,28 @@ public interface WebSiteOperations {
     Future<WebSiteGetRepositoryResponse> getRepositoryAsync(String webSpaceName, String webSiteName);
     
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    SlotConfigNames getSlotConfigNames(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<SlotConfigNames> getSlotConfigNamesAsync(String webSpaceName, String webSiteName);
+    
+    /**
     * You can retrieve current usage metrics for a site by issuing an HTTP GET
     * request. The metrics returned include CPU Time, Data In, Data Out, Local
     * Bytes Read, Local Bytes Written, Network Bytes Read, Network Bytes
@@ -927,4 +951,28 @@ public interface WebSiteOperations {
     * request ID.
     */
     Future<OperationResponse> updateConfigurationAsync(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters);
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse updateSlotConfigNames(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> updateSlotConfigNamesAsync(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters);
 }

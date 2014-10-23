@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     */
     public ServiceBusConnectionDetailsResponse() {
         super();
-        this.setConnectionDetails(new ArrayList<ServiceBusConnectionDetail>());
+        this.setConnectionDetails(new LazyArrayList<ServiceBusConnectionDetail>());
     }
     
     /**

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -475,6 +476,6 @@ public class ServiceBusTopic {
     *
     */
     public ServiceBusTopic() {
-        this.setAuthorizationRules(new ArrayList<ServiceBusSharedAccessAuthorizationRule>());
+        this.setAuthorizationRules(new LazyArrayList<ServiceBusSharedAccessAuthorizationRule>());
     }
 }

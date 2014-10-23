@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-parent</artifactId>
+    <artifactId>azure</artifactId>
     <version>0.7.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
@@ -84,9 +84,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.windowsazure.storage</groupId>
-      <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-      <version>1.0.0</version>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>1.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency> 

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
@@ -131,6 +132,6 @@ public class WebSiteGetBackupConfigurationResponse extends OperationResponse {
     */
     public WebSiteGetBackupConfigurationResponse() {
         super();
-        this.setDatabases(new ArrayList<DatabaseBackupSetting>());
+        this.setDatabases(new LazyArrayList<DatabaseBackupSetting>());
     }
 }

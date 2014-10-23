@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -108,6 +109,6 @@ public class ServiceBusConnectionDetail {
     *
     */
     public ServiceBusConnectionDetail() {
-        this.setRights(new ArrayList<AccessRight>());
+        this.setRights(new LazyArrayList<AccessRight>());
     }
 }

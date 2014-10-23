@@ -96,7 +96,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
-        createParameters.setGeoReplicationEnabled(false);
         createParameters.setLocation(storageLocation);       
      
         //act
@@ -116,7 +115,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
-        createParameters.setGeoReplicationEnabled(false);
         createParameters.setLocation(storageLocation); 
 
         //act
@@ -202,7 +200,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(expectedStorageAccountName);
         createParameters.setLocation(storageLocation);
         createParameters.setLabel(expectedStorageAccountLabel);
-        createParameters.setGeoReplicationEnabled(true);
         
         //Act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -210,7 +207,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         
         StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();      
         updateParameters.setLabel(expectedUpdatedStorageAccountLabel);
-        updateParameters.setGeoReplicationEnabled(false);
         updateParameters.setDescription(expectedUpdatedDescription);
         OperationResponse updateoperationResponse = storageManagementClient.getStorageAccountsOperations().update(expectedStorageAccountName, updateParameters);
                     

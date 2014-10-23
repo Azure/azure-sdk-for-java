@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -46,6 +47,8 @@ import com.microsoft.windowsazure.management.websites.models.RemoteDebuggingVers
 import com.microsoft.windowsazure.management.websites.models.RestoreRequest;
 import com.microsoft.windowsazure.management.websites.models.RoutingRule;
 import com.microsoft.windowsazure.management.websites.models.SkuOptions;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNames;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNamesUpdate;
 import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteBackupResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteComputeMode;
@@ -273,36 +276,38 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (backupRequest.getDatabases() != null) {
-            Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
-            for (DatabaseBackupSetting databasesItem : backupRequest.getDatabases()) {
-                Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
-                databasesSequenceElement.appendChild(databaseBackupSettingElement);
-                
-                if (databasesItem.getConnectionString() != null) {
-                    Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
-                    connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
-                    databaseBackupSettingElement.appendChild(connectionStringElement);
+            if (backupRequest.getDatabases() instanceof LazyCollection == false || ((LazyCollection) backupRequest.getDatabases()).isInitialized()) {
+                Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
+                for (DatabaseBackupSetting databasesItem : backupRequest.getDatabases()) {
+                    Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
+                    databasesSequenceElement.appendChild(databaseBackupSettingElement);
+                    
+                    if (databasesItem.getConnectionString() != null) {
+                        Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
+                        connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
+                        databaseBackupSettingElement.appendChild(connectionStringElement);
+                    }
+                    
+                    if (databasesItem.getConnectionStringName() != null) {
+                        Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
+                        connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
+                        databaseBackupSettingElement.appendChild(connectionStringNameElement);
+                    }
+                    
+                    if (databasesItem.getDatabaseType() != null) {
+                        Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
+                        databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
+                        databaseBackupSettingElement.appendChild(databaseTypeElement);
+                    }
+                    
+                    if (databasesItem.getName() != null) {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
+                        databaseBackupSettingElement.appendChild(nameElement);
+                    }
                 }
-                
-                if (databasesItem.getConnectionStringName() != null) {
-                    Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
-                    connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
-                    databaseBackupSettingElement.appendChild(connectionStringNameElement);
-                }
-                
-                if (databasesItem.getDatabaseType() != null) {
-                    Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
-                    databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
-                    databaseBackupSettingElement.appendChild(databaseTypeElement);
-                }
-                
-                if (databasesItem.getName() != null) {
-                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
-                    databaseBackupSettingElement.appendChild(nameElement);
-                }
+                backupRequestElement.appendChild(databasesSequenceElement);
             }
-            backupRequestElement.appendChild(databasesSequenceElement);
         }
         
         if (backupRequest.isEnabled() != null) {
@@ -1702,36 +1707,38 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (restoreRequest.getDatabases() != null) {
-            Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
-            for (DatabaseBackupSetting databasesItem : restoreRequest.getDatabases()) {
-                Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
-                databasesSequenceElement.appendChild(databaseBackupSettingElement);
-                
-                if (databasesItem.getConnectionString() != null) {
-                    Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
-                    connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
-                    databaseBackupSettingElement.appendChild(connectionStringElement);
+            if (restoreRequest.getDatabases() instanceof LazyCollection == false || ((LazyCollection) restoreRequest.getDatabases()).isInitialized()) {
+                Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
+                for (DatabaseBackupSetting databasesItem : restoreRequest.getDatabases()) {
+                    Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
+                    databasesSequenceElement.appendChild(databaseBackupSettingElement);
+                    
+                    if (databasesItem.getConnectionString() != null) {
+                        Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
+                        connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
+                        databaseBackupSettingElement.appendChild(connectionStringElement);
+                    }
+                    
+                    if (databasesItem.getConnectionStringName() != null) {
+                        Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
+                        connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
+                        databaseBackupSettingElement.appendChild(connectionStringNameElement);
+                    }
+                    
+                    if (databasesItem.getDatabaseType() != null) {
+                        Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
+                        databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
+                        databaseBackupSettingElement.appendChild(databaseTypeElement);
+                    }
+                    
+                    if (databasesItem.getName() != null) {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
+                        databaseBackupSettingElement.appendChild(nameElement);
+                    }
                 }
-                
-                if (databasesItem.getConnectionStringName() != null) {
-                    Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
-                    connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
-                    databaseBackupSettingElement.appendChild(connectionStringNameElement);
-                }
-                
-                if (databasesItem.getDatabaseType() != null) {
-                    Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
-                    databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
-                    databaseBackupSettingElement.appendChild(databaseTypeElement);
-                }
-                
-                if (databasesItem.getName() != null) {
-                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
-                    databaseBackupSettingElement.appendChild(nameElement);
-                }
+                restoreRequestElement.appendChild(databasesSequenceElement);
             }
-            restoreRequestElement.appendChild(databasesSequenceElement);
         }
         
         Element ignoreConflictingHostNamesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IgnoreConflictingHostNames");
@@ -2665,9 +2672,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null && responseDoc.getClass() != NullNode.class) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 JsonNode appSettingsSequenceElement = ((JsonNode) responseDoc.get("AppSettings"));
-                if (appSettingsSequenceElement != null && appSettingsSequenceElement.getClass() != NullNode.class) {
+                if (appSettingsSequenceElement != null && appSettingsSequenceElement instanceof NullNode == false) {
                     for (JsonNode appSettingsElement : ((ArrayNode) appSettingsSequenceElement)) {
                         String appSettingsKey = appSettingsElement.get("Name").getTextValue();
                         String appSettingsValue = appSettingsElement.get("Value").getTextValue();
@@ -2676,77 +2683,77 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode connectionStringsArray = responseDoc.get("ConnectionStrings");
-                if (connectionStringsArray != null && connectionStringsArray.getClass() != NullNode.class) {
+                if (connectionStringsArray != null && connectionStringsArray instanceof NullNode == false) {
                     for (JsonNode connectionStringsValue : ((ArrayNode) connectionStringsArray)) {
                         WebSiteGetConfigurationResponse.ConnectionStringInfo connectionStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
                         result.getConnectionStrings().add(connectionStringInfoInstance);
                         
                         JsonNode connectionStringValue = connectionStringsValue.get("ConnectionString");
-                        if (connectionStringValue != null && connectionStringValue.getClass() != NullNode.class) {
+                        if (connectionStringValue != null && connectionStringValue instanceof NullNode == false) {
                             String connectionStringInstance;
                             connectionStringInstance = connectionStringValue.getTextValue();
                             connectionStringInfoInstance.setConnectionString(connectionStringInstance);
                         }
                         
                         JsonNode nameValue = connectionStringsValue.get("Name");
-                        if (nameValue != null && nameValue.getClass() != NullNode.class) {
+                        if (nameValue != null && nameValue instanceof NullNode == false) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             connectionStringInfoInstance.setName(nameInstance);
                         }
                         
                         JsonNode typeValue = connectionStringsValue.get("Type");
-                        if (typeValue != null && typeValue.getClass() != NullNode.class) {
+                        if (typeValue != null && typeValue instanceof NullNode == false) {
                             ConnectionStringType typeInstance;
-                            typeInstance = typeValue.isNumber() ? ConnectionStringType.values()[typeValue.getIntValue()] : WebSiteManagementClientImpl.parseConnectionStringType(typeValue.getTextValue());
+                            typeInstance = ConnectionStringType.values()[typeValue.getIntValue()];
                             connectionStringInfoInstance.setType(typeInstance);
                         }
                     }
                 }
                 
                 JsonNode defaultDocumentsArray = responseDoc.get("DefaultDocuments");
-                if (defaultDocumentsArray != null && defaultDocumentsArray.getClass() != NullNode.class) {
+                if (defaultDocumentsArray != null && defaultDocumentsArray instanceof NullNode == false) {
                     for (JsonNode defaultDocumentsValue : ((ArrayNode) defaultDocumentsArray)) {
                         result.getDefaultDocuments().add(defaultDocumentsValue.getTextValue());
                     }
                 }
                 
                 JsonNode detailedErrorLoggingEnabledValue = responseDoc.get("DetailedErrorLoggingEnabled");
-                if (detailedErrorLoggingEnabledValue != null && detailedErrorLoggingEnabledValue.getClass() != NullNode.class) {
+                if (detailedErrorLoggingEnabledValue != null && detailedErrorLoggingEnabledValue instanceof NullNode == false) {
                     boolean detailedErrorLoggingEnabledInstance;
                     detailedErrorLoggingEnabledInstance = detailedErrorLoggingEnabledValue.getBooleanValue();
                     result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
                 }
                 
                 JsonNode documentRootValue = responseDoc.get("DocumentRoot");
-                if (documentRootValue != null && documentRootValue.getClass() != NullNode.class) {
+                if (documentRootValue != null && documentRootValue instanceof NullNode == false) {
                     String documentRootInstance;
                     documentRootInstance = documentRootValue.getTextValue();
                     result.setDocumentRoot(documentRootInstance);
                 }
                 
                 JsonNode handlerMappingsArray = responseDoc.get("HandlerMappings");
-                if (handlerMappingsArray != null && handlerMappingsArray.getClass() != NullNode.class) {
+                if (handlerMappingsArray != null && handlerMappingsArray instanceof NullNode == false) {
                     for (JsonNode handlerMappingsValue : ((ArrayNode) handlerMappingsArray)) {
                         WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
                         result.getHandlerMappings().add(handlerMappingInstance);
                         
                         JsonNode argumentsValue = handlerMappingsValue.get("Arguments");
-                        if (argumentsValue != null && argumentsValue.getClass() != NullNode.class) {
+                        if (argumentsValue != null && argumentsValue instanceof NullNode == false) {
                             String argumentsInstance;
                             argumentsInstance = argumentsValue.getTextValue();
                             handlerMappingInstance.setArguments(argumentsInstance);
                         }
                         
                         JsonNode extensionValue = handlerMappingsValue.get("Extension");
-                        if (extensionValue != null && extensionValue.getClass() != NullNode.class) {
+                        if (extensionValue != null && extensionValue instanceof NullNode == false) {
                             String extensionInstance;
                             extensionInstance = extensionValue.getTextValue();
                             handlerMappingInstance.setExtension(extensionInstance);
                         }
                         
                         JsonNode scriptProcessorValue = handlerMappingsValue.get("ScriptProcessor");
-                        if (scriptProcessorValue != null && scriptProcessorValue.getClass() != NullNode.class) {
+                        if (scriptProcessorValue != null && scriptProcessorValue instanceof NullNode == false) {
                             String scriptProcessorInstance;
                             scriptProcessorInstance = scriptProcessorValue.getTextValue();
                             handlerMappingInstance.setScriptProcessor(scriptProcessorInstance);
@@ -2755,28 +2762,28 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode httpLoggingEnabledValue = responseDoc.get("HttpLoggingEnabled");
-                if (httpLoggingEnabledValue != null && httpLoggingEnabledValue.getClass() != NullNode.class) {
+                if (httpLoggingEnabledValue != null && httpLoggingEnabledValue instanceof NullNode == false) {
                     boolean httpLoggingEnabledInstance;
                     httpLoggingEnabledInstance = httpLoggingEnabledValue.getBooleanValue();
                     result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
                 }
                 
                 JsonNode logsDirectorySizeLimitValue = responseDoc.get("LogsDirectorySizeLimit");
-                if (logsDirectorySizeLimitValue != null && logsDirectorySizeLimitValue.getClass() != NullNode.class) {
+                if (logsDirectorySizeLimitValue != null && logsDirectorySizeLimitValue instanceof NullNode == false) {
                     int logsDirectorySizeLimitInstance;
                     logsDirectorySizeLimitInstance = logsDirectorySizeLimitValue.getIntValue();
                     result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
                 }
                 
                 JsonNode managedPipelineModeValue = responseDoc.get("ManagedPipelineMode");
-                if (managedPipelineModeValue != null && managedPipelineModeValue.getClass() != NullNode.class) {
+                if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                     ManagedPipelineMode managedPipelineModeInstance;
-                    managedPipelineModeInstance = managedPipelineModeValue.isNumber() ? ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()] : WebSiteManagementClientImpl.parseManagedPipelineMode(managedPipelineModeValue.getTextValue());
+                    managedPipelineModeInstance = ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()];
                     result.setManagedPipelineMode(managedPipelineModeInstance);
                 }
                 
                 JsonNode metadataSequenceElement = ((JsonNode) responseDoc.get("Metadata"));
-                if (metadataSequenceElement != null && metadataSequenceElement.getClass() != NullNode.class) {
+                if (metadataSequenceElement != null && metadataSequenceElement instanceof NullNode == false) {
                     for (JsonNode metadataElement : ((ArrayNode) metadataSequenceElement)) {
                         String metadataKey = metadataElement.get("Name").getTextValue();
                         String metadataValue = metadataElement.get("Value").getTextValue();
@@ -2785,154 +2792,154 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 }
                 
                 JsonNode netFrameworkVersionValue = responseDoc.get("NetFrameworkVersion");
-                if (netFrameworkVersionValue != null && netFrameworkVersionValue.getClass() != NullNode.class) {
+                if (netFrameworkVersionValue != null && netFrameworkVersionValue instanceof NullNode == false) {
                     String netFrameworkVersionInstance;
                     netFrameworkVersionInstance = netFrameworkVersionValue.getTextValue();
                     result.setNetFrameworkVersion(netFrameworkVersionInstance);
                 }
                 
                 JsonNode numberOfWorkersValue = responseDoc.get("NumberOfWorkers");
-                if (numberOfWorkersValue != null && numberOfWorkersValue.getClass() != NullNode.class) {
+                if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
                 JsonNode phpVersionValue = responseDoc.get("PhpVersion");
-                if (phpVersionValue != null && phpVersionValue.getClass() != NullNode.class) {
+                if (phpVersionValue != null && phpVersionValue instanceof NullNode == false) {
                     String phpVersionInstance;
                     phpVersionInstance = phpVersionValue.getTextValue();
                     result.setPhpVersion(phpVersionInstance);
                 }
                 
                 JsonNode publishingPasswordValue = responseDoc.get("PublishingPassword");
-                if (publishingPasswordValue != null && publishingPasswordValue.getClass() != NullNode.class) {
+                if (publishingPasswordValue != null && publishingPasswordValue instanceof NullNode == false) {
                     String publishingPasswordInstance;
                     publishingPasswordInstance = publishingPasswordValue.getTextValue();
                     result.setPublishingPassword(publishingPasswordInstance);
                 }
                 
                 JsonNode publishingUsernameValue = responseDoc.get("PublishingUsername");
-                if (publishingUsernameValue != null && publishingUsernameValue.getClass() != NullNode.class) {
+                if (publishingUsernameValue != null && publishingUsernameValue instanceof NullNode == false) {
                     String publishingUsernameInstance;
                     publishingUsernameInstance = publishingUsernameValue.getTextValue();
                     result.setPublishingUserName(publishingUsernameInstance);
                 }
                 
                 JsonNode remoteDebuggingEnabledValue = responseDoc.get("RemoteDebuggingEnabled");
-                if (remoteDebuggingEnabledValue != null && remoteDebuggingEnabledValue.getClass() != NullNode.class) {
+                if (remoteDebuggingEnabledValue != null && remoteDebuggingEnabledValue instanceof NullNode == false) {
                     boolean remoteDebuggingEnabledInstance;
                     remoteDebuggingEnabledInstance = remoteDebuggingEnabledValue.getBooleanValue();
                     result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
                 }
                 
                 JsonNode remoteDebuggingVersionValue = responseDoc.get("RemoteDebuggingVersion");
-                if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue.getClass() != NullNode.class) {
+                if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                     RemoteDebuggingVersion remoteDebuggingVersionInstance;
                     remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
                     result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                 }
                 
                 JsonNode requestTracingEnabledValue = responseDoc.get("RequestTracingEnabled");
-                if (requestTracingEnabledValue != null && requestTracingEnabledValue.getClass() != NullNode.class) {
+                if (requestTracingEnabledValue != null && requestTracingEnabledValue instanceof NullNode == false) {
                     boolean requestTracingEnabledInstance;
                     requestTracingEnabledInstance = requestTracingEnabledValue.getBooleanValue();
                     result.setRequestTracingEnabled(requestTracingEnabledInstance);
                 }
                 
                 JsonNode requestTracingExpirationTimeValue = responseDoc.get("RequestTracingExpirationTime");
-                if (requestTracingExpirationTimeValue != null && requestTracingExpirationTimeValue.getClass() != NullNode.class) {
+                if (requestTracingExpirationTimeValue != null && requestTracingExpirationTimeValue instanceof NullNode == false) {
                     Calendar requestTracingExpirationTimeInstance;
                     requestTracingExpirationTimeInstance = DatatypeConverter.parseDateTime(requestTracingExpirationTimeValue.getTextValue());
                     result.setRequestTracingExpirationTime(requestTracingExpirationTimeInstance);
                 }
                 
                 JsonNode scmTypeValue = responseDoc.get("ScmType");
-                if (scmTypeValue != null && scmTypeValue.getClass() != NullNode.class) {
+                if (scmTypeValue != null && scmTypeValue instanceof NullNode == false) {
                     String scmTypeInstance;
                     scmTypeInstance = scmTypeValue.getTextValue();
                     result.setScmType(scmTypeInstance);
                 }
                 
                 JsonNode use32BitWorkerProcessValue = responseDoc.get("Use32BitWorkerProcess");
-                if (use32BitWorkerProcessValue != null && use32BitWorkerProcessValue.getClass() != NullNode.class) {
+                if (use32BitWorkerProcessValue != null && use32BitWorkerProcessValue instanceof NullNode == false) {
                     boolean use32BitWorkerProcessInstance;
                     use32BitWorkerProcessInstance = use32BitWorkerProcessValue.getBooleanValue();
                     result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
                 }
                 
                 JsonNode webSocketsEnabledValue = responseDoc.get("WebSocketsEnabled");
-                if (webSocketsEnabledValue != null && webSocketsEnabledValue.getClass() != NullNode.class) {
+                if (webSocketsEnabledValue != null && webSocketsEnabledValue instanceof NullNode == false) {
                     boolean webSocketsEnabledInstance;
                     webSocketsEnabledInstance = webSocketsEnabledValue.getBooleanValue();
                     result.setWebSocketsEnabled(webSocketsEnabledInstance);
                 }
                 
                 JsonNode alwaysOnValue = responseDoc.get("AlwaysOn");
-                if (alwaysOnValue != null && alwaysOnValue.getClass() != NullNode.class) {
+                if (alwaysOnValue != null && alwaysOnValue instanceof NullNode == false) {
                     boolean alwaysOnInstance;
                     alwaysOnInstance = alwaysOnValue.getBooleanValue();
                     result.setAlwaysOn(alwaysOnInstance);
                 }
                 
                 JsonNode routingRulesArray = responseDoc.get("RoutingRules");
-                if (routingRulesArray != null && routingRulesArray.getClass() != NullNode.class) {
+                if (routingRulesArray != null && routingRulesArray instanceof NullNode == false) {
                     for (JsonNode routingRulesValue : ((ArrayNode) routingRulesArray)) {
                         String typeName = routingRulesValue.get("__type").getTextValue();
                         if ("RampUpRule:http://schemas.microsoft.com/windowsazure".equals(typeName)) {
                             RampUpRule rampUpRuleInstance = new RampUpRule();
                             
                             JsonNode actionHostNameValue = routingRulesValue.get("ActionHostName");
-                            if (actionHostNameValue != null && actionHostNameValue.getClass() != NullNode.class) {
+                            if (actionHostNameValue != null && actionHostNameValue instanceof NullNode == false) {
                                 String actionHostNameInstance;
                                 actionHostNameInstance = actionHostNameValue.getTextValue();
                                 rampUpRuleInstance.setActionHostName(actionHostNameInstance);
                             }
                             
                             JsonNode reroutePercentageValue = routingRulesValue.get("ReroutePercentage");
-                            if (reroutePercentageValue != null && reroutePercentageValue.getClass() != NullNode.class) {
+                            if (reroutePercentageValue != null && reroutePercentageValue instanceof NullNode == false) {
                                 double reroutePercentageInstance;
                                 reroutePercentageInstance = reroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setReroutePercentage(reroutePercentageInstance);
                             }
                             
                             JsonNode changeStepValue = routingRulesValue.get("ChangeStep");
-                            if (changeStepValue != null && changeStepValue.getClass() != NullNode.class) {
+                            if (changeStepValue != null && changeStepValue instanceof NullNode == false) {
                                 double changeStepInstance;
                                 changeStepInstance = changeStepValue.getDoubleValue();
                                 rampUpRuleInstance.setChangeStep(changeStepInstance);
                             }
                             
                             JsonNode changeIntervalInMinutesValue = routingRulesValue.get("ChangeIntervalInMinutes");
-                            if (changeIntervalInMinutesValue != null && changeIntervalInMinutesValue.getClass() != NullNode.class) {
+                            if (changeIntervalInMinutesValue != null && changeIntervalInMinutesValue instanceof NullNode == false) {
                                 int changeIntervalInMinutesInstance;
                                 changeIntervalInMinutesInstance = changeIntervalInMinutesValue.getIntValue();
                                 rampUpRuleInstance.setChangeIntervalInMinutes(changeIntervalInMinutesInstance);
                             }
                             
                             JsonNode minReroutePercentageValue = routingRulesValue.get("MinReroutePercentage");
-                            if (minReroutePercentageValue != null && minReroutePercentageValue.getClass() != NullNode.class) {
+                            if (minReroutePercentageValue != null && minReroutePercentageValue instanceof NullNode == false) {
                                 double minReroutePercentageInstance;
                                 minReroutePercentageInstance = minReroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setMinReroutePercentage(minReroutePercentageInstance);
                             }
                             
                             JsonNode maxReroutePercentageValue = routingRulesValue.get("MaxReroutePercentage");
-                            if (maxReroutePercentageValue != null && maxReroutePercentageValue.getClass() != NullNode.class) {
+                            if (maxReroutePercentageValue != null && maxReroutePercentageValue instanceof NullNode == false) {
                                 double maxReroutePercentageInstance;
                                 maxReroutePercentageInstance = maxReroutePercentageValue.getDoubleValue();
                                 rampUpRuleInstance.setMaxReroutePercentage(maxReroutePercentageInstance);
                             }
                             
                             JsonNode changeDecisionCallbackUrlValue = routingRulesValue.get("ChangeDecisionCallbackUrl");
-                            if (changeDecisionCallbackUrlValue != null && changeDecisionCallbackUrlValue.getClass() != NullNode.class) {
+                            if (changeDecisionCallbackUrlValue != null && changeDecisionCallbackUrlValue instanceof NullNode == false) {
                                 String changeDecisionCallbackUrlInstance;
                                 changeDecisionCallbackUrlInstance = changeDecisionCallbackUrlValue.getTextValue();
                                 rampUpRuleInstance.setChangeDecisionCallbackUrl(changeDecisionCallbackUrlInstance);
                             }
                             
                             JsonNode nameValue2 = routingRulesValue.get("Name");
-                            if (nameValue2 != null && nameValue2.getClass() != NullNode.class) {
+                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
                                 String nameInstance2;
                                 nameInstance2 = nameValue2.getTextValue();
                                 rampUpRuleInstance.setName(nameInstance2);
@@ -2940,6 +2947,34 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             result.getRoutingRules().add(rampUpRuleInstance);
                         }
                     }
+                }
+                
+                JsonNode javaVersionValue = responseDoc.get("JavaVersion");
+                if (javaVersionValue != null && javaVersionValue instanceof NullNode == false) {
+                    String javaVersionInstance;
+                    javaVersionInstance = javaVersionValue.getTextValue();
+                    result.setJavaVersion(javaVersionInstance);
+                }
+                
+                JsonNode javaContainerValue = responseDoc.get("JavaContainer");
+                if (javaContainerValue != null && javaContainerValue instanceof NullNode == false) {
+                    String javaContainerInstance;
+                    javaContainerInstance = javaContainerValue.getTextValue();
+                    result.setJavaContainer(javaContainerInstance);
+                }
+                
+                JsonNode javaContainerVersionValue = responseDoc.get("JavaContainerVersion");
+                if (javaContainerVersionValue != null && javaContainerVersionValue instanceof NullNode == false) {
+                    String javaContainerVersionInstance;
+                    javaContainerVersionInstance = javaContainerVersionValue.getTextValue();
+                    result.setJavaContainerVersion(javaContainerVersionInstance);
+                }
+                
+                JsonNode autoSwapSlotNameValue = responseDoc.get("AutoSwapSlotName");
+                if (autoSwapSlotNameValue != null && autoSwapSlotNameValue instanceof NullNode == false) {
+                    String autoSwapSlotNameInstance;
+                    autoSwapSlotNameInstance = autoSwapSlotNameValue.getTextValue();
+                    result.setAutoSwapSlotName(autoSwapSlotNameInstance);
                 }
             }
             
@@ -3744,6 +3779,137 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<SlotConfigNames> getSlotConfigNamesAsync(final String webSpaceName, final String webSiteName) {
+        return this.getClient().getExecutorService().submit(new Callable<SlotConfigNames>() { 
+            @Override
+            public SlotConfigNames call() throws Exception {
+                return getSlotConfigNames(webSpaceName, webSiteName);
+            }
+         });
+    }
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public SlotConfigNames getSlotConfigNames(String webSpaceName, String webSiteName) throws IOException, ServiceException {
+        // Validate
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            CloudTracing.enter(invocationId, this, "getSlotConfigNamesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/slotConfigNames";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("accept", "application/json");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            SlotConfigNames result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new SlotConfigNames();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = null;
+            if (responseContent == null == false) {
+                responseDoc = objectMapper.readTree(responseContent);
+            }
+            
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                JsonNode appSettingNamesArray = responseDoc.get("AppSettingNames");
+                if (appSettingNamesArray != null && appSettingNamesArray instanceof NullNode == false) {
+                    for (JsonNode appSettingNamesValue : ((ArrayNode) appSettingNamesArray)) {
+                        result.getAppSettingNames().add(appSettingNamesValue.getTextValue());
+                    }
+                }
+                
+                JsonNode connectionStringNamesArray = responseDoc.get("ConnectionStringNames");
+                if (connectionStringNamesArray != null && connectionStringNamesArray instanceof NullNode == false) {
+                    for (JsonNode connectionStringNamesValue : ((ArrayNode) connectionStringNamesArray)) {
+                        result.getConnectionStringNames().add(connectionStringNamesValue.getTextValue());
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * You can retrieve current usage metrics for a site by issuing an HTTP GET
     * request. The metrics returned include CPU Time, Data In, Data Out, Local
     * Bytes Read, Local Bytes Written, Network Bytes Read, Network Bytes
@@ -4522,36 +4688,38 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (restoreRequest.getDatabases() != null) {
-            Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
-            for (DatabaseBackupSetting databasesItem : restoreRequest.getDatabases()) {
-                Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
-                databasesSequenceElement.appendChild(databaseBackupSettingElement);
-                
-                if (databasesItem.getConnectionString() != null) {
-                    Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
-                    connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
-                    databaseBackupSettingElement.appendChild(connectionStringElement);
+            if (restoreRequest.getDatabases() instanceof LazyCollection == false || ((LazyCollection) restoreRequest.getDatabases()).isInitialized()) {
+                Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
+                for (DatabaseBackupSetting databasesItem : restoreRequest.getDatabases()) {
+                    Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
+                    databasesSequenceElement.appendChild(databaseBackupSettingElement);
+                    
+                    if (databasesItem.getConnectionString() != null) {
+                        Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
+                        connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
+                        databaseBackupSettingElement.appendChild(connectionStringElement);
+                    }
+                    
+                    if (databasesItem.getConnectionStringName() != null) {
+                        Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
+                        connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
+                        databaseBackupSettingElement.appendChild(connectionStringNameElement);
+                    }
+                    
+                    if (databasesItem.getDatabaseType() != null) {
+                        Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
+                        databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
+                        databaseBackupSettingElement.appendChild(databaseTypeElement);
+                    }
+                    
+                    if (databasesItem.getName() != null) {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
+                        databaseBackupSettingElement.appendChild(nameElement);
+                    }
                 }
-                
-                if (databasesItem.getConnectionStringName() != null) {
-                    Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
-                    connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
-                    databaseBackupSettingElement.appendChild(connectionStringNameElement);
-                }
-                
-                if (databasesItem.getDatabaseType() != null) {
-                    Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
-                    databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
-                    databaseBackupSettingElement.appendChild(databaseTypeElement);
-                }
-                
-                if (databasesItem.getName() != null) {
-                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
-                    databaseBackupSettingElement.appendChild(nameElement);
-                }
+                restoreRequestElement.appendChild(databasesSequenceElement);
             }
-            restoreRequestElement.appendChild(databasesSequenceElement);
         }
         
         Element ignoreConflictingHostNamesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IgnoreConflictingHostNames");
@@ -4984,46 +5152,50 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         requestDoc.appendChild(siteElement);
         
         if (parameters.getHostNameSslStates() != null) {
-            Element hostNameSslStatesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
-            for (WebSiteUpdateParameters.WebSiteHostNameSslState hostNameSslStatesItem : parameters.getHostNameSslStates()) {
-                Element webSiteHostNameSslStateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState");
-                hostNameSslStatesSequenceElement.appendChild(webSiteHostNameSslStateElement);
-                
-                Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                nameElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getName()));
-                webSiteHostNameSslStateElement.appendChild(nameElement);
-                
-                Element sslStateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SslState");
-                sslStateElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getSslState().toString()));
-                webSiteHostNameSslStateElement.appendChild(sslStateElement);
-                
-                if (hostNameSslStatesItem.getThumbprint() != null) {
-                    Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    thumbprintElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getThumbprint()));
-                    webSiteHostNameSslStateElement.appendChild(thumbprintElement);
-                } else {
-                    Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    nilAttribute.setValue("true");
-                    emptyElement.setAttributeNode(nilAttribute);
-                    webSiteHostNameSslStateElement.appendChild(emptyElement);
+            if (parameters.getHostNameSslStates() instanceof LazyCollection == false || ((LazyCollection) parameters.getHostNameSslStates()).isInitialized()) {
+                Element hostNameSslStatesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
+                for (WebSiteUpdateParameters.WebSiteHostNameSslState hostNameSslStatesItem : parameters.getHostNameSslStates()) {
+                    Element webSiteHostNameSslStateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState");
+                    hostNameSslStatesSequenceElement.appendChild(webSiteHostNameSslStateElement);
+                    
+                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getName()));
+                    webSiteHostNameSslStateElement.appendChild(nameElement);
+                    
+                    Element sslStateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SslState");
+                    sslStateElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getSslState().toString()));
+                    webSiteHostNameSslStateElement.appendChild(sslStateElement);
+                    
+                    if (hostNameSslStatesItem.getThumbprint() != null) {
+                        Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        thumbprintElement.appendChild(requestDoc.createTextNode(hostNameSslStatesItem.getThumbprint()));
+                        webSiteHostNameSslStateElement.appendChild(thumbprintElement);
+                    } else {
+                        Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                        nilAttribute.setValue("true");
+                        emptyElement.setAttributeNode(nilAttribute);
+                        webSiteHostNameSslStateElement.appendChild(emptyElement);
+                    }
+                    
+                    Element toUpdateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ToUpdate");
+                    toUpdateElement.appendChild(requestDoc.createTextNode("true"));
+                    webSiteHostNameSslStateElement.appendChild(toUpdateElement);
                 }
-                
-                Element toUpdateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ToUpdate");
-                toUpdateElement.appendChild(requestDoc.createTextNode("true"));
-                webSiteHostNameSslStateElement.appendChild(toUpdateElement);
+                siteElement.appendChild(hostNameSslStatesSequenceElement);
             }
-            siteElement.appendChild(hostNameSslStatesSequenceElement);
         }
         
         if (parameters.getHostNames() != null) {
-            Element hostNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNames");
-            for (String hostNamesItem : parameters.getHostNames()) {
-                Element hostNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
-                hostNamesItemElement.appendChild(requestDoc.createTextNode(hostNamesItem));
-                hostNamesSequenceElement.appendChild(hostNamesItemElement);
+            if (parameters.getHostNames() instanceof LazyCollection == false || ((LazyCollection) parameters.getHostNames()).isInitialized()) {
+                Element hostNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                for (String hostNamesItem : parameters.getHostNames()) {
+                    Element hostNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
+                    hostNamesItemElement.appendChild(requestDoc.createTextNode(hostNamesItem));
+                    hostNamesSequenceElement.appendChild(hostNamesItemElement);
+                }
+                siteElement.appendChild(hostNamesSequenceElement);
             }
-            siteElement.appendChild(hostNamesSequenceElement);
         }
         
         if (parameters.getServerFarm() != null) {
@@ -5424,36 +5596,38 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (backupRequest.getDatabases() != null) {
-            Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
-            for (DatabaseBackupSetting databasesItem : backupRequest.getDatabases()) {
-                Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
-                databasesSequenceElement.appendChild(databaseBackupSettingElement);
-                
-                if (databasesItem.getConnectionString() != null) {
-                    Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
-                    connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
-                    databaseBackupSettingElement.appendChild(connectionStringElement);
+            if (backupRequest.getDatabases() instanceof LazyCollection == false || ((LazyCollection) backupRequest.getDatabases()).isInitialized()) {
+                Element databasesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Databases");
+                for (DatabaseBackupSetting databasesItem : backupRequest.getDatabases()) {
+                    Element databaseBackupSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseBackupSetting");
+                    databasesSequenceElement.appendChild(databaseBackupSettingElement);
+                    
+                    if (databasesItem.getConnectionString() != null) {
+                        Element connectionStringElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
+                        connectionStringElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionString()));
+                        databaseBackupSettingElement.appendChild(connectionStringElement);
+                    }
+                    
+                    if (databasesItem.getConnectionStringName() != null) {
+                        Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
+                        connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
+                        databaseBackupSettingElement.appendChild(connectionStringNameElement);
+                    }
+                    
+                    if (databasesItem.getDatabaseType() != null) {
+                        Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
+                        databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
+                        databaseBackupSettingElement.appendChild(databaseTypeElement);
+                    }
+                    
+                    if (databasesItem.getName() != null) {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
+                        databaseBackupSettingElement.appendChild(nameElement);
+                    }
                 }
-                
-                if (databasesItem.getConnectionStringName() != null) {
-                    Element connectionStringNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectionStringName");
-                    connectionStringNameElement.appendChild(requestDoc.createTextNode(databasesItem.getConnectionStringName()));
-                    databaseBackupSettingElement.appendChild(connectionStringNameElement);
-                }
-                
-                if (databasesItem.getDatabaseType() != null) {
-                    Element databaseTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DatabaseType");
-                    databaseTypeElement.appendChild(requestDoc.createTextNode(databasesItem.getDatabaseType()));
-                    databaseBackupSettingElement.appendChild(databaseTypeElement);
-                }
-                
-                if (databasesItem.getName() != null) {
-                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    nameElement.appendChild(requestDoc.createTextNode(databasesItem.getName()));
-                    databaseBackupSettingElement.appendChild(nameElement);
-                }
+                backupRequestElement.appendChild(databasesSequenceElement);
             }
-            backupRequestElement.appendChild(databasesSequenceElement);
         }
         
         if (backupRequest.isEnabled() != null) {
@@ -5617,44 +5791,50 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         ObjectNode webSiteUpdateConfigurationParametersValue = objectMapper.createObjectNode();
         requestDoc = webSiteUpdateConfigurationParametersValue;
         
-        ArrayNode appSettingsDictionary = objectMapper.createArrayNode();
         if (parameters.getAppSettings() != null) {
-            for (Map.Entry<String, String> entry : parameters.getAppSettings().entrySet()) {
-                String appSettingsKey = entry.getKey();
-                String appSettingsValue = entry.getValue();
-                ObjectNode appSettingsItemObject = objectMapper.createObjectNode();
-                ((ObjectNode) appSettingsItemObject).put("Name", appSettingsKey);
-                ((ObjectNode) appSettingsItemObject).put("Value", appSettingsValue);
-                appSettingsDictionary.add(appSettingsItemObject);
+            if (parameters.getAppSettings() instanceof LazyCollection == false || ((LazyCollection) parameters.getAppSettings()).isInitialized()) {
+                ArrayNode appSettingsDictionary = objectMapper.createArrayNode();
+                for (Map.Entry<String, String> entry : parameters.getAppSettings().entrySet()) {
+                    String appSettingsKey = entry.getKey();
+                    String appSettingsValue = entry.getValue();
+                    ObjectNode appSettingsItemObject = objectMapper.createObjectNode();
+                    ((ObjectNode) appSettingsItemObject).put("Name", appSettingsKey);
+                    ((ObjectNode) appSettingsItemObject).put("Value", appSettingsValue);
+                    appSettingsDictionary.add(appSettingsItemObject);
+                }
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("AppSettings", appSettingsDictionary);
             }
         }
-        ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("AppSettings", appSettingsDictionary);
         
         if (parameters.getConnectionStrings() != null) {
-            ArrayNode connectionStringsArray = objectMapper.createArrayNode();
-            for (WebSiteUpdateConfigurationParameters.ConnectionStringInfo connectionStringsItem : parameters.getConnectionStrings()) {
-                ObjectNode connectionStringInfoValue = objectMapper.createObjectNode();
-                connectionStringsArray.add(connectionStringInfoValue);
-                
-                if (connectionStringsItem.getConnectionString() != null) {
-                    ((ObjectNode) connectionStringInfoValue).put("ConnectionString", connectionStringsItem.getConnectionString());
+            if (parameters.getConnectionStrings() instanceof LazyCollection == false || ((LazyCollection) parameters.getConnectionStrings()).isInitialized()) {
+                ArrayNode connectionStringsArray = objectMapper.createArrayNode();
+                for (WebSiteUpdateConfigurationParameters.ConnectionStringInfo connectionStringsItem : parameters.getConnectionStrings()) {
+                    ObjectNode connectionStringInfoValue = objectMapper.createObjectNode();
+                    connectionStringsArray.add(connectionStringInfoValue);
+                    
+                    if (connectionStringsItem.getConnectionString() != null) {
+                        ((ObjectNode) connectionStringInfoValue).put("ConnectionString", connectionStringsItem.getConnectionString());
+                    }
+                    
+                    if (connectionStringsItem.getName() != null) {
+                        ((ObjectNode) connectionStringInfoValue).put("Name", connectionStringsItem.getName());
+                    }
+                    
+                    ((ObjectNode) connectionStringInfoValue).put("Type", connectionStringsItem.getType().ordinal());
                 }
-                
-                if (connectionStringsItem.getName() != null) {
-                    ((ObjectNode) connectionStringInfoValue).put("Name", connectionStringsItem.getName());
-                }
-                
-                ((ObjectNode) connectionStringInfoValue).put("Type", WebSiteManagementClientImpl.connectionStringTypeToString(connectionStringsItem.getType()));
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ConnectionStrings", connectionStringsArray);
             }
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ConnectionStrings", connectionStringsArray);
         }
         
         if (parameters.getDefaultDocuments() != null) {
-            ArrayNode defaultDocumentsArray = objectMapper.createArrayNode();
-            for (String defaultDocumentsItem : parameters.getDefaultDocuments()) {
-                defaultDocumentsArray.add(defaultDocumentsItem);
+            if (parameters.getDefaultDocuments() instanceof LazyCollection == false || ((LazyCollection) parameters.getDefaultDocuments()).isInitialized()) {
+                ArrayNode defaultDocumentsArray = objectMapper.createArrayNode();
+                for (String defaultDocumentsItem : parameters.getDefaultDocuments()) {
+                    defaultDocumentsArray.add(defaultDocumentsItem);
+                }
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("DefaultDocuments", defaultDocumentsArray);
             }
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("DefaultDocuments", defaultDocumentsArray);
         }
         
         if (parameters.isDetailedErrorLoggingEnabled() != null) {
@@ -5666,24 +5846,26 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getHandlerMappings() != null) {
-            ArrayNode handlerMappingsArray = objectMapper.createArrayNode();
-            for (WebSiteUpdateConfigurationParameters.HandlerMapping handlerMappingsItem : parameters.getHandlerMappings()) {
-                ObjectNode handlerMappingValue = objectMapper.createObjectNode();
-                handlerMappingsArray.add(handlerMappingValue);
-                
-                if (handlerMappingsItem.getArguments() != null) {
-                    ((ObjectNode) handlerMappingValue).put("Arguments", handlerMappingsItem.getArguments());
+            if (parameters.getHandlerMappings() instanceof LazyCollection == false || ((LazyCollection) parameters.getHandlerMappings()).isInitialized()) {
+                ArrayNode handlerMappingsArray = objectMapper.createArrayNode();
+                for (WebSiteUpdateConfigurationParameters.HandlerMapping handlerMappingsItem : parameters.getHandlerMappings()) {
+                    ObjectNode handlerMappingValue = objectMapper.createObjectNode();
+                    handlerMappingsArray.add(handlerMappingValue);
+                    
+                    if (handlerMappingsItem.getArguments() != null) {
+                        ((ObjectNode) handlerMappingValue).put("Arguments", handlerMappingsItem.getArguments());
+                    }
+                    
+                    if (handlerMappingsItem.getExtension() != null) {
+                        ((ObjectNode) handlerMappingValue).put("Extension", handlerMappingsItem.getExtension());
+                    }
+                    
+                    if (handlerMappingsItem.getScriptProcessor() != null) {
+                        ((ObjectNode) handlerMappingValue).put("ScriptProcessor", handlerMappingsItem.getScriptProcessor());
+                    }
                 }
-                
-                if (handlerMappingsItem.getExtension() != null) {
-                    ((ObjectNode) handlerMappingValue).put("Extension", handlerMappingsItem.getExtension());
-                }
-                
-                if (handlerMappingsItem.getScriptProcessor() != null) {
-                    ((ObjectNode) handlerMappingValue).put("ScriptProcessor", handlerMappingsItem.getScriptProcessor());
-                }
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("HandlerMappings", handlerMappingsArray);
             }
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("HandlerMappings", handlerMappingsArray);
         }
         
         if (parameters.isHttpLoggingEnabled() != null) {
@@ -5695,21 +5877,23 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getManagedPipelineMode() != null) {
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", WebSiteManagementClientImpl.managedPipelineModeToString(parameters.getManagedPipelineMode()));
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", parameters.getManagedPipelineMode().ordinal());
         }
         
-        ArrayNode metadataDictionary = objectMapper.createArrayNode();
         if (parameters.getMetadata() != null) {
-            for (Map.Entry<String, String> entry2 : parameters.getMetadata().entrySet()) {
-                String metadataKey = entry2.getKey();
-                String metadataValue = entry2.getValue();
-                ObjectNode metadataItemObject = objectMapper.createObjectNode();
-                ((ObjectNode) metadataItemObject).put("Name", metadataKey);
-                ((ObjectNode) metadataItemObject).put("Value", metadataValue);
-                metadataDictionary.add(metadataItemObject);
+            if (parameters.getMetadata() instanceof LazyCollection == false || ((LazyCollection) parameters.getMetadata()).isInitialized()) {
+                ArrayNode metadataDictionary = objectMapper.createArrayNode();
+                for (Map.Entry<String, String> entry2 : parameters.getMetadata().entrySet()) {
+                    String metadataKey = entry2.getKey();
+                    String metadataValue = entry2.getValue();
+                    ObjectNode metadataItemObject = objectMapper.createObjectNode();
+                    ((ObjectNode) metadataItemObject).put("Name", metadataKey);
+                    ((ObjectNode) metadataItemObject).put("Value", metadataValue);
+                    metadataDictionary.add(metadataItemObject);
+                }
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("Metadata", metadataDictionary);
             }
         }
-        ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("Metadata", metadataDictionary);
         
         if (parameters.getNetFrameworkVersion() != null) {
             ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("NetFrameworkVersion", parameters.getNetFrameworkVersion());
@@ -5756,46 +5940,213 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getRoutingRules() != null) {
-            ArrayNode routingRulesArray = objectMapper.createArrayNode();
-            for (RoutingRule routingRulesItem : parameters.getRoutingRules()) {
-                ObjectNode routingRuleValue = objectMapper.createObjectNode();
-                routingRulesArray.add(routingRuleValue);
-                if (routingRulesItem.getClass().isInstance(RampUpRule.class)) {
-                    ((ObjectNode) routingRuleValue).put("__type", "RampUpRule:http://schemas.microsoft.com/windowsazure");
-                    RampUpRule derived = ((RampUpRule) routingRulesItem);
-                    
-                    if (derived.getActionHostName() != null) {
-                        ((ObjectNode) routingRuleValue).put("ActionHostName", derived.getActionHostName());
-                    }
-                    
-                    ((ObjectNode) routingRuleValue).put("ReroutePercentage", derived.getReroutePercentage());
-                    
-                    if (derived.getChangeStep() != null) {
-                        ((ObjectNode) routingRuleValue).put("ChangeStep", derived.getChangeStep());
-                    }
-                    
-                    if (derived.getChangeIntervalInMinutes() != null) {
-                        ((ObjectNode) routingRuleValue).put("ChangeIntervalInMinutes", derived.getChangeIntervalInMinutes());
-                    }
-                    
-                    if (derived.getMinReroutePercentage() != null) {
-                        ((ObjectNode) routingRuleValue).put("MinReroutePercentage", derived.getMinReroutePercentage());
-                    }
-                    
-                    if (derived.getMaxReroutePercentage() != null) {
-                        ((ObjectNode) routingRuleValue).put("MaxReroutePercentage", derived.getMaxReroutePercentage());
-                    }
-                    
-                    if (derived.getChangeDecisionCallbackUrl() != null) {
-                        ((ObjectNode) routingRuleValue).put("ChangeDecisionCallbackUrl", derived.getChangeDecisionCallbackUrl());
-                    }
-                    
-                    if (derived.getName() != null) {
-                        ((ObjectNode) routingRuleValue).put("Name", derived.getName());
+            if (parameters.getRoutingRules() instanceof LazyCollection == false || ((LazyCollection) parameters.getRoutingRules()).isInitialized()) {
+                ArrayNode routingRulesArray = objectMapper.createArrayNode();
+                for (RoutingRule routingRulesItem : parameters.getRoutingRules()) {
+                    ObjectNode routingRuleValue = objectMapper.createObjectNode();
+                    routingRulesArray.add(routingRuleValue);
+                    if (routingRulesItem instanceof RampUpRule) {
+                        ((ObjectNode) routingRuleValue).put("__type", "RampUpRule:http://schemas.microsoft.com/windowsazure");
+                        RampUpRule derived = ((RampUpRule) routingRulesItem);
+                        
+                        if (derived.getActionHostName() != null) {
+                            ((ObjectNode) routingRuleValue).put("ActionHostName", derived.getActionHostName());
+                        }
+                        
+                        ((ObjectNode) routingRuleValue).put("ReroutePercentage", derived.getReroutePercentage());
+                        
+                        if (derived.getChangeStep() != null) {
+                            ((ObjectNode) routingRuleValue).put("ChangeStep", derived.getChangeStep());
+                        }
+                        
+                        if (derived.getChangeIntervalInMinutes() != null) {
+                            ((ObjectNode) routingRuleValue).put("ChangeIntervalInMinutes", derived.getChangeIntervalInMinutes());
+                        }
+                        
+                        if (derived.getMinReroutePercentage() != null) {
+                            ((ObjectNode) routingRuleValue).put("MinReroutePercentage", derived.getMinReroutePercentage());
+                        }
+                        
+                        if (derived.getMaxReroutePercentage() != null) {
+                            ((ObjectNode) routingRuleValue).put("MaxReroutePercentage", derived.getMaxReroutePercentage());
+                        }
+                        
+                        if (derived.getChangeDecisionCallbackUrl() != null) {
+                            ((ObjectNode) routingRuleValue).put("ChangeDecisionCallbackUrl", derived.getChangeDecisionCallbackUrl());
+                        }
+                        
+                        if (derived.getName() != null) {
+                            ((ObjectNode) routingRuleValue).put("Name", derived.getName());
+                        }
                     }
                 }
+                ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("RoutingRules", routingRulesArray);
             }
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("RoutingRules", routingRulesArray);
+        }
+        
+        if (parameters.getJavaVersion() != null) {
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("JavaVersion", parameters.getJavaVersion());
+        }
+        
+        if (parameters.getJavaContainer() != null) {
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("JavaContainer", parameters.getJavaContainer());
+        }
+        
+        if (parameters.getJavaContainerVersion() != null) {
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("JavaContainerVersion", parameters.getJavaContainerVersion());
+        }
+        
+        if (parameters.getAutoSwapSlotName() != null) {
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("AutoSwapSlotName", parameters.getAutoSwapSlotName());
+        }
+        
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, requestDoc);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> updateSlotConfigNamesAsync(final String webSpaceName, final String webSiteName, final SlotConfigNamesUpdate parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return updateSlotConfigNames(webSpaceName, webSiteName, parameters);
+            }
+         });
+    }
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse updateSlotConfigNames(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters) throws IOException, ServiceException {
+        // Validate
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateSlotConfigNamesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/slotConfigNames";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("accept", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        JsonNode requestDoc = null;
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode slotConfigNamesUpdateValue = objectMapper.createObjectNode();
+        requestDoc = slotConfigNamesUpdateValue;
+        
+        if (parameters.getConnectionStringNames() != null) {
+            if (parameters.getConnectionStringNames() instanceof LazyCollection == false || ((LazyCollection) parameters.getConnectionStringNames()).isInitialized()) {
+                ArrayNode connectionStringNamesArray = objectMapper.createArrayNode();
+                for (String connectionStringNamesItem : parameters.getConnectionStringNames()) {
+                    connectionStringNamesArray.add(connectionStringNamesItem);
+                }
+                ((ObjectNode) slotConfigNamesUpdateValue).put("ConnectionStringNames", connectionStringNamesArray);
+            }
+        }
+        
+        if (parameters.getAppSettingNames() != null) {
+            if (parameters.getAppSettingNames() instanceof LazyCollection == false || ((LazyCollection) parameters.getAppSettingNames()).isInitialized()) {
+                ArrayNode appSettingNamesArray = objectMapper.createArrayNode();
+                for (String appSettingNamesItem : parameters.getAppSettingNames()) {
+                    appSettingNamesArray.add(appSettingNamesItem);
+                }
+                ((ObjectNode) slotConfigNamesUpdateValue).put("AppSettingNames", appSettingNamesArray);
+            }
         }
         
         StringWriter stringWriter = new StringWriter();

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -120,8 +121,8 @@ public class WebSiteUpdateParameters {
     *
     */
     public WebSiteUpdateParameters() {
-        this.setHostNames(new ArrayList<String>());
-        this.setHostNameSslStates(new ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>());
+        this.setHostNames(new LazyArrayList<String>());
+        this.setHostNameSslStates(new LazyArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>());
     }
     
     /**
