@@ -260,4 +260,22 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         
         Assert.assertEquals(expectUri.getHost(), uri.getHost());     
     }
+    
+    @Test
+    public void verifyUserAgentHeaderContainsSdkString() throws Exception {
+        // reinitialize configuration from known state
+        Configuration config = createConfiguration();
+
+        createManagementClient(config);
+
+        TestRequestFilter testFilter = new TestRequestFilter("filterUserAgent");
+        ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
+
+        // Executing operation on the filtered service should execute the filter
+        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
+
+        String userAgent = testFilter.getUserAgent();
+        Assert.assertNotNull(userAgent);
+        Assert.assertTrue(userAgent.contains("Azure-SDK-For-Java"));
+    }
 }
