@@ -17,8 +17,7 @@ package com.microsoft.windowsazure.management.compute.models;
 
 import java.net.URI;
 
-import com.microsoft.windowsazure.storage.blob.ListBlobItem;
-
+import com.microsoft.azure.storage.blob.ListBlobItem;
 
 public class MockListBlobItem{
     public MockCloudPageBlob pageBlob;

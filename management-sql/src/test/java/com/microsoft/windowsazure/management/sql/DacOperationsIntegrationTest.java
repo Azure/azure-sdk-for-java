@@ -113,6 +113,6 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         // act 
         DacExportParameters dacExportParameters = new DacExportParameters();
         dacExportParameters.setBlobCredentials(blobCredentialsValue);
-        dacOperations.export(serverName, dacExportParameters);
+        dacOperations.exportDatabase(serverName, dacExportParameters);
     }
 }

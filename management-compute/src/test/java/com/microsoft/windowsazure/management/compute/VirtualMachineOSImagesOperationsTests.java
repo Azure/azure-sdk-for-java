@@ -18,21 +18,14 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.azure.storage.StorageException;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.Ignore;
 
 public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {

@@ -121,6 +121,7 @@ public abstract class SqlManagementIntegrationTestBase extends MockIntegrationTe
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
         createParameters.setLocation(testLocationValue);
+        createParameters.setAccountType("Standard_LRS");
         storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();

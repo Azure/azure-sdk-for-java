@@ -96,7 +96,8 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
-        createParameters.setLocation(storageLocation);       
+        createParameters.setLocation(storageLocation);      
+        createParameters.setAccountType("Standard_LRS");
      
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -116,7 +117,8 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
         createParameters.setLocation(storageLocation); 
-
+        createParameters.setAccountType("Standard_LRS");
+        
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
 
@@ -200,6 +202,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(expectedStorageAccountName);
         createParameters.setLocation(storageLocation);
         createParameters.setLabel(expectedStorageAccountLabel);
+        createParameters.setAccountType("Standard_LRS");
         
         //Act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 

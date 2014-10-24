@@ -51,7 +51,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKey
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
-import com.microsoft.windowsazure.*;
 
 public abstract class ComputeManagementIntegrationTestBase extends MockIntegrationTestBase{
     protected static String testVMPrefix = "aztst";
@@ -137,6 +136,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         createParameters.setLabel(storageAccountLabel);
         //required if no affinity group has set
         createParameters.setLocation(vmLocation);
+        createParameters.setAccountType("Standard_LRS");
 
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
