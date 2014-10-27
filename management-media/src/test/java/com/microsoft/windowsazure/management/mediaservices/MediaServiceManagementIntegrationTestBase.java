@@ -119,6 +119,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
         createParameters.setLabel(storageAccountLabel);
         //required if no affinity group has set
         createParameters.setLocation(storageLocation);
+        createParameters.setAccountType("Standard_LRS");
 
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 

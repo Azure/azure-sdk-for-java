@@ -23,80 +23,13 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
 * Parameters supplied to the Update Web Site operation.
 */
 public class WebSiteUpdateParameters {
-    private WebSpaceAvailabilityState availabilityState;
-    
-    /**
-    * Optional. The state of the availability of management information for the
-    * web site. Possible values are Normal or Limited. Normal means that the
-    * web site is running correctly and that management information for the
-    * web site is available. Limited means that only partial management
-    * information for the web site is available and that detailed web site
-    * information is unavailable.
-    * @return The AvailabilityState value.
-    */
-    public WebSpaceAvailabilityState getAvailabilityState() {
-        return this.availabilityState;
-    }
-    
-    /**
-    * Optional. The state of the availability of management information for the
-    * web site. Possible values are Normal or Limited. Normal means that the
-    * web site is running correctly and that management information for the
-    * web site is available. Limited means that only partial management
-    * information for the web site is available and that detailed web site
-    * information is unavailable.
-    * @param availabilityStateValue The AvailabilityState value.
-    */
-    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
-        this.availabilityState = availabilityStateValue;
-    }
-    
-    private WebSiteComputeMode computeMode;
-    
-    /**
-    * Optional. The Compute Mode for the web site. Possible values are Shared
-    * or Dedicated.
-    * @return The ComputeMode value.
-    */
-    public WebSiteComputeMode getComputeMode() {
-        return this.computeMode;
-    }
-    
-    /**
-    * Optional. The Compute Mode for the web site. Possible values are Shared
-    * or Dedicated.
-    * @param computeModeValue The ComputeMode value.
-    */
-    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
-        this.computeMode = computeModeValue;
-    }
-    
-    private Boolean enabled;
-    
-    /**
-    * Optional. Indicates if the site is enabled. Setting this value to false
-    * disables the site (takes the site offline).
-    * @return The Enabled value.
-    */
-    public Boolean isEnabled() {
-        return this.enabled;
-    }
-    
-    /**
-    * Optional. Indicates if the site is enabled. Setting this value to false
-    * disables the site (takes the site offline).
-    * @param enabledValue The Enabled value.
-    */
-    public void setEnabled(final Boolean enabledValue) {
-        this.enabled = enabledValue;
-    }
-    
     private ArrayList<String> hostNames;
     
     /**
@@ -128,7 +61,7 @@ public class WebSiteUpdateParameters {
     private ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStates;
     
     /**
-    * Optional. SSL states bound to the web site.
+    * Optional. SSL states of host names bound to the web site.
     * @return The HostNameSslStates value.
     */
     public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates() {
@@ -136,46 +69,18 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * Optional. SSL states bound to the web site.
+    * Optional. SSL states of host names bound to the web site.
     * @param hostNameSslStatesValue The HostNameSslStates value.
     */
     public void setHostNameSslStates(final ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStatesValue) {
         this.hostNameSslStates = hostNameSslStatesValue;
     }
     
-    private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
-    
-    /**
-    * Optional. The current runtime availability state. Possible values are
-    * Normal, Degraded, or NotAvailable: Normal: the web site is running
-    * correctly; Degraded: the web site is running temporarily in a degraded
-    * mode (typically with less memory and a shared instance). Not Available:
-    * due to an unexpected issue, the web site has been excluded from
-    * provisioning. This typically occurs only for free sites.
-    * @return The RuntimeAvailabilityState value.
-    */
-    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
-        return this.runtimeAvailabilityState;
-    }
-    
-    /**
-    * Optional. The current runtime availability state. Possible values are
-    * Normal, Degraded, or NotAvailable: Normal: the web site is running
-    * correctly; Degraded: the web site is running temporarily in a degraded
-    * mode (typically with less memory and a shared instance). Not Available:
-    * due to an unexpected issue, the web site has been excluded from
-    * provisioning. This typically occurs only for free sites.
-    * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
-    */
-    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
-        this.runtimeAvailabilityState = runtimeAvailabilityStateValue;
-    }
-    
     private String serverFarm;
     
     /**
-    * Optional. String specifying the server farm. If a server farm exists,
-    * this value is DefaultServerFarm.
+    * Optional. String specifying the Server Farm (Web Hosting Plan) where to
+    * place the site. Server Farm must exist.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -183,54 +88,12 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * Optional. String specifying the server farm. If a server farm exists,
-    * this value is DefaultServerFarm.
+    * Optional. String specifying the Server Farm (Web Hosting Plan) where to
+    * place the site. Server Farm must exist.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
         this.serverFarm = serverFarmValue;
-    }
-    
-    private WebSiteMode siteMode;
-    
-    /**
-    * Optional. String that represents the web site mode. If the web site mode
-    * is Free, this value is Limited. If the web site mode is Shared, this
-    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
-    * Reserved mode uses the ComputeMode setting.
-    * @return The SiteMode value.
-    */
-    public WebSiteMode getSiteMode() {
-        return this.siteMode;
-    }
-    
-    /**
-    * Optional. String that represents the web site mode. If the web site mode
-    * is Free, this value is Limited. If the web site mode is Shared, this
-    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
-    * Reserved mode uses the ComputeMode setting.
-    * @param siteModeValue The SiteMode value.
-    */
-    public void setSiteMode(final WebSiteMode siteModeValue) {
-        this.siteMode = siteModeValue;
-    }
-    
-    private ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificates;
-    
-    /**
-    * Optional. SSL certificates bound to the web site.
-    * @return The SslCertificates value.
-    */
-    public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates() {
-        return this.sslCertificates;
-    }
-    
-    /**
-    * Optional. SSL certificates bound to the web site.
-    * @param sslCertificatesValue The SslCertificates value.
-    */
-    public void setSslCertificates(final ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificatesValue) {
-        this.sslCertificates = sslCertificatesValue;
     }
     
     private String state;
@@ -258,19 +121,36 @@ public class WebSiteUpdateParameters {
     *
     */
     public WebSiteUpdateParameters() {
-        this.setHostNames(new ArrayList<String>());
-        this.setHostNameSslStates(new ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>());
-        this.setSslCertificates(new ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate>());
+        this.setHostNames(new LazyArrayList<String>());
+        this.setHostNameSslStates(new LazyArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>());
     }
     
     /**
-    * SSL state bound to the web site.
+    * SSL state of a site's hostname.
     */
     public static class WebSiteHostNameSslState {
+        private String name;
+        
+        /**
+        * Required. The host name.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Required. The host name.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
+        
         private WebSiteSslState sslState;
         
         /**
-        * Optional. The SSL state. Possible values are Disabled, SniEnabled, or
+        * Required. The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         * @return The SslState value.
         */
@@ -279,7 +159,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * Optional. The SSL state. Possible values are Disabled, SniEnabled, or
+        * Required. The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         * @param sslStateValue The SslState value.
         */
@@ -307,101 +187,46 @@ public class WebSiteUpdateParameters {
             this.thumbprint = thumbprintValue;
         }
         
-        private Boolean toUpdate;
+        private boolean toUpdate;
         
         /**
-        * Optional. Indicates whether the SSL state will be updated.
+        * Required. Indicates whether the SSL state will be updated.
         * @return The ToUpdate value.
         */
-        public Boolean isToUpdate() {
+        public boolean isToUpdate() {
             return this.toUpdate;
         }
         
         /**
-        * Optional. Indicates whether the SSL state will be updated.
+        * Required. Indicates whether the SSL state will be updated.
         * @param toUpdateValue The ToUpdate value.
         */
-        public void setToUpdate(final Boolean toUpdateValue) {
+        public void setToUpdate(final boolean toUpdateValue) {
             this.toUpdate = toUpdateValue;
         }
-    }
-    
-    /**
-    * The properties for an SSL certificate.
-    */
-    public static class WebSiteSslCertificate {
-        private Boolean isToBeDeleted;
         
         /**
-        * Optional. Indicates if the certificate is to be deleted.
-        * @return The IsToBeDeleted value.
+        * Initializes a new instance of the WebSiteHostNameSslState class.
+        *
         */
-        public Boolean isToBeDeleted() {
-            return this.isToBeDeleted;
+        public WebSiteHostNameSslState() {
         }
         
         /**
-        * Optional. Indicates if the certificate is to be deleted.
-        * @param isToBeDeletedValue The IsToBeDeleted value.
+        * Initializes a new instance of the WebSiteHostNameSslState class with
+        * required arguments.
+        *
         */
-        public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
-            this.isToBeDeleted = isToBeDeletedValue;
-        }
-        
-        private String password;
-        
-        /**
-        * Optional. A string that contains the password for the certificate.
-        * @return The Password value.
-        */
-        public String getPassword() {
-            return this.password;
-        }
-        
-        /**
-        * Optional. A string that contains the password for the certificate.
-        * @param passwordValue The Password value.
-        */
-        public void setPassword(final String passwordValue) {
-            this.password = passwordValue;
-        }
-        
-        private byte[] pfxBlob;
-        
-        /**
-        * Optional. A base64Binary value that contains the PfxBlob of the
-        * certificate.
-        * @return The PfxBlob value.
-        */
-        public byte[] getPfxBlob() {
-            return this.pfxBlob;
-        }
-        
-        /**
-        * Optional. A base64Binary value that contains the PfxBlob of the
-        * certificate.
-        * @param pfxBlobValue The PfxBlob value.
-        */
-        public void setPfxBlob(final byte[] pfxBlobValue) {
-            this.pfxBlob = pfxBlobValue;
-        }
-        
-        private String thumbprint;
-        
-        /**
-        * Optional. A string that contains the certificate thumbprint.
-        * @return The Thumbprint value.
-        */
-        public String getThumbprint() {
-            return this.thumbprint;
-        }
-        
-        /**
-        * Optional. A string that contains the certificate thumbprint.
-        * @param thumbprintValue The Thumbprint value.
-        */
-        public void setThumbprint(final String thumbprintValue) {
-            this.thumbprint = thumbprintValue;
+        public WebSiteHostNameSslState(String name, WebSiteSslState sslState, boolean toUpdate) {
+            if (name == null) {
+                throw new NullPointerException("name");
+            }
+            if (sslState == null) {
+                throw new NullPointerException("sslState");
+            }
+            this.setName(name);
+            this.setSslState(sslState);
+            this.setToUpdate(toUpdate);
         }
     }
 }

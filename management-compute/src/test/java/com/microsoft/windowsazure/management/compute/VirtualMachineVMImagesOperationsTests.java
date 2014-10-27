@@ -21,10 +21,8 @@ package com.microsoft.windowsazure.management.compute;
 import java.util.ArrayList;
 
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;

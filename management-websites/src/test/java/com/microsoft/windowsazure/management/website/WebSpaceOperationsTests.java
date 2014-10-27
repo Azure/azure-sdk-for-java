@@ -25,8 +25,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
@@ -51,13 +49,6 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @AfterClass
     public static void cleanup() throws Exception {
         setupTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
-        String webSpaceName = "northcentraluswebspace"; 
-        try {
-            webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
-        }
-        catch (ServiceException e) {
-            e.printStackTrace();
-        }
         resetTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 

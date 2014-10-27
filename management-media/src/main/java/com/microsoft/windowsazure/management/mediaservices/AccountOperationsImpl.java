@@ -60,6 +60,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.NullNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -187,8 +188,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -197,6 +198,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -275,26 +277,26 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 MediaServicesCreatedAccount accountInstance = new MediaServicesCreatedAccount();
                 result.setAccount(accountInstance);
                 
                 JsonNode accountIdValue = responseDoc.get("AccountId");
-                if (accountIdValue != null) {
+                if (accountIdValue != null && accountIdValue instanceof NullNode == false) {
                     String accountIdInstance;
                     accountIdInstance = accountIdValue.getTextValue();
                     accountInstance.setAccountId(accountIdInstance);
                 }
                 
                 JsonNode accountNameValue = responseDoc.get("AccountName");
-                if (accountNameValue != null) {
+                if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
                     String accountNameInstance;
                     accountNameInstance = accountNameValue.getTextValue();
                     accountInstance.setAccountName(accountNameInstance);
                 }
                 
                 JsonNode subscriptionValue = responseDoc.get("Subscription");
-                if (subscriptionValue != null) {
+                if (subscriptionValue != null && subscriptionValue instanceof NullNode == false) {
                     String subscriptionInstance;
                     subscriptionInstance = subscriptionValue.getTextValue();
                     accountInstance.setSubscriptionId(subscriptionInstance);
@@ -369,8 +371,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -379,6 +381,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -474,8 +477,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -484,6 +487,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -521,38 +525,38 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
                 responseDoc = objectMapper.readTree(responseContent);
             }
             
-            if (responseDoc != null) {
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
                 MediaServicesAccount accountInstance = new MediaServicesAccount();
                 result.setAccount(accountInstance);
                 
                 JsonNode accountNameValue = responseDoc.get("AccountName");
-                if (accountNameValue != null) {
+                if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
                     String accountNameInstance;
                     accountNameInstance = accountNameValue.getTextValue();
                     accountInstance.setAccountName(accountNameInstance);
                 }
                 
                 JsonNode accountKeyValue = responseDoc.get("AccountKey");
-                if (accountKeyValue != null) {
+                if (accountKeyValue != null && accountKeyValue instanceof NullNode == false) {
                     String accountKeyInstance;
                     accountKeyInstance = accountKeyValue.getTextValue();
                     accountInstance.setAccountKey(accountKeyInstance);
                 }
                 
                 JsonNode accountKeysValue = responseDoc.get("AccountKeys");
-                if (accountKeysValue != null) {
+                if (accountKeysValue != null && accountKeysValue instanceof NullNode == false) {
                     MediaServicesAccount.AccountKeys accountKeysInstance = new MediaServicesAccount.AccountKeys();
                     accountInstance.setStorageAccountKeys(accountKeysInstance);
                     
                     JsonNode primaryValue = accountKeysValue.get("Primary");
-                    if (primaryValue != null) {
+                    if (primaryValue != null && primaryValue instanceof NullNode == false) {
                         String primaryInstance;
                         primaryInstance = primaryValue.getTextValue();
                         accountKeysInstance.setPrimary(primaryInstance);
                     }
                     
                     JsonNode secondaryValue = accountKeysValue.get("Secondary");
-                    if (secondaryValue != null) {
+                    if (secondaryValue != null && secondaryValue instanceof NullNode == false) {
                         String secondaryInstance;
                         secondaryInstance = secondaryValue.getTextValue();
                         accountKeysInstance.setSecondary(secondaryInstance);
@@ -560,14 +564,14 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
                 }
                 
                 JsonNode accountRegionValue = responseDoc.get("AccountRegion");
-                if (accountRegionValue != null) {
+                if (accountRegionValue != null && accountRegionValue instanceof NullNode == false) {
                     String accountRegionInstance;
                     accountRegionInstance = accountRegionValue.getTextValue();
                     accountInstance.setAccountRegion(accountRegionInstance);
                 }
                 
                 JsonNode storageAccountNameValue = responseDoc.get("StorageAccountName");
-                if (storageAccountNameValue != null) {
+                if (storageAccountNameValue != null && storageAccountNameValue instanceof NullNode == false) {
                     String storageAccountNameInstance;
                     storageAccountNameInstance = storageAccountNameValue.getTextValue();
                     accountInstance.setStorageAccountName(storageAccountNameInstance);
@@ -642,8 +646,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -652,6 +656,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -812,8 +817,8 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
         String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim() + "/AccountKeys/" + keyType + "/Regenerate";
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -822,6 +827,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);

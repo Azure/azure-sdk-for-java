@@ -80,19 +80,19 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
     /**
     * Issues a recovery request for an Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
     * @param parameters Required. Additional parameters for the Create Recover
     * Database Operation request.
     * @return Contains the response to the Create Recover Database Operation
     * request.
     */
     @Override
-    public Future<RecoverDatabaseOperationCreateResponse> createAsync(final String targetServerName, final RecoverDatabaseOperationCreateParameters parameters) {
+    public Future<RecoverDatabaseOperationCreateResponse> createAsync(final String sourceServerName, final RecoverDatabaseOperationCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<RecoverDatabaseOperationCreateResponse>() { 
             @Override
             public RecoverDatabaseOperationCreateResponse call() throws Exception {
-                return create(targetServerName, parameters);
+                return create(sourceServerName, parameters);
             }
          });
     }
@@ -100,8 +100,8 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
     /**
     * Issues a recovery request for an Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
     * @param parameters Required. Additional parameters for the Create Recover
     * Database Operation request.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -118,10 +118,10 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
     * request.
     */
     @Override
-    public RecoverDatabaseOperationCreateResponse create(String targetServerName, RecoverDatabaseOperationCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public RecoverDatabaseOperationCreateResponse create(String sourceServerName, RecoverDatabaseOperationCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (targetServerName == null) {
-            throw new NullPointerException("targetServerName");
+        if (sourceServerName == null) {
+            throw new NullPointerException("sourceServerName");
         }
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -136,13 +136,13 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("targetServerName", targetServerName);
+            tracingParameters.put("sourceServerName", sourceServerName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + targetServerName.trim() + "/recoverdatabaseoperations";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + sourceServerName.trim() + "/recoverdatabaseoperations";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -174,10 +174,10 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
         sourceDatabaseNameElement.appendChild(requestDoc.createTextNode(parameters.getSourceDatabaseName()));
         serviceResourceElement.appendChild(sourceDatabaseNameElement);
         
-        if (parameters.getSourceServerName() != null) {
-            Element sourceServerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceServerName");
-            sourceServerNameElement.appendChild(requestDoc.createTextNode(parameters.getSourceServerName()));
-            serviceResourceElement.appendChild(sourceServerNameElement);
+        if (parameters.getTargetServerName() != null) {
+            Element targetServerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetServerName");
+            targetServerNameElement.appendChild(requestDoc.createTextNode(parameters.getTargetServerName()));
+            serviceResourceElement.appendChild(targetServerNameElement);
         }
         
         if (parameters.getTargetDatabaseName() != null) {
@@ -238,18 +238,18 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
                     serviceResourceInstance.setId(requestIDInstance);
                 }
                 
-                Element sourceServerNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "SourceServerName");
-                if (sourceServerNameElement2 != null) {
-                    String sourceServerNameInstance;
-                    sourceServerNameInstance = sourceServerNameElement2.getTextContent();
-                    serviceResourceInstance.setSourceServerName(sourceServerNameInstance);
-                }
-                
                 Element sourceDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "SourceDatabaseName");
                 if (sourceDatabaseNameElement2 != null) {
                     String sourceDatabaseNameInstance;
                     sourceDatabaseNameInstance = sourceDatabaseNameElement2.getTextContent();
                     serviceResourceInstance.setSourceDatabaseName(sourceDatabaseNameInstance);
+                }
+                
+                Element targetServerNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetServerName");
+                if (targetServerNameElement2 != null) {
+                    String targetServerNameInstance;
+                    targetServerNameInstance = targetServerNameElement2.getTextContent();
+                    serviceResourceInstance.setTargetServerName(targetServerNameInstance);
                 }
                 
                 Element targetDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetDatabaseName");

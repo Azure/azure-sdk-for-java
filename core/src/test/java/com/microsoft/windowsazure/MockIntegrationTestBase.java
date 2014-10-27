@@ -56,8 +56,11 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 public class MockIntegrationTestBase {
-    protected final static Boolean IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
-    protected final static Boolean IS_RECORD = System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record");
+    protected final static Boolean IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null ?
+    		System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback") : true;
+    protected final static Boolean IS_RECORD = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null ?
+    		System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record") : false;
+
     private final static String RECORD_FOLDER = "session-records/";
     private final static String SUBSCRIPTION_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     protected final static String CLEANUP_SUFFIX = "Cleanup";

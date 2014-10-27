@@ -24,10 +24,7 @@ import java.util.ArrayList;
 import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.Ignore;
 
 public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrationTestBase {

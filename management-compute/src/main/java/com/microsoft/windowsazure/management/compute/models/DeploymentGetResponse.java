@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -513,10 +515,10 @@ public class DeploymentGetResponse extends OperationResponse {
     */
     public DeploymentGetResponse() {
         super();
-        this.setExtendedProperties(new HashMap<String, String>());
-        this.setLoadBalancers(new ArrayList<LoadBalancer>());
-        this.setRoleInstances(new ArrayList<RoleInstance>());
-        this.setRoles(new ArrayList<Role>());
-        this.setVirtualIPAddresses(new ArrayList<VirtualIPAddress>());
+        this.setExtendedProperties(new LazyHashMap<String, String>());
+        this.setLoadBalancers(new LazyArrayList<LoadBalancer>());
+        this.setRoleInstances(new LazyArrayList<RoleInstance>());
+        this.setRoles(new LazyArrayList<Role>());
+        this.setVirtualIPAddresses(new LazyArrayList<VirtualIPAddress>());
     }
 }

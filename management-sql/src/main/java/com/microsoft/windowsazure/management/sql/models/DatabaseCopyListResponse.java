@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class DatabaseCopyListResponse extends OperationResponse implements Itera
     */
     public DatabaseCopyListResponse() {
         super();
-        this.setDatabaseCopies(new ArrayList<DatabaseCopy>());
+        this.setDatabaseCopies(new LazyArrayList<DatabaseCopy>());
     }
     
     /**

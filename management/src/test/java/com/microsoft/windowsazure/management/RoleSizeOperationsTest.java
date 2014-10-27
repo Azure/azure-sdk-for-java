@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 
-public class RoleSizeOperationsTest  extends ManagementIntegrationTestBase { 
+public class RoleSizeOperationsTest extends ManagementIntegrationTestBase { 
     @BeforeClass
     public static void setup() throws Exception {
         createService();

@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -45,9 +45,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-
-    <jackson.version>2.1.1</jackson.version>
-    <spring.version>3.0.7.RELEASE</spring.version>
   </properties>
 
   <developers>
@@ -70,6 +67,10 @@
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
     </dependency>
 
     <!-- Test dependencies -->

@@ -30,6 +30,42 @@ import java.net.InetAddress;
 * A standard service response including an HTTP status code and request ID.
 */
 public class GatewayGetResponse extends OperationResponse {
+    private GatewayDefaultSite defaultSite;
+    
+    /**
+    * Optional. The default site on the gateway.
+    * @return The DefaultSite value.
+    */
+    public GatewayDefaultSite getDefaultSite() {
+        return this.defaultSite;
+    }
+    
+    /**
+    * Optional. The default site on the gateway.
+    * @param defaultSiteValue The DefaultSite value.
+    */
+    public void setDefaultSite(final GatewayDefaultSite defaultSiteValue) {
+        this.defaultSite = defaultSiteValue;
+    }
+    
+    private GatewaySKU gatewaySKU;
+    
+    /**
+    * Optional. The SKU for this virtual network gateway.
+    * @return The GatewaySKU value.
+    */
+    public GatewaySKU getGatewaySKU() {
+        return this.gatewaySKU;
+    }
+    
+    /**
+    * Optional. The SKU for this virtual network gateway.
+    * @param gatewaySKUValue The GatewaySKU value.
+    */
+    public void setGatewaySKU(final GatewaySKU gatewaySKUValue) {
+        this.gatewaySKU = gatewaySKUValue;
+    }
+    
     private GatewayType gatewayType;
     
     /**

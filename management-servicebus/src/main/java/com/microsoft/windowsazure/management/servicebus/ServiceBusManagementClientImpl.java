@@ -233,7 +233,6 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
