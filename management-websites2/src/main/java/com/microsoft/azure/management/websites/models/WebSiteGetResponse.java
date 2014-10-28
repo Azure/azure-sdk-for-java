@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The Get Web Site Details operation response.
+*/
+public class WebSiteGetResponse extends OperationResponse {
+    private WebSite webSite;
+    
+    /**
+    * Optional. Details for the requested website.
+    * @return The WebSite value.
+    */
+    public WebSite getWebSite() {
+        return this.webSite;
+    }
+    
+    /**
+    * Optional. Details for the requested website.
+    * @param webSiteValue The WebSite value.
+    */
+    public void setWebSite(final WebSite webSiteValue) {
+        this.webSite = webSiteValue;
+    }
 }

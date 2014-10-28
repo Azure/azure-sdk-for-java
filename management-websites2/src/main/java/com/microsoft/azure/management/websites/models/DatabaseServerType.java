@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* Type of Database
+*/
+public enum DatabaseServerType {
+    /**
+    * My SQL Server
+    */
+    MySql,
+    
+    /**
+    * MS SQL server
+    */
+    SQLServer,
+    
+    /**
+    * SQL Azure
+    */
+    SQLAzure,
+    
+    /**
+    * Custom SQL Server
+    */
+    Custom,
 }

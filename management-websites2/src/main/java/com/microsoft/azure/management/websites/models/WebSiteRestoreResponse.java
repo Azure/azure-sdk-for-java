@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Restore operation information.
+*/
+public class WebSiteRestoreResponse extends OperationResponse {
+    private String operationId;
+    
+    /**
+    * Optional. OperationId for the restore operation.
+    * @return The OperationId value.
+    */
+    public String getOperationId() {
+        return this.operationId;
+    }
+    
+    /**
+    * Optional. OperationId for the restore operation.
+    * @param operationIdValue The OperationId value.
+    */
+    public void setOperationId(final String operationIdValue) {
+        this.operationId = operationIdValue;
+    }
 }

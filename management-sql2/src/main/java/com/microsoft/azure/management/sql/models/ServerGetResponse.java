@@ -21,12 +21,31 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.sql.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Represents the response to a Get Database request.
+*/
+public class ServerGetResponse extends OperationResponse {
+    private Server server;
+    
+    /**
+    * Optional. Gets or sets the object representing the Azure Sql Database
+    * server.
+    * @return The Server value.
+    */
+    public Server getServer() {
+        return this.server;
+    }
+    
+    /**
+    * Optional. Gets or sets the object representing the Azure Sql Database
+    * server.
+    * @param serverValue The Server value.
+    */
+    public void setServer(final Server serverValue) {
+        this.server = serverValue;
+    }
 }

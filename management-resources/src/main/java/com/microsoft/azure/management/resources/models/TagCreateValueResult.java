@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Tag information.
+*/
+public class TagCreateValueResult extends OperationResponse {
+    private TagValue value;
+    
+    /**
+    * Optional. Gets or sets the tag value.
+    * @return The Value value.
+    */
+    public TagValue getValue() {
+        return this.value;
+    }
+    
+    /**
+    * Optional. Gets or sets the tag value.
+    * @param valueValue The Value value.
+    */
+    public void setValue(final TagValue valueValue) {
+        this.value = valueValue;
+    }
 }

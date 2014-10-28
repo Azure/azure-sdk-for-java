@@ -21,12 +21,31 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Resource group information.
+*/
+public class ResourceGroupExistsResult extends OperationResponse {
+    private boolean exists;
+    
+    /**
+    * Optional. Gets or sets the value indicating whether the resource group
+    * exists.
+    * @return The Exists value.
+    */
+    public boolean isExists() {
+        return this.exists;
+    }
+    
+    /**
+    * Optional. Gets or sets the value indicating whether the resource group
+    * exists.
+    * @param existsValue The Exists value.
+    */
+    public void setExists(final boolean existsValue) {
+        this.exists = existsValue;
+    }
 }

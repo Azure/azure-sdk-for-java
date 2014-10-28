@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Resource group information.
+*/
+public class ResourceGroupGetResult extends OperationResponse {
+    private ResourceGroup resourceGroup;
+    
+    /**
+    * Optional. Gets or sets the resource group.
+    * @return The ResourceGroup value.
+    */
+    public ResourceGroup getResourceGroup() {
+        return this.resourceGroup;
+    }
+    
+    /**
+    * Optional. Gets or sets the resource group.
+    * @param resourceGroupValue The ResourceGroup value.
+    */
+    public void setResourceGroup(final ResourceGroup resourceGroupValue) {
+        this.resourceGroup = resourceGroupValue;
+    }
 }

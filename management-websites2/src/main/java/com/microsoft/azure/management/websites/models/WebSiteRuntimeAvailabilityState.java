@@ -21,12 +21,26 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* The runtime availability of a website.
+*/
+public enum WebSiteRuntimeAvailabilityState {
+    /**
+    * The web site is running correctly.
+    */
+    Normal,
+    
+    /**
+    * The web site is running temporarily in a degraded mode (typically with
+    * less memory and a shared instance).
+    */
+    Degraded,
+    
+    /**
+    * Due to an unexpected issue, the site has been excluded from provisioning.
+    * This typically occurs only for free sites.
+    */
+    NotAvailable,
 }

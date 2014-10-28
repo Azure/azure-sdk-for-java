@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* List of connection strings for the website.
+*/
+public class WebSiteConnectionStringsResult extends OperationResponse {
+    private WebSiteConnectionStringsEnvelope resource;
+    
+    /**
+    * Optional. Connection strings configuration for a site.
+    * @return The Resource value.
+    */
+    public WebSiteConnectionStringsEnvelope getResource() {
+        return this.resource;
+    }
+    
+    /**
+    * Optional. Connection strings configuration for a site.
+    * @param resourceValue The Resource value.
+    */
+    public void setResource(final WebSiteConnectionStringsEnvelope resourceValue) {
+        this.resource = resourceValue;
+    }
 }

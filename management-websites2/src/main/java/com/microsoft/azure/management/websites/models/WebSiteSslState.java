@@ -21,12 +21,15 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* A web site's SSL state.
+*/
+public enum WebSiteSslState {
+    Disabled,
+    
+    SniEnabled,
+    
+    IpBasedEnabled,
 }

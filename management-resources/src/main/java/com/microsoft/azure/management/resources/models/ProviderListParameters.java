@@ -21,12 +21,27 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* Deployment list operation parameters.
+*/
+public class ProviderListParameters {
+    private Integer top;
+    
+    /**
+    * Optional. Get or sets the number of records to return. Optional.
+    * @return The Top value.
+    */
+    public Integer getTop() {
+        return this.top;
+    }
+    
+    /**
+    * Optional. Get or sets the number of records to return. Optional.
+    * @param topValue The Top value.
+    */
+    public void setTop(final Integer topValue) {
+        this.top = topValue;
+    }
 }

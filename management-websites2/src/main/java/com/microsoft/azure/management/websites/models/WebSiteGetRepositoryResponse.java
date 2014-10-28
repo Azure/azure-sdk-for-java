@@ -21,12 +21,30 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
+import java.net.URI;
 
-    Default,
-
-    HighPerformance,
+/**
+* The Get Web Site Repository operation response.
+*/
+public class WebSiteGetRepositoryResponse extends OperationResponse {
+    private URI uri;
+    
+    /**
+    * Optional. Contains the URI of the web site repository.
+    * @return The Uri value.
+    */
+    public URI getUri() {
+        return this.uri;
+    }
+    
+    /**
+    * Optional. Contains the URI of the web site repository.
+    * @param uriValue The Uri value.
+    */
+    public void setUri(final URI uriValue) {
+        this.uri = uriValue;
+    }
 }

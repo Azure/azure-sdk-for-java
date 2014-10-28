@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The Create or Update resource group operation response.
+*/
+public class ResourceGroupCreateOrUpdateResponse extends OperationResponse {
+    private String name;
+    
+    /**
+    * Optional. The resource group name.
+    * @return The Name value.
+    */
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+    * Optional. The resource group name.
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue) {
+        this.name = nameValue;
+    }
 }

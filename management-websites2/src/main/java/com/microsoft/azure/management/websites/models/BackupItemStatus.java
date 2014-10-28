@@ -21,12 +21,45 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* Backup status
+*/
+public enum BackupItemStatus {
+    /**
+    * In progress
+    */
+    InProgress,
+    
+    /**
+    * Failed
+    */
+    Failed,
+    
+    /**
+    * Succeeded
+    */
+    Succeeded,
+    
+    /**
+    * Timed out
+    */
+    TimedOut,
+    
+    /**
+    * Created, pending
+    */
+    Created,
+    
+    /**
+    * Skipped
+    */
+    Skipped,
+    
+    /**
+    * Partially succeeded. Some file were not included in the backup due to
+    * locking conflicts
+    */
+    PartiallySucceeded,
 }

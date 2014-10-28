@@ -327,11 +327,14 @@
     <module>../management</module>
     <module>../management-compute</module>
     <module>../management-media</module>
+    <module>../management-resources</module>
     <module>../management-scheduler</module>
     <module>../management-sql</module>
+    <module>../management-sql2</module>
     <module>../management-storage</module>
     <module>../management-network</module>
     <module>../management-websites</module>
+    <module>../management-websites2</module>
     <module>../media</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>

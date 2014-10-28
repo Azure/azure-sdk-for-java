@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.sql.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Represents the response to a List Firewall Rules request.
+*/
+public class FirewallRuleGetResponse extends OperationResponse {
+    private FirewallRule firewallRule;
+    
+    /**
+    * Optional. Gets or sets the Azure Sql Database Server firewall rule.
+    * @return The FirewallRule value.
+    */
+    public FirewallRule getFirewallRule() {
+        return this.firewallRule;
+    }
+    
+    /**
+    * Optional. Gets or sets the Azure Sql Database Server firewall rule.
+    * @param firewallRuleValue The FirewallRule value.
+    */
+    public void setFirewallRule(final FirewallRule firewallRuleValue) {
+        this.firewallRule = firewallRuleValue;
+    }
 }
