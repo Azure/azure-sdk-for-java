@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Template deployment information.
+*/
+public class DeploymentGetResult extends OperationResponse {
+    private Deployment deployment;
+    
+    /**
+    * Optional. Gets or sets the deployment.
+    * @return The Deployment value.
+    */
+    public Deployment getDeployment() {
+        return this.deployment;
+    }
+    
+    /**
+    * Optional. Gets or sets the deployment.
+    * @param deploymentValue The Deployment value.
+    */
+    public void setDeployment(final Deployment deploymentValue) {
+        this.deployment = deploymentValue;
+    }
 }

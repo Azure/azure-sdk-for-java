@@ -21,12 +21,19 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* The managed pipeline mode of a website.
+*/
+public enum ManagedPipelineMode {
+    /**
+    * Integrated Managed Pipeline Mode.
+    */
+    Integrated,
+    
+    /**
+    * Classic Managed Pipeline Mode.
+    */
+    Classic,
 }

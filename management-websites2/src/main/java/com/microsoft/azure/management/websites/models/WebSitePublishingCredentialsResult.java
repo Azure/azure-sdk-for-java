@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Publishing credentials for the website.
+*/
+public class WebSitePublishingCredentialsResult extends OperationResponse {
+    private WebSitePublishingCredentialsEnvelope resource;
+    
+    /**
+    * Optional. Publishing credentials for a site.
+    * @return The Resource value.
+    */
+    public WebSitePublishingCredentialsEnvelope getResource() {
+        return this.resource;
+    }
+    
+    /**
+    * Optional. Publishing credentials for a site.
+    * @param resourceValue The Resource value.
+    */
+    public void setResource(final WebSitePublishingCredentialsEnvelope resourceValue) {
+        this.resource = resourceValue;
+    }
 }

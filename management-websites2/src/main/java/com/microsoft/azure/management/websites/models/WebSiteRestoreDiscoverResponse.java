@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The information gathered about a backup storaged in a storage account.
+*/
+public class WebSiteRestoreDiscoverResponse extends OperationResponse {
+    private WebSiteRestoreDiscover envelope;
+    
+    /**
+    * Optional. OperationId for the restore operation.
+    * @return The Envelope value.
+    */
+    public WebSiteRestoreDiscover getEnvelope() {
+        return this.envelope;
+    }
+    
+    /**
+    * Optional. OperationId for the restore operation.
+    * @param envelopeValue The Envelope value.
+    */
+    public void setEnvelope(final WebSiteRestoreDiscover envelopeValue) {
+        this.envelope = envelopeValue;
+    }
 }

@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The backup record created based on the backup request.
+*/
+public class WebSiteBackupResponse extends OperationResponse {
+    private BackupItemEnvelope backupItem;
+    
+    /**
+    * Optional. Backups for a web site.
+    * @return The BackupItem value.
+    */
+    public BackupItemEnvelope getBackupItem() {
+        return this.backupItem;
+    }
+    
+    /**
+    * Optional. Backups for a web site.
+    * @param backupItemValue The BackupItem value.
+    */
+    public void setBackupItem(final BackupItemEnvelope backupItemValue) {
+        this.backupItem = backupItemValue;
+    }
 }

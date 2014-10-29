@@ -21,12 +21,11 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* Specifies the deployment type for the deployment operations.
+*/
+public enum DeploymentMode {
+    Incremental,
 }

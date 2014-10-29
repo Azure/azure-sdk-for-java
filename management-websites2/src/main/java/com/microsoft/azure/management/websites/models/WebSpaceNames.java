@@ -21,12 +21,18 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+public abstract class WebSpaceNames {
+    public static final String EASTUSWEBSPACE = "eastuswebspace";
+    
+    public static final String WESTUSWEBSPACE = "westuswebspace";
+    
+    public static final String NORTHCENTRALUSWEBSPACE = "northcentraluswebspace";
+    
+    public static final String NORTHEUROPEWEBSPACE = "northeuropewebspace";
+    
+    public static final String WESTEUROPEWEBSPACE = "westeuropewebspace";
+    
+    public static final String EASTASIAWEBSPACE = "eastasiawebspace";
 }

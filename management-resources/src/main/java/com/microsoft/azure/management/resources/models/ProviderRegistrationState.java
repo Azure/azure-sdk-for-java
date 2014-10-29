@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.resources.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* Provider registration states.
+*/
+public abstract class ProviderRegistrationState {
+    /**
+    * Provider registration state is not registered.
+    */
+    public static final String NOTREGISTERED = "NotRegistered";
+    
+    /**
+    * Provider registration state is unregistering.
+    */
+    public static final String UNREGISTERING = "Unregistering";
+    
+    /**
+    * Provider registration state is registering.
+    */
+    public static final String REGISTERING = "Registering";
+    
+    /**
+    * Provider registration state is registered.
+    */
+    public static final String REGISTERED = "Registered";
 }

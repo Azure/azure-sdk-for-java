@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The Create Web Space operation response.
+*/
+public class WebSiteCreateResponse extends OperationResponse {
+    private WebSite webSite;
+    
+    /**
+    * Optional. Details of the Web Site.
+    * @return The WebSite value.
+    */
+    public WebSite getWebSite() {
+        return this.webSite;
+    }
+    
+    /**
+    * Optional. Details of the Web Site.
+    * @param webSiteValue The WebSite value.
+    */
+    public void setWebSite(final WebSite webSiteValue) {
+        this.webSite = webSiteValue;
+    }
 }

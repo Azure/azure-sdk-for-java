@@ -75,6 +75,21 @@ def hydraSpecs = [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.MediaServices.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaServicesManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-media"
+    ],
+    [
+        specificationDllFileName: "Microsoft.Azure.Management.Resources.Specification.dll",
+        clientType: "Microsoft.Azure.Management.Resources.ResourceManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-resources"
+    ],
+    [
+        specificationDllFileName: "Microsoft.Azure.Management.Sql.Specification.dll",
+        clientType: "Microsoft.Azure.Management.Sql.SqlManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-sql2"
+    ],
+    [
+        specificationDllFileName: "Microsoft.Azure.Management.WebSites.Specification.dll",
+        clientType: "Microsoft.Azure.Management.WebSites.WebSiteManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-websites2"
     ]
 ]
 

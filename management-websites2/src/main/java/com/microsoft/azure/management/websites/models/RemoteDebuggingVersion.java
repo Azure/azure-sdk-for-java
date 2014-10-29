@@ -21,12 +21,19 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
-
-    Default,
-
-    HighPerformance,
+/**
+* The remote debugging version.
+*/
+public enum RemoteDebuggingVersion {
+    /**
+    * Visual Studio 2012.
+    */
+    VS2012,
+    
+    /**
+    * Visual Studio 2013.
+    */
+    VS2013,
 }

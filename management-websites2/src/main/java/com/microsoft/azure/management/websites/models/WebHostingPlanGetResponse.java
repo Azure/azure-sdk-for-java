@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* The Get Web Hosting Plan operation response.
+*/
+public class WebHostingPlanGetResponse extends OperationResponse {
+    private WebHostingPlan webHostingPlan;
+    
+    /**
+    * Optional. Details for the requested Web Hosting Plan.
+    * @return The WebHostingPlan value.
+    */
+    public WebHostingPlan getWebHostingPlan() {
+        return this.webHostingPlan;
+    }
+    
+    /**
+    * Optional. Details for the requested Web Hosting Plan.
+    * @param webHostingPlanValue The WebHostingPlan value.
+    */
+    public void setWebHostingPlan(final WebHostingPlan webHostingPlanValue) {
+        this.webHostingPlan = webHostingPlanValue;
+    }
 }

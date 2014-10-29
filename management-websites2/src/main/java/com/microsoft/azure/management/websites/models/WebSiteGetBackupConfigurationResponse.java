@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.network.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum GatewaySKU {
-    None,
+import com.microsoft.windowsazure.core.OperationResponse;
 
-    Default,
-
-    HighPerformance,
+/**
+* Scheduled backup definition.
+*/
+public class WebSiteGetBackupConfigurationResponse extends OperationResponse {
+    private BackupScheduleRequestEnvelope backupSchedule;
+    
+    /**
+    * Optional. Backups schedule for a site.
+    * @return The BackupSchedule value.
+    */
+    public BackupScheduleRequestEnvelope getBackupSchedule() {
+        return this.backupSchedule;
+    }
+    
+    /**
+    * Optional. Backups schedule for a site.
+    * @param backupScheduleValue The BackupSchedule value.
+    */
+    public void setBackupSchedule(final BackupScheduleRequestEnvelope backupScheduleValue) {
+        this.backupSchedule = backupScheduleValue;
+    }
 }
