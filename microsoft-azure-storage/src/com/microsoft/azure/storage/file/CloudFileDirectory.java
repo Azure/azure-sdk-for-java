@@ -685,6 +685,7 @@ public final class CloudFileDirectory implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
+    @DoesServiceRequest
     public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented(final int maxResults,
             final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
             throws StorageException {

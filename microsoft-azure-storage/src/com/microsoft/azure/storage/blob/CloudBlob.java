@@ -3006,11 +3006,6 @@ public abstract class CloudBlob implements ListBlobItem {
             }
 
             @Override
-            public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
-                BlobRequest.addMetadata(connection, blob.metadata, context);
-            }
-
-            @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
                 StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);

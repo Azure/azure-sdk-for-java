@@ -42,8 +42,8 @@ import com.microsoft.azure.storage.table.CloudTableClient;
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class StorageAccountTests {
 
-    public static String accountName = UUID.randomUUID().toString();
-    public static String accountKey = Base64.encode(UUID.randomUUID().toString().getBytes());
+    public static final String ACCOUNT_NAME = UUID.randomUUID().toString();
+    public static final String ACCOUNT_KEY = Base64.encode(UUID.randomUUID().toString().getBytes());
 
     @Test
     public void testStorageCredentialsAnonymous() throws URISyntaxException, StorageException {
@@ -57,22 +57,22 @@ public class StorageAccountTests {
 
     @Test
     public void testStorageCredentialsSharedKey() throws URISyntaxException, StorageException {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(accountName, accountKey);
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
 
-        assertEquals(accountName, cred.getAccountName());
+        assertEquals(ACCOUNT_NAME, cred.getAccountName());
 
         URI testUri = new URI("http://test/abc?querya=1");
         assertEquals(testUri, cred.transformUri(testUri));
 
-        assertEquals(accountKey, cred.getCredentials().exportBase64EncodedKey());
+        assertEquals(ACCOUNT_KEY, cred.getCredentials().exportBase64EncodedKey());
         byte[] dummyKey = { 0, 1, 2 };
         String base64EncodedDummyKey = Base64.encode(dummyKey);
-        cred = new StorageCredentialsAccountAndKey(accountName, base64EncodedDummyKey);
+        cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
         assertEquals(base64EncodedDummyKey, cred.getCredentials().exportBase64EncodedKey());
 
         dummyKey[0] = 3;
         base64EncodedDummyKey = Base64.encode(dummyKey);
-        cred = new StorageCredentialsAccountAndKey(accountName, base64EncodedDummyKey);
+        cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
         assertEquals(base64EncodedDummyKey, cred.getCredentials().exportBase64EncodedKey());
     }
 
@@ -96,17 +96,17 @@ public class StorageAccountTests {
     public void testStorageCredentialsEmptyKeyValue() throws URISyntaxException, InvalidKeyException {
         String emptyKeyValueAsString = "";
         String emptyKeyConnectionString = String.format(Locale.US,
-                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=", accountName);
+                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=", ACCOUNT_NAME);
 
-        StorageCredentialsAccountAndKey credentials1 = new StorageCredentialsAccountAndKey(accountName,
+        StorageCredentialsAccountAndKey credentials1 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME,
                 emptyKeyValueAsString);
-        assertEquals(accountName, credentials1.getAccountName());
+        assertEquals(ACCOUNT_NAME, credentials1.getAccountName());
         assertEquals(emptyKeyValueAsString, Base64.encode(credentials1.getCredentials().exportKey()));
 
         CloudStorageAccount account1 = new CloudStorageAccount(credentials1, true);
         assertEquals(emptyKeyConnectionString, account1.toString(true));
         assertNotNull(account1.getCredentials());
-        assertEquals(accountName, account1.getCredentials().getAccountName());
+        assertEquals(ACCOUNT_NAME, account1.getCredentials().getAccountName());
         assertEquals(emptyKeyValueAsString,
                 Base64.encode(((StorageCredentialsAccountAndKey) (account1.getCredentials())).getCredentials()
                         .exportKey()));
@@ -114,19 +114,19 @@ public class StorageAccountTests {
         CloudStorageAccount account2 = CloudStorageAccount.parse(emptyKeyConnectionString);
         assertEquals(emptyKeyConnectionString, account2.toString(true));
         assertNotNull(account2.getCredentials());
-        assertEquals(accountName, account2.getCredentials().getAccountName());
+        assertEquals(ACCOUNT_NAME, account2.getCredentials().getAccountName());
         assertEquals(emptyKeyValueAsString,
                 Base64.encode(((StorageCredentialsAccountAndKey) (account2.getCredentials())).getCredentials()
                         .exportKey()));
 
-        StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(accountName, accountKey);
-        assertEquals(accountName, credentials2.getAccountName());
-        assertEquals(accountKey, Base64.encode(credentials2.getCredentials().exportKey()));
+        StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
+        assertEquals(ACCOUNT_NAME, credentials2.getAccountName());
+        assertEquals(ACCOUNT_KEY, Base64.encode(credentials2.getCredentials().exportKey()));
 
         byte[] emptyKeyValueAsByteArray = new byte[0];
-        StorageCredentialsAccountAndKey credentials3 = new StorageCredentialsAccountAndKey(accountName,
+        StorageCredentialsAccountAndKey credentials3 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME,
                 emptyKeyValueAsByteArray);
-        assertEquals(accountName, credentials3.getAccountName());
+        assertEquals(ACCOUNT_NAME, credentials3.getAccountName());
         assertEquals(Base64.encode(emptyKeyValueAsByteArray), Base64.encode(credentials3.getCredentials().exportKey()));
     }
 
@@ -135,20 +135,20 @@ public class StorageAccountTests {
         String nullKeyValueAsString = null;
 
         try {
-            new StorageCredentialsAccountAndKey(accountName, nullKeyValueAsString);
+            new StorageCredentialsAccountAndKey(ACCOUNT_NAME, nullKeyValueAsString);
             fail("Did not hit expected exception");
         }
         catch (NullPointerException ex) {
             //            assertEquals(SR.KEY_NULL, ex.getMessage());
         }
 
-        StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(accountName, accountKey);
-        assertEquals(accountName, credentials2.getAccountName());
-        assertEquals(accountKey, Base64.encode(credentials2.getCredentials().exportKey()));
+        StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
+        assertEquals(ACCOUNT_NAME, credentials2.getAccountName());
+        assertEquals(ACCOUNT_KEY, Base64.encode(credentials2.getCredentials().exportKey()));
 
         byte[] nullKeyValueAsByteArray = null;
         try {
-            new StorageCredentialsAccountAndKey(accountName, nullKeyValueAsByteArray);
+            new StorageCredentialsAccountAndKey(ACCOUNT_NAME, nullKeyValueAsByteArray);
             fail("Did not hit expected exception");
         }
         catch (IllegalArgumentException ex) {
@@ -216,24 +216,24 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountDefaultStorageAccountWithHttp() throws URISyntaxException, InvalidKeyException {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(accountName, accountKey);
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
         CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(cred, false);
         assertEquals(cloudStorageAccount.getBlobEndpoint(),
-                new URI(String.format("http://%s.blob.core.windows.net", accountName)));
+                new URI(String.format("http://%s.blob.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getQueueEndpoint(),
-                new URI(String.format("http://%s.queue.core.windows.net", accountName)));
+                new URI(String.format("http://%s.queue.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getTableEndpoint(),
-                new URI(String.format("http://%s.table.core.windows.net", accountName)));
+                new URI(String.format("http://%s.table.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getFileEndpoint(),
-                new URI(String.format("http://%s.file.core.windows.net", accountName)));
+                new URI(String.format("http://%s.file.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getBlobStorageUri().getSecondaryUri(),
-                new URI(String.format("http://%s-secondary.blob.core.windows.net", accountName)));
+                new URI(String.format("http://%s-secondary.blob.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getQueueStorageUri().getSecondaryUri(),
-                new URI(String.format("http://%s-secondary.queue.core.windows.net", accountName)));
+                new URI(String.format("http://%s-secondary.queue.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getTableStorageUri().getSecondaryUri(),
-                new URI(String.format("http://%s-secondary.table.core.windows.net", accountName)));
+                new URI(String.format("http://%s-secondary.table.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getFileStorageUri().getSecondaryUri(),
-                new URI(String.format("http://%s-secondary.file.core.windows.net", accountName)));
+                new URI(String.format("http://%s-secondary.file.core.windows.net", ACCOUNT_NAME)));
 
         String cloudStorageAccountToStringWithSecrets = cloudStorageAccount.toString(true);
         CloudStorageAccount testAccount = CloudStorageAccount.parse(cloudStorageAccountToStringWithSecrets);
@@ -243,24 +243,24 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountDefaultStorageAccountWithHttps() throws URISyntaxException, InvalidKeyException {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(accountName, accountKey);
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
         CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(cred, true);
         assertEquals(cloudStorageAccount.getBlobEndpoint(),
-                new URI(String.format("https://%s.blob.core.windows.net", accountName)));
+                new URI(String.format("https://%s.blob.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getQueueEndpoint(),
-                new URI(String.format("https://%s.queue.core.windows.net", accountName)));
+                new URI(String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getTableEndpoint(),
-                new URI(String.format("https://%s.table.core.windows.net", accountName)));
+                new URI(String.format("https://%s.table.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getFileEndpoint(),
-                new URI(String.format("https://%s.file.core.windows.net", accountName)));
+                new URI(String.format("https://%s.file.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getBlobStorageUri().getSecondaryUri(),
-                new URI(String.format("https://%s-secondary.blob.core.windows.net", accountName)));
+                new URI(String.format("https://%s-secondary.blob.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getQueueStorageUri().getSecondaryUri(),
-                new URI(String.format("https://%s-secondary.queue.core.windows.net", accountName)));
+                new URI(String.format("https://%s-secondary.queue.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getTableStorageUri().getSecondaryUri(),
-                new URI(String.format("https://%s-secondary.table.core.windows.net", accountName)));
+                new URI(String.format("https://%s-secondary.table.core.windows.net", ACCOUNT_NAME)));
         assertEquals(cloudStorageAccount.getFileStorageUri().getSecondaryUri(),
-                new URI(String.format("https://%s-secondary.file.core.windows.net", accountName)));
+                new URI(String.format("https://%s-secondary.file.core.windows.net", ACCOUNT_NAME)));
 
         String cloudStorageAccountToStringWithSecrets = cloudStorageAccount.toString(true);
         CloudStorageAccount testAccount = CloudStorageAccount.parse(cloudStorageAccountToStringWithSecrets);
@@ -271,11 +271,11 @@ public class StorageAccountTests {
     @Test
     public void testCloudStorageAccountConnectionStringRoundtrip() throws InvalidKeyException, URISyntaxException {
         String accountString1 = String.format("DefaultEndpointsProtocol=http;AccountName=%s;AccountKey=%s",
-                accountName, accountKey);
+                ACCOUNT_NAME, ACCOUNT_KEY);
 
         String accountString2 = String.format(
-                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;QueueEndpoint=%s", accountName,
-                accountKey, "https://alternate.queue.endpoint/");
+                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;QueueEndpoint=%s", ACCOUNT_NAME,
+                ACCOUNT_KEY, "https://alternate.queue.endpoint/");
 
         connectionStringRoundtripHelper(accountString1);
         connectionStringRoundtripHelper(accountString2);
@@ -293,7 +293,7 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountClientMethods() throws URISyntaxException {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(accountName, accountKey);
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
 
         CloudStorageAccount account = new CloudStorageAccount(cred, false);
         CloudBlobClient blob = account.createCloudBlobClient();
@@ -322,7 +322,7 @@ public class StorageAccountTests {
 
     @Test
     public void testCloudStorageAccountClientUriVerify() throws URISyntaxException, StorageException {
-        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(accountName, accountKey);
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
         CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(cred, true);
 
         CloudBlobClient blobClient = cloudStorageAccount.createCloudBlobClient();
@@ -363,7 +363,8 @@ public class StorageAccountTests {
     }
 
     @Test
-    public void testCloudStorageAccountDevStoreNonTrueFails() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountDevStoreFalseFails()
+            throws InvalidKeyException, URISyntaxException {
         try {
             CloudStorageAccount.parse("UseDevelopmentStorage=false");
             fail();
@@ -374,7 +375,8 @@ public class StorageAccountTests {
     }
 
     @Test
-    public void testCloudStorageAccountDevStorePlusAccountFails() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountDevStoreFalsePlusAccountFails()
+            throws InvalidKeyException, URISyntaxException {
         try {
             CloudStorageAccount.parse("UseDevelopmentStorage=false;AccountName=devstoreaccount1");
             fail();
@@ -385,10 +387,24 @@ public class StorageAccountTests {
     }
 
     @Test
-    public void testCloudStorageAccountDevStorePlusEndpointFails() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountDevStoreFalsePlusEndpointFails()
+            throws InvalidKeyException, URISyntaxException {
+        try {
+            CloudStorageAccount.parse("UseDevelopmentStorage=false;"
+                    + "BlobEndpoint=http://127.0.0.1:1000/devstoreaccount1");
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE, ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void testCloudStorageAccountDevStoreFalsePlusEndpointSuffixFails()
+            throws InvalidKeyException, URISyntaxException {
         try {
             CloudStorageAccount
-                    .parse("UseDevelopmentStorage=false;BlobEndpoint=http://127.0.0.1:1000/devstoreaccount1");
+                    .parse("UseDevelopmentStorage=false;EndpointSuffix=core.chinacloudapi.cn");
             fail();
         }
         catch (IllegalArgumentException ex) {
@@ -449,51 +465,110 @@ public class StorageAccountTests {
     }
 
     @Test
-    public void testCloudStorageAccountDevStoreRoundtrip() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountDevStoreRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
         String accountString = "UseDevelopmentStorage=true";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
-    public void testCloudStorageAccountDevStoreProxyRoundtrip() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountDevStoreProxyRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
         String accountString = "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://ipv4.fiddler/";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
-    public void testCloudStorageAccountDefaultCloudRoundtrip() throws InvalidKeyException, URISyntaxException {
-        String accountString = "DefaultEndpointsProtocol=http;AccountName=test;AccountKey=abc=";
+    public void testCloudStorageAccountDefaultCloudRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
+        String accountString = "EndpointSuffix=a.b.c;DefaultEndpointsProtocol=http;AccountName=test;"
+                + "AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
-    public void testCloudStorageAccountExplicitCloudRoundtrip() throws InvalidKeyException, URISyntaxException {
-        String accountString = "BlobEndpoint=https://blobs/;AccountName=test;AccountKey=abc=";
+    public void testCloudStorageAccountExplicitCloudRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
+        String accountString = "EndpointSuffix=a.b.c;BlobEndpoint=https://blobs/;AccountName=test;"
+                + "AccountKey=abc=";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
     }
 
     @Test
-    public void testCloudStorageAccountAnonymousRoundtrip() throws InvalidKeyException, URISyntaxException {
+    public void testCloudStorageAccountAnonymousRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
         String accountString = "BlobEndpoint=http://blobs/";
 
         assertEquals(accountString, CloudStorageAccount.parse(accountString).toString(true));
 
-        CloudStorageAccount account = new CloudStorageAccount(null, new StorageUri(new URI("http://blobs/")), null,
-                null, null);
+        CloudStorageAccount account = new CloudStorageAccount(
+                null, new StorageUri(new URI("http://blobs/")), null, null, null);
 
         AccountsAreEqual(account, CloudStorageAccount.parse(account.toString(true)));
+    }
+    
+    @Test
+    public void testCloudStorageAccountInvalidAnonymousRoundtrip()
+            throws InvalidKeyException, URISyntaxException {
+        String accountString = "AccountKey=abc=";
+        try {
+            assertNull(CloudStorageAccount.parse(accountString));
+            fail();
+        }
+        catch (Exception ex) {
+            assertEquals(SR.INVALID_CONNECTION_STRING, ex.getMessage());
+        }
     }
 
     @Test
     public void testCloudStorageAccountEmptyValues() throws InvalidKeyException, URISyntaxException {
-        String accountString = ";BlobEndpoint=http://blobs/;;AccountName=test;;AccountKey=abc=;";
-        String validAccountString = "BlobEndpoint=http://blobs/;AccountName=test;AccountKey=abc=";
+        String accountString = ";EndpointSuffix=a.b.c;;BlobEndpoint=http://blobs/;;"
+                + "AccountName=test;;AccountKey=abc=;;;";
+        String validAccountString = "EndpointSuffix=a.b.c;BlobEndpoint=http://blobs/;"
+                + "AccountName=test;AccountKey=abc=";
 
         assertEquals(validAccountString, CloudStorageAccount.parse(accountString).toString(true));
+    }
+    
+    @Test
+    public void testCloudStorageAccountEndpointSuffix()
+            throws InvalidKeyException, URISyntaxException, StorageException {
+        final String mooncake = "core.chinacloudapi.cn";
+        final String fairfax = "core.usgovcloudapi.net";
+        
+        // Endpoint suffix for mooncake
+        CloudStorageAccount accountParse = CloudStorageAccount.parse(
+                "DefaultEndpointsProtocol=http;AccountName=test;"
+                + "AccountKey=abc=;EndpointSuffix=" + mooncake);
+        CloudStorageAccount accountConstruct = new CloudStorageAccount(accountParse.getCredentials(),
+                false, accountParse.getEndpointSuffix());
+        assertNotNull(accountParse);
+        assertNotNull(accountConstruct);
+        assertNotNull(accountParse.getBlobEndpoint());
+        assertEquals(accountParse.getBlobEndpoint(), accountConstruct.getBlobEndpoint());
+        assertTrue(accountParse.getBlobEndpoint().toString().endsWith(mooncake));
+        
+        // Endpoint suffix for fairfax
+        accountParse = CloudStorageAccount.parse(
+                "TableEndpoint=http://tables/;DefaultEndpointsProtocol=http;"
+                + "AccountName=test;AccountKey=abc=;EndpointSuffix=" + fairfax);
+        accountConstruct = new CloudStorageAccount(accountParse.getCredentials(),
+                false, accountParse.getEndpointSuffix());
+        assertNotNull(accountParse);
+        assertNotNull(accountConstruct);
+        assertNotNull(accountParse.getBlobEndpoint());
+        assertEquals(accountParse.getBlobEndpoint(), accountConstruct.getBlobEndpoint());
+        assertTrue(accountParse.getBlobEndpoint().toString().endsWith(fairfax));
+        
+        // Explicit table endpoint should override endpoint suffix for fairfax
+        CloudTableClient tableClientParse = accountParse.createCloudTableClient();
+        assertNotNull(tableClientParse);
+        assertEquals(accountParse.getTableEndpoint(), tableClientParse.getEndpoint());
+        assertTrue(tableClientParse.getEndpoint().toString().endsWith("tables/"));
     }
 
     @Test
