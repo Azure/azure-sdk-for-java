@@ -17,7 +17,7 @@ package com.microsoft.azure.storage;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.HashMap;
+import java.util.Map;
 
 import com.microsoft.azure.storage.core.Base64;
 import com.microsoft.azure.storage.core.SR;
@@ -33,7 +33,7 @@ public abstract class StorageCredentials {
      * Tries to determine the storage credentials from a collection of name/value pairs.
      * 
      * @param settings
-     *            A <code>HashMap</code> object of the name/value pairs that represent the settings to use to configure
+     *            A <code>Map</code> object of the name/value pairs that represent the settings to use to configure
      *            the credentials.
      *            <p>
      *            Either include an account name with an account key (specifying values for
@@ -49,7 +49,7 @@ public abstract class StorageCredentials {
      *             If the key value specified for {@link CloudStorageAccount#ACCOUNT_KEY_NAME} is not a valid
      *             Base64-encoded string.
      */
-    protected static StorageCredentials tryParseCredentials(final HashMap<String, String> settings)
+    protected static StorageCredentials tryParseCredentials(final Map<String, String> settings)
             throws InvalidKeyException {
         final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
                 .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;

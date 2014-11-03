@@ -1,3 +1,7 @@
+2014.11.03 Version 1.3.0
+ * Added support for EndpointSuffix which was previously not accepted in Account Strings.
+ * Fixed a bug where high precision timestamps were forced to fit into milliseconds resulting in inaccuracies. Precision is limited to 1 millisecond by Java.util.Date. If greater precision is required, the String should be used directly.
+
 2014.08.01 Version 1.2.0
  * Added the NameValidator class which contains helpers that check to see if resource names are valid.
  * Fixed a bug where the RequestUrl of a LogRecord was not correctly HTML4 decoded. Added a dependency on Apache Commons Lang3.  

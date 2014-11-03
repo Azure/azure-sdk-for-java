@@ -18,7 +18,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClient;
@@ -47,14 +48,24 @@ public final class CloudStorageAccount {
     protected static final String ACCOUNT_NAME_NAME = "AccountName";
 
     /**
-     * The root blob storage DNS name.
+     * Represents the final terms of each root storage DNS name.
      */
-    private static final String BLOB_BASE_DNS_NAME = "blob.core.windows.net";
-
+    private static final String DNS_NAME_FORMAT = "%s.%s";
+    
+    /**
+     * Represents the root storage DNS name.
+     */
+    private static final String DEFAULT_DNS = "core.windows.net";
+    
     /**
      * The suffix appended to account in order to access secondary location for read only access.
      */
     private static final String SECONDARY_LOCATION_ACCOUNT_SUFFIX = "-secondary";
+    
+    /**
+     * Represents the setting name for a custom storage endpoint suffix.
+     */
+    private static final String ENDPOINT_SUFFIX_NAME = "EndpointSuffix";
 
     /**
      * Represents the setting name for a custom blob storage endpoint.
@@ -74,8 +85,8 @@ public final class CloudStorageAccount {
     /**
      * The format string for the secondary endpoint.
      */
-    private static final String DEVELOPMENT_STORAGE_SECONDARY_ENDPOINT_FORMAT = DEVELOPMENT_STORAGE_PRIMARY_ENDPOINT_FORMAT
-            + SECONDARY_LOCATION_ACCOUNT_SUFFIX;
+    private static final String DEVELOPMENT_STORAGE_SECONDARY_ENDPOINT_FORMAT =
+            DEVELOPMENT_STORAGE_PRIMARY_ENDPOINT_FORMAT + SECONDARY_LOCATION_ACCOUNT_SUFFIX;
 
     /**
      * The setting name for specifying a development storage proxy Uri.
@@ -93,11 +104,6 @@ public final class CloudStorageAccount {
     private static final String DEVSTORE_ACCOUNT_NAME = "devstoreaccount1";
 
     /**
-     * Represents the root file DNS name.
-     */
-    private static final String FILE_BASE_DNS_NAME = "file.core.windows.net";
-
-    /**
      * Represents the setting name for a custom file endpoint.
      */
     private static final String FILE_ENDPOINT_NAME = "FileEndpoint";
@@ -113,11 +119,6 @@ public final class CloudStorageAccount {
     private static final String SECONDARY_ENDPOINT_FORMAT = "%s://%s%s.%s";
 
     /**
-     * Represents the root queue DNS name.
-     */
-    protected static final String QUEUE_BASE_DNS_NAME = "queue.core.windows.net";
-
-    /**
      * Represents the setting name for a custom queue endpoint.
      */
     protected static final String QUEUE_ENDPOINT_NAME = "QueueEndpoint";
@@ -128,11 +129,6 @@ public final class CloudStorageAccount {
     protected static final String SHARED_ACCESS_SIGNATURE_NAME = "SharedAccessSignature";
 
     /**
-     * Represents the root table storage DNS name.
-     */
-    protected static final String TABLE_BASE_DNS_NAME = "table.core.windows.net";
-
-    /**
      * Represents the setting name for a custom table storage endpoint.
      */
     protected static final String TABLE_ENDPOINT_NAME = "TableEndpoint";
@@ -141,52 +137,7 @@ public final class CloudStorageAccount {
      * The setting name for using the development storage.
      */
     private static final String USE_DEVELOPMENT_STORAGE_NAME = "UseDevelopmentStorage";
-
-    /**
-     * Gets the default {@link StorageUri} using specified service and settings.
-     * 
-     * @param settings
-     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
-     * @param serviceDNS
-     *            A String that represents the service's base DNS name.
-     * @return The default {@link StorageUri}.
-     * @throws URISyntaxException
-     */
-    private static StorageUri getDefaultStorageUri(final HashMap<String, String> settings, final String serviceDNS)
-            throws URISyntaxException {
-        final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
-        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME);
-
-        return getDefaultStorageUri(scheme, accountName, serviceDNS);
-    }
-
-    /**
-     * Gets the default {@link StorageUri} using the specified service, protocol and account name.
-     * 
-     * @param scheme
-     *            The protocol to use.
-     * @param accountName
-     *            The name of the storage account.
-     * @param serviceDNS
-     *            A String that represents the service's base DNS name.
-     * @return The default {@link StorageUri}.
-     */
-    private static StorageUri getDefaultStorageUri(final String scheme, final String accountName,
-            final String serviceDNS) throws URISyntaxException {
-        if (Utility.isNullOrEmpty(scheme)) {
-            throw new IllegalArgumentException(SR.SCHEME_NULL_OR_EMPTY);
-        }
-
-        if (Utility.isNullOrEmpty(accountName)) {
-            throw new IllegalArgumentException(SR.ACCOUNT_NAME_NULL_OR_EMPTY);
-        }
-
-        return new StorageUri(new URI(String.format(PRIMARY_ENDPOINT_FORMAT, scheme, accountName, serviceDNS)),
-                new URI(String.format(SECONDARY_ENDPOINT_FORMAT, scheme, accountName,
-                        SECONDARY_LOCATION_ACCOUNT_SUFFIX, serviceDNS)));
-    }
-
+    
     /**
      * Returns a {@link CloudStorageAccount} object that represents the development storage credentials. Secondary
      * endpoints are enabled by default.
@@ -285,7 +236,7 @@ public final class CloudStorageAccount {
         }
 
         // 1. Parse connection string in to key / value pairs
-        final HashMap<String, String> settings = Utility.parseAccountString(connectionString);
+        final Map<String, String> settings = Utility.parseAccountString(connectionString);
 
         // 2 Validate General Settings rules,
         // - only setting value per key
@@ -300,31 +251,112 @@ public final class CloudStorageAccount {
         }
 
         // 3. Validate scenario specific constraints
-        CloudStorageAccount retVal = tryConfigureDevStore(settings);
-        if (retVal != null) {
-            return retVal;
+        CloudStorageAccount account = tryConfigureDevStore(settings);
+        if (account != null) {
+            return account;
         }
 
-        retVal = tryConfigureServiceAccount(settings);
-        if (retVal != null) {
-            return retVal;
+        account = tryConfigureServiceAccount(settings);
+        if (account != null) {
+            return account;
         }
 
         throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING);
     }
+    
+    /**
+     * Gets the {@link StorageUri} using specified service, settings, and endpoint.
+     * 
+     * @param settings
+     *            A <code>java.util.Map</code> of key/value pairs which represents
+     *            the connection settings.
+     * @param service
+     *            A String that represents the service's base DNS name.
+     * @param serviceEndpoint
+     *            The service endpoint name to check in settings.
+     * @return The {@link StorageUri}.
+     * @throws URISyntaxException
+     */
+    private static StorageUri getStorageUri(final Map<String, String> settings,
+            final String service, final String serviceEndpoint) throws URISyntaxException {
+        
+        // Explicit Endpoint Case
+        if (settings.containsKey(serviceEndpoint)) {
+            return new StorageUri(new URI(settings.get(serviceEndpoint)));
+        }
+        // Automatic Endpoint Case
+        else if (settings.containsKey(DEFAULT_ENDPOINTS_PROTOCOL_NAME) &&
+                 settings.containsKey(CloudStorageAccount.ACCOUNT_NAME_NAME) &&
+                 settings.containsKey(CloudStorageAccount.ACCOUNT_KEY_NAME)) {
+            final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
+            final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME);
+            final String endpointSuffix = settings.get(CloudStorageAccount.ENDPOINT_SUFFIX_NAME);
+            return getDefaultStorageUri(scheme, accountName, getDNS(service, endpointSuffix));
+        }
+        // Otherwise
+        else {
+            return null;
+        }
+    }
+    
+    /**
+     * Gets the default {@link StorageUri} using the specified service, protocol and account name.
+     * 
+     * @param scheme
+     *            The protocol to use.
+     * @param accountName
+     *            The name of the storage account.
+     * @param service
+     *            A String that represents the service's base DNS name.
+     * @return The default {@link StorageUri}.
+     */
+    private static StorageUri getDefaultStorageUri(final String scheme, final String accountName,
+            final String service) throws URISyntaxException {
+        if (Utility.isNullOrEmpty(scheme)) {
+            throw new IllegalArgumentException(SR.SCHEME_NULL_OR_EMPTY);
+        }
 
+        if (Utility.isNullOrEmpty(accountName)) {
+            throw new IllegalArgumentException(SR.ACCOUNT_NAME_NULL_OR_EMPTY);
+        }
+
+        URI primaryUri = new URI(String.format(
+                PRIMARY_ENDPOINT_FORMAT, scheme, accountName, service));
+        URI secondaryUri = new URI(String.format(
+                SECONDARY_ENDPOINT_FORMAT,scheme, accountName,
+                SECONDARY_LOCATION_ACCOUNT_SUFFIX, service));
+        return new StorageUri(primaryUri, secondaryUri);
+    }
+    
+    /**
+     * This generates a domain name for the given service.
+     * 
+     * @param service
+     *              the service to connect to
+     * @param base
+     *              the suffix to use
+     * @return the domain name
+     */
+    private static String getDNS(String service, String base) {
+        if (base == null) {
+            base = DEFAULT_DNS;
+        }
+        
+        return String.format(DNS_NAME_FORMAT, service, base);
+    }
+    
     /**
      * Evaluates connection settings and returns a CloudStorageAccount representing Development Storage.
      * 
      * @param settings
-     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
+     *            A <code>java.util.Map</code> of key/value pairs which represents the connection settings.
      * @return A {@link CloudStorageAccount} object constructed from the values provided in the connection settings, or
      *         null if
      *         one cannot be constructed.
      * @throws URISyntaxException
      *             if the connection settings contains an invalid URI
      */
-    private static CloudStorageAccount tryConfigureDevStore(final HashMap<String, String> settings)
+    private static CloudStorageAccount tryConfigureDevStore(final Map<String, String> settings)
             throws URISyntaxException {
         if (settings.containsKey(USE_DEVELOPMENT_STORAGE_NAME)) {
             if (!Boolean.parseBoolean(settings.get(USE_DEVELOPMENT_STORAGE_NAME))) {
@@ -347,20 +379,18 @@ public final class CloudStorageAccount {
      * Evaluates connection settings and configures a CloudStorageAccount accordingly.
      * 
      * @param settings
-     *            A <code>java.util.HashMap</code> of key/value pairs which represents the connection settings.
+     *            A <code>java.util.Map</code> of key/value pairs which represents
+     *            the connection settings.
      * @return A {@link CloudStorageAccount} represented by the settings.
      * @throws URISyntaxException
      *             if the connectionString specifies an invalid URI.
      * @throws InvalidKeyException
      *             if credentials in the connection settings contain an invalid key.
      */
-    private static CloudStorageAccount tryConfigureServiceAccount(final HashMap<String, String> settings)
+    private static CloudStorageAccount tryConfigureServiceAccount(final Map<String, String> settings)
             throws URISyntaxException, InvalidKeyException {
-
         if (settings.containsKey(USE_DEVELOPMENT_STORAGE_NAME)) {
-            final String useDevStoreSetting = settings.get(USE_DEVELOPMENT_STORAGE_NAME);
-
-            if (!Boolean.parseBoolean(useDevStoreSetting)) {
+            if (!Boolean.parseBoolean(settings.get(USE_DEVELOPMENT_STORAGE_NAME))) {
                 throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE);
             }
             else {
@@ -368,54 +398,49 @@ public final class CloudStorageAccount {
             }
         }
 
-        final String defaultEndpointSetting = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME).toLowerCase() : null;
-
-        if (defaultEndpointSetting != null && !defaultEndpointSetting.equals(Constants.HTTP)
-                && !defaultEndpointSetting.equals(Constants.HTTPS)) {
-            return null;
+        String defaultEndpointSetting = settings.get(DEFAULT_ENDPOINTS_PROTOCOL_NAME);
+        if (defaultEndpointSetting != null) {
+            defaultEndpointSetting = defaultEndpointSetting.toLowerCase();
+            if(!defaultEndpointSetting.equals(Constants.HTTP)
+                    && !defaultEndpointSetting.equals(Constants.HTTPS)) {
+                return null;
+            }
         }
 
         final StorageCredentials credentials = StorageCredentials.tryParseCredentials(settings);
-
-        boolean isExplicitBlobEndpoint = settings.containsKey(CloudStorageAccount.BLOB_ENDPOINT_NAME);
-        boolean isExplicitFileEndpoint = settings.containsKey(CloudStorageAccount.FILE_ENDPOINT_NAME);
-        boolean isExplicitQueueEndpoint = settings.containsKey(CloudStorageAccount.QUEUE_ENDPOINT_NAME);
-        boolean isExplicitTableEndpoint = settings.containsKey(CloudStorageAccount.TABLE_ENDPOINT_NAME);
-
-        final StorageUri blobURI = isExplicitBlobEndpoint ? new StorageUri(new URI(
-                settings.get(CloudStorageAccount.BLOB_ENDPOINT_NAME))) : null;
-        final StorageUri fileURI = isExplicitFileEndpoint ? new StorageUri(new URI(
-                settings.get(CloudStorageAccount.FILE_ENDPOINT_NAME))) : null;
-        final StorageUri queueURI = isExplicitQueueEndpoint ? new StorageUri(new URI(
-                settings.get(CloudStorageAccount.QUEUE_ENDPOINT_NAME))) : null;
-        final StorageUri tableURI = isExplicitTableEndpoint ? new StorageUri(new URI(
-                settings.get(CloudStorageAccount.TABLE_ENDPOINT_NAME))) : null;
-
-        CloudStorageAccount retVal = null;
-        // Automatic endpoint Case
-        if (defaultEndpointSetting != null && settings.containsKey(CloudStorageAccount.ACCOUNT_NAME_NAME)
-                && settings.containsKey(CloudStorageAccount.ACCOUNT_KEY_NAME)) {
-
-            retVal = new CloudStorageAccount(credentials, isExplicitBlobEndpoint ? blobURI : getDefaultStorageUri(
-                    settings, BLOB_BASE_DNS_NAME), isExplicitQueueEndpoint ? queueURI : getDefaultStorageUri(settings,
-                    QUEUE_BASE_DNS_NAME), isExplicitTableEndpoint ? tableURI : getDefaultStorageUri(settings,
-                    TABLE_BASE_DNS_NAME), isExplicitFileEndpoint ? fileURI : getDefaultStorageUri(settings,
-                    FILE_BASE_DNS_NAME));
-            retVal.isBlobEndpointDefault = !isExplicitBlobEndpoint;
-            retVal.isFileEndpointDefault = !isExplicitFileEndpoint;
-            retVal.isQueueEndpointDefault = !isExplicitQueueEndpoint;
-            retVal.isTableEndpointDefault = !isExplicitTableEndpoint;
+        final CloudStorageAccount account = new CloudStorageAccount(credentials,
+                getStorageUri(settings, SR.BLOB, BLOB_ENDPOINT_NAME),
+                getStorageUri(settings, SR.QUEUE, QUEUE_ENDPOINT_NAME),
+                getStorageUri(settings, SR.TABLE, TABLE_ENDPOINT_NAME),
+                getStorageUri(settings, SR.FILE, FILE_ENDPOINT_NAME));
+        
+        // Invalid Account String
+        if ((account.getBlobEndpoint() == null) && (account.getFileEndpoint() == null) &&
+                (account.getQueueEndpoint() == null) && (account.getTableEndpoint() == null)) {
+            return null;
         }
 
-        // Explicit endpoint Case
-        else if (isExplicitBlobEndpoint || isExplicitQueueEndpoint || isExplicitTableEndpoint || isExplicitFileEndpoint) {
-            retVal = new CloudStorageAccount(credentials, blobURI, queueURI, tableURI, fileURI);
-        }
-
-        return retVal;
+        // Endpoint is only default if it is neither null nor explicitly specified
+        account.isBlobEndpointDefault = !((account.getBlobEndpoint() == null) ||
+                  settings.containsKey(CloudStorageAccount.BLOB_ENDPOINT_NAME));
+        account.isFileEndpointDefault = !((account.getFileEndpoint() == null) ||
+                  settings.containsKey(CloudStorageAccount.FILE_ENDPOINT_NAME));
+        account.isQueueEndpointDefault = !((account.getQueueEndpoint() == null) ||
+                  settings.containsKey(CloudStorageAccount.QUEUE_ENDPOINT_NAME));
+        account.isTableEndpointDefault = !((account.getTableEndpoint() == null) ||
+                  settings.containsKey(CloudStorageAccount.TABLE_ENDPOINT_NAME));
+        
+        account.endpointSuffix = settings.get(CloudStorageAccount.ENDPOINT_SUFFIX_NAME);
+        
+        return account;
     }
 
+    
+    /**
+     * The explicit endpoint suffix if one other than the default is needed.  Null otherwise.
+     */
+    private String endpointSuffix;
+    
     /**
      * The internal Blob StorageUri.
      */
@@ -440,93 +465,162 @@ public final class CloudStorageAccount {
      * The internal Storage Credentials.
      */
     private StorageCredentials credentials;
-
+    
     /**
-     * Internal flag storing true if the blob endpoint was created using default settings. False if the caller specified
-     * the blob endpoint explicitly.
+     * Internal flag storing true if the blob endpoint was created using default settings.
+     * False if the caller specified the blob endpoint explicitly.
      */
     private boolean isBlobEndpointDefault = false;
 
     /**
-     * Internal flag storing true if the file endpoint was created using default settings. False if the caller
-     * specified the file endpoint explicitly.
+     * Internal flag storing true if the file endpoint was created using default settings.
+     * False if the caller specified the file endpoint explicitly.
      */
     private boolean isFileEndpointDefault = false;
 
     /**
-     * Internal flag storing true if the queue endpoint was created using default settings. False if the caller
-     * specified the queue endpoint explicitly.
+     * Internal flag storing true if the queue endpoint was created using default settings.
+     * False if the caller specified the queue endpoint explicitly.
      */
     private boolean isQueueEndpointDefault = false;
 
     /**
-     * Internal flag storing true if the table endpoint was created using default settings. False if the caller
-     * specified the table endpoint explicitly.
+     * Internal flag storing true if the table endpoint was created using default settings.
+     * False if the caller specified the table endpoint explicitly.
      */
     private boolean isTableEndpointDefault = false;
 
     /**
-     * Internal flag storing true if this is a dev store account created by one of the getDevelopmentStorageAccount
-     * methods, either called directly or by parsing a connection string with the UseDevelopmentStorage flag. False
-     * otherwise.
+     * Internal flag storing true if this is a dev store account created by one of the
+     * getDevelopmentStorageAccount methods, either called directly or by parsing a
+     * connection string with the UseDevelopmentStorage flag. False otherwise.
      */
     private boolean isDevStoreAccount = false;
 
     /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials.
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials.
      * <p>
-     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using the default HTTP storage
-     * service endpoints. The default HTTP storage service endpoints are
+     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using the
+     * default HTTP storage service endpoints. The default HTTP storage service endpoints are
      * <code>http://<i>myaccount</i>.blob.core.windows.net</code>,
      * <code>http://<i>myaccount</i>.queue.core.windows.net</code>,
      * <code>http://<i>myaccount</i>.table.core.windows.net</code>, and
-     * <code>http://<i>myaccount</i>.file.core.windows.net</code>, where <code><i>myaccount</i></code> is the name of
-     * your storage account.
+     * <code>http://<i>myaccount</i>.file.core.windows.net</code>, where
+     * <code><i>myaccount</i></code> is the name of your storage account.
      * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it.
+     * A client object may be a {@link CloudBlobClient} object.
      * 
      * @param storageCredentials
-     *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
-     *            this account.
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
      * 
      * @throws URISyntaxException
      *             If <code>storageCredentials</code> specify an invalid account name.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials) throws URISyntaxException {
-        Utility.assertNotNull("storageCredentials", storageCredentials);
-        this.credentials = storageCredentials;
+    public CloudStorageAccount(final StorageCredentials storageCredentials)
+            throws URISyntaxException {
+        // Protocol defaults to HTTP unless otherwise specified
+        this(storageCredentials, false, null);
+    }
 
+    /**
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials and the default service endpoints, using HTTP or HTTPS as specified.
+     * <p>
+     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using
+     * the default storage service endpoints. The default storage service endpoints are:
+     * <code>[http|https]://<i>myaccount</i>.blob.core.windows.net</code>;
+     * <code>[http|https]://<i>myaccount</i>.queue.core.windows.net</code>;
+     * <code>[http|https]://<i>myaccount</i>.table.core.windows.net</code>; and
+     * <code>[http|https]://<i>myaccount</i>.file.core.windows.net</code>,
+     * where <code><i>myaccount</i></code> is the name of your storage account. Access to the cloud
+     * storage account may be via HTTP or HTTPS, as specified by the <code>useHttps</code> parameter.
+     * <p>
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it. A client
+     * object may be a {@link CloudBlobClient} object.
+     * 
+     * @param storageCredentials
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
+     * @param useHttps
+     *            <code>true</code> to use HTTPS to connect to the storage service endpoints;
+     *            otherwise, <code>false</code>.
+     * 
+     * @throws URISyntaxException
+     *             If <code>storageCredentials</code> specify an invalid account name.
+     */
+    public CloudStorageAccount(final StorageCredentials storageCredentials,
+            final boolean useHttps) throws URISyntaxException {
+        this (storageCredentials, useHttps, null);
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials.
+     * <p>
+     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using the
+     * given HTTP storage service endpoint suffix (if any, otherwise the default is used).
+     * 
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it.
+     * A client object may be a {@link CloudBlobClient} object.
+     * 
+     * @param storageCredentials
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
+     * @param useHttps
+     *            <code>true</code> to use HTTPS to connect to the storage service endpoints;
+     *            otherwise, <code>false</code>.
+     * @param endpointSuffix
+     *            A String that represents the endpointSuffix to use, if any.
+     * 
+     * @throws URISyntaxException
+     *             If <code>storageCredentials</code> specify an invalid account name.
+     */
+    public CloudStorageAccount(final StorageCredentials storageCredentials,
+            final boolean useHttps, final String endpointSuffix) throws URISyntaxException {
+        Utility.assertNotNull("storageCredentials", storageCredentials);
+        String protocol = useHttps ? Constants.HTTPS : Constants.HTTP;
+        
+        this.credentials = storageCredentials;
+        this.blobStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
+                getDNS(SR.BLOB, endpointSuffix));
+        this.fileStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
+                getDNS(SR.FILE, endpointSuffix));
+        this.queueStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
+                getDNS(SR.QUEUE, endpointSuffix));
+        this.tableStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
+                getDNS(SR.TABLE, endpointSuffix));
+        this.endpointSuffix = endpointSuffix;
+        
         this.isBlobEndpointDefault = true;
         this.isFileEndpointDefault = true;
         this.isQueueEndpointDefault = true;
         this.isTableEndpointDefault = true;
-
-        this.blobStorageUri = getDefaultStorageUri(Constants.HTTP, this.credentials.getAccountName(),
-                BLOB_BASE_DNS_NAME);
-        this.fileStorageUri = getDefaultStorageUri(Constants.HTTP, this.credentials.getAccountName(),
-                FILE_BASE_DNS_NAME);
-        this.queueStorageUri = getDefaultStorageUri(Constants.HTTP, this.credentials.getAccountName(),
-                QUEUE_BASE_DNS_NAME);
-        this.tableStorageUri = getDefaultStorageUri(Constants.HTTP, this.credentials.getAccountName(),
-                TABLE_BASE_DNS_NAME);
     }
-
+    
     /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials and
-     * service endpoints.
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials and service endpoints.
      * <p>
-     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom endpoints, in the case
-     * where you've configured a custom domain name for your storage account.
+     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom
+     * endpoints, in the case where you've configured a custom domain name for your storage account.
      * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it. A
+     * client object may be a {@link CloudBlobClient} object.
      * 
      * @param storageCredentials
-     *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
-     *            this account.
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
      * @param blobEndpoint
      *            A <code>java.net.URI</code> object that represents the Blob service endpoint.
      * @param queueEndpoint
@@ -536,24 +630,25 @@ public final class CloudStorageAccount {
      */
     public CloudStorageAccount(final StorageCredentials storageCredentials, final URI blobEndpoint,
             final URI queueEndpoint, final URI tableEndpoint) {
-        this(storageCredentials, new StorageUri(blobEndpoint), new StorageUri(queueEndpoint), new StorageUri(
-                tableEndpoint), null);
+        this(storageCredentials, new StorageUri(blobEndpoint), new StorageUri(queueEndpoint),
+                new StorageUri(tableEndpoint), null);
     }
 
     /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials and
-     * service endpoints.
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials and service endpoints.
      * <p>
-     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom endpoints, in the case
-     * where you've configured a custom domain name for your storage account.
+     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom
+     * endpoints, in the case where you've configured a custom domain name for your storage account.
      * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it. A client
+     * object may be a {@link CloudBlobClient} object.
      * 
      * @param storageCredentials
-     *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
-     *            this account.
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
      * @param blobEndpoint
      *            A <code>java.net.URI</code> object that represents the Blob service endpoint.
      * @param queueEndpoint
@@ -565,24 +660,25 @@ public final class CloudStorageAccount {
      */
     public CloudStorageAccount(final StorageCredentials storageCredentials, final URI blobEndpoint,
             final URI queueEndpoint, final URI tableEndpoint, final URI fileEndpoint) {
-        this(storageCredentials, new StorageUri(blobEndpoint), new StorageUri(queueEndpoint), new StorageUri(
-                tableEndpoint), new StorageUri(fileEndpoint));
+        this(storageCredentials, new StorageUri(blobEndpoint), new StorageUri(queueEndpoint),
+                new StorageUri(tableEndpoint), new StorageUri(fileEndpoint));
     }
 
     /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials and
-     * service endpoints.
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials and service endpoints.
      * <p>
-     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom endpoints, in the case
-     * where you've configured a custom domain name for your storage account.
+     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom
+     * endpoints, in the case where you've configured a custom domain name for your storage account.
      * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it. A client
+     * object may be a {@link CloudBlobClient} object.
      * 
      * @param storageCredentials
-     *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
-     *            this account.
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
      * @param blobStorageUri
      *            A {@link StorageUri} object that represents the Blob service endpoint.
      * @param queueStorageUri
@@ -590,25 +686,28 @@ public final class CloudStorageAccount {
      * @param tableStorageUri
      *            A {@link StorageUri} object that represents the Table service endpoint.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials, final StorageUri blobStorageUri,
-            final StorageUri queueStorageUri, final StorageUri tableStorageUri) {
+    public CloudStorageAccount(final StorageCredentials storageCredentials,
+            final StorageUri blobStorageUri,
+            final StorageUri queueStorageUri,
+            final StorageUri tableStorageUri) {
         this(storageCredentials, blobStorageUri, queueStorageUri, tableStorageUri, null);
     }
 
     /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials and
-     * service endpoints.
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials and service endpoints.
      * <p>
-     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom endpoints, in the case
-     * where you've configured a custom domain name for your storage account.
+     * Use this constructor to construct a <code>CloudStorageAccount</code> object using custom
+     * endpoints, in the case where you've configured a custom domain name for your storage account.
      * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are
+     * used to authenticate all further requests against resources that are accessed via the
+     * <code>CloudStorageAccount</code> object or a client object created from it.
+     * A client object may be a {@link CloudBlobClient} object.
      * 
      * @param storageCredentials
-     *            A {@link StorageCredentials} object that represents the storage credentials to use to authenticate
-     *            this account.
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
      * @param blobStorageUri
      *            A {@link StorageUri} object that represents the Blob service endpoint.
      * @param queueStorageUri
@@ -618,61 +717,18 @@ public final class CloudStorageAccount {
      * @param fileStorageUri
      *            A {@link StorageUri} object that represents the File service endpoint.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials, final StorageUri blobStorageUri,
-            final StorageUri queueStorageUri, final StorageUri tableStorageUri, final StorageUri fileStorageUri) {
+    public CloudStorageAccount(
+            final StorageCredentials storageCredentials, final StorageUri blobStorageUri,
+            final StorageUri queueStorageUri, final StorageUri tableStorageUri,
+            final StorageUri fileStorageUri) {
         this.credentials = storageCredentials;
         this.blobStorageUri = blobStorageUri;
         this.fileStorageUri = fileStorageUri;
         this.queueStorageUri = queueStorageUri;
         this.tableStorageUri = tableStorageUri;
+        this.endpointSuffix = null;
     }
-
-    /**
-     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified account credentials and the
-     * default service endpoints, using HTTP or HTTPS as specified.
-     * <p>
-     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using the default storage
-     * service endpoints. The default storage service endpoints are
-     * <code>[http|https]://<i>myaccount</i>.blob.core.windows.net</code>;
-     * <code>[http|https]://<i>myaccount</i>.queue.core.windows.net</code>;
-     * <code>[http|https]://<i>myaccount</i>.table.core.windows.net</code>; and
-     * <code>[http|https]://<i>myaccount</i>.file.core.windows.net</code>, where <code><i>myaccount</i></code> is the
-     * name of your storage account. Access to the cloud storage account may be via HTTP or HTTPS, as specified by the
-     * <code>useHttps</code> parameter.
-     * <p>
-     * The credentials provided when constructing the <code>CloudStorageAccount</code> object are used to authenticate
-     * all further requests against resources that are accessed via the <code>CloudStorageAccount</code> object or a
-     * client object created from it. A client object may be a {@link CloudBlobClient} object.
-     * 
-     * @param storageCredentials
-     *            A {@link StorageCredentialsAccountAndKey} object that represents the storage credentials to use to
-     *            authenticate this account.
-     * @param useHttps
-     *            <code>true</code> to use HTTPS to connect to the storage service endpoints; otherwise,
-     *            <code>false</code>.
-     * 
-     * @throws URISyntaxException
-     *             If <code>storageCredentials</code> specify an invalid account name.
-     */
-    public CloudStorageAccount(final StorageCredentialsAccountAndKey storageCredentials, final boolean useHttps)
-            throws URISyntaxException {
-        Utility.assertNotNull("storageCredentials", storageCredentials);
-
-        this.credentials = storageCredentials;
-        this.blobStorageUri = getDefaultStorageUri(useHttps ? Constants.HTTPS : Constants.HTTP,
-                storageCredentials.getAccountName(), BLOB_BASE_DNS_NAME);
-        this.fileStorageUri = getDefaultStorageUri(useHttps ? Constants.HTTPS : Constants.HTTP,
-                storageCredentials.getAccountName(), FILE_BASE_DNS_NAME);
-        this.queueStorageUri = getDefaultStorageUri(useHttps ? Constants.HTTPS : Constants.HTTP,
-                storageCredentials.getAccountName(), QUEUE_BASE_DNS_NAME);
-        this.tableStorageUri = getDefaultStorageUri(useHttps ? Constants.HTTPS : Constants.HTTP,
-                storageCredentials.getAccountName(), TABLE_BASE_DNS_NAME);
-        this.isBlobEndpointDefault = true;
-        this.isFileEndpointDefault = true;
-        this.isQueueEndpointDefault = true;
-        this.isTableEndpointDefault = true;
-    }
-
+    
     /**
      * Creates a new Analytics service client.
      * 
@@ -809,6 +865,23 @@ public final class CloudStorageAccount {
     }
 
     /**
+     * Returns the credentials for the storage account.
+     * 
+     * @return A {@link StorageCredentials} object that represents the credentials for this storage account.
+     */
+    public StorageCredentials getCredentials() {
+        return this.credentials;
+    }
+    
+    /**
+     * If an endpoint suffix was specified, return it
+     * @return the endpoint suffix
+     */
+    public String getEndpointSuffix() {
+        return this.endpointSuffix;
+    }
+
+    /**
      * Returns the endpoint for the File service for the storage account. This method is not supported when using shared
      * access signature credentials.
      * 
@@ -838,15 +911,6 @@ public final class CloudStorageAccount {
         }
 
         return this.fileStorageUri;
-    }
-
-    /**
-     * Returns the credentials for the storage account.
-     * 
-     * @return A {@link StorageCredentials} object that represents the credentials for this storage account.
-     */
-    public StorageCredentials getCredentials() {
-        return this.credentials;
     }
 
     /**
@@ -909,24 +973,6 @@ public final class CloudStorageAccount {
         return this.tableStorageUri;
     }
 
-    //
-    // Sets the StorageCredentials to use with this account. Warning internal
-    // use only, updating the credentials to a new account can potentially
-    // invalidate a bunch of pre-existing objects.
-    //
-    // @param credentials
-    // the credentials to set
-    //
-    /**
-     * Reserved for internal use.
-     * 
-     * @param credentials
-     *            Reserved.
-     */
-    protected void setCredentials(final StorageCredentials credentials) {
-        this.credentials = credentials;
-    }
-
     /**
      * Returns a connection string for this storage account, without sensitive data.
      * 
@@ -941,32 +987,39 @@ public final class CloudStorageAccount {
     /**
      * Returns a connection string for this storage account, optionally with sensitive data.
      * 
-     * @return A <code>String</code> that represents the connection string for this storage account, optionally with
-     *         sensitive data.
      * @param exportSecrets
-     *            <code>true</code> to include sensitive data in the string; otherwise, <code>false</code>.
+     *            <code>true</code> to include sensitive data in the string;
+     *            otherwise, <code>false</code>.
+     * @return A <code>String</code> that represents the connection string for this storage account,
+     *         optionally with sensitive data.
      */
     public String toString(final boolean exportSecrets) {
         if (this.credentials != null && Utility.isNullOrEmpty(this.credentials.getAccountName())) {
             return this.credentials.toString(exportSecrets);
         }
 
-        final ArrayList<String> retVals = new ArrayList<String>();
+        final List<String> values = new ArrayList<String>();
         if (this.isDevStoreAccount) {
-            retVals.add(String.format("%s=true", USE_DEVELOPMENT_STORAGE_NAME));
+            values.add(String.format("%s=true", USE_DEVELOPMENT_STORAGE_NAME));
             if (!this.getBlobEndpoint().toString().equals("http://127.0.0.1:10000/devstoreaccount1")) {
-                retVals.add(String.format("%s=%s://%s/", DEVELOPMENT_STORAGE_PROXY_URI_NAME, this.getBlobEndpoint()
-                        .getScheme(), this.getBlobEndpoint().getHost()));
+                values.add(String.format("%s=%s://%s/", DEVELOPMENT_STORAGE_PROXY_URI_NAME,
+                        this.getBlobEndpoint().getScheme(), this.getBlobEndpoint().getHost()));
             }
         }
         else {
+            final String attributeFormat = "%s=%s";
             boolean addDefault = false;
+            
+            if (this.endpointSuffix != null) {
+                values.add(String.format(attributeFormat, ENDPOINT_SUFFIX_NAME, this.endpointSuffix));
+            }
+            
             if (this.getBlobStorageUri() != null) {
                 if (this.isBlobEndpointDefault) {
                     addDefault = true;
                 }
                 else {
-                    retVals.add(String.format("%s=%s", BLOB_ENDPOINT_NAME, this.getBlobEndpoint()));
+                    values.add(String.format(attributeFormat, BLOB_ENDPOINT_NAME, this.getBlobEndpoint()));
                 }
             }
 
@@ -975,7 +1028,7 @@ public final class CloudStorageAccount {
                     addDefault = true;
                 }
                 else {
-                    retVals.add(String.format("%s=%s", QUEUE_ENDPOINT_NAME, this.getQueueEndpoint()));
+                    values.add(String.format(attributeFormat, QUEUE_ENDPOINT_NAME, this.getQueueEndpoint()));
                 }
             }
 
@@ -984,7 +1037,7 @@ public final class CloudStorageAccount {
                     addDefault = true;
                 }
                 else {
-                    retVals.add(String.format("%s=%s", TABLE_ENDPOINT_NAME, this.getTableEndpoint()));
+                    values.add(String.format(attributeFormat, TABLE_ENDPOINT_NAME, this.getTableEndpoint()));
                 }
             }
 
@@ -993,30 +1046,42 @@ public final class CloudStorageAccount {
                     addDefault = true;
                 }
                 else {
-                    retVals.add(String.format("%s=%s", FILE_ENDPOINT_NAME, this.getFileEndpoint()));
+                    values.add(String.format(attributeFormat, FILE_ENDPOINT_NAME, this.getFileEndpoint()));
                 }
             }
 
             if (addDefault) {
-                retVals.add(String.format("%s=%s", DEFAULT_ENDPOINTS_PROTOCOL_NAME, this.getBlobEndpoint().getScheme()));
+                values.add(String.format(attributeFormat, DEFAULT_ENDPOINTS_PROTOCOL_NAME,
+                        this.getBlobEndpoint().getScheme()));
             }
 
             if (this.getCredentials() != null) {
-                retVals.add(this.getCredentials().toString(exportSecrets));
+                values.add(this.getCredentials().toString(exportSecrets));
             }
         }
 
         final StringBuilder returnString = new StringBuilder();
-        for (final String val : retVals) {
+        for (final String val : values) {
             returnString.append(val);
             returnString.append(';');
         }
 
         // Remove trailing ';'
-        if (retVals.size() > 0) {
+        if (values.size() > 0) {
             returnString.deleteCharAt(returnString.length() - 1);
         }
 
         return returnString.toString();
+    }
+    
+    /**
+     *  Sets the StorageCredentials to use with this account. Warning: for internal use only,
+     *  as updating the credentials to a new account can invalidate pre-existing objects.
+     *
+     * @param credentials
+     *     the credentials to set
+    */
+    protected void setCredentials(final StorageCredentials credentials) {
+        this.credentials = credentials;
     }
 }

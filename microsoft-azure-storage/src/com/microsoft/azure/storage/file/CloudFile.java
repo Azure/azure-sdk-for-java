@@ -2131,11 +2131,6 @@ public class CloudFile implements ListFileItem {
             }
 
             @Override
-            public void setHeaders(HttpURLConnection connection, CloudFile file, OperationContext context) {
-                FileRequest.addMetadata(connection, file.metadata, context);
-            }
-
-            @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
                 StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);

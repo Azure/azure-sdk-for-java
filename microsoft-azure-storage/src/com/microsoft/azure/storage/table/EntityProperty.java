@@ -710,7 +710,7 @@ public final class EntityProperty {
             this.isNull = false;
         }
 
-        this.value = Utility.getTimeByZoneAndFormat(value, Utility.UTC_ZONE, Utility.ISO8061_LONG_PATTERN);
+        this.value = Utility.getJavaISO8061Time(value);
     }
 
     /**

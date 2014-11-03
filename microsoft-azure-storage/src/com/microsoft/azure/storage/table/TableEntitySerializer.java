@@ -176,8 +176,7 @@ final class TableEntitySerializer {
             xmlw.writeStartElement("d", TableConstants.TIMESTAMP, ODataConstants.DATA_SERVICES_NS);
             xmlw.writeAttribute("m", ODataConstants.DATA_SERVICES_METADATA_NS, ODataConstants.TYPE,
                     EdmType.DATE_TIME.toString());
-            xmlw.writeCharacters(Utility.getTimeByZoneAndFormat(entity.getTimestamp(), Utility.UTC_ZONE,
-                    Utility.ISO8061_LONG_PATTERN));
+            xmlw.writeCharacters(Utility.getJavaISO8061Time(entity.getTimestamp()));
             xmlw.writeEndElement();
         }
 
@@ -334,8 +333,7 @@ final class TableEntitySerializer {
             generator.writeStringField(TableConstants.ROW_KEY, entity.getRowKey());
 
             // Timestamp
-            generator.writeStringField(TableConstants.TIMESTAMP, Utility.getTimeByZoneAndFormat(entity.getTimestamp(),
-                    Utility.UTC_ZONE, Utility.ISO8061_LONG_PATTERN));
+            generator.writeStringField(TableConstants.TIMESTAMP, Utility.getJavaISO8061Time(entity.getTimestamp()));
         }
 
         for (final Entry<String, EntityProperty> ent : properties.entrySet()) {
