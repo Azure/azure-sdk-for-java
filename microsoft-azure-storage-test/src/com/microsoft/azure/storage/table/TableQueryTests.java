@@ -367,28 +367,6 @@ public class TableQueryTests {
                     secondIteration.get(m).getProperties().get("D").getValueAsByteArray()));
         }
     }
-    
-    @Test
-    public void testTableQueryRoundTripDate() throws URISyntaxException, StorageException {
-        String partitionKey = "partitionTest";
-        String rowKey = "rowTest";
-        String timestampKey = "timestamp";
-        
-        CloudTable table = TableTestHelper.getRandomTableReference();
-        table.createIfNotExists();
-        
-        DynamicTableEntity entity = new DynamicTableEntity(partitionKey, rowKey);
-        Date start = entity.getTimestamp();
-        entity.getProperties().put(timestampKey, new EntityProperty(start));
-        
-        TableOperation put = TableOperation.insertOrReplace(entity);
-        table.execute(put);
-        
-        TableOperation get = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
-        entity = table.execute(get).getResultAsType();
-        
-        assertEquals(start.getTime(), entity.getProperties().get(timestampKey).getValueAsDate().getTime());
-    }
 
     @SuppressWarnings("deprecation")
     @Test

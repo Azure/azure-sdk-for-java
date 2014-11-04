@@ -83,19 +83,18 @@ public final class Utility {
     /**
      * Stores a reference to the ISO8061 date/time pattern.
      */
-    private static final String ISO8061_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
+    public static final String ISO8061_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
 
     /**
      * Stores a reference to the ISO8061 date/time pattern.
      */
-    private static final String ISO8061_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final String ISO8061_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
-     * Stores a reference to the Java version of ISO8061_LONG date/time pattern.  The full version cannot be used
-     * because Java Dates have millisecond precision.
+     * Stores a reference to the ISO8061_LONG date/time pattern.
      */
-    private static final String JAVA_ISO8061_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    
+    public static final String ISO8061_LONG_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'";
+
     /**
      * List of ports used for path style addressing.
      */
@@ -105,18 +104,8 @@ public final class Utility {
     /**
      * A factory to create SAXParser instances.
      */
-    private static final SAXParserFactory factory = SAXParserFactory.newInstance();
+    private final static SAXParserFactory factory = SAXParserFactory.newInstance();
 
-    /**
-     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
-     */
-    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    
-    /**
-     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
-     */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
-    
     /**
      * 
      * Determines the size of an input stream, and optionally calculates the MD5 hash for the stream.
@@ -491,16 +480,16 @@ public final class Utility {
     }
 
     /**
-     * Returns the current GMT date/time String using the RFC1123 pattern.
+     * Returns the current GMT date/time using the RFC1123 pattern.
      * 
      * @return A <code>String</code> that represents the current GMT date/time using the RFC1123 pattern.
      */
     public static String getGMTTime() {
-        return getGMTTime(new Date());
+        return getTimeByZoneAndFormat(new Date(), GMT_ZONE, RFC1123_PATTERN);
     }
-
+    
     /**
-     * Returns the GTM date/time String for the specified value using the RFC1123 pattern.
+     * Returns the GTM date/time for the specified value using the RFC1123 pattern.
      * 
      * @param date
      *            A <code>Date</code> object that represents the date to convert to GMT date/time in the RFC1123
@@ -510,26 +499,24 @@ public final class Utility {
      *         pattern.
      */
     public static String getGMTTime(final Date date) {
-        final DateFormat formatter = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
-        formatter.setTimeZone(GMT_ZONE);
-        return formatter.format(date);
+        return getTimeByZoneAndFormat(date, GMT_ZONE, RFC1123_PATTERN);
     }
 
     
     /**
-     * Returns the UTC date/time String for the specified value using Java's version of the ISO8061 pattern,
-     * which is limited to millisecond precision.
+     * Returns the date/time for the specified value using the specified zone and format.
      * 
      * @param date
-     *            A <code>Date</code> object that represents the date to convert to UTC date/time in Java's version
-     *            of the ISO8061 pattern.
-     * 
-     * @return A <code>String</code> that represents the UTC date/time for the specified value using Java's version
-     *            of the ISO8061 pattern.
+     *            A <code>Date</code> object that represents the date to convert.
+     * @param zone
+     *            A <code>TimeZone</code> object representing the time zone to convert to. 
+     * @param format
+     *            A <code>String</code> representing the format to use.
+     * @return
      */
-    public static String getJavaISO8061Time(Date date) {
-        final DateFormat formatter = new SimpleDateFormat(JAVA_ISO8061_PATTERN, LOCALE_US);
-        formatter.setTimeZone(UTC_ZONE);
+    public static String getTimeByZoneAndFormat(Date date, TimeZone zone, String format) {
+        final DateFormat formatter = new SimpleDateFormat(format, LOCALE_US);
+        formatter.setTimeZone(zone);
         return formatter.format(date);
     }
     
@@ -545,7 +532,7 @@ public final class Utility {
         factory.setNamespaceAware(true);
         return factory.newSAXParser();
     }
-    
+
     /**
      * Returns the standard header value from the specified connection request, or an empty string if no header value
      * has been specified for the request.
@@ -661,7 +648,38 @@ public final class Utility {
     }
 
     /**
-     * Returns a GMT date for the specified string in the RFC1123 pattern.
+     * Returns a GMT date in the specified format
+     * 
+     * @param value
+     *            the string to parse
+     * @return the GMT date, as a <code>Date</code>
+     * @throws ParseException
+     *             If the specified string is invalid
+     */
+    public static Date parseDateFromString(final String value, final String pattern, final TimeZone timeZone)
+            throws ParseException {
+        final DateFormat rfc1123Format = new SimpleDateFormat(pattern, Utility.LOCALE_US);
+        rfc1123Format.setTimeZone(timeZone);
+        return rfc1123Format.parse(value);
+    }
+
+    /**
+     * Returns a date in the ISO8061 long pattern for the specified string.
+     * 
+     * @param value
+     *            A <code>String</code> that represents the string to parse.
+     * 
+     * @return A <code>Date</code> object that represents the date in the ISO8061 long pattern.
+     * 
+     * @throws ParseException
+     *             If the specified string is invalid.
+     */
+    public static Date parseISO8061LongDateFromString(final String value) throws ParseException {
+        return parseDateFromString(value, ISO8061_LONG_PATTERN, Utility.UTC_ZONE);
+    }
+
+    /**
+     * Returns a GMT date in the RFC1123 pattern for the specified string.
      * 
      * @param value
      *            A <code>String</code> that represents the string to parse.
@@ -672,9 +690,7 @@ public final class Utility {
      *             If the specified string is invalid.
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
-        final DateFormat format = new SimpleDateFormat(RFC1123_PATTERN, Utility.LOCALE_US);
-        format.setTimeZone(GMT_ZONE);
-        return format.parse(value);
+        return parseDateFromString(value, RFC1123_PATTERN, Utility.GMT_ZONE);
     }
 
     /**
@@ -1047,7 +1063,7 @@ public final class Utility {
     }
 
     /**
-     * Private Default Constructor.
+     * Private Default Ctor.
      */
     private Utility() {
         // No op
@@ -1067,52 +1083,53 @@ public final class Utility {
         }
     }
 
-    /**
-     * Given a String representing a date in a form of the ISO8061 pattern, generates a Date representing it
-     * with up to millisecond precision. 
-     * 
-     * @param dateString
-     *              the String to be interpreted as a Date
-     * @return the corresponding <code>Date</code> object
-     */
     public static Date parseDate(String dateString) {
-        String pattern = MAX_PRECISION_PATTERN;
-        switch(dateString.length()) {
-            case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
-            case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
-            case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
-            case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
-            case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
-                dateString = dateString.substring(0, MAX_PRECISION_DATESTRING_LENGTH);
-                break;
-            case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
-                // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = dateString.replace("Z", "0");
-                break;
-            case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
-                // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = dateString.replace("Z", "00");
-                break;
-            case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = Utility.ISO8061_PATTERN;
-                break;
-            case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = Utility.ISO8061_PATTERN_NO_SECONDS;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString));
-        }
-
-        final DateFormat format = new SimpleDateFormat(pattern, Utility.LOCALE_US);
-        format.setTimeZone(UTC_ZONE);
         try {
-            return format.parse(dateString);
+            if (dateString.length() == 28) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_LONG_PATTERN, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 20) {
+                // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_PATTERN, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 17) {
+                // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_PATTERN_NO_SECONDS, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 27) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 26) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 25) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 24) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 23) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 22) {
+                // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.S'Z'", Utility.UTC_ZONE);
+            }
+            else {
+                throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString));
+            }
         }
         catch (final ParseException e) {
             throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString), e);
         }
     }
-    
+
     /**
      * Determines which location can the listing command target by looking at the
      * continuation token.

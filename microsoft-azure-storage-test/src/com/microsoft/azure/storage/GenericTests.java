@@ -20,10 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -415,33 +412,6 @@ public class GenericTests {
             inputStream.close();
             container.deleteIfExists();
         }
-    }
-    
-    @Test
-    public void testDateStringParsing() throws ParseException {
-        String fullDateString = "1999-12-31T23:59:45.1234567Z";
-        SimpleDateFormat testFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
-        Date milliDate = testFormat.parse("1999-12-31T23:59:45.123 -0000");
-        assertEquals(milliDate, Utility.parseDate(fullDateString));
-        
-        fullDateString = "1999-04-30T23:59:55.9876Z";
-        long millisSinceEpoch = 925516795987L;
-        
-        Date deciDate = Utility.parseDate(fullDateString.replace("876Z", "Z"));
-        assertEquals(deciDate.getTime(), (millisSinceEpoch / 100) * 100);
-        
-        Date centiDate = Utility.parseDate(fullDateString.replace("76Z", "Z"));
-        assertEquals(centiDate.getTime(), (millisSinceEpoch / 10) * 10);
-        
-        milliDate = Utility.parseDate(fullDateString);
-        assertEquals(milliDate.getTime(), millisSinceEpoch);
-    }
-    
-    @Test
-    public void testDateStringFormatting() {
-        String fullDateString = "1999-12-31T23:59:45.123Z";
-        String outDateString = Utility.getJavaISO8061Time(Utility.parseDate(fullDateString));
-        assertEquals(fullDateString, outDateString);
     }
 
     private static String generateRandomContainerName() {

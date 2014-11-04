@@ -260,7 +260,8 @@ public class TableQuery<T extends TableEntity> {
      */
     public static String generateFilterCondition(String propertyName, String operation, final Date value) {
         return generateFilterCondition(propertyName, operation,
-                Utility.getJavaISO8061Time(value), EdmType.DATE_TIME);
+                Utility.getTimeByZoneAndFormat(value, Utility.UTC_ZONE, Utility.ISO8061_LONG_PATTERN),
+                EdmType.DATE_TIME);
     }
 
     /**
