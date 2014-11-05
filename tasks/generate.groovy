@@ -101,14 +101,14 @@ def hydraSpecs = [
 def ensureEnvironment()
 {
     def env = System.getenv()
-    def notSet = []
+    def notSetCount = 0;
 
-    ['PRIVATE_FEED_USER_NAME', 'PRIVATE_FEED_PASSWORD', 'PRIVATE_FEED_URL'].each {
-        if (!env.containsKey(it)) { notSet.add(it) }
+    // Specify either feed location or feed url
+    ['PRIVATE_FEED_URL', 'SECONDARY_FEED_URL'].each {
+        if (!env.containsKey(it)) { notSetCount++ }
     }
-
-    if (notSet) {
-        throw new Exception("Required environment variables not set: ${notSet}")
+    if (notSetCount == 2) {
+        throw new Exception("Please either feed url in environment varialbe: PRIVATE_FEED_URL or SECONDARY_FEED_URL")
     }
 }
 
@@ -134,11 +134,11 @@ def exePrefix() {
 def run(String exePath, String... args)
 {
     def commands = [exePrefix(), exePath, args].flatten()
-    commands.execute()
+    commands.execute().waitFor()
 }
 
 // Execute nuget.exe with the given command line arguments
-def nuget(String... args) { run('./nuget.exe', args) }
+def nuget(String... args) { run('nuget.exe', args) }
 
 // Execute hydra.exe with the given command line arguments
 def hydra(String hydraExePath, String... args)
@@ -151,29 +151,64 @@ def hydra(String hydraExePath, String... args)
 def generate(hydraExePath, specInfo)
 {
     def specDLL = findFileInPackagesDirectory(specInfo.specificationDllFileName)
-    return hydra(hydraExePath, '-f', 'java', '-s', 'namespace',
+    return hydra(hydraExePath, '-f', 'JavaEE.Azure', '-s', 'namespace',
         '-c', specInfo.clientType,
         '-d', "../${specInfo.generatedCodeDestinationRootDirectoryName}/src/main/java/com",
         specDLL)
 }
 
+// Create restore.config for local feed management
+def createConfig()
+{
+    File existing = new File("./restore.config")
+    if (existing.exists()) {
+        existing.delete()
+    }
+    File configFile = new File("./restore.config")
+    configFile << "<configurations></configurations>"
+}
+
 // Run nuget.exe to restore required nuget packages
 def restorePackages()
 {
+    def folder = new File("packages")
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
     def env = System.getenv()
     try {
-        nuget('sources', 'add',
-            '-name', 'download',
-            '-source', env['PRIVATE_FEED_URL'],
-            '-configfile', './restore.config')
-        nuget('sources', 'update',
-            '-name', 'download',
-            '-username', env['PRIVATE_FEED_USER_NAME'],
-            '-password', env['PRIVATE_FEED_PASSWORD'],
-            '-configfile', './restore.config')
-        nuget('restore', 'packages.config',
-            '-packagesdirectory', './packages',
-            '-configfile', './restore.config')
+        if (env.containsKey('PRIVATE_FEED_URL')) {
+            nuget('sources', 'add',
+                '-name', 'PrimaryFeed',
+                '-source', env['PRIVATE_FEED_URL'],
+                '-configfile', './restore.config')
+            if (env.containsKey('PRIVATE_FEED_USER_NAME') && env.containsKey('PRIVATE_FEED_PASSWORD')) {
+                nuget('sources', 'update',
+                    '-name', 'PrimaryFeed',
+                    '-username', env['PRIVATE_FEED_USER_NAME'],
+                    '-password', env['PRIVATE_FEED_PASSWORD'],
+                    '-configfile', './restore.config')
+            }
+            nuget('restore', 'packages.config',
+                '-packagesdirectory', './packages',
+                '-configfile', './restore.config')
+        }
+        if (env.containsKey('SECONDARY_FEED_URL')) {
+            nuget('sources', 'add',
+                '-name', 'SecondaryFeed',
+                '-source', env['SECONDARY_FEED_URL'],
+                '-configfile', './restore.config')
+            if (env.containsKey('SECONDARY_FEED_USER_NAME') && env.containsKey('SECONDARY_FEED_PASSWORD')) {
+                nuget('sources', 'update',
+                    '-name', 'SecondaryFeed',
+                    '-username', env['SECONDARY_FEED_USER_NAME'],
+                    '-password', env['SECONDARY_FEED_PASSWORD'],
+                    '-configfile', './restore.config')
+            }
+            nuget('restore', 'packages.config',
+                '-packagesdirectory', './packages',
+                '-configfile', './restore.config')
+        }
     }
     finally {
         // Need to wait a bit, config file stays open while nuget.exe shuts down
@@ -196,6 +231,7 @@ def findFileInPackagesDirectory(pattern)
 //
 ensureEnvironment()
 download("http://www.nuget.org/nuget.exe")
+createConfig()
 restorePackages()
 def hydraPath = findFileInPackagesDirectory('hydra.exe')
 
