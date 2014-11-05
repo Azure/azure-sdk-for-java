@@ -104,22 +104,11 @@ def ensureEnvironment()
     def notSetCount = 0;
 
     // Specify either feed location or feed url
-    ['PRIVATE_FEED_LOCATION', 'PRIVATE_FEED_URL'].each {
+    ['PRIVATE_FEED_URL', 'SECONDARY_FEED_URL'].each {
         if (!env.containsKey(it)) { notSetCount++ }
     }
     if (notSetCount == 2) {
-        throw new Exception("Please either set environment variable PRIVATE_FEED_LOCATION or PRIVATE_FEED_URL")
-    }
-
-    def notSet = []
-    // Specify user name and password if using feed url
-    if (env.containsKey('PRIVATE_FEED_URL')) {
-        ['PRIVATE_FEED_USER_NAME', 'PRIVATE_FEED_PASSWORD'].each {
-            if (!env.containsKey(it)) { notSet.add(it) }
-        }
-    }
-    if (notSet) {
-        throw new Exception("Required environment variables not set: ${notSet}")
+        throw new Exception("Please either feed url in environment varialbe: PRIVATE_FEED_URL or SECONDARY_FEED_URL")
     }
 }
 
@@ -188,25 +177,34 @@ def restorePackages()
     }
     def env = System.getenv()
     try {
-        if (env.containsKey('PRIVATE_FEED_LOCATION')) {
+        if (env.containsKey('PRIVATE_FEED_URL')) {
             nuget('sources', 'add',
-                '-name', 'primaryFeed',
-                '-source', env['PRIVATE_FEED_LOCATION'],
+                '-name', 'PrimaryFeed',
+                '-source', env['PRIVATE_FEED_URL'],
                 '-configfile', './restore.config')
+            if (env.containsKey('PRIVATE_FEED_USER_NAME') && env.containsKey('PRIVATE_FEED_PASSWORD')) {
+                nuget('sources', 'update',
+                    '-name', 'PrimaryFeed',
+                    '-username', env['PRIVATE_FEED_USER_NAME'],
+                    '-password', env['PRIVATE_FEED_PASSWORD'],
+                    '-configfile', './restore.config')
+            }
             nuget('restore', 'packages.config',
                 '-packagesdirectory', './packages',
                 '-configfile', './restore.config')
         }
-        if (env.containsKey('PRIVATE_FEED_URL')) {
+        if (env.containsKey('SECONDARY_FEED_URL')) {
             nuget('sources', 'add',
-                '-name', 'secondaryFeed',
-                '-source', env['PRIVATE_FEED_URL'],
+                '-name', 'SecondaryFeed',
+                '-source', env['SECONDARY_FEED_URL'],
                 '-configfile', './restore.config')
-            nuget('sources', 'update',
-                '-name', 'secondaryFeed',
-                '-username', env['PRIVATE_FEED_USER_NAME'],
-                '-password', env['PRIVATE_FEED_PASSWORD'],
-                '-configfile', './restore.config')
+            if (env.containsKey('SECONDARY_FEED_USER_NAME') && env.containsKey('SECONDARY_FEED_PASSWORD')) {
+                nuget('sources', 'update',
+                    '-name', 'SecondaryFeed',
+                    '-username', env['SECONDARY_FEED_USER_NAME'],
+                    '-password', env['SECONDARY_FEED_PASSWORD'],
+                    '-configfile', './restore.config')
+            }
             nuget('restore', 'packages.config',
                 '-packagesdirectory', './packages',
                 '-configfile', './restore.config')
