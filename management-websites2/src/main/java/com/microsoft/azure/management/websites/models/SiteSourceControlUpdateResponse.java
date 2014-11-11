@@ -21,16 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.websites.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum RemoteDebuggingVersion {
-    /**
-    * Visual Studio 2012.
-    */
-    VS2012,
+import com.microsoft.windowsazure.core.OperationResponse;
+
+/**
+* The link site to source control operation response.
+*/
+public class SiteSourceControlUpdateResponse extends OperationResponse {
+    private SiteSourceControl siteSourceControl;
     
     /**
-    * Visual Studio 2013.
+    * Optional. Gets or sets details for the requested source control.
+    * @return The SiteSourceControl value.
     */
-    VS2013,
+    public SiteSourceControl getSiteSourceControl() {
+        return this.siteSourceControl;
+    }
+    
+    /**
+    * Optional. Gets or sets details for the requested source control.
+    * @param siteSourceControlValue The SiteSourceControl value.
+    */
+    public void setSiteSourceControl(final SiteSourceControl siteSourceControlValue) {
+        this.siteSourceControl = siteSourceControlValue;
+    }
 }

@@ -42,17 +42,7 @@ public class JobCollectionJobsUpdateStateParameters {
     * @param stateValue The State value.
     */
     public void setState(final JobState stateValue) {
-        this.stateIsIncluded = true;
         this.state = stateValue;
-    }
-    
-    private boolean stateIsIncluded;
-    
-    /**
-    * @return The StateIsIncluded value.
-    */
-    public boolean isStateIsIncluded() {
-        return this.stateIsIncluded;
     }
     
     /**

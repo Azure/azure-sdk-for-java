@@ -177,10 +177,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
         }
         // TODO: Validate parameters.Name is a valid DNS name.
-        int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0) + (parameters.getLocation() != null ? 1 : 0);
-        if (locationCount != 1) {
-            throw new IllegalArgumentException("Only one of parameters.AffinityGroup, parameters.Location may be provided.");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();

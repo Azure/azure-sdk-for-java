@@ -149,6 +149,123 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> applySlotConfigurationAsync(final String webSpaceName, final String webSiteName, final String targetSwapSlot) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return applySlotConfiguration(webSpaceName, webSiteName, targetSwapSlot);
+            }
+         });
+    }
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse applySlotConfiguration(String webSpaceName, String webSiteName, String targetSwapSlot) throws IOException, ServiceException {
+        // Validate
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        if (targetSwapSlot == null) {
+            throw new NullPointerException("targetSwapSlot");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("targetSwapSlot", targetSwapSlot);
+            CloudTracing.enter(invocationId, this, "applySlotConfigurationAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/applySlotConfig" + "?";
+        url = url + "targetSwapSlot=" + URLEncoder.encode(targetSwapSlot.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("accept", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * Backups a site on-demand.
     *
     * @param webSpaceName Required. The name of the web space.
@@ -1022,11 +1139,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                Element skuElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Sku");
-                if (skuElement != null) {
-                    SkuOptions skuInstance;
-                    skuInstance = SkuOptions.valueOf(skuElement.getTextContent());
-                    webSiteInstance.setSku(skuInstance);
+                Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
+                if (sKUElement != null) {
+                    SkuOptions sKUInstance;
+                    sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                    webSiteInstance.setSku(sKUInstance);
                 }
                 
                 Element enabledElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
@@ -2144,11 +2261,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                Element skuElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Sku");
-                if (skuElement != null) {
-                    SkuOptions skuInstance;
-                    skuInstance = SkuOptions.valueOf(skuElement.getTextContent());
-                    webSiteInstance.setSku(skuInstance);
+                Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SKU");
+                if (sKUElement != null) {
+                    SkuOptions sKUInstance;
+                    sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                    webSiteInstance.setSku(sKUInstance);
                 }
                 
                 Element enabledElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
@@ -4474,6 +4591,114 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> resetSlotConfigurationAsync(final String webSpaceName, final String webSiteName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return resetSlotConfiguration(webSpaceName, webSiteName);
+            }
+         });
+    }
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse resetSlotConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException {
+        // Validate
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            CloudTracing.enter(invocationId, this, "resetSlotConfigurationAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + webSiteName.trim() + "/resetSlotConfig";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("accept", "application/json");
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * You can restart a web site by issuing an HTTP POST request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236425.aspx for
     * more information)
@@ -5269,11 +5494,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                Element skuElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Sku");
-                if (skuElement != null) {
-                    SkuOptions skuInstance;
-                    skuInstance = SkuOptions.valueOf(skuElement.getTextContent());
-                    webSiteInstance.setSku(skuInstance);
+                Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
+                if (sKUElement != null) {
+                    SkuOptions sKUInstance;
+                    sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                    webSiteInstance.setSku(sKUInstance);
                 }
                 
                 Element enabledElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
@@ -5821,7 +6046,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         ((ObjectNode) connectionStringInfoValue).put("Name", connectionStringsItem.getName());
                     }
                     
-                    ((ObjectNode) connectionStringInfoValue).put("Type", connectionStringsItem.getType().ordinal());
+                    ((ObjectNode) connectionStringInfoValue).put("Type", ((int) connectionStringsItem.getType()));
                 }
                 ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ConnectionStrings", connectionStringsArray);
             }
@@ -5877,7 +6102,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getManagedPipelineMode() != null) {
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", parameters.getManagedPipelineMode().ordinal());
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", ((int) parameters.getManagedPipelineMode()));
         }
         
         if (parameters.getMetadata() != null) {

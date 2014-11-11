@@ -910,10 +910,6 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0) + (parameters.getLocation() != null ? 1 : 0);
-        if (locationCount != 1) {
-            throw new IllegalArgumentException("Only one of parameters.AffinityGroup, parameters.Location may be provided.");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -4919,10 +4915,6 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
-        }
-        int minimumUpdateCount = (parameters.getDescription() != null ? 1 : 0) + (parameters.getExtendedProperties() != null ? 1 : 0) + (parameters.getLabel() != null ? 1 : 0) + (parameters.getReverseDnsFqdn() != null ? 1 : 0);
-        if (minimumUpdateCount < 1) {
-            throw new IllegalArgumentException("Expected at least one of parameters.Description, parameters.ExtendedProperties, parameters.Label, parameters.ReverseDnsFqdn to be provided.");
         }
         
         // Tracing

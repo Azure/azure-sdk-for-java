@@ -199,6 +199,10 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             ((ObjectNode) propertiesValue).put("numberOfWorkers", parameters.getWebHostingPlan().getProperties().getNumberOfWorkers());
             
             ((ObjectNode) propertiesValue).put("workerSize", parameters.getWebHostingPlan().getProperties().getWorkerSize().toString());
+            
+            if (parameters.getWebHostingPlan().getProperties().getAdminSiteName() != null) {
+                ((ObjectNode) propertiesValue).put("adminSiteName", parameters.getWebHostingPlan().getProperties().getAdminSiteName());
+            }
         }
         
         if (parameters.getWebHostingPlan().getId() != null) {
@@ -292,6 +296,13 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         WorkerSizeOptions workerSizeInstance;
                         workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
                         propertiesInstance.setWorkerSize(workerSizeInstance);
+                    }
+                    
+                    JsonNode adminSiteNameValue = propertiesValue2.get("adminSiteName");
+                    if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                        String adminSiteNameInstance;
+                        adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                        propertiesInstance.setAdminSiteName(adminSiteNameInstance);
                     }
                 }
                 
@@ -597,6 +608,13 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         WorkerSizeOptions workerSizeInstance;
                         workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
                         propertiesInstance.setWorkerSize(workerSizeInstance);
+                    }
+                    
+                    JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
+                    if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                        String adminSiteNameInstance;
+                        adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                        propertiesInstance.setAdminSiteName(adminSiteNameInstance);
                     }
                 }
                 
@@ -1062,6 +1080,13 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 WorkerSizeOptions workerSizeInstance;
                                 workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
                                 propertiesInstance.setWorkerSize(workerSizeInstance);
+                            }
+                            
+                            JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
+                            if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                                String adminSiteNameInstance;
+                                adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                                propertiesInstance.setAdminSiteName(adminSiteNameInstance);
                             }
                         }
                         

@@ -4281,9 +4281,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         ObjectNode jobCollectionJobsUpdateStateParametersValue = objectMapper.createObjectNode();
         requestDoc = jobCollectionJobsUpdateStateParametersValue;
         
-        if (parameters.isStateIsIncluded()) {
-            ((ObjectNode) jobCollectionJobsUpdateStateParametersValue).put("state", SchedulerClientImpl.jobStateToString(parameters.getState()));
-        }
+        ((ObjectNode) jobCollectionJobsUpdateStateParametersValue).put("state", SchedulerClientImpl.jobStateToString(parameters.getState()));
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);

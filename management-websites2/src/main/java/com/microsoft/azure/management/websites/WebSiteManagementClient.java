@@ -23,16 +23,10 @@
 
 package com.microsoft.azure.management.websites;
 
-import com.microsoft.azure.management.websites.models.ResourceGroupCreateOrUpdateParameters;
-import com.microsoft.azure.management.websites.models.ResourceGroupCreateOrUpdateResponse;
 import com.microsoft.windowsazure.core.FilterableService;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.Future;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web
@@ -88,6 +82,12 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
+    * User source controls operations
+    * @return The SourceControlsOperations value.
+    */
+    SourceControlOperations getSourceControlsOperations();
+    
+    /**
     * Operations for managing the Web Hosting Plans in a resource group. Web
     * hosting plans (WHPs) represent a set of features and capacity that you
     * can share across your web sites. Web hosting plans support the 4 Azure
@@ -109,108 +109,4 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @return The WebSitesOperations value.
     */
     WebSiteOperations getWebSitesOperations();
-    
-    /**
-    * Begins deleting a resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse beginDeletingResourceGroup(String resourceGroupName) throws IOException, ServiceException;
-    
-    /**
-    * Begins deleting a resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> beginDeletingResourceGroupAsync(String resourceGroupName);
-    
-    /**
-    * Creates or updates the resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param parameters Required. Parameters supplied to the operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The Create or Update resource group operation response.
-    */
-    ResourceGroupCreateOrUpdateResponse createOrUpdateResourceGroup(String resourceGroupName, ResourceGroupCreateOrUpdateParameters parameters) throws IOException, ServiceException;
-    
-    /**
-    * Creates or updates the resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param parameters Required. Parameters supplied to the operation.
-    * @return The Create or Update resource group operation response.
-    */
-    Future<ResourceGroupCreateOrUpdateResponse> createOrUpdateResourceGroupAsync(String resourceGroupName, ResourceGroupCreateOrUpdateParameters parameters);
-    
-    /**
-    * Gets all resource groups in the subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse getResourceGroups() throws IOException, ServiceException;
-    
-    /**
-    * Gets all resource groups in the subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> getResourceGroupsAsync();
-    
-    /**
-    * Register the resource provider with a subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse registerResourceProvider() throws IOException, ServiceException;
-    
-    /**
-    * Register the resource provider with a subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> registerResourceProviderAsync();
-    
-    /**
-    * Unregister the resource provider with a subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse unregisterResourceProvider() throws IOException, ServiceException;
-    
-    /**
-    * Unregister the resource provider with a subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> unregisterResourceProviderAsync();
 }

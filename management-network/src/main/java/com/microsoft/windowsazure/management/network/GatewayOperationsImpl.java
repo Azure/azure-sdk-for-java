@@ -1290,14 +1290,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        Element updateGatewayParametersElement = requestDoc.createElementNS("", "UpdateGatewayParameters");
+        Element updateGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayParameters");
         requestDoc.appendChild(updateGatewayParametersElement);
         
-        Element gatewaySizeElement = requestDoc.createElementNS("", "GatewaySize");
+        Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
         gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU().toString()));
         updateGatewayParametersElement.appendChild(gatewaySizeElement);
         
-        Element operationElement = requestDoc.createElementNS("", "Operation");
+        Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
         operationElement.appendChild(requestDoc.createTextNode("Resize"));
         updateGatewayParametersElement.appendChild(operationElement);
         

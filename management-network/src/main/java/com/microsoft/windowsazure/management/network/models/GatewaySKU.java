@@ -24,9 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public enum GatewaySKU {
-    None,
-
     Default,
-
+    
     HighPerformance,
 }

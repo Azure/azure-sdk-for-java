@@ -267,6 +267,13 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
                         propertiesInstance.setStorageAccountKey(storageAccountKeyInstance);
                     }
                     
+                    JsonNode secondaryStorageAccountKeyValue = propertiesValue.get("secondaryStorageAccountKey");
+                    if (secondaryStorageAccountKeyValue != null && secondaryStorageAccountKeyValue instanceof NullNode == false) {
+                        String secondaryStorageAccountKeyInstance;
+                        secondaryStorageAccountKeyInstance = secondaryStorageAccountKeyValue.getTextValue();
+                        propertiesInstance.setSecondaryStorageAccountKey(secondaryStorageAccountKeyInstance);
+                    }
+                    
                     JsonNode storageTableEndpointValue = propertiesValue.get("storageTableEndpoint");
                     if (storageTableEndpointValue != null && storageTableEndpointValue instanceof NullNode == false) {
                         String storageTableEndpointInstance;
@@ -328,6 +335,13 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
                         boolean useServerDefaultInstance;
                         useServerDefaultInstance = useServerDefaultValue.getBooleanValue();
                         propertiesInstance.setUseServerDefault(useServerDefaultInstance);
+                    }
+                    
+                    JsonNode isBlockDirectAccessEnabledValue = propertiesValue.get("isBlockDirectAccessEnabled");
+                    if (isBlockDirectAccessEnabledValue != null && isBlockDirectAccessEnabledValue instanceof NullNode == false) {
+                        boolean isBlockDirectAccessEnabledInstance;
+                        isBlockDirectAccessEnabledInstance = isBlockDirectAccessEnabledValue.getBooleanValue();
+                        propertiesInstance.setIsBlockDirectAccessEnabled(isBlockDirectAccessEnabledInstance);
                     }
                 }
                 
@@ -507,6 +521,10 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
             ((ObjectNode) propertiesValue).put("storageAccountKey", parameters.getProperties().getStorageAccountKey());
         }
         
+        if (parameters.getProperties().getSecondaryStorageAccountKey() != null) {
+            ((ObjectNode) propertiesValue).put("secondaryStorageAccountKey", parameters.getProperties().getSecondaryStorageAccountKey());
+        }
+        
         if (parameters.getProperties().getStorageTableEndpoint() != null) {
             ((ObjectNode) propertiesValue).put("storageTableEndpoint", parameters.getProperties().getStorageTableEndpoint());
         }
@@ -540,6 +558,8 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         ((ObjectNode) propertiesValue).put("useServerDefault", parameters.getProperties().isUseServerDefault());
+        
+        ((ObjectNode) propertiesValue).put("isBlockDirectAccessEnabled", parameters.getProperties().isBlockDirectAccessEnabled());
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);

@@ -21,12 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.websites.models;
+package com.microsoft.azure.management.websites.models;
 
-public enum WebSpaceWorkerSize {
-    Small,
+import com.microsoft.windowsazure.core.OperationResponse;
+
+/**
+* The get source control operation response.
+*/
+public class SourceControlGetResponse extends OperationResponse {
+    private SourceControl sourceControl;
     
-    Medium,
+    /**
+    * Optional. Gets or sets the requested source control.
+    * @return The SourceControl value.
+    */
+    public SourceControl getSourceControl() {
+        return this.sourceControl;
+    }
     
-    Large,
+    /**
+    * Optional. Gets or sets the requested source control.
+    * @param sourceControlValue The SourceControl value.
+    */
+    public void setSourceControl(final SourceControl sourceControlValue) {
+        this.sourceControl = sourceControlValue;
+    }
 }

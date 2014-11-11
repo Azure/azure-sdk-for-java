@@ -318,7 +318,7 @@ public class WebSiteUpdateConfigurationDetails {
     
     /**
     * Optional. Supported values are an empty string (an empty string disables
-    * PHP), 5.3, and 5.4.
+    * PHP), 5.3, 5.4, 5.5 and 5.6.
     * @return The PhpVersion value.
     */
     public String getPhpVersion() {
@@ -327,11 +327,31 @@ public class WebSiteUpdateConfigurationDetails {
     
     /**
     * Optional. Supported values are an empty string (an empty string disables
-    * PHP), 5.3, and 5.4.
+    * PHP), 5.3, 5.4, 5.5 and 5.6.
     * @param phpVersionValue The PhpVersion value.
     */
     public void setPhpVersion(final String phpVersionValue) {
         this.phpVersion = phpVersionValue;
+    }
+    
+    private String pythonVersion;
+    
+    /**
+    * Optional. Supported values are an empty string (an empty string disables
+    * Python), 2.7 and 3.4.
+    * @return The PythonVersion value.
+    */
+    public String getPythonVersion() {
+        return this.pythonVersion;
+    }
+    
+    /**
+    * Optional. Supported values are an empty string (an empty string disables
+    * Python), 2.7 and 3.4.
+    * @param pythonVersionValue The PythonVersion value.
+    */
+    public void setPythonVersion(final String pythonVersionValue) {
+        this.pythonVersion = pythonVersionValue;
     }
     
     private Boolean remoteDebuggingEnabled;
