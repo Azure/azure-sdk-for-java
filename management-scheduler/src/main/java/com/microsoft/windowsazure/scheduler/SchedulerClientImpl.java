@@ -285,14 +285,17 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value.
     */
      static HttpAuthenticationType parseHttpAuthenticationType(String value) {
-        if ("notspecified".equalsIgnoreCase(value)) {
+        if ("NotSpecified".equalsIgnoreCase(value)) {
             return HttpAuthenticationType.NotSpecified;
         }
-        if ("basic".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.Basic;
-        }
-        if ("clientcertificate".equalsIgnoreCase(value)) {
+        if ("ClientCertificate".equalsIgnoreCase(value)) {
             return HttpAuthenticationType.ClientCertificate;
+        }
+        if ("ActiveDirectoryOAuth".equalsIgnoreCase(value)) {
+            return HttpAuthenticationType.ActiveDirectoryOAuth;
+        }
+        if ("Basic".equalsIgnoreCase(value)) {
+            return HttpAuthenticationType.Basic;
         }
         throw new IllegalArgumentException("value");
     }
@@ -305,13 +308,16 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static String httpAuthenticationTypeToString(HttpAuthenticationType value) {
         if (value == HttpAuthenticationType.NotSpecified) {
-            return "notspecified";
-        }
-        if (value == HttpAuthenticationType.Basic) {
-            return "basic";
+            return "NotSpecified";
         }
         if (value == HttpAuthenticationType.ClientCertificate) {
-            return "clientcertificate";
+            return "ClientCertificate";
+        }
+        if (value == HttpAuthenticationType.ActiveDirectoryOAuth) {
+            return "ActiveDirectoryOAuth";
+        }
+        if (value == HttpAuthenticationType.Basic) {
+            return "Basic";
         }
         throw new IllegalArgumentException("value");
     }

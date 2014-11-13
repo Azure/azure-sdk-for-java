@@ -29,6 +29,8 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.TimeSpan8601Converter;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.scheduler.models.AADOAuthAuthentication;
+import com.microsoft.windowsazure.scheduler.models.BasicAuthentication;
 import com.microsoft.windowsazure.scheduler.models.ClientCertAuthentication;
 import com.microsoft.windowsazure.scheduler.models.HttpAuthenticationType;
 import com.microsoft.windowsazure.scheduler.models.Job;
@@ -329,6 +331,40 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived.getType()));
                     }
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
+                        ((ObjectNode) authenticationValue).put("type", "ActiveDirectoryOAuth");
+                        AADOAuthAuthentication derived2 = ((AADOAuthAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        if (derived2.getSecret() != null) {
+                            ((ObjectNode) authenticationValue).put("secret", derived2.getSecret());
+                        }
+                        
+                        if (derived2.getTenant() != null) {
+                            ((ObjectNode) authenticationValue).put("tenant", derived2.getTenant());
+                        }
+                        
+                        if (derived2.getAudience() != null) {
+                            ((ObjectNode) authenticationValue).put("audience", derived2.getAudience());
+                        }
+                        
+                        if (derived2.getClientId() != null) {
+                            ((ObjectNode) authenticationValue).put("clientId", derived2.getClientId());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                    }
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
+                        ((ObjectNode) authenticationValue).put("type", "Basic");
+                        BasicAuthentication derived3 = ((BasicAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        ((ObjectNode) authenticationValue).put("username", derived3.getUsername());
+                        
+                        if (derived3.getPassword() != null) {
+                            ((ObjectNode) authenticationValue).put("password", derived3.getPassword());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived3.getType()));
+                    }
                 }
             }
             
@@ -375,31 +411,65 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
                 if (parameters.getAction().getRequest().getAuthentication() instanceof ClientCertAuthentication) {
                     ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
-                    ClientCertAuthentication derived2 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    ClientCertAuthentication derived4 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
-                    if (derived2.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived2.getPassword());
+                    if (derived4.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived4.getPassword());
                     }
                     
-                    if (derived2.getPfx() != null) {
-                        ((ObjectNode) authenticationValue2).put("pfx", derived2.getPfx());
+                    if (derived4.getPfx() != null) {
+                        ((ObjectNode) authenticationValue2).put("pfx", derived4.getPfx());
                     }
                     
-                    if (derived2.getCertificateThumbprint() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived2.getCertificateThumbprint());
+                    if (derived4.getCertificateThumbprint() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived4.getCertificateThumbprint());
                     }
                     
-                    if (derived2.getCertificateExpiration() != null) {
+                    if (derived4.getCertificateExpiration() != null) {
                         SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                         simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived2.getCertificateExpiration().getTime()));
+                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived4.getCertificateExpiration().getTime()));
                     }
                     
-                    if (derived2.getCertificateSubjectName() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived2.getCertificateSubjectName());
+                    if (derived4.getCertificateSubjectName() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived4.getCertificateSubjectName());
                     }
                     
-                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
+                }
+                if (parameters.getAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
+                    ((ObjectNode) authenticationValue2).put("type", "ActiveDirectoryOAuth");
+                    AADOAuthAuthentication derived5 = ((AADOAuthAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    if (derived5.getSecret() != null) {
+                        ((ObjectNode) authenticationValue2).put("secret", derived5.getSecret());
+                    }
+                    
+                    if (derived5.getTenant() != null) {
+                        ((ObjectNode) authenticationValue2).put("tenant", derived5.getTenant());
+                    }
+                    
+                    if (derived5.getAudience() != null) {
+                        ((ObjectNode) authenticationValue2).put("audience", derived5.getAudience());
+                    }
+                    
+                    if (derived5.getClientId() != null) {
+                        ((ObjectNode) authenticationValue2).put("clientId", derived5.getClientId());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
+                }
+                if (parameters.getAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
+                    ((ObjectNode) authenticationValue2).put("type", "Basic");
+                    BasicAuthentication derived6 = ((BasicAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    ((ObjectNode) authenticationValue2).put("username", derived6.getUsername());
+                    
+                    if (derived6.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived6.getPassword());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
                 }
             }
         }
@@ -689,6 +759,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     }
                                     requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                 }
+                                if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                    AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                    
+                                    JsonNode secretValue = authenticationValue3.get("secret");
+                                    if (secretValue != null && secretValue instanceof NullNode == false) {
+                                        String secretInstance;
+                                        secretInstance = secretValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                    }
+                                    
+                                    JsonNode tenantValue = authenticationValue3.get("tenant");
+                                    if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                        String tenantInstance;
+                                        tenantInstance = tenantValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                    }
+                                    
+                                    JsonNode audienceValue = authenticationValue3.get("audience");
+                                    if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                        String audienceInstance;
+                                        audienceInstance = audienceValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                    }
+                                    
+                                    JsonNode clientIdValue = authenticationValue3.get("clientId");
+                                    if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                        String clientIdInstance;
+                                        clientIdInstance = clientIdValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                    }
+                                    
+                                    JsonNode typeValue4 = authenticationValue3.get("type");
+                                    if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance4;
+                                        typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                        aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                    }
+                                    requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                }
+                                if ("Basic".equals(typeName)) {
+                                    BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                    
+                                    JsonNode usernameValue = authenticationValue3.get("username");
+                                    if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                        String usernameInstance;
+                                        usernameInstance = usernameValue.getTextValue();
+                                        basicAuthenticationInstance.setUsername(usernameInstance);
+                                    }
+                                    
+                                    JsonNode passwordValue2 = authenticationValue3.get("password");
+                                    if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                        String passwordInstance2;
+                                        passwordInstance2 = passwordValue2.getTextValue();
+                                        basicAuthenticationInstance.setPassword(passwordInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue5 = authenticationValue3.get("type");
+                                    if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance5;
+                                        typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                        basicAuthenticationInstance.setType(typeInstance5);
+                                    }
+                                    requestInstance.setAuthentication(basicAuthenticationInstance);
+                                }
                             }
                         }
                         
@@ -770,11 +904,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             if ("ClientCertificate".equals(typeName2)) {
                                 ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                 
-                                JsonNode passwordValue2 = authenticationValue4.get("password");
-                                if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                    String passwordInstance2;
-                                    passwordInstance2 = passwordValue2.getTextValue();
-                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                JsonNode passwordValue3 = authenticationValue4.get("password");
+                                if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                    String passwordInstance3;
+                                    passwordInstance3 = passwordValue3.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                 }
                                 
                                 JsonNode pfxValue2 = authenticationValue4.get("pfx");
@@ -805,13 +939,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                 }
                                 
-                                JsonNode typeValue4 = authenticationValue4.get("type");
-                                if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                    HttpAuthenticationType typeInstance4;
-                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                JsonNode typeValue6 = authenticationValue4.get("type");
+                                if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance6;
+                                    typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance6);
                                 }
                                 requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
+                            if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                
+                                JsonNode secretValue2 = authenticationValue4.get("secret");
+                                if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                    String secretInstance2;
+                                    secretInstance2 = secretValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                }
+                                
+                                JsonNode tenantValue2 = authenticationValue4.get("tenant");
+                                if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                    String tenantInstance2;
+                                    tenantInstance2 = tenantValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                }
+                                
+                                JsonNode audienceValue2 = authenticationValue4.get("audience");
+                                if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                    String audienceInstance2;
+                                    audienceInstance2 = audienceValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                }
+                                
+                                JsonNode clientIdValue2 = authenticationValue4.get("clientId");
+                                if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                    String clientIdInstance2;
+                                    clientIdInstance2 = clientIdValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                }
+                                
+                                JsonNode typeValue7 = authenticationValue4.get("type");
+                                if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance7;
+                                    typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                    aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                }
+                                requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                            }
+                            if ("Basic".equals(typeName2)) {
+                                BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                
+                                JsonNode usernameValue2 = authenticationValue4.get("username");
+                                if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                    String usernameInstance2;
+                                    usernameInstance2 = usernameValue2.getTextValue();
+                                    basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                }
+                                
+                                JsonNode passwordValue4 = authenticationValue4.get("password");
+                                if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                    String passwordInstance4;
+                                    passwordInstance4 = passwordValue4.getTextValue();
+                                    basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                }
+                                
+                                JsonNode typeValue8 = authenticationValue4.get("type");
+                                if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance8;
+                                    typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                    basicAuthenticationInstance2.setType(typeInstance8);
+                                }
+                                requestInstance2.setAuthentication(basicAuthenticationInstance2);
                             }
                         }
                     }
@@ -1239,6 +1437,40 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                         
                         ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived.getType()));
                     }
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
+                        ((ObjectNode) authenticationValue).put("type", "ActiveDirectoryOAuth");
+                        AADOAuthAuthentication derived2 = ((AADOAuthAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        if (derived2.getSecret() != null) {
+                            ((ObjectNode) authenticationValue).put("secret", derived2.getSecret());
+                        }
+                        
+                        if (derived2.getTenant() != null) {
+                            ((ObjectNode) authenticationValue).put("tenant", derived2.getTenant());
+                        }
+                        
+                        if (derived2.getAudience() != null) {
+                            ((ObjectNode) authenticationValue).put("audience", derived2.getAudience());
+                        }
+                        
+                        if (derived2.getClientId() != null) {
+                            ((ObjectNode) authenticationValue).put("clientId", derived2.getClientId());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                    }
+                    if (parameters.getAction().getErrorAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
+                        ((ObjectNode) authenticationValue).put("type", "Basic");
+                        BasicAuthentication derived3 = ((BasicAuthentication) parameters.getAction().getErrorAction().getRequest().getAuthentication());
+                        
+                        ((ObjectNode) authenticationValue).put("username", derived3.getUsername());
+                        
+                        if (derived3.getPassword() != null) {
+                            ((ObjectNode) authenticationValue).put("password", derived3.getPassword());
+                        }
+                        
+                        ((ObjectNode) authenticationValue).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived3.getType()));
+                    }
                 }
             }
             
@@ -1285,31 +1517,65 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
                 if (parameters.getAction().getRequest().getAuthentication() instanceof ClientCertAuthentication) {
                     ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
-                    ClientCertAuthentication derived2 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    ClientCertAuthentication derived4 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
-                    if (derived2.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived2.getPassword());
+                    if (derived4.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived4.getPassword());
                     }
                     
-                    if (derived2.getPfx() != null) {
-                        ((ObjectNode) authenticationValue2).put("pfx", derived2.getPfx());
+                    if (derived4.getPfx() != null) {
+                        ((ObjectNode) authenticationValue2).put("pfx", derived4.getPfx());
                     }
                     
-                    if (derived2.getCertificateThumbprint() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived2.getCertificateThumbprint());
+                    if (derived4.getCertificateThumbprint() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived4.getCertificateThumbprint());
                     }
                     
-                    if (derived2.getCertificateExpiration() != null) {
+                    if (derived4.getCertificateExpiration() != null) {
                         SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                         simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived2.getCertificateExpiration().getTime()));
+                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived4.getCertificateExpiration().getTime()));
                     }
                     
-                    if (derived2.getCertificateSubjectName() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived2.getCertificateSubjectName());
+                    if (derived4.getCertificateSubjectName() != null) {
+                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived4.getCertificateSubjectName());
                     }
                     
-                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived2.getType()));
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
+                }
+                if (parameters.getAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
+                    ((ObjectNode) authenticationValue2).put("type", "ActiveDirectoryOAuth");
+                    AADOAuthAuthentication derived5 = ((AADOAuthAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    if (derived5.getSecret() != null) {
+                        ((ObjectNode) authenticationValue2).put("secret", derived5.getSecret());
+                    }
+                    
+                    if (derived5.getTenant() != null) {
+                        ((ObjectNode) authenticationValue2).put("tenant", derived5.getTenant());
+                    }
+                    
+                    if (derived5.getAudience() != null) {
+                        ((ObjectNode) authenticationValue2).put("audience", derived5.getAudience());
+                    }
+                    
+                    if (derived5.getClientId() != null) {
+                        ((ObjectNode) authenticationValue2).put("clientId", derived5.getClientId());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
+                }
+                if (parameters.getAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
+                    ((ObjectNode) authenticationValue2).put("type", "Basic");
+                    BasicAuthentication derived6 = ((BasicAuthentication) parameters.getAction().getRequest().getAuthentication());
+                    
+                    ((ObjectNode) authenticationValue2).put("username", derived6.getUsername());
+                    
+                    if (derived6.getPassword() != null) {
+                        ((ObjectNode) authenticationValue2).put("password", derived6.getPassword());
+                    }
+                    
+                    ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
                 }
             }
         }
@@ -1599,6 +1865,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     }
                                     requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                 }
+                                if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                    AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                    
+                                    JsonNode secretValue = authenticationValue3.get("secret");
+                                    if (secretValue != null && secretValue instanceof NullNode == false) {
+                                        String secretInstance;
+                                        secretInstance = secretValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                    }
+                                    
+                                    JsonNode tenantValue = authenticationValue3.get("tenant");
+                                    if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                        String tenantInstance;
+                                        tenantInstance = tenantValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                    }
+                                    
+                                    JsonNode audienceValue = authenticationValue3.get("audience");
+                                    if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                        String audienceInstance;
+                                        audienceInstance = audienceValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                    }
+                                    
+                                    JsonNode clientIdValue = authenticationValue3.get("clientId");
+                                    if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                        String clientIdInstance;
+                                        clientIdInstance = clientIdValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                    }
+                                    
+                                    JsonNode typeValue4 = authenticationValue3.get("type");
+                                    if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance4;
+                                        typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                        aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                    }
+                                    requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                }
+                                if ("Basic".equals(typeName)) {
+                                    BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                    
+                                    JsonNode usernameValue = authenticationValue3.get("username");
+                                    if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                        String usernameInstance;
+                                        usernameInstance = usernameValue.getTextValue();
+                                        basicAuthenticationInstance.setUsername(usernameInstance);
+                                    }
+                                    
+                                    JsonNode passwordValue2 = authenticationValue3.get("password");
+                                    if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                        String passwordInstance2;
+                                        passwordInstance2 = passwordValue2.getTextValue();
+                                        basicAuthenticationInstance.setPassword(passwordInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue5 = authenticationValue3.get("type");
+                                    if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance5;
+                                        typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                        basicAuthenticationInstance.setType(typeInstance5);
+                                    }
+                                    requestInstance.setAuthentication(basicAuthenticationInstance);
+                                }
                             }
                         }
                         
@@ -1680,11 +2010,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             if ("ClientCertificate".equals(typeName2)) {
                                 ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                 
-                                JsonNode passwordValue2 = authenticationValue4.get("password");
-                                if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                    String passwordInstance2;
-                                    passwordInstance2 = passwordValue2.getTextValue();
-                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                JsonNode passwordValue3 = authenticationValue4.get("password");
+                                if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                    String passwordInstance3;
+                                    passwordInstance3 = passwordValue3.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                 }
                                 
                                 JsonNode pfxValue2 = authenticationValue4.get("pfx");
@@ -1715,13 +2045,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                 }
                                 
-                                JsonNode typeValue4 = authenticationValue4.get("type");
-                                if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                    HttpAuthenticationType typeInstance4;
-                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                JsonNode typeValue6 = authenticationValue4.get("type");
+                                if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance6;
+                                    typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance6);
                                 }
                                 requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
+                            if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                
+                                JsonNode secretValue2 = authenticationValue4.get("secret");
+                                if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                    String secretInstance2;
+                                    secretInstance2 = secretValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                }
+                                
+                                JsonNode tenantValue2 = authenticationValue4.get("tenant");
+                                if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                    String tenantInstance2;
+                                    tenantInstance2 = tenantValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                }
+                                
+                                JsonNode audienceValue2 = authenticationValue4.get("audience");
+                                if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                    String audienceInstance2;
+                                    audienceInstance2 = audienceValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                }
+                                
+                                JsonNode clientIdValue2 = authenticationValue4.get("clientId");
+                                if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                    String clientIdInstance2;
+                                    clientIdInstance2 = clientIdValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                }
+                                
+                                JsonNode typeValue7 = authenticationValue4.get("type");
+                                if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance7;
+                                    typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                    aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                }
+                                requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                            }
+                            if ("Basic".equals(typeName2)) {
+                                BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                
+                                JsonNode usernameValue2 = authenticationValue4.get("username");
+                                if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                    String usernameInstance2;
+                                    usernameInstance2 = usernameValue2.getTextValue();
+                                    basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                }
+                                
+                                JsonNode passwordValue4 = authenticationValue4.get("password");
+                                if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                    String passwordInstance4;
+                                    passwordInstance4 = passwordValue4.getTextValue();
+                                    basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                }
+                                
+                                JsonNode typeValue8 = authenticationValue4.get("type");
+                                if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance8;
+                                    typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                    basicAuthenticationInstance2.setType(typeInstance8);
+                                }
+                                requestInstance2.setAuthentication(basicAuthenticationInstance2);
                             }
                         }
                     }
@@ -2282,6 +2676,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     }
                                     requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                 }
+                                if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                    AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                    
+                                    JsonNode secretValue = authenticationValue.get("secret");
+                                    if (secretValue != null && secretValue instanceof NullNode == false) {
+                                        String secretInstance;
+                                        secretInstance = secretValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                    }
+                                    
+                                    JsonNode tenantValue = authenticationValue.get("tenant");
+                                    if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                        String tenantInstance;
+                                        tenantInstance = tenantValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                    }
+                                    
+                                    JsonNode audienceValue = authenticationValue.get("audience");
+                                    if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                        String audienceInstance;
+                                        audienceInstance = audienceValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                    }
+                                    
+                                    JsonNode clientIdValue = authenticationValue.get("clientId");
+                                    if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                        String clientIdInstance;
+                                        clientIdInstance = clientIdValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                    }
+                                    
+                                    JsonNode typeValue4 = authenticationValue.get("type");
+                                    if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance4;
+                                        typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                        aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                    }
+                                    requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                }
+                                if ("Basic".equals(typeName)) {
+                                    BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                    
+                                    JsonNode usernameValue = authenticationValue.get("username");
+                                    if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                        String usernameInstance;
+                                        usernameInstance = usernameValue.getTextValue();
+                                        basicAuthenticationInstance.setUsername(usernameInstance);
+                                    }
+                                    
+                                    JsonNode passwordValue2 = authenticationValue.get("password");
+                                    if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                        String passwordInstance2;
+                                        passwordInstance2 = passwordValue2.getTextValue();
+                                        basicAuthenticationInstance.setPassword(passwordInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue5 = authenticationValue.get("type");
+                                    if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance5;
+                                        typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                        basicAuthenticationInstance.setType(typeInstance5);
+                                    }
+                                    requestInstance.setAuthentication(basicAuthenticationInstance);
+                                }
                             }
                         }
                         
@@ -2363,11 +2821,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             if ("ClientCertificate".equals(typeName2)) {
                                 ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                 
-                                JsonNode passwordValue2 = authenticationValue2.get("password");
-                                if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                    String passwordInstance2;
-                                    passwordInstance2 = passwordValue2.getTextValue();
-                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                JsonNode passwordValue3 = authenticationValue2.get("password");
+                                if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                    String passwordInstance3;
+                                    passwordInstance3 = passwordValue3.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                 }
                                 
                                 JsonNode pfxValue2 = authenticationValue2.get("pfx");
@@ -2398,13 +2856,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                 }
                                 
-                                JsonNode typeValue4 = authenticationValue2.get("type");
-                                if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                    HttpAuthenticationType typeInstance4;
-                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                JsonNode typeValue6 = authenticationValue2.get("type");
+                                if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance6;
+                                    typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance6);
                                 }
                                 requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
+                            if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                
+                                JsonNode secretValue2 = authenticationValue2.get("secret");
+                                if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                    String secretInstance2;
+                                    secretInstance2 = secretValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                }
+                                
+                                JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                    String tenantInstance2;
+                                    tenantInstance2 = tenantValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                }
+                                
+                                JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                    String audienceInstance2;
+                                    audienceInstance2 = audienceValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                }
+                                
+                                JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                    String clientIdInstance2;
+                                    clientIdInstance2 = clientIdValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                }
+                                
+                                JsonNode typeValue7 = authenticationValue2.get("type");
+                                if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance7;
+                                    typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                    aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                }
+                                requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                            }
+                            if ("Basic".equals(typeName2)) {
+                                BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                
+                                JsonNode usernameValue2 = authenticationValue2.get("username");
+                                if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                    String usernameInstance2;
+                                    usernameInstance2 = usernameValue2.getTextValue();
+                                    basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                }
+                                
+                                JsonNode passwordValue4 = authenticationValue2.get("password");
+                                if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                    String passwordInstance4;
+                                    passwordInstance4 = passwordValue4.getTextValue();
+                                    basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                }
+                                
+                                JsonNode typeValue8 = authenticationValue2.get("type");
+                                if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance8;
+                                    typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                    basicAuthenticationInstance2.setType(typeInstance8);
+                                }
+                                requestInstance2.setAuthentication(basicAuthenticationInstance2);
                             }
                         }
                     }
@@ -3280,6 +3802,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             }
                                             requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                         }
+                                        if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                            AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                            
+                                            JsonNode secretValue = authenticationValue.get("secret");
+                                            if (secretValue != null && secretValue instanceof NullNode == false) {
+                                                String secretInstance;
+                                                secretInstance = secretValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                            }
+                                            
+                                            JsonNode tenantValue = authenticationValue.get("tenant");
+                                            if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                                String tenantInstance;
+                                                tenantInstance = tenantValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                            }
+                                            
+                                            JsonNode audienceValue = authenticationValue.get("audience");
+                                            if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                                String audienceInstance;
+                                                audienceInstance = audienceValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                            }
+                                            
+                                            JsonNode clientIdValue = authenticationValue.get("clientId");
+                                            if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                                String clientIdInstance;
+                                                clientIdInstance = clientIdValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                            }
+                                            
+                                            JsonNode typeValue4 = authenticationValue.get("type");
+                                            if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance4;
+                                                typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                                aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                            }
+                                            requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                        }
+                                        if ("Basic".equals(typeName)) {
+                                            BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                            
+                                            JsonNode usernameValue = authenticationValue.get("username");
+                                            if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                                String usernameInstance;
+                                                usernameInstance = usernameValue.getTextValue();
+                                                basicAuthenticationInstance.setUsername(usernameInstance);
+                                            }
+                                            
+                                            JsonNode passwordValue2 = authenticationValue.get("password");
+                                            if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                                String passwordInstance2;
+                                                passwordInstance2 = passwordValue2.getTextValue();
+                                                basicAuthenticationInstance.setPassword(passwordInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue5 = authenticationValue.get("type");
+                                            if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance5;
+                                                typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                                basicAuthenticationInstance.setType(typeInstance5);
+                                            }
+                                            requestInstance.setAuthentication(basicAuthenticationInstance);
+                                        }
                                     }
                                 }
                                 
@@ -3361,11 +3947,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("ClientCertificate".equals(typeName2)) {
                                         ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                         
-                                        JsonNode passwordValue2 = authenticationValue2.get("password");
-                                        if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                            String passwordInstance2;
-                                            passwordInstance2 = passwordValue2.getTextValue();
-                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        JsonNode passwordValue3 = authenticationValue2.get("password");
+                                        if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                            String passwordInstance3;
+                                            passwordInstance3 = passwordValue3.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                         }
                                         
                                         JsonNode pfxValue2 = authenticationValue2.get("pfx");
@@ -3396,13 +3982,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                         }
                                         
-                                        JsonNode typeValue4 = authenticationValue2.get("type");
-                                        if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                            HttpAuthenticationType typeInstance4;
-                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        JsonNode typeValue6 = authenticationValue2.get("type");
+                                        if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance6;
+                                            typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance6);
                                         }
                                         requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
+                                    if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                        AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                        
+                                        JsonNode secretValue2 = authenticationValue2.get("secret");
+                                        if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                            String secretInstance2;
+                                            secretInstance2 = secretValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                        }
+                                        
+                                        JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                        if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                            String tenantInstance2;
+                                            tenantInstance2 = tenantValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                        }
+                                        
+                                        JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                        if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                            String audienceInstance2;
+                                            audienceInstance2 = audienceValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                        }
+                                        
+                                        JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                        if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                            String clientIdInstance2;
+                                            clientIdInstance2 = clientIdValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue7 = authenticationValue2.get("type");
+                                        if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance7;
+                                            typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                            aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                        }
+                                        requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                                    }
+                                    if ("Basic".equals(typeName2)) {
+                                        BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                        
+                                        JsonNode usernameValue2 = authenticationValue2.get("username");
+                                        if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                            String usernameInstance2;
+                                            usernameInstance2 = usernameValue2.getTextValue();
+                                            basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                        }
+                                        
+                                        JsonNode passwordValue4 = authenticationValue2.get("password");
+                                        if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                            String passwordInstance4;
+                                            passwordInstance4 = passwordValue4.getTextValue();
+                                            basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue8 = authenticationValue2.get("type");
+                                        if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance8;
+                                            typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                            basicAuthenticationInstance2.setType(typeInstance8);
+                                        }
+                                        requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                     }
                                 }
                             }
@@ -3874,6 +4524,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             }
                                             requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                         }
+                                        if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                            AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                            
+                                            JsonNode secretValue = authenticationValue.get("secret");
+                                            if (secretValue != null && secretValue instanceof NullNode == false) {
+                                                String secretInstance;
+                                                secretInstance = secretValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                            }
+                                            
+                                            JsonNode tenantValue = authenticationValue.get("tenant");
+                                            if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                                String tenantInstance;
+                                                tenantInstance = tenantValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                            }
+                                            
+                                            JsonNode audienceValue = authenticationValue.get("audience");
+                                            if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                                String audienceInstance;
+                                                audienceInstance = audienceValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                            }
+                                            
+                                            JsonNode clientIdValue = authenticationValue.get("clientId");
+                                            if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                                String clientIdInstance;
+                                                clientIdInstance = clientIdValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                            }
+                                            
+                                            JsonNode typeValue4 = authenticationValue.get("type");
+                                            if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance4;
+                                                typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                                aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                            }
+                                            requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                        }
+                                        if ("Basic".equals(typeName)) {
+                                            BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                            
+                                            JsonNode usernameValue = authenticationValue.get("username");
+                                            if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                                String usernameInstance;
+                                                usernameInstance = usernameValue.getTextValue();
+                                                basicAuthenticationInstance.setUsername(usernameInstance);
+                                            }
+                                            
+                                            JsonNode passwordValue2 = authenticationValue.get("password");
+                                            if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                                String passwordInstance2;
+                                                passwordInstance2 = passwordValue2.getTextValue();
+                                                basicAuthenticationInstance.setPassword(passwordInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue5 = authenticationValue.get("type");
+                                            if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance5;
+                                                typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                                basicAuthenticationInstance.setType(typeInstance5);
+                                            }
+                                            requestInstance.setAuthentication(basicAuthenticationInstance);
+                                        }
                                     }
                                 }
                                 
@@ -3955,11 +4669,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("ClientCertificate".equals(typeName2)) {
                                         ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                         
-                                        JsonNode passwordValue2 = authenticationValue2.get("password");
-                                        if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                            String passwordInstance2;
-                                            passwordInstance2 = passwordValue2.getTextValue();
-                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        JsonNode passwordValue3 = authenticationValue2.get("password");
+                                        if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                            String passwordInstance3;
+                                            passwordInstance3 = passwordValue3.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                         }
                                         
                                         JsonNode pfxValue2 = authenticationValue2.get("pfx");
@@ -3990,13 +4704,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                         }
                                         
-                                        JsonNode typeValue4 = authenticationValue2.get("type");
-                                        if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                            HttpAuthenticationType typeInstance4;
-                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        JsonNode typeValue6 = authenticationValue2.get("type");
+                                        if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance6;
+                                            typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance6);
                                         }
                                         requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
+                                    if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                        AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                        
+                                        JsonNode secretValue2 = authenticationValue2.get("secret");
+                                        if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                            String secretInstance2;
+                                            secretInstance2 = secretValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                        }
+                                        
+                                        JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                        if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                            String tenantInstance2;
+                                            tenantInstance2 = tenantValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                        }
+                                        
+                                        JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                        if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                            String audienceInstance2;
+                                            audienceInstance2 = audienceValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                        }
+                                        
+                                        JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                        if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                            String clientIdInstance2;
+                                            clientIdInstance2 = clientIdValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue7 = authenticationValue2.get("type");
+                                        if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance7;
+                                            typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                            aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                        }
+                                        requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                                    }
+                                    if ("Basic".equals(typeName2)) {
+                                        BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                        
+                                        JsonNode usernameValue2 = authenticationValue2.get("username");
+                                        if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                            String usernameInstance2;
+                                            usernameInstance2 = usernameValue2.getTextValue();
+                                            basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                        }
+                                        
+                                        JsonNode passwordValue4 = authenticationValue2.get("password");
+                                        if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                            String passwordInstance4;
+                                            passwordInstance4 = passwordValue4.getTextValue();
+                                            basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue8 = authenticationValue2.get("type");
+                                        if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance8;
+                                            typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                            basicAuthenticationInstance2.setType(typeInstance8);
+                                        }
+                                        requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                     }
                                 }
                             }
@@ -4477,6 +5255,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             }
                                             requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                         }
+                                        if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                            AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                            
+                                            JsonNode secretValue = authenticationValue.get("secret");
+                                            if (secretValue != null && secretValue instanceof NullNode == false) {
+                                                String secretInstance;
+                                                secretInstance = secretValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                            }
+                                            
+                                            JsonNode tenantValue = authenticationValue.get("tenant");
+                                            if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                                String tenantInstance;
+                                                tenantInstance = tenantValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                            }
+                                            
+                                            JsonNode audienceValue = authenticationValue.get("audience");
+                                            if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                                String audienceInstance;
+                                                audienceInstance = audienceValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                            }
+                                            
+                                            JsonNode clientIdValue = authenticationValue.get("clientId");
+                                            if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                                String clientIdInstance;
+                                                clientIdInstance = clientIdValue.getTextValue();
+                                                aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                            }
+                                            
+                                            JsonNode typeValue4 = authenticationValue.get("type");
+                                            if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance4;
+                                                typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                                aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                            }
+                                            requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                        }
+                                        if ("Basic".equals(typeName)) {
+                                            BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                            
+                                            JsonNode usernameValue = authenticationValue.get("username");
+                                            if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                                String usernameInstance;
+                                                usernameInstance = usernameValue.getTextValue();
+                                                basicAuthenticationInstance.setUsername(usernameInstance);
+                                            }
+                                            
+                                            JsonNode passwordValue2 = authenticationValue.get("password");
+                                            if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                                String passwordInstance2;
+                                                passwordInstance2 = passwordValue2.getTextValue();
+                                                basicAuthenticationInstance.setPassword(passwordInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue5 = authenticationValue.get("type");
+                                            if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance5;
+                                                typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                                basicAuthenticationInstance.setType(typeInstance5);
+                                            }
+                                            requestInstance.setAuthentication(basicAuthenticationInstance);
+                                        }
                                     }
                                 }
                                 
@@ -4558,11 +5400,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("ClientCertificate".equals(typeName2)) {
                                         ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                         
-                                        JsonNode passwordValue2 = authenticationValue2.get("password");
-                                        if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                            String passwordInstance2;
-                                            passwordInstance2 = passwordValue2.getTextValue();
-                                            clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                        JsonNode passwordValue3 = authenticationValue2.get("password");
+                                        if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                            String passwordInstance3;
+                                            passwordInstance3 = passwordValue3.getTextValue();
+                                            clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                         }
                                         
                                         JsonNode pfxValue2 = authenticationValue2.get("pfx");
@@ -4593,13 +5435,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                         }
                                         
-                                        JsonNode typeValue4 = authenticationValue2.get("type");
-                                        if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                            HttpAuthenticationType typeInstance4;
-                                            typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                            clientCertAuthenticationInstance2.setType(typeInstance4);
+                                        JsonNode typeValue6 = authenticationValue2.get("type");
+                                        if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance6;
+                                            typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                            clientCertAuthenticationInstance2.setType(typeInstance6);
                                         }
                                         requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                                    }
+                                    if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                        AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                        
+                                        JsonNode secretValue2 = authenticationValue2.get("secret");
+                                        if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                            String secretInstance2;
+                                            secretInstance2 = secretValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                        }
+                                        
+                                        JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                        if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                            String tenantInstance2;
+                                            tenantInstance2 = tenantValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                        }
+                                        
+                                        JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                        if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                            String audienceInstance2;
+                                            audienceInstance2 = audienceValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                        }
+                                        
+                                        JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                        if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                            String clientIdInstance2;
+                                            clientIdInstance2 = clientIdValue2.getTextValue();
+                                            aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                        }
+                                        
+                                        JsonNode typeValue7 = authenticationValue2.get("type");
+                                        if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance7;
+                                            typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                            aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                        }
+                                        requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                                    }
+                                    if ("Basic".equals(typeName2)) {
+                                        BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                        
+                                        JsonNode usernameValue2 = authenticationValue2.get("username");
+                                        if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                            String usernameInstance2;
+                                            usernameInstance2 = usernameValue2.getTextValue();
+                                            basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                        }
+                                        
+                                        JsonNode passwordValue4 = authenticationValue2.get("password");
+                                        if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                            String passwordInstance4;
+                                            passwordInstance4 = passwordValue4.getTextValue();
+                                            basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue8 = authenticationValue2.get("type");
+                                        if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                            HttpAuthenticationType typeInstance8;
+                                            typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                            basicAuthenticationInstance2.setType(typeInstance8);
+                                        }
+                                        requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                     }
                                 }
                             }
@@ -5088,6 +5994,70 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     }
                                     requestInstance.setAuthentication(clientCertAuthenticationInstance);
                                 }
+                                if ("ActiveDirectoryOAuth".equals(typeName)) {
+                                    AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
+                                    
+                                    JsonNode secretValue = authenticationValue.get("secret");
+                                    if (secretValue != null && secretValue instanceof NullNode == false) {
+                                        String secretInstance;
+                                        secretInstance = secretValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setSecret(secretInstance);
+                                    }
+                                    
+                                    JsonNode tenantValue = authenticationValue.get("tenant");
+                                    if (tenantValue != null && tenantValue instanceof NullNode == false) {
+                                        String tenantInstance;
+                                        tenantInstance = tenantValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setTenant(tenantInstance);
+                                    }
+                                    
+                                    JsonNode audienceValue = authenticationValue.get("audience");
+                                    if (audienceValue != null && audienceValue instanceof NullNode == false) {
+                                        String audienceInstance;
+                                        audienceInstance = audienceValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setAudience(audienceInstance);
+                                    }
+                                    
+                                    JsonNode clientIdValue = authenticationValue.get("clientId");
+                                    if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
+                                        String clientIdInstance;
+                                        clientIdInstance = clientIdValue.getTextValue();
+                                        aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
+                                    }
+                                    
+                                    JsonNode typeValue4 = authenticationValue.get("type");
+                                    if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance4;
+                                        typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
+                                        aADOAuthAuthenticationInstance.setType(typeInstance4);
+                                    }
+                                    requestInstance.setAuthentication(aADOAuthAuthenticationInstance);
+                                }
+                                if ("Basic".equals(typeName)) {
+                                    BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
+                                    
+                                    JsonNode usernameValue = authenticationValue.get("username");
+                                    if (usernameValue != null && usernameValue instanceof NullNode == false) {
+                                        String usernameInstance;
+                                        usernameInstance = usernameValue.getTextValue();
+                                        basicAuthenticationInstance.setUsername(usernameInstance);
+                                    }
+                                    
+                                    JsonNode passwordValue2 = authenticationValue.get("password");
+                                    if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
+                                        String passwordInstance2;
+                                        passwordInstance2 = passwordValue2.getTextValue();
+                                        basicAuthenticationInstance.setPassword(passwordInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue5 = authenticationValue.get("type");
+                                    if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance5;
+                                        typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
+                                        basicAuthenticationInstance.setType(typeInstance5);
+                                    }
+                                    requestInstance.setAuthentication(basicAuthenticationInstance);
+                                }
                             }
                         }
                         
@@ -5169,11 +6139,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             if ("ClientCertificate".equals(typeName2)) {
                                 ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                 
-                                JsonNode passwordValue2 = authenticationValue2.get("password");
-                                if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
-                                    String passwordInstance2;
-                                    passwordInstance2 = passwordValue2.getTextValue();
-                                    clientCertAuthenticationInstance2.setPassword(passwordInstance2);
+                                JsonNode passwordValue3 = authenticationValue2.get("password");
+                                if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
+                                    String passwordInstance3;
+                                    passwordInstance3 = passwordValue3.getTextValue();
+                                    clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                 }
                                 
                                 JsonNode pfxValue2 = authenticationValue2.get("pfx");
@@ -5204,13 +6174,77 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                 }
                                 
-                                JsonNode typeValue4 = authenticationValue2.get("type");
-                                if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
-                                    HttpAuthenticationType typeInstance4;
-                                    typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
-                                    clientCertAuthenticationInstance2.setType(typeInstance4);
+                                JsonNode typeValue6 = authenticationValue2.get("type");
+                                if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance6;
+                                    typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
+                                    clientCertAuthenticationInstance2.setType(typeInstance6);
                                 }
                                 requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
+                            }
+                            if ("ActiveDirectoryOAuth".equals(typeName2)) {
+                                AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
+                                
+                                JsonNode secretValue2 = authenticationValue2.get("secret");
+                                if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
+                                    String secretInstance2;
+                                    secretInstance2 = secretValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
+                                }
+                                
+                                JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
+                                    String tenantInstance2;
+                                    tenantInstance2 = tenantValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
+                                }
+                                
+                                JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
+                                    String audienceInstance2;
+                                    audienceInstance2 = audienceValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
+                                }
+                                
+                                JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
+                                    String clientIdInstance2;
+                                    clientIdInstance2 = clientIdValue2.getTextValue();
+                                    aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
+                                }
+                                
+                                JsonNode typeValue7 = authenticationValue2.get("type");
+                                if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance7;
+                                    typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
+                                    aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                }
+                                requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
+                            }
+                            if ("Basic".equals(typeName2)) {
+                                BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
+                                
+                                JsonNode usernameValue2 = authenticationValue2.get("username");
+                                if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
+                                    String usernameInstance2;
+                                    usernameInstance2 = usernameValue2.getTextValue();
+                                    basicAuthenticationInstance2.setUsername(usernameInstance2);
+                                }
+                                
+                                JsonNode passwordValue4 = authenticationValue2.get("password");
+                                if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
+                                    String passwordInstance4;
+                                    passwordInstance4 = passwordValue4.getTextValue();
+                                    basicAuthenticationInstance2.setPassword(passwordInstance4);
+                                }
+                                
+                                JsonNode typeValue8 = authenticationValue2.get("type");
+                                if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                    HttpAuthenticationType typeInstance8;
+                                    typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                    basicAuthenticationInstance2.setType(typeInstance8);
+                                }
+                                requestInstance2.setAuthentication(basicAuthenticationInstance2);
                             }
                         }
                     }

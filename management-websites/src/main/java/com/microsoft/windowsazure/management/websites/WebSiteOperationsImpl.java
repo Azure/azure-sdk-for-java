@@ -6046,7 +6046,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         ((ObjectNode) connectionStringInfoValue).put("Name", connectionStringsItem.getName());
                     }
                     
-                    ((ObjectNode) connectionStringInfoValue).put("Type", ((int) connectionStringsItem.getType()));
+                    ((ObjectNode) connectionStringInfoValue).put("Type", connectionStringsItem.getType().ordinal());
                 }
                 ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ConnectionStrings", connectionStringsArray);
             }
@@ -6102,7 +6102,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         if (parameters.getManagedPipelineMode() != null) {
-            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", ((int) parameters.getManagedPipelineMode()));
+            ((ObjectNode) webSiteUpdateConfigurationParametersValue).put("ManagedPipelineMode", parameters.getManagedPipelineMode().ordinal());
         }
         
         if (parameters.getMetadata() != null) {

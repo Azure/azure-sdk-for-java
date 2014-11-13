@@ -426,7 +426,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     JsonNode sizeInBytesValue = propertiesValue2.get("sizeInBytes");
                     if (sizeInBytesValue != null && sizeInBytesValue instanceof NullNode == false) {
                         long sizeInBytesInstance;
-                        sizeInBytesInstance = sizeInBytesValue.getNumericValue();
+                        sizeInBytesInstance = sizeInBytesValue.getLongValue();
                         propertiesInstance.setSizeInBytes(sizeInBytesInstance);
                     }
                     
@@ -5145,7 +5145,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode sizeInBytesValue = propertiesValue.get("sizeInBytes");
                         if (sizeInBytesValue != null && sizeInBytesValue instanceof NullNode == false) {
                             long sizeInBytesInstance;
-                            sizeInBytesInstance = sizeInBytesValue.getNumericValue();
+                            sizeInBytesInstance = sizeInBytesValue.getLongValue();
                             backupItemInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         

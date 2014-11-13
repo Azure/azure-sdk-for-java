@@ -815,11 +815,11 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * or export operation has been initiated.
     */
     @Override
-    public Future<DacImportExportResponse> importAsync(final String serverName, final DacImportParameters parameters) {
+    public Future<DacImportExportResponse> importDatabaseAsync(final String serverName, final DacImportParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { 
             @Override
             public DacImportExportResponse call() throws Exception {
-                return import(serverName, parameters);
+                return importDatabase(serverName, parameters);
             }
          });
     }
@@ -846,7 +846,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * or export operation has been initiated.
     */
     @Override
-    public DacImportExportResponse import(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public DacImportExportResponse importDatabase(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");

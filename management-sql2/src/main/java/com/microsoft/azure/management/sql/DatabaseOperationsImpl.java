@@ -310,7 +310,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     JsonNode maxSizeBytesValue = propertiesValue2.get("maxSizeBytes");
                     if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
                         long maxSizeBytesInstance;
-                        maxSizeBytesInstance = maxSizeBytesValue.getNumericValue();
+                        maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
                         propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
                     }
                     
@@ -669,7 +669,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
                     if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
                         long maxSizeBytesInstance;
-                        maxSizeBytesInstance = maxSizeBytesValue.getNumericValue();
+                        maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
                         propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
                     }
                     
@@ -914,7 +914,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
                             if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
                                 long maxSizeBytesInstance;
-                                maxSizeBytesInstance = maxSizeBytesValue.getNumericValue();
+                                maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
                                 propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
                             }
                             
@@ -1150,7 +1150,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
                             if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
                                 long maxSizeBytesInstance;
-                                maxSizeBytesInstance = maxSizeBytesValue.getNumericValue();
+                                maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
                                 propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
                             }
                             
