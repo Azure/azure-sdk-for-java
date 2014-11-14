@@ -1205,11 +1205,11 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         siteInstance.setAvailabilityState(availabilityStateInstance);
                     }
                     
-                    Element skuElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Sku");
-                    if (skuElement != null) {
-                        SkuOptions skuInstance;
-                        skuInstance = SkuOptions.valueOf(skuElement.getTextContent());
-                        siteInstance.setSku(skuInstance);
+                    Element sKUElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "SKU");
+                    if (sKUElement != null) {
+                        SkuOptions sKUInstance;
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                        siteInstance.setSku(sKUInstance);
                     }
                     
                     Element enabledElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Enabled");

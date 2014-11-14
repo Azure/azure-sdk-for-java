@@ -23,14 +23,43 @@
 
 package com.microsoft.azure.management.websites.models;
 
-public enum ManagedPipelineMode {
-    /**
-    * Integrated Managed Pipeline Mode.
-    */
-    Integrated,
+/**
+* Represents the properties of a source control.
+*/
+public class SourceControlProperties {
+    private String token;
     
     /**
-    * Classic Managed Pipeline Mode.
+    * Optional. Gets or sets the token.
+    * @return The Token value.
     */
-    Classic,
+    public String getToken() {
+        return this.token;
+    }
+    
+    /**
+    * Optional. Gets or sets the token.
+    * @param tokenValue The Token value.
+    */
+    public void setToken(final String tokenValue) {
+        this.token = tokenValue;
+    }
+    
+    private String tokenSecret;
+    
+    /**
+    * Optional. Gets or sets the token secret.
+    * @return The TokenSecret value.
+    */
+    public String getTokenSecret() {
+        return this.tokenSecret;
+    }
+    
+    /**
+    * Optional. Gets or sets the token secret.
+    * @param tokenSecretValue The TokenSecret value.
+    */
+    public void setTokenSecret(final String tokenSecretValue) {
+        this.tokenSecret = tokenSecretValue;
+    }
 }

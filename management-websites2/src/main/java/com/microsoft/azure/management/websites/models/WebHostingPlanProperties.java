@@ -27,6 +27,26 @@ package com.microsoft.azure.management.websites.models;
 * Represents the properties of a Web Hosting Plan.
 */
 public class WebHostingPlanProperties {
+    private String adminSiteName;
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @return The AdminSiteName value.
+    */
+    public String getAdminSiteName() {
+        return this.adminSiteName;
+    }
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @param adminSiteNameValue The AdminSiteName value.
+    */
+    public void setAdminSiteName(final String adminSiteNameValue) {
+        this.adminSiteName = adminSiteNameValue;
+    }
+    
     private int numberOfWorkers;
     
     /**

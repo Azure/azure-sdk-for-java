@@ -233,7 +233,7 @@ ensureEnvironment()
 download("http://www.nuget.org/nuget.exe")
 createConfig()
 restorePackages()
-def hydraPath = findFileInPackagesDirectory('hydra.exe')
+def hydraPath = findFileInPackagesDirectory('hyak.exe')
 
 def processes = [];
 hydraSpecs.each {

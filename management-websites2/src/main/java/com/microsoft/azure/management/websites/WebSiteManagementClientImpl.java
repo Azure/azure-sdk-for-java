@@ -23,37 +23,15 @@
 
 package com.microsoft.azure.management.websites;
 
-import com.microsoft.azure.management.websites.models.ResourceGroupCreateOrUpdateParameters;
-import com.microsoft.azure.management.websites.models.ResourceGroupCreateOrUpdateResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
-import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web
@@ -134,6 +112,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
+    private SourceControlOperations sourceControls;
+    
+    /**
+    * User source controls operations
+    * @return The SourceControlsOperations value.
+    */
+    public SourceControlOperations getSourceControlsOperations() {
+        return this.sourceControls;
+    }
+    
     private WebHostingPlanOperations webHostingPlans;
     
     /**
@@ -173,6 +161,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
+        this.sourceControls = new SourceControlOperationsImpl(this);
         this.webHostingPlans = new WebHostingPlanOperationsImpl(this);
         this.webSites = new WebSiteOperationsImpl(this);
         this.apiVersion = "2014-06-01";
@@ -188,7 +177,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -238,9 +227,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
@@ -263,538 +252,5 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
-    }
-    
-    /**
-    * Begins deleting a resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public Future<OperationResponse> beginDeletingResourceGroupAsync(final String resourceGroupName) {
-        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception {
-                return beginDeletingResourceGroup(resourceGroupName);
-            }
-         });
-    }
-    
-    /**
-    * Begins deleting a resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public OperationResponse beginDeletingResourceGroup(String resourceGroupName) throws IOException, ServiceException {
-        // Validate
-        if (resourceGroupName == null) {
-            throw new NullPointerException("resourceGroupName");
-        }
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("resourceGroupName", resourceGroupName);
-            CloudTracing.enter(invocationId, this, "beginDeletingResourceGroupAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "/subscriptions/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
-        String baseUrl = this.getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
-        // Set Headers
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Creates or updates the resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param parameters Required. Parameters supplied to the operation.
-    * @return The Create or Update resource group operation response.
-    */
-    @Override
-    public Future<ResourceGroupCreateOrUpdateResponse> createOrUpdateResourceGroupAsync(final String resourceGroupName, final ResourceGroupCreateOrUpdateParameters parameters) {
-        return this.getExecutorService().submit(new Callable<ResourceGroupCreateOrUpdateResponse>() { 
-            @Override
-            public ResourceGroupCreateOrUpdateResponse call() throws Exception {
-                return createOrUpdateResourceGroup(resourceGroupName, parameters);
-            }
-         });
-    }
-    
-    /**
-    * Creates or updates the resource group.
-    *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param parameters Required. Parameters supplied to the operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The Create or Update resource group operation response.
-    */
-    @Override
-    public ResourceGroupCreateOrUpdateResponse createOrUpdateResourceGroup(String resourceGroupName, ResourceGroupCreateOrUpdateParameters parameters) throws IOException, ServiceException {
-        // Validate
-        if (resourceGroupName == null) {
-            throw new NullPointerException("resourceGroupName");
-        }
-        if (parameters == null) {
-            throw new NullPointerException("parameters");
-        }
-        if (parameters.getLocation() == null) {
-            throw new NullPointerException("parameters.Location");
-        }
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("resourceGroupName", resourceGroupName);
-            tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateResourceGroupAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "/subscriptions/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
-        String baseUrl = this.getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpPut httpRequest = new HttpPut(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
-        
-        // Serialize Request
-        String requestContent = null;
-        JsonNode requestDoc = null;
-        
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode resourceGroupCreateOrUpdateParametersValue = objectMapper.createObjectNode();
-        requestDoc = resourceGroupCreateOrUpdateParametersValue;
-        
-        ((ObjectNode) resourceGroupCreateOrUpdateParametersValue).put("location", parameters.getLocation());
-        
-        StringWriter stringWriter = new StringWriter();
-        objectMapper.writeValue(stringWriter, requestDoc);
-        requestContent = stringWriter.toString();
-        StringEntity entity = new StringEntity(requestContent);
-        httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED) {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            ResourceGroupCreateOrUpdateResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupCreateOrUpdateResponse();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    result.setName(nameInstance);
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Gets all resource groups in the subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public Future<OperationResponse> getResourceGroupsAsync() {
-        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception {
-                return getResourceGroups();
-            }
-         });
-    }
-    
-    /**
-    * Gets all resource groups in the subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public OperationResponse getResourceGroups() throws IOException, ServiceException {
-        // Validate
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "getResourceGroupsAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "/subscriptions/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups" + "?";
-        url = url + "api-version=" + "2014-06-01";
-        String baseUrl = this.getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpGet httpRequest = new HttpGet(url);
-        
-        // Set Headers
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Register the resource provider with a subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public Future<OperationResponse> registerResourceProviderAsync() {
-        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception {
-                return registerResourceProvider();
-            }
-         });
-    }
-    
-    /**
-    * Register the resource provider with a subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public OperationResponse registerResourceProvider() throws IOException, ServiceException {
-        // Validate
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "registerResourceProviderAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "/subscriptions/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/providers/" + "Microsoft.Web" + "/register" + "?";
-        url = url + "api-version=" + "2014-06-01";
-        String baseUrl = this.getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpPost httpRequest = new HttpPost(url);
-        
-        // Set Headers
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Unregister the resource provider with a subscription.
-    *
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public Future<OperationResponse> unregisterResourceProviderAsync() {
-        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception {
-                return unregisterResourceProvider();
-            }
-         });
-    }
-    
-    /**
-    * Unregister the resource provider with a subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    @Override
-    public OperationResponse unregisterResourceProvider() throws IOException, ServiceException {
-        // Validate
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "unregisterResourceProviderAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "/subscriptions/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/providers/" + "Microsoft.Web" + "/unregister" + "?";
-        url = url + "api-version=" + "2014-06-01";
-        String baseUrl = this.getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpPost httpRequest = new HttpPost(url);
-        
-        // Set Headers
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
     }
 }

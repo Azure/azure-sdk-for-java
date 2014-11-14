@@ -43,6 +43,10 @@ import com.microsoft.azure.management.websites.models.NameValuePair;
 import com.microsoft.azure.management.websites.models.PublishingCredentials;
 import com.microsoft.azure.management.websites.models.RemoteDebuggingVersion;
 import com.microsoft.azure.management.websites.models.RestoreRequestEnvelope;
+import com.microsoft.azure.management.websites.models.SiteSourceControl;
+import com.microsoft.azure.management.websites.models.SiteSourceControlProperties;
+import com.microsoft.azure.management.websites.models.SiteSourceControlUpdateParameters;
+import com.microsoft.azure.management.websites.models.SiteSourceControlUpdateResponse;
 import com.microsoft.azure.management.websites.models.SkuOptions;
 import com.microsoft.azure.management.websites.models.SlotConfigNames;
 import com.microsoft.azure.management.websites.models.SlotConfigNamesEnvelope;
@@ -1152,6 +1156,127 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     }
     
     /**
+    * Unlink source control from website
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Optional. The name of the slot.
+    * @param repoUrl Required. The repository url.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> deleteSiteSourceControlAsync(final String resourceGroupName, final String webSiteName, final String slotName, final String repoUrl) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return deleteSiteSourceControl(resourceGroupName, webSiteName, slotName, repoUrl);
+            }
+         });
+    }
+    
+    /**
+    * Unlink source control from website
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Optional. The name of the slot.
+    * @param repoUrl Required. The repository url.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        if (repoUrl == null) {
+            throw new NullPointerException("repoUrl");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("slotName", slotName);
+            tracingParameters.put("repoUrl", repoUrl);
+            CloudTracing.enter(invocationId, this, "deleteSiteSourceControlAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/" + "sites" + "/" + webSiteName.trim();
+        if (slotName != null) {
+            url = url + "/slots/" + URLEncoder.encode(slotName != null ? slotName.trim() : "", "UTF-8");
+        }
+        url = url + "/sourcecontrols/web" + "?";
+        url = url + "api-version=" + "2014-06-01";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * Scans a backup in a storage account and returns database information etc.
     * Should be called before calling Restore to discover what parameters are
     * needed for the restore operation. KNOWN BUG: This has to be called
@@ -1573,7 +1698,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (slotName != null) {
             url = url + "/slots/" + URLEncoder.encode(slotName != null ? slotName.trim() : "", "UTF-8");
         }
-        url = url + "newPassword" + "?";
+        url = url + "/newPassword" + "?";
         url = url + "api-version=" + "2014-06-01";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -2753,6 +2878,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         String phpVersionInstance;
                         phpVersionInstance = phpVersionValue.getTextValue();
                         propertiesInstance.setPhpVersion(phpVersionInstance);
+                    }
+                    
+                    JsonNode pythonVersionValue = propertiesValue.get("pythonVersion");
+                    if (pythonVersionValue != null && pythonVersionValue instanceof NullNode == false) {
+                        String pythonVersionInstance;
+                        pythonVersionInstance = pythonVersionValue.getTextValue();
+                        propertiesInstance.setPythonVersion(pythonVersionInstance);
                     }
                     
                     JsonNode publishingPasswordValue = propertiesValue.get("publishingPassword");
@@ -6443,6 +6575,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             ((ObjectNode) propertiesValue).put("phpVersion", parameters.getProperties().getPhpVersion());
         }
         
+        if (parameters.getProperties().getPythonVersion() != null) {
+            ((ObjectNode) propertiesValue).put("pythonVersion", parameters.getProperties().getPythonVersion());
+        }
+        
         if (parameters.getProperties().isRemoteDebuggingEnabled() != null) {
             ((ObjectNode) propertiesValue).put("remoteDebuggingEnabled", parameters.getProperties().isRemoteDebuggingEnabled());
         }
@@ -7070,6 +7206,256 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     String typeInstance;
                     typeInstance = typeValue.getTextValue();
                     resourceInstance.setType(typeInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Link source control to website (do not forget to setup the token, and if
+    * needed token secret, for the specific source control type used).
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * @param webSiteName Required. The name of the web site
+    * @param slotName Optional. The name of the slot of the website
+    * @param parameters Required. The update site source control parameters.
+    * @return The link site to source control operation response.
+    */
+    @Override
+    public Future<SiteSourceControlUpdateResponse> updateSiteSourceControlAsync(final String resourceGroupName, final String webSiteName, final String slotName, final SiteSourceControlUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<SiteSourceControlUpdateResponse>() { 
+            @Override
+            public SiteSourceControlUpdateResponse call() throws Exception {
+                return updateSiteSourceControl(resourceGroupName, webSiteName, slotName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Link source control to website (do not forget to setup the token, and if
+    * needed token secret, for the specific source control type used).
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * @param webSiteName Required. The name of the web site
+    * @param slotName Optional. The name of the slot of the website
+    * @param parameters Required. The update site source control parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The link site to source control operation response.
+    */
+    @Override
+    public SiteSourceControlUpdateResponse updateSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, SiteSourceControlUpdateParameters parameters) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (webSiteName == null) {
+            throw new NullPointerException("webSiteName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getProperties() == null) {
+            throw new NullPointerException("parameters.Properties");
+        }
+        if (parameters.getProperties().getRepoUrl() == null) {
+            throw new NullPointerException("parameters.Properties.RepoUrl");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("slotName", slotName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateSiteSourceControlAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/" + "sites" + "/" + webSiteName.trim();
+        if (slotName != null) {
+            url = url + "/slots/" + URLEncoder.encode(slotName != null ? slotName.trim() : "", "UTF-8");
+        }
+        url = url + "/sourcecontrols/web" + "?";
+        url = url + "api-version=" + "2014-06-01";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Serialize Request
+        String requestContent = null;
+        JsonNode requestDoc = null;
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode siteSourceControlUpdateParametersValue = objectMapper.createObjectNode();
+        requestDoc = siteSourceControlUpdateParametersValue;
+        
+        ObjectNode propertiesValue = objectMapper.createObjectNode();
+        ((ObjectNode) siteSourceControlUpdateParametersValue).put("properties", propertiesValue);
+        
+        ((ObjectNode) propertiesValue).put("repoUrl", parameters.getProperties().getRepoUrl());
+        
+        if (parameters.getProperties().getBranch() != null) {
+            ((ObjectNode) propertiesValue).put("branch", parameters.getProperties().getBranch());
+        }
+        
+        ((ObjectNode) propertiesValue).put("isManualIntegration", parameters.getProperties().isManualIntegration());
+        
+        ((ObjectNode) propertiesValue).put("deploymentRollbackEnabled", parameters.getProperties().isDeploymentRollbackEnabled());
+        
+        ((ObjectNode) propertiesValue).put("isMercurial", parameters.getProperties().isMercurial());
+        
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, requestDoc);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            SiteSourceControlUpdateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new SiteSourceControlUpdateResponse();
+            JsonNode responseDoc = null;
+            if (responseContent == null == false) {
+                responseDoc = objectMapper.readTree(responseContent);
+            }
+            
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                SiteSourceControl siteSourceControlInstance = new SiteSourceControl();
+                result.setSiteSourceControl(siteSourceControlInstance);
+                
+                JsonNode propertiesValue2 = responseDoc.get("properties");
+                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                    SiteSourceControlProperties propertiesInstance = new SiteSourceControlProperties();
+                    siteSourceControlInstance.setProperties(propertiesInstance);
+                    
+                    JsonNode repoUrlValue = propertiesValue2.get("repoUrl");
+                    if (repoUrlValue != null && repoUrlValue instanceof NullNode == false) {
+                        String repoUrlInstance;
+                        repoUrlInstance = repoUrlValue.getTextValue();
+                        propertiesInstance.setRepoUrl(repoUrlInstance);
+                    }
+                    
+                    JsonNode branchValue = propertiesValue2.get("branch");
+                    if (branchValue != null && branchValue instanceof NullNode == false) {
+                        String branchInstance;
+                        branchInstance = branchValue.getTextValue();
+                        propertiesInstance.setBranch(branchInstance);
+                    }
+                    
+                    JsonNode isManualIntegrationValue = propertiesValue2.get("isManualIntegration");
+                    if (isManualIntegrationValue != null && isManualIntegrationValue instanceof NullNode == false) {
+                        boolean isManualIntegrationInstance;
+                        isManualIntegrationInstance = isManualIntegrationValue.getBooleanValue();
+                        propertiesInstance.setIsManualIntegration(isManualIntegrationInstance);
+                    }
+                    
+                    JsonNode deploymentRollbackEnabledValue = propertiesValue2.get("deploymentRollbackEnabled");
+                    if (deploymentRollbackEnabledValue != null && deploymentRollbackEnabledValue instanceof NullNode == false) {
+                        boolean deploymentRollbackEnabledInstance;
+                        deploymentRollbackEnabledInstance = deploymentRollbackEnabledValue.getBooleanValue();
+                        propertiesInstance.setDeploymentRollbackEnabled(deploymentRollbackEnabledInstance);
+                    }
+                    
+                    JsonNode isMercurialValue = propertiesValue2.get("isMercurial");
+                    if (isMercurialValue != null && isMercurialValue instanceof NullNode == false) {
+                        boolean isMercurialInstance;
+                        isMercurialInstance = isMercurialValue.getBooleanValue();
+                        propertiesInstance.setIsMercurial(isMercurialInstance);
+                    }
+                }
+                
+                JsonNode idValue = responseDoc.get("id");
+                if (idValue != null && idValue instanceof NullNode == false) {
+                    String idInstance;
+                    idInstance = idValue.getTextValue();
+                    siteSourceControlInstance.setId(idInstance);
+                }
+                
+                JsonNode nameValue = responseDoc.get("name");
+                if (nameValue != null && nameValue instanceof NullNode == false) {
+                    String nameInstance;
+                    nameInstance = nameValue.getTextValue();
+                    siteSourceControlInstance.setName(nameInstance);
+                }
+                
+                JsonNode locationValue = responseDoc.get("location");
+                if (locationValue != null && locationValue instanceof NullNode == false) {
+                    String locationInstance;
+                    locationInstance = locationValue.getTextValue();
+                    siteSourceControlInstance.setLocation(locationInstance);
+                }
+                
+                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                    while (itr.hasNext()) {
+                        Map.Entry<String, JsonNode> property = itr.next();
+                        String tagsKey = property.getKey();
+                        String tagsValue = property.getValue().getTextValue();
+                        siteSourceControlInstance.getTags().put(tagsKey, tagsValue);
+                    }
+                }
+                
+                JsonNode typeValue = responseDoc.get("type");
+                if (typeValue != null && typeValue instanceof NullNode == false) {
+                    String typeInstance;
+                    typeInstance = typeValue.getTextValue();
+                    siteSourceControlInstance.setType(typeInstance);
                 }
             }
             

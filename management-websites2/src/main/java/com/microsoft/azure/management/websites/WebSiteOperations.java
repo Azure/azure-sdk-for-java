@@ -25,6 +25,8 @@ package com.microsoft.azure.management.websites;
 
 import com.microsoft.azure.management.websites.models.BackupRequestEnvelope;
 import com.microsoft.azure.management.websites.models.RestoreRequestEnvelope;
+import com.microsoft.azure.management.websites.models.SiteSourceControlUpdateParameters;
+import com.microsoft.azure.management.websites.models.SiteSourceControlUpdateResponse;
 import com.microsoft.azure.management.websites.models.SlotConfigNamesResult;
 import com.microsoft.azure.management.websites.models.SlotConfigNamesUpdateParameters;
 import com.microsoft.azure.management.websites.models.WebSiteAppSettingsResult;
@@ -229,6 +231,34 @@ public interface WebSiteOperations {
     * @return The Delete Web Site Repository operation response.
     */
     Future<WebSiteDeleteRepositoryResponse> deleteRepositoryAsync(String resourceGroupName, String webSiteName, String slotName);
+    
+    /**
+    * Unlink source control from website
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Optional. The name of the slot.
+    * @param repoUrl Required. The repository url.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException;
+    
+    /**
+    * Unlink source control from website
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Optional. The name of the slot.
+    * @param repoUrl Required. The repository url.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> deleteSiteSourceControlAsync(String resourceGroupName, String webSiteName, String slotName, String repoUrl);
     
     /**
     * Scans a backup in a storage account and returns database information etc.
@@ -983,6 +1013,34 @@ public interface WebSiteOperations {
     * @return List of metadata for the website.
     */
     Future<WebSiteMetadataResult> updateMetadataAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteNameValueParameters parameters);
+    
+    /**
+    * Link source control to website (do not forget to setup the token, and if
+    * needed token secret, for the specific source control type used).
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * @param webSiteName Required. The name of the web site
+    * @param slotName Optional. The name of the slot of the website
+    * @param parameters Required. The update site source control parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The link site to source control operation response.
+    */
+    SiteSourceControlUpdateResponse updateSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, SiteSourceControlUpdateParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * Link source control to website (do not forget to setup the token, and if
+    * needed token secret, for the specific source control type used).
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * @param webSiteName Required. The name of the web site
+    * @param slotName Optional. The name of the slot of the website
+    * @param parameters Required. The update site source control parameters.
+    * @return The link site to source control operation response.
+    */
+    Future<SiteSourceControlUpdateResponse> updateSiteSourceControlAsync(String resourceGroupName, String webSiteName, String slotName, SiteSourceControlUpdateParameters parameters);
     
     /**
     * Update list of app settings and connection strings which to be slot

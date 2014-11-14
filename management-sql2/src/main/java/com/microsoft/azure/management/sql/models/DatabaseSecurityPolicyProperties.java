@@ -63,6 +63,27 @@ public class DatabaseSecurityPolicyProperties {
         this.isAuditingEnabled = isAuditingEnabledValue;
     }
     
+    private boolean isBlockDirectAccessEnabled;
+    
+    /**
+    * Optional. Gets or sets a value indicating whether block direct access is
+    * enabled.
+    * @return The IsBlockDirectAccessEnabled value.
+    */
+    public boolean isBlockDirectAccessEnabled() {
+        return this.isBlockDirectAccessEnabled;
+    }
+    
+    /**
+    * Optional. Gets or sets a value indicating whether block direct access is
+    * enabled.
+    * @param isBlockDirectAccessEnabledValue The IsBlockDirectAccessEnabled
+    * value.
+    */
+    public void setIsBlockDirectAccessEnabled(final boolean isBlockDirectAccessEnabledValue) {
+        this.isBlockDirectAccessEnabled = isBlockDirectAccessEnabledValue;
+    }
+    
     private boolean isEventTypeDataAccessEnabled;
     
     /**
@@ -246,6 +267,25 @@ public class DatabaseSecurityPolicyProperties {
     */
     public void setRetentionDays(final int retentionDaysValue) {
         this.retentionDays = retentionDaysValue;
+    }
+    
+    private String secondaryStorageAccountKey;
+    
+    /**
+    * Optional. Gets or sets the secondary storage account key.
+    * @return The SecondaryStorageAccountKey value.
+    */
+    public String getSecondaryStorageAccountKey() {
+        return this.secondaryStorageAccountKey;
+    }
+    
+    /**
+    * Optional. Gets or sets the secondary storage account key.
+    * @param secondaryStorageAccountKeyValue The SecondaryStorageAccountKey
+    * value.
+    */
+    public void setSecondaryStorageAccountKey(final String secondaryStorageAccountKeyValue) {
+        this.secondaryStorageAccountKey = secondaryStorageAccountKeyValue;
     }
     
     private String storageAccountKey;

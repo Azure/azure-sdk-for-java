@@ -269,7 +269,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
             }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0)) {
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
             }
             if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72) {
@@ -1140,7 +1140,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
                 if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
@@ -2040,7 +2040,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
                         }
-                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
                         if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
@@ -3928,7 +3928,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
                 if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {

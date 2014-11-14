@@ -67,6 +67,32 @@ import org.xml.sax.SAXException;
 */
 public interface WebSiteOperations {
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse applySlotConfiguration(String webSpaceName, String webSiteName, String targetSwapSlot) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> applySlotConfigurationAsync(String webSpaceName, String webSiteName, String targetSwapSlot);
+    
+    /**
     * Backups a site on-demand.
     *
     * @param webSpaceName Required. The name of the web space.
@@ -703,6 +729,28 @@ public interface WebSiteOperations {
     * @return List of backups for the website.
     */
     Future<WebSiteGetBackupsResponse> listBackupsAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse resetSlotConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> resetSlotConfigurationAsync(String webSpaceName, String webSiteName);
     
     /**
     * You can restart a web site by issuing an HTTP POST request.  (see
