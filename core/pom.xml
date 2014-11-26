@@ -56,12 +56,7 @@
   </developers>
 
   <dependencies>
-      <dependency>
-          <groupId>com.microsoft.aad</groupId>
-          <artifactId>adal4j</artifactId>
-          <version>0.0.2-SNAPSHOT</version>
-      </dependency>
-      <dependency>
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
     </dependency>
