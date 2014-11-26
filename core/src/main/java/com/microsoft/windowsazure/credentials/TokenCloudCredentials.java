@@ -35,8 +35,8 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
     /** The uri. */
     private URI uri; 
     
-    /** The ADAL authorization configuration */
-    private AdalAuthConfig adalAuthConfig;
+    /** The token */
+    private String token;
 
     /**
      * Instantiates a new certificate cloud credentials.
@@ -49,14 +49,14 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
      *
      * @param uri the uri
      * @param subscriptionId the subscription id
-     * @param keyStoreCredential the key store credential
+     * @param token the ADAL access token
      */
     @Inject
     public TokenCloudCredentials(@Named(ManagementConfiguration.URI) URI uri, @Named(ManagementConfiguration.SUBSCRIPTION_ID) String subscriptionId,
-            AdalAuthConfig adalAuthConfig) {
+            String token) {
         this.uri = uri;
         this.subscriptionId = subscriptionId;
-        this.adalAuthConfig = adalAuthConfig;
+        this.token = token;
     }
 
     /* (non-Javadoc)
@@ -94,21 +94,21 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
     }
     
     /**
-     * Gets the ADAL authentication configuration.
+     * Gets the ADAL authentication token.
      *
-     * @return the ADAL authentication configuration
+     * @return the ADAL authentication token
      */
-    public AdalAuthConfig getAdalAuthConfig() {
-        return adalAuthConfig;
+    public String getToken() {
+        return token;
     }
 
     /**
      * Sets the ADAL authentication configuration.
      *
-     * @param uri the new ADAL authentication configuration
+     * @param token the new ADAL authentication token
      */
-    public void setAdalAuthConfig(AdalAuthConfig adalAuthConfig) {
-        this.adalAuthConfig = adalAuthConfig;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /* (non-Javadoc)
@@ -125,7 +125,7 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
     		filters = (ArrayList<AdalAuthFilter>)properties.get("AuthFilters");
     	}
     	
-    	filters.add(new AdalAuthFilter(this.adalAuthConfig));
+    	filters.add(new AdalAuthFilter(this.token));
     }
 
 }

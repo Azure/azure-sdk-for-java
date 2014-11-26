@@ -28,15 +28,15 @@ public class Exports implements Builder.Exports {
     public void register(Registry registry) {
         registry.add(SubscriptionCloudCredentials.class, CertificateCloudCredentials.class);
         registry.add(SubscriptionCloudCredentials.class, TokenCloudCredentials.class);
-        
-        registry.add(new Builder.Factory<AdalAuthConfig>() {
+
+        registry.add(new Builder.Factory<SubscriptionCloudCredentials>() {
             @Override
-            public <S> AdalAuthConfig create(String profile,
-                    Class<S> service, Builder builder,
-                    Map<String, Object> properties) {
-                TokenCloudCredentials credential = (TokenCloudCredentials)properties.get(profile);
+            public <S> SubscriptionCloudCredentials create(String profile,
+                                                    Class<S> service, Builder builder,
+                                                    Map<String, Object> properties) {
+                SubscriptionCloudCredentials credential = (SubscriptionCloudCredentials)properties.get(profile);
                 credential.applyConfig(profile, properties);
-                return credential.getAdalAuthConfig();
+                return credential;
             }
         });
     }

@@ -27,11 +27,13 @@ import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 
+import javax.naming.ServiceUnavailableException;
+
 public class AdalAuthFilter implements ServiceRequestFilter {
-	private AdalAuthConfig adalAuthConfig;
+	private String token;
 	
-	public AdalAuthFilter(AdalAuthConfig adalAuthConfig) {
-		this.adalAuthConfig = adalAuthConfig;
+	public AdalAuthFilter(String token) {
+		this.token = token;
 	}
 	
 	@Override
@@ -39,27 +41,10 @@ public class AdalAuthFilter implements ServiceRequestFilter {
     	ExecutorService service = null;
 
 		try {
-			service = Executors.newFixedThreadPool(1);
-	    	AuthenticationContext authenticationContext = new AuthenticationContext(
-				this.adalAuthConfig.getAuthorityUrl() + this.adalAuthConfig.getTenantId() + "/",
-				true,
-		        service);
-            Future<AuthenticationResult> future = authenticationContext.acquireToken(
-                    this.adalAuthConfig.getResource(),
-                    new ClientCredential(this.adalAuthConfig.getClientId(),
-                            this.adalAuthConfig.getClientSecret()), null);
-            AuthenticationResult result = future.get();
-            
-            // TODO: missing a step here. Need to get access token from soemthing else
-            
-            request.setHeader("Authorization", "Bearer " + result.getAccessToken());
-		} catch (InterruptedException e) {
-			// Do nothing.
-		} catch (ExecutionException e) {
-			// Do nothing.
-		} catch (MalformedURLException e) {
-        	// Do nothing.
-		} finally {
+            request.setHeader("Authorization", "Bearer " + token);
+		} catch (Exception e) {
+            // silently fail
+        } finally {
         	if (service != null) {
         		service.shutdown();
         	}

@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.management.configuration;
 
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
-import com.microsoft.windowsazure.credentials.AdalAuthConfig;
 import com.microsoft.windowsazure.credentials.TokenCloudCredentials;
 import com.microsoft.windowsazure.Configuration;
 
@@ -79,9 +78,7 @@ public final class ARMManagementConfiguration {
      */
     public static Configuration configure(String profile,
             Configuration configuration, URI uri, String subscriptionId,
-            String username, String password,
-            String authorityUrl, String tenantId, String resource,
-            String clientId, String clientSecret)
+            String token)
             throws IOException {
 
         if (profile == null) {
@@ -93,8 +90,7 @@ public final class ARMManagementConfiguration {
         configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
 
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
-                new TokenCloudCredentials(uri, subscriptionId,
-                        new AdalAuthConfig(authorityUrl, tenantId, resource, clientId, clientSecret)));
+                new TokenCloudCredentials(uri, subscriptionId, token));
 
         configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
                 new LaxRedirectStrategy());
