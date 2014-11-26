@@ -96,13 +96,8 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
-<<<<<<< HEAD
-//        createParameters.setGeoReplicationEnabled(false);
-        createParameters.setLocation(storageLocation);       
-=======
         createParameters.setLocation(storageLocation);      
         createParameters.setAccountType("Standard_LRS");
->>>>>>> e46fcc53028d0fde3b7bf49cece2ad2f9bddb7b8
      
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -121,10 +116,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName);        
         createParameters.setLabel(storageAccountDescription);
-<<<<<<< HEAD
-//        createParameters.setGeoReplicationEnabled(false);
-=======
->>>>>>> e46fcc53028d0fde3b7bf49cece2ad2f9bddb7b8
         createParameters.setLocation(storageLocation); 
         createParameters.setAccountType("Standard_LRS");
         
@@ -211,11 +202,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setName(expectedStorageAccountName);
         createParameters.setLocation(storageLocation);
         createParameters.setLabel(expectedStorageAccountLabel);
-<<<<<<< HEAD
-//        createParameters.setGeoReplicationEnabled(true);
-=======
         createParameters.setAccountType("Standard_LRS");
->>>>>>> e46fcc53028d0fde3b7bf49cece2ad2f9bddb7b8
         
         //Act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
@@ -223,10 +210,6 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         
         StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();      
         updateParameters.setLabel(expectedUpdatedStorageAccountLabel);
-<<<<<<< HEAD
-//        updateParameters.setGeoReplicationEnabled(false);
-=======
->>>>>>> e46fcc53028d0fde3b7bf49cece2ad2f9bddb7b8
         updateParameters.setDescription(expectedUpdatedDescription);
         OperationResponse updateoperationResponse = storageManagementClient.getStorageAccountsOperations().update(expectedStorageAccountName, updateParameters);
                     
