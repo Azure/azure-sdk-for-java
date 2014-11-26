@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     */
     public LocationsListResponse() {
         super();
-        this.setLocations(new ArrayList<LocationsListResponse.Location>());
+        this.setLocations(new LazyArrayList<LocationsListResponse.Location>());
     }
     
     /**
@@ -167,7 +168,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         *
         */
         public Location() {
-            this.setAvailableServices(new ArrayList<String>());
+            this.setAvailableServices(new LazyArrayList<String>());
         }
     }
 }

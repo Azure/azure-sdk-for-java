@@ -245,6 +245,44 @@ public class ConfigurationSet {
         this.inputEndpoints = inputEndpointsValue;
     }
     
+    private ArrayList<NetworkInterface> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterface> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterface> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
+    private String networkSecurityGroup;
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @return The NetworkSecurityGroup value.
+    */
+    public String getNetworkSecurityGroup() {
+        return this.networkSecurityGroup;
+    }
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @param networkSecurityGroupValue The NetworkSecurityGroup value.
+    */
+    public void setNetworkSecurityGroup(final String networkSecurityGroupValue) {
+        this.networkSecurityGroup = networkSecurityGroupValue;
+    }
+    
     private ArrayList<ConfigurationSet.PublicIP> publicIPs;
     
     /**
@@ -480,6 +518,7 @@ public class ConfigurationSet {
     */
     public ConfigurationSet() {
         this.setInputEndpoints(new LazyArrayList<InputEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterface>());
         this.setPublicIPs(new LazyArrayList<ConfigurationSet.PublicIP>());
         this.setStoredCertificateSettings(new LazyArrayList<StoredCertificateSettings>());
         this.setSubnetNames(new LazyArrayList<String>());

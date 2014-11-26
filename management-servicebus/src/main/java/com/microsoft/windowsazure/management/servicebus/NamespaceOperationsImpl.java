@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.AccessRight;
 import com.microsoft.windowsazure.management.servicebus.models.CheckNamespaceAvailabilityResponse;
 import com.microsoft.windowsazure.management.servicebus.models.NamespaceDescription;
+import com.microsoft.windowsazure.management.servicebus.models.NamespaceType;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRuleResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRulesResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespace;
@@ -456,6 +457,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             boolean enabledInstance;
                             enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
+                        }
+                        
+                        Element createACSNamespaceElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreateACSNamespace");
+                        if (createACSNamespaceElement != null) {
+                            boolean createACSNamespaceInstance;
+                            createACSNamespaceInstance = DatatypeConverter.parseBoolean(createACSNamespaceElement.getTextContent().toLowerCase());
+                            namespaceDescriptionInstance.setCreateACSNamespace(createACSNamespaceInstance);
+                        }
+                        
+                        Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
+                        if (namespaceTypeElement != null) {
+                            NamespaceType namespaceTypeInstance;
+                            namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
+                            namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
                         }
                     }
                 }
@@ -984,6 +999,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
+                        
+                        Element createACSNamespaceElement2 = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreateACSNamespace");
+                        if (createACSNamespaceElement2 != null) {
+                            boolean createACSNamespaceInstance;
+                            createACSNamespaceInstance = DatatypeConverter.parseBoolean(createACSNamespaceElement2.getTextContent().toLowerCase());
+                            namespaceDescriptionInstance.setCreateACSNamespace(createACSNamespaceInstance);
+                        }
+                        
+                        Element namespaceTypeElement2 = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
+                        if (namespaceTypeElement2 != null) {
+                            NamespaceType namespaceTypeInstance;
+                            namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement2.getTextContent());
+                            namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
+                        }
                     }
                 }
             }
@@ -1392,6 +1421,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             boolean enabledInstance;
                             enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
+                        }
+                        
+                        Element createACSNamespaceElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreateACSNamespace");
+                        if (createACSNamespaceElement != null) {
+                            boolean createACSNamespaceInstance;
+                            createACSNamespaceInstance = DatatypeConverter.parseBoolean(createACSNamespaceElement.getTextContent().toLowerCase());
+                            namespaceDescriptionInstance.setCreateACSNamespace(createACSNamespaceInstance);
+                        }
+                        
+                        Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
+                        if (namespaceTypeElement != null) {
+                            NamespaceType namespaceTypeInstance;
+                            namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
+                            namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
                         }
                     }
                 }
@@ -1951,6 +1994,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                     boolean enabledInstance;
                                     enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                                     entryInstance.setEnabled(enabledInstance);
+                                }
+                                
+                                Element createACSNamespaceElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreateACSNamespace");
+                                if (createACSNamespaceElement != null) {
+                                    boolean createACSNamespaceInstance;
+                                    createACSNamespaceInstance = DatatypeConverter.parseBoolean(createACSNamespaceElement.getTextContent().toLowerCase());
+                                    entryInstance.setCreateACSNamespace(createACSNamespaceInstance);
+                                }
+                                
+                                Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
+                                if (namespaceTypeElement != null) {
+                                    NamespaceType namespaceTypeInstance;
+                                    namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
+                                    entryInstance.setNamespaceType(namespaceTypeInstance);
                                 }
                             }
                         }

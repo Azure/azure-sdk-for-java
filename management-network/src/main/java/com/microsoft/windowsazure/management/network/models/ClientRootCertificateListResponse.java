@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     */
     public ClientRootCertificateListResponse() {
         super();
-        this.setClientRootCertificates(new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>());
+        this.setClientRootCertificates(new LazyArrayList<ClientRootCertificateListResponse.ClientRootCertificate>());
     }
     
     /**

@@ -699,6 +699,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     languageInstance = languageElement2.getTextContent();
                     result.setLanguage(languageInstance);
                 }
+                
+                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
+                if (iOTypeElement != null) {
+                    String iOTypeInstance;
+                    iOTypeInstance = iOTypeElement.getTextContent();
+                    result.setIOType(iOTypeInstance);
+                }
             }
             
             result.setStatusCode(statusCode);
@@ -2443,6 +2450,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     String languageInstance;
                     languageInstance = languageElement2.getTextContent();
                     result.setLanguage(languageInstance);
+                }
+                
+                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
+                if (iOTypeElement != null) {
+                    String iOTypeInstance;
+                    iOTypeInstance = iOTypeElement.getTextContent();
+                    result.setIOType(iOTypeInstance);
                 }
             }
             

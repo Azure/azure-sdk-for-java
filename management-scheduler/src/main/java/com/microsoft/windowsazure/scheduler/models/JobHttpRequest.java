@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -127,7 +128,7 @@ public class JobHttpRequest {
     *
     */
     public JobHttpRequest() {
-        this.setHeaders(new HashMap<String, String>());
+        this.setHeaders(new LazyHashMap<String, String>());
     }
     
     /**

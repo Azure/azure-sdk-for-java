@@ -62,6 +62,7 @@ public abstract class ServiceClient<TClient> implements
             ExecutorService executorService) {
         this.httpClientBuilder = httpClientBuilder;
         this.executorService = executorService;
+        this.httpClientBuilder.addInterceptorFirst(new UserAgentFilterAdapter(new UserAgentFilter()));
     }
 
     protected abstract TClient newInstance(HttpClientBuilder httpClientBuilder,

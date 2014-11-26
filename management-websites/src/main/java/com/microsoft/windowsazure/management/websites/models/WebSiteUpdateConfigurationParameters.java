@@ -71,6 +71,24 @@ public class WebSiteUpdateConfigurationParameters {
         this.appSettings = appSettingsValue;
     }
     
+    private String autoSwapSlotName;
+    
+    /**
+    * Optional. Sets the slot name to swap with after successful deployment.
+    * @return The AutoSwapSlotName value.
+    */
+    public String getAutoSwapSlotName() {
+        return this.autoSwapSlotName;
+    }
+    
+    /**
+    * Optional. Sets the slot name to swap with after successful deployment.
+    * @param autoSwapSlotNameValue The AutoSwapSlotName value.
+    */
+    public void setAutoSwapSlotName(final String autoSwapSlotNameValue) {
+        this.autoSwapSlotName = autoSwapSlotNameValue;
+    }
+    
     private ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStrings;
     
     /**

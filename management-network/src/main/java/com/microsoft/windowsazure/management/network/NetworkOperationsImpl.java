@@ -158,7 +158,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/octet-stream");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = parameters.getConfiguration();
@@ -264,7 +264,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -372,7 +372,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -438,6 +438,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
                         virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
+                    Element locationElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        virtualNetworkSiteInstance.setLocation(locationInstance);
+                    }
+                    
                     Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null) {
                         String stateInstance;
@@ -478,6 +485,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
                                 String addressPrefixInstance;
                                 addressPrefixInstance = addressPrefixElement.getTextContent();
                                 subnetInstance.setAddressPrefix(addressPrefixInstance);
+                            }
+                            
+                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                            if (networkSecurityGroupElement != null) {
+                                String networkSecurityGroupInstance;
+                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                subnetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
                             }
                         }
                     }

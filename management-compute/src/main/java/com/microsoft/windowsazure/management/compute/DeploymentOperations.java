@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentDeleteRoleInstanceParameters;
+import com.microsoft.windowsazure.management.compute.models.DeploymentEventListResponse;
 import com.microsoft.windowsazure.management.compute.models.DeploymentGetPackageParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentGetResponse;
 import com.microsoft.windowsazure.management.compute.models.DeploymentRollbackUpdateOrUpgradeParameters;
@@ -39,6 +40,7 @@ import com.microsoft.windowsazure.management.compute.models.DeploymentUpgradePar
 import com.microsoft.windowsazure.management.compute.models.DeploymentWalkUpgradeDomainParameters;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -1882,6 +1884,82 @@ public interface DeploymentOperations {
     * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> getPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
+    
+    /**
+    * Identifies the list of reboot events due to planned maintenance that
+    * impacted a deployment in the optionally provided timeframe.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param startTime Required. Datetime in UTC representing the start time of
+    * the query.
+    * @param endTime Required. Datetime in UTC representing the end time of the
+    * query.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Identifies the list of reboot events due to planned maintenance
+    * that impacted a deployment in the optionally provided timeframe.
+    */
+    DeploymentEventListResponse listEvents(String serviceName, String deploymentName, Calendar startTime, Calendar endTime) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Identifies the list of reboot events due to planned maintenance that
+    * impacted a deployment in the optionally provided timeframe.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param startTime Required. Datetime in UTC representing the start time of
+    * the query.
+    * @param endTime Required. Datetime in UTC representing the end time of the
+    * query.
+    * @return Identifies the list of reboot events due to planned maintenance
+    * that impacted a deployment in the optionally provided timeframe.
+    */
+    Future<DeploymentEventListResponse> listEventsAsync(String serviceName, String deploymentName, Calendar startTime, Calendar endTime);
+    
+    /**
+    * Identifies the list of reboot events due to planned maintenance that
+    * impacted a deployment in the optionally provided timeframe.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param startTime Required. Datetime in UTC representing the start time of
+    * the query.
+    * @param endTime Required. Datetime in UTC representing the end time of the
+    * query.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Identifies the list of reboot events due to planned maintenance
+    * that impacted a deployment in the optionally provided timeframe.
+    */
+    DeploymentEventListResponse listEventsBySlot(String serviceName, DeploymentSlot deploymentSlot, Calendar startTime, Calendar endTime) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Identifies the list of reboot events due to planned maintenance that
+    * impacted a deployment in the optionally provided timeframe.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param startTime Required. Datetime in UTC representing the start time of
+    * the query.
+    * @param endTime Required. Datetime in UTC representing the end time of the
+    * query.
+    * @return Identifies the list of reboot events due to planned maintenance
+    * that impacted a deployment in the optionally provided timeframe.
+    */
+    Future<DeploymentEventListResponse> listEventsBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, Calendar startTime, Calendar endTime);
     
     /**
     * The Reboot Role Instance By Deployment Name operation requests a reboot

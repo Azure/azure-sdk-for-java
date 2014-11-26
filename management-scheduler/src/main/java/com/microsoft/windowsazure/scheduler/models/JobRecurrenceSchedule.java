@@ -146,11 +146,5 @@ public class JobRecurrenceSchedule {
     *
     */
     public JobRecurrenceSchedule() {
-        this.setDays(new java.util.ArrayList<com.microsoft.windowsazure.scheduler.models.JobScheduleDay>());
-        this.setHours(new java.util.ArrayList<java.lang.Integer>());
-        this.setMinutes(new java.util.ArrayList<java.lang.Integer>());
-        this.setMonthDays(new java.util.ArrayList<java.lang.Integer>());
-        this.setMonthlyOccurrences(new java.util.ArrayList<com.microsoft.windowsazure.scheduler.models.JobScheduleMonthlyOccurrence>());
-        this.setMonths(new java.util.ArrayList<java.lang.Integer>());
     }
 }

@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +58,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     */
     public CloudServiceListResponse() {
         super();
-        this.setCloudServices(new ArrayList<CloudServiceListResponse.CloudService>());
+        this.setCloudServices(new LazyArrayList<CloudServiceListResponse.CloudService>());
     }
     
     /**
@@ -168,7 +170,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         *
         */
         public CloudService() {
-            this.setResources(new ArrayList<CloudServiceListResponse.CloudService.AddOnResource>());
+            this.setResources(new LazyArrayList<CloudServiceListResponse.CloudService.AddOnResource>());
         }
         
         /**
@@ -362,8 +364,8 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             *
             */
             public AddOnResource() {
-                this.setOutputItems(new HashMap<String, String>());
-                this.setUsageLimits(new ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit>());
+                this.setOutputItems(new LazyHashMap<String, String>());
+                this.setUsageLimits(new LazyArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit>());
             }
             
             /**

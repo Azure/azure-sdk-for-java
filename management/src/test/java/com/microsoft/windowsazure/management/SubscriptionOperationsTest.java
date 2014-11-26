@@ -18,7 +18,9 @@ package com.microsoft.windowsazure.management;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,10 +28,20 @@ import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
 
-public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
-   @BeforeClass
+public class SubscriptionOperationsTest extends ManagementIntegrationTestBase { 
+    @BeforeClass
     public static void setup() throws Exception {
         createService();
+    }
+
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
 
     @Test
@@ -52,7 +64,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
     @Test
     public void listSubscriptionsSuccess() throws Exception {
         // Arrange  
-        SubscriptionListOperationsParameters parameters = new  SubscriptionListOperationsParameters();
+        SubscriptionListOperationsParameters parameters = new SubscriptionListOperationsParameters();
 
         Calendar now = Calendar.getInstance();
         Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -62,6 +74,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
         parameters.setStartTime(startTime);
         parameters.setEndTime(endTime);
 
+        addRegexRule("StartTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z&EndTime=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}\\.[0-9]+Z");
         SubscriptionListOperationsResponse subscriptionListOperationsResponse = managementClient.getSubscriptionsOperations().listOperations(parameters);
 
         Assert.assertEquals(200, subscriptionListOperationsResponse.getStatusCode());

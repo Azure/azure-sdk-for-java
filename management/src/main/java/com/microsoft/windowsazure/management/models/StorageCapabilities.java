@@ -56,6 +56,5 @@ public class StorageCapabilities {
     *
     */
     public StorageCapabilities() {
-        this.setStorageAccountTypes(new java.util.ArrayList<java.lang.String>());
     }
 }

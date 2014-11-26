@@ -1,3 +1,4 @@
+@ignore
 Feature: WebSite should work
 
 Background: 

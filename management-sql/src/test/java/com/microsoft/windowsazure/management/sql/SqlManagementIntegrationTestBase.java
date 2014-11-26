@@ -14,6 +14,31 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Callable;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.xml.sax.SAXException;
+
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
+import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.Builder.Alteration;
+import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.ManagementClient;
 import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -25,41 +50,14 @@ import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
-import com.microsoft.windowsazure.management.storage.models.GeoRegionNames;
 import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.xml.sax.SAXException;
-
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Alteration;
-import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
-import com.microsoft.windowsazure.core.utils.KeyStoreType;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.Configuration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
-import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
-import com.microsoft.windowsazure.management.models.LocationsListResponse;
-import com.microsoft.windowsazure.management.ManagementClient;
 
-public abstract class SqlManagementIntegrationTestBase {
+public abstract class SqlManagementIntegrationTestBase extends MockIntegrationTestBase {
 
     protected static String testStorageAccountPrefix = "azsql";
     protected static ManagementClient managementClient;
@@ -82,6 +80,13 @@ public abstract class SqlManagementIntegrationTestBase {
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         sqlManagementClient = SqlManagementService.create(config);
+        addClient((ServiceClient<?>) sqlManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createService();
+                return null;
+            }
+        });
     }
     
     protected static void createStorageService() throws Exception {
@@ -99,6 +104,14 @@ public abstract class SqlManagementIntegrationTestBase {
         });
 
         storageManagementClient = StorageManagementService.create(config);
+        addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createStorageService();
+                return null;
+            }
+        });
+        addRegexRule("azsql[a-z]{10}");
     }
     
     protected static StorageAccount createStorageAccount(String storageAccountName) throws Exception { 
@@ -108,6 +121,7 @@ public abstract class SqlManagementIntegrationTestBase {
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
         createParameters.setLocation(testLocationValue);
+        createParameters.setAccountType("Standard_LRS");
         storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
@@ -163,6 +177,13 @@ public abstract class SqlManagementIntegrationTestBase {
         Configuration config = createConfiguration();
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
         managementClient = ManagementService.create(config);
+        addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createManagementClient();
+                return null;
+            }
+        });
     }      
     
     protected static void getLocation() throws Exception {

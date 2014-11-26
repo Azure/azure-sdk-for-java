@@ -247,6 +247,24 @@ public class RoleInstance {
         this.iPAddress = iPAddressValue;
     }
     
+    private ArrayList<NetworkInterfaceInstance> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterfaceInstance> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterfaceInstance> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
     private RoleInstancePowerState powerState;
     
     /**
@@ -353,6 +371,7 @@ public class RoleInstance {
     */
     public RoleInstance() {
         this.setInstanceEndpoints(new LazyArrayList<InstanceEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterfaceInstance>());
         this.setPublicIPs(new LazyArrayList<RoleInstance.PublicIP>());
         this.setResourceExtensionStatusList(new LazyArrayList<ResourceExtensionStatus>());
     }

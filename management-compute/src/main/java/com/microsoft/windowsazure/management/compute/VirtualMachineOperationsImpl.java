@@ -42,10 +42,12 @@ import com.microsoft.windowsazure.management.compute.models.DomainJoinCredential
 import com.microsoft.windowsazure.management.compute.models.DomainJoinProvisioning;
 import com.microsoft.windowsazure.management.compute.models.DomainJoinSettings;
 import com.microsoft.windowsazure.management.compute.models.EndpointAcl;
+import com.microsoft.windowsazure.management.compute.models.IPConfiguration;
 import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancer;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
+import com.microsoft.windowsazure.management.compute.models.NetworkInterface;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
@@ -267,7 +269,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
             }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0)) {
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
             }
             if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72) {
@@ -522,6 +524,52 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     provisioningConfigurationElement.appendChild(publicIPsSequenceElement);
                 }
+            }
+            
+            if (parameters.getProvisioningConfiguration().getNetworkInterfaces() != null) {
+                if (parameters.getProvisioningConfiguration().getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getNetworkInterfaces()).isInitialized()) {
+                    Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
+                    for (NetworkInterface networkInterfacesItem : parameters.getProvisioningConfiguration().getNetworkInterfaces()) {
+                        Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
+                        networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
+                        
+                        if (networkInterfacesItem.getName() != null) {
+                            Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
+                            networkInterfaceElement.appendChild(nameElement3);
+                        }
+                        
+                        if (networkInterfacesItem.getIPConfigurations() != null) {
+                            if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
+                                Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
+                                for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
+                                    Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
+                                    iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
+                                    
+                                    if (iPConfigurationsItem.getSubnetName() != null) {
+                                        Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                                        subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
+                                        iPConfigurationElement.appendChild(subnetNameElement);
+                                    }
+                                    
+                                    if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
+                                        Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                                        staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
+                                        iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
+                                    }
+                                }
+                                networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
+                            }
+                        }
+                    }
+                    provisioningConfigurationElement.appendChild(networkInterfacesSequenceElement);
+                }
+            }
+            
+            if (parameters.getProvisioningConfiguration().getNetworkSecurityGroup() != null) {
+                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getNetworkSecurityGroup()));
+                provisioningConfigurationElement.appendChild(networkSecurityGroupElement);
             }
             
             if (parameters.getProvisioningConfiguration().getComputerName() != null) {
@@ -1092,7 +1140,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
                 if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
@@ -1349,6 +1397,52 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
+                    if (configurationSetsItem.getNetworkInterfaces() != null) {
+                        if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
+                            Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
+                            for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
+                                Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
+                                networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
+                                
+                                if (networkInterfacesItem.getName() != null) {
+                                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                    nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
+                                    networkInterfaceElement.appendChild(nameElement3);
+                                }
+                                
+                                if (networkInterfacesItem.getIPConfigurations() != null) {
+                                    if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
+                                        Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
+                                        for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
+                                            Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
+                                            iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
+                                            
+                                            if (iPConfigurationsItem.getSubnetName() != null) {
+                                                Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                                                subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
+                                                iPConfigurationElement.appendChild(subnetNameElement);
+                                            }
+                                            
+                                            if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
+                                                Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                                                staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
+                                                iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
+                                            }
+                                        }
+                                        networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
+                                    }
+                                }
+                            }
+                            configurationSetElement.appendChild(networkInterfacesSequenceElement);
+                        }
+                    }
+                    
+                    if (configurationSetsItem.getNetworkSecurityGroup() != null) {
+                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                        configurationSetElement.appendChild(networkSecurityGroupElement);
+                    }
+                    
                     if (configurationSetsItem.getComputerName() != null) {
                         Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                         computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
@@ -1578,9 +1672,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     if (resourceExtensionReferencesItem.getName() != null) {
-                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                        resourceExtensionReferenceElement.appendChild(nameElement3);
+                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                        resourceExtensionReferenceElement.appendChild(nameElement4);
                     }
                     
                     if (resourceExtensionReferencesItem.getVersion() != null) {
@@ -1946,7 +2040,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
                         }
-                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
                         if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
@@ -2229,6 +2323,52 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
+                            if (configurationSetsItem.getNetworkInterfaces() != null) {
+                                if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
+                                    Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
+                                    for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
+                                        Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
+                                        networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
+                                        
+                                        if (networkInterfacesItem.getName() != null) {
+                                            Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                            nameElement4.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
+                                            networkInterfaceElement.appendChild(nameElement4);
+                                        }
+                                        
+                                        if (networkInterfacesItem.getIPConfigurations() != null) {
+                                            if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
+                                                Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
+                                                for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
+                                                    Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
+                                                    iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
+                                                    
+                                                    if (iPConfigurationsItem.getSubnetName() != null) {
+                                                        Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                                                        subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
+                                                        iPConfigurationElement.appendChild(subnetNameElement);
+                                                    }
+                                                    
+                                                    if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
+                                                        Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                                                        staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
+                                                        iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
+                                                    }
+                                                }
+                                                networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
+                                            }
+                                        }
+                                    }
+                                    configurationSetElement.appendChild(networkInterfacesSequenceElement);
+                                }
+                            }
+                            
+                            if (configurationSetsItem.getNetworkSecurityGroup() != null) {
+                                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                                configurationSetElement.appendChild(networkSecurityGroupElement);
+                            }
+                            
                             if (configurationSetsItem.getComputerName() != null) {
                                 Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                                 computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
@@ -2458,9 +2598,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             if (resourceExtensionReferencesItem.getName() != null) {
-                                Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                                resourceExtensionReferenceElement.appendChild(nameElement4);
+                                Element nameElement5 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                nameElement5.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                                resourceExtensionReferenceElement.appendChild(nameElement5);
                             }
                             
                             if (resourceExtensionReferencesItem.getVersion() != null) {
@@ -2677,9 +2817,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         dnsServersSequenceElement.appendChild(dnsServerElement);
                         
                         if (dnsServersItem.getName() != null) {
-                            Element nameElement5 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            nameElement5.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
-                            dnsServerElement.appendChild(nameElement5);
+                            Element nameElement6 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement6.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
+                            dnsServerElement.appendChild(nameElement6);
                         }
                         
                         if (dnsServersItem.getAddress() != null) {
@@ -2707,9 +2847,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     loadBalancersSequenceElement.appendChild(loadBalancerElement);
                     
                     if (loadBalancersItem.getName() != null) {
-                        Element nameElement6 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement6.appendChild(requestDoc.createTextNode(loadBalancersItem.getName()));
-                        loadBalancerElement.appendChild(nameElement6);
+                        Element nameElement7 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement7.appendChild(requestDoc.createTextNode(loadBalancersItem.getName()));
+                        loadBalancerElement.appendChild(nameElement7);
                     }
                     
                     if (loadBalancersItem.getFrontendIPConfiguration() != null) {
@@ -2723,15 +2863,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         if (loadBalancersItem.getFrontendIPConfiguration().getSubnetName() != null) {
-                            Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                            subnetNameElement.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getSubnetName()));
-                            frontendIpConfigurationElement.appendChild(subnetNameElement);
+                            Element subnetNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                            subnetNameElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getSubnetName()));
+                            frontendIpConfigurationElement.appendChild(subnetNameElement2);
                         }
                         
                         if (loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress() != null) {
-                            Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                            staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress().getHostAddress()));
-                            frontendIpConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
+                            Element staticVirtualNetworkIPAddressElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                            staticVirtualNetworkIPAddressElement3.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress().getHostAddress()));
+                            frontendIpConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement3);
                         }
                     }
                 }
@@ -3788,7 +3928,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
                 if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
@@ -4049,6 +4189,52 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
+                    if (configurationSetsItem.getNetworkInterfaces() != null) {
+                        if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
+                            Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
+                            for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
+                                Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
+                                networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
+                                
+                                if (networkInterfacesItem.getName() != null) {
+                                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                    nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
+                                    networkInterfaceElement.appendChild(nameElement3);
+                                }
+                                
+                                if (networkInterfacesItem.getIPConfigurations() != null) {
+                                    if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
+                                        Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
+                                        for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
+                                            Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
+                                            iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
+                                            
+                                            if (iPConfigurationsItem.getSubnetName() != null) {
+                                                Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                                                subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
+                                                iPConfigurationElement.appendChild(subnetNameElement);
+                                            }
+                                            
+                                            if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
+                                                Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                                                staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
+                                                iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
+                                            }
+                                        }
+                                        networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
+                                    }
+                                }
+                            }
+                            configurationSetElement.appendChild(networkInterfacesSequenceElement);
+                        }
+                    }
+                    
+                    if (configurationSetsItem.getNetworkSecurityGroup() != null) {
+                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                        configurationSetElement.appendChild(networkSecurityGroupElement);
+                    }
+                    
                     if (configurationSetsItem.getComputerName() != null) {
                         Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                         computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
@@ -4278,9 +4464,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     if (resourceExtensionReferencesItem.getName() != null) {
-                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                        resourceExtensionReferenceElement.appendChild(nameElement3);
+                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                        resourceExtensionReferenceElement.appendChild(nameElement4);
                     }
                     
                     if (resourceExtensionReferencesItem.getVersion() != null) {
@@ -4735,6 +4921,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
                         idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getIdleTimeoutInMinutes())));
                         inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
+                    }
+                    
+                    if (loadBalancedEndpointsItem.getLoadBalancerDistribution() != null) {
+                        Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
+                        loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerDistribution()));
+                        inputEndpointElement.appendChild(loadBalancerDistributionElement);
                     }
                 }
             }
@@ -5841,6 +6033,52 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
+                        Element networkInterfacesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
+                        if (networkInterfacesSequenceElement != null) {
+                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkInterfacesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterface").size(); i6 = i6 + 1) {
+                                org.w3c.dom.Element networkInterfacesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkInterfacesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterface").get(i6));
+                                NetworkInterface networkInterfaceInstance = new NetworkInterface();
+                                configurationSetInstance.getNetworkInterfaces().add(networkInterfaceInstance);
+                                
+                                Element nameElement3 = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                if (nameElement3 != null) {
+                                    String nameInstance3;
+                                    nameInstance3 = nameElement3.getTextContent();
+                                    networkInterfaceInstance.setName(nameInstance3);
+                                }
+                                
+                                Element iPConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "IPConfigurations");
+                                if (iPConfigurationsSequenceElement != null) {
+                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(iPConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "IPConfiguration").size(); i7 = i7 + 1) {
+                                        org.w3c.dom.Element iPConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(iPConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "IPConfiguration").get(i7));
+                                        IPConfiguration iPConfigurationInstance = new IPConfiguration();
+                                        networkInterfaceInstance.getIPConfigurations().add(iPConfigurationInstance);
+                                        
+                                        Element subnetNameElement = XmlUtility.getElementByTagNameNS(iPConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "SubnetName");
+                                        if (subnetNameElement != null) {
+                                            String subnetNameInstance;
+                                            subnetNameInstance = subnetNameElement.getTextContent();
+                                            iPConfigurationInstance.setSubnetName(subnetNameInstance);
+                                        }
+                                        
+                                        Element staticVirtualNetworkIPAddressElement2 = XmlUtility.getElementByTagNameNS(iPConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                                        if (staticVirtualNetworkIPAddressElement2 != null) {
+                                            String staticVirtualNetworkIPAddressInstance2;
+                                            staticVirtualNetworkIPAddressInstance2 = staticVirtualNetworkIPAddressElement2.getTextContent();
+                                            iPConfigurationInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                        if (networkSecurityGroupElement != null) {
+                            String networkSecurityGroupInstance;
+                            networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                            configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                        }
+                        
                         Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
                         if (computerNameElement != null) {
                             String computerNameInstance;
@@ -5938,8 +6176,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                         if (storedCertificateSettingsSequenceElement != null) {
-                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i6 = i6 + 1) {
-                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i6));
+                            for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
+                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
                                 StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                 configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                 
@@ -5970,8 +6208,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                             if (listenersSequenceElement != null) {
-                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i7 = i7 + 1) {
-                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i7));
+                                for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
+                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
                                     WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                     winRMInstance.getListeners().add(listenerInstance);
                                     
@@ -6034,8 +6272,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                             if (publicKeysSequenceElement != null) {
-                                for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i8 = i8 + 1) {
-                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i8));
+                                for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
+                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
                                     SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                     sSHInstance.getPublicKeys().add(publicKeyInstance);
                                     
@@ -6057,8 +6295,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                             if (keyPairsSequenceElement != null) {
-                                for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i9 = i9 + 1) {
-                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i9));
+                                for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
+                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
                                     SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                     sSHInstance.getKeyPairs().add(keyPairInstance);
                                     
@@ -6090,8 +6328,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(persistentVMRoleElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                 if (dataVirtualHardDisksSequenceElement != null) {
-                    for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i10 = i10 + 1) {
-                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i10));
+                    for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i12 = i12 + 1) {
+                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i12));
                         DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                         result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                         

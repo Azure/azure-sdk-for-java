@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +33,18 @@ public class ServiceBusCreationTest {
         assertNotNull(service);
         assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
+
+    @Test
+    public void theServiceClassMayBeCreatedWithSasDirectlyViaSingletonConfig()
+            throws Exception {
+        ServiceBusConfiguration.configureWithSASAuthentication("my-namespace",
+                "my-key-name", "my-secret-key", ".servicebus.windows.net");
+        ServiceBusContract service = ServiceBusService.create();
+
+        assertNotNull(service);
+        assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
+    }
+
 
     public Configuration newConfiguration() {
         Configuration config = new Configuration();

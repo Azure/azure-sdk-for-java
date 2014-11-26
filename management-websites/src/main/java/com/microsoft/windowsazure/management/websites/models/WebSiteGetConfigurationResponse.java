@@ -72,6 +72,24 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.appSettings = appSettingsValue;
     }
     
+    private String autoSwapSlotName;
+    
+    /**
+    * Optional. Gets the slot name to swap with after successful deployment.
+    * @return The AutoSwapSlotName value.
+    */
+    public String getAutoSwapSlotName() {
+        return this.autoSwapSlotName;
+    }
+    
+    /**
+    * Optional. Gets the slot name to swap with after successful deployment.
+    * @param autoSwapSlotNameValue The AutoSwapSlotName value.
+    */
+    public void setAutoSwapSlotName(final String autoSwapSlotNameValue) {
+        this.autoSwapSlotName = autoSwapSlotNameValue;
+    }
+    
     private ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings;
     
     /**

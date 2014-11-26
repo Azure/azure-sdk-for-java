@@ -30,6 +30,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.ConnectionStringType;
+import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -193,7 +195,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -243,9 +245,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
@@ -268,6 +270,82 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type ConnectionStringType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ConnectionStringType parseConnectionStringType(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ConnectionStringType.MySql;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlServer;
+        }
+        if ("2".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlAzure;
+        }
+        if ("3".equalsIgnoreCase(value)) {
+            return ConnectionStringType.Custom;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ConnectionStringType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String connectionStringTypeToString(ConnectionStringType value) {
+        if (value == ConnectionStringType.MySql) {
+            return "0";
+        }
+        if (value == ConnectionStringType.SqlServer) {
+            return "1";
+        }
+        if (value == ConnectionStringType.SqlAzure) {
+            return "2";
+        }
+        if (value == ConnectionStringType.Custom) {
+            return "3";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type ManagedPipelineMode.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ManagedPipelineMode parseManagedPipelineMode(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Integrated;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Classic;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ManagedPipelineMode to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String managedPipelineModeToString(ManagedPipelineMode value) {
+        if (value == ManagedPipelineMode.Integrated) {
+            return "0";
+        }
+        if (value == ManagedPipelineMode.Classic) {
+            return "1";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
