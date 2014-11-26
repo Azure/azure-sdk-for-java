@@ -334,12 +334,7 @@
     <module>../management-storage</module>
     <module>../management-network</module>
     <module>../management-websites</module>
-<<<<<<< HEAD
-    <module>../management-resource</module>
-    <module>../management-resource-websites</module>
-=======
     <module>../management-websites2</module>
->>>>>>> e46fcc53028d0fde3b7bf49cece2ad2f9bddb7b8
     <module>../media</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>
