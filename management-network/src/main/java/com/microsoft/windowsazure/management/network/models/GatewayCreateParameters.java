@@ -27,31 +27,33 @@ package com.microsoft.windowsazure.management.network.models;
 * Parameters supplied to the Create Virtual Network Gateway operation.
 */
 public class GatewayCreateParameters {
-    private GatewaySKU gatewaySKU;
+    private String gatewaySKU;
     
     /**
-    * Optional. The SKU of this virtual network gateway.
+    * Optional. The SKU of this virtual network gateway. Valid values are
+    * Default and HighPerformance.
     * @return The GatewaySKU value.
     */
-    public GatewaySKU getGatewaySKU() {
+    public String getGatewaySKU() {
         return this.gatewaySKU;
     }
     
     /**
-    * Optional. The SKU of this virtual network gateway.
+    * Optional. The SKU of this virtual network gateway. Valid values are
+    * Default and HighPerformance.
     * @param gatewaySKUValue The GatewaySKU value.
     */
-    public void setGatewaySKU(final GatewaySKU gatewaySKUValue) {
+    public void setGatewaySKU(final String gatewaySKUValue) {
         this.gatewaySKU = gatewaySKUValue;
     }
     
-    private GatewayType gatewayType;
+    private String gatewayType;
     
     /**
     * Optional. The routing type for this virtual network gateway.
     * @return The GatewayType value.
     */
-    public GatewayType getGatewayType() {
+    public String getGatewayType() {
         return this.gatewayType;
     }
     
@@ -59,7 +61,7 @@ public class GatewayCreateParameters {
     * Optional. The routing type for this virtual network gateway.
     * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(final GatewayType gatewayTypeValue) {
+    public void setGatewayType(final String gatewayTypeValue) {
         this.gatewayType = gatewayTypeValue;
     }
 }

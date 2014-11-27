@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public abstract class GatewayType {
-    public static final String STATICROUTING = "StaticRouting";
+public abstract class PfsGroup {
+    public static final String PFS1 = "PFS1";
     
-    public static final String DYNAMICROUTING = "DynamicRouting";
+    public static final String NONE = "None";
 }

@@ -23,8 +23,11 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public enum GatewaySKU {
-    Default,
+/**
+* The different SKUs that a gateway can have.
+*/
+public abstract class GatewaySKU {
+    public static final String DEFAULT = "Default";
     
-    HighPerformance,
+    public static final String HIGHPERFORMANCE = "HighPerformance";
 }

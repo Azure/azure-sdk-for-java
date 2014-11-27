@@ -23,8 +23,25 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public abstract class GatewayType {
-    public static final String STATICROUTING = "StaticRouting";
+/**
+* The IPsec parameters to set for the connection.
+*/
+public class GatewaySetIPsecParametersParameters {
+    private IPsecParameters parameters;
     
-    public static final String DYNAMICROUTING = "DynamicRouting";
+    /**
+    * Optional.
+    * @return The Parameters value.
+    */
+    public IPsecParameters getParameters() {
+        return this.parameters;
+    }
+    
+    /**
+    * Optional.
+    * @param parametersValue The Parameters value.
+    */
+    public void setParameters(final IPsecParameters parametersValue) {
+        this.parameters = parametersValue;
+    }
 }

@@ -23,8 +23,28 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public abstract class GatewayType {
-    public static final String STATICROUTING = "StaticRouting";
+import com.microsoft.windowsazure.core.OperationResponse;
+
+/**
+* The response that will be returned from a GetIPsecParameters request. This
+* contains the IPsec parameters for the specified connection.
+*/
+public class GatewayGetIPsecParametersResponse extends OperationResponse {
+    private IPsecParameters iPsecParameters;
     
-    public static final String DYNAMICROUTING = "DynamicRouting";
+    /**
+    * Optional.
+    * @return The IPsecParameters value.
+    */
+    public IPsecParameters getIPsecParameters() {
+        return this.iPsecParameters;
+    }
+    
+    /**
+    * Optional.
+    * @param iPsecParametersValue The IPsecParameters value.
+    */
+    public void setIPsecParameters(final IPsecParameters iPsecParametersValue) {
+        this.iPsecParameters = iPsecParametersValue;
+    }
 }

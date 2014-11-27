@@ -23,8 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public abstract class GatewayType {
-    public static final String STATICROUTING = "StaticRouting";
+public abstract class EncryptionType {
+    public static final String NOENCRYPTION = "NoEncryption";
     
-    public static final String DYNAMICROUTING = "DynamicRouting";
+    public static final String AES256 = "AES256";
+    
+    public static final String AES128 = "AES128";
+    
+    public static final String DES3 = "DES3";
+    
+    public static final String REQUIREENCRYPTION = "RequireEncryption";
 }

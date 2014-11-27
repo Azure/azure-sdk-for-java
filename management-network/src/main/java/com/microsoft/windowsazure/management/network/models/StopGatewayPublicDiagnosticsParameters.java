@@ -23,8 +23,27 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public abstract class GatewayType {
-    public static final String STATICROUTING = "StaticRouting";
+/**
+* Parameters supplied to the Start Public Diagnostics operation.
+*/
+public class StopGatewayPublicDiagnosticsParameters {
+    private UpdateGatewayPublicDiagnosticsOperation operation;
     
-    public static final String DYNAMICROUTING = "DynamicRouting";
+    /**
+    * Optional. The update gateway diagnostics operation to perform on the
+    * gateway tenant
+    * @return The Operation value.
+    */
+    public UpdateGatewayPublicDiagnosticsOperation getOperation() {
+        return this.operation;
+    }
+    
+    /**
+    * Optional. The update gateway diagnostics operation to perform on the
+    * gateway tenant
+    * @param operationValue The Operation value.
+    */
+    public void setOperation(final UpdateGatewayPublicDiagnosticsOperation operationValue) {
+        this.operation = operationValue;
+    }
 }
