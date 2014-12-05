@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -35,7 +39,36 @@ public abstract class ServiceClient<TClient> implements
     }
 
     private CloseableHttpClient httpClient;
-
+    /**
+     * Set Proxy to let service client communicate through proxy.
+     *
+     * @param proxyHost proxy host.
+     * @param proxyPort proxy port.      
+     */
+    public void setClientProxy(String proxyHost, int proxyPort){
+    	if ((proxyHost != null) && (proxyPort > 0 && proxyPort < 65536 )){
+    		HttpHost proxy = new HttpHost(proxyHost, proxyPort);
+    		if (proxy != null) {
+                httpClientBuilder.setProxy(proxy);
+            }
+    	}
+    }
+    
+    /**
+     * Set Proxy Credentials to if authentication is required
+     *
+     * @param username username for authentication.
+     * @param password password for authentication.      
+     */
+    public void setClientProxyCredentials(String username, String password){
+    	if ((username != null) && (password != null)){
+    		BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            Credentials credentials = new UsernamePasswordCredentials(username, password);
+            credentialsProvider.setCredentials(AuthScope.ANY, credentials); 
+            httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+    	}
+    }
+    
     public CloseableHttpClient getHttpClient() {
         if (this.httpClient == null) {
             String proxyHost = System.getProperty("http.proxyHost");
