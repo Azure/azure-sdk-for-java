@@ -36,4 +36,9 @@ public enum JobHistoryStatus {
     * A failed execution attempt.
     */
     Failed,
+    
+    /**
+    * Execution has been postponed.
+    */
+    Postponed,
 }

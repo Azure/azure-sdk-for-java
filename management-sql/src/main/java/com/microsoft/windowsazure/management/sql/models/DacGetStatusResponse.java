@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     */
     public DacGetStatusResponse() {
         super();
-        this.setStatusInfoList(new ArrayList<StatusInfo>());
+        this.setStatusInfoList(new LazyArrayList<StatusInfo>());
     }
     
     /**

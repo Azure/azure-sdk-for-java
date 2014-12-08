@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     */
     public FirewallRuleListResponse() {
         super();
-        this.setFirewallRules(new ArrayList<FirewallRule>());
+        this.setFirewallRules(new LazyArrayList<FirewallRule>());
     }
     
     /**

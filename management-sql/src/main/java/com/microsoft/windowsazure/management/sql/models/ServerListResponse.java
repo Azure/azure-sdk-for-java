@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     */
     public ServerListResponse() {
         super();
-        this.setServers(new ArrayList<Server>());
+        this.setServers(new LazyArrayList<Server>());
     }
     
     /**

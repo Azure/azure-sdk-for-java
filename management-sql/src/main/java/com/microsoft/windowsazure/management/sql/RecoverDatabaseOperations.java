@@ -39,8 +39,8 @@ public interface RecoverDatabaseOperations {
     /**
     * Issues a recovery request for an Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
     * @param parameters Required. Additional parameters for the Create Recover
     * Database Operation request.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -56,17 +56,17 @@ public interface RecoverDatabaseOperations {
     * @return Contains the response to the Create Recover Database Operation
     * request.
     */
-    RecoverDatabaseOperationCreateResponse create(String targetServerName, RecoverDatabaseOperationCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    RecoverDatabaseOperationCreateResponse create(String sourceServerName, RecoverDatabaseOperationCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Issues a recovery request for an Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
     * @param parameters Required. Additional parameters for the Create Recover
     * Database Operation request.
     * @return Contains the response to the Create Recover Database Operation
     * request.
     */
-    Future<RecoverDatabaseOperationCreateResponse> createAsync(String targetServerName, RecoverDatabaseOperationCreateParameters parameters);
+    Future<RecoverDatabaseOperationCreateResponse> createAsync(String sourceServerName, RecoverDatabaseOperationCreateParameters parameters);
 }

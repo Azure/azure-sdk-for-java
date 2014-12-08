@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -255,68 +256,72 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
         queueDescriptionElement.appendChild(isAnonymousAccessibleElement);
         
         if (queue.getAuthorizationRules() != null) {
-            Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : queue.getAuthorizationRules()) {
-                Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
-                authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
-                
-                Attr typeAttribute2 = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
-                typeAttribute2.setValue("SharedAccessAuthorizationRule");
-                authorizationRuleElement.setAttributeNode(typeAttribute2);
-                
-                if (authorizationRulesItem.getClaimType() != null) {
-                    Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                    claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
-                    authorizationRuleElement.appendChild(claimTypeElement);
-                }
-                
-                if (authorizationRulesItem.getClaimValue() != null) {
-                    Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                    claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
-                    authorizationRuleElement.appendChild(claimValueElement);
-                }
-                
-                if (authorizationRulesItem.getRights() != null) {
-                    Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
-                        Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                        rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                        rightsSequenceElement.appendChild(rightsItemElement);
+            if (queue.getAuthorizationRules() instanceof LazyCollection == false || ((LazyCollection) queue.getAuthorizationRules()).isInitialized()) {
+                Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+                for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : queue.getAuthorizationRules()) {
+                    Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
+                    authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
+                    
+                    Attr typeAttribute2 = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    typeAttribute2.setValue("SharedAccessAuthorizationRule");
+                    authorizationRuleElement.setAttributeNode(typeAttribute2);
+                    
+                    if (authorizationRulesItem.getClaimType() != null) {
+                        Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
+                        claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
+                        authorizationRuleElement.appendChild(claimTypeElement);
                     }
-                    authorizationRuleElement.appendChild(rightsSequenceElement);
+                    
+                    if (authorizationRulesItem.getClaimValue() != null) {
+                        Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
+                        claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
+                        authorizationRuleElement.appendChild(claimValueElement);
+                    }
+                    
+                    if (authorizationRulesItem.getRights() != null) {
+                        if (authorizationRulesItem.getRights() instanceof LazyCollection == false || ((LazyCollection) authorizationRulesItem.getRights()).isInitialized()) {
+                            Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                            for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
+                                Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                                rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                                rightsSequenceElement.appendChild(rightsItemElement);
+                            }
+                            authorizationRuleElement.appendChild(rightsSequenceElement);
+                        }
+                    }
+                    
+                    Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
+                    authorizationRuleElement.appendChild(createdTimeElement);
+                    
+                    if (authorizationRulesItem.getKeyName() != null) {
+                        Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
+                        keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
+                        authorizationRuleElement.appendChild(keyNameElement);
+                    }
+                    
+                    Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
+                    authorizationRuleElement.appendChild(modifiedTimeElement);
+                    
+                    if (authorizationRulesItem.getPrimaryKey() != null) {
+                        Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
+                        primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
+                        authorizationRuleElement.appendChild(primaryKeyElement);
+                    }
+                    
+                    if (authorizationRulesItem.getSecondaryKey() != null) {
+                        Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
+                        secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
+                        authorizationRuleElement.appendChild(secondaryKeyElement);
+                    }
                 }
-                
-                Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
-                authorizationRuleElement.appendChild(createdTimeElement);
-                
-                if (authorizationRulesItem.getKeyName() != null) {
-                    Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                    keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
-                    authorizationRuleElement.appendChild(keyNameElement);
-                }
-                
-                Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
-                authorizationRuleElement.appendChild(modifiedTimeElement);
-                
-                if (authorizationRulesItem.getPrimaryKey() != null) {
-                    Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                    primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
-                    authorizationRuleElement.appendChild(primaryKeyElement);
-                }
-                
-                if (authorizationRulesItem.getSecondaryKey() != null) {
-                    Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                    secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
-                    authorizationRuleElement.appendChild(secondaryKeyElement);
-                }
+                queueDescriptionElement.appendChild(authorizationRulesSequenceElement);
             }
-            queueDescriptionElement.appendChild(authorizationRulesSequenceElement);
         }
         
         if (queue.getStatus() != null) {
@@ -1884,68 +1889,72 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
         queueDescriptionElement.appendChild(isAnonymousAccessibleElement);
         
         if (queue.getAuthorizationRules() != null) {
-            Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : queue.getAuthorizationRules()) {
-                Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
-                authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
-                
-                Attr typeAttribute2 = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
-                typeAttribute2.setValue("SharedAccessAuthorizationRule");
-                authorizationRuleElement.setAttributeNode(typeAttribute2);
-                
-                if (authorizationRulesItem.getClaimType() != null) {
-                    Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                    claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
-                    authorizationRuleElement.appendChild(claimTypeElement);
-                }
-                
-                if (authorizationRulesItem.getClaimValue() != null) {
-                    Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                    claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
-                    authorizationRuleElement.appendChild(claimValueElement);
-                }
-                
-                if (authorizationRulesItem.getRights() != null) {
-                    Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
-                        Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                        rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                        rightsSequenceElement.appendChild(rightsItemElement);
+            if (queue.getAuthorizationRules() instanceof LazyCollection == false || ((LazyCollection) queue.getAuthorizationRules()).isInitialized()) {
+                Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+                for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : queue.getAuthorizationRules()) {
+                    Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
+                    authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
+                    
+                    Attr typeAttribute2 = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    typeAttribute2.setValue("SharedAccessAuthorizationRule");
+                    authorizationRuleElement.setAttributeNode(typeAttribute2);
+                    
+                    if (authorizationRulesItem.getClaimType() != null) {
+                        Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
+                        claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
+                        authorizationRuleElement.appendChild(claimTypeElement);
                     }
-                    authorizationRuleElement.appendChild(rightsSequenceElement);
+                    
+                    if (authorizationRulesItem.getClaimValue() != null) {
+                        Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
+                        claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
+                        authorizationRuleElement.appendChild(claimValueElement);
+                    }
+                    
+                    if (authorizationRulesItem.getRights() != null) {
+                        if (authorizationRulesItem.getRights() instanceof LazyCollection == false || ((LazyCollection) authorizationRulesItem.getRights()).isInitialized()) {
+                            Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                            for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
+                                Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                                rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                                rightsSequenceElement.appendChild(rightsItemElement);
+                            }
+                            authorizationRuleElement.appendChild(rightsSequenceElement);
+                        }
+                    }
+                    
+                    Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
+                    authorizationRuleElement.appendChild(createdTimeElement);
+                    
+                    if (authorizationRulesItem.getKeyName() != null) {
+                        Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
+                        keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
+                        authorizationRuleElement.appendChild(keyNameElement);
+                    }
+                    
+                    Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
+                    authorizationRuleElement.appendChild(modifiedTimeElement);
+                    
+                    if (authorizationRulesItem.getPrimaryKey() != null) {
+                        Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
+                        primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
+                        authorizationRuleElement.appendChild(primaryKeyElement);
+                    }
+                    
+                    if (authorizationRulesItem.getSecondaryKey() != null) {
+                        Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
+                        secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
+                        authorizationRuleElement.appendChild(secondaryKeyElement);
+                    }
                 }
-                
-                Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
-                authorizationRuleElement.appendChild(createdTimeElement);
-                
-                if (authorizationRulesItem.getKeyName() != null) {
-                    Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                    keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
-                    authorizationRuleElement.appendChild(keyNameElement);
-                }
-                
-                Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
-                authorizationRuleElement.appendChild(modifiedTimeElement);
-                
-                if (authorizationRulesItem.getPrimaryKey() != null) {
-                    Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                    primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
-                    authorizationRuleElement.appendChild(primaryKeyElement);
-                }
-                
-                if (authorizationRulesItem.getSecondaryKey() != null) {
-                    Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                    secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
-                    authorizationRuleElement.appendChild(secondaryKeyElement);
-                }
+                queueDescriptionElement.appendChild(authorizationRulesSequenceElement);
             }
-            queueDescriptionElement.appendChild(authorizationRulesSequenceElement);
         }
         
         if (queue.getStatus() != null) {

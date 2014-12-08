@@ -56,7 +56,7 @@ public final class TextUtility
         {
             if (input.equals("DateTime.Now"))
             {
-            	return Calendar.getInstance();
+                return Calendar.getInstance();
             }
 
             return DatatypeConverter.parseDateTime(input);

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     */
     public OperatingSystemListFamiliesResponse() {
         super();
-        this.setOperatingSystemFamilies(new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>());
+        this.setOperatingSystemFamilies(new LazyArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>());
     }
     
     /**
@@ -263,7 +264,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         *
         */
         public OperatingSystemFamily() {
-            this.setOperatingSystems(new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem>());
+            this.setOperatingSystems(new LazyArrayList<OperatingSystemListFamiliesResponse.OperatingSystem>());
         }
     }
 }
