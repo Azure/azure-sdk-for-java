@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class WebSiteInstanceIdsResponse extends OperationResponse implements Ite
     */
     public WebSiteInstanceIdsResponse() {
         super();
-        this.setInstanceIds(new ArrayList<String>());
+        this.setInstanceIds(new LazyArrayList<String>());
     }
     
     /**

@@ -1,3 +1,6 @@
+2014.12.09 Version 0.7.0
+ * Refresh client wrappers to latest specifications
+
 2014.08.4 Version 0.6.0
  * Multiple fixes
 

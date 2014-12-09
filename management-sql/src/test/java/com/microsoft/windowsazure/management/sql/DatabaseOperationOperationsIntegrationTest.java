@@ -40,14 +40,17 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
     public static void setup() throws Exception {
         createService();
         createManagementClient();
+        setupTest(DatabaseOperationOperationsIntegrationTest.class.getSimpleName());
         getLocation();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
+        resetTest(DatabaseOperationOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest(DatabaseOperationOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             databaseOperations.delete(serverName, databaseName);
@@ -56,8 +59,19 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
         for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
+        resetTest(DatabaseOperationOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // arrange 

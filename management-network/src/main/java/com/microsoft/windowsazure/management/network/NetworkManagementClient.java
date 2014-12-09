@@ -113,11 +113,25 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     NetworkOperations getNetworksOperations();
     
     /**
+    * The Network Management API includes operations for managing the Network
+    * Security Groups for your subscription.
+    * @return The NetworkSecurityGroupsOperations value.
+    */
+    NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations();
+    
+    /**
     * The Network Management API includes operations for managing the reserved
     * IPs for your subscription.
     * @return The ReservedIPsOperations value.
     */
     ReservedIPOperations getReservedIPsOperations();
+    
+    /**
+    * The Network Management API includes operations for managing the routes
+    * for your subscription.
+    * @return The RoutesOperations value.
+    */
+    RouteOperations getRoutesOperations();
     
     /**
     * The Network Management API includes operations for managing the static

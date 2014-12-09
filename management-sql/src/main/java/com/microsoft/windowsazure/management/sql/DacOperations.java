@@ -61,7 +61,7 @@ public interface DacOperations {
     * @return Represents the response that the service returns once an import
     * or export operation has been initiated.
     */
-    DacImportExportResponse export(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    DacImportExportResponse exportDatabase(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Exports an Azure SQL Database into a DACPAC file in Azure Blob Storage.
@@ -73,7 +73,7 @@ public interface DacOperations {
     * @return Represents the response that the service returns once an import
     * or export operation has been initiated.
     */
-    Future<DacImportExportResponse> exportAsync(String serverName, DacExportParameters parameters);
+    Future<DacImportExportResponse> exportDatabaseAsync(String serverName, DacExportParameters parameters);
     
     /**
     * Gets the status of the import or export operation in the specified server

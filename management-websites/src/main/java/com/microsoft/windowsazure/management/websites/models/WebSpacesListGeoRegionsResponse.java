@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     */
     public WebSpacesListGeoRegionsResponse() {
         super();
-        this.setGeoRegions(new ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>());
+        this.setGeoRegions(new LazyArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>());
     }
     
     /**

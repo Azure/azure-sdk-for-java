@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
@@ -73,7 +74,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
     */
     public GatewayListSupportedDevicesResponse() {
         super();
-        this.setVendors(new ArrayList<GatewayListSupportedDevicesResponse.Vendor>());
+        this.setVendors(new LazyArrayList<GatewayListSupportedDevicesResponse.Vendor>());
     }
     
     public static class OSFamily {
@@ -141,7 +142,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         *
         */
         public Platform() {
-            this.setOSFamilies(new ArrayList<GatewayListSupportedDevicesResponse.OSFamily>());
+            this.setOSFamilies(new LazyArrayList<GatewayListSupportedDevicesResponse.OSFamily>());
         }
     }
     
@@ -190,7 +191,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse {
         *
         */
         public Vendor() {
-            this.setPlatforms(new ArrayList<GatewayListSupportedDevicesResponse.Platform>());
+            this.setPlatforms(new LazyArrayList<GatewayListSupportedDevicesResponse.Platform>());
         }
     }
 }

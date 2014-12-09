@@ -63,7 +63,7 @@ def hydraSpecs = [
     ],
     [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Scheduler.SchedulerClient",
+        clientType: "Microsoft.WindowsAzure.Scheduler.SchedulerClient",
         generatedCodeDestinationRootDirectoryName: "management-scheduler"
     ],
     [
@@ -73,7 +73,7 @@ def hydraSpecs = [
     ],
     [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.MediaServices.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaManagementClient",
+        clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaServicesManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-media"
     ]
 ]
@@ -191,6 +191,7 @@ hydraSpecs.each {
 }
 // Wait for all generations to finish
 processes.each() {
+    it.consumeProcessErrorStream(System.err)
     it.waitFor()
 }
 System.out.println("Finished generating")

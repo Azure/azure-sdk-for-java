@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class JobListResponse extends OperationResponse implements Iterable<Job> 
     */
     public JobListResponse() {
         super();
-        this.setJobs(new ArrayList<Job>());
+        this.setJobs(new LazyArrayList<Job>());
     }
     
     /**

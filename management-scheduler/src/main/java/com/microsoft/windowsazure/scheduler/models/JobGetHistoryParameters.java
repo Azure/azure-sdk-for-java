@@ -27,60 +27,43 @@ package com.microsoft.windowsazure.scheduler.models;
 * Parameters supplied to the Get Job History operation.
 */
 public class JobGetHistoryParameters {
-    private int skip;
+    private Integer skip;
     
     /**
-    * Required. Specify the (0-based) index of the history list from which to
+    * Optional. Specify the (0-based) index of the history list from which to
     * begin requesting entries.
     * @return The Skip value.
     */
-    public int getSkip() {
+    public Integer getSkip() {
         return this.skip;
     }
     
     /**
-    * Required. Specify the (0-based) index of the history list from which to
+    * Optional. Specify the (0-based) index of the history list from which to
     * begin requesting entries.
     * @param skipValue The Skip value.
     */
-    public void setSkip(final int skipValue) {
+    public void setSkip(final Integer skipValue) {
         this.skip = skipValue;
     }
     
-    private int top;
+    private Integer top;
     
     /**
-    * Required. Specify the number of history entries to request, in the of
+    * Optional. Specify the number of history entries to request, in the of
     * range [1..100].
     * @return The Top value.
     */
-    public int getTop() {
+    public Integer getTop() {
         return this.top;
     }
     
     /**
-    * Required. Specify the number of history entries to request, in the of
+    * Optional. Specify the number of history entries to request, in the of
     * range [1..100].
     * @param topValue The Top value.
     */
-    public void setTop(final int topValue) {
+    public void setTop(final Integer topValue) {
         this.top = topValue;
-    }
-    
-    /**
-    * Initializes a new instance of the JobGetHistoryParameters class.
-    *
-    */
-    public JobGetHistoryParameters() {
-    }
-    
-    /**
-    * Initializes a new instance of the JobGetHistoryParameters class with
-    * required arguments.
-    *
-    */
-    public JobGetHistoryParameters(int skip, int top) {
-        this.setSkip(skip);
-        this.setTop(top);
     }
 }

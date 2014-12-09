@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     */
     public WebSiteGetUsageMetricsResponse() {
         super();
-        this.setUsageMetrics(new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>());
+        this.setUsageMetrics(new LazyArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>());
     }
     
     /**
