@@ -533,4 +533,24 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         }
         throw new IllegalArgumentException("value");
     }
+	
+    /**
+     * Set Proxy to let service client communicate through proxy.
+     *
+     * @param proxyHost proxy host.
+     * @param proxyPort proxy port.      
+     */
+     public void setProxy(String proxyHost, int proxyPort) {
+         this.setClientProxy(proxyHost, proxyPort);
+     }
+     
+     /**
+      * Set Proxy Credentials to if authentication is required
+      *
+      * @param username username for authentication.
+      * @param password password for authentication.      
+      */
+     public void setProxyCredentials(String username, String password) {
+         this.setClientProxyCredentials(username, password);
+     }
 }

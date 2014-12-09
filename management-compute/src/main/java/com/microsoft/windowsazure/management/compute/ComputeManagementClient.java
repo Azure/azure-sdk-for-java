@@ -189,4 +189,20 @@ public interface ComputeManagementClient extends Closeable, FilterableService<Co
     * the failed request and error information regarding the failure.
     */
     Future<OperationStatusResponse> getOperationStatusAsync(String requestId);
+	
+    /**
+     * Set Proxy to let service client communicate through proxy.
+     *
+     * @param proxyHost proxy host.
+     * @param proxyPort proxy port.      
+     */
+     void setProxy(String proxyHost, int proxyPort);
+     
+     /**
+      * Set Proxy Credentials to if authentication is required
+      *
+      * @param username username for authentication.
+      * @param password password for authentication.      
+      */
+     void setProxyCredentials(String username, String password);
 }
