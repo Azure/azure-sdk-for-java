@@ -53,7 +53,7 @@ This project provides a client library in Java that makes it easy to consume Mic
       * SetConfiguration/GetConfiguration/Get/List network 
       * Create/Delete/Get/List reserved IP operations
       * Check static IP operations  
-	* Schedulor Management    
+	* Scheduler Management    
       * Create/Delete/Get/List/Update Job/JobCollection operations 	
     * Sql Database Management
       * Export/GetStatus/Import database 
