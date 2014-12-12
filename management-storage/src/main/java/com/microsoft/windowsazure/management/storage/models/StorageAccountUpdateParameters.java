@@ -23,12 +23,37 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
 * Parameters supplied to the Update Storage Account operation.
 */
 public class StorageAccountUpdateParameters {
+    private String accountType;
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @return The AccountType value.
+    */
+    public String getAccountType() {
+        return this.accountType;
+    }
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @param accountTypeValue The AccountType value.
+    */
+    public void setAccountType(final String accountTypeValue) {
+        this.accountType = accountTypeValue;
+    }
+    
     private String description;
     
     /**
@@ -51,16 +76,16 @@ public class StorageAccountUpdateParameters {
     
     /**
     * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
+    * Each extended property must have a defined name and a value. You can
+    * have a maximum of 50 extended property name/value pairs. The maximum
     * length of the Name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the Name, and the name must
     * start with a letter. Attempting to use other characters, starting the
     * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
-    * property value has a maximum length of 255 characters.  You can delete
-    * an extended property by setting the value to NULL.
+    * to that of another extended property owned by the same storage account
+    * will result in a status code 400 (Bad Request) error. Each extended
+    * property value has a maximum length of 255 characters. You can delete an
+    * extended property by setting the value to NULL.
     * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties() {
@@ -69,72 +94,28 @@ public class StorageAccountUpdateParameters {
     
     /**
     * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
+    * Each extended property must have a defined name and a value. You can
+    * have a maximum of 50 extended property name/value pairs. The maximum
     * length of the Name element is 64 characters, only alphanumeric
     * characters and underscores are valid in the Name, and the name must
     * start with a letter. Attempting to use other characters, starting the
     * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
-    * property value has a maximum length of 255 characters.  You can delete
-    * an extended property by setting the value to NULL.
+    * to that of another extended property owned by the same storage account
+    * will result in a status code 400 (Bad Request) error. Each extended
+    * property value has a maximum length of 255 characters. You can delete an
+    * extended property by setting the value to NULL.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
     
-    private Boolean geoReplicationEnabled;
-    
-    /**
-    * Optional. Enables or disables geo-replication on the specified the
-    * storage. If set to true, the data in the storage account is replicated
-    * across more than one geographic location so as to enable resilience in
-    * the face of catastrophic service loss. If set to false, geo-replication
-    * is disabled. If the element is not included in the request body, the
-    * current value is left unchanged.  Important: If you have enabled
-    * geo-replication you can elect to disable it by setting this element to
-    * false. When disabled, your data is no longer replicated to a secondary
-    * data center and any data in the secondary location will be removed.
-    * Enabling geo-replication once it has been disabled will result in the
-    * storage account being billed for replicating the current copy of data to
-    * the secondary data center. After the existing copy of the data is
-    * replicated to the secondary data center, updates are geo-replicated at
-    * no additional charge.
-    * @return The GeoReplicationEnabled value.
-    */
-    public Boolean isGeoReplicationEnabled() {
-        return this.geoReplicationEnabled;
-    }
-    
-    /**
-    * Optional. Enables or disables geo-replication on the specified the
-    * storage. If set to true, the data in the storage account is replicated
-    * across more than one geographic location so as to enable resilience in
-    * the face of catastrophic service loss. If set to false, geo-replication
-    * is disabled. If the element is not included in the request body, the
-    * current value is left unchanged.  Important: If you have enabled
-    * geo-replication you can elect to disable it by setting this element to
-    * false. When disabled, your data is no longer replicated to a secondary
-    * data center and any data in the secondary location will be removed.
-    * Enabling geo-replication once it has been disabled will result in the
-    * storage account being billed for replicating the current copy of data to
-    * the secondary data center. After the existing copy of the data is
-    * replicated to the secondary data center, updates are geo-replicated at
-    * no additional charge.
-    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
-    */
-    public void setGeoReplicationEnabled(final Boolean geoReplicationEnabledValue) {
-        this.geoReplicationEnabled = geoReplicationEnabledValue;
-    }
-    
     private String label;
     
     /**
-    * Optional. A name for the storage account that is base64-encoded. The
-    * label may be up to 100 characters in length. The name can be used
-    * identify the storage account for your tracking purposes.
+    * Optional. A name for the storage account, base64-encoded. The name may be
+    * up to 100 characters in length. The name can be used identify the
+    * storage account for your tracking purposes.
     * @return The Label value.
     */
     public String getLabel() {
@@ -142,9 +123,9 @@ public class StorageAccountUpdateParameters {
     }
     
     /**
-    * Optional. A name for the storage account that is base64-encoded. The
-    * label may be up to 100 characters in length. The name can be used
-    * identify the storage account for your tracking purposes.
+    * Optional. A name for the storage account, base64-encoded. The name may be
+    * up to 100 characters in length. The name can be used identify the
+    * storage account for your tracking purposes.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -156,6 +137,6 @@ public class StorageAccountUpdateParameters {
     *
     */
     public StorageAccountUpdateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new LazyHashMap<String, String>());
     }
 }

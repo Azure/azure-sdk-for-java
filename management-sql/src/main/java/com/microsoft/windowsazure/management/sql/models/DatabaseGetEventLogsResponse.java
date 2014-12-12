@@ -23,18 +23,19 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A standard service response including an HTTP status code and request ID.
+* Contains the response to a Get Database Event Logs request.
 */
 public class DatabaseGetEventLogsResponse extends OperationResponse implements Iterable<DatabaseEventLog> {
     private ArrayList<DatabaseEventLog> eventLogs;
     
     /**
-    * Optional. Gets or sets the SQL Server database event logs.
+    * Optional. Gets or sets the collection of Azure SQL Database event logs.
     * @return The EventLogs value.
     */
     public ArrayList<DatabaseEventLog> getEventLogs() {
@@ -42,7 +43,7 @@ public class DatabaseGetEventLogsResponse extends OperationResponse implements I
     }
     
     /**
-    * Optional. Gets or sets the SQL Server database event logs.
+    * Optional. Gets or sets the collection of Azure SQL Database event logs.
     * @param eventLogsValue The EventLogs value.
     */
     public void setEventLogs(final ArrayList<DatabaseEventLog> eventLogsValue) {
@@ -55,7 +56,7 @@ public class DatabaseGetEventLogsResponse extends OperationResponse implements I
     */
     public DatabaseGetEventLogsResponse() {
         super();
-        this.eventLogs = new ArrayList<DatabaseEventLog>();
+        this.setEventLogs(new LazyArrayList<DatabaseEventLog>());
     }
     
     /**

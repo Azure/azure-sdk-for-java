@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     */
     public WebSpacesListResponse() {
         super();
-        this.webSpaces = new ArrayList<WebSpacesListResponse.WebSpace>();
+        this.setWebSpaces(new LazyArrayList<WebSpacesListResponse.WebSpace>());
     }
     
     /**

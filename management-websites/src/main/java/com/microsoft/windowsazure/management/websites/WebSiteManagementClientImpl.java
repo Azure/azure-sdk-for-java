@@ -30,6 +30,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.ConnectionStringType;
+import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -67,10 +69,20 @@ import org.xml.sax.SAXException;
 * information)
 */
 public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagementClient> implements WebSiteManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all Service Management requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -80,28 +92,61 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
-    private ServerFarmOperations serverFarms;
+    private int longRunningOperationInitialTimeout;
     
     /**
-    * Operations for managing the server farm in a web space.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    * @return The ServerFarmsOperations value.
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
     */
-    public ServerFarmOperations getServerFarmsOperations() {
-        return this.serverFarms;
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
+    }
+    
+    private WebHostingPlanOperations webHostingPlans;
+    
+    /**
+    * Operations for managing web hosting plans beneath your subscription.
+    * @return The WebHostingPlansOperations value.
+    */
+    public WebHostingPlanOperations getWebHostingPlansOperations() {
+        return this.webHostingPlans;
     }
     
     private WebSiteOperations webSites;
@@ -134,9 +179,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
-        this.serverFarms = new ServerFarmOperationsImpl(this);
+        this.webHostingPlans = new WebHostingPlanOperationsImpl(this);
         this.webSites = new WebSiteOperationsImpl(this);
         this.webSpaces = new WebSpaceOperationsImpl(this);
+        this.apiVersion = "2014-04-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
@@ -144,14 +192,11 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
-    * @param baseUri Required. The URI used as the base for all Service
-    * Management requests.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -177,12 +222,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -200,9 +242,110 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Required. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the WebSiteManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type ConnectionStringType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ConnectionStringType parseConnectionStringType(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ConnectionStringType.MySql;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlServer;
+        }
+        if ("2".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SqlAzure;
+        }
+        if ("3".equalsIgnoreCase(value)) {
+            return ConnectionStringType.Custom;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ConnectionStringType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String connectionStringTypeToString(ConnectionStringType value) {
+        if (value == ConnectionStringType.MySql) {
+            return "0";
+        }
+        if (value == ConnectionStringType.SqlServer) {
+            return "1";
+        }
+        if (value == ConnectionStringType.SqlAzure) {
+            return "2";
+        }
+        if (value == ConnectionStringType.Custom) {
+            return "3";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type ManagedPipelineMode.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ManagedPipelineMode parseManagedPipelineMode(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Integrated;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.Classic;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ManagedPipelineMode to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String managedPipelineModeToString(ManagedPipelineMode value) {
+        if (value == ManagedPipelineMode.Integrated) {
+            return "0";
+        }
+        if (value == ManagedPipelineMode.Classic) {
+            return "1";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -293,8 +436,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + siteName.trim() + "/operations/" + operationId.trim();
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + siteName.trim() + "/operations/" + operationId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -303,12 +446,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -429,6 +573,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                         org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
                                         errorInstance.getParameters().add(parametersElement.getTextContent());
                                     }
+                                } else {
+                                    errorInstance.setParameters(null);
                                 }
                             }
                             
@@ -446,6 +592,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                         }
+                    } else {
+                        result.setErrors(null);
                     }
                 }
                 
@@ -569,10 +717,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services" + "?";
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=register";
+        String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -581,13 +729,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -667,10 +816,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/services" + "?";
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=unregister";
+        String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -679,13 +828,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;

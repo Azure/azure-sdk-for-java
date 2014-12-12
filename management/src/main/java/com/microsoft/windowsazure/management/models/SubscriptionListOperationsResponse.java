@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     */
     public SubscriptionListOperationsResponse() {
         super();
-        this.subscriptionOperations = new ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation>();
+        this.setSubscriptionOperations(new LazyArrayList<SubscriptionListOperationsResponse.SubscriptionOperation>());
     }
     
     /**
@@ -352,7 +354,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         *
         */
         public SubscriptionOperation() {
-            this.operationParameters = new HashMap<String, String>();
+            this.setOperationParameters(new LazyHashMap<String, String>());
         }
     }
 }

@@ -64,10 +64,20 @@ import org.xml.sax.SAXException;
 * information)
 */
 public class ComputeManagementClientImpl extends ServiceClient<ComputeManagementClient> implements ComputeManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all Service Management requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -77,16 +87,51 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
+    }
+    
+    private int longRunningOperationInitialTimeout;
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
     private DeploymentOperations deployments;
@@ -102,6 +147,28 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         return this.deployments;
     }
     
+    private DNSServerOperations dnsServer;
+    
+    /**
+    * The Compute Management API includes operations for managing the dns
+    * servers for your subscription.
+    * @return The DnsServerOperations value.
+    */
+    public DNSServerOperations getDnsServerOperations() {
+        return this.dnsServer;
+    }
+    
+    private ExtensionImageOperations extensionImages;
+    
+    /**
+    * The Service Management API includes operations for managing the service
+    * and virtual machine extension images in your publisher subscription.
+    * @return The ExtensionImagesOperations value.
+    */
+    public ExtensionImageOperations getExtensionImagesOperations() {
+        return this.extensionImages;
+    }
+    
     private HostedServiceOperations hostedServices;
     
     /**
@@ -113,6 +180,17 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
     public HostedServiceOperations getHostedServicesOperations() {
         return this.hostedServices;
+    }
+    
+    private LoadBalancerOperations loadBalancers;
+    
+    /**
+    * The Compute Management API includes operations for managing the load
+    * balancers for your subscription.
+    * @return The LoadBalancersOperations value.
+    */
+    public LoadBalancerOperations getLoadBalancersOperations() {
+        return this.loadBalancers;
     }
     
     private OperatingSystemOperations operatingSystems;
@@ -212,7 +290,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     private ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.deployments = new DeploymentOperationsImpl(this);
+        this.dnsServer = new DNSServerOperationsImpl(this);
+        this.extensionImages = new ExtensionImageOperationsImpl(this);
         this.hostedServices = new HostedServiceOperationsImpl(this);
+        this.loadBalancers = new LoadBalancerOperationsImpl(this);
         this.operatingSystems = new OperatingSystemOperationsImpl(this);
         this.serviceCertificates = new ServiceCertificateOperationsImpl(this);
         this.virtualMachineDisks = new VirtualMachineDiskOperationsImpl(this);
@@ -220,6 +301,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
         this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
+        this.apiVersion = "2014-10-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
@@ -227,14 +311,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
-    * @param baseUri Required. The URI used as the base for all Service
-    * Management requests.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -260,12 +341,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -283,9 +361,98 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Required. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the ComputeManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected ComputeManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new ComputeManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new ComputeManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type CertificateFormat.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static CertificateFormat parseCertificateFormat(String value) {
+        if ("pfx".equalsIgnoreCase(value)) {
+            return CertificateFormat.Pfx;
+        }
+        if ("cer".equalsIgnoreCase(value)) {
+            return CertificateFormat.Cer;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type CertificateFormat to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String certificateFormatToString(CertificateFormat value) {
+        if (value == CertificateFormat.Pfx) {
+            return "pfx";
+        }
+        if (value == CertificateFormat.Cer) {
+            return "cer";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type LoadBalancerProbeTransportProtocol.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
+        if ("tcp".equalsIgnoreCase(value)) {
+            return LoadBalancerProbeTransportProtocol.Tcp;
+        }
+        if ("http".equalsIgnoreCase(value)) {
+            return LoadBalancerProbeTransportProtocol.Http;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type LoadBalancerProbeTransportProtocol to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
+        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
+            return "tcp";
+        }
+        if (value == LoadBalancerProbeTransportProtocol.Http) {
+            return "http";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -364,8 +531,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         }
         
         // Construct URL
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/operations/" + requestId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -374,12 +541,13 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -468,69 +636,5 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
-    }
-    
-    /**
-    * Parse enum values for type CertificateFormat.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static CertificateFormat parseCertificateFormat(String value) {
-        if ("pfx".equalsIgnoreCase(value)) {
-            return CertificateFormat.Pfx;
-        }
-        if ("cer".equalsIgnoreCase(value)) {
-            return CertificateFormat.Cer;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type CertificateFormat to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String certificateFormatToString(CertificateFormat value) {
-        if (value == CertificateFormat.Pfx) {
-            return "pfx";
-        }
-        if (value == CertificateFormat.Cer) {
-            return "cer";
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Parse enum values for type LoadBalancerProbeTransportProtocol.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
-        if ("tcp".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Tcp;
-        }
-        if ("http".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Http;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type LoadBalancerProbeTransportProtocol to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
-        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
-            return "tcp";
-        }
-        if (value == LoadBalancerProbeTransportProtocol.Http) {
-            return "http";
-        }
-        throw new IllegalArgumentException("value");
     }
 }

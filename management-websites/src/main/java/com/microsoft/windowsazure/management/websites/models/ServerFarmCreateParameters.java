@@ -120,4 +120,21 @@ public class ServerFarmCreateParameters {
     public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue) {
         this.workerSize = workerSizeValue;
     }
+    
+    /**
+    * Initializes a new instance of the ServerFarmCreateParameters class.
+    *
+    */
+    public ServerFarmCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ServerFarmCreateParameters class with
+    * required arguments.
+    *
+    */
+    public ServerFarmCreateParameters(int numberOfWorkers, ServerFarmWorkerSize workerSize) {
+        this.setNumberOfWorkers(numberOfWorkers);
+        this.setWorkerSize(workerSize);
+    }
 }

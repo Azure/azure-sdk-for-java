@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.util.TestRequestFilter;
 import com.microsoft.windowsazure.management.util.TestResponseFilter;
@@ -38,8 +39,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest();
         TestRequestFilter testFilter = new TestRequestFilter("filter1a");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
         
@@ -54,6 +56,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter.getCalled());
+        resetTest();
     }
     
     @Test
@@ -71,8 +74,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest();
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1b");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2b");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter1);
@@ -91,6 +95,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -108,8 +113,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest();
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1c");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2c");
         ManagementClient filteredService = managementClient.withRequestFilterFirst(testFilter1);
@@ -128,6 +134,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -145,8 +152,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest();
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1b");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2b");
         ManagementClient filteredService = managementClient.withResponseFilterLast(testFilter1);
@@ -165,6 +173,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -182,8 +191,9 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
+        setupTest();
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1c");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2c");
         ManagementClient filteredService = managementClient.withResponseFilterFirst(testFilter1);
@@ -202,6 +212,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
+        resetTest();
     }
     
     @Test
@@ -219,7 +230,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
         SubscriptionCloudCredentials subscriptionCloudCredentials = managementClient.getCredentials();      
         
@@ -230,6 +241,7 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
     public void getUri() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
+        config.setProperty(ManagementConfiguration.URI, null);
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
@@ -241,11 +253,29 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        createManagementClient(config);
         
         URI uri = managementClient.getBaseUri(); 
         URI expectUri = new URI("https://management.core.windows.net");
         
         Assert.assertEquals(expectUri.getHost(), uri.getHost());     
+    }
+    
+    @Test
+    public void verifyUserAgentHeaderContainsSdkString() throws Exception {
+        // reinitialize configuration from known state
+        Configuration config = createConfiguration();
+
+        createManagementClient(config);
+
+        TestRequestFilter testFilter = new TestRequestFilter("filterUserAgent");
+        ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
+
+        // Executing operation on the filtered service should execute the filter
+        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
+
+        String userAgent = testFilter.getUserAgent();
+        Assert.assertNotNull(userAgent);
+        Assert.assertTrue(userAgent.contains("Azure-SDK-For-Java"));
     }
 }

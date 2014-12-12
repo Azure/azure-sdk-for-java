@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
     */
     public VirtualMachineVMImageListResponse() {
         super();
-        this.vMImages = new ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage>();
+        this.setVMImages(new LazyArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage>());
     }
     
     /**
@@ -72,14 +73,14 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
     * The data disk configuration.
     */
     public static class DataDiskConfiguration {
-        private VirtualHardDiskHostCaching hostCaching;
+        private String hostCaching;
         
         /**
         * Optional. Specifies the platform caching behavior of the data disk
         * blob for read/write efficiency. The default vault is ReadOnly.
         * @return The HostCaching value.
         */
-        public VirtualHardDiskHostCaching getHostCaching() {
+        public String getHostCaching() {
             return this.hostCaching;
         }
         
@@ -88,8 +89,26 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         * blob for read/write efficiency. The default vault is ReadOnly.
         * @param hostCachingValue The HostCaching value.
         */
-        public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+        public void setHostCaching(final String hostCachingValue) {
             this.hostCaching = hostCachingValue;
+        }
+        
+        private String iOType;
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @return The IOType value.
+        */
+        public String getIOType() {
+            return this.iOType;
+        }
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @param iOTypeValue The IOType value.
+        */
+        public void setIOType(final String iOTypeValue) {
+            this.iOType = iOTypeValue;
         }
         
         private int logicalDiskSizeInGB;
@@ -185,14 +204,14 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
     * The OS disk configuration.
     */
     public static class OSDiskConfiguration {
-        private VirtualHardDiskHostCaching hostCaching;
+        private String hostCaching;
         
         /**
         * Optional. Specifies the platform caching behavior of the operating
         * system disk blob for read/write efficiency.
         * @return The HostCaching value.
         */
-        public VirtualHardDiskHostCaching getHostCaching() {
+        public String getHostCaching() {
             return this.hostCaching;
         }
         
@@ -201,8 +220,26 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         * system disk blob for read/write efficiency.
         * @param hostCachingValue The HostCaching value.
         */
-        public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+        public void setHostCaching(final String hostCachingValue) {
             this.hostCaching = hostCachingValue;
+        }
+        
+        private String iOType;
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @return The IOType value.
+        */
+        public String getIOType() {
+            return this.iOType;
+        }
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @param iOTypeValue The IOType value.
+        */
+        public void setIOType(final String iOTypeValue) {
+            this.iOType = iOTypeValue;
         }
         
         private int logicalDiskSizeInGB;
@@ -400,6 +437,104 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
             this.deploymentName = deploymentNameValue;
         }
         
+        private String description;
+        
+        /**
+        * Optional. The description of the virtual machine image.
+        * @return The Description value.
+        */
+        public String getDescription() {
+            return this.description;
+        }
+        
+        /**
+        * Optional. The description of the virtual machine image.
+        * @param descriptionValue The Description value.
+        */
+        public void setDescription(final String descriptionValue) {
+            this.description = descriptionValue;
+        }
+        
+        private String eula;
+        
+        /**
+        * Optional. Specifies the End User License Agreement that is associated
+        * with the image. The value for this element is a string, but it is
+        * recommended that the value be a URL that points to a EULA.
+        * @return The Eula value.
+        */
+        public String getEula() {
+            return this.eula;
+        }
+        
+        /**
+        * Optional. Specifies the End User License Agreement that is associated
+        * with the image. The value for this element is a string, but it is
+        * recommended that the value be a URL that points to a EULA.
+        * @param eulaValue The Eula value.
+        */
+        public void setEula(final String eulaValue) {
+            this.eula = eulaValue;
+        }
+        
+        private URI iconUri;
+        
+        /**
+        * Optional. Provides the URI to the icon for this Operating System
+        * Image.
+        * @return The IconUri value.
+        */
+        public URI getIconUri() {
+            return this.iconUri;
+        }
+        
+        /**
+        * Optional. Provides the URI to the icon for this Operating System
+        * Image.
+        * @param iconUriValue The IconUri value.
+        */
+        public void setIconUri(final URI iconUriValue) {
+            this.iconUri = iconUriValue;
+        }
+        
+        private String imageFamily;
+        
+        /**
+        * Optional. The image family of the virtual machine image.
+        * @return The ImageFamily value.
+        */
+        public String getImageFamily() {
+            return this.imageFamily;
+        }
+        
+        /**
+        * Optional. The image family of the virtual machine image.
+        * @param imageFamilyValue The ImageFamily value.
+        */
+        public void setImageFamily(final String imageFamilyValue) {
+            this.imageFamily = imageFamilyValue;
+        }
+        
+        private Boolean isPremium;
+        
+        /**
+        * Optional. The indicator of whether the virtual machine image is
+        * premium.
+        * @return The IsPremium value.
+        */
+        public Boolean isPremium() {
+            return this.isPremium;
+        }
+        
+        /**
+        * Optional. The indicator of whether the virtual machine image is
+        * premium.
+        * @param isPremiumValue The IsPremium value.
+        */
+        public void setIsPremium(final Boolean isPremiumValue) {
+            this.isPremium = isPremiumValue;
+        }
+        
         private String label;
         
         /**
@@ -416,6 +551,60 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         */
         public void setLabel(final String labelValue) {
             this.label = labelValue;
+        }
+        
+        private String language;
+        
+        /**
+        * Optional. The language of the virtual machine image.
+        * @return The Language value.
+        */
+        public String getLanguage() {
+            return this.language;
+        }
+        
+        /**
+        * Optional. The language of the virtual machine image.
+        * @param languageValue The Language value.
+        */
+        public void setLanguage(final String languageValue) {
+            this.language = languageValue;
+        }
+        
+        private String location;
+        
+        /**
+        * Optional. The location name of the virtual machine image.
+        * @return The Location value.
+        */
+        public String getLocation() {
+            return this.location;
+        }
+        
+        /**
+        * Optional. The location name of the virtual machine image.
+        * @param locationValue The Location value.
+        */
+        public void setLocation(final String locationValue) {
+            this.location = locationValue;
+        }
+        
+        private Calendar modifiedTime;
+        
+        /**
+        * Optional. The date when the virtual machine image was created.
+        * @return The ModifiedTime value.
+        */
+        public Calendar getModifiedTime() {
+            return this.modifiedTime;
+        }
+        
+        /**
+        * Optional. The date when the virtual machine image was created.
+        * @param modifiedTimeValue The ModifiedTime value.
+        */
+        public void setModifiedTime(final Calendar modifiedTimeValue) {
+            this.modifiedTime = modifiedTimeValue;
         }
         
         private String name;
@@ -454,6 +643,100 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
             this.oSDiskConfiguration = oSDiskConfigurationValue;
         }
         
+        private URI pricingDetailLink;
+        
+        /**
+        * Optional. Specifies the URI that points to the pricing detail.
+        * @return The PricingDetailLink value.
+        */
+        public URI getPricingDetailLink() {
+            return this.pricingDetailLink;
+        }
+        
+        /**
+        * Optional. Specifies the URI that points to the pricing detail.
+        * @param pricingDetailLinkValue The PricingDetailLink value.
+        */
+        public void setPricingDetailLink(final URI pricingDetailLinkValue) {
+            this.pricingDetailLink = pricingDetailLinkValue;
+        }
+        
+        private URI privacyUri;
+        
+        /**
+        * Optional. Specifies the URI that points to a document that contains
+        * the privacy policy related to the image.
+        * @return The PrivacyUri value.
+        */
+        public URI getPrivacyUri() {
+            return this.privacyUri;
+        }
+        
+        /**
+        * Optional. Specifies the URI that points to a document that contains
+        * the privacy policy related to the image.
+        * @param privacyUriValue The PrivacyUri value.
+        */
+        public void setPrivacyUri(final URI privacyUriValue) {
+            this.privacyUri = privacyUriValue;
+        }
+        
+        private Calendar publishedDate;
+        
+        /**
+        * Optional. Specifies the date when the image was added to the image
+        * repository.
+        * @return The PublishedDate value.
+        */
+        public Calendar getPublishedDate() {
+            return this.publishedDate;
+        }
+        
+        /**
+        * Optional. Specifies the date when the image was added to the image
+        * repository.
+        * @param publishedDateValue The PublishedDate value.
+        */
+        public void setPublishedDate(final Calendar publishedDateValue) {
+            this.publishedDate = publishedDateValue;
+        }
+        
+        private String publisherName;
+        
+        /**
+        * Optional. The name of the publisher of this VM Image in Azure.
+        * @return The PublisherName value.
+        */
+        public String getPublisherName() {
+            return this.publisherName;
+        }
+        
+        /**
+        * Optional. The name of the publisher of this VM Image in Azure.
+        * @param publisherNameValue The PublisherName value.
+        */
+        public void setPublisherName(final String publisherNameValue) {
+            this.publisherName = publisherNameValue;
+        }
+        
+        private String recommendedVMSize;
+        
+        /**
+        * Optional. The recommended size of the virtual machine image.
+        * @return The RecommendedVMSize value.
+        */
+        public String getRecommendedVMSize() {
+            return this.recommendedVMSize;
+        }
+        
+        /**
+        * Optional. The recommended size of the virtual machine image.
+        * @param recommendedVMSizeValue The RecommendedVMSize value.
+        */
+        public void setRecommendedVMSize(final String recommendedVMSizeValue) {
+            this.recommendedVMSize = recommendedVMSizeValue;
+        }
+        
         private String roleName;
         
         /**
@@ -490,12 +773,50 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
             this.serviceName = serviceNameValue;
         }
         
+        private Boolean showInGui;
+        
+        /**
+        * Optional. Specifies whether to show in Gui.
+        * @return The ShowInGui value.
+        */
+        public Boolean isShowInGui() {
+            return this.showInGui;
+        }
+        
+        /**
+        * Optional. Specifies whether to show in Gui.
+        * @param showInGuiValue The ShowInGui value.
+        */
+        public void setShowInGui(final Boolean showInGuiValue) {
+            this.showInGui = showInGuiValue;
+        }
+        
+        private URI smallIconUri;
+        
+        /**
+        * Optional. Specifies the URI to the small icon that is displayed when
+        * the image is presented in the Azure Management Portal.
+        * @return The SmallIconUri value.
+        */
+        public URI getSmallIconUri() {
+            return this.smallIconUri;
+        }
+        
+        /**
+        * Optional. Specifies the URI to the small icon that is displayed when
+        * the image is presented in the Azure Management Portal.
+        * @param smallIconUriValue The SmallIconUri value.
+        */
+        public void setSmallIconUri(final URI smallIconUriValue) {
+            this.smallIconUri = smallIconUriValue;
+        }
+        
         /**
         * Initializes a new instance of the VirtualMachineVMImage class.
         *
         */
         public VirtualMachineVMImage() {
-            this.dataDiskConfigurations = new ArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>();
+            this.setDataDiskConfigurations(new LazyArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
         }
     }
 }

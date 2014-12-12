@@ -64,6 +64,7 @@ public class Exports implements Builder.Exports {
                 HttpClientBuilder httpClientBuilder = HttpClients.custom();
                 ApacheConfigSettings settings = builder.build(profile, service,
                         ApacheConfigSettings.class, properties);
+
                 return settings.applyConfig(httpClientBuilder);
             }
         });

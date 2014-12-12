@@ -37,6 +37,11 @@ def hydraSpecs = [
         generatedCodeDestinationRootDirectoryName: 'management-network'
     ],
     [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.ServiceBus.Specification.dll",
+        clientType: 'Microsoft.WindowsAzure.Management.ServiceBus.ServiceBusManagementClient',
+        generatedCodeDestinationRootDirectoryName: 'management-serviceBus'
+    ],
+    [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Sql.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Sql.SqlManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-sql"
@@ -50,6 +55,26 @@ def hydraSpecs = [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.WebSites.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.WebSites.WebSiteManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-websites"
+    ],
+    [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.Scheduler.SchedulerManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
+    ],
+    [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Scheduler.SchedulerClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
+    ],
+    [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.CloudServices.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.Scheduler.CloudServiceManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-scheduler"
+    ],
+    [
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.MediaServices.Specification.dll",
+        clientType: "Microsoft.WindowsAzure.Management.MediaServices.MediaServicesManagementClient",
+        generatedCodeDestinationRootDirectoryName: "management-media"
     ]
 ]
 
@@ -137,8 +162,8 @@ def restorePackages()
     }
     finally {
         // Need to wait a bit, config file stays open while nuget.exe shuts down
-        Thread.sleep(1000)
-        new File('./restore.config').delete()
+//        Thread.sleep(1000)
+ //       new File('./restore.config').delete()
     }
 }
 
@@ -166,6 +191,7 @@ hydraSpecs.each {
 }
 // Wait for all generations to finish
 processes.each() {
+    it.consumeProcessErrorStream(System.err)
     it.waitFor()
 }
 System.out.println("Finished generating")

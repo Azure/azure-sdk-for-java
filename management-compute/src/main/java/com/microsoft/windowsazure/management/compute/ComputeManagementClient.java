@@ -44,22 +44,49 @@ import org.xml.sax.SAXException;
 */
 public interface ComputeManagementClient extends Closeable, FilterableService<ComputeManagementClient> {
     /**
-    * The URI used as the base for all Service Management requests.
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    String getApiVersion();
+    
+    /**
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     URI getBaseUri();
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
     
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    int getLongRunningOperationInitialTimeout();
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue);
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    int getLongRunningOperationRetryTimeout();
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
     * The Service Management API includes operations for managing the
     * deployments in your subscription.  (see
@@ -70,6 +97,20 @@ public interface ComputeManagementClient extends Closeable, FilterableService<Co
     DeploymentOperations getDeploymentsOperations();
     
     /**
+    * The Compute Management API includes operations for managing the dns
+    * servers for your subscription.
+    * @return The DnsServerOperations value.
+    */
+    DNSServerOperations getDnsServerOperations();
+    
+    /**
+    * The Service Management API includes operations for managing the service
+    * and virtual machine extension images in your publisher subscription.
+    * @return The ExtensionImagesOperations value.
+    */
+    ExtensionImageOperations getExtensionImagesOperations();
+    
+    /**
     * The Service Management API includes operations for managing the hosted
     * services beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for
@@ -77,6 +118,13 @@ public interface ComputeManagementClient extends Closeable, FilterableService<Co
     * @return The HostedServicesOperations value.
     */
     HostedServiceOperations getHostedServicesOperations();
+    
+    /**
+    * The Compute Management API includes operations for managing the load
+    * balancers for your subscription.
+    * @return The LoadBalancersOperations value.
+    */
+    LoadBalancerOperations getLoadBalancersOperations();
     
     /**
     * Operations for determining the version of the Azure Guest Operating

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -244,6 +245,66 @@ public class ConfigurationSet {
         this.inputEndpoints = inputEndpointsValue;
     }
     
+    private ArrayList<NetworkInterface> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterface> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterface> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
+    private String networkSecurityGroup;
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @return The NetworkSecurityGroup value.
+    */
+    public String getNetworkSecurityGroup() {
+        return this.networkSecurityGroup;
+    }
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @param networkSecurityGroupValue The NetworkSecurityGroup value.
+    */
+    public void setNetworkSecurityGroup(final String networkSecurityGroupValue) {
+        this.networkSecurityGroup = networkSecurityGroupValue;
+    }
+    
+    private ArrayList<ConfigurationSet.PublicIP> publicIPs;
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @return The PublicIPs value.
+    */
+    public ArrayList<ConfigurationSet.PublicIP> getPublicIPs() {
+        return this.publicIPs;
+    }
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @param publicIPsValue The PublicIPs value.
+    */
+    public void setPublicIPs(final ArrayList<ConfigurationSet.PublicIP> publicIPsValue) {
+        this.publicIPs = publicIPsValue;
+    }
+    
     private Boolean resetPasswordOnFirstLogon;
     
     /**
@@ -456,8 +517,53 @@ public class ConfigurationSet {
     *
     */
     public ConfigurationSet() {
-        this.inputEndpoints = new ArrayList<InputEndpoint>();
-        this.storedCertificateSettings = new ArrayList<StoredCertificateSettings>();
-        this.subnetNames = new ArrayList<String>();
+        this.setInputEndpoints(new LazyArrayList<InputEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterface>());
+        this.setPublicIPs(new LazyArrayList<ConfigurationSet.PublicIP>());
+        this.setStoredCertificateSettings(new LazyArrayList<StoredCertificateSettings>());
+        this.setSubnetNames(new LazyArrayList<String>());
+    }
+    
+    /**
+    * An additional public IP that will be created for the role. The public IP
+    * will be an additional IP for the role. The role continues to be
+    * addressable via the default deployment VIP.
+    */
+    public static class PublicIP {
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+        }
+        
+        private String name;
+        
+        /**
+        * Optional. The name of the public IP.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Optional. The name of the public IP.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
     }
 }

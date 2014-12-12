@@ -16,17 +16,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
-    <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure</artifactId>
+    <version>0.7.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-media</artifactId>
+  <artifactId>azure-media</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Media Client API</name>
-  <description>Microsoft Azure Media SDK Clients</description>
+  <name>Microsoft Azure SDK for Media Services</name>
+  <description>This package contains Microsoft Azure SDK for Media Services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -57,8 +57,8 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

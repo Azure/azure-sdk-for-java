@@ -84,4 +84,22 @@ public class WebSiteDeleteParameters {
     public void setDeleteMetrics(final boolean deleteMetricsValue) {
         this.deleteMetrics = deleteMetricsValue;
     }
+    
+    /**
+    * Initializes a new instance of the WebSiteDeleteParameters class.
+    *
+    */
+    public WebSiteDeleteParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the WebSiteDeleteParameters class with
+    * required arguments.
+    *
+    */
+    public WebSiteDeleteParameters(boolean deleteEmptyServerFarm, boolean deleteMetrics, boolean deleteAllSlots) {
+        this.setDeleteEmptyServerFarm(deleteEmptyServerFarm);
+        this.setDeleteMetrics(deleteMetrics);
+        this.setDeleteAllSlots(deleteAllSlots);
+    }
 }

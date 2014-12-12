@@ -92,7 +92,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     *
     * @param parameters Required. Parameters supplied to the Set Network
     * Configuration operation.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -117,7 +117,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -141,8 +141,8 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/media";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -151,13 +151,14 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/octet-stream");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = parameters.getConfiguration();
@@ -247,8 +248,8 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/media";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -257,12 +258,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -354,8 +356,8 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/virtualnetwork";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/virtualnetwork";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -364,12 +366,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -435,6 +438,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
                         virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
+                    Element locationElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        virtualNetworkSiteInstance.setLocation(locationInstance);
+                    }
+                    
                     Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null) {
                         String stateInstance;
@@ -475,6 +485,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
                                 String addressPrefixInstance;
                                 addressPrefixInstance = addressPrefixElement.getTextContent();
                                 subnetInstance.setAddressPrefix(addressPrefixInstance);
+                            }
+                            
+                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                            if (networkSecurityGroupElement != null) {
+                                String networkSecurityGroupInstance;
+                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                subnetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
                             }
                         }
                     }
@@ -680,10 +697,16 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             OperationResponse response = client2.getNetworksOperations().beginSettingConfigurationAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {

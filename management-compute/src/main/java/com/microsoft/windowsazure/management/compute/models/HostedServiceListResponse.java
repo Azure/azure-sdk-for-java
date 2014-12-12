@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     */
     public HostedServiceListResponse() {
         super();
-        this.hostedServices = new ArrayList<HostedServiceListResponse.HostedService>();
+        this.setHostedServices(new LazyArrayList<HostedServiceListResponse.HostedService>());
     }
     
     /**
@@ -71,6 +72,24 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     * A hosted service associated with your subscription.
     */
     public static class HostedService {
+        private ComputeCapabilities computeCapabilities;
+        
+        /**
+        * Optional. The compute capabilities in this hosted service.
+        * @return The ComputeCapabilities value.
+        */
+        public ComputeCapabilities getComputeCapabilities() {
+            return this.computeCapabilities;
+        }
+        
+        /**
+        * Optional. The compute capabilities in this hosted service.
+        * @param computeCapabilitiesValue The ComputeCapabilities value.
+        */
+        public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+            this.computeCapabilities = computeCapabilitiesValue;
+        }
+        
         private HostedServiceProperties properties;
         
         /**

@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* A standard service response including an HTTP status code and request ID.
+* Contains the response from a request to Get Firewall Rule.
 */
 public class FirewallRuleGetResponse extends OperationResponse {
     private FirewallRule firewallRule;
     
     /**
-    * Optional. Gets or sets the firewall rule for this SQL Database Server.
+    * Optional. Gets the Firewall Rule returned from the Get Firewall Rule
+    * operation.
     * @return The FirewallRule value.
     */
     public FirewallRule getFirewallRule() {
@@ -40,7 +41,8 @@ public class FirewallRuleGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets the firewall rule for this SQL Database Server.
+    * Optional. Gets the Firewall Rule returned from the Get Firewall Rule
+    * operation.
     * @param firewallRuleValue The FirewallRule value.
     */
     public void setFirewallRule(final FirewallRule firewallRuleValue) {

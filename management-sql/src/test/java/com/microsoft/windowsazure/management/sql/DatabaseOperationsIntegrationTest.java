@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -37,12 +38,17 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();
+        setupTest(DatabaseOperationsIntegrationTest.class.getSimpleName());
+        getLocation();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
+        resetTest(DatabaseOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest(DatabaseOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
 
@@ -63,6 +69,17 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
         }
 
         serverToBeRemoved.clear();
+        resetTest(DatabaseOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     @Test
@@ -164,7 +181,6 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
         DatabaseUpdateParameters databaseUpdateParameters = new DatabaseUpdateParameters();
         databaseUpdateParameters.setName(expectedDatabaseName);
         databaseUpdateParameters.setMaximumDatabaseSizeInGB(updatedMaxSizeInGB);
-        databaseUpdateParameters.setCollationName(expectedCollationName);
         databaseUpdateParameters.setEdition(updatedEdition);
         DatabaseUpdateResponse databaseUpdateResponse = databaseOperations.update(serverName, expectedDatabaseName, databaseUpdateParameters);
 

@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +73,7 @@ public class SshSettings {
     *
     */
     public SshSettings() {
-        this.keyPairs = new ArrayList<SshSettingKeyPair>();
-        this.publicKeys = new ArrayList<SshSettingPublicKey>();
+        this.setKeyPairs(new LazyArrayList<SshSettingKeyPair>());
+        this.setPublicKeys(new LazyArrayList<SshSettingPublicKey>());
     }
 }

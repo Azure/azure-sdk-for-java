@@ -19,13 +19,16 @@ import com.microsoft.windowsazure.management.sql.models.Server;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
+
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.*;
 import org.xml.sax.SAXException;
+
 import static org.junit.Assert.*;
 
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -37,11 +40,16 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        createManagementClient();       
+        setupTest(SqlServerIntegrationTest.class.getSimpleName());
+        getLocation();
         serverOperations = sqlManagementClient.getServersOperations();
+        resetTest(SqlServerIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
+        setupTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String serverName : serverToBeRemoved) {
             try {
                 serverOperations.delete(serverName);
@@ -61,20 +69,31 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
                 Thread.sleep(100);
             }
         }
+        resetTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         //arrange 
         String testAdministratorUserName = "testadminname";
         String testPassword = "testpassword8!";
-        String testLocation = "West US";
+        //String testLocation = "West US";
         
         // act
         ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
         serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
         serverCreateParameters.setAdministratorPassword(testPassword);
-        serverCreateParameters.setLocation(testLocation);
+        serverCreateParameters.setLocation(testLocationValue);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
@@ -92,7 +111,7 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         }
         assertNotNull(createdServer);
         assertEquals(testAdministratorUserName, createdServer.getAdministratorUserName());
-        assertEquals(testLocation, createdServer.getLocation());
+        assertEquals(testLocationValue, createdServer.getLocation());
     }
 
     @Test
@@ -100,13 +119,13 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         //arrange 
         String testAdministratorUserName = "testadminname";
         String testPassword = "testpassword8!";
-        String testLocation = "West US";
+        //String testLocation = "West US";
 
         // act
         ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
         serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
         serverCreateParameters.setAdministratorPassword(testPassword);
-        serverCreateParameters.setLocation(testLocation);
+        serverCreateParameters.setLocation(testLocationValue);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverOperations.delete(serverName);

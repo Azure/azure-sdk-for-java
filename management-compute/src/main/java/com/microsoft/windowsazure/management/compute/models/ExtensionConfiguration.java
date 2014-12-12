@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -74,8 +75,8 @@ public class ExtensionConfiguration {
     *
     */
     public ExtensionConfiguration() {
-        this.allRoles = new ArrayList<ExtensionConfiguration.Extension>();
-        this.namedRoles = new ArrayList<ExtensionConfiguration.NamedRole>();
+        this.setAllRoles(new LazyArrayList<ExtensionConfiguration.Extension>());
+        this.setNamedRoles(new LazyArrayList<ExtensionConfiguration.NamedRole>());
     }
     
     /**
@@ -105,6 +106,25 @@ public class ExtensionConfiguration {
         */
         public void setId(final String idValue) {
             this.id = idValue;
+        }
+        
+        /**
+        * Initializes a new instance of the Extension class.
+        *
+        */
+        public Extension() {
+        }
+        
+        /**
+        * Initializes a new instance of the Extension class with required
+        * arguments.
+        *
+        */
+        public Extension(String id) {
+            if (id == null) {
+                throw new NullPointerException("id");
+            }
+            this.setId(id);
         }
     }
     
@@ -156,7 +176,24 @@ public class ExtensionConfiguration {
         *
         */
         public NamedRole() {
-            this.extensions = new ArrayList<ExtensionConfiguration.Extension>();
+            this.setExtensions(new LazyArrayList<ExtensionConfiguration.Extension>());
+        }
+        
+        /**
+        * Initializes a new instance of the NamedRole class with required
+        * arguments.
+        *
+        */
+        public NamedRole(String roleName, ArrayList<ExtensionConfiguration.Extension> extensions) {
+            this();
+            if (roleName == null) {
+                throw new NullPointerException("roleName");
+            }
+            if (extensions == null) {
+                throw new NullPointerException("extensions");
+            }
+            this.setRoleName(roleName);
+            this.setExtensions(extensions);
         }
     }
 }

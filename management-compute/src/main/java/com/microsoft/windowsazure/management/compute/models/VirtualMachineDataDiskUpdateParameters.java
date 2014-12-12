@@ -29,7 +29,7 @@ import java.net.URI;
 * Parameters supplied to the Update Virtual Machine Data Disk operation.
 */
 public class VirtualMachineDataDiskUpdateParameters {
-    private VirtualHardDiskHostCaching hostCaching;
+    private String hostCaching;
     
     /**
     * Required. Specifies the platform caching behavior of data disk blob for
@@ -38,7 +38,7 @@ public class VirtualMachineDataDiskUpdateParameters {
     * impacts the consistency of the disk.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public String getHostCaching() {
         return this.hostCaching;
     }
     
@@ -49,7 +49,7 @@ public class VirtualMachineDataDiskUpdateParameters {
     * impacts the consistency of the disk.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final String hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     
@@ -171,5 +171,29 @@ public class VirtualMachineDataDiskUpdateParameters {
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDataDiskUpdateParameters
+    * class.
+    *
+    */
+    public VirtualMachineDataDiskUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDataDiskUpdateParameters
+    * class with required arguments.
+    *
+    */
+    public VirtualMachineDataDiskUpdateParameters(String hostCaching, URI mediaLinkUri) {
+        if (hostCaching == null) {
+            throw new NullPointerException("hostCaching");
+        }
+        if (mediaLinkUri == null) {
+            throw new NullPointerException("mediaLinkUri");
+        }
+        this.setHostCaching(hostCaching);
+        this.setMediaLinkUri(mediaLinkUri);
     }
 }

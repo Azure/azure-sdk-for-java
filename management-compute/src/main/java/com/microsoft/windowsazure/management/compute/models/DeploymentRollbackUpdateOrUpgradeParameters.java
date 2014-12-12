@@ -66,4 +66,22 @@ public class DeploymentRollbackUpdateOrUpgradeParameters {
     public void setMode(final RollbackUpdateOrUpgradeMode modeValue) {
         this.mode = modeValue;
     }
+    
+    /**
+    * Initializes a new instance of the
+    * DeploymentRollbackUpdateOrUpgradeParameters class.
+    *
+    */
+    public DeploymentRollbackUpdateOrUpgradeParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * DeploymentRollbackUpdateOrUpgradeParameters class with required
+    * arguments.
+    *
+    */
+    public DeploymentRollbackUpdateOrUpgradeParameters(RollbackUpdateOrUpgradeMode mode) {
+        this.setMode(mode);
+    }
 }

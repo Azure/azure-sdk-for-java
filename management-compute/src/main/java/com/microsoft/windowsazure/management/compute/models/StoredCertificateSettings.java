@@ -70,4 +70,27 @@ public class StoredCertificateSettings {
     public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
+    
+    /**
+    * Initializes a new instance of the StoredCertificateSettings class.
+    *
+    */
+    public StoredCertificateSettings() {
+    }
+    
+    /**
+    * Initializes a new instance of the StoredCertificateSettings class with
+    * required arguments.
+    *
+    */
+    public StoredCertificateSettings(String storeName, String thumbprint) {
+        if (storeName == null) {
+            throw new NullPointerException("storeName");
+        }
+        if (thumbprint == null) {
+            throw new NullPointerException("thumbprint");
+        }
+        this.setStoreName(storeName);
+        this.setThumbprint(thumbprint);
+    }
 }

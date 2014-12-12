@@ -61,10 +61,20 @@ import org.xml.sax.SAXException;
 * information)
 */
 public class NetworkManagementClientImpl extends ServiceClient<NetworkManagementClient> implements NetworkManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all SQL requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -74,16 +84,51 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
+    }
+    
+    private int longRunningOperationInitialTimeout;
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
     private ClientRootCertificateOperations clientRootCertificates;
@@ -125,6 +170,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.networks;
     }
     
+    private NetworkSecurityGroupOperations networkSecurityGroups;
+    
+    /**
+    * The Network Management API includes operations for managing the Network
+    * Security Groups for your subscription.
+    * @return The NetworkSecurityGroupsOperations value.
+    */
+    public NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations() {
+        return this.networkSecurityGroups;
+    }
+    
     private ReservedIPOperations reservedIPs;
     
     /**
@@ -134,6 +190,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     */
     public ReservedIPOperations getReservedIPsOperations() {
         return this.reservedIPs;
+    }
+    
+    private RouteOperations routes;
+    
+    /**
+    * The Network Management API includes operations for managing the routes
+    * for your subscription.
+    * @return The RoutesOperations value.
+    */
+    public RouteOperations getRoutesOperations() {
+        return this.routes;
     }
     
     private StaticIPOperations staticIPs;
@@ -158,8 +225,13 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
         this.gateways = new GatewayOperationsImpl(this);
         this.networks = new NetworkOperationsImpl(this);
+        this.networkSecurityGroups = new NetworkSecurityGroupOperationsImpl(this);
         this.reservedIPs = new ReservedIPOperationsImpl(this);
+        this.routes = new RouteOperationsImpl(this);
         this.staticIPs = new StaticIPOperationsImpl(this);
+        this.apiVersion = "2014-10-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
@@ -167,13 +239,11 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
-    * @param baseUri Required. The URI used as the base for all SQL requests.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -199,12 +269,9 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -222,9 +289,66 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Required. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the NetworkManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected NetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type LocalNetworkConnectionType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
+        if ("IPsec".equalsIgnoreCase(value)) {
+            return LocalNetworkConnectionType.IPSecurity;
+        }
+        if ("Dedicated".equalsIgnoreCase(value)) {
+            return LocalNetworkConnectionType.Dedicated;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type LocalNetworkConnectionType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
+        if (value == LocalNetworkConnectionType.IPSecurity) {
+            return "IPsec";
+        }
+        if (value == LocalNetworkConnectionType.Dedicated) {
+            return "Dedicated";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -305,8 +429,8 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         }
         
         // Construct URL
+        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/operations/" + requestId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -315,12 +439,13 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -409,37 +534,5 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
-    }
-    
-    /**
-    * Parse enum values for type LocalNetworkConnectionType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
-        if ("IPsec".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.IPSecurity;
-        }
-        if ("Dedicated".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.Dedicated;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type LocalNetworkConnectionType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
-        if (value == LocalNetworkConnectionType.IPSecurity) {
-            return "IPsec";
-        }
-        if (value == LocalNetworkConnectionType.Dedicated) {
-            return "Dedicated";
-        }
-        throw new IllegalArgumentException("value");
     }
 }

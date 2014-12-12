@@ -16,17 +16,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-azure-api-parent</artifactId>
-    <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure</artifactId>
+    <version>0.7.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-compute</artifactId>
+  <artifactId>azure-management-compute</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure Compute Management Client API</name>
-  <description>Microsoft Azure Compute Management SDK Clients</description>
+  <name>Microsoft Azure SDK for Compute Management</name>
+  <description>This package contains Microsoft Azure Compute Management SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,9 +45,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-
-    <jackson.version>2.1.1</jackson.version>
-    <spring.version>3.0.7.RELEASE</spring.version>
   </properties>
 
   <developers>
@@ -60,8 +57,8 @@
   <dependencies>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-core</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -75,20 +72,27 @@
     <!-- Test dependencies -->
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management-storage</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-core</artifactId>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>microsoft-azure-api-management</artifactId>
-      <version>0.5.0</version>
+      <artifactId>azure-management-storage</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>  
-      <groupId>com.microsoft.windowsazure.storage</groupId>
-      <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-      <version>0.5.0</version>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-management</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -109,6 +113,16 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

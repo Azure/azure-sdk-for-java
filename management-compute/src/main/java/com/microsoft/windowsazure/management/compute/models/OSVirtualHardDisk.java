@@ -30,14 +30,14 @@ import java.net.URI;
 * machine.
 */
 public class OSVirtualHardDisk {
-    private VirtualHardDiskHostCaching hostCaching;
+    private String hostCaching;
     
     /**
     * Optional. Specifies the platform caching behavior of the operating system
     * disk blob for read/write efficiency.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public String getHostCaching() {
         return this.hostCaching;
     }
     
@@ -46,8 +46,26 @@ public class OSVirtualHardDisk {
     * disk blob for read/write efficiency.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final String hostCachingValue) {
         this.hostCaching = hostCachingValue;
+    }
+    
+    private String iOType;
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @return The IOType value.
+    */
+    public String getIOType() {
+        return this.iOType;
+    }
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @param iOTypeValue The IOType value.
+    */
+    public void setIOType(final String iOTypeValue) {
+        this.iOType = iOTypeValue;
     }
     
     private String label;

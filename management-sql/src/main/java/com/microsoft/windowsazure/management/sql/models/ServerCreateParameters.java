@@ -24,13 +24,14 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Create Server operation.
+* The parameters that are used by the service to provision a server.  The
+* parameters marked optional are not required by the service.
 */
 public class ServerCreateParameters {
     private String administratorPassword;
     
     /**
-    * Required. Gets or sets the administrator password.
+    * Required. Gets or sets the administrator password for the new server.
     * @return The AdministratorPassword value.
     */
     public String getAdministratorPassword() {
@@ -38,7 +39,7 @@ public class ServerCreateParameters {
     }
     
     /**
-    * Required. Gets or sets the administrator password.
+    * Required. Gets or sets the administrator password for the new server.
     * @param administratorPasswordValue The AdministratorPassword value.
     */
     public void setAdministratorPassword(final String administratorPasswordValue) {
@@ -48,7 +49,8 @@ public class ServerCreateParameters {
     private String administratorUserName;
     
     /**
-    * Required. Gets or sets the administrator username.
+    * Required. Gets or sets the administrator username that will be used for
+    * the new server.
     * @return The AdministratorUserName value.
     */
     public String getAdministratorUserName() {
@@ -56,7 +58,8 @@ public class ServerCreateParameters {
     }
     
     /**
-    * Required. Gets or sets the administrator username.
+    * Required. Gets or sets the administrator username that will be used for
+    * the new server.
     * @param administratorUserNameValue The AdministratorUserName value.
     */
     public void setAdministratorUserName(final String administratorUserNameValue) {
@@ -67,6 +70,8 @@ public class ServerCreateParameters {
     
     /**
     * Required. Gets or sets the region in which this server will be created.
+    * See http://azure.microsoft.com/en-us/regions/#services for a list of
+    * all the available regions.
     * @return The Location value.
     */
     public String getLocation() {
@@ -75,9 +80,58 @@ public class ServerCreateParameters {
     
     /**
     * Required. Gets or sets the region in which this server will be created.
+    * See http://azure.microsoft.com/en-us/regions/#services for a list of
+    * all the available regions.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
+    }
+    
+    private String version;
+    
+    /**
+    * Optional. Gets or sets the version of server to create.  Valid values
+    * are: 1.0, 2.0.
+    * @return The Version value.
+    */
+    public String getVersion() {
+        return this.version;
+    }
+    
+    /**
+    * Optional. Gets or sets the version of server to create.  Valid values
+    * are: 1.0, 2.0.
+    * @param versionValue The Version value.
+    */
+    public void setVersion(final String versionValue) {
+        this.version = versionValue;
+    }
+    
+    /**
+    * Initializes a new instance of the ServerCreateParameters class.
+    *
+    */
+    public ServerCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ServerCreateParameters class with
+    * required arguments.
+    *
+    */
+    public ServerCreateParameters(String administratorUserName, String administratorPassword, String location) {
+        if (administratorUserName == null) {
+            throw new NullPointerException("administratorUserName");
+        }
+        if (administratorPassword == null) {
+            throw new NullPointerException("administratorPassword");
+        }
+        if (location == null) {
+            throw new NullPointerException("location");
+        }
+        this.setAdministratorUserName(administratorUserName);
+        this.setAdministratorPassword(administratorPassword);
+        this.setLocation(location);
     }
 }

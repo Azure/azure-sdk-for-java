@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.management.compute;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
@@ -27,16 +26,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.*;
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.windowsazure.management.storage.models.*;
-import com.microsoft.windowsazure.storage.*;
-import com.microsoft.windowsazure.storage.blob.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -47,20 +45,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
     private static String storageAccountName;
-    private static String storageAccountKey = "";
     private static String storageContainer = "vhd-store";    
     private static String hostedServiceName;   
     private static String deploymentName = testVMPrefix + "deploy1";    
-    private static String virtualMachineName = testVMPrefix + "vm1";    
-    private static String vmLocation = "West US";
+    private static String virtualMachineName = testVMPrefix + "vm1"; 
     private static String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
     private static String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
     private static String deploymentLabel = testVMPrefix + "deployLabel1";
-    private static HostedServiceOperations hostedServicesOperations;
+    private static HostedServiceOperations hostedServicesOperations; 
 
     @BeforeClass    
     public static void setup() throws Exception {
-        storageAccountName = testStoragePrefix + randomString(10);
+        storageAccountName = testStoragePrefix + "vmo" + randomString(7);
         hostedServiceName = testHostedServicePrefix + randomString(10);
         
         //create storage service for storage account creation
@@ -70,24 +66,120 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //create management service for accessing management operation
         createManagementClient();
         
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName());
         hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
         getLocation();
         //create a new storage account for vm .vhd storage.
-        createStorageAccount();        
+        createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName());
     }
 
     @AfterClass   
-    public static void cleanup() {        
-        cleanDeployment();
+    public static void cleanup() throws Exception {
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanHostedService();
-        cleanBlob();
-        cleanStorageAccount();
+        cleanDeployment();
+        cleanBlob(storageAccountName, storageContainer);
+        cleanStorageAccount(storageAccountName);
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
     
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
+    private OSVirtualHardDisk createOSVirtualHardDisk(String osVHarddiskName, String operatingSystemName, URI mediaLinkUriValue, String sourceImageName)
+    {
+        OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
+        //required
+        oSVirtualHardDisk.setName(osVHarddiskName);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
+        oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
+        //required
+        oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
+        //required
+        oSVirtualHardDisk.setSourceImageName(sourceImageName);
+        return oSVirtualHardDisk;
+    }
+    
+    private VirtualMachineCreateParameters createVirtualMachineCreateParameter(String roleName, ArrayList<ConfigurationSet> configlist, OSVirtualHardDisk oSVirtualHardDisk, String availabilitySetNameValue) {
+        VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
+        //required       
+        createParameters.setRoleName(roleName);
+        createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
+        createParameters.setProvisionGuestAgent(true);
+        createParameters.setConfigurationSets(configlist);       
+        createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
+        createParameters.setAvailabilitySetName(availabilitySetNameValue);        
+        return createParameters;
+    }
+
+    private ArrayList<ConfigurationSet> createConfigList(String computerName,
+            String adminuserPassword, String adminUserName) {
+        ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
+        ConfigurationSet configset = new ConfigurationSet();
+        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
+        //required
+        configset.setComputerName(computerName);
+        //required
+        configset.setAdminPassword(adminuserPassword);
+        //required
+        configset.setAdminUserName(adminUserName);
+        configset.setEnableAutomaticUpdates(false);
+        configlist.add(configset);
+        return configlist;
+    }
+    
+    @Test
+    public void createVirtualMachineInAvailabilitySetSuccess() throws Exception {
+        int random = (int)(Math.random()* 100); 
+        String roleName = testVMPrefix + "vm3";
+        String roleNameSecond = testVMPrefix + "vm4";
+        String computerName = testVMPrefix + "vm3";
+        String computerNameSecond = testVMPrefix + "vm4";
+        String adminuserPassword = testVMPrefix + "!12";
+        String adminUserName = testVMPrefix;
+        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix +random + ".vhd");
+        URI mediaLinkUriValueSecond =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix +random + "2.vhd");
+        String osVHarddiskName =testVMPrefix + "oshdname" + random;
+        String osVHarddiskNameSecond = testVMPrefix + "oshdname2" + random;
+        String operatingSystemName ="Windows";
+        String availabilitySetNameValue = "azurejava" + random;
+
+        //required
+        ArrayList<ConfigurationSet> configlist = createConfigList(computerName, adminuserPassword, adminUserName);
+        ArrayList<ConfigurationSet> configlistSecond = createConfigList(computerNameSecond, adminuserPassword, adminUserName);
+        
+        //required
+        String sourceImageName = getOSSourceImage();
+        OSVirtualHardDisk oSVirtualHardDisk = createOSVirtualHardDisk(osVHarddiskName, operatingSystemName, mediaLinkUriValue, sourceImageName);
+        VirtualMachineCreateParameters createParameters = createVirtualMachineCreateParameter(roleName, configlist, oSVirtualHardDisk, availabilitySetNameValue);
+
+        OSVirtualHardDisk oSVirtualHardDiskSecond = createOSVirtualHardDisk(osVHarddiskNameSecond, operatingSystemName, mediaLinkUriValueSecond, sourceImageName);
+        VirtualMachineCreateParameters createParametersSecond = createVirtualMachineCreateParameter(roleNameSecond, configlistSecond, oSVirtualHardDiskSecond, availabilitySetNameValue);
+        //Act
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
+        OperationResponse operationResponseSecond = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParametersSecond);
+
+        //Assert
+        Assert.assertEquals(200, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+        Assert.assertEquals(200, operationResponseSecond.getStatusCode());
+        Assert.assertNotNull(operationResponseSecond.getRequestId());
+        
+    }
+
+
     @Test
     public void createVirtualMachines() throws Exception {
         int random = (int)(Math.random()* 100); 
@@ -100,38 +192,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String operatingSystemName ="Windows";
 
         //required
-        ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
-        ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
-        //required
-        configset.setComputerName(computerName);
-        //required
-        configset.setAdminPassword(adminuserPassword);
-        //required
-        configset.setAdminUserName(adminUserName);
-        configset.setEnableAutomaticUpdates(false);
-        configlist.add(configset);
+        ArrayList<ConfigurationSet> configlist = createConfigList(computerName, adminuserPassword, adminUserName);
 
         //required
         String sourceImageName = getOSSourceImage();
-        OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
-        //required
-        oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
-        oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
-        //required
-        oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
-        //required
-        oSVirtualHardDisk.setSourceImageName(sourceImageName);
-      
-        VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
-        //required
-        createParameters.setRoleName(roleName);
-        createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
-        createParameters.setProvisionGuestAgent(true);
-        createParameters.setConfigurationSets(configlist);
-        createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
-
+        OSVirtualHardDisk oSVirtualHardDisk = createOSVirtualHardDisk(osVHarddiskName, operatingSystemName, mediaLinkUriValue, sourceImageName);
+        VirtualMachineCreateParameters createParameters = createVirtualMachineCreateParameter(roleName, configlist, oSVirtualHardDisk, null);
+        
         //Act
         OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
 
@@ -187,14 +254,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk();
         //required
         oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.ReadWrite);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
         oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
         //required
         oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
         //required
         oSVirtualHardDisk.setSourceImageName(sourceImageName);
 
-        //required
+        //required        
         role.setRoleName(roleName);
         //required
         role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
@@ -273,7 +340,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
         Assert.assertTrue(osharddisk.getSourceImageName().contains("Win"));
-        Assert.assertEquals(VirtualHardDiskHostCaching.ReadWrite, osharddisk.getHostCaching());
+        Assert.assertEquals(VirtualHardDiskHostCaching.READWRITE, osharddisk.getHostCaching());
     }
     
     @Test
@@ -377,8 +444,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
-    
-    
+
     private static String getOSSourceImage() throws Exception {
         String sourceImageName = null;
         VirtualMachineOSImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
@@ -393,129 +459,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         Assert.assertNotNull(sourceImageName);
         return sourceImageName;
-    }
-   
-    private static void createStorageAccount() throws Exception {
-        String storageAccountCreateName = testStoragePrefix + randomString(10);
-        String storageAccountLabel = testStoragePrefix + "storageLabel1";
-
-        //Arrange
-        StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
-        //required
-        createParameters.setName(storageAccountCreateName);
-        //required
-        createParameters.setLabel(storageAccountLabel);
-        //required if no affinity group has set
-        createParameters.setLocation(vmLocation);
-
-        //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
-      
-        //Assert
-        Assert.assertEquals(200, operationResponse.getStatusCode());
-        storageAccountName = storageAccountCreateName;
-        
-        //use container inside storage account, needed for os image storage.
-        StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
-        storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
-        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
-        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
-        container.createIfNotExists();
-        
-        //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
-        boolean found = false;
-        while(found == false) {
-            Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
-                        for (CloudBlobContainer item : listContainerResult) {
-                 if (item.getName().contains(storageContainer) == true) {
-                     found = true;                  
-                 }
-            }
-        
-            if (found == false) { 
-                Thread.sleep(1000 * 30);
-            }
-            else {
-                Thread.sleep(1000 * 120);
-            }           
-        }       
-    }
-    
-    private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException {
-        String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
-        CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
-
-        // Create the blob client
-        CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-        return blobClient;
-    }
-    
-    private static void cleanBlob() {
-        // Create the blob client
-        CloudBlobClient blobClient = null;
-        try {
-            blobClient = createBlobClient(storageAccountName, storageAccountKey);
-        } catch (InvalidKeyException e) {
-        } catch (URISyntaxException e) {
-        }
-
-        // Retrieve reference to a previously created container
-        CloudBlobContainer container = null;
-        try {
-            container = blobClient.getContainerReference(storageContainer);
-        } catch (URISyntaxException e) {
-        } catch (StorageException e) {
-        }           
-        
-        try {
-            container.breakLease(300);
-        } catch (StorageException e) {
-        }
-        try {
-            container.delete();
-        } catch (StorageException e) {
-        }
-    }
-    
-    private static void getLocation() throws Exception {
-        //has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
-        ArrayList<String> serviceName = new ArrayList<String>();
-        serviceName.add(LocationAvailableServiceNames.COMPUTE);
-        serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
-        serviceName.add(LocationAvailableServiceNames.STORAGE);     
-        
-        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
-        for (LocationsListResponse.Location location : locationsListResponse) {
-            ArrayList<String> availableServicelist = location.getAvailableServices();
-            String locationName = location.getName();
-            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true)) {                       
-                vmLocation = locationName;              
-            }           
-        }
-    }
-
-    private static void cleanStorageAccount() {
-        StorageAccountGetResponse storageAccountGetResponse = null; 
-        try {
-            storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
-        } catch (ServiceException e) {
-        } catch (IOException e) {
-        } catch (ParserConfigurationException e) {
-        } catch (SAXException e) {
-        } catch (URISyntaxException e) {
-        }
-        
-        if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))) {
-            OperationResponse operationResponse = null;
-            try {
-                operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
-            } catch (IOException e) {
-            } catch (ServiceException e) {
-            }
-            if (operationResponse != null) {
-                Assert.assertEquals(200, operationResponse.getStatusCode());
-            }
-        }
     }
     
     private static void cleanHostedService() {
@@ -542,6 +485,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             } 
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+                waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
             }
         }
     }
@@ -568,6 +512,46 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             }
             if (operationStatusResponse != null) {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+            }
+            waitOperationToComplete(operationStatusResponse.getRequestId(), 20, 60);
+        }
+        
+        try {
+            if (!IS_MOCKED) {
+                Thread.sleep(3*60*1000);
+            }
+        } catch (InterruptedException e) {
+        }
+    }
+
+    private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
+        boolean operationCompleted = false;
+        int tryCount =0;
+        while ((!operationCompleted)&&(tryCount<maximumNumberOfTries))
+        {
+            OperationStatusResponse operationStatus = null;
+            try {
+                operationStatus = computeManagementClient.getOperationStatus(requestId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+            
+            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
+            {
+                operationCompleted = true;
+            }else{
+                try {
+                    Thread.sleep(waitTimeBetweenTriesInSeconds * 1000);
+                    tryCount ++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

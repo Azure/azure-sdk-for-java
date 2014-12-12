@@ -55,7 +55,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
     */
     public ServerFarmListResponse() {
         super();
-        this.serverFarms = new ArrayList<ServerFarmListResponse.ServerFarm>();
+        this.setServerFarms(new ArrayList<ServerFarmListResponse.ServerFarm>());
     }
     
     /**

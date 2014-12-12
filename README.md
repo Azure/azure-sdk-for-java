@@ -2,6 +2,7 @@
 
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/).
 
+
 #Features
 
 
@@ -27,13 +28,6 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Add/Get job notifications
     * Create/Read/Update/Delete notification endpoints
 * Service Management
-    * Management
-      * Create/Delete/Get/List/Update affinity group
-      * List location
-      * Create/Delete/Get/List management certificate
-      * List role size
-      * Get/List subscription
-      * Register/Unregister resource
     * Compute Management
       * ChangeConfiguration/Delete/Reboot/Reimage/Swap/Update/Upgrade deployment
       * AddExtension/Delete/CheckNameAvailability/Create/Delete/Get/GetDetailed/GetExtension/List/ListAvailableExtension/Update hosted service operations
@@ -44,18 +38,23 @@ This project provides a client library in Java that makes it easy to consume Mic
       * Capture/Create/Delete/Restart/Shutdown/Start/Update/Start/Update/UpdateLoadBalancedEndpointSet virtual machine
       * Create/Delete/Get/List/Update virtual machine OS image
       * Delete/List virtual machine image
-    * Websites Management
-      * Create/Delete/Get/List/Update server farm
-      * Create/Delete/DeleteRepository/GeneratePassword/Get/GetConfiguration/GetHistoricalUsageMetrics/GetInstanceIds/GetPublishProfile/GetRepository/GetUsageMetrics/isHostnameAvailable/Restart/SwapSlots/SyncRepository/Update/UpdateConfiguration of Azure web sites
-      * CreatePublishingUser/Get/List/ListGeoRegions/ListPublishingUser/ListWebSites of web space
-    * Network Management
+    * Management
+      * Create/Delete/Get/List/Update affinity group
+      * List location
+      * Create/Delete/Get/List management certificate
+      * List role size
+      * Get/List subscription
+      * Register/Unregister resource
+	* Media Management
+      * Create/Delete/Get/List/Update media service account
+	* Network Management
       * Create/Delete/Get/List client root certificate
       * Connect/Disconnect/Testing/Create/Delete/Failover/ResetSharedKey gateway operations
       * SetConfiguration/GetConfiguration/Get/List network 
       * Create/Delete/Get/List reserved IP operations
-      * Check static IP operations
-    * Storage Management
-      * Create/CheckNameAvailability/Delete/Get/GetAsync/GetKeys/List/RegenerateKeys/Update Azure storage account
+      * Check static IP operations  
+	* Scheduler Management    
+      * Create/Delete/Get/List/Update Job/JobCollection operations 	
     * Sql Database Management
       * Export/GetStatus/Import database 
       * Get/List database operation's operation
@@ -63,9 +62,16 @@ This project provides a client library in Java that makes it easy to consume Mic
       * Create/Delete/Get/List/Update firewall rule
       * ChangeAdministratorPassword/Create/Delete/List server operations
       * Get/List service objective
+    * Storage Management
+      * Create/CheckNameAvailability/Delete/Get/GetAsync/GetKeys/List/RegenerateKeys/Update Azure storage account
+    * Websites Management
+      * Create/Delete/Get/List/Update server farm
+      * Create/Delete/DeleteRepository/GeneratePassword/Get/GetConfiguration/GetHistoricalUsageMetrics/GetInstanceIds/GetPublishProfile/GetRepository/GetUsageMetrics/isHostnameAvailable/Restart/SwapSlots/SyncRepository/Update/UpdateConfiguration of Azure web sites
+      * CreatePublishingUser/Get/List/ListGeoRegions/ListPublishingUser/ListWebSites of web space
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
-
+* Storage
+	* The Azure Storage SDK for Java is maintained in a separate repository. You can find the Azure Storage SDK for Java at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
 
 #Getting Started
 
@@ -85,65 +91,79 @@ within your project you can also have them installed by the Java package manager
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-compute</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-compute</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-network</artifactId>
-  <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-management-media</artifactId>
+    <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-sql</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-network</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-storage</artifactId>
-  <version>0.5.0</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-management-scheduler</artifactId>
+    <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-websites</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-sql</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-media</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-storage</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-servicebus</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-websites</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-media</artifactId>
+  <version>0.7.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus</artifactId>
+  <version>0.7.0</version>
+</dependency>
+```
+```xml
+<dependency>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-serviceruntime</artifactId>
+  <version>0.7.0</version>
 </dependency>
 ```
 

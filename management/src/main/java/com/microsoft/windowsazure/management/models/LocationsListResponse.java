@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     */
     public LocationsListResponse() {
         super();
-        this.locations = new ArrayList<LocationsListResponse.Location>();
+        this.setLocations(new LazyArrayList<LocationsListResponse.Location>());
     }
     
     /**
@@ -86,6 +87,24 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         */
         public void setAvailableServices(final ArrayList<String> availableServicesValue) {
             this.availableServices = availableServicesValue;
+        }
+        
+        private ComputeCapabilities computeCapabilities;
+        
+        /**
+        * Optional. The compute capabilities in this location.
+        * @return The ComputeCapabilities value.
+        */
+        public ComputeCapabilities getComputeCapabilities() {
+            return this.computeCapabilities;
+        }
+        
+        /**
+        * Optional. The compute capabilities in this location.
+        * @param computeCapabilitiesValue The ComputeCapabilities value.
+        */
+        public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+            this.computeCapabilities = computeCapabilitiesValue;
         }
         
         private String displayName;
@@ -126,12 +145,30 @@ public class LocationsListResponse extends OperationResponse implements Iterable
             this.name = nameValue;
         }
         
+        private StorageCapabilities storageCapabilities;
+        
+        /**
+        * Optional. The storage capabilities in this location.
+        * @return The StorageCapabilities value.
+        */
+        public StorageCapabilities getStorageCapabilities() {
+            return this.storageCapabilities;
+        }
+        
+        /**
+        * Optional. The storage capabilities in this location.
+        * @param storageCapabilitiesValue The StorageCapabilities value.
+        */
+        public void setStorageCapabilities(final StorageCapabilities storageCapabilitiesValue) {
+            this.storageCapabilities = storageCapabilitiesValue;
+        }
+        
         /**
         * Initializes a new instance of the Location class.
         *
         */
         public Location() {
-            this.availableServices = new ArrayList<String>();
+            this.setAvailableServices(new LazyArrayList<String>());
         }
     }
 }

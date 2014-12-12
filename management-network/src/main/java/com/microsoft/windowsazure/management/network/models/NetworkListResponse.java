@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     */
     public NetworkListResponse() {
         super();
-        this.virtualNetworkSites = new ArrayList<NetworkListResponse.VirtualNetworkSite>();
+        this.setVirtualNetworkSites(new LazyArrayList<NetworkListResponse.VirtualNetworkSite>());
     }
     
     /**
@@ -91,7 +92,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public AddressSpace() {
-            this.addressPrefixes = new ArrayList<String>();
+            this.setAddressPrefixes(new LazyArrayList<String>());
         }
     }
     
@@ -226,7 +227,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public Gateway() {
-            this.sites = new ArrayList<NetworkListResponse.LocalNetworkSite>();
+            this.setSites(new LazyArrayList<NetworkListResponse.LocalNetworkSite>());
         }
     }
     
@@ -313,7 +314,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public LocalNetworkSite() {
-            this.connections = new ArrayList<NetworkListResponse.Connection>();
+            this.setConnections(new LazyArrayList<NetworkListResponse.Connection>());
         }
     }
     
@@ -354,6 +355,24 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         */
         public void setName(final String nameValue) {
             this.name = nameValue;
+        }
+        
+        private String networkSecurityGroup;
+        
+        /**
+        * Optional. Name of Network Security Group associated with this subnet.
+        * @return The NetworkSecurityGroup value.
+        */
+        public String getNetworkSecurityGroup() {
+            return this.networkSecurityGroup;
+        }
+        
+        /**
+        * Optional. Name of Network Security Group associated with this subnet.
+        * @param networkSecurityGroupValue The NetworkSecurityGroup value.
+        */
+        public void setNetworkSecurityGroup(final String networkSecurityGroupValue) {
+            this.networkSecurityGroup = networkSecurityGroupValue;
         }
     }
     
@@ -485,6 +504,24 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
             this.label = labelValue;
         }
         
+        private String location;
+        
+        /**
+        * Optional. Gets or sets the virtual network location.
+        * @return The Location value.
+        */
+        public String getLocation() {
+            return this.location;
+        }
+        
+        /**
+        * Optional. Gets or sets the virtual network location.
+        * @param locationValue The Location value.
+        */
+        public void setLocation(final String locationValue) {
+            this.location = locationValue;
+        }
+        
         private String name;
         
         /**
@@ -550,8 +587,8 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public VirtualNetworkSite() {
-            this.dnsServers = new ArrayList<NetworkListResponse.DnsServer>();
-            this.subnets = new ArrayList<NetworkListResponse.Subnet>();
+            this.setDnsServers(new LazyArrayList<NetworkListResponse.DnsServer>());
+            this.setSubnets(new LazyArrayList<NetworkListResponse.Subnet>());
         }
     }
     
@@ -583,7 +620,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         *
         */
         public VPNClientAddressPool() {
-            this.addressPrefixes = new ArrayList<String>();
+            this.setAddressPrefixes(new LazyArrayList<String>());
         }
     }
 }

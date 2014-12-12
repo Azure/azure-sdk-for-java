@@ -32,8 +32,8 @@ public class CheckNameAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
     
     /**
-    * Optional. The result of the availability request.  True if the name is
-    * available, false otherwise
+    * Optional. The result of the availability request indicating if the name
+    * is available.
     * @return The IsAvailable value.
     */
     public boolean isAvailable() {
@@ -41,8 +41,8 @@ public class CheckNameAvailabilityResponse extends OperationResponse {
     }
     
     /**
-    * Optional. The result of the availability request.  True if the name is
-    * available, false otherwise
+    * Optional. The result of the availability request indicating if the name
+    * is available.
     * @param isAvailableValue The IsAvailable value.
     */
     public void setIsAvailable(final boolean isAvailableValue) {
@@ -53,7 +53,7 @@ public class CheckNameAvailabilityResponse extends OperationResponse {
     
     /**
     * Optional. The reason for unavailability, if the requested name is
-    * unavailable
+    * unavailable.
     * @return The Reason value.
     */
     public String getReason() {
@@ -62,7 +62,7 @@ public class CheckNameAvailabilityResponse extends OperationResponse {
     
     /**
     * Optional. The reason for unavailability, if the requested name is
-    * unavailable
+    * unavailable.
     * @param reasonValue The Reason value.
     */
     public void setReason(final String reasonValue) {

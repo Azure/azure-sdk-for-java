@@ -50,8 +50,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* The SQL Database Management API includes operations for get/stop SQL
-* Databases' operations for a subscription.
+* The Azure SQL Database Management API includes operations for getting
+* database operations. Specifically, this API allows you to get a specific
+* operation, or to list all the operations that happened on a specific
+* database or on all databases in the Azure SQL Database Server.
 */
 public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperationOperations {
     /**
@@ -75,14 +77,14 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns information about one operation on a given operation Guid.
-    *
-    * @param serverName Required. The name of the SQL Server on which the
-    * operation was executed.
-    * @param operationGuid Required. The Guid of the SQL Server database
-    * operation to be obtained.
-    * @return Response containing the database operation for a given operation
+    * Returns information about a specific operation by using the operation
     * Guid.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * where the database is hosted.
+    * @param operationGuid Required. The Guid of the Azure SQL Database
+    * operation to be obtained.
+    * @return Represents the database operation for a given operation Guid.
     */
     @Override
     public Future<DatabaseOperationGetResponse> getAsync(final String serverName, final String operationGuid) {
@@ -95,11 +97,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns information about one operation on a given operation Guid.
+    * Returns information about a specific operation by using the operation
+    * Guid.
     *
-    * @param serverName Required. The name of the SQL Server on which the
-    * operation was executed.
-    * @param operationGuid Required. The Guid of the SQL Server database
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * where the database is hosted.
+    * @param operationGuid Required. The Guid of the Azure SQL Database
     * operation to be obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -109,8 +112,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Response containing the database operation for a given operation
-    * Guid.
+    * @return Represents the database operation for a given operation Guid.
     */
     @Override
     public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -134,8 +136,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         }
         
         // Construct URL
+        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations/" + operationGuid.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations/" + operationGuid.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -144,6 +146,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -184,41 +187,6 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             if (serviceResourceElement != null) {
                 DatabaseOperation serviceResourceInstance = new DatabaseOperation();
                 result.setDatabaseOperation(serviceResourceInstance);
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
-                
-                Element selfLinkElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
-                if (selfLinkElement != null) {
-                    String selfLinkInstance;
-                    selfLinkInstance = selfLinkElement.getTextContent();
-                    serviceResourceInstance.setSelfLink(selfLinkInstance);
-                }
-                
-                Element parentLinkElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
-                if (parentLinkElement != null) {
-                    String parentLinkInstance;
-                    parentLinkInstance = parentLinkElement.getTextContent();
-                    serviceResourceInstance.setParentLink(parentLinkInstance);
-                }
                 
                 Element idElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Id");
                 if (idElement != null) {
@@ -296,6 +264,27 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                     serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
                 }
+                
+                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                if (nameElement != null) {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    serviceResourceInstance.setName(nameInstance);
+                }
+                
+                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                if (typeElement != null) {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    serviceResourceInstance.setType(typeInstance);
+                }
+                
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
+                if (stateElement != null) {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    serviceResourceInstance.setState(stateInstance);
+                }
             }
             
             result.setStatusCode(statusCode);
@@ -315,12 +304,14 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns the list database operations for a given server and database.
+    * Retrieves all of the operations that took place on a specific database.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
-    * @param databaseName Required. The name of the Database to be queried.
-    * @return Response containing the list of database operations for a given
-    * server or database.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that hosts the database.
+    * @param databaseName Required. The name of the database for which the
+    * operations should be retrieved.
+    * @return Represents the response containing the list of database
+    * operations for a given server or database.
     */
     @Override
     public Future<DatabaseOperationListResponse> listByDatabaseAsync(final String serverName, final String databaseName) {
@@ -333,10 +324,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns the list database operations for a given server and database.
+    * Retrieves all of the operations that took place on a specific database.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
-    * @param databaseName Required. The name of the Database to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that hosts the database.
+    * @param databaseName Required. The name of the database for which the
+    * operations should be retrieved.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -345,8 +338,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Response containing the list of database operations for a given
-    * server or database.
+    * @return Represents the response containing the list of database
+    * operations for a given server or database.
     */
     @Override
     public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -370,9 +363,9 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         }
         
         // Construct URL
-        String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?";
+        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?";
         url = url + "databaseName=" + URLEncoder.encode(databaseName.trim(), "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -381,6 +374,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -423,41 +417,6 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
                     DatabaseOperation serviceResourceInstance = new DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serviceResourceInstance.setName(nameInstance);
-                    }
-                    
-                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                    if (typeElement != null) {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        serviceResourceInstance.setType(typeInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serviceResourceInstance.setState(stateInstance);
-                    }
-                    
-                    Element selfLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
-                    if (selfLinkElement != null) {
-                        String selfLinkInstance;
-                        selfLinkInstance = selfLinkElement.getTextContent();
-                        serviceResourceInstance.setSelfLink(selfLinkInstance);
-                    }
-                    
-                    Element parentLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
-                    if (parentLinkElement != null) {
-                        String parentLinkInstance;
-                        parentLinkInstance = parentLinkElement.getTextContent();
-                        serviceResourceInstance.setParentLink(parentLinkInstance);
-                    }
                     
                     Element idElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                     if (idElement != null) {
@@ -534,6 +493,27 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         Calendar lastModifyTimeInstance;
                         lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
                     }
                 }
             }
@@ -555,11 +535,13 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns the list database operations for a given server.
+    * Retrieves all of the operations that occured on the Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
-    * @return Response containing the list of database operations for a given
-    * server or database.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
+    * @return Represents the response containing the list of database
+    * operations for a given server or database.
     */
     @Override
     public Future<DatabaseOperationListResponse> listByServerAsync(final String serverName) {
@@ -572,9 +554,11 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     }
     
     /**
-    * Returns the list database operations for a given server.
+    * Retrieves all of the operations that occured on the Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -583,8 +567,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Response containing the list of database operations for a given
-    * server or database.
+    * @return Represents the response containing the list of database
+    * operations for a given server or database.
     */
     @Override
     public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -604,8 +588,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         }
         
         // Construct URL
+        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?" + "contentview=generic";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?" + "contentview=generic";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -614,6 +598,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -656,41 +641,6 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
                     DatabaseOperation serviceResourceInstance = new DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serviceResourceInstance.setName(nameInstance);
-                    }
-                    
-                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                    if (typeElement != null) {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        serviceResourceInstance.setType(typeInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serviceResourceInstance.setState(stateInstance);
-                    }
-                    
-                    Element selfLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
-                    if (selfLinkElement != null) {
-                        String selfLinkInstance;
-                        selfLinkInstance = selfLinkElement.getTextContent();
-                        serviceResourceInstance.setSelfLink(selfLinkInstance);
-                    }
-                    
-                    Element parentLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
-                    if (parentLinkElement != null) {
-                        String parentLinkInstance;
-                        parentLinkInstance = parentLinkElement.getTextContent();
-                        serviceResourceInstance.setParentLink(parentLinkInstance);
-                    }
                     
                     Element idElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                     if (idElement != null) {
@@ -767,6 +717,27 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         Calendar lastModifyTimeInstance;
                         lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
                     }
                 }
             }

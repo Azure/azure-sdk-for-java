@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -132,8 +133,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/resourceextensions";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -142,12 +143,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -274,6 +276,41 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         boolean isJsonExtensionInstance;
                         isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                    }
+                    
+                    Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                    if (isInternalExtensionElement != null && (isInternalExtensionElement.getTextContent() == null || isInternalExtensionElement.getTextContent().isEmpty() == true) == false) {
+                        boolean isInternalExtensionInstance;
+                        isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                    }
+                    
+                    Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                    if (disallowMajorVersionUpgradeElement != null && (disallowMajorVersionUpgradeElement.getTextContent() == null || disallowMajorVersionUpgradeElement.getTextContent().isEmpty() == true) == false) {
+                        boolean disallowMajorVersionUpgradeInstance;
+                        disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
+                    }
+                    
+                    Element supportedOSElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SupportedOS");
+                    if (supportedOSElement != null) {
+                        String supportedOSInstance;
+                        supportedOSInstance = supportedOSElement.getTextContent();
+                        resourceExtensionInstance.setSupportedOS(supportedOSInstance);
+                    }
+                    
+                    Element companyNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "CompanyName");
+                    if (companyNameElement != null) {
+                        String companyNameInstance;
+                        companyNameInstance = companyNameElement.getTextContent();
+                        resourceExtensionInstance.setCompanyName(companyNameInstance);
+                    }
+                    
+                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement != null && (publishedDateElement.getTextContent() == null || publishedDateElement.getTextContent().isEmpty() == true) == false) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                        resourceExtensionInstance.setPublishedDate(publishedDateInstance);
                     }
                 }
             }
@@ -362,8 +399,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -372,12 +409,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -504,6 +542,41 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         boolean isJsonExtensionInstance;
                         isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                    }
+                    
+                    Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                    if (isInternalExtensionElement != null && (isInternalExtensionElement.getTextContent() == null || isInternalExtensionElement.getTextContent().isEmpty() == true) == false) {
+                        boolean isInternalExtensionInstance;
+                        isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                    }
+                    
+                    Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                    if (disallowMajorVersionUpgradeElement != null && (disallowMajorVersionUpgradeElement.getTextContent() == null || disallowMajorVersionUpgradeElement.getTextContent().isEmpty() == true) == false) {
+                        boolean disallowMajorVersionUpgradeInstance;
+                        disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                        resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
+                    }
+                    
+                    Element supportedOSElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SupportedOS");
+                    if (supportedOSElement != null) {
+                        String supportedOSInstance;
+                        supportedOSInstance = supportedOSElement.getTextContent();
+                        resourceExtensionInstance.setSupportedOS(supportedOSInstance);
+                    }
+                    
+                    Element companyNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "CompanyName");
+                    if (companyNameElement != null) {
+                        String companyNameInstance;
+                        companyNameInstance = companyNameElement.getTextContent();
+                        resourceExtensionInstance.setCompanyName(companyNameInstance);
+                    }
+                    
+                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement != null && (publishedDateElement.getTextContent() == null || publishedDateElement.getTextContent().isEmpty() == true) == false) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                        resourceExtensionInstance.setPublishedDate(publishedDateInstance);
                     }
                 }
             }

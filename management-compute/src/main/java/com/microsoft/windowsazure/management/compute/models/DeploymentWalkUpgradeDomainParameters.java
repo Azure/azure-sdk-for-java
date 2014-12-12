@@ -48,4 +48,21 @@ public class DeploymentWalkUpgradeDomainParameters {
     public void setUpgradeDomain(final int upgradeDomainValue) {
         this.upgradeDomain = upgradeDomainValue;
     }
+    
+    /**
+    * Initializes a new instance of the DeploymentWalkUpgradeDomainParameters
+    * class.
+    *
+    */
+    public DeploymentWalkUpgradeDomainParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentWalkUpgradeDomainParameters
+    * class with required arguments.
+    *
+    */
+    public DeploymentWalkUpgradeDomainParameters(int upgradeDomain) {
+        this.setUpgradeDomain(upgradeDomain);
+    }
 }

@@ -1,3 +1,9 @@
+2014.12.09 Version 0.7.0
+ * Refresh client wrappers to latest specifications
+
+2014.08.4 Version 0.6.0
+ * Multiple fixes
+
 2014.04.2 Version 0.5.0
  * Add multiple service management modules
  * Split the SDK into multiple sub-modules

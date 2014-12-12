@@ -72,4 +72,27 @@ public class SshSettingKeyPair {
     public void setPath(final String pathValue) {
         this.path = pathValue;
     }
+    
+    /**
+    * Initializes a new instance of the SshSettingKeyPair class.
+    *
+    */
+    public SshSettingKeyPair() {
+    }
+    
+    /**
+    * Initializes a new instance of the SshSettingKeyPair class with required
+    * arguments.
+    *
+    */
+    public SshSettingKeyPair(String fingerprint, String path) {
+        if (fingerprint == null) {
+            throw new NullPointerException("fingerprint");
+        }
+        if (path == null) {
+            throw new NullPointerException("path");
+        }
+        this.setFingerprint(fingerprint);
+        this.setPath(path);
+    }
 }

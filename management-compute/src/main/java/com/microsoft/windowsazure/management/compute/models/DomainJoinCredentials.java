@@ -90,4 +90,27 @@ public class DomainJoinCredentials {
     public void setUserName(final String userNameValue) {
         this.userName = userNameValue;
     }
+    
+    /**
+    * Initializes a new instance of the DomainJoinCredentials class.
+    *
+    */
+    public DomainJoinCredentials() {
+    }
+    
+    /**
+    * Initializes a new instance of the DomainJoinCredentials class with
+    * required arguments.
+    *
+    */
+    public DomainJoinCredentials(String userName, String password) {
+        if (userName == null) {
+            throw new NullPointerException("userName");
+        }
+        if (password == null) {
+            throw new NullPointerException("password");
+        }
+        this.setUserName(userName);
+        this.setPassword(password);
+    }
 }

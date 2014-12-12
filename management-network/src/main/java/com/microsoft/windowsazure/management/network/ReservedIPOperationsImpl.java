@@ -88,8 +88,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Begin Creating Reserved IP operation creates a reserved
-    * IP from your the subscription.
+    * The Begin Creating Reserved IP operation creates a reserved IP from your
+    * the subscription.
     *
     * @param parameters Required. Parameters supplied to the Begin Creating
     * Reserved IP operation.
@@ -114,8 +114,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Begin Creating Reserved IP operation creates a reserved
-    * IP from your the subscription.
+    * The Begin Creating Reserved IP operation creates a reserved IP from your
+    * the subscription.
     *
     * @param parameters Required. Parameters supplied to the Begin Creating
     * Reserved IP operation.
@@ -157,8 +157,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/reservedips";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -167,13 +167,14 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -196,10 +197,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             reservedIPElement.appendChild(labelElement);
         }
         
-        if (parameters.getAffinityGroup() != null) {
-            Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-            affinityGroupElement.appendChild(requestDoc.createTextNode(parameters.getAffinityGroup()));
-            reservedIPElement.appendChild(affinityGroupElement);
+        if (parameters.getLocation() != null) {
+            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
+            reservedIPElement.appendChild(locationElement);
         }
         
         if (parameters.getServiceName() != null) {
@@ -264,11 +265,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Begin Deleting Reserved IP operation removes a reserved
-    * IP from your the subscription.
+    * The Begin Deleting Reserved IP operation removes a reserved IP from your
+    * the subscription.
     *
     * @param ipName Required. The name of the reserved IP.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -282,8 +283,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Begin Deleting Reserved IP operation removes a reserved
-    * IP from your the subscription.
+    * The Begin Deleting Reserved IP operation removes a reserved IP from your
+    * the subscription.
     *
     * @param ipName Required. The name of the reserved IP.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -294,7 +295,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -315,8 +316,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/reservedips/" + ipName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -325,13 +326,14 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -453,10 +455,16 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
@@ -566,10 +574,16 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             OperationResponse response = client2.getReservedIPsOperations().beginDeletingAsync(ipName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
@@ -603,11 +617,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Get Reserved IP operation retrieves the details for the
-    * virtual IP reserved for the subscription.
+    * The Get Reserved IP operation retrieves the details for the virtual IP
+    * reserved for the subscription.
     *
     * @param ipName Required. The name of the reserved IP to retrieve.
-    * @return Preview Only. A reserved IP associated with your subscription.
+    * @return A reserved IP associated with your subscription.
     */
     @Override
     public Future<NetworkReservedIPGetResponse> getAsync(final String ipName) {
@@ -620,8 +634,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The Get Reserved IP operation retrieves the details for the
-    * virtual IP reserved for the subscription.
+    * The Get Reserved IP operation retrieves the details for the virtual IP
+    * reserved for the subscription.
     *
     * @param ipName Required. The name of the reserved IP to retrieve.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -632,7 +646,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Preview Only. A reserved IP associated with your subscription.
+    * @return A reserved IP associated with your subscription.
     */
     @Override
     public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -652,8 +666,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/reservedips/" + ipName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -662,12 +676,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -728,13 +743,6 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                     result.setLabel(labelInstance);
                 }
                 
-                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(reservedIPElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                if (affinityGroupElement != null) {
-                    String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
-                    result.setAffinityGroup(affinityGroupInstance);
-                }
-                
                 Element stateElement = XmlUtility.getElementByTagNameNS(reservedIPElement, "http://schemas.microsoft.com/windowsazure", "State");
                 if (stateElement != null) {
                     String stateInstance;
@@ -762,6 +770,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                     deploymentNameInstance = deploymentNameElement.getTextContent();
                     result.setDeploymentName(deploymentNameInstance);
                 }
+                
+                Element locationElement = XmlUtility.getElementByTagNameNS(reservedIPElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                if (locationElement != null) {
+                    String locationInstance;
+                    locationInstance = locationElement.getTextContent();
+                    result.setLocation(locationInstance);
+                }
             }
             
             result.setStatusCode(statusCode);
@@ -781,11 +796,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The List Reserved IP operation retrieves all of the virtual
-    * IPs reserved for the subscription.
+    * The List Reserved IP operation retrieves all of the virtual IPs reserved
+    * for the subscription.
     *
-    * @return Preview Only. The response structure for the Server List
-    * operation.
+    * @return The response structure for the Server List operation.
     */
     @Override
     public Future<NetworkReservedIPListResponse> listAsync() {
@@ -798,8 +812,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     }
     
     /**
-    * Preview Only. The List Reserved IP operation retrieves all of the virtual
-    * IPs reserved for the subscription.
+    * The List Reserved IP operation retrieves all of the virtual IPs reserved
+    * for the subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -809,8 +823,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Preview Only. The response structure for the Server List
-    * operation.
+    * @return The response structure for the Server List operation.
     */
     @Override
     public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -826,8 +839,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/reservedips";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -836,12 +849,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -907,13 +921,6 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         reservedIPInstance.setLabel(labelInstance);
                     }
                     
-                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(reservedIPsElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                    if (affinityGroupElement != null) {
-                        String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement.getTextContent();
-                        reservedIPInstance.setAffinityGroup(affinityGroupInstance);
-                    }
-                    
                     Element stateElement = XmlUtility.getElementByTagNameNS(reservedIPsElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null) {
                         String stateInstance;
@@ -940,6 +947,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         String deploymentNameInstance;
                         deploymentNameInstance = deploymentNameElement.getTextContent();
                         reservedIPInstance.setDeploymentName(deploymentNameInstance);
+                    }
+                    
+                    Element locationElement = XmlUtility.getElementByTagNameNS(reservedIPsElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        reservedIPInstance.setLocation(locationInstance);
                     }
                 }
             }

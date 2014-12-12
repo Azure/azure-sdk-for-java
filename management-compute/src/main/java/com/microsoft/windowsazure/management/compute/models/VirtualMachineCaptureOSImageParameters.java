@@ -116,4 +116,29 @@ public class VirtualMachineCaptureOSImageParameters {
     public void setTargetImageName(final String targetImageNameValue) {
         this.targetImageName = targetImageNameValue;
     }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineCaptureOSImageParameters
+    * class.
+    *
+    */
+    public VirtualMachineCaptureOSImageParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineCaptureOSImageParameters
+    * class with required arguments.
+    *
+    */
+    public VirtualMachineCaptureOSImageParameters(PostCaptureAction postCaptureAction, String targetImageLabel, String targetImageName) {
+        if (targetImageLabel == null) {
+            throw new NullPointerException("targetImageLabel");
+        }
+        if (targetImageName == null) {
+            throw new NullPointerException("targetImageName");
+        }
+        this.setPostCaptureAction(postCaptureAction);
+        this.setTargetImageLabel(targetImageLabel);
+        this.setTargetImageName(targetImageName);
+    }
 }

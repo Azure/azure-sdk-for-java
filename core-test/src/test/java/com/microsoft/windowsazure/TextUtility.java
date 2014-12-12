@@ -44,7 +44,7 @@ public final class TextUtility
             return null;
         }
 
-        if (type.equals("System.Int32"))
+        if (type.equals("System.Int32")||type.equals("System.Int32?"))
         {
             return DatatypeConverter.parseInt(input);
         }
@@ -56,7 +56,7 @@ public final class TextUtility
         {
             if (input.equals("DateTime.Now"))
             {
-            	return Calendar.getInstance();
+                return Calendar.getInstance();
             }
 
             return DatatypeConverter.parseDateTime(input);
@@ -78,6 +78,10 @@ public final class TextUtility
         if (csharpType.equals("System.Int32"))
         {
             return int.class;
+        }
+        if (csharpType.equals("System.Int32?"))
+        {
+            return Integer.class;
         }
         else if (csharpType.equals("System.String"))
         {

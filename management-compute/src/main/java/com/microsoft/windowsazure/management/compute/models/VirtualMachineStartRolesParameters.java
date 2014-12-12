@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,6 @@ public class VirtualMachineStartRolesParameters {
     *
     */
     public VirtualMachineStartRolesParameters() {
-        this.roles = new ArrayList<String>();
+        this.setRoles(new LazyArrayList<String>());
     }
 }

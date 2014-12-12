@@ -14,18 +14,26 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
 import com.microsoft.windowsazure.Configuration;
+
 import java.io.IOException;
 import java.net.URI;
+
+import org.apache.http.impl.client.LaxRedirectStrategy;
 
 /**
  * Provides functionality to create a service management configuration.
  * 
  */
 public final class ManagementConfiguration {
+    
+    /**
+     * Instantiates a new management configuration.
+     */
     private ManagementConfiguration() {
     }
 
@@ -57,30 +65,44 @@ public final class ManagementConfiguration {
      * 
      */
     public static final String URI = "management.uri";
+    
+    /**
+     * Defines the if the tests are run mocked.
+     * 
+     */
+    public static final String AZURE_TEST_MODE = "test.mode";
 
     /**
      * Defines the subscription ID of the Windows Azure account.
      */
     public static final String SUBSCRIPTION_ID = "management.subscription.id";
-
+    
+    /**
+     * Defines the cloud service name for the scheduler. 
+     */
+    public static final String CLOUD_SERVICE_NAME = "management.cloud.service.name";
+    
+    /**
+     * Defines the job collection name for the scheduler.
+     */
+    public static final String JOB_COLLECTION_NAME = "management.job.collection.name";
+    
     /**
      * Creates a service management configuration using specified URI, and
      * subscription ID.
-     * 
-     * @param subscriptionId
-     *            A <code>String</code> object that represents the subscription
+     *
+     * @param uri            A <code>URI</code> object that represents the URI of the 
+     *            service end point. 
+     * @param subscriptionId            A <code>String</code> object that represents the subscription
      *            ID.
-     * @param keyStoreLocation
-     *            A <code>String</code> object that represents the key store
+     * @param keyStoreLocation            A <code>String</code> object that represents the key store
      *            location.
-     * @param keyStorePassword
-     *            A <code>String</code> object that represents the key store
+     * @param keyStorePassword            A <code>String</code> object that represents the key store
      *            password.
      * @return the configuration A <code>Configuration</code> object that can be
      *         used when creating an instance of the
      *         <code>ManagementContract</code> class.
-     * @throws java.io.IOException
-     *             If the key store location or its contents is invalid.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static Configuration configure(URI uri, String subscriptionId,
             String keyStoreLocation, String keyStorePassword)
@@ -92,7 +114,34 @@ public final class ManagementConfiguration {
     /**
      * Creates a service management configuration using specified URI, and
      * subscription ID.
-     * 
+     *
+     * @param uri the uri
+     * @param subscriptionId            A <code>String</code> object that represents the subscription
+     *            ID.
+     * @param keyStoreLocation            A <code>String</code> object that represents the key store
+     *            location.
+     * @param keyStorePassword            A <code>String</code> object that represents the key store
+     *            password.
+     * @param type            Type of key store.
+     * @return the configuration A <code>Configuration</code> object that can be
+     *         used when creating an instance of the
+     *         <code>ManagementContract</code> class.
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public static Configuration configure(URI uri, String subscriptionId,
+            String keyStoreLocation, String keyStorePassword, KeyStoreType type)
+            throws IOException {
+        return configure(null, Configuration.getInstance(), uri, subscriptionId,
+                keyStoreLocation, keyStorePassword, type);
+    }
+
+    /**
+     * Creates a service management configuration using specified URI, and
+     * subscription ID.
+     *
+     * @param URI
+     *            A <code>URI</code> object that represents URI of the service
+     *            end point.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription
      *            ID.
@@ -104,6 +153,12 @@ public final class ManagementConfiguration {
      *            password.
      * @param type
      *            Type of key store.
+     * @param cloudServiceName for
+     *            A <code>String</code> object that represents the cloud service name
+     *            for scheduler job.
+     * @param jobCollectionName
+     *            A <code>String</code> object that represents the job collection
+     *            name for scheduler job.
      * @return the configuration A <code>Configuration</code> object that can be
      *         used when creating an instance of the
      *         <code>ManagementContract</code> class.
@@ -111,32 +166,28 @@ public final class ManagementConfiguration {
      *             If the key store location or its contents is invalid.
      */
     public static Configuration configure(URI uri, String subscriptionId,
-            String keyStoreLocation, String keyStorePassword, KeyStoreType type)
+            String keyStoreLocation, String keyStorePassword, KeyStoreType type, String cloudServiceName, String jobCollectionName)
             throws IOException {
         return configure(null, Configuration.getInstance(), uri, subscriptionId,
-                keyStoreLocation, keyStorePassword, type);
+                keyStoreLocation, keyStorePassword, type, cloudServiceName, jobCollectionName);
     }
 
     /**
      * Creates a service management configuration with specified parameters.
-     * 
-     * @param profile
-     *            A <code>String</code> object that represents the profile.
-     * @param configuration
-     *            A previously instantiated <code>Configuration</code> object.
-     * @param subscriptionId
-     *            A <code>String</code> object that represents the subscription
+     *
+     * @param profile            A <code>String</code> object that represents the profile.
+     * @param configuration            A previously instantiated <code>Configuration</code> object.
+     * @param uri            A <code>URI</code> object that represents the URI of the 
+     *            service end point.
+     * @param subscriptionId            A <code>String</code> object that represents the subscription
      *            ID.
-     * @param keyStoreLocation
-     *            the key store location
-     * @param keyStorePassword
-     *            A <code>String</code> object that represents the password of
+     * @param keyStoreLocation            the key store location
+     * @param keyStorePassword            A <code>String</code> object that represents the password of
      *            the keystore.
      * @return A <code>Configuration</code> object that can be used when
      *         creating an instance of the <code>ManagementContract</code>
      *         class.
-     * @throws java.io.IOException
-     *             If the key store location or its contents is invalid.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static Configuration configure(String profile,
             Configuration configuration, URI uri, String subscriptionId,
@@ -159,31 +210,29 @@ public final class ManagementConfiguration {
                         new KeyStoreCredential(keyStoreLocation,
                                 keyStorePassword)));
 
+        configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
+                new LaxRedirectStrategy());
+        
         return configuration;
     }
 
     /**
      * Creates a service management configuration with specified parameters.
-     * 
-     * @param profile
-     *            A <code>String</code> object that represents the profile.
-     * @param configuration
-     *            A previously instantiated <code>Configuration</code> object.
-     * @param subscriptionId
-     *            A <code>String</code> object that represents the subscription
+     *
+     * @param profile            A <code>String</code> object that represents the profile.
+     * @param configuration            A previously instantiated <code>Configuration</code> object.
+     * @param uri            A <code>URI</code> object that represents the URI of the service
+     *            end point.
+     * @param subscriptionId            A <code>String</code> object that represents the subscription
      *            ID.
-     * @param keyStoreLocation
-     *            the key store location
-     * @param keyStorePassword
-     *            A <code>String</code> object that represents the password of
+     * @param keyStoreLocation            the key store location
+     * @param keyStorePassword            A <code>String</code> object that represents the password of
      *            the keystore.
-     * @param keyStoreType
-     *            The type of key store.
+     * @param keyStoreType            The type of key store.
      * @return A <code>Configuration</code> object that can be used when
      *         creating an instance of the <code>ManagementContract</code>
      *         class.
-     * @throws java.io.IOException
-     *             If the key store location or its contents is invalid.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static Configuration configure(String profile,
             Configuration configuration, URI uri, String subscriptionId,
@@ -208,7 +257,47 @@ public final class ManagementConfiguration {
                 subscriptionId, keyStoreCredential);
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
                 cloudCredentials);
+        
+        configuration.setProperty(profile + ApacheConfigurationProperties.PROPERTY_REDIRECT_STRATEGY,
+                new LaxRedirectStrategy());
 
         return configuration;
+    }
+    
+    /**
+     * Creates a service management configuration for the scheduler.
+     *
+     * @param profile            A <code>String</code> object that represents the profile.
+     * @param configuration            A previously instantiated <code>Configuration</code> object.
+     * @param uri            A <code>URI</code> object that represents the URI of the service
+     *            end point.
+     * @param subscriptionId            A <code>String</code> object that represents the subscription
+     *            ID.
+     * @param keyStoreLocation            A <code>String</code> object that represents the key store location
+     * @param keyStorePassword            A <code>String</code> object that represents the password of
+     *            the keystore.
+     * @param keyStoreType            The type of key store.
+     * @param cloudServiceName            A <code>String</code> object that represents the name of the cloud service. 
+     * @param jobCollectionName           A <code>String</code> object that represents the name of the job collection. 
+     *            
+     * @return A <code>Configuration</code> object that can be used when
+     *         creating an instance of the <code>ManagementContract</code>
+     *         class.
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public static Configuration configure(String profile,
+    Configuration configuration, URI uri, String subscriptionId,
+    String keyStoreLocation, String keyStorePassword, KeyStoreType keyStoreType, String cloudServiceName, String jobCollectionName) throws IOException
+    {
+        if (profile == null) {
+            profile = "";
+        } else if (profile.length() != 0 && !profile.endsWith(".")) {
+            profile = profile + ".";
+        }
+        
+        Configuration resultConfiguration = configure(profile, configuration, uri, subscriptionId, keyStoreLocation, keyStorePassword, keyStoreType);
+        resultConfiguration.setProperty(profile+ManagementConfiguration.CLOUD_SERVICE_NAME, cloudServiceName);
+        resultConfiguration.setProperty(profile+ManagementConfiguration.JOB_COLLECTION_NAME, jobCollectionName);
+        return resultConfiguration;
     }
 }

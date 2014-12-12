@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     *
     */
     public VirtualMachineUpdateLoadBalancedSetParameters() {
-        this.loadBalancedEndpoints = new ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>();
+        this.setLoadBalancedEndpoints(new LazyArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>());
     }
     
     /**
@@ -80,6 +81,24 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         */
         public void setEnableDirectServerReturn(final Boolean enableDirectServerReturnValue) {
             this.enableDirectServerReturn = enableDirectServerReturnValue;
+        }
+        
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this endpoint.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this endpoint.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
         }
         
         private String loadBalancedEndpointSetName;
@@ -109,6 +128,45 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         */
         public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue) {
             this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
+        }
+        
+        private String loadBalancerDistribution;
+        
+        /**
+        * Optional. Load Balancer Distribution for this endpoint.
+        * @return The LoadBalancerDistribution value.
+        */
+        public String getLoadBalancerDistribution() {
+            return this.loadBalancerDistribution;
+        }
+        
+        /**
+        * Optional. Load Balancer Distribution for this endpoint.
+        * @param loadBalancerDistributionValue The LoadBalancerDistribution
+        * value.
+        */
+        public void setLoadBalancerDistribution(final String loadBalancerDistributionValue) {
+            this.loadBalancerDistribution = loadBalancerDistributionValue;
+        }
+        
+        private String loadBalancerName;
+        
+        /**
+        * Optional. Optional. Specify the name of an internal load balancer if
+        * this endpoint shall not be exposed on the default load balancer.
+        * @return The LoadBalancerName value.
+        */
+        public String getLoadBalancerName() {
+            return this.loadBalancerName;
+        }
+        
+        /**
+        * Optional. Optional. Specify the name of an internal load balancer if
+        * this endpoint shall not be exposed on the default load balancer.
+        * @param loadBalancerNameValue The LoadBalancerName value.
+        */
+        public void setLoadBalancerName(final String loadBalancerNameValue) {
+            this.loadBalancerName = loadBalancerNameValue;
         }
         
         private LoadBalancerProbe loadBalancerProbe;
@@ -280,7 +338,20 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         *
         */
         public InputEndpoint() {
-            this.rules = new ArrayList<AccessControlListRule>();
+            this.setRules(new LazyArrayList<AccessControlListRule>());
+        }
+        
+        /**
+        * Initializes a new instance of the InputEndpoint class with required
+        * arguments.
+        *
+        */
+        public InputEndpoint(String loadBalancedEndpointSetName) {
+            this();
+            if (loadBalancedEndpointSetName == null) {
+                throw new NullPointerException("loadBalancedEndpointSetName");
+            }
+            this.setLoadBalancedEndpointSetName(loadBalancedEndpointSetName);
         }
     }
 }

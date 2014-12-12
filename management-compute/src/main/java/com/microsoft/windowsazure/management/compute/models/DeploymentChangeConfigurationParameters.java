@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
@@ -163,6 +164,19 @@ public class DeploymentChangeConfigurationParameters {
     *
     */
     public DeploymentChangeConfigurationParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new LazyHashMap<String, String>());
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentChangeConfigurationParameters
+    * class with required arguments.
+    *
+    */
+    public DeploymentChangeConfigurationParameters(String configuration) {
+        this();
+        if (configuration == null) {
+            throw new NullPointerException("configuration");
+        }
+        this.setConfiguration(configuration);
     }
 }

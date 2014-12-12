@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage;
 
+import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -105,13 +106,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Create Storage Account operation creates a new storage account in
-    * Windows Azure.  (see
+    * The Begin Creating Storage Account operation creates a new storage
+    * account in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Required. Parameters supplied to the Create Storage
-    * Account operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Storage Account operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -126,13 +127,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Create Storage Account operation creates a new storage account in
-    * Windows Azure.  (see
+    * The Begin Creating Storage Account operation creates a new storage
+    * account in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Required. Parameters supplied to the Create Storage
-    * Account operation.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Storage Account operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -192,8 +193,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -202,13 +203,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -223,10 +225,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         createStorageServiceInputElement.appendChild(serviceNameElement);
         
-        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
-        createStorageServiceInputElement.appendChild(labelElement);
-        
         if (parameters.getDescription() != null) {
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
@@ -239,11 +237,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             createStorageServiceInputElement.appendChild(emptyElement);
         }
         
-        if (parameters.getLocation() != null) {
-            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
-            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
-            createStorageServiceInputElement.appendChild(locationElement);
-        }
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
+        createStorageServiceInputElement.appendChild(labelElement);
         
         if (parameters.getAffinityGroup() != null) {
             Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
@@ -251,27 +247,37 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             createStorageServiceInputElement.appendChild(affinityGroupElement);
         }
         
-        Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-        geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
-        createStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
+        if (parameters.getLocation() != null) {
+            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
+            createStorageServiceInputElement.appendChild(locationElement);
+        }
         
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
             }
-            createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
+        }
+        
+        if (parameters.getAccountType() != null) {
+            Element accountTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountType");
+            accountTypeElement.appendChild(requestDoc.createTextNode(parameters.getAccountType()));
+            createStorageServiceInputElement.appendChild(accountTypeElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -325,7 +331,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     
     /**
     * The Check Name Availability operation checks if a storage account name is
-    * available for use in Windows Azure.  (see
+    * available for use in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
@@ -345,7 +351,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     
     /**
     * The Check Name Availability operation checks if a storage account name is
-    * available for use in Windows Azure.  (see
+    * available for use in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
@@ -379,8 +385,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/operations/isavailable/" + accountName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/operations/isavailable/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -389,12 +395,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -467,7 +474,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     
     /**
     * The Create Storage Account operation creates a new storage account in
-    * Windows Azure.  (see
+    * Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
@@ -478,10 +485,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public Future<OperationStatusResponse> createAsync(final StorageAccountCreateParameters parameters) {
@@ -495,7 +501,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     
     /**
     * The Create Storage Account operation creates a new storage account in
-    * Windows Azure.  (see
+    * Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
@@ -518,10 +524,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * inprogress, or has failed. Note that this status is distinct from the
     * HTTP status code returned for the Get Operation Status operation itself.
     * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
+    * HTTP status code for the successful request. If the asynchronous
     * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
+    * the failed request and error information regarding the failure.
     */
     @Override
     public OperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
@@ -542,10 +547,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             OperationResponse response = client2.getStorageAccountsOperations().beginCreatingAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
@@ -579,12 +590,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Delete Storage Account operation deletes the specifiedstorage account
-    * from Windows Azure.  (see
+    * The Delete Storage Account operation deletes the specified storage
+    * account from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param accountName Required. The name of the storage account.
+    * @param accountName Required. The name of the storage account to be
+    * deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -599,12 +611,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Delete Storage Account operation deletes the specifiedstorage account
-    * from Windows Azure.  (see
+    * The Delete Storage Account operation deletes the specified storage
+    * account from Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param accountName Required. The name of the storage account.
+    * @param accountName Required. The name of the storage account to be
+    * deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -630,8 +643,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/" + accountName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -640,12 +653,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -691,7 +705,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param accountName Required. Name of the storage account to get.
+    * @param accountName Required. Name of the storage account to get
+    * properties for.
     * @return The Get Storage Account Properties operation response.
     */
     @Override
@@ -710,7 +725,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param accountName Required. Name of the storage account to get.
+    * @param accountName Required. Name of the storage account to get
+    * properties for.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -741,8 +757,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/" + accountName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -751,12 +767,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -861,13 +878,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         }
                     }
                     
-                    Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                    if (geoReplicationEnabledElement != null) {
-                        boolean geoReplicationEnabledInstance;
-                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
-                        storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
-                    }
-                    
                     Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                     if (geoPrimaryRegionElement != null) {
                         String geoPrimaryRegionInstance;
@@ -901,6 +911,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         GeoRegionStatus statusOfSecondaryInstance;
                         statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
                         storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                    }
+                    
+                    Element accountTypeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AccountType");
+                    if (accountTypeElement != null) {
+                        String accountTypeInstance;
+                        accountTypeInstance = accountTypeElement.getTextContent();
+                        storageServicePropertiesInstance.setAccountType(accountTypeInstance);
                     }
                 }
                 
@@ -987,8 +1004,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/" + accountName.trim() + "/keys";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim() + "/keys";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -997,12 +1014,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1126,8 +1144,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1136,12 +1154,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1248,13 +1267,6 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             }
                         }
                         
-                        Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                        if (geoReplicationEnabledElement != null) {
-                            boolean geoReplicationEnabledInstance;
-                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
-                            storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
-                        }
-                        
                         Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                         if (geoPrimaryRegionElement != null) {
                             String geoPrimaryRegionInstance;
@@ -1288,6 +1300,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             GeoRegionStatus statusOfSecondaryInstance;
                             statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
                             storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                        }
+                        
+                        Element accountTypeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AccountType");
+                        if (accountTypeElement != null) {
+                            String accountTypeInstance;
+                            accountTypeInstance = accountTypeElement.getTextContent();
+                            storageServicePropertiesInstance.setAccountType(accountTypeInstance);
                         }
                     }
                     
@@ -1382,8 +1401,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/" + parameters.getName().trim() + "/keys" + "?" + "action=regenerate";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + parameters.getName().trim() + "/keys" + "?" + "action=regenerate";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1392,13 +1411,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1497,9 +1517,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Update Storage Account operation updates the label, the description,
-    * and enables or disables the geo-replication status for a storage account
-    * in Windows Azure.  (see
+    * The Update Storage Account operation updates the label and the
+    * description, and enables or disables the geo-replication status for a
+    * storage account in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
@@ -1520,9 +1540,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     }
     
     /**
-    * The Update Storage Account operation updates the label, the description,
-    * and enables or disables the geo-replication status for a storage account
-    * in Windows Azure.  (see
+    * The Update Storage Account operation updates the label and the
+    * description, and enables or disables the geo-replication status for a
+    * storage account in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
@@ -1579,8 +1599,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/storageservices/" + accountName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/storageservices/" + accountName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1589,13 +1609,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1624,29 +1645,31 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             updateStorageServiceInputElement.appendChild(labelElement);
         }
         
-        if (parameters.isGeoReplicationEnabled() != null) {
-            Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-            geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
-            updateStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
+        if (parameters.getExtendedProperties() != null) {
+            if (parameters.getExtendedProperties() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtendedProperties()).isInitialized()) {
+                Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+                for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
+                    String extendedPropertiesKey = entry.getKey();
+                    String extendedPropertiesValue = entry.getValue();
+                    Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                    extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                    
+                    Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                    extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                    
+                    Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                    extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                    extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
+                }
+                updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
+            }
         }
         
-        if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
-                String extendedPropertiesKey = entry.getKey();
-                String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
-                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
-                
-                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
-                
-                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
-            }
-            updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
+        if (parameters.getAccountType() != null) {
+            Element accountTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountType");
+            accountTypeElement.appendChild(requestDoc.createTextNode(parameters.getAccountType()));
+            updateStorageServiceInputElement.appendChild(accountTypeElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);

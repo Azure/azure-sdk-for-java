@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.network.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* A standard storage response including an HTTP status code and request ID.
+* A standard service response including an HTTP status code and request ID.
 */
 public class GatewayOperationResponse extends OperationResponse {
     private String operationId;

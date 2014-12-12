@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the database update response.
+* Contains the response from a request to Update Database.
 */
 public class DatabaseUpdateResponse extends OperationResponse {
     private Database database;
     
     /**
-    * Optional.
+    * Optional. The database object returned from the call to Update Database
+    * reflecting the changes made.
     * @return The Database value.
     */
     public Database getDatabase() {
@@ -40,7 +41,8 @@ public class DatabaseUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. The database object returned from the call to Update Database
+    * reflecting the changes made.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final Database databaseValue) {
