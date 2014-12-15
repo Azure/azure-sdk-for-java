@@ -39,7 +39,7 @@ import com.microsoft.azure.management.websites.models.WorkerSizeOptions;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
-import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -743,7 +743,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms/" + webHostingPlanName.trim() + "/metrics" + "?";
         url = url + "api-version=" + "2014-06-01";
         if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0) {
-            url = url + "&" + "names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
+            url = url + "&" + "names=" + URLEncoder.encode(CollectionStringBuilder.join(parameters.getMetricNames()), "UTF-8");
         }
         if (parameters.getStartTime() != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
