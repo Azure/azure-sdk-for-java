@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.core.utils;
 
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
