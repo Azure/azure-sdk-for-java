@@ -19,12 +19,13 @@ import com.sun.deploy.util.StringUtils;
 import java.util.List;
 
 public class CollectionStringBuilder {
+    private static final String DEFAULT_SEPARATOR = ",";
     private final StringBuilder sb;
     private static String separator;
 
     public CollectionStringBuilder() {
         sb = new StringBuilder();
-        separator = ",";
+        separator = DEFAULT_SEPARATOR;
     }
 
     public CollectionStringBuilder(String separator) {
