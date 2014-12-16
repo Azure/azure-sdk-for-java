@@ -323,10 +323,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         
         /**
         * Optional. An object that contains information on the current status
-        * of the operation. The object returned has the following XML format:
-        * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
-        * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
-        * </OperationStatus>. Possible values of the Status element,
+        * of the operation. Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, or
         * InProgress.
         * @return The OperationStatus value.
@@ -337,10 +334,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         
         /**
         * Optional. An object that contains information on the current status
-        * of the operation. The object returned has the following XML format:
-        * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
-        * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
-        * </OperationStatus>. Possible values of the Status element,
+        * of the operation. Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, or
         * InProgress.
         * @param operationStatusValue The OperationStatus value.

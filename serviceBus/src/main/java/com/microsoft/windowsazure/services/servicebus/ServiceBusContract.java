@@ -587,9 +587,8 @@ public interface ServiceBusContract extends
      * @param topicName
      *            A <code>String</code> object that represents the name of the
      *            topic.
-     * @param queueName
-     *            A <code>String</code> object that represents the name of the
-     *            queue.
+     * @param subscriptionName
+     *            The subscription name.
      * @param messageId
      *            A <code>String</code> object that represents the ID of the
      *            message.

@@ -139,7 +139,7 @@ public final class ManagementConfiguration {
      * Creates a service management configuration using specified URI, and
      * subscription ID.
      *
-     * @param URI
+     * @param uri
      *            A <code>URI</code> object that represents URI of the service
      *            end point.
      * @param subscriptionId

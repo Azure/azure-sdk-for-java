@@ -102,6 +102,8 @@ public class DomainJoinCredentials {
     * Initializes a new instance of the DomainJoinCredentials class with
     * required arguments.
     *
+    * @param userName The user name.
+    * @param password The password.
     */
     public DomainJoinCredentials(String userName, String password) {
         if (userName == null) {

@@ -86,7 +86,7 @@ public class BrokeredMessage {
     /**
      * Internal
      * 
-     * @param properties
+     * @param properties The properties.
      */
     public BrokeredMessage(BrokerProperties properties) {
         this.brokerProperties = properties;

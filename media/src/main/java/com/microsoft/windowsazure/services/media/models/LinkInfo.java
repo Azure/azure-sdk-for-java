@@ -26,7 +26,9 @@ public class LinkInfo<T extends ODataEntity<?>> {
     private final LinkType rawLink;
 
     /**
-     * Construct a new {@link LinkInfo} instance
+     * Construct a new LinkInfo instance
+     * 
+     * @param rawLink The raw link.
      */
     public LinkInfo(LinkType rawLink) {
         this.rawLink = rawLink;

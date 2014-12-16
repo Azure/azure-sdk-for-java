@@ -232,7 +232,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "name", scope = PersonType.class)
     public JAXBElement<String> createPersonTypeName(String value) {
@@ -242,7 +242,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "email", scope = PersonType.class)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
@@ -253,7 +253,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UriType }{@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "uri", scope = PersonType.class)
     public JAXBElement<UriType> createPersonTypeUri(UriType value) {
@@ -264,7 +264,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "title", scope = EntryType.class)
     public JAXBElement<TextType> createEntryTypeTitle(TextType value) {
@@ -275,7 +275,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CategoryType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "category", scope = EntryType.class)
     public JAXBElement<CategoryType> createEntryTypeCategory(CategoryType value) {
@@ -286,7 +286,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "author", scope = EntryType.class)
     public JAXBElement<PersonType> createEntryTypeAuthor(PersonType value) {
@@ -297,7 +297,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "summary", scope = EntryType.class)
     public JAXBElement<TextType> createEntryTypeSummary(TextType value) {
@@ -307,7 +307,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IdType }{@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "id", scope = EntryType.class)
     public JAXBElement<IdType> createEntryTypeId(IdType value) {
@@ -318,7 +319,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ContentType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "content", scope = EntryType.class)
     public JAXBElement<ContentType> createEntryTypeContent(ContentType value) {
@@ -329,7 +331,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LinkType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "link", scope = EntryType.class)
     public JAXBElement<LinkType> createEntryTypeLink(LinkType value) {
@@ -340,7 +343,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "contributor", scope = EntryType.class)
     public JAXBElement<PersonType> createEntryTypeContributor(PersonType value) {
@@ -351,7 +354,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DateTimeType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "updated", scope = EntryType.class)
     public JAXBElement<DateTimeType> createEntryTypeUpdated(DateTimeType value) {
@@ -362,7 +366,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "source", scope = EntryType.class)
     public JAXBElement<TextType> createEntryTypeSource(TextType value) {
@@ -373,7 +377,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "rights", scope = EntryType.class)
     public JAXBElement<TextType> createEntryTypeRights(TextType value) {
@@ -384,7 +389,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DateTimeType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "published", scope = EntryType.class)
     public JAXBElement<DateTimeType> createEntryTypePublished(DateTimeType value) {
@@ -395,7 +401,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CategoryType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "category", scope = FeedType.class)
     public JAXBElement<CategoryType> createFeedTypeCategory(CategoryType value) {
@@ -406,7 +413,7 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "title", scope = FeedType.class)
     public JAXBElement<TextType> createFeedTypeTitle(TextType value) {
@@ -417,7 +424,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "author", scope = FeedType.class)
     public JAXBElement<PersonType> createFeedTypeAuthor(PersonType value) {
@@ -427,7 +435,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IdType }{@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "id", scope = FeedType.class)
     public JAXBElement<IdType> createFeedTypeId(IdType value) {
@@ -438,7 +447,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link EntryType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "entry", scope = FeedType.class)
     public JAXBElement<EntryType> createFeedTypeEntry(EntryType value) {
@@ -449,7 +459,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "contributor", scope = FeedType.class)
     public JAXBElement<PersonType> createFeedTypeContributor(PersonType value) {
@@ -460,7 +471,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DateTimeType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "updated", scope = FeedType.class)
     public JAXBElement<DateTimeType> createFeedTypeUpdated(DateTimeType value) {
@@ -471,7 +483,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GeneratorType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "generator", scope = FeedType.class)
     public JAXBElement<GeneratorType> createFeedTypeGenerator(
@@ -483,7 +496,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "subtitle", scope = FeedType.class)
     public JAXBElement<TextType> createFeedTypeSubtitle(TextType value) {
@@ -494,7 +508,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LogoType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "logo", scope = FeedType.class)
     public JAXBElement<LogoType> createFeedTypeLogo(LogoType value) {
@@ -505,7 +520,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IconType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "icon", scope = FeedType.class)
     public JAXBElement<IconType> createFeedTypeIcon(IconType value) {
@@ -516,7 +532,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LinkType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "link", scope = FeedType.class)
     public JAXBElement<LinkType> createFeedTypeLink(LinkType value) {
@@ -527,7 +544,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "rights", scope = FeedType.class)
     public JAXBElement<TextType> createFeedTypeRights(TextType value) {
@@ -538,7 +556,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "title", scope = SourceType.class)
     public JAXBElement<TextType> createSourceTypeTitle(TextType value) {
@@ -549,7 +568,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CategoryType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "category", scope = SourceType.class)
     public JAXBElement<CategoryType> createSourceTypeCategory(CategoryType value) {
@@ -560,7 +580,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IconType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "icon", scope = SourceType.class)
     public JAXBElement<IconType> createSourceTypeIcon(IconType value) {
@@ -571,7 +592,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "author", scope = SourceType.class)
     public JAXBElement<PersonType> createSourceTypeAuthor(PersonType value) {
@@ -582,7 +604,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LogoType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "logo", scope = SourceType.class)
     public JAXBElement<LogoType> createSourceTypeLogo(LogoType value) {
@@ -592,7 +615,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IdType }{@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "id", scope = SourceType.class)
     public JAXBElement<IdType> createSourceTypeId(IdType value) {
@@ -603,7 +627,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LinkType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "link", scope = SourceType.class)
     public JAXBElement<LinkType> createSourceTypeLink(LinkType value) {
@@ -614,7 +639,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PersonType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "contributor", scope = SourceType.class)
     public JAXBElement<PersonType> createSourceTypeContributor(PersonType value) {
@@ -625,7 +651,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DateTimeType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "updated", scope = SourceType.class)
     public JAXBElement<DateTimeType> createSourceTypeUpdated(DateTimeType value) {
@@ -636,7 +663,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GeneratorType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "generator", scope = SourceType.class)
     public JAXBElement<GeneratorType> createSourceTypeGenerator(
@@ -648,7 +676,8 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "rights", scope = SourceType.class)
     public JAXBElement<TextType> createSourceTypeRights(TextType value) {
@@ -659,12 +688,12 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }
      * {@code >}
-     * 
+     * @param value The value.
+     * @return the JAXB element.
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2005/Atom", name = "subtitle", scope = SourceType.class)
     public JAXBElement<TextType> createSourceTypeSubtitle(TextType value) {
         return new JAXBElement<TextType>(FEED_TYPE_SUBTITLE_QNAME,
                 TextType.class, SourceType.class, value);
     }
-
 }

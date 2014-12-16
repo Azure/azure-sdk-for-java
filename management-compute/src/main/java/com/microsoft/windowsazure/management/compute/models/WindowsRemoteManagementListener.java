@@ -84,6 +84,7 @@ public class WindowsRemoteManagementListener {
     * Initializes a new instance of the WindowsRemoteManagementListener class
     * with required arguments.
     *
+    * @param listenerType The listener type.
     */
     public WindowsRemoteManagementListener(VirtualMachineWindowsRemoteManagementListenerType listenerType) {
         this.setListenerType(listenerType);

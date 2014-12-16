@@ -260,6 +260,7 @@ public class VirtualMachineCreateParameters {
     * Initializes a new instance of the VirtualMachineCreateParameters class
     * with required arguments.
     *
+    * @param roleName The role name.
     */
     public VirtualMachineCreateParameters(String roleName) {
         this();

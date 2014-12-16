@@ -82,6 +82,8 @@ public class StoredCertificateSettings {
     * Initializes a new instance of the StoredCertificateSettings class with
     * required arguments.
     *
+    * @param storeName The store name.
+    * @param thumbprint The thumbprint.
     */
     public StoredCertificateSettings(String storeName, String thumbprint) {
         if (storeName == null) {

@@ -297,6 +297,7 @@ public class VirtualMachineVMImageUpdateParameters {
     * Initializes a new instance of the VirtualMachineVMImageUpdateParameters
     * class with required arguments.
     *
+    * @param label The label.
     */
     public VirtualMachineVMImageUpdateParameters(String label) {
         this();

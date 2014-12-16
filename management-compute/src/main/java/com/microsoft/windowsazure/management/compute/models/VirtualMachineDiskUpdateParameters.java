@@ -145,6 +145,8 @@ public class VirtualMachineDiskUpdateParameters {
     * Initializes a new instance of the VirtualMachineDiskUpdateParameters
     * class with required arguments.
     *
+    * @param label The label.
+    * @param name The name.
     */
     public VirtualMachineDiskUpdateParameters(String label, String name) {
         if (label == null) {

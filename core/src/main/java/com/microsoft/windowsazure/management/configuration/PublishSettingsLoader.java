@@ -47,13 +47,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * Loading a publish settings file to create a service management configuration.
  * Supports both schema version 1.0 (deprecated) and 2.0. To get different
  * schema versions, use the 'SchemaVersion' query parameter when downloading the
- * file:
- * <ul>
- * <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&
- * SchemaVersion=1.0</li>
- * <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&
- * SchemaVersion=2.0</li>
- * </ul>
+ * file.
  * 
  */
 public abstract class PublishSettingsLoader {
@@ -61,14 +55,13 @@ public abstract class PublishSettingsLoader {
     /**
      * Create a service management configuration using specified publish settings
      * file and subscription ID.
-     * <p>
+     *
      * <b>Please note:</b>
      * <ul>
      * <li>Will use the first PublishProfile present in the file.</li>
      * <li>An unprotected keystore file <code>keystore.out</code> will be left
      * in the working directory containing the management certificate.</li>
      * </ul>
-     * </p>
      * 
      * @param publishSettingsFileName
      *            The name of the publish settings file with a valid certificate obtained from

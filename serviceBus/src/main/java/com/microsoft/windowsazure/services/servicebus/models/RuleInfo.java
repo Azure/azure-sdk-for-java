@@ -244,7 +244,7 @@ public class RuleInfo extends EntryModel<RuleDescription> {
      * 
      * @param createdAt
      *            A
-     *            <code>Calendar> object which represents the time that the rule was created at.
+     *            <code>Calendar</code> object which represents the time that the rule was created at.
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
     public RuleInfo setCreatedAt(Calendar createdAt) {
@@ -256,7 +256,7 @@ public class RuleInfo extends EntryModel<RuleDescription> {
      * Gets the created at.
      * 
      * @return A
-     *         <code>Calendar> object which represents the time that the rule was created at.
+     *         <code>Calendar</code> object which represents the time that the rule was created at.
      */
     public Calendar getCreatedAt() {
         return getModel().getCreatedAt();

@@ -93,6 +93,9 @@ public class ServiceCertificateDeleteParameters {
     * Initializes a new instance of the ServiceCertificateDeleteParameters
     * class with required arguments.
     *
+    * @param serviceName The service name.
+    * @param thumbprintAlgorithm The thumbprint algorithm.
+    * @param thumbprint The thumbprint.
     */
     public ServiceCertificateDeleteParameters(String serviceName, String thumbprintAlgorithm, String thumbprint) {
         if (serviceName == null) {

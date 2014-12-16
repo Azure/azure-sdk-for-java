@@ -97,6 +97,8 @@ public class ServiceCertificateCreateParameters {
     * Initializes a new instance of the ServiceCertificateCreateParameters
     * class with required arguments.
     *
+    * @param data The data.
+    * @param certificateFormat The certificate format.
     */
     public ServiceCertificateCreateParameters(byte[] data, CertificateFormat certificateFormat) {
         if (data == null) {

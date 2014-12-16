@@ -62,6 +62,7 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     * Initializes a new instance of the
     * VirtualMachineGetRemoteDesktopFileResponse class with required arguments.
     *
+    * @param remoteDesktopFile The remote desktop file.
     */
     public VirtualMachineGetRemoteDesktopFileResponse(byte[] remoteDesktopFile) {
         if (remoteDesktopFile == null) {

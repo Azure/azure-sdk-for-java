@@ -131,11 +131,7 @@ public class DeleteBlobOptions extends BlobServiceOptions {
      * snapshots are deleted by the operation. If this option is not set on a
      * request, and the blob has associated snapshots, the Blob service returns
      * a 409 (Conflict) status code and a {@link com.microsoft.windowsazure.exception.ServiceException} is thrown.
-     * <p>
-     * This option is not compatible with the snapshot option; if both are set
-     * the Blob service returns status code 400 (Bad Request) and a
-     * {@link StorageException} is thrown.
-     * <p>
+     * </p>
      * Note that this value only affects calls made on methods where this
      * {@link DeleteBlobOptions} instance is passed as a parameter.
      * 

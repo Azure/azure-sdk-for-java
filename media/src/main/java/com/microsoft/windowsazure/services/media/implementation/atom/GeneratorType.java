@@ -43,25 +43,7 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for generatorType complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- * 
- * <pre>
- * &lt;complexType name="generatorType">
- *   &lt;simpleContent>
- *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
- *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
- *       &lt;attribute name="uri" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
- *       &lt;attribute name="version" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;anyAttribute namespace='##other'/>
- *     &lt;/extension>
- *   &lt;/simpleContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ * </p>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "generatorType", propOrder = { "value" })

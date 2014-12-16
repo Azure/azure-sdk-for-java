@@ -96,6 +96,8 @@ public class WebSiteCreateParameters {
     * Initializes a new instance of the WebSiteCreateParameters class with
     * required arguments.
     *
+    * @param name The name.
+    * @param serverFarm The server farm.
     */
     public WebSiteCreateParameters(String name, String serverFarm) {
         if (name == null) {
@@ -179,6 +181,9 @@ public class WebSiteCreateParameters {
         * Initializes a new instance of the WebSpaceDetails class with required
         * arguments.
         *
+        * @param geoRegion The geo region.
+        * @param name The name.
+        * @param plan The plan.
         */
         public WebSpaceDetails(String geoRegion, String name, String plan) {
             if (geoRegion == null) {

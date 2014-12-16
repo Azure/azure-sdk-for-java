@@ -216,6 +216,8 @@ public class HostedServiceCreateParameters {
     * Initializes a new instance of the HostedServiceCreateParameters class
     * with required arguments.
     *
+    * @param serviceName The service name.
+    * @param label The label.
     */
     public HostedServiceCreateParameters(String serviceName, String label) {
         this();

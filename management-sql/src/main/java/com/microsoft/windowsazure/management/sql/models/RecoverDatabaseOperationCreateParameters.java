@@ -94,6 +94,7 @@ public class RecoverDatabaseOperationCreateParameters {
     * Initializes a new instance of the
     * RecoverDatabaseOperationCreateParameters class with required arguments.
     *
+    * @param sourceDatabaseName The source database name.
     */
     public RecoverDatabaseOperationCreateParameters(String sourceDatabaseName) {
         if (sourceDatabaseName == null) {

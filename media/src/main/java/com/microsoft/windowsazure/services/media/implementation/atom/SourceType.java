@@ -48,38 +48,7 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for sourceType complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- * 
- * <pre>
- * &lt;complexType name="sourceType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;choice maxOccurs="unbounded">
- *         &lt;element name="author" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="category" type="{http://www.w3.org/2005/Atom}categoryType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="contributor" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="generator" type="{http://www.w3.org/2005/Atom}generatorType" minOccurs="0"/>
- *         &lt;element name="icon" type="{http://www.w3.org/2005/Atom}iconType" minOccurs="0"/>
- *         &lt;element name="id" type="{http://www.w3.org/2005/Atom}idType" minOccurs="0"/>
- *         &lt;element name="link" type="{http://www.w3.org/2005/Atom}linkType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="logo" type="{http://www.w3.org/2005/Atom}logoType" minOccurs="0"/>
- *         &lt;element name="rights" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
- *         &lt;element name="subtitle" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
- *         &lt;element name="title" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
- *         &lt;element name="updated" type="{http://www.w3.org/2005/Atom}dateTimeType" minOccurs="0"/>
- *         &lt;any namespace='##other' maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/choice>
- *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
- *       &lt;anyAttribute namespace='##other'/>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ * </p>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sourceType", propOrder = { "authorOrCategoryOrContributor" })

@@ -281,7 +281,7 @@ public final class Locator {
          * Set when the locator will become available.
          * 
          * @param startDateTime
-         *            the date & time
+         *            the date and time
          * @return Updater instance
          */
         public Updater setStartDateTime(Date startDateTime) {

@@ -94,7 +94,7 @@ public class DatabaseBackupSetting {
     /**
     * Optional. Always contains the original database name (it is used as a key
     * for association with a dump in the backup package) - even if it is a
-    * restore to a new&different database.
+    * restore to a new and different database.
     * @return The Name value.
     */
     public String getName() {
@@ -104,7 +104,7 @@ public class DatabaseBackupSetting {
     /**
     * Optional. Always contains the original database name (it is used as a key
     * for association with a dump in the backup package) - even if it is a
-    * restore to a new&different database.
+    * restore to a new and different database.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

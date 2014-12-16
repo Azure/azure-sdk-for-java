@@ -70,13 +70,6 @@
     </dependency>
 
     <!-- Test dependencies -->
-    <dependency> 
-      <groupId>${project.groupId}</groupId>
-      <artifactId>azure-core</artifactId>
-      <classifier>tests</classifier>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>

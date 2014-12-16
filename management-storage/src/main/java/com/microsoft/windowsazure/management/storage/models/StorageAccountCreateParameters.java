@@ -226,6 +226,8 @@ public class StorageAccountCreateParameters {
     * Initializes a new instance of the StorageAccountCreateParameters class
     * with required arguments.
     *
+    * @param name The name.
+    * @param label The label.
     */
     public StorageAccountCreateParameters(String name, String label) {
         this();

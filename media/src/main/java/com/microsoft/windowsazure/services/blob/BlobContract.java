@@ -236,6 +236,7 @@ public interface BlobContract extends JerseyFilterableService<BlobContract> {
      * @param contentStream
      *            An {@link InputStream} reference to the content stream to
      *            upload to the new blob.
+     * @return The create blob result.
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */

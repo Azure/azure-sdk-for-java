@@ -20,7 +20,7 @@ public interface EntityDeleteOperation {
     /**
      * Supplies the current proxy information to the action.
      * 
-     * @param proxyData
+     * @param proxyData The proxy data.
      */
     void setProxyData(EntityProxyData proxyData);
 

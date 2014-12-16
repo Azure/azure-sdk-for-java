@@ -84,6 +84,8 @@ public class SshSettingKeyPair {
     * Initializes a new instance of the SshSettingKeyPair class with required
     * arguments.
     *
+    * @param fingerprint The finger print.
+    * @param path The path.
     */
     public SshSettingKeyPair(String fingerprint, String path) {
         if (fingerprint == null) {

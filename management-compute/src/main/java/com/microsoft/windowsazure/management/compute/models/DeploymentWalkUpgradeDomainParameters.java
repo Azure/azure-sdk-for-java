@@ -61,6 +61,7 @@ public class DeploymentWalkUpgradeDomainParameters {
     * Initializes a new instance of the DeploymentWalkUpgradeDomainParameters
     * class with required arguments.
     *
+    * @param upgradeDomain The upgrade domain.
     */
     public DeploymentWalkUpgradeDomainParameters(int upgradeDomain) {
         this.setUpgradeDomain(upgradeDomain);

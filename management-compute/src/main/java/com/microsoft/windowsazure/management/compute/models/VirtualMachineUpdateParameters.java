@@ -231,6 +231,8 @@ public class VirtualMachineUpdateParameters {
     * Initializes a new instance of the VirtualMachineUpdateParameters class
     * with required arguments.
     *
+    * @param roleName The role name.
+    * @param oSVirtualHardDisk The OS Virtual Hard Disk.
     */
     public VirtualMachineUpdateParameters(String roleName, OSVirtualHardDisk oSVirtualHardDisk) {
         this();

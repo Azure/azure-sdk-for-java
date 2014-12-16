@@ -129,6 +129,9 @@ public class VirtualMachineCaptureOSImageParameters {
     * Initializes a new instance of the VirtualMachineCaptureOSImageParameters
     * class with required arguments.
     *
+    * @param postCaptureAction The post capture action.
+    * @param targetImageLabel The target image label.
+    * @param targetImageName The target image name.
     */
     public VirtualMachineCaptureOSImageParameters(PostCaptureAction postCaptureAction, String targetImageLabel, String targetImageName) {
         if (targetImageLabel == null) {

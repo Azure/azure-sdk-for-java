@@ -216,6 +216,9 @@ public class WebSiteUpdateParameters {
         * Initializes a new instance of the WebSiteHostNameSslState class with
         * required arguments.
         *
+        * @param name The name.
+        * @param sslState The ssl state.
+        * @param toUpdate To Update.
         */
         public WebSiteHostNameSslState(String name, WebSiteSslState sslState, boolean toUpdate) {
             if (name == null) {

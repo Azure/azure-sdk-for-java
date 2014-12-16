@@ -44,29 +44,7 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for linkType complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- * 
- * <pre>
- * &lt;complexType name="linkType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
- *       &lt;attribute name="href" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
- *       &lt;attribute name="rel" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="type" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="hreflang" type="{http://www.w3.org/2001/XMLSchema}NMTOKEN" />
- *       &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="length" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
- *       &lt;anyAttribute namespace='##other'/>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ * </p>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "linkType", propOrder = { "content" })

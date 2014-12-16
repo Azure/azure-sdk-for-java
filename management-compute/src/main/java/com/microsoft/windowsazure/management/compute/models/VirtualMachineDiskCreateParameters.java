@@ -123,6 +123,9 @@ public class VirtualMachineDiskCreateParameters {
     * Initializes a new instance of the VirtualMachineDiskCreateParameters
     * class with required arguments.
     *
+    * @param label The label.
+    * @param mediaLinkUri The media link Uri.
+    * @param name The name.
     */
     public VirtualMachineDiskCreateParameters(String label, URI mediaLinkUri, String name) {
         if (label == null) {

@@ -39,6 +39,9 @@ public class ExtensionImageRegisterParameters extends ExtensionImage {
     * Initializes a new instance of the ExtensionImageRegisterParameters class
     * with required arguments.
     *
+    * @param providerNameSpace The provider name space.
+    * @param type The type.
+    * @param version The version.
     */
     public ExtensionImageRegisterParameters(String providerNameSpace, String type, String version) {
         this();

@@ -28,7 +28,7 @@ public final class MediaService {
 
     /**
      * Creates an instance of the <code>MediaServicesContract</code> API.
-     * 
+     * @return The media contract.
      */
     public static MediaContract create() {
         return Configuration.getInstance().create(MediaContract.class);
@@ -41,7 +41,7 @@ public final class MediaService {
      * @param config
      *            A <code>Configuration</code> object that represents the
      *            configuration for the service bus service.
-     * 
+     * @return The media contract.
      */
     public static MediaContract create(Configuration config) {
         return config.create(MediaContract.class);
@@ -50,6 +50,8 @@ public final class MediaService {
     /**
      * Creates an instance of the <code>MediaServicesContract</code> API.
      * 
+     * @param profile The profile.
+     * @return The media contract.
      */
     public static MediaContract create(String profile) {
         return Configuration.getInstance().create(profile, MediaContract.class);
@@ -59,10 +61,11 @@ public final class MediaService {
      * Creates an instance of the <code>MediaServicesContract</code> API using
      * the specified configuration.
      * 
+     * @param profile The profile.
      * @param config
      *            A <code>Configuration</code> object that represents the
      *            configuration for the service bus service.
-     * 
+     * @return The media contract.
      */
     public static MediaContract create(String profile, Configuration config) {
         return config.create(profile, MediaContract.class);

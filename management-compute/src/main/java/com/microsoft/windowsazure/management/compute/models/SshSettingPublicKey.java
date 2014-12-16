@@ -80,6 +80,8 @@ public class SshSettingPublicKey {
     * Initializes a new instance of the SshSettingPublicKey class with required
     * arguments.
     *
+    * @param fingerprint The fingerprint.
+    * @param path The path.
     */
     public SshSettingPublicKey(String fingerprint, String path) {
         if (fingerprint == null) {

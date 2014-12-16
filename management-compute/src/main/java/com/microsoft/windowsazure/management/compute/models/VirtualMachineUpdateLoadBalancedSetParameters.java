@@ -345,6 +345,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Initializes a new instance of the InputEndpoint class with required
         * arguments.
         *
+        * @param loadBalancedEndpointSetName The load balanced endpoint set name.
         */
         public InputEndpoint(String loadBalancedEndpointSetName) {
             this();

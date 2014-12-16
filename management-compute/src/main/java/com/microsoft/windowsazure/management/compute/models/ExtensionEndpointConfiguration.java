@@ -268,6 +268,9 @@ public class ExtensionEndpointConfiguration {
         * Initializes a new instance of the InternalEndpoint class with
         * required arguments.
         *
+        * @param name The name.
+        * @param protocol The protocol.
+        * @param port The port.
         */
         public InternalEndpoint(String name, String protocol, int port) {
             if (name == null) {

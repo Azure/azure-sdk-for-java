@@ -284,6 +284,7 @@ public class VirtualMachineOSImageUpdateParameters {
     * Initializes a new instance of the VirtualMachineOSImageUpdateParameters
     * class with required arguments.
     *
+    * @param label The label.
     */
     public VirtualMachineOSImageUpdateParameters(String label) {
         if (label == null) {

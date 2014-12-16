@@ -183,6 +183,8 @@ public class ExtensionConfiguration {
         * Initializes a new instance of the NamedRole class with required
         * arguments.
         *
+        * @param roleName The role name.
+        * @param extensions The extensions.
         */
         public NamedRole(String roleName, ArrayList<ExtensionConfiguration.Extension> extensions) {
             this();

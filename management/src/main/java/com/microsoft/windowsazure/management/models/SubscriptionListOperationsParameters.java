@@ -168,6 +168,8 @@ public class SubscriptionListOperationsParameters {
     * Initializes a new instance of the SubscriptionListOperationsParameters
     * class with required arguments.
     *
+    * @param startTime The start time.
+    * @param endTime The end time.
     */
     public SubscriptionListOperationsParameters(Calendar startTime, Calendar endTime) {
         this.setStartTime(startTime);

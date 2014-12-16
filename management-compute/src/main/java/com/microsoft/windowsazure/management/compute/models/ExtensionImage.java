@@ -246,7 +246,7 @@ public class ExtensionImage {
     /**
     * Optional. Optional. If this is set to 'true' the extension is not visible
     * for public use, i.e. being returned from list API's. It can be still
-    * accessed by referring to the ProviderNamespace, Type & Version combo.
+    * accessed by referring to the ProviderNamespace, Type Version combo.
     * Therefore an internal extension is intended only for testing purpose.
     * Its value has to be 'true' or 'false' (case-sensitive) if present.
     * @return The IsInternalExtension value.
@@ -258,7 +258,7 @@ public class ExtensionImage {
     /**
     * Optional. Optional. If this is set to 'true' the extension is not visible
     * for public use, i.e. being returned from list API's. It can be still
-    * accessed by referring to the ProviderNamespace, Type & Version combo.
+    * accessed by referring to the ProviderNamespace, Type Version combo.
     * Therefore an internal extension is intended only for testing purpose.
     * Its value has to be 'true' or 'false' (case-sensitive) if present.
     * @param isInternalExtensionValue The IsInternalExtension value.
@@ -612,6 +612,9 @@ public class ExtensionImage {
     * Initializes a new instance of the ExtensionImage class with required
     * arguments.
     *
+    * @param providerNameSpace The provider name space.
+    * @param type The type.
+    * @param version The version.
     */
     public ExtensionImage(String providerNameSpace, String type, String version) {
         this();

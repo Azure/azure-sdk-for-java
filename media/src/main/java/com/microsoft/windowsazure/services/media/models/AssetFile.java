@@ -84,7 +84,8 @@ public final class AssetFile {
 
         /**
          * @param contentChecksum
-         *            the contentChecksum to set
+         *            the contentChecksum to set.
+         * @return The Creator.
          */
         public Creator setContentChecksum(String contentChecksum) {
             this.contentChecksum = contentChecksum;
@@ -93,7 +94,8 @@ public final class AssetFile {
 
         /**
          * @param contentFileSize
-         *            the contentFileSize to set
+         *            the contentFileSize to set.
+         * @return The Creator.
          */
         public Creator setContentFileSize(Long contentFileSize) {
             this.contentFileSize = contentFileSize;
@@ -102,7 +104,8 @@ public final class AssetFile {
 
         /**
          * @param encryptionKeyId
-         *            the encryptionKeyId to set
+         *            the encryptionKeyId to set.
+         * @return The Creator.
          */
         public Creator setEncryptionKeyId(String encryptionKeyId) {
             this.encryptionKeyId = encryptionKeyId;
@@ -111,7 +114,8 @@ public final class AssetFile {
 
         /**
          * @param encryptionScheme
-         *            the encryptionScheme to set
+         *            the encryptionScheme to set.
+         * @return The Creator.
          */
         public Creator setEncryptionScheme(String encryptionScheme) {
             this.encryptionScheme = encryptionScheme;
@@ -120,7 +124,8 @@ public final class AssetFile {
 
         /**
          * @param encryptionVersion
-         *            the encryptionVersion to set
+         *            the encryptionVersion to set.
+         * @return The Creator.
          */
         public Creator setEncryptionVersion(String encryptionVersion) {
             this.encryptionVersion = encryptionVersion;
@@ -129,7 +134,8 @@ public final class AssetFile {
 
         /**
          * @param initializationVector
-         *            the initializationVector to set
+         *            the initializationVector to set.
+         * @return The Creator.
          */
         public Creator setInitializationVector(String initializationVector) {
             this.initializationVector = initializationVector;
@@ -138,7 +144,8 @@ public final class AssetFile {
 
         /**
          * @param isEncrypted
-         *            the isEncrypted to set
+         *            the isEncrypted to set.
+         * @return The Creator.
          */
         public Creator setIsEncrypted(Boolean isEncrypted) {
             this.isEncrypted = isEncrypted;
@@ -147,7 +154,8 @@ public final class AssetFile {
 
         /**
          * @param isPrimary
-         *            the isPrimary to set
+         *            the isPrimary to set.
+         * @return The Creator.
          */
         public Creator setIsPrimary(Boolean isPrimary) {
             this.isPrimary = isPrimary;
@@ -156,13 +164,13 @@ public final class AssetFile {
 
         /**
          * @param mimeType
-         *            the mimeType to set
+         *            the mimeType to set.
+         * @return The Creator.
          */
         public Creator setMimeType(String mimeType) {
             this.mimeType = mimeType;
             return this;
         }
-
     }
 
     /**
@@ -171,7 +179,6 @@ public final class AssetFile {
      * @param assetId
      *            asset to create file infos for
      * @return The action operation object to pass to rest proxy.
-     * @throws UnsupportedEncodingException
      */
     public static EntityActionOperation createFileInfos(String assetId) {
         String encodedId;
@@ -271,6 +278,7 @@ public final class AssetFile {
         /**
          * @param contentChecksum
          *            the contentChecksum to set
+         * @return The updater.
          */
         public Updater setContentChecksum(String contentChecksum) {
             this.contentChecksum = contentChecksum;
@@ -280,6 +288,7 @@ public final class AssetFile {
         /**
          * @param contentFileSize
          *            the contentFileSize to set
+         * @return The updater.
          */
         public Updater setContentFileSize(Long contentFileSize) {
             this.contentFileSize = contentFileSize;
@@ -289,6 +298,7 @@ public final class AssetFile {
         /**
          * @param encryptionKeyId
          *            the encryptionKeyId to set
+         * @return The updater.
          */
         public Updater setEncryptionKeyId(String encryptionKeyId) {
             this.encryptionKeyId = encryptionKeyId;
@@ -298,6 +308,7 @@ public final class AssetFile {
         /**
          * @param encryptionScheme
          *            the encryptionScheme to set
+         * @return The updater.
          */
         public Updater setEncryptionScheme(String encryptionScheme) {
             this.encryptionScheme = encryptionScheme;
@@ -307,6 +318,7 @@ public final class AssetFile {
         /**
          * @param encryptionVersion
          *            the encryptionVersion to set
+         * @return The updater.
          */
         public Updater setEncryptionVersion(String encryptionVersion) {
             this.encryptionVersion = encryptionVersion;
@@ -316,6 +328,7 @@ public final class AssetFile {
         /**
          * @param initializationVector
          *            the initializationVector to set
+         * @return The updater.
          */
         public Updater setInitializationVector(String initializationVector) {
             this.initializationVector = initializationVector;
@@ -325,6 +338,7 @@ public final class AssetFile {
         /**
          * @param isEncrypted
          *            the isEncrypted to set
+         * @return The updater.
          */
         public Updater setIsEncrypted(Boolean isEncrypted) {
             this.isEncrypted = isEncrypted;
@@ -334,6 +348,7 @@ public final class AssetFile {
         /**
          * @param isPrimary
          *            the isPrimary to set
+         * @return The updater.
          */
         public Updater setIsPrimary(Boolean isPrimary) {
             this.isPrimary = isPrimary;
@@ -343,6 +358,7 @@ public final class AssetFile {
         /**
          * @param mimeType
          *            the mimeType to set
+         * @return The updater.
          */
         public Updater setMimeType(String mimeType) {
             this.mimeType = mimeType;

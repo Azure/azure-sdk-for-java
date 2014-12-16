@@ -166,6 +166,8 @@ public class DacImportParameters {
         * Initializes a new instance of the BlobCredentialsParameter class with
         * required arguments.
         *
+        * @param uri The uri.
+        * @param storageAccessKey The storage access key.
         */
         public BlobCredentialsParameter(URI uri, String storageAccessKey) {
             if (uri == null) {
