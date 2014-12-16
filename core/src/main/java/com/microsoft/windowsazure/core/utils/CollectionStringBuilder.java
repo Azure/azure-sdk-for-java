@@ -14,14 +14,28 @@
  */
 package com.microsoft.windowsazure.core.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 
-public class CommaStringBuilder {
-    private final StringBuilder sb = new StringBuilder();
+public class CollectionStringBuilder {
+    private static final String DEFAULT_SEPARATOR = ",";
+    private final StringBuilder sb;
+    private static String separator;
+
+    public CollectionStringBuilder() {
+        sb = new StringBuilder();
+        separator = DEFAULT_SEPARATOR;
+    }
+
+    public CollectionStringBuilder(String separator) {
+        sb = new StringBuilder();
+        CollectionStringBuilder.separator = separator;
+    }
 
     public void add(String representation) {
         if (sb.length() > 0) {
-            sb.append(",");
+            sb.append(separator);
         }
         sb.append(representation);
     }
@@ -33,17 +47,15 @@ public class CommaStringBuilder {
     }
 
     public static String join(List<String> values) {
-        CommaStringBuilder sb = new CommaStringBuilder();
+        return StringUtils.join(values, separator);
+    }
 
-        for (String value : values) {
-            sb.add(value);
-        }
-
-        return sb.toString();
+    public static String join(List<String> values, String separator) {
+        return StringUtils.join(values, separator);
     }
 
     public static String join(String... values) {
-        CommaStringBuilder sb = new CommaStringBuilder();
+        CollectionStringBuilder sb = new CollectionStringBuilder();
 
         for (String value : values) {
             sb.add(value);
