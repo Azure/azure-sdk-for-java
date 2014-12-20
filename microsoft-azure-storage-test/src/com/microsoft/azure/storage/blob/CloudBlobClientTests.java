@@ -35,6 +35,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.core.SR;
 
 /**
  * Blob Client Tests
@@ -47,7 +48,7 @@ public class CloudBlobClientTests {
      */
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
-    public void testListContainersTest() throws StorageException, URISyntaxException {
+    public void testListContainers() throws StorageException, URISyntaxException {
         CloudBlobClient bClient = BlobTestHelper.createCloudBlobClient();
         ArrayList<String> containerList = new ArrayList<String>();
         String prefix = UUID.randomUUID().toString();
@@ -79,6 +80,57 @@ public class CloudBlobClientTests {
         } while (token != null);
 
         assertEquals(0, containerList.size());
+    }
+    
+    /**
+     * Try to list the containers to ensure maxResults validation is working.
+     * 
+     * @throws StorageException
+     * @throws URISyntaxException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    public void testListContainersMaxResultsValidation()
+            throws StorageException, URISyntaxException {
+        CloudBlobClient bClient = BlobTestHelper.createCloudBlobClient();
+        String prefix = UUID.randomUUID().toString();
+
+        // Validation should cause each of these to fail.
+        for(int i = 0; i >= -2; i--) {
+            try {
+                bClient.listContainersSegmented(
+                        prefix, ContainerListingDetails.ALL, i, null, null, null);
+                fail();
+            }
+            catch (IllegalArgumentException e) {
+                assertTrue(String.format(SR.PARAMETER_SHOULD_BE_GREATER_OR_EQUAL, "maxResults", 1)
+                        .equals(e.getMessage()));
+            }
+        }
+        assertNotNull(bClient.listContainersSegmented("thereshouldntbeanycontainersswiththisprefix"));
+    }
+    
+    /**
+     * Fetch result segments and ensure pageSize is null when unspecified and will cap at 5000.
+     * 
+     * @throws StorageException
+     * @throws URISyntaxException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    public void testListContainersResultSegment()
+            throws StorageException, URISyntaxException {
+        CloudBlobClient bClient = BlobTestHelper.createCloudBlobClient();
+
+        ResultSegment<CloudBlobContainer> segment1 = bClient.listContainersSegmented(); 
+        assertNotNull(segment1);
+        assertNull(segment1.getPageSize());
+        
+        ResultSegment<CloudBlobContainer> segment2 = bClient.listContainersSegmented(null,
+                ContainerListingDetails.ALL, 9001, null, null, null); 
+        assertNotNull(segment2);
+        assertNotNull(segment2.getPageSize());
+        assertEquals(5000, segment2.getPageSize().intValue());
     }
 
     @Test

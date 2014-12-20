@@ -63,6 +63,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entities into instances of type <code>R</code>. Set
      *            to <code>null</code> to return the entities as instances of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -88,7 +91,7 @@ final class TableDeserializer {
             XMLStreamException, StorageException, JsonParseException, IOException {
         ODataPayload<?> payload;
         if (options.getTablePayloadFormat() == TablePayloadFormat.AtomPub) {
-            payload = parseAtomQueryResponse(inStream, clazzType, resolver, opContext);
+            payload = parseAtomQueryResponse(inStream, clazzType, resolver, options, opContext);
         }
         else {
             payload = parseJsonQueryResponse(inStream, clazzType, resolver, options, opContext);
@@ -105,6 +108,9 @@ final class TableDeserializer {
      *            The <code>InputStream</code> to read the data to parse from.
      * @param format
      *            The {@link TablePayloadFormat} to use for parsing.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param httpStatusCode
      *            The HTTP status code returned with the operation response.
      * @param clazzType
@@ -138,7 +144,7 @@ final class TableDeserializer {
             IllegalAccessException, XMLStreamException, StorageException, IOException, JsonParseException {
         TableResult res;
         if (options.getTablePayloadFormat() == TablePayloadFormat.AtomPub) {
-            res = parseSingleOpAtomResponse(inStream, httpStatusCode, clazzType, resolver, opContext);
+            res = parseSingleOpAtomResponse(inStream, httpStatusCode, clazzType, resolver, options, opContext);
         }
         else {
             res = parseSingleOpJsonResponse(inStream, httpStatusCode, clazzType, resolver, options, opContext);
@@ -160,6 +166,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entity into an instance of type <code>R</code>. Set
      *            to <code>null</code> to return the entity as an instance of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -238,6 +247,7 @@ final class TableDeserializer {
             }
 
             final EntityProperty newProp = new EntityProperty(val, edmType);
+            newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
             properties.put(key, newProp);
 
             parser.nextToken();
@@ -261,6 +271,7 @@ final class TableDeserializer {
 
         tempProp = properties.remove(TableConstants.TIMESTAMP);
         if (tempProp != null) {
+            tempProp.setDateBackwardCompatibility(false);
             timestamp = tempProp.getValueAsDate();
 
             if (res.getEtag() == null) {
@@ -290,6 +301,7 @@ final class TableDeserializer {
                     // try to create a new entity property using the returned type
                     try {
                         final EntityProperty newProp = new EntityProperty(value, edmType);
+                        newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
                         properties.put(p.getKey(), newProp);
                     }
                     catch (IllegalArgumentException e) {
@@ -308,6 +320,7 @@ final class TableDeserializer {
                     if (propPair != null) {
                         final EntityProperty newProp = new EntityProperty(p.getValue().getValueAsString(),
                                 propPair.type);
+                        newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
                         properties.put(p.getKey(), newProp);
                     }
                 }
@@ -329,7 +342,7 @@ final class TableDeserializer {
             entity.setPartitionKey(partitionKey);
             entity.setRowKey(rowKey);
             entity.setTimestamp(timestamp);
-
+            
             entity.readEntity(res.getProperties(), opContext);
 
             res.setResult(entity);
@@ -352,6 +365,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entities into instances of type <code>R</code>. Set
      *            to <code>null</code> to return the entities as instances of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -463,6 +479,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entity into an instance of type <code>R</code>. Set
      *            to <code>null</code> to return the entitys as instance of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -509,6 +528,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entity into an instance of type <code>R</code>. Set
      *            to <code>null</code> to return the entity as an instance of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -524,8 +546,9 @@ final class TableDeserializer {
      *             if a storage service error occurs.
      */
     private static <T extends TableEntity, R> TableResult parseAtomEntity(final XMLStreamReader xmlr,
-            final Class<T> clazzType, final EntityResolver<R> resolver, final OperationContext opContext)
-            throws XMLStreamException, InstantiationException, IllegalAccessException, StorageException {
+            final Class<T> clazzType, final EntityResolver<R> resolver, final TableRequestOptions options,
+            final OperationContext opContext) throws XMLStreamException, InstantiationException,
+            IllegalAccessException, StorageException {
         int eventType = xmlr.getEventType();
         final TableResult res = new TableResult();
 
@@ -554,7 +577,7 @@ final class TableDeserializer {
                         return res;
                     }
                     else {
-                        res.setProperties(readAtomProperties(xmlr, opContext));
+                        res.setProperties(readAtomProperties(xmlr, options, opContext));
                         break;
                     }
                 }
@@ -593,6 +616,7 @@ final class TableDeserializer {
 
         tempProp = res.getProperties().remove(TableConstants.TIMESTAMP);
         if (tempProp != null) {
+            tempProp.setDateBackwardCompatibility(false);
             timestamp = tempProp.getValueAsDate();
         }
 
@@ -631,6 +655,9 @@ final class TableDeserializer {
      * @param resolver
      *            An {@link EntityResolver} instance to project the entities into instances of type <code>R</code>. Set
      *            to <code>null</code> to return the entities as instances of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -648,8 +675,9 @@ final class TableDeserializer {
      */
     @SuppressWarnings("unchecked")
     private static <T extends TableEntity, R> ODataPayload<?> parseAtomQueryResponse(final InputStream inStream,
-            final Class<T> clazzType, final EntityResolver<R> resolver, final OperationContext opContext)
-            throws XMLStreamException, InstantiationException, IllegalAccessException, StorageException {
+            final Class<T> clazzType, final EntityResolver<R> resolver, final TableRequestOptions options,
+            final OperationContext opContext) throws XMLStreamException, InstantiationException,
+            IllegalAccessException, StorageException {
         ODataPayload<T> corePayload = null;
         ODataPayload<R> resolvedPayload = null;
         ODataPayload<?> commonPayload = null;
@@ -684,7 +712,7 @@ final class TableDeserializer {
 
             if (eventType == XMLStreamConstants.START_ELEMENT) {
                 if (name.equals(ODataConstants.BRACKETED_ATOM_NS + ODataConstants.ENTRY)) {
-                    final TableResult res = parseAtomEntity(xmlr, clazzType, resolver, opContext);
+                    final TableResult res = parseAtomEntity(xmlr, clazzType, resolver, options, opContext);
                     if (corePayload != null) {
                         corePayload.tableResults.add(res);
                     }
@@ -722,7 +750,10 @@ final class TableDeserializer {
      *            {@link TableResult} object.
      * @param resolver
      *            An {@link EntityResolver} instance to project the entity into an instance of type <code>R</code>. Set
-     *            to <code>null</code> to return the entitys as instance of the class type <code>T</code>.
+     *            to <code>null</code> to return the entities as instance of the class type <code>T</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * @return
@@ -739,15 +770,15 @@ final class TableDeserializer {
      */
     private static <T extends TableEntity, R> TableResult parseSingleOpAtomResponse(final InputStream inStream,
             final int httpStatusCode, final Class<T> clazzType, final EntityResolver<R> resolver,
-            final OperationContext opContext) throws XMLStreamException, InstantiationException,
-            IllegalAccessException, StorageException {
+            final TableRequestOptions options, final OperationContext opContext)
+            throws XMLStreamException, InstantiationException, IllegalAccessException, StorageException {
         XMLStreamReader xmlr = DeserializationHelper.createXMLStreamReaderFromStream(inStream);
 
         try {
             xmlr.require(XMLStreamConstants.START_DOCUMENT, null, null);
             xmlr.next();
 
-            final TableResult res = parseAtomEntity(xmlr, clazzType, resolver, opContext);
+            final TableResult res = parseAtomEntity(xmlr, clazzType, resolver, options, opContext);
             res.setHttpStatusCode(httpStatusCode);
             return res;
         }
@@ -763,6 +794,9 @@ final class TableDeserializer {
      * 
      * @param xmlr
      *            The <code>XMLStreamReader</code> to read the data from.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
      * 
@@ -773,7 +807,7 @@ final class TableDeserializer {
      *             if an error occurs accessing the stream.
      */
     private static HashMap<String, EntityProperty> readAtomProperties(final XMLStreamReader xmlr,
-            final OperationContext opContext) throws XMLStreamException {
+            final TableRequestOptions options, final OperationContext opContext) throws XMLStreamException {
         int eventType = xmlr.getEventType();
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, ODataConstants.PROPERTIES);
         final HashMap<String, EntityProperty> properties = new HashMap<String, EntityProperty>();
@@ -808,6 +842,7 @@ final class TableDeserializer {
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, key);
 
                 final EntityProperty newProp = new EntityProperty(val, EdmType.parse(edmType));
+                newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
                 properties.put(key, newProp);
             }
             else if (eventType == XMLStreamConstants.END_ELEMENT

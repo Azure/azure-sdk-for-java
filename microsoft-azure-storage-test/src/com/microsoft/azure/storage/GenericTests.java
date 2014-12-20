@@ -20,7 +20,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -412,6 +415,128 @@ public class GenericTests {
             inputStream.close();
             container.deleteIfExists();
         }
+    }
+
+    @Test
+    public void testDateStringParsingWithRounding() throws ParseException {
+        String fullDateString = "1999-12-31T23:59:45.1234567Z";
+        SimpleDateFormat testFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+        Date milliDate = testFormat.parse("1999-12-31T23:59:45.123 -0000");
+        assertEquals(milliDate, Utility.parseDate(fullDateString));
+
+        fullDateString = "1999-04-30T23:59:55.9876Z";
+        long millisSinceEpoch = 925516795987L;
+
+        Date deciDate = Utility.parseDate(fullDateString.replace("876Z", "Z"));
+        assertEquals(deciDate.getTime(), (millisSinceEpoch / 100) * 100);
+
+        Date centiDate = Utility.parseDate(fullDateString.replace("76Z", "Z"));
+        assertEquals(centiDate.getTime(), (millisSinceEpoch / 10) * 10);
+
+        milliDate = Utility.parseDate(fullDateString);
+        assertEquals(milliDate.getTime(), millisSinceEpoch);
+    }
+    
+    @Test
+    public void testDateStringParsing() throws ParseException {
+        // 2014-12-07T09:15:12.123Z  from Java
+        testDate("2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, false);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testDate("2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, false);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testDate("2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, false);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testDate("2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false);
+    }
+
+    @Test
+    public void testDateStringParsingCrossVersion() throws ParseException {
+        // 2014-12-07T09:15:12.123Z  from Java, milliseconds are incorrectly left-padded
+        testDate("2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, false);
+
+        // 2015-01-14T14:53:32.800Z  from Java, milliseconds are incorrectly left-padded
+        testDate("2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, false);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testDate("2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, false);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testDate("2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false);
+    }
+    
+    @Test
+    public void testDateStringParsingWithBackwardCompatibility() throws ParseException {
+        // 2014-12-07T09:15:12.123Z  from Java
+        testDate("2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, true);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testDate("2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, true);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testDate("2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, true);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testDate("2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true);
+    }
+
+    @Test
+    public void testDateStringParsingCrossVersionWithBackwardCompatibility() throws ParseException {
+        // 2014-12-07T09:15:12.123Z  from Java, milliseconds are incorrectly left-padded
+        testDate("2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, true);
+
+        // 2015-01-14T14:53:32.800Z  from Java, milliseconds are incorrectly left-padded
+        testDate("2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, true);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testDate("2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, true);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testDate("2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true);
+    }
+
+    private static void testDate(final String dateString, final long intendedMilliseconds, final int ticks,
+            final boolean writtenPre2, final boolean dateBackwardCompatibility) {
+        assertTrue(ticks >= 0);     // ticks is non-negative
+        assertTrue(ticks <= 9999);  // ticks do not overflow into milliseconds
+        long expectedMilliseconds = intendedMilliseconds;
+        
+        if (dateBackwardCompatibility && (intendedMilliseconds % 1000 == 0) && (ticks < 1000)) {
+            // when no milliseconds are present dateBackwardCompatibility causes up to 3 digits of ticks
+            // to be read as milliseconds
+            expectedMilliseconds += ticks;
+        } else if (writtenPre2 && !dateBackwardCompatibility && (ticks == 0)) {
+            // without DateBackwardCompatibility, milliseconds stored by Java prior to 2.0.0 are lost
+            expectedMilliseconds -= expectedMilliseconds % 1000;
+        }
+        
+        assertEquals(expectedMilliseconds, Utility.parseDate(dateString, dateBackwardCompatibility).getTime());
+    }
+
+    @Test
+    public void testDateStringFormatting() {
+        String fullDateString = "2014-12-07T09:15:12.123Z";
+        String outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
+        assertEquals(fullDateString, outDateString);
+        
+        fullDateString = "2015-01-14T14:53:32.800Z";
+        outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
+        assertEquals(fullDateString, outDateString);
+        
+        // Ensure that trimming of trailing zeroes by the service does not affect this
+        fullDateString = "2015-01-14T14:53:32.8Z";
+        outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString));
+        fullDateString = fullDateString.replace("Z", "00Z");
+        assertEquals(fullDateString, outDateString);
+        
+        // Ensure that trimming of trailing zeroes by the service does not affect this
+        // even with dateBackwardCompatibility
+        fullDateString = "2015-01-14T14:53:32.0000800Z";
+        outDateString = Utility.getJavaISO8601Time(Utility.parseDate(fullDateString, true));
+        fullDateString = "2015-01-14T14:53:32.800Z";
+        assertEquals(fullDateString, outDateString);
     }
 
     private static String generateRandomContainerName() {

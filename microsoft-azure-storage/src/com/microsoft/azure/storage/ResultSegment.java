@@ -36,7 +36,7 @@ public class ResultSegment<T> {
     /**
      * Holds the size of the requested page.
      */
-    private final int pageSize;
+    private final Integer pageSize;
 
     /**
      * Holds the ArrayList of results.
@@ -53,7 +53,7 @@ public class ResultSegment<T> {
      * @param token
      *            A {@link ResultContinuation} object that represents the continuation token.
      */
-    public ResultSegment(final ArrayList<T> results, final int pageSize, final ResultContinuation token) {
+    public ResultSegment(final ArrayList<T> results, final Integer pageSize, final ResultContinuation token) {
         this.results = results;
         this.length = results.size();
         this.pageSize = pageSize;
@@ -84,7 +84,7 @@ public class ResultSegment<T> {
      * @return <code>true</code> if the page has more results; otherwise, <code>false</code>.
      */
     public boolean getIsPageComplete() {
-        return this.length == this.pageSize;
+        return (new Integer(this.length)).equals(this.pageSize);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ResultSegment<T> {
      * 
      * @return The size of the requested page.
      */
-    public int getPageSize() {
+    public Integer getPageSize() {
         return this.pageSize;
     }
 

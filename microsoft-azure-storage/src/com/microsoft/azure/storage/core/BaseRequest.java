@@ -458,7 +458,10 @@ public final class BaseRequest {
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
+     * 
+     * @deprecated as of 2.0.0. Use {@link #signRequestForBlobAndQueue} instead.
      */
+    @Deprecated
     public static void signRequestForBlobAndQueueSharedKeyLite(final HttpURLConnection request,
             final Credentials credentials, final Long contentLength, final OperationContext opContext)
             throws InvalidKeyException, StorageException {
@@ -522,7 +525,10 @@ public final class BaseRequest {
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
+     * 
+     * @deprecated as of 2.0.0. Use {@link #signRequestForTableSharedKey} instead.
      */
+    @Deprecated
     public static void signRequestForTableSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
             final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());

@@ -1,3 +1,10 @@
+2014.12.20 Version 2.0.0
+ * Deprecated getSubDirectoryReference() for blob directories and file directories. Use getDirectoryReference() instead. 
+ * Fixed a bug where maxResults was not verified to be positive for list operations.
+ * Fixed a bug where high precision Date values stored on Table Entites were forced to fit into milliseconds resulting in inaccuracies. Precision is limited to 1 millisecond by Java.util.Date. If greater precision is required, the String should be used directly.
+ * Added TableRequestOptions.dateBackwardCompatibility, which supports reading Date values on Table Entities written using versions of this library prior to 2.0.0. See http://go.microsoft.com/fwlink/?LinkId=523753 for more details.
+ * Deprecated AuthenticationScheme and its getter and setter. In the future only SharedKey will be used.
+
 2014.11.03 Version 1.3.1
  * Reverted timestamp bug fix from 1.3.0 for further consideration.
 

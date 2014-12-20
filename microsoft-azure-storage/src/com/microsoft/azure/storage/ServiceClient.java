@@ -51,6 +51,7 @@ public abstract class ServiceClient {
     /**
      * Holds the AuthenticationScheme associated with this Service Client.
      */
+    @SuppressWarnings("deprecation")
     protected AuthenticationScheme authenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
 
     /**
@@ -179,6 +180,8 @@ public abstract class ServiceClient {
      * 
      * @return An {@link AuthenticationScheme} object which represents the authentication scheme associated with this
      *         client.
+     *
+     * @deprecated as of 2.0.0. In the future only SharedKeyFull will be used.
      */
     public final AuthenticationScheme getAuthenticationScheme() {
         return this.authenticationScheme;
@@ -237,6 +240,8 @@ public abstract class ServiceClient {
      * @param scheme
      *            An {@link AuthenticationScheme} object which represents the authentication scheme being assigned for
      *            the service client.
+     *            
+     * @deprecated as of 2.0.0. In the future, only SharedKeyFull will be used.
      */
     public final void setAuthenticationScheme(final AuthenticationScheme scheme) {
         this.authenticationScheme = scheme;

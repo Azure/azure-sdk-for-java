@@ -16,7 +16,10 @@ package com.microsoft.azure.storage;
 
 /**
  * Specifies the authentication scheme that is used to sign HTTP requests.
+ * 
+ * @deprecated as of 2.0.0. In the future, only SHAREDKEYFULL will be used.
  */
+@Deprecated
 public enum AuthenticationScheme {
     /**
      * Signs HTTP requests using the Shared Key Lite authentication scheme.

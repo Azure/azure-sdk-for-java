@@ -295,6 +295,10 @@ public final class CloudTableClient extends ServiceClient {
     public ResultSegment<String> listTablesSegmented(final String prefix, final Integer maxResults,
             final ResultContinuation continuationToken, final TableRequestOptions options,
             final OperationContext opContext) throws StorageException {
+        if (null != maxResults) {
+            Utility.assertGreaterThanOrEqual("maxResults", maxResults, 1);
+        }
+        
         return (ResultSegment<String>) this.executeQuerySegmentedImpl(
                 this.generateListTablesQuery(prefix).take(maxResults), this.tableNameResolver, continuationToken,
                 options, opContext);

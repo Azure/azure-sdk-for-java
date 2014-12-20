@@ -41,6 +41,7 @@ import com.microsoft.azure.storage.StorageUri;
  * @param <R>
  *            The type of the expected result
  */
+@SuppressWarnings("deprecation")
 public abstract class StorageRequest<C, P, R> {
     /**
      * Holds a reference to a realized exception which occurred during execution.

@@ -114,6 +114,7 @@ public class SR {
     public static final String OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY = "All entities in a given batch must have the same partition key.";
     public static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
     public static final String PARAMETER_SHOULD_BE_GREATER = "The value of the parameter '%s' should be greater than %s.";
+    public static final String PARAMETER_SHOULD_BE_GREATER_OR_EQUAL = "The value of the parameter '%s' should be greater than or equal to %s.";
     public static final String PARTITIONKEY_MISSING_FOR_DELETE = "Delete requires a partition key.";
     public static final String PARTITIONKEY_MISSING_FOR_MERGE = "Merge requires a partition key.";
     public static final String PARTITIONKEY_MISSING_FOR_UPDATE = "Replace requires a partition key.";

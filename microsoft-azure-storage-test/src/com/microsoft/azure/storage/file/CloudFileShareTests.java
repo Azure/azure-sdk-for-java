@@ -100,8 +100,8 @@ public class CloudFileShareTests {
         CloudFileClient client = FileTestHelper.createCloudFileClient();
         CloudFileShare share = client.getShareReference("share");
 
-        CloudFileDirectory directory = share.getRootDirectoryReference().getSubDirectoryReference("directory3");
-        CloudFileDirectory directory2 = directory.getSubDirectoryReference("directory4");
+        CloudFileDirectory directory = share.getRootDirectoryReference().getDirectoryReference("directory3");
+        CloudFileDirectory directory2 = directory.getDirectoryReference("directory4");
 
         assertEquals(share.getStorageUri().toString(), directory.getShare().getStorageUri().toString());
         assertEquals(share.getStorageUri().toString(), directory2.getShare().getStorageUri().toString());

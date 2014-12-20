@@ -269,7 +269,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws URISyntaxException {
+    public CloudBlobDirectory getDirectoryReference(String directoryName) throws URISyntaxException {
         Utility.assertNotNullOrEmpty("directoryName", directoryName);
 
         if (!directoryName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
@@ -281,6 +281,24 @@ public final class CloudBlobDirectory implements ListBlobItem {
                 this.blobServiceClient.getDirectoryDelimiter());
 
         return new CloudBlobDirectory(address, subDirName, this.blobServiceClient, this.container, this);
+    }
+    
+    /**
+     * Returns a reference to a virtual blob directory beneath this directory.
+     * 
+     * @param directoryName
+     *            A <code>String</code> that represents the name of the virtual directory.
+     * 
+     * @return A <code>CloudBlobDirectory</code> object that represents a virtual blob directory beneath this directory.
+     * 
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     *             
+     * @deprecated as of 2.0.0. Use {@link #getDirectoryReference()} instead.
+     */
+    @Deprecated
+    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws URISyntaxException {
+        return this.getDirectoryReference(directoryName);
     }
 
     /**

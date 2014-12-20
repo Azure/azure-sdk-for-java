@@ -32,6 +32,7 @@ import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.core.SR;
 
 public final class CloudQueueClientTests {
 
@@ -142,11 +143,30 @@ public final class CloudQueueClientTests {
 
         assertTrue(totalRoundTrip == 7);
 
-        ResultSegment<CloudQueue> segment3 = qClient.listQueuesSegmented(prefix, QueueListingDetails.NONE, 0, null,
-                null, null);
+        ResultSegment<CloudQueue> segment3 = qClient.listQueuesSegmented(prefix, QueueListingDetails.NONE,
+                null, null, null, null);
         assertTrue(segment3.getLength() == 35);
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    @Test
+    public void testListQueuesSegmentedMaxResultsValidation() throws URISyntaxException, StorageException {
+        CloudQueueClient qClient = QueueTestHelper.createCloudQueueClient();
+
+        // Validation should cause each of these to fail
+        for (int i = 0; i >= -2; i--) {
+            try {
+                qClient.listQueuesSegmented(null, QueueListingDetails.NONE, i, null, null, null);
+                fail();
+            }
+            catch (IllegalArgumentException e) {
+                assertTrue(String.format(SR.PARAMETER_SHOULD_BE_GREATER_OR_EQUAL, "maxResults", 1)
+                        .equals(e.getMessage()));
+            }
+        }
+        assertNotNull(qClient.listQueuesSegmented("thereshouldntbeanyqueueswiththisprefix"));
+    }
+    
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListQueuesEqual() throws StorageException {

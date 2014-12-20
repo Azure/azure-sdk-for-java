@@ -42,6 +42,13 @@ public final class EntityProperty {
     private Class<?> type;
     private EdmType edmType = EdmType.NULL;
     private boolean isNull = false;
+    
+    /**
+     * Flag that specifies whether the client should look to correct Date values stored on a {@link TableEntity}
+     * that may have been written using versions of this library prior to 2.0.0.
+     * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
+     */
+    private boolean dateBackwardCompatibility = false;
 
     /**
      * Reserved for internal use. Constructs an {@link EntityProperty} instance from a <code>Object</code> value type,
@@ -405,7 +412,7 @@ public final class EntityProperty {
     public Class<?> getType() {
         return this.type;
     }
-
+    
     /**
      * Gets the value of this {@link EntityProperty} as a <code>boolean</code>.
      * 
@@ -471,7 +478,7 @@ public final class EntityProperty {
         if (this.isNull) {
             return null;
         }
-        return Utility.parseDate(this.value);
+        return Utility.parseDate(this.value, this.dateBackwardCompatibility);
     }
 
     /**
@@ -710,7 +717,7 @@ public final class EntityProperty {
             this.isNull = false;
         }
 
-        this.value = Utility.getTimeByZoneAndFormat(value, Utility.UTC_ZONE, Utility.ISO8061_LONG_PATTERN);
+        this.value = Utility.getJavaISO8601Time(value);
     }
 
     /**
@@ -851,5 +858,21 @@ public final class EntityProperty {
         }
 
         this.value = value.toString();
+    }
+
+    /**
+     * Sets whether the client should look to correct Date values stored on a {@link TableEntity}
+     * that may have been written using versions of this library prior to 2.0.0.
+     * <p>
+     * {@link #dateBackwardCompatibility} is by default <code>false</code>, indicating a post 2.0.0 version or
+     * mixed-platform usage.
+     * <p>
+     * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
+     * 
+     * @param dateBackwardCompatibility
+     *        <code>true</code> to enable <code>dateBackwardCompatibility</code>; otherwise, <code>false</code>
+     */
+    void setDateBackwardCompatibility(boolean dateBackwardCompatibility) {
+        this.dateBackwardCompatibility = dateBackwardCompatibility;
     }
 }

@@ -36,7 +36,7 @@ public class ListResponse<T> {
     /**
      * Stores the max results.
      */
-    protected int maxResults;
+    protected Integer maxResults;
 
     /**
      * Stores the next marker.
@@ -71,7 +71,7 @@ public class ListResponse<T> {
      * 
      * @return the max results
      */
-    public int getMaxResults() {
+    public Integer getMaxResults() {
         return this.maxResults;
     }
 
@@ -119,7 +119,7 @@ public class ListResponse<T> {
      * @param maxResults
      *            the maxResults to set
      */
-    public void setMaxResults(int maxResults) {
+    public void setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
     }
 

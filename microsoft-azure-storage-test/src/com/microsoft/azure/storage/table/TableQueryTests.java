@@ -367,6 +367,337 @@ public class TableQueryTests {
                     secondIteration.get(m).getProperties().get("D").getValueAsByteArray()));
         }
     }
+    
+    @Test
+    public void testTableQueryRoundTripDate() throws URISyntaxException, StorageException {
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(new Date(1417943712123L));
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(new Date(1421247212800L));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testTableQueryRoundTripDateJsonAtom() throws URISyntaxException, StorageException {
+        // JSON
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, false, TablePayloadFormat.Json);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, false, TablePayloadFormat.Json);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, false, TablePayloadFormat.Json);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.Json);
+        
+        
+        // JSON NO METADATA
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.JsonNoMetadata);
+        
+        // ATOM PUB
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, false, TablePayloadFormat.AtomPub);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, false, TablePayloadFormat.AtomPub);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, false, TablePayloadFormat.AtomPub);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.AtomPub);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testTableQueryRoundTripDateJsonAtomCrossVersion()
+            throws URISyntaxException, StorageException {
+        // JSON
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, false, TablePayloadFormat.Json);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, false, TablePayloadFormat.Json);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, false, TablePayloadFormat.Json);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.Json);
+        
+        // JSON NO METADATA
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, false, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.JsonNoMetadata);
+        
+        // ATOM PUB
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, false, TablePayloadFormat.AtomPub);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, false, TablePayloadFormat.AtomPub);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, false, TablePayloadFormat.AtomPub);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.AtomPub);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testTableQueryRoundTripDateJsonAtomWithBackwardCompatibility()
+            throws URISyntaxException, StorageException {
+        // JSON
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, true, TablePayloadFormat.Json);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, true, TablePayloadFormat.Json);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, true, TablePayloadFormat.Json);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true, TablePayloadFormat.Json);
+
+        // JSON NO METADATA
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true, TablePayloadFormat.JsonNoMetadata);
+        
+        // ATOM PUB
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, true, TablePayloadFormat.AtomPub);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, true, TablePayloadFormat.AtomPub);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, true, TablePayloadFormat.AtomPub);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true, TablePayloadFormat.AtomPub);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testTableQueryRoundTripDateJsonAtomCrossVersionWithBackwardCompatibility()
+            throws URISyntaxException, StorageException {
+        // JSON
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, true, TablePayloadFormat.Json);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, true, TablePayloadFormat.Json);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, true, TablePayloadFormat.Json);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.Json);
+        
+        // JSON NO METADATA
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, true, TablePayloadFormat.JsonNoMetadata);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.JsonNoMetadata);
+        
+        // ATOM PUB
+        // 2014-12-07T09:15:12.123Z  from Java
+        testTableQueryRoundTripDate(
+                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, true, TablePayloadFormat.AtomPub);
+
+        // 2015-01-14T14:53:32.800Z  from Java
+        testTableQueryRoundTripDate(
+                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, true, TablePayloadFormat.AtomPub);
+
+        // 2014-11-29T22:55:21.9876543Z  from .Net
+        testTableQueryRoundTripDate(
+                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, true, TablePayloadFormat.AtomPub);
+
+        // 2015-02-14T03:11:13.0000229Z  from .Net
+        testTableQueryRoundTripDate(
+                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.AtomPub);
+    }
+
+    private void testTableQueryRoundTripDate(final Date date) throws URISyntaxException, StorageException {
+        final String partitionKey = "partitionTest";
+
+        // DateBackwardCompatibility off
+        String rowKey = TableTestHelper.generateRandomKeyName();
+        DateTestEntity entity = new DateTestEntity(partitionKey, rowKey);
+        entity.setDate(date);
+
+        TableOperation put = TableOperation.insertOrReplace(entity);
+        TableQueryTests.table.execute(put);
+
+        TableOperation get = TableOperation.retrieve(partitionKey, rowKey, DateTestEntity.class);
+        entity = TableQueryTests.table.execute(get).getResultAsType();
+        assertEquals(date.getTime(), entity.getDate().getTime());
+
+        // DateBackwardCompatibility on
+        rowKey = TableTestHelper.generateRandomKeyName();
+        entity = new DateTestEntity(partitionKey, rowKey);
+        entity.setDate(date);
+
+        put = TableOperation.insertOrReplace(entity);
+        TableQueryTests.table.execute(put);
+
+        get = TableOperation.retrieve(partitionKey, rowKey, DateTestEntity.class);
+        final TableRequestOptions options = new TableRequestOptions();
+        options.setDateBackwardCompatibility(true);
+        entity = TableQueryTests.table.execute(get, options, null).getResultAsType();
+        assertEquals(date.getTime(), entity.getDate().getTime());
+        
+        // DateBackwardCompatibility off
+        final String dateKey = "date";
+        final EntityProperty property = new EntityProperty(date);
+        rowKey = TableTestHelper.generateRandomKeyName();
+        DynamicTableEntity dynamicEntity = new DynamicTableEntity(partitionKey, rowKey);
+        dynamicEntity.getProperties().put(dateKey, property);
+
+        put = TableOperation.insertOrReplace(dynamicEntity);
+        TableQueryTests.table.execute(put);
+
+        get = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
+        dynamicEntity = TableQueryTests.table.execute(get).getResultAsType();
+        assertEquals(date.getTime(), dynamicEntity.getProperties().get(dateKey).getValueAsDate().getTime());
+
+        // DateBackwardCompatibility on
+        rowKey = TableTestHelper.generateRandomKeyName();
+        dynamicEntity = new DynamicTableEntity(partitionKey, rowKey);
+        dynamicEntity.getProperties().put(dateKey, property);
+
+        put = TableOperation.insertOrReplace(dynamicEntity);
+        TableQueryTests.table.execute(put);
+
+        get = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
+        options.setDateBackwardCompatibility(true);
+        dynamicEntity = TableQueryTests.table.execute(get, options, null).getResultAsType();
+        assertEquals(date.getTime(), dynamicEntity.getProperties().get(dateKey).getValueAsDate().getTime());
+    }
+
+    private void testTableQueryRoundTripDate(final String dateString, final long milliseconds, final int ticks,
+            final boolean writtenPre2, final boolean dateBackwardCompatibility, TablePayloadFormat format)
+            throws URISyntaxException, StorageException {
+        assertTrue(ticks >= 0);     // ticks is non-negative
+        assertTrue(ticks <= 9999);  // ticks do not overflow into milliseconds
+        final String partitionKey = "partitionTest";
+        final String dateKey = "date";
+        long expectedMilliseconds = milliseconds;
+        
+        if (dateBackwardCompatibility && (milliseconds % 1000 == 0) && (ticks < 1000)) {
+            // when no milliseconds are present dateBackwardCompatibility causes up to 3 digits of ticks
+            // to be read as milliseconds
+            expectedMilliseconds += ticks;
+        } else if (writtenPre2 && !dateBackwardCompatibility && (ticks == 0)) {
+            // without DateBackwardCompatibility, milliseconds stored by Java prior to 2.0.0 are lost
+            expectedMilliseconds -= expectedMilliseconds % 1000;
+        }
+        
+        // Create a property for how the service would store the dateString
+        EntityProperty property = new EntityProperty(dateString, EdmType.DATE_TIME);
+        String rowKey = TableTestHelper.generateRandomKeyName();
+        DynamicTableEntity dynamicEntity = new DynamicTableEntity(partitionKey, rowKey);
+        dynamicEntity.getProperties().put(dateKey, property);
+
+        // Add the entity to the table
+        TableOperation put = TableOperation.insertOrReplace(dynamicEntity);
+        TableQueryTests.table.execute(put);
+        
+        // Specify the options
+        TableRequestOptions options = new TableRequestOptions();
+        options.setDateBackwardCompatibility(dateBackwardCompatibility);
+        options.setTablePayloadFormat(format);
+        
+        // Fetch the entity from the table
+        TableOperation get = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
+        dynamicEntity = TableQueryTests.table.execute(get, options, null).getResultAsType();
+        
+        // Ensure the date matches our expectations
+        assertEquals(expectedMilliseconds, dynamicEntity.getProperties().get(dateKey).getValueAsDate().getTime());
+    }
 
     @SuppressWarnings("deprecation")
     @Test
@@ -442,7 +773,7 @@ public class TableQueryTests {
             assertNotNull(ent.getRowKey());
             assertNotNull(ent.getTimestamp());
 
-            // Validate correct columsn returned.
+            // Validate correct column returned.
             assertEquals(ent.getA(), randEnt.getA());
             assertEquals(ent.getB(), null);
             assertEquals(ent.getC(), randEnt.getC());
@@ -742,4 +1073,24 @@ public class TableQueryTests {
 
         assertEquals(count, 200);
     }
+
+    private static class DateTestEntity extends TableServiceEntity {
+        private Date value;
+        
+        @SuppressWarnings("unused")
+        public DateTestEntity() {
+        }
+        
+        public DateTestEntity(String partition, String key) {
+            super(partition, key);
+        }
+        
+        public Date getDate() {
+            return this.value;
+        }
+        
+        public void setDate(Date value) {
+            this.value = value;
+        }
+     }
 }

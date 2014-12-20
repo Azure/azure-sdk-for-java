@@ -46,28 +46,33 @@ public class TestHelper {
     private static StorageCredentialsAccountAndKey credentials;
     private static CloudStorageAccount account;
 
+    @SuppressWarnings("deprecation")
     private final static AuthenticationScheme defaultAuthenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
     private final static boolean enableFiddler = true;
     private final static boolean requireSecondaryEndpoint = false;
 
+    @SuppressWarnings("deprecation")
     public static CloudBlobClient createCloudBlobClient() throws StorageException {
         CloudBlobClient client = getAccount().createCloudBlobClient();
         client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
+    @SuppressWarnings("deprecation")
     public static CloudFileClient createCloudFileClient() throws StorageException {
         CloudFileClient client = getAccount().createCloudFileClient();
         client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
+    @SuppressWarnings("deprecation")
     public static CloudQueueClient createCloudQueueClient() throws StorageException {
         CloudQueueClient client = getAccount().createCloudQueueClient();
         client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
+    @SuppressWarnings("deprecation")
     public static CloudTableClient createCloudTableClient() throws StorageException {
         CloudTableClient client = getAccount().createCloudTableClient();
         client.setAuthenticationScheme(defaultAuthenticationScheme);

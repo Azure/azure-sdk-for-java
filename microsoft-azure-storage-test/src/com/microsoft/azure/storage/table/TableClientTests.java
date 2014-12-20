@@ -49,31 +49,30 @@ import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 import com.microsoft.azure.storage.table.TableTestHelper.Class2;
 
 /**
  * Table Client Tests
  */
+@SuppressWarnings("deprecation")
 public class TableClientTests {
 
-    @SuppressWarnings("deprecation")
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListTablesSegmented() throws URISyntaxException, StorageException {
         TableRequestOptions options = new TableRequestOptions();
+        TablePayloadFormat[] formats =
+                {TablePayloadFormat.AtomPub,
+                TablePayloadFormat.JsonFullMetadata,
+                TablePayloadFormat.Json,
+                TablePayloadFormat.JsonNoMetadata}; 
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testListTablesSegmented(options);
-
-        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
-        testListTablesSegmented(options);
-
-        options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testListTablesSegmented(options);
-
-        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
-        testListTablesSegmented(options);
+        for (TablePayloadFormat format : formats) {
+            options.setTablePayloadFormat(format);
+            testListTablesSegmented(options);
+        }
     }
 
     private void testListTablesSegmented(TableRequestOptions options) throws URISyntaxException, StorageException {
@@ -120,8 +119,27 @@ public class TableClientTests {
             }
         }
     }
+    
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    @Test
+    public void testListTablesSegmentedMaxResultsValidation()
+            throws URISyntaxException, StorageException {
+        final CloudTableClient tClient = TableTestHelper.createCloudTableClient();
 
-    @SuppressWarnings("deprecation")
+        // Validation should cause each of these to fail.
+        for (int i = 0; i >= -2; i--) {
+            try {
+                tClient.listTablesSegmented(null, i, null, null, null);
+                fail();
+            }
+            catch (IllegalArgumentException e) {
+                assertTrue(String.format(SR.PARAMETER_SHOULD_BE_GREATER_OR_EQUAL, "maxResults", 1)
+                        .equals(e.getMessage()));
+            }
+        }
+        assertNotNull(tClient.listTablesSegmented("thereshouldntbeanytableswiththisprefix"));
+    }
+
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListTablesSegmentedNoPrefix() throws URISyntaxException, StorageException {
@@ -187,7 +205,6 @@ public class TableClientTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListTablesWithIterator() throws URISyntaxException, StorageException {

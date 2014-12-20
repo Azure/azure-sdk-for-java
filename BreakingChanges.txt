@@ -1,3 +1,20 @@
+Changes in 2.0.0
+
+BLOB
+ * Deprecated getSubDirectoryReference(). Use getDirectoryReference() instead. 
+
+TABLE
+ * Loses millisecond precision when reading Date values on Table Entities written using versions of this library prior to 2.0.0, unless TableRequestOptions.dateBackwardCompatibility is set to true.  See http://go.microsoft.com/fwlink/?LinkId=523753 for more details.
+
+FILE
+ * Deprecated getSubDirectoryReference(). Use getDirectoryReference() instead. 
+
+OTHER
+ * Changed maxResults arguments of List*Segmented() methods to type Integer instead of int
+ * Added validation to ensure that the maxResults arguments of List*Segmented() methods are positive when non-null
+ * Added PARAMETER_SHOULD_BE_GREATER_OR_EQUAL attribute to SR which is used by Utility.assertGreaterThanOrEqual()
+ * Deprecated AuthenticationScheme and its getter and setter. In the future only SharedKey will be used.
+
 Changes in 0.7.0
 
 BLOB

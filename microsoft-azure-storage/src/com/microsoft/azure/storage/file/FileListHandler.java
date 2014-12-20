@@ -123,7 +123,7 @@ final class FileListHandler extends DefaultHandler {
         else if (FileConstants.DIRECTORY_ELEMENT.equals(currentNode)) {
             CloudFileDirectory retDirectory = null;
             try {
-                retDirectory = this.directory.getSubDirectoryReference(this.name);
+                retDirectory = this.directory.getDirectoryReference(this.name);
             }
             catch (URISyntaxException e) {
                 throw new SAXException(e);

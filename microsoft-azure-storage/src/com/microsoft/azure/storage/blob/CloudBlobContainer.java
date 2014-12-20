@@ -1104,7 +1104,7 @@ public final class CloudBlobContainer {
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
         return new LazySegmentedIterable<CloudBlobClient, CloudBlobContainer, ListBlobItem>(
-                this.listBlobsSegmentedImpl(prefix, useFlatBlobListing, listingDetails, -1, options, segmentedRequest),
+                this.listBlobsSegmentedImpl(prefix, useFlatBlobListing, listingDetails, null, options, segmentedRequest),
                 this.blobServiceClient, this, options.getRetryPolicyFactory(), opContext);
     }
 
@@ -1119,7 +1119,7 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public ResultSegment<ListBlobItem> listBlobsSegmented() throws StorageException {
-        return this.listBlobsSegmented(null, false, EnumSet.noneOf(BlobListingDetails.class), -1, null, null, null);
+        return this.listBlobsSegmented(null, false, EnumSet.noneOf(BlobListingDetails.class), null, null, null, null);
     }
 
     /**
@@ -1137,46 +1137,48 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public ResultSegment<ListBlobItem> listBlobsSegmented(final String prefix) throws StorageException {
-        return this.listBlobsSegmented(prefix, false, EnumSet.noneOf(BlobListingDetails.class), -1, null, null, null);
+        return this.listBlobsSegmented(prefix, false, EnumSet.noneOf(BlobListingDetails.class), null, null, null, null);
     }
 
     /**
-     * Returns a result segment containing a collection of blob items whose names begin with the specified prefix, using
-     * the specified flat or hierarchical option, listing details options, request options, and operation context.
+     * Returns a result segment containing a collection of blob items whose names begin with the
+     * specified prefix, using the specified flat or hierarchical option, listing details options,
+     * request options, and operation context.
      * 
      * @param prefix
      *            A <code>String</code> that represents the prefix of the blob name.
      * @param useFlatBlobListing
-     *            <code>true</code> to indicate that the returned list will be flat; <code>false</code> to indicate that
-     *            the returned list will be hierarchical.
+     *            <code>true</code> to indicate that the returned list will be flat;
+     *            <code>false</code> to indicate that the returned list will be hierarchical.
      * @param listingDetails
-     *            A <code>java.util.EnumSet</code> object that contains {@link BlobListingDetails} values that indicate
-     *            whether snapshots, metadata, and/or uncommitted blocks are returned. Committed blocks are always
-     *            returned.
+     *            A <code>java.util.EnumSet</code> object that contains {@link BlobListingDetails} 
+     *            values that indicate whether snapshots, metadata, and/or uncommitted blocks
+     *            are returned. Committed blocks are always returned.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token returned
+     *            by a previous listing operation.
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the
+     *            request. Specifying <code>null</code> will use the default request options from
+     *            the associated service client ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
      * 
-     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
-     *         {@link ListBlobItem} objects that represent the block items whose names begin with the specified prefix
-     *         in the container.
+     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection
+     *         of {@link ListBlobItem} objects that represent the block items whose names begin
+     *         with the specified prefix in the container.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
     public ResultSegment<ListBlobItem> listBlobsSegmented(final String prefix, final boolean useFlatBlobListing,
-            final EnumSet<BlobListingDetails> listingDetails, final int maxResults,
+            final EnumSet<BlobListingDetails> listingDetails, final Integer maxResults,
             final ResultContinuation continuationToken, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -1202,7 +1204,7 @@ public final class CloudBlobContainer {
 
     private StorageRequest<CloudBlobClient, CloudBlobContainer, ResultSegment<ListBlobItem>> listBlobsSegmentedImpl(
             final String prefix, final boolean useFlatBlobListing, final EnumSet<BlobListingDetails> listingDetails,
-            final int maxResults, final BlobRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
+            final Integer maxResults, final BlobRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.BLOB);
         Utility.assertNotNull("options", options);
@@ -1260,7 +1262,7 @@ public final class CloudBlobContainer {
                 }
 
                 final ResultSegment<ListBlobItem> resSegment = new ResultSegment<ListBlobItem>(response.getResults(),
-                        maxResults, newToken);
+                        response.getMaxResults(), newToken);
 
                 // Important for listBlobs because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());
@@ -1363,31 +1365,32 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Returns a result segment containing a collection of containers whose names begin with the specified prefix for
-     * the service client associated with this container, using the specified listing details options, request options,
-     * and operation context.
+     * Returns a result segment containing a collection of containers whose names begin with
+     * the specified prefix for the service client associated with this container,
+     * using the specified listing details options, request options, and operation context.
      * 
      * @param prefix
      *            A <code>String</code> that represents the prefix of the container name.
      * @param detailsIncluded
      *            A {@link ContainerListingDetails} object that indicates whether metadata is included.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token
+     *            returned by a previous listing operation.
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the
+     *            request. Specifying <code>null</code> will use the default request options from
+     *            the associated service client ( {@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *             and to provide additional runtime information about the operation.
      * 
-     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
-     *         {@link CloudBlobContainer} objects that represent the containers whose names begin with the specified
-     *         prefix for the service client associated with this container.
+     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection
+     *         of {@link CloudBlobContainer} objects that represent the containers whose names
+     *         begin with the specified prefix for the service client associated with this container.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1395,7 +1398,7 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public ResultSegment<CloudBlobContainer> listContainersSegmented(final String prefix,
-            final ContainerListingDetails detailsIncluded, final int maxResults,
+            final ContainerListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, final BlobRequestOptions options,
             final OperationContext opContext) throws StorageException {
         return this.blobServiceClient.listContainersSegmented(prefix, detailsIncluded, maxResults, continuationToken,

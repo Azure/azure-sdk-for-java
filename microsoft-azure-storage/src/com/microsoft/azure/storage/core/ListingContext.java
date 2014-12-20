@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.core;
 
+import com.microsoft.azure.storage.core.Utility;
+
 /**
  * RESERVED FOR INTERNAL USE. A class which holds the current context of a listing
  */
@@ -79,9 +81,13 @@ public class ListingContext {
 
     /**
      * @param maxResults
-     *            the maxResults to set
+     *            the maxResults to set, must be at least 1
      */
     protected final void setMaxResults(final Integer maxResults) {
+        if (null != maxResults) {
+            Utility.assertGreaterThanOrEqual("maxResults", maxResults, 1);
+        }
+        
         this.maxResults = maxResults;
     }
 
