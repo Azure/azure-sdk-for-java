@@ -211,7 +211,7 @@ public class StorageUriTests {
         assertEquals(containerUri, directory.getContainer().getStorageUri());
         assertEquals(endpoint, directory.getServiceClient().getStorageUri());
 
-        CloudBlobDirectory subdirectory = directory.getSubDirectoryReference("subdirectory");
+        CloudBlobDirectory subdirectory = directory.getDirectoryReference("subdirectory");
         assertEquals(subdirectoryUri, subdirectory.getStorageUri());
         assertEquals(subdirectoryUri.getPrimaryUri(), subdirectory.getUri());
         assertEquals(directoryUri, subdirectory.getParent().getStorageUri());

@@ -1086,7 +1086,7 @@ public class CloudFileTests {
         CloudFileClient client = FileTestHelper.createCloudFileClient();
         CloudFileShare share = client.getShareReference(FileTestHelper.generateRandomShareName());
         share.create();
-        CloudFileDirectory directory = share.getRootDirectoryReference().getSubDirectoryReference("directory");
+        CloudFileDirectory directory = share.getRootDirectoryReference().getDirectoryReference("directory");
         directory.create();
         final CloudFile file = directory.getFileReference("file");
 

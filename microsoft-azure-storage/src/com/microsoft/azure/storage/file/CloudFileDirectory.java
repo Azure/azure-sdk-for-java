@@ -644,7 +644,7 @@ public final class CloudFileDirectory implements ListFileItem {
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
         return new LazySegmentedIterable<CloudFileClient, CloudFileDirectory, ListFileItem>(
-                this.listFilesAndDirectoriesSegmentedImpl(-1, options, segmentedRequest), this.fileServiceClient, this,
+                this.listFilesAndDirectoriesSegmentedImpl(null, options, segmentedRequest), this.fileServiceClient, this,
                 options.getRetryPolicyFactory(), opContext);
     }
 
@@ -657,8 +657,8 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     @DoesServiceRequest
     public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented() throws StorageException {
-        return this
-                .listFilesAndDirectoriesSegmented(0, null /* continuationToken */, null /* options */, null /* opContext */);
+        return this.listFilesAndDirectoriesSegmented(
+                null, null /* continuationToken */, null /* options */, null /* opContext */);
     }
 
     /**
@@ -666,18 +666,19 @@ public final class CloudFileDirectory implements ListFileItem {
      * specified listing details options, request options, and operation context.
      * 
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token
+     *            returned by a previous listing operation.
      * @param options
-     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudFileClient}).
+     *            A {@link FileRequestOptions} object that specifies any additional options for
+     *            the request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ( {@link CloudFileClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
      * 
      * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
      *         {@link ListFileItem} objects that represent the files and directories in this directory.
@@ -686,7 +687,7 @@ public final class CloudFileDirectory implements ListFileItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented(final int maxResults,
+    public ResultSegment<ListFileItem> listFilesAndDirectoriesSegmented(final Integer maxResults,
             final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -707,7 +708,7 @@ public final class CloudFileDirectory implements ListFileItem {
     }
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>> listFilesAndDirectoriesSegmentedImpl(
-            final int maxResults, final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
+            final Integer maxResults, final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.FILE);
 
@@ -761,7 +762,7 @@ public final class CloudFileDirectory implements ListFileItem {
                 }
 
                 final ResultSegment<ListFileItem> resSegment = new ResultSegment<ListFileItem>(response.getResults(),
-                        maxResults, newToken);
+                        response.getMaxResults(), newToken);
 
                 // Important for listFilesAndDirectories because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());
@@ -792,6 +793,26 @@ public final class CloudFileDirectory implements ListFileItem {
 
         return new CloudFile(subdirectoryUri, this.fileServiceClient, this.getShare());
     }
+    
+    /**
+     * Returns a reference to a {@link CloudFileDirectory} object that represents a directory in this directory.
+     * 
+     * @param itemName
+     *            A <code>String</code> that represents the name of the directory.
+     * 
+     * @return A {@link CloudFileDirectory} object that represents a reference to the specified directory.
+     * 
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     * @throws StorageException
+     */
+    public CloudFileDirectory getDirectoryReference(final String itemName) throws URISyntaxException,
+            StorageException {
+        Utility.assertNotNullOrEmpty("itemName", itemName);
+
+        StorageUri subdirectoryUri = PathUtility.appendPathToUri(this.storageUri, itemName);
+        return new CloudFileDirectory(subdirectoryUri, itemName, this.getShare());
+    }
 
     /**
      * Returns a reference to a {@link CloudFileDirectory} object that represents a subdirectory in this directory.
@@ -804,13 +825,13 @@ public final class CloudFileDirectory implements ListFileItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      * @throws StorageException
+     * 
+     * @deprecated as of 2.0.0. Use {@link #getDirectoryReference()} instead.
      */
+    @Deprecated
     public CloudFileDirectory getSubDirectoryReference(final String itemName) throws URISyntaxException,
             StorageException {
-        Utility.assertNotNullOrEmpty("itemName", itemName);
-
-        StorageUri subdirectoryUri = PathUtility.appendPathToUri(this.storageUri, itemName);
-        return new CloudFileDirectory(subdirectoryUri, itemName, this.getShare());
+        return this.getDirectoryReference(itemName);
     }
 
     /**

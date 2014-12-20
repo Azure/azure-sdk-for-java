@@ -29,6 +29,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.core.SR;
 
 /**
  * File Client Tests
@@ -82,5 +83,32 @@ public class CloudFileClientTests {
                 fileClient.getShareReference(shareName).deleteIfExists();
             }
         }
+    }
+    
+    /**
+     * Tests doing a listShares to ensure maxResults validation is working.
+     * 
+     * @throws StorageException
+     * @throws URISyntaxException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    public void testListSharesMaxResultsValidationTest() throws StorageException, URISyntaxException {
+        CloudFileClient fileClient = FileTestHelper.createCloudFileClient();
+        String prefix = UUID.randomUUID().toString();
+            
+        // Validation should cause each of these to fail
+        for (int i = 0; i >= -2; i--) {
+            try{ 
+                fileClient.listSharesSegmented(
+                        prefix, ShareListingDetails.ALL, i, null, null, null);
+                fail();
+            }
+            catch (IllegalArgumentException e) {
+                assertTrue(String.format(SR.PARAMETER_SHOULD_BE_GREATER_OR_EQUAL, "maxResults", 1)
+                        .equals(e.getMessage()));
+            }
+        }
+        assertNotNull(fileClient.listSharesSegmented("thereshouldntbeanyshareswiththisprefix"));
     }
 }

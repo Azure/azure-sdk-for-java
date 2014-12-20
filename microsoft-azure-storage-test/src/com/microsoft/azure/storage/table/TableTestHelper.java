@@ -39,6 +39,10 @@ public class TableTestHelper extends TestHelper {
         String queueName = "queue" + UUID.randomUUID().toString();
         return queueName.replace("-", "");
     }
+    
+    public static String generateRandomKeyName() {
+        return "key" + UUID.randomUUID().toString();
+    }
 
     public static CloudTable getRandomTableReference() throws URISyntaxException, StorageException {
         String tableName = generateRandomTableName();

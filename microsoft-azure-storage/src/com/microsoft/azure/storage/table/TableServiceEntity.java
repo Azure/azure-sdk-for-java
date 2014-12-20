@@ -78,12 +78,6 @@ import com.microsoft.azure.storage.core.SR;
  * <td>A Boolean value.</td>
  * </tr>
  * <tr>
- * <td><strong>Edm.Byte</strong></td>
- * <td>{@link EdmType#BYTE}</td>
- * <td><code>byte, Byte</code></td>
- * <td>An 8-bit integer value.</td>
- * </tr>
- * <tr>
  * <td><strong>Edm.DateTime</strong></td>
  * <td>{@link EdmType#DATE_TIME}</td>
  * <td><code>java.util.Date</code></td>

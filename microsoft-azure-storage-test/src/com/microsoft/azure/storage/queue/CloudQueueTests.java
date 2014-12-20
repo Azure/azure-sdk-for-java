@@ -55,6 +55,7 @@ import com.microsoft.azure.storage.core.PathUtility;
 /**
  * Queue Tests
  */
+@SuppressWarnings("deprecation")
 @Category({ CloudTests.class })
 public class CloudQueueTests {
 

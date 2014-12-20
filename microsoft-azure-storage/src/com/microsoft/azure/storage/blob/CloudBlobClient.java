@@ -244,7 +244,7 @@ public final class CloudBlobClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudBlobContainer> listContainersSegmented() throws StorageException {
-        return this.listContainersSegmented(null, ContainerListingDetails.NONE, 0, null /* continuationToken */,
+        return this.listContainersSegmented(null, ContainerListingDetails.NONE, null, null /* continuationToken */,
                 null /* options */, null /* opContext */);
     }
 
@@ -264,7 +264,7 @@ public final class CloudBlobClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudBlobContainer> listContainersSegmented(final String prefix) throws StorageException {
-        return this.listContainersWithPrefixSegmented(prefix, ContainerListingDetails.NONE, 0,
+        return this.listContainersWithPrefixSegmented(prefix, ContainerListingDetails.NONE, null,
                 null /* continuationToken */, null /* options */, null /* opContext */);
     }
 
@@ -278,18 +278,19 @@ public final class CloudBlobClient extends ServiceClient {
      * @param detailsIncluded
      *            A {@link ContainerListingDetails} value that indicates whether container metadata will be returned.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *           The maximum number of results to retrieve.  If <code>null</code> or greater
+     *           than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token returned
+     *            by a previous listing operation.
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the
+     *            request. Specifying <code>null</code> will use the default request options from
+     *            the associated service client ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
      * 
      * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
      *         {@link CloudBlobContainer} objects that represent the containers for this Blob service client.
@@ -299,7 +300,7 @@ public final class CloudBlobClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudBlobContainer> listContainersSegmented(final String prefix,
-            final ContainerListingDetails detailsIncluded, final int maxResults,
+            final ContainerListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, final BlobRequestOptions options,
             final OperationContext opContext) throws StorageException {
 
@@ -340,7 +341,7 @@ public final class CloudBlobClient extends ServiceClient {
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
         return new LazySegmentedIterable<CloudBlobClient, Void, CloudBlobContainer>(
-                this.listContainersWithPrefixSegmentedImpl(prefix, detailsIncluded, -1, options, segmentedRequest),
+                this.listContainersWithPrefixSegmentedImpl(prefix, detailsIncluded, null, options, segmentedRequest),
                 this, null, options.getRetryPolicyFactory(), opContext);
     }
 
@@ -354,18 +355,19 @@ public final class CloudBlobClient extends ServiceClient {
      * @param detailsIncluded
      *            A {@link ContainerListingDetails} value that indicates whether container metadata will be returned.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token returned
+     *            by a previous listing operation.
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the
+     *            request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *             and to provide additional runtime information about the operation.
      * 
      * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
      *         {@link CloudBlobContainer} objects that represent the containers for this client.
@@ -374,7 +376,7 @@ public final class CloudBlobClient extends ServiceClient {
      *             If a storage service error occurred.
      */
     private ResultSegment<CloudBlobContainer> listContainersWithPrefixSegmented(final String prefix,
-            final ContainerListingDetails detailsIncluded, final int maxResults,
+            final ContainerListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -394,7 +396,7 @@ public final class CloudBlobClient extends ServiceClient {
     }
 
     private StorageRequest<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> listContainersWithPrefixSegmentedImpl(
-            final String prefix, final ContainerListingDetails detailsIncluded, final int maxResults,
+            final String prefix, final ContainerListingDetails detailsIncluded, final Integer maxResults,
             final BlobRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.CONTAINER);
@@ -450,7 +452,7 @@ public final class CloudBlobClient extends ServiceClient {
                 }
 
                 final ResultSegment<CloudBlobContainer> resSegment = new ResultSegment<CloudBlobContainer>(
-                        response.getResults(), maxResults, newToken);
+                        response.getResults(), response.getMaxResults(), newToken);
 
                 // Important for listContainers because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());

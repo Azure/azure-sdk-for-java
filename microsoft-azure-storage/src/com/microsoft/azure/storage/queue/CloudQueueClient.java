@@ -170,7 +170,7 @@ public final class CloudQueueClient extends ServiceClient {
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
         return new LazySegmentedIterable<CloudQueueClient, Void, CloudQueue>(this.listQueuesSegmentedImpl(prefix,
-                detailsIncluded, -1, options, segmentedRequest), this, null, options.getRetryPolicyFactory(), opContext);
+                detailsIncluded, null, options, segmentedRequest), this, null, options.getRetryPolicyFactory(), opContext);
     }
 
     /**
@@ -187,7 +187,7 @@ public final class CloudQueueClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudQueue> listQueuesSegmented() throws StorageException {
-        return this.listQueuesSegmented(null, QueueListingDetails.NONE, 0, null, null, null);
+        return this.listQueuesSegmented(null, QueueListingDetails.NONE, null, null, null, null);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class CloudQueueClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudQueue> listQueuesSegmented(final String prefix) throws StorageException {
-        return this.listQueuesSegmented(prefix, QueueListingDetails.NONE, 0, null, null, null);
+        return this.listQueuesSegmented(prefix, QueueListingDetails.NONE, null, null, null, null);
     }
 
     /**
@@ -219,32 +219,31 @@ public final class CloudQueueClient extends ServiceClient {
      *            A {@link QueueListingDetails} value that indicates whether
      *            queue metadata will be returned.
      * @param maxResults
-     *            The maximum number of queue results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
      *            A {@link ResultContinuation} object that represents a
      *            continuation token returned by a previous listing operation.
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueue}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for
+     *            the request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ( {@link CloudQueue}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context
      *            for the current operation. This object is used to track
      *            requests to the storage service, and to provide additional
      *            runtime information about the operation.
      * 
-     * @return A {@link ResultSegment} of {@link CloudQueue} objects that
-     *         contains a segment of the iterable collection of {@link CloudQueue} objects that represent the requested
-     *         queues in
-     *         the storage service.
+     * @return A {@link ResultSegment} of {@link CloudQueue} objects that contains a segment of
+     *         the iterable collection of {@link CloudQueue} objects that represent the requested
+     *         queues in the storage service.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
     public ResultSegment<CloudQueue> listQueuesSegmented(final String prefix,
-            final QueueListingDetails detailsIncluded, final int maxResults,
+            final QueueListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, QueueRequestOptions options, OperationContext opContext)
             throws StorageException {
 
@@ -263,7 +262,7 @@ public final class CloudQueueClient extends ServiceClient {
     }
 
     private StorageRequest<CloudQueueClient, Void, ResultSegment<CloudQueue>> listQueuesSegmentedImpl(
-            final String prefix, final QueueListingDetails detailsIncluded, final int maxResults,
+            final String prefix, final QueueListingDetails detailsIncluded, final Integer maxResults,
             final QueueRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.QUEUE);
@@ -318,7 +317,7 @@ public final class CloudQueueClient extends ServiceClient {
                 }
 
                 final ResultSegment<CloudQueue> resSegment = new ResultSegment<CloudQueue>(response.getResults(),
-                        maxResults, newToken);
+                        response.getMaxResults(), newToken);
 
                 // Important for listQueues because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());

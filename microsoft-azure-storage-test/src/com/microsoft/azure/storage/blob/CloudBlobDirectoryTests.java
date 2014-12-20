@@ -513,7 +513,7 @@ public class CloudBlobDirectoryTests {
         CloudBlobDirectory blockParent = blockBlob.getParent();
         assertEquals("Dir1" + delimiter, blockParent.getPrefix());
 
-        CloudBlobDirectory subDirectory = dir1.getSubDirectoryReference("SubDirectory");
+        CloudBlobDirectory subDirectory = dir1.getDirectoryReference("SubDirectory");
         assertEquals(dir1.getContainer().getName(), subDirectory.getContainer().getName());
         assertEquals(dir1.getServiceClient().getEndpoint().toString(), subDirectory.getServiceClient().getEndpoint()
                 .toString());
@@ -559,7 +559,7 @@ public class CloudBlobDirectoryTests {
     private void testGetSubdirectoryAndTraverseBackToParent(String delimiter, CloudBlobContainer container)
             throws URISyntaxException, StorageException {
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1" + delimiter);
-        CloudBlobDirectory subDirectory = directory.getSubDirectoryReference("MidDir1" + delimiter);
+        CloudBlobDirectory subDirectory = directory.getDirectoryReference("MidDir1" + delimiter);
         CloudBlobDirectory parent = subDirectory.getParent();
         assertEquals(parent.getPrefix(), directory.getPrefix());
         assertEquals(parent.getUri(), directory.getUri());
@@ -629,19 +629,19 @@ public class CloudBlobDirectoryTests {
         // Traverse hierarchically starting with length 1
         CloudBlobDirectory directory1 = container.getDirectoryReference("Dir1" + delimiter);
 
-        CloudBlobDirectory subdir1 = directory1.getSubDirectoryReference("Dir2");
+        CloudBlobDirectory subdir1 = directory1.getDirectoryReference("Dir2");
         CloudBlobDirectory parent1 = subdir1.getParent();
         assertEquals(parent1.getPrefix(), directory1.getPrefix());
 
-        CloudBlobDirectory subdir2 = subdir1.getSubDirectoryReference("Dir3");
+        CloudBlobDirectory subdir2 = subdir1.getDirectoryReference("Dir3");
         CloudBlobDirectory parent2 = subdir2.getParent();
         assertEquals(parent2.getPrefix(), subdir1.getPrefix());
 
-        CloudBlobDirectory subdir3 = subdir2.getSubDirectoryReference("Dir4");
+        CloudBlobDirectory subdir3 = subdir2.getDirectoryReference("Dir4");
         CloudBlobDirectory parent3 = subdir3.getParent();
         assertEquals(parent3.getPrefix(), subdir2.getPrefix());
 
-        CloudBlobDirectory subdir4 = subdir3.getSubDirectoryReference("Dir5");
+        CloudBlobDirectory subdir4 = subdir3.getDirectoryReference("Dir5");
         CloudBlobDirectory parent4 = subdir4.getParent();
         assertEquals(parent4.getPrefix(), subdir3.getPrefix());
     }
@@ -714,12 +714,12 @@ public class CloudBlobDirectoryTests {
             assertEquals("", root.getPrefix());
             assertEquals(container.getUri(), root.getUri());
 
-            CloudBlobDirectory subdir1 = directory1.getSubDirectoryReference("MidDir" + delimiter);
+            CloudBlobDirectory subdir1 = directory1.getDirectoryReference("MidDir" + delimiter);
             CloudBlobDirectory parent1 = subdir1.getParent();
             assertEquals(directory1.getPrefix(), parent1.getPrefix());
             assertEquals(directory1.getUri(), parent1.getUri());
 
-            CloudBlobDirectory subdir2 = subdir1.getSubDirectoryReference("EndDir" + delimiter);
+            CloudBlobDirectory subdir2 = subdir1.getDirectoryReference("EndDir" + delimiter);
             CloudBlobDirectory parent2 = subdir2.getParent();
             assertEquals(subdir1.getPrefix(), parent2.getPrefix());
             assertEquals(subdir1.getUri(), parent2.getUri());
@@ -756,10 +756,10 @@ public class CloudBlobDirectoryTests {
 
         // Traverse from root to leaf
         CloudBlobDirectory directory4 = container.getDirectoryReference(delimiter);
-        CloudBlobDirectory directory5 = directory4.getSubDirectoryReference(delimiter);
+        CloudBlobDirectory directory5 = directory4.getDirectoryReference(delimiter);
         assertEquals(delimiter + delimiter, directory5.getPrefix());
 
-        CloudBlobDirectory directory6 = directory5.getSubDirectoryReference(delimiter);
+        CloudBlobDirectory directory6 = directory5.getDirectoryReference(delimiter);
         assertEquals(delimiter + delimiter + delimiter, directory6.getPrefix());
 
         CloudPageBlob blob2 = directory6.getPageBlobReference("Blob1");
@@ -811,7 +811,7 @@ public class CloudBlobDirectoryTests {
                 .getPath() + "/TopDir1" + delimiter + "MidDir2" + delimiter, null, null), get13.getUri());
 
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1" + delimiter);
-        CloudBlobDirectory subDirectory = directory.getSubDirectoryReference("MidDir1" + delimiter);
+        CloudBlobDirectory subDirectory = directory.getDirectoryReference("MidDir1" + delimiter);
         CloudBlobDirectory parent = subDirectory.getParent();
         assertEquals(parent.getPrefix(), directory.getPrefix());
         assertEquals(parent.getUri(), directory.getUri());

@@ -53,7 +53,12 @@ public class StorageCredentialsHelper {
     // @return <code>true</code> if a request can be signed with these
     // credentials; otherwise, <code>false</code>
     //
-    /** Reserved. */
+    /** 
+     * Reserved. 
+     * 
+     * @deprecated as of 2.0.0. Use {@link #canCredentialsSignRequest} instead.
+     */
+    @Deprecated
     public static boolean canCredentialsSignRequestLite(final StorageCredentials creds) {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             return true;
@@ -163,7 +168,10 @@ public class StorageCredentialsHelper {
      *             If the given key is invalid.
      * @throws StorageException
      *             If an unspecified storage exception occurs.
+     *             
+     * @deprecated as of 2.0.0. Use {@link #signBlobAndQueueRequest} instead.
      */
+    @Deprecated
     public static void signBlobAndQueueRequestLite(final StorageCredentials creds,
             final java.net.HttpURLConnection request, final long contentLength) throws InvalidKeyException,
             StorageException {
@@ -186,7 +194,10 @@ public class StorageCredentialsHelper {
      *             If the given key is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
+     *             
+     * @deprecated as of 2.0.0. Use {@link #signBlobAndQueueRequest} instead.
      */
+    @Deprecated
     public static void signBlobAndQueueRequestLite(final StorageCredentials creds,
             final java.net.HttpURLConnection request, final long contentLength, OperationContext opContext)
             throws StorageException, InvalidKeyException {
@@ -253,7 +264,10 @@ public class StorageCredentialsHelper {
      *             If the given key is invalid.
      * @throws StorageException
      *             If an unspecified storage exception occurs.
+     *             
+     * @deprecated as of 2.0.0. Use {@link #signTableRequest} instead.
      */
+    @Deprecated
     public static void signTableRequestLite(final StorageCredentials creds, final java.net.HttpURLConnection request,
             final long contentLength) throws InvalidKeyException, StorageException {
         signTableRequestLite(creds, request, contentLength, null);
@@ -275,7 +289,10 @@ public class StorageCredentialsHelper {
      *             If the given key is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
+     *             
+     * @deprecated as of 2.0.0. Use {@link #signTableRequest} instead.
      */
+    @Deprecated
     public static void signTableRequestLite(final StorageCredentials creds, final java.net.HttpURLConnection request,
             final long contentLength, OperationContext opContext) throws StorageException, InvalidKeyException {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {

@@ -166,7 +166,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented() throws StorageException {
-        return this.listSharesSegmented(null, ShareListingDetails.NONE, 0, null /* continuationToken */,
+        return this.listSharesSegmented(null, ShareListingDetails.NONE, null, null /* continuationToken */,
                 null /* options */, null /* opContext */);
     }
 
@@ -186,7 +186,7 @@ public final class CloudFileClient extends ServiceClient {
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented(final String prefix) throws StorageException {
-        return this.listSharesWithPrefixSegmented(prefix, ShareListingDetails.NONE, 0, null /* continuationToken */,
+        return this.listSharesWithPrefixSegmented(prefix, ShareListingDetails.NONE, null, null /* continuationToken */,
                 null /* options */, null /* opContext */);
     }
 
@@ -199,28 +199,29 @@ public final class CloudFileClient extends ServiceClient {
      * @param detailsIncluded
      *            A {@link ShareListingDetails} value that indicates whether share metadata will be returned.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token returned
+     *            by a previous listing operation.
      * @param options
-     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudFileClient}).
+     *            A {@link FileRequestOptions} object that specifies any additional options for
+     *            the request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ( {@link CloudFileClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
      * 
-     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
-     *         {@link CloudFileShare} objects that represent the shares for this client.
+     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection
+     *         of {@link CloudFileShare} objects that represent the shares for this client.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
     public ResultSegment<CloudFileShare> listSharesSegmented(final String prefix,
-            final ShareListingDetails detailsIncluded, final int maxResults,
+            final ShareListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, final FileRequestOptions options,
             final OperationContext opContext) throws StorageException {
         return this.listSharesWithPrefixSegmented(prefix, detailsIncluded, maxResults, continuationToken, options,
@@ -259,7 +260,7 @@ public final class CloudFileClient extends ServiceClient {
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
         return new LazySegmentedIterable<CloudFileClient, Void, CloudFileShare>(this.listSharesWithPrefixSegmentedImpl(
-                prefix, detailsIncluded, -1, options, segmentedRequest), this, null, options.getRetryPolicyFactory(),
+                prefix, detailsIncluded, null, options, segmentedRequest), this, null, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -272,27 +273,28 @@ public final class CloudFileClient extends ServiceClient {
      * @param detailsIncluded
      *            A {@link FileListingDetails} value that indicates whether share metadata will be returned.
      * @param maxResults
-     *            The maximum number of results to retrieve.
+     *            The maximum number of results to retrieve.  If <code>null</code> or greater
+     *            than 5000, the server will return up to 5,000 items.  Must be at least 1.
      * @param continuationToken
-     *            A {@link ResultContinuation} object that represents a continuation token returned by a previous
-     *            listing operation.
+     *            A {@link ResultContinuation} object that represents a continuation token returned
+     *            by a previous listing operation.
      * @param options
-     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudFileClient}).
+     *            A {@link FileRequestOptions} object that specifies any additional options for
+     *            the request. Specifying <code>null</code> will use the default request options
+     *            from the associated service client ( {@link CloudFileClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current
+     *            operation. This object is used to track requests to the storage service,
+     *            and to provide additional runtime information about the operation.
      * 
-     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection of
-     *         {@link CloudFileShare} objects that represent the shares for this client.
+     * @return A {@link ResultSegment} object that contains a segment of the enumerable collection
+     *         of {@link CloudFileShare} objects that represent the shares for this client.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
     private ResultSegment<CloudFileShare> listSharesWithPrefixSegmented(final String prefix,
-            final ShareListingDetails detailsIncluded, final int maxResults,
+            final ShareListingDetails detailsIncluded, final Integer maxResults,
             final ResultContinuation continuationToken, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -313,7 +315,7 @@ public final class CloudFileClient extends ServiceClient {
     }
 
     private StorageRequest<CloudFileClient, Void, ResultSegment<CloudFileShare>> listSharesWithPrefixSegmentedImpl(
-            final String prefix, final ShareListingDetails detailsIncluded, final int maxResults,
+            final String prefix, final ShareListingDetails detailsIncluded, final Integer maxResults,
             final FileRequestOptions options, final SegmentedStorageRequest segmentedRequest) {
 
         Utility.assertContinuationType(segmentedRequest.getToken(), ResultContinuationType.SHARE);
@@ -369,7 +371,7 @@ public final class CloudFileClient extends ServiceClient {
                 }
 
                 final ResultSegment<CloudFileShare> resSegment = new ResultSegment<CloudFileShare>(
-                        response.getResults(), maxResults, newToken);
+                        response.getResults(), response.getMaxResults(), newToken);
 
                 // Important for listShares because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());

@@ -109,17 +109,17 @@ public class SharedAccessPolicyHandler<T extends SharedAccessPolicy> extends Def
         }
         else if (Constants.START.equals(currentNode)) {
             try {
-                this.policy.setSharedAccessStartTime(Utility.parseISO8061LongDateFromString(value));
+                this.policy.setSharedAccessStartTime(Utility.parseDate(value));
             }
-            catch (ParseException e) {
+            catch (IllegalArgumentException e) {
                 throw new SAXException(e);
             }
         }
         else if (Constants.EXPIRY.equals(currentNode)) {
             try {
-                this.policy.setSharedAccessExpiryTime(Utility.parseISO8061LongDateFromString(value));
+                this.policy.setSharedAccessExpiryTime(Utility.parseDate(value));
             }
-            catch (ParseException e) {
+            catch (IllegalArgumentException e) {
                 throw new SAXException(e);
             }
         }

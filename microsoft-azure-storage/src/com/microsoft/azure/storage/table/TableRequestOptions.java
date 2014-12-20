@@ -55,11 +55,18 @@ public class TableRequestOptions extends RequestOptions {
     private PropertyResolver propertyResolver;
 
     /**
-     * The <see {@link TablePayloadFormat} that is used for any table accessed with this {@link TableRequest} object.
+     * The {@link TablePayloadFormat} that is used for any table accessed with this {@link TableRequest} object.
      * 
      * Default is Json Minimal Metadata.
      */
     private TablePayloadFormat payloadFormat;
+    
+    /**
+     * Flag that specifies whether the client should look to correct Date values stored on a {@link TableEntity}
+     * that may have been written using versions of this library prior to 2.0.0.
+     * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
+     */
+    private boolean dateBackwardCompatibility = false;
 
     /**
      * Creates an instance of the <code>TableRequestOptions</code>
@@ -80,6 +87,7 @@ public class TableRequestOptions extends RequestOptions {
         if (other != null) {
             this.setTablePayloadFormat(other.getTablePayloadFormat());
             this.setPropertyResolver(other.getPropertyResolver());
+            this.dateBackwardCompatibility = other.dateBackwardCompatibility;
         }
     }
 
@@ -161,6 +169,20 @@ public class TableRequestOptions extends RequestOptions {
     }
 
     /**
+     * Gets whether the client should look to correct Date values stored on a {@link TableEntity}
+     * that may have been written using versions of this library prior to 2.0.0,
+     * see {@link #setDateBackwardCompatibility(boolean)}.
+     * <p>
+     * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
+     * 
+     * @return
+     *        <code>true</code> if <code>dateBackwardCompatibility</code> is enabled; otherwise, <code>false</code>
+     */
+    public boolean getDateBackwardCompatibility() {
+        return this.dateBackwardCompatibility;
+    }
+
+    /**
      * Sets the {@link TablePayloadFormat} to be used.
      * <p>
      * The default {@link TablePayloadFormat} is set in the client and is by default {@link TablePayloadFormat#Json}.
@@ -189,5 +211,23 @@ public class TableRequestOptions extends RequestOptions {
      */
     public void setPropertyResolver(PropertyResolver propertyResolver) {
         this.propertyResolver = propertyResolver;
+    }
+    
+    /**
+     * Sets whether the client should look to correct Date values stored on a {@link TableEntity}
+     * that may have been written using versions of this library prior to 2.0.0.
+     * <p>
+     * {@link #dateBackwardCompatibility} is by default <code>false</code>, indicating a post 2.0.0 version or mixed-
+     * platform usage. You can change the {@link #dateBackwardCompatibility} on this request by setting this property.
+     * You can also change the value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all
+     * subsequent requests made via the service client will use that {@link #dateBackwardCompatibility}.
+     * <p>
+     * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
+     * 
+     * @param dateBackwardCompatibility
+     *        <code>true</code> to enable <code>dateBackwardCompatibility</code>; otherwise, <code>false</code>
+     */
+    public void setDateBackwardCompatibility(boolean dateBackwardCompatibility) {
+        this.dateBackwardCompatibility = dateBackwardCompatibility;
     }
 }
