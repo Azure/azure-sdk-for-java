@@ -17,23 +17,18 @@ package com.microsoft.windowsazure.core.apache;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
-import com.sun.deploy.net.HttpRequest;
-import junit.framework.Assert;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestWrapper;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+
+import static org.junit.Assert.assertEquals;
 
 public class HttpResponseInterceptorAdapterTest extends MockIntegrationTestBase {
     @Test
