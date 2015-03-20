@@ -9,4 +9,4 @@ Scenario: List webspaces
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
     And set "element1" with value from list "operationResponse.WebSpaces" where "GeoRegion" of type "System.String" equals "East US"
     And property with type "System.String" and path "element1.GeoRegion" should equal "East US"
-    And property with type "System.String" and path "element1.Name" should equal "destanko-EastUSwebspace"
+    And property with type "System.String" and path "element1.Name" should equal "autorestresourceeast-EastUSwebspace"
