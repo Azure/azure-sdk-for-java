@@ -21,7 +21,7 @@ package com.microsoft.windowsazure.management.compute;
 import java.net.URI;
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -93,7 +93,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS);
         
         //Act
-        OperationResponse operationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().create(createParameters);        
+        AzureOperationResponse operationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().create(createParameters);
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
@@ -132,7 +132,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         VirtualMachineOSImageUpdateParameters updateParameters = new VirtualMachineOSImageUpdateParameters();      
         updateParameters.setLabel(expectedUpdatedVirtualMachineOSImageLabel);
         updateParameters.setDescription(expectedDescription);
-        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().update(virtualMachineOSImageName, updateParameters);
+        AzureOperationResponse updateoperationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().update(virtualMachineOSImageName, updateParameters);
  
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());

@@ -27,7 +27,7 @@ import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicy;
 import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicyProperties;
 import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicyUpdateParameters;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -409,10 +409,10 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<OperationResponse> updateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseSecurityPolicyUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> updateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseSecurityPolicyUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() {
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return update(resourceGroupName, serverName, databaseName, parameters);
             }
          });
@@ -437,7 +437,7 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public OperationResponse update(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters) throws IOException, ServiceException {
+    public AzureOperationResponse update(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -588,8 +588,8 @@ public class SecurityOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
