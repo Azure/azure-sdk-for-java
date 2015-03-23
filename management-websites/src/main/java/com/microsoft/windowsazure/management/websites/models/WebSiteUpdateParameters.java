@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import System.Nullable;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
@@ -216,8 +217,12 @@ public class WebSiteUpdateParameters {
         * Initializes a new instance of the WebSiteHostNameSslState class with
         * required arguments.
         *
+        * @param name The host name.
+        * @param sslState The SSL state. Possible values are Disabled,
+        * SniEnabled, or IpBasedEnabled.
+        * @param toUpdate Indicates whether the SSL state will be updated.
         */
-        public WebSiteHostNameSslState(String name, WebSiteSslState sslState, boolean toUpdate) {
+        public WebSiteHostNameSslState(String name, Nullable<WebSiteSslState> sslState, boolean toUpdate) {
             if (name == null) {
                 throw new NullPointerException("name");
             }

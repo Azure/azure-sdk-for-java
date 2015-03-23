@@ -190,7 +190,7 @@ public interface DacOperations {
     * @return Represents the response that the service returns once an import
     * or export operation has been initiated.
     */
-    DacImportExportResponse importDatabase(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    DacImportExportResponse importMethod(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Initiates an Import of a DACPAC file from Azure Blob Storage into a Azure
@@ -203,5 +203,5 @@ public interface DacOperations {
     * @return Represents the response that the service returns once an import
     * or export operation has been initiated.
     */
-    Future<DacImportExportResponse> importDatabaseAsync(String serverName, DacImportParameters parameters);
+    Future<DacImportExportResponse> importMethodAsync(String serverName, DacImportParameters parameters);
 }

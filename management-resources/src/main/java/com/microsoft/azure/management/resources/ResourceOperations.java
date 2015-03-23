@@ -23,14 +23,15 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.BasicResource;
+import com.microsoft.azure.ResourceIdentity;
+import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
 import com.microsoft.azure.management.resources.models.ResourceGetResult;
-import com.microsoft.azure.management.resources.models.ResourceIdentity;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.management.resources.models.ResourceListResult;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.resources.models.ResourcesMoveInfo;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -80,7 +81,7 @@ public interface ResourceOperations {
     * the response.
     * @return Resource information.
     */
-    ResourceCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceIdentity identity, BasicResource parameters) throws IOException, ServiceException, URISyntaxException;
+    ResourceCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceIdentity identity, GenericResource parameters) throws IOException, ServiceException, URISyntaxException;
     
     /**
     * Create a resource.
@@ -91,7 +92,7 @@ public interface ResourceOperations {
     * @param parameters Required. Create or update resource parameters.
     * @return Resource information.
     */
-    Future<ResourceCreateOrUpdateResult> createOrUpdateAsync(String resourceGroupName, ResourceIdentity identity, BasicResource parameters);
+    Future<ResourceCreateOrUpdateResult> createOrUpdateAsync(String resourceGroupName, ResourceIdentity identity, GenericResource parameters);
     
     /**
     * Delete resource and all of its resources.
@@ -113,7 +114,7 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Delete resource and all of its resources.
@@ -124,7 +125,7 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName, ResourceIdentity identity);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, ResourceIdentity identity);
     
     /**
     * Returns a resource belonging to a resource group.
@@ -199,4 +200,28 @@ public interface ResourceOperations {
     * @return List of resource groups.
     */
     Future<ResourceListResult> listNextAsync(String nextLink);
+    
+    /**
+    * Move resources within or across subscriptions.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    AzureOperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException;
+    
+    /**
+    * Move resources within or across subscriptions.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<AzureOperationResponse> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 }

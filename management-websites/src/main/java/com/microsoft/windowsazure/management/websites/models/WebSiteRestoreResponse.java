@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Restore operation information.
 */
-public class WebSiteRestoreResponse extends OperationResponse {
+public class WebSiteRestoreResponse extends AzureOperationResponse {
     private String operationId;
     
     /**

@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import System.Nullable;
+
 /**
 * Parameters supplied to the Capture Virtual Machine operation.
 */
@@ -129,8 +131,21 @@ public class VirtualMachineCaptureOSImageParameters {
     * Initializes a new instance of the VirtualMachineCaptureOSImageParameters
     * class with required arguments.
     *
+    * @param postCaptureAction Specifies the action that is performed after the
+    * capture operation finishes. Possible values are: Delete - this value
+    * causes the virtual machine to be deleted after the image has been
+    * captured; or Reprovision - this value causes the virtual machine to be
+    * redeployed after the image is captured by using the specified
+    * information in ProvisioningConfiguration.
+    * @param targetImageLabel Specifies the friendly name of the captured
+    * image. This is the value that appears in the Name column for the image
+    * in the Azure Management Portal.
+    * @param targetImageName Specifies the image name of the captured image.
     */
-    public VirtualMachineCaptureOSImageParameters(PostCaptureAction postCaptureAction, String targetImageLabel, String targetImageName) {
+    public VirtualMachineCaptureOSImageParameters(Nullable<PostCaptureAction> postCaptureAction, String targetImageLabel, String targetImageName) {
+        if (postCaptureAction == null) {
+            throw new NullPointerException("postCaptureAction");
+        }
         if (targetImageLabel == null) {
             throw new NullPointerException("targetImageLabel");
         }

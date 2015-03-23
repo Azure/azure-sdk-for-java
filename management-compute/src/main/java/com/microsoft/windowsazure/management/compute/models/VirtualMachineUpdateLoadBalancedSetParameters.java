@@ -345,6 +345,12 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Initializes a new instance of the InputEndpoint class with required
         * arguments.
         *
+        * @param loadBalancedEndpointSetName Specifies whether this endpoint is
+        * part of shared LoadBalanced endpoint and served by multiple role
+        * instances. If not specified a BadRequest error will be returned. It
+        * must also be in use by the deployment (at least one role in the
+        * deployment must have an endpoint whose LoadBalancedEndpointSetName
+        * matches this) otherwise a BadRequest error will be returned.
         */
         public InputEndpoint(String loadBalancedEndpointSetName) {
             this();

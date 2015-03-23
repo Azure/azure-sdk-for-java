@@ -92,6 +92,9 @@ public class ServiceCertificateGetParameters {
     * Initializes a new instance of the ServiceCertificateGetParameters class
     * with required arguments.
     *
+    * @param serviceName The DNS prefix name of your service.
+    * @param thumbprintAlgorithm The algorithm for the certificate's thumbprint.
+    * @param thumbprint The hexadecimal representation of the thumbprint.
     */
     public ServiceCertificateGetParameters(String serviceName, String thumbprintAlgorithm, String thumbprint) {
         if (serviceName == null) {

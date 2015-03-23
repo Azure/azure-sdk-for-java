@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Contains a collection of databases for a given Azure SQL Database Server.
 */
-public class DatabaseListResponse extends OperationResponse implements Iterable<Database> {
+public class DatabaseListResponse extends AzureOperationResponse implements Iterable<Database> {
     private ArrayList<Database> databases;
     
     /**

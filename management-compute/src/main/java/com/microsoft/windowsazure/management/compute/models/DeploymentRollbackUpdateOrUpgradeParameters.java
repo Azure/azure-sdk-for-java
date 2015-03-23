@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import System.Nullable;
+
 /**
 * Parameters supplied to the Rollback Update Or Upgrade operation.
 */
@@ -80,8 +82,12 @@ public class DeploymentRollbackUpdateOrUpgradeParameters {
     * DeploymentRollbackUpdateOrUpgradeParameters class with required
     * arguments.
     *
+    * @param mode Specifies whether the rollback should proceed automatically.
     */
-    public DeploymentRollbackUpdateOrUpgradeParameters(RollbackUpdateOrUpgradeMode mode) {
+    public DeploymentRollbackUpdateOrUpgradeParameters(Nullable<RollbackUpdateOrUpgradeMode> mode) {
+        if (mode == null) {
+            throw new NullPointerException("mode");
+        }
         this.setMode(mode);
     }
 }

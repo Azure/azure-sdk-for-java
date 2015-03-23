@@ -181,7 +181,7 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ResourceManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public ResourceManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.deploymentOperations = new DeploymentOperationOperationsImpl(this);
         this.deployments = new DeploymentOperationsImpl(this);
@@ -331,7 +331,9 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
         }
         
         // Construct URL
-        String url = operationStatusLink.trim();
+        String url = "";
+        url = url + operationStatusLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -360,6 +362,7 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
             
             // Create Result
             LongRunningOperationResponse result = null;
+            // Deserialize Response
             result = new LongRunningOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {

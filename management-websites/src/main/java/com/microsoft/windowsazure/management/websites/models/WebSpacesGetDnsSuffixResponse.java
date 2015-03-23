@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get DNS Suffix operation response.
 */
-public class WebSpacesGetDnsSuffixResponse extends OperationResponse {
+public class WebSpacesGetDnsSuffixResponse extends AzureOperationResponse {
     private String dnsSuffix;
     
     /**

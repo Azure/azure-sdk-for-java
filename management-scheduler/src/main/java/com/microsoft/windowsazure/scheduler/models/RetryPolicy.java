@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import System.Nullable;
 import javax.xml.datatype.Duration;
 
 /**
@@ -96,8 +97,13 @@ public class RetryPolicy {
     * Initializes a new instance of the RetryPolicy class with required
     * arguments.
     *
+    * @param retryType  The Retry Type of the Retry Policy. Can be either
+    * 'fixed' or 'none'.
     */
-    public RetryPolicy(RetryType retryType) {
+    public RetryPolicy(Nullable<RetryType> retryType) {
+        if (retryType == null) {
+            throw new NullPointerException("retryType");
+        }
         this.setRetryType(retryType);
     }
 }

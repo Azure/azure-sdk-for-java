@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Network Security Group associated with a subnet.
 */
-public class NetworkSecurityGroupGetForSubnetResponse extends OperationResponse {
+public class NetworkSecurityGroupGetForSubnetResponse extends AzureOperationResponse {
     private String name;
     
     /**

@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Download RDP file operation response.
 */
-public class VirtualMachineGetRemoteDesktopFileResponse extends OperationResponse {
+public class VirtualMachineGetRemoteDesktopFileResponse extends AzureOperationResponse {
     private byte[] remoteDesktopFile;
     
     /**
@@ -62,6 +62,8 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     * Initializes a new instance of the
     * VirtualMachineGetRemoteDesktopFileResponse class with required arguments.
     *
+    * @param remoteDesktopFile A Remote Desktop Protocol (.rdp) file that can
+    * be used to establish a remote desktop session to the virtual machine
     */
     public VirtualMachineGetRemoteDesktopFileResponse(byte[] remoteDesktopFile) {
         if (remoteDesktopFile == null) {

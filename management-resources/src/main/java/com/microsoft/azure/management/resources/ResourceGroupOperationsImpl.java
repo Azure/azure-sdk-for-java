@@ -23,20 +23,21 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.BasicResourceGroup;
 import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupExistsResult;
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -45,6 +46,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -144,8 +146,18 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -184,6 +196,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             
             // Create Result
             LongRunningOperationResponse result = null;
+            // Deserialize Response
             result = new LongRunningOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("Location").length > 0) {
@@ -265,8 +278,18 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -305,6 +328,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             
             // Create Result
             ResourceGroupExistsResult result = null;
+            // Deserialize Response
             result = new ResourceGroupExistsResult();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -335,7 +359,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * @return Resource group information.
     */
     @Override
-    public Future<ResourceGroupCreateOrUpdateResult> createOrUpdateAsync(final String resourceGroupName, final BasicResourceGroup parameters) {
+    public Future<ResourceGroupCreateOrUpdateResult> createOrUpdateAsync(final String resourceGroupName, final ResourceGroup parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ResourceGroupCreateOrUpdateResult>() { 
             @Override
             public ResourceGroupCreateOrUpdateResult call() throws Exception {
@@ -360,7 +384,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * @return Resource group information.
     */
     @Override
-    public ResourceGroupCreateOrUpdateResult createOrUpdate(String resourceGroupName, BasicResourceGroup parameters) throws IOException, ServiceException, URISyntaxException {
+    public ResourceGroupCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws IOException, ServiceException, URISyntaxException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -390,8 +414,18 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -414,13 +448,13 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         JsonNode requestDoc = null;
         
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode basicResourceGroupValue = objectMapper.createObjectNode();
-        requestDoc = basicResourceGroupValue;
+        ObjectNode resourceGroupValue = objectMapper.createObjectNode();
+        requestDoc = resourceGroupValue;
         
-        ((ObjectNode) basicResourceGroupValue).put("location", parameters.getLocation());
+        ((ObjectNode) resourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
+            ((ObjectNode) resourceGroupValue).put("properties", parameters.getProperties());
         }
         
         if (parameters.getTags() != null) {
@@ -431,12 +465,12 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                     String tagsValue = entry.getValue();
                     ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
                 }
-                ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
+                ((ObjectNode) resourceGroupValue).put("tags", tagsDictionary);
             }
         }
         
         if (parameters.getProvisioningState() != null) {
-            ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());
+            ((ObjectNode) resourceGroupValue).put("provisioningState", parameters.getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -468,74 +502,76 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             // Create Result
             ResourceGroupCreateOrUpdateResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupCreateOrUpdateResult();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                ResourceGroup resourceGroupInstance = new ResourceGroup();
-                result.setResourceGroup(resourceGroupInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    resourceGroupInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGroupCreateOrUpdateResult();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    resourceGroupInstance.setName(nameInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    ResourceGroupExtended resourceGroupInstance = new ResourceGroupExtended();
+                    result.setResourceGroup(resourceGroupInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        resourceGroupInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        resourceGroupInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        resourceGroupInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        String propertiesInstance;
+                        propertiesInstance = propertiesValue2.getTextValue();
+                        resourceGroupInstance.setProperties(propertiesInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey2 = property.getKey();
+                            String tagsValue2 = property.getValue().getTextValue();
+                            resourceGroupInstance.getTags().put(tagsKey2, tagsValue2);
+                        }
+                    }
+                    
+                    JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
+                    if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                        String provisioningStateInstance2;
+                        provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                        resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
                     }
                 }
                 
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    resourceGroupInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    String propertiesInstance;
-                    propertiesInstance = propertiesValue2.getTextValue();
-                    resourceGroupInstance.setProperties(propertiesInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey2 = property.getKey();
-                        String tagsValue2 = property.getValue().getTextValue();
-                        resourceGroupInstance.getTags().put(tagsKey2, tagsValue2);
-                    }
-                }
-                
-                JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                    String provisioningStateInstance2;
-                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                    resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -561,10 +597,10 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String resourceGroupName) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(resourceGroupName);
             }
          });
@@ -590,7 +626,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException {
+    public AzureOperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException {
         ResourceManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -692,8 +728,18 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -733,75 +779,77 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             // Create Result
             ResourceGroupGetResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupGetResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                ResourceGroup resourceGroupInstance = new ResourceGroup();
-                result.setResourceGroup(resourceGroupInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    resourceGroupInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGroupGetResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    resourceGroupInstance.setName(nameInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    ResourceGroupExtended resourceGroupInstance = new ResourceGroupExtended();
+                    result.setResourceGroup(resourceGroupInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        resourceGroupInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        resourceGroupInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        resourceGroupInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        String propertiesInstance;
+                        propertiesInstance = propertiesValue2.getTextValue();
+                        resourceGroupInstance.setProperties(propertiesInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            resourceGroupInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                    
+                    JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
+                    if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                        String provisioningStateInstance2;
+                        provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                        resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
                     }
                 }
                 
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    resourceGroupInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    String propertiesInstance;
-                    propertiesInstance = propertiesValue2.getTextValue();
-                    resourceGroupInstance.setProperties(propertiesInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        resourceGroupInstance.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-                
-                JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                    String provisioningStateInstance2;
-                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                    resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -863,25 +911,30 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups" + "?";
-        boolean appendFilter = true;
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        ArrayList<String> odataFilter = new ArrayList<String>();
         if (parameters != null && parameters.getTagName() != null) {
-            appendFilter = false;
-            url = url + "$filter=" + "tagname eq '" + URLEncoder.encode(parameters.getTagName() != null ? parameters.getTagName().trim() : "", "UTF-8") + "'";
+            odataFilter.add("tagname eq '" + URLEncoder.encode(parameters.getTagName(), "UTF-8") + "'");
         }
         if (parameters != null && parameters.getTagValue() != null) {
-            if (appendFilter == true) {
-                appendFilter = false;
-                url = url + "$filter=";
-            } else {
-                url = url + " and ";
-            }
-            url = url + "tagvalue eq '" + URLEncoder.encode(parameters.getTagValue() != null ? parameters.getTagValue().trim() : "", "UTF-8") + "'";
+            odataFilter.add("tagvalue eq '" + URLEncoder.encode(parameters.getTagValue(), "UTF-8") + "'");
+        }
+        if (odataFilter.size() > 0) {
+            queryParameters.add("$filter=" + CollectionStringBuilder.join(odataFilter, " and "));
         }
         if (parameters != null && parameters.getTop() != null) {
-            url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+            queryParameters.add("$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8"));
         }
-        url = url + "&" + "api-version=" + "2014-04-01-preview";
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -921,87 +974,89 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             // Create Result
             ResourceGroupListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        ResourceGroup resourceGroupJsonFormatInstance = new ResourceGroup();
-                        result.getResourceGroups().add(resourceGroupJsonFormatInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGroupListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            ResourceGroupExtended resourceGroupJsonFormatInstance = new ResourceGroupExtended();
+                            result.getResourceGroups().add(resourceGroupJsonFormatInstance);
+                            
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setName(nameInstance);
+                            }
+                            
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                }
+                            }
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode propertiesValue2 = valueValue.get("properties");
+                            if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                String propertiesInstance;
+                                propertiesInstance = propertiesValue2.getTextValue();
+                                resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    resourceGroupJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                            
+                            JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
+                            if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                                String provisioningStateInstance2;
+                                provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                                resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
                             }
                         }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                            String propertiesInstance;
-                            propertiesInstance = propertiesValue2.getTextValue();
-                            resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                resourceGroupJsonFormatInstance.getTags().put(tagsKey, tagsValue);
-                            }
-                        }
-                        
-                        JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                            String provisioningStateInstance2;
-                            provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                            resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
-                        }
+                    }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
                     }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1066,7 +1121,9 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = nextLink.trim();
+        String url = "";
+        url = url + nextLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1096,87 +1153,89 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             // Create Result
             ResourceGroupListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        ResourceGroup resourceGroupJsonFormatInstance = new ResourceGroup();
-                        result.getResourceGroups().add(resourceGroupJsonFormatInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGroupListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            ResourceGroupExtended resourceGroupJsonFormatInstance = new ResourceGroupExtended();
+                            result.getResourceGroups().add(resourceGroupJsonFormatInstance);
+                            
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setName(nameInstance);
+                            }
+                            
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                }
+                            }
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                resourceGroupJsonFormatInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode propertiesValue2 = valueValue.get("properties");
+                            if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                String propertiesInstance;
+                                propertiesInstance = propertiesValue2.getTextValue();
+                                resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    resourceGroupJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                            
+                            JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
+                            if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                                String provisioningStateInstance2;
+                                provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                                resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
                             }
                         }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            resourceGroupJsonFormatInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                            String propertiesInstance;
-                            propertiesInstance = propertiesValue2.getTextValue();
-                            resourceGroupJsonFormatInstance.setProperties(propertiesInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                resourceGroupJsonFormatInstance.getTags().put(tagsKey, tagsValue);
-                            }
-                        }
-                        
-                        JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                            String provisioningStateInstance2;
-                            provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                            resourceGroupJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
-                        }
+                    }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
                     }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1206,7 +1265,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * @return Resource group information.
     */
     @Override
-    public Future<ResourceGroupPatchResult> patchAsync(final String resourceGroupName, final BasicResourceGroup parameters) {
+    public Future<ResourceGroupPatchResult> patchAsync(final String resourceGroupName, final ResourceGroup parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ResourceGroupPatchResult>() { 
             @Override
             public ResourceGroupPatchResult call() throws Exception {
@@ -1232,7 +1291,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * @return Resource group information.
     */
     @Override
-    public ResourceGroupPatchResult patch(String resourceGroupName, BasicResourceGroup parameters) throws IOException, ServiceException {
+    public ResourceGroupPatchResult patch(String resourceGroupName, ResourceGroup parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -1262,8 +1321,18 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1286,13 +1355,13 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         JsonNode requestDoc = null;
         
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode basicResourceGroupValue = objectMapper.createObjectNode();
-        requestDoc = basicResourceGroupValue;
+        ObjectNode resourceGroupValue = objectMapper.createObjectNode();
+        requestDoc = resourceGroupValue;
         
-        ((ObjectNode) basicResourceGroupValue).put("location", parameters.getLocation());
+        ((ObjectNode) resourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) basicResourceGroupValue).put("properties", parameters.getProperties());
+            ((ObjectNode) resourceGroupValue).put("properties", parameters.getProperties());
         }
         
         if (parameters.getTags() != null) {
@@ -1303,12 +1372,12 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                     String tagsValue = entry.getValue();
                     ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
                 }
-                ((ObjectNode) basicResourceGroupValue).put("tags", tagsDictionary);
+                ((ObjectNode) resourceGroupValue).put("tags", tagsDictionary);
             }
         }
         
         if (parameters.getProvisioningState() != null) {
-            ((ObjectNode) basicResourceGroupValue).put("provisioningState", parameters.getProvisioningState());
+            ((ObjectNode) resourceGroupValue).put("provisioningState", parameters.getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -1340,74 +1409,76 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             // Create Result
             ResourceGroupPatchResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGroupPatchResult();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                ResourceGroup resourceGroupInstance = new ResourceGroup();
-                result.setResourceGroup(resourceGroupInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    resourceGroupInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGroupPatchResult();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    resourceGroupInstance.setName(nameInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    ResourceGroupExtended resourceGroupInstance = new ResourceGroupExtended();
+                    result.setResourceGroup(resourceGroupInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        resourceGroupInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        resourceGroupInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            resourceGroupInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        resourceGroupInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        String propertiesInstance;
+                        propertiesInstance = propertiesValue2.getTextValue();
+                        resourceGroupInstance.setProperties(propertiesInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey2 = property.getKey();
+                            String tagsValue2 = property.getValue().getTextValue();
+                            resourceGroupInstance.getTags().put(tagsKey2, tagsValue2);
+                        }
+                    }
+                    
+                    JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
+                    if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                        String provisioningStateInstance2;
+                        provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                        resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
                     }
                 }
                 
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    resourceGroupInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    String propertiesInstance;
-                    propertiesInstance = propertiesValue2.getTextValue();
-                    resourceGroupInstance.setProperties(propertiesInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey2 = property.getKey();
-                        String tagsValue2 = property.getValue().getTextValue();
-                        resourceGroupInstance.getTags().put(tagsKey2, tagsValue2);
-                    }
-                }
-                
-                JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                    String provisioningStateInstance2;
-                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                    resourceGroupInstance.setProvisioningState(provisioningStateInstance2);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -151,7 +152,7 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private CloudServiceManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public CloudServiceManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.cloudServices = new CloudServiceOperationsImpl(this);
         this.apiVersion = "2013-03-01";
@@ -255,10 +256,10 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
     * request ID.
     */
     @Override
-    public Future<OperationResponse> entitleResourceAsync(final EntitleResourceParameters parameters) {
-        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> entitleResourceAsync(final EntitleResourceParameters parameters) {
+        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return entitleResource(parameters);
             }
          });
@@ -285,7 +286,7 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
     * request ID.
     */
     @Override
-    public OperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public AzureOperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -308,7 +309,11 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
         }
         
         // Construct URL
-        String url = (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/EntitleResource";
+        String url = "";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/EntitleResource";
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -381,8 +386,9 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -477,7 +483,12 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
         }
         
         // Construct URL
-        String url = (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
+        String url = "";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(requestId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -517,57 +528,59 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
             // Create Result
             CloudServiceOperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new CloudServiceOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new CloudServiceOperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    CloudServiceOperationStatus statusInstance;
-                    statusInstance = CloudServiceOperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    CloudServiceOperationStatusResponse.ErrorDetails errorInstance = new CloudServiceOperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        CloudServiceOperationStatus statusInstance;
+                        statusInstance = CloudServiceOperationStatus.valueOf(statusElement.getTextContent());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        CloudServiceOperationStatusResponse.ErrorDetails errorInstance = new CloudServiceOperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

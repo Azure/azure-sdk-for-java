@@ -94,6 +94,7 @@ public class JobCreateOrUpdateParameters {
     * Initializes a new instance of the JobCreateOrUpdateParameters class with
     * required arguments.
     *
+    * @param action Action to invoke for the job.
     */
     public JobCreateOrUpdateParameters(JobAction action) {
         if (action == null) {

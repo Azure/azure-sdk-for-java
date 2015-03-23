@@ -78,6 +78,8 @@ public class AffinityGroupUpdateParameters {
     * Initializes a new instance of the AffinityGroupUpdateParameters class
     * with required arguments.
     *
+    * @param label A name for the affinity specified as a base-64-encoded
+    * string. The label can be up to 100 characters in length.
     */
     public AffinityGroupUpdateParameters(String label) {
         if (label == null) {

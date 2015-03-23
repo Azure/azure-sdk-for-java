@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * The response to the list supported devices request.
 */
-public class GatewayListSupportedDevicesResponse extends OperationResponse {
+public class GatewayListSupportedDevicesResponse extends AzureOperationResponse {
     private ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendors;
     
     /**

@@ -61,6 +61,8 @@ public class WebSiteNameValueParameters extends ResourceBase {
     * Initializes a new instance of the WebSiteNameValueParameters class with
     * required arguments.
     *
+    * @param properties The name value pair parameters for the web site.
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteNameValueParameters(ArrayList<NameValuePair> properties, String location) {
         this();

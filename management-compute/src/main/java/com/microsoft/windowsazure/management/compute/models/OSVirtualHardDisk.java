@@ -146,6 +146,56 @@ public class OSVirtualHardDisk {
         this.operatingSystem = operatingSystemValue;
     }
     
+    private URI remoteSourceImageLink;
+    
+    /**
+    * Optional. Uri of the source OS image that will be copied to the
+    * customer’s storage account of VM creation.If RemoteSourceImageLink is
+    * specified, then MediaLink must also be specified.If
+    * RemoteSourceImageLink is specified, thenSourceIamgeName must not be
+    * specified.
+    * @return The RemoteSourceImageLink value.
+    */
+    public URI getRemoteSourceImageLink() {
+        return this.remoteSourceImageLink;
+    }
+    
+    /**
+    * Optional. Uri of the source OS image that will be copied to the
+    * customer’s storage account of VM creation.If RemoteSourceImageLink is
+    * specified, then MediaLink must also be specified.If
+    * RemoteSourceImageLink is specified, thenSourceIamgeName must not be
+    * specified.
+    * @param remoteSourceImageLinkValue The RemoteSourceImageLink value.
+    */
+    public void setRemoteSourceImageLink(final URI remoteSourceImageLinkValue) {
+        this.remoteSourceImageLink = remoteSourceImageLinkValue;
+    }
+    
+    private Integer resizedSizeInGB;
+    
+    /**
+    * Optional. When an OS Image or a RemoteSourceImage is used to create an
+    * OSVirtualHardDisk, this parameter can be used to resize the new
+    * OSVirtualHardDisk to a larger size. ResizedSizeInGB must be larger than
+    * the underlying OS Image’s LogicalSizeInGB.
+    * @return The ResizedSizeInGB value.
+    */
+    public Integer getResizedSizeInGB() {
+        return this.resizedSizeInGB;
+    }
+    
+    /**
+    * Optional. When an OS Image or a RemoteSourceImage is used to create an
+    * OSVirtualHardDisk, this parameter can be used to resize the new
+    * OSVirtualHardDisk to a larger size. ResizedSizeInGB must be larger than
+    * the underlying OS Image’s LogicalSizeInGB.
+    * @param resizedSizeInGBValue The ResizedSizeInGB value.
+    */
+    public void setResizedSizeInGB(final Integer resizedSizeInGBValue) {
+        this.resizedSizeInGB = resizedSizeInGBValue;
+    }
+    
     private String sourceImageName;
     
     /**

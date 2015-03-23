@@ -23,44 +23,89 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
+import java.util.HashMap;
+
 /**
 * Resource group information.
 */
-public class ResourceGroup extends BasicResourceGroup {
-    private String id;
+public class ResourceGroup {
+    private String location;
     
     /**
-    * Optional. Gets or sets the ID of the resource group.
-    * @return The Id value.
+    * Required. Gets or sets the location of the resource group. It cannot be
+    * changed after the resource group has been created. Has to be one of the
+    * supported Azure Locations, such as West US, East US, West Europe, East
+    * Asia, etc.
+    * @return The Location value.
     */
-    public String getId() {
-        return this.id;
+    public String getLocation() {
+        return this.location;
     }
     
     /**
-    * Optional. Gets or sets the ID of the resource group.
-    * @param idValue The Id value.
+    * Required. Gets or sets the location of the resource group. It cannot be
+    * changed after the resource group has been created. Has to be one of the
+    * supported Azure Locations, such as West US, East US, West Europe, East
+    * Asia, etc.
+    * @param locationValue The Location value.
     */
-    public void setId(final String idValue) {
-        this.id = idValue;
+    public void setLocation(final String locationValue) {
+        this.location = locationValue;
     }
     
-    private String name;
+    private String properties;
     
     /**
-    * Optional. Gets or sets the Name of the resource group.
-    * @return The Name value.
+    * Optional. Gets or sets the resource group properties.
+    * @return The Properties value.
     */
-    public String getName() {
-        return this.name;
+    public String getProperties() {
+        return this.properties;
     }
     
     /**
-    * Optional. Gets or sets the Name of the resource group.
-    * @param nameValue The Name value.
+    * Optional. Gets or sets the resource group properties.
+    * @param propertiesValue The Properties value.
     */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
+    public void setProperties(final String propertiesValue) {
+        this.properties = propertiesValue;
+    }
+    
+    private String provisioningState;
+    
+    /**
+    * Optional. Gets or sets resource group provisioning state.
+    * @return The ProvisioningState value.
+    */
+    public String getProvisioningState() {
+        return this.provisioningState;
+    }
+    
+    /**
+    * Optional. Gets or sets resource group provisioning state.
+    * @param provisioningStateValue The ProvisioningState value.
+    */
+    public void setProvisioningState(final String provisioningStateValue) {
+        this.provisioningState = provisioningStateValue;
+    }
+    
+    private HashMap<String, String> tags;
+    
+    /**
+    * Optional. Gets or sets the tags attached to the resource group.
+    * @return The Tags value.
+    */
+    public HashMap<String, String> getTags() {
+        return this.tags;
+    }
+    
+    /**
+    * Optional. Gets or sets the tags attached to the resource group.
+    * @param tagsValue The Tags value.
+    */
+    public void setTags(final HashMap<String, String> tagsValue) {
+        this.tags = tagsValue;
     }
     
     /**
@@ -68,13 +113,17 @@ public class ResourceGroup extends BasicResourceGroup {
     *
     */
     public ResourceGroup() {
-        super();
+        this.setTags(new LazyHashMap<String, String>());
     }
     
     /**
     * Initializes a new instance of the ResourceGroup class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource group. It
+    * cannot be changed after the resource group has been created. Has to be
+    * one of the supported Azure Locations, such as West US, East US, West
+    * Europe, East Asia, etc.
     */
     public ResourceGroup(String location) {
         this();

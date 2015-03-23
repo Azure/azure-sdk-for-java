@@ -89,6 +89,8 @@ public class ResourceManagementError {
     * Initializes a new instance of the ResourceManagementError class with
     * required arguments.
     *
+    * @param code Gets or sets the error code returned from the server.
+    * @param message Gets or sets the error message returned from the server.
     */
     public ResourceManagementError(String code, String message) {
         if (code == null) {

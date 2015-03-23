@@ -482,6 +482,26 @@ public class ExtensionImage {
         this.publisherName = publisherNameValue;
     }
     
+    private String regions;
+    
+    /**
+    * Optional. String property containing the name of the regions required for
+    * the slice.
+    * @return The Regions value.
+    */
+    public String getRegions() {
+        return this.regions;
+    }
+    
+    /**
+    * Optional. String property containing the name of the regions required for
+    * the slice.
+    * @param regionsValue The Regions value.
+    */
+    public void setRegions(final String regionsValue) {
+        this.regions = regionsValue;
+    }
+    
     private Boolean replicationCompleted;
     
     /**
@@ -612,6 +632,10 @@ public class ExtensionImage {
     * Initializes a new instance of the ExtensionImage class with required
     * arguments.
     *
+    * @param providerNameSpace Required. The provider namespace of the
+    * extension.
+    * @param type Required. The type of the extension.
+    * @param version Required. The version of the extension.
     */
     public ExtensionImage(String providerNameSpace, String type, String version) {
         this();

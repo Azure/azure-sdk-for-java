@@ -57,6 +57,7 @@ public class RestoreRequestEnvelope extends ResourceBase {
     * Initializes a new instance of the RestoreRequestEnvelope class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public RestoreRequestEnvelope(String location) {
         this();

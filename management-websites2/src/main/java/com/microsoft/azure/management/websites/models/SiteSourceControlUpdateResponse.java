@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The link site to source control operation response.
 */
-public class SiteSourceControlUpdateResponse extends OperationResponse {
+public class SiteSourceControlUpdateResponse extends AzureOperationResponse {
     private SiteSourceControl siteSourceControl;
     
     /**

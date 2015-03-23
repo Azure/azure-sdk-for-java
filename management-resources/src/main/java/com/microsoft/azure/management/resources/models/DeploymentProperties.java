@@ -23,129 +23,105 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 /**
 * Deployment properties.
 */
-public class DeploymentProperties extends BasicDeployment {
-    private String correlationId;
+public class DeploymentProperties {
+    private DeploymentMode mode;
     
     /**
-    * Optional. Gets or sets the correlation ID of the deployment.
-    * @return The CorrelationId value.
+    * Optional. Gets or sets the deployment mode.
+    * @return The Mode value.
     */
-    public String getCorrelationId() {
-        return this.correlationId;
+    public DeploymentMode getMode() {
+        return this.mode;
     }
     
     /**
-    * Optional. Gets or sets the correlation ID of the deployment.
-    * @param correlationIdValue The CorrelationId value.
+    * Optional. Gets or sets the deployment mode.
+    * @param modeValue The Mode value.
     */
-    public void setCorrelationId(final String correlationIdValue) {
-        this.correlationId = correlationIdValue;
+    public void setMode(final DeploymentMode modeValue) {
+        this.mode = modeValue;
     }
     
-    private ArrayList<Dependency> dependencies;
+    private String parameters;
     
     /**
-    * Optional. Gets the list of deployment dependencies.
-    * @return The Dependencies value.
+    * Optional. Deployment parameters. Use only one of Parameters or
+    * ParametersLink.
+    * @return The Parameters value.
     */
-    public ArrayList<Dependency> getDependencies() {
-        return this.dependencies;
-    }
-    
-    /**
-    * Optional. Gets the list of deployment dependencies.
-    * @param dependenciesValue The Dependencies value.
-    */
-    public void setDependencies(final ArrayList<Dependency> dependenciesValue) {
-        this.dependencies = dependenciesValue;
-    }
-    
-    private String outputs;
-    
-    /**
-    * Optional. Gets or sets key/value pairs that represent deploymentoutput.
-    * @return The Outputs value.
-    */
-    public String getOutputs() {
-        return this.outputs;
+    public String getParameters() {
+        return this.parameters;
     }
     
     /**
-    * Optional. Gets or sets key/value pairs that represent deploymentoutput.
-    * @param outputsValue The Outputs value.
+    * Optional. Deployment parameters. Use only one of Parameters or
+    * ParametersLink.
+    * @param parametersValue The Parameters value.
     */
-    public void setOutputs(final String outputsValue) {
-        this.outputs = outputsValue;
+    public void setParameters(final String parametersValue) {
+        this.parameters = parametersValue;
     }
     
-    private ArrayList<Provider> providers;
+    private ParametersLink parametersLink;
     
     /**
-    * Optional. Gets the list of resource providers needed for the deployment.
-    * @return The Providers value.
+    * Optional. Gets or sets the URI referencing the parameters. Use only one
+    * of Parameters or ParametersLink.
+    * @return The ParametersLink value.
     */
-    public ArrayList<Provider> getProviders() {
-        return this.providers;
-    }
-    
-    /**
-    * Optional. Gets the list of resource providers needed for the deployment.
-    * @param providersValue The Providers value.
-    */
-    public void setProviders(final ArrayList<Provider> providersValue) {
-        this.providers = providersValue;
-    }
-    
-    private String provisioningState;
-    
-    /**
-    * Optional. Gets or sets the state of the provisioning.
-    * @return The ProvisioningState value.
-    */
-    public String getProvisioningState() {
-        return this.provisioningState;
+    public ParametersLink getParametersLink() {
+        return this.parametersLink;
     }
     
     /**
-    * Optional. Gets or sets the state of the provisioning.
-    * @param provisioningStateValue The ProvisioningState value.
+    * Optional. Gets or sets the URI referencing the parameters. Use only one
+    * of Parameters or ParametersLink.
+    * @param parametersLinkValue The ParametersLink value.
     */
-    public void setProvisioningState(final String provisioningStateValue) {
-        this.provisioningState = provisioningStateValue;
+    public void setParametersLink(final ParametersLink parametersLinkValue) {
+        this.parametersLink = parametersLinkValue;
     }
     
-    private Calendar timestamp;
+    private String template;
     
     /**
-    * Optional. Gets or sets the timestamp of the template deployment.
-    * @return The Timestamp value.
+    * Optional. Gets or sets the template content. Use only one of Template or
+    * TemplateLink.
+    * @return The Template value.
     */
-    public Calendar getTimestamp() {
-        return this.timestamp;
-    }
-    
-    /**
-    * Optional. Gets or sets the timestamp of the template deployment.
-    * @param timestampValue The Timestamp value.
-    */
-    public void setTimestamp(final Calendar timestampValue) {
-        this.timestamp = timestampValue;
+    public String getTemplate() {
+        return this.template;
     }
     
     /**
-    * Initializes a new instance of the DeploymentProperties class.
-    *
+    * Optional. Gets or sets the template content. Use only one of Template or
+    * TemplateLink.
+    * @param templateValue The Template value.
     */
-    public DeploymentProperties() {
-        super();
-        this.setDependencies(new LazyArrayList<Dependency>());
-        this.setProviders(new LazyArrayList<Provider>());
+    public void setTemplate(final String templateValue) {
+        this.template = templateValue;
+    }
+    
+    private TemplateLink templateLink;
+    
+    /**
+    * Optional. Gets or sets the URI referencing the template. Use only one of
+    * Template or TemplateLink.
+    * @return The TemplateLink value.
+    */
+    public TemplateLink getTemplateLink() {
+        return this.templateLink;
+    }
+    
+    /**
+    * Optional. Gets or sets the URI referencing the template. Use only one of
+    * Template or TemplateLink.
+    * @param templateLinkValue The TemplateLink value.
+    */
+    public void setTemplateLink(final TemplateLink templateLinkValue) {
+        this.templateLink = templateLinkValue;
     }
 }

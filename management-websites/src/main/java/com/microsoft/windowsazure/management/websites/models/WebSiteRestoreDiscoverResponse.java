@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * The information gathered about a backup storaged in a storage account.
 */
-public class WebSiteRestoreDiscoverResponse extends OperationResponse {
+public class WebSiteRestoreDiscoverResponse extends AzureOperationResponse {
     private boolean adjustConnectionStrings;
     
     /**

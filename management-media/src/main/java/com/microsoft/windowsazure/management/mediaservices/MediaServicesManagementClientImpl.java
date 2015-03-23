@@ -119,7 +119,7 @@ public class MediaServicesManagementClientImpl extends ServiceClient<MediaServic
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private MediaServicesManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public MediaServicesManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.accounts = new AccountOperationsImpl(this);
         this.apiVersion = "2011-10-01";

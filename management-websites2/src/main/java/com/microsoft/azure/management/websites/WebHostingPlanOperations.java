@@ -29,7 +29,7 @@ import com.microsoft.azure.management.websites.models.WebHostingPlanGetHistorica
 import com.microsoft.azure.management.websites.models.WebHostingPlanGetHistoricalUsageMetricsResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanGetResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanListResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -61,9 +61,11 @@ public interface WebHostingPlanOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Create Web Hosting Plan operation response.
     */
-    WebHostingPlanCreateOrUpdateResponse createOrUpdate(String resourceGroupName, WebHostingPlanCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    WebHostingPlanCreateOrUpdateResponse createOrUpdate(String resourceGroupName, WebHostingPlanCreateOrUpdateParameters parameters) throws IOException, ServiceException, URISyntaxException;
     
     /**
     * Creates a new Web Hosting Plan or updates an existing one.  (see
@@ -92,7 +94,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException;
     
     /**
     * Deletes a Web Hosting Plan  (see
@@ -105,7 +107,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName, String webHostingPlanName);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String webHostingPlanName);
     
     /**
     * Gets details of an existing Web Hosting Plan  (see

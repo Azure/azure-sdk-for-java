@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Represents a list of import or export status values returned from GetStatus.
 */
-public class DacGetStatusResponse extends OperationResponse implements Iterable<StatusInfo> {
+public class DacGetStatusResponse extends AzureOperationResponse implements Iterable<StatusInfo> {
     private ArrayList<StatusInfo> statusInfoList;
     
     /**

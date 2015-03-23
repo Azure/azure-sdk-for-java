@@ -59,6 +59,8 @@ public class WebHostingPlanCreateOrUpdateParameters {
     * Initializes a new instance of the WebHostingPlanCreateOrUpdateParameters
     * class with required arguments.
     *
+    * @param webHostingPlan Gets or sets information about a Web Hosting Plan
+    * being created of updated.
     */
     public WebHostingPlanCreateOrUpdateParameters(WebHostingPlan webHostingPlan) {
         if (webHostingPlan == null) {

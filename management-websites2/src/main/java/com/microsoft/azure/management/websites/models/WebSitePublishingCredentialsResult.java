@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Publishing credentials for the website.
 */
-public class WebSitePublishingCredentialsResult extends OperationResponse {
+public class WebSitePublishingCredentialsResult extends AzureOperationResponse {
     private WebSitePublishingCredentialsEnvelope resource;
     
     /**

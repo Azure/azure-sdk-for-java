@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A response to a request for a list of regions.
 */
-public class ServiceBusRegionsResponse extends OperationResponse implements Iterable<ServiceBusLocation> {
+public class ServiceBusRegionsResponse extends AzureOperationResponse implements Iterable<ServiceBusLocation> {
     private ArrayList<ServiceBusLocation> regions;
     
     /**

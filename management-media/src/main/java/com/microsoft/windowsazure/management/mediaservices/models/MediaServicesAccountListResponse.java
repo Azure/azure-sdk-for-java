@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.mediaservices.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The List Media Accounts operation response.
 */
-public class MediaServicesAccountListResponse extends OperationResponse implements Iterable<MediaServicesAccountListResponse.MediaServiceAccount> {
+public class MediaServicesAccountListResponse extends AzureOperationResponse implements Iterable<MediaServicesAccountListResponse.MediaServiceAccount> {
     private ArrayList<MediaServicesAccountListResponse.MediaServiceAccount> accounts;
     
     /**

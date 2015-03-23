@@ -23,21 +23,21 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * List of deployments.
 */
-public class DeploymentListResult extends OperationResponse {
-    private ArrayList<Deployment> deployments;
+public class DeploymentListResult extends AzureOperationResponse {
+    private ArrayList<DeploymentExtended> deployments;
     
     /**
     * Optional. Gets or sets the list of deployments.
     * @return The Deployments value.
     */
-    public ArrayList<Deployment> getDeployments() {
+    public ArrayList<DeploymentExtended> getDeployments() {
         return this.deployments;
     }
     
@@ -45,7 +45,7 @@ public class DeploymentListResult extends OperationResponse {
     * Optional. Gets or sets the list of deployments.
     * @param deploymentsValue The Deployments value.
     */
-    public void setDeployments(final ArrayList<Deployment> deploymentsValue) {
+    public void setDeployments(final ArrayList<DeploymentExtended> deploymentsValue) {
         this.deployments = deploymentsValue;
     }
     
@@ -73,6 +73,6 @@ public class DeploymentListResult extends OperationResponse {
     */
     public DeploymentListResult() {
         super();
-        this.setDeployments(new LazyArrayList<Deployment>());
+        this.setDeployments(new LazyArrayList<DeploymentExtended>());
     }
 }

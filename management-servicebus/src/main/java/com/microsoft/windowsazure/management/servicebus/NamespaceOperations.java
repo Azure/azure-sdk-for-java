@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.CheckNamespaceAvailabilityResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRuleResponse;
@@ -196,7 +196,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String namespaceName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String namespaceName) throws IOException, ServiceException;
     
     /**
     * Deletes an existing namespace. This operation also removes all associated
@@ -209,7 +209,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String namespaceName);
+    Future<AzureOperationResponse> deleteAsync(String namespaceName);
     
     /**
     * The delete namespace authorization rule operation deletes an
@@ -224,7 +224,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException;
+    AzureOperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException;
     
     /**
     * The delete namespace authorization rule operation deletes an
@@ -235,12 +235,12 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAuthorizationRuleAsync(String namespaceName, String ruleName);
+    Future<AzureOperationResponse> deleteAuthorizationRuleAsync(String namespaceName, String ruleName);
     
     /**
     * Returns the description for the specified namespace.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
-    * more information)
+    * http://msdn.microsoft.com/library/azure/dn140232.aspx for more
+    * information)
     *
     * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -259,8 +259,8 @@ public interface NamespaceOperations {
     
     /**
     * Returns the description for the specified namespace.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
-    * more information)
+    * http://msdn.microsoft.com/library/azure/dn140232.aspx for more
+    * information)
     *
     * @param namespaceName Required. The namespace name.
     * @return The response to a request for a particular namespace.
@@ -333,8 +333,8 @@ public interface NamespaceOperations {
     
     /**
     * Lists the available namespaces.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
-    * more information)
+    * http://msdn.microsoft.com/en-us/library/azure/hh780759.aspx for more
+    * information)
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -352,8 +352,8 @@ public interface NamespaceOperations {
     
     /**
     * Lists the available namespaces.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
-    * more information)
+    * http://msdn.microsoft.com/en-us/library/azure/hh780759.aspx for more
+    * information)
     *
     * @return The response to the request for a listing of namespaces.
     */

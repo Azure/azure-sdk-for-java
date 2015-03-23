@@ -23,11 +23,13 @@
 
 package com.microsoft.windowsazure.management.network;
 
+import Hyak.Common.CloudError;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroup;
@@ -44,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -192,8 +195,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -298,7 +302,16 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/virtualnetwork/" + virtualNetworkName.trim() + "/subnets/" + subnetName.trim() + "/networksecuritygroups";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetwork/";
+        url = url + URLEncoder.encode(virtualNetworkName, "UTF-8");
+        url = url + "/subnets/";
+        url = url + URLEncoder.encode(subnetName, "UTF-8");
+        url = url + "/networksecuritygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -315,7 +328,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Serialize Request
         String requestContent = null;
@@ -362,6 +375,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -453,7 +467,12 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -470,7 +489,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Serialize Request
         String requestContent = null;
@@ -527,6 +546,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -616,7 +636,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups/" + networkSecurityGroupName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -633,7 +659,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -656,6 +682,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -741,7 +768,15 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups/" + networkSecurityGroupName.trim() + "/rules/" + ruleName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
+        url = url + "/rules/";
+        url = url + URLEncoder.encode(ruleName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -757,7 +792,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -780,6 +815,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -869,7 +905,17 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/virtualnetwork/" + virtualNetworkName.trim() + "/subnets/" + subnetName.trim() + "/networksecuritygroups/" + networkSecurityGroupName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetwork/";
+        url = url + URLEncoder.encode(virtualNetworkName, "UTF-8");
+        url = url + "/subnets/";
+        url = url + URLEncoder.encode(subnetName, "UTF-8");
+        url = url + "/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -885,7 +931,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -908,6 +954,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -1020,7 +1067,19 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups/" + (networkSecurityGroupName != null ? networkSecurityGroupName.trim() : "") + "/rules/" + (ruleName != null ? ruleName.trim() : "");
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups/";
+        if (networkSecurityGroupName != null) {
+            url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
+        }
+        url = url + "/rules/";
+        if (ruleName != null) {
+            url = url + URLEncoder.encode(ruleName, "UTF-8");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1037,7 +1096,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1112,6 +1171,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -1159,14 +1219,6 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     *
     * @param parameters Required. Parameters supplied to the Create Network
     * Security Group operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1177,6 +1229,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1188,7 +1247,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public OperationStatusResponse create(NetworkSecurityGroupCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public OperationStatusResponse create(NetworkSecurityGroupCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1228,8 +1287,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1289,14 +1349,6 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     *
     * @param networkSecurityGroupName Required. The name of the Network
     * Security Group to delete.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1307,6 +1359,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1318,7 +1377,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String networkSecurityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public OperationStatusResponse delete(String networkSecurityGroupName) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1358,8 +1417,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1479,8 +1539,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1557,9 +1618,19 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups/" + networkSecurityGroupName.trim() + "?";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
         if (detailLevel != null) {
-            url = url + "detaillevel=" + URLEncoder.encode(detailLevel != null ? detailLevel.trim() : "", "UTF-8");
+            queryParameters.add("detaillevel=" + URLEncoder.encode(detailLevel, "UTF-8"));
+        }
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -1576,7 +1647,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1600,123 +1671,125 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             // Create Result
             NetworkSecurityGroupGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkSecurityGroupGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-            if (networkSecurityGroupElement != null) {
-                Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkSecurityGroupGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element labelElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement != null) {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                Element locationElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement != null) {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Rules");
-                if (rulesSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i1));
-                        NetworkSecurityRule ruleInstance = new NetworkSecurityRule();
-                        result.getRules().add(ruleInstance);
-                        
-                        Element nameElement2 = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                        if (nameElement2 != null) {
-                            String nameInstance2;
-                            nameInstance2 = nameElement2.getTextContent();
-                            ruleInstance.setName(nameInstance2);
-                        }
-                        
-                        Element typeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                        if (typeElement != null) {
-                            String typeInstance;
-                            typeInstance = typeElement.getTextContent();
-                            ruleInstance.setType(typeInstance);
-                        }
-                        
-                        Element priorityElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Priority");
-                        if (priorityElement != null) {
-                            int priorityInstance;
-                            priorityInstance = DatatypeConverter.parseInt(priorityElement.getTextContent());
-                            ruleInstance.setPriority(priorityInstance);
-                        }
-                        
-                        Element actionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Action");
-                        if (actionElement != null) {
-                            String actionInstance;
-                            actionInstance = actionElement.getTextContent();
-                            ruleInstance.setAction(actionInstance);
-                        }
-                        
-                        Element sourceAddressPrefixElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "SourceAddressPrefix");
-                        if (sourceAddressPrefixElement != null) {
-                            String sourceAddressPrefixInstance;
-                            sourceAddressPrefixInstance = sourceAddressPrefixElement.getTextContent();
-                            ruleInstance.setSourceAddressPrefix(sourceAddressPrefixInstance);
-                        }
-                        
-                        Element sourcePortRangeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "SourcePortRange");
-                        if (sourcePortRangeElement != null) {
-                            String sourcePortRangeInstance;
-                            sourcePortRangeInstance = sourcePortRangeElement.getTextContent();
-                            ruleInstance.setSourcePortRange(sourcePortRangeInstance);
-                        }
-                        
-                        Element destinationAddressPrefixElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "DestinationAddressPrefix");
-                        if (destinationAddressPrefixElement != null) {
-                            String destinationAddressPrefixInstance;
-                            destinationAddressPrefixInstance = destinationAddressPrefixElement.getTextContent();
-                            ruleInstance.setDestinationAddressPrefix(destinationAddressPrefixInstance);
-                        }
-                        
-                        Element destinationPortRangeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "DestinationPortRange");
-                        if (destinationPortRangeElement != null) {
-                            String destinationPortRangeInstance;
-                            destinationPortRangeInstance = destinationPortRangeElement.getTextContent();
-                            ruleInstance.setDestinationPortRange(destinationPortRangeInstance);
-                        }
-                        
-                        Element protocolElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
-                        if (protocolElement != null) {
-                            String protocolInstance;
-                            protocolInstance = protocolElement.getTextContent();
-                            ruleInstance.setProtocol(protocolInstance);
-                        }
-                        
-                        Element stateElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                        if (stateElement != null) {
-                            String stateInstance;
-                            stateInstance = stateElement.getTextContent();
-                            ruleInstance.setState(stateInstance);
-                        }
-                        
-                        Element isDefaultElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
-                        if (isDefaultElement != null) {
-                            boolean isDefaultInstance;
-                            isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
-                            ruleInstance.setIsDefault(isDefaultInstance);
+                Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                if (networkSecurityGroupElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element labelElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement != null) {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent();
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element locationElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Rules");
+                    if (rulesSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i1));
+                            NetworkSecurityRule ruleInstance = new NetworkSecurityRule();
+                            result.getRules().add(ruleInstance);
+                            
+                            Element nameElement2 = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                            if (nameElement2 != null) {
+                                String nameInstance2;
+                                nameInstance2 = nameElement2.getTextContent();
+                                ruleInstance.setName(nameInstance2);
+                            }
+                            
+                            Element typeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                            if (typeElement != null) {
+                                String typeInstance;
+                                typeInstance = typeElement.getTextContent();
+                                ruleInstance.setType(typeInstance);
+                            }
+                            
+                            Element priorityElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Priority");
+                            if (priorityElement != null) {
+                                int priorityInstance;
+                                priorityInstance = DatatypeConverter.parseInt(priorityElement.getTextContent());
+                                ruleInstance.setPriority(priorityInstance);
+                            }
+                            
+                            Element actionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Action");
+                            if (actionElement != null) {
+                                String actionInstance;
+                                actionInstance = actionElement.getTextContent();
+                                ruleInstance.setAction(actionInstance);
+                            }
+                            
+                            Element sourceAddressPrefixElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "SourceAddressPrefix");
+                            if (sourceAddressPrefixElement != null) {
+                                String sourceAddressPrefixInstance;
+                                sourceAddressPrefixInstance = sourceAddressPrefixElement.getTextContent();
+                                ruleInstance.setSourceAddressPrefix(sourceAddressPrefixInstance);
+                            }
+                            
+                            Element sourcePortRangeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "SourcePortRange");
+                            if (sourcePortRangeElement != null) {
+                                String sourcePortRangeInstance;
+                                sourcePortRangeInstance = sourcePortRangeElement.getTextContent();
+                                ruleInstance.setSourcePortRange(sourcePortRangeInstance);
+                            }
+                            
+                            Element destinationAddressPrefixElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "DestinationAddressPrefix");
+                            if (destinationAddressPrefixElement != null) {
+                                String destinationAddressPrefixInstance;
+                                destinationAddressPrefixInstance = destinationAddressPrefixElement.getTextContent();
+                                ruleInstance.setDestinationAddressPrefix(destinationAddressPrefixInstance);
+                            }
+                            
+                            Element destinationPortRangeElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "DestinationPortRange");
+                            if (destinationPortRangeElement != null) {
+                                String destinationPortRangeInstance;
+                                destinationPortRangeInstance = destinationPortRangeElement.getTextContent();
+                                ruleInstance.setDestinationPortRange(destinationPortRangeInstance);
+                            }
+                            
+                            Element protocolElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
+                            if (protocolElement != null) {
+                                String protocolInstance;
+                                protocolInstance = protocolElement.getTextContent();
+                                ruleInstance.setProtocol(protocolInstance);
+                            }
+                            
+                            Element stateElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                            if (stateElement != null) {
+                                String stateInstance;
+                                stateInstance = stateElement.getTextContent();
+                                ruleInstance.setState(stateInstance);
+                            }
+                            
+                            Element isDefaultElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
+                            if (isDefaultElement != null) {
+                                boolean isDefaultInstance;
+                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
+                                ruleInstance.setIsDefault(isDefaultInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1787,7 +1860,16 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/virtualnetwork/" + virtualNetworkName.trim() + "/subnets/" + subnetName.trim() + "/networksecuritygroups";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetwork/";
+        url = url + URLEncoder.encode(virtualNetworkName, "UTF-8");
+        url = url + "/subnets/";
+        url = url + URLEncoder.encode(subnetName, "UTF-8");
+        url = url + "/networksecuritygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1803,7 +1885,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1827,30 +1909,32 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             // Create Result
             NetworkSecurityGroupGetForSubnetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkSecurityGroupGetForSubnetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-            if (networkSecurityGroupElement != null) {
-                Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkSecurityGroupGetForSubnetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                if (networkSecurityGroupElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        result.setState(stateInstance);
+                    }
                 }
                 
-                Element stateElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    result.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1909,7 +1993,12 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/networksecuritygroups";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/networksecuritygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1925,7 +2014,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-02-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1949,43 +2038,45 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             // Create Result
             NetworkSecurityGroupListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkSecurityGroupListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element networkSecurityGroupsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroups");
-            if (networkSecurityGroupsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkSecurityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element networkSecurityGroupsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkSecurityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup").get(i1));
-                    NetworkSecurityGroup networkSecurityGroupInstance = new NetworkSecurityGroup();
-                    result.getNetworkSecurityGroups().add(networkSecurityGroupInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        networkSecurityGroupInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        networkSecurityGroupInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element locationElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                    if (locationElement != null) {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        networkSecurityGroupInstance.setLocation(locationInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkSecurityGroupListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element networkSecurityGroupsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroups");
+                if (networkSecurityGroupsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkSecurityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element networkSecurityGroupsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkSecurityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup").get(i1));
+                        NetworkSecurityGroup networkSecurityGroupInstance = new NetworkSecurityGroup();
+                        result.getNetworkSecurityGroups().add(networkSecurityGroupInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            networkSecurityGroupInstance.setName(nameInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            networkSecurityGroupInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            networkSecurityGroupInstance.setLocation(locationInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2099,8 +2190,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2221,8 +2313,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -142,7 +143,14 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + sourceServerName.trim() + "/recoverdatabaseoperations";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(sourceServerName, "UTF-8");
+        url = url + "/recoverdatabaseoperations";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -219,68 +227,70 @@ public class RecoverDatabaseOperationsImpl implements ServiceOperations<SqlManag
             // Create Result
             RecoverDatabaseOperationCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new RecoverDatabaseOperationCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            if (serviceResourceElement2 != null) {
-                RecoverDatabaseOperation serviceResourceInstance = new RecoverDatabaseOperation();
-                result.setOperation(serviceResourceInstance);
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new RecoverDatabaseOperationCreateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
                 
-                Element requestIDElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "RequestID");
-                if (requestIDElement != null) {
-                    String requestIDInstance;
-                    requestIDInstance = requestIDElement.getTextContent();
-                    serviceResourceInstance.setId(requestIDInstance);
+                Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+                if (serviceResourceElement2 != null) {
+                    RecoverDatabaseOperation serviceResourceInstance = new RecoverDatabaseOperation();
+                    result.setOperation(serviceResourceInstance);
+                    
+                    Element requestIDElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "RequestID");
+                    if (requestIDElement != null) {
+                        String requestIDInstance;
+                        requestIDInstance = requestIDElement.getTextContent();
+                        serviceResourceInstance.setId(requestIDInstance);
+                    }
+                    
+                    Element sourceDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "SourceDatabaseName");
+                    if (sourceDatabaseNameElement2 != null) {
+                        String sourceDatabaseNameInstance;
+                        sourceDatabaseNameInstance = sourceDatabaseNameElement2.getTextContent();
+                        serviceResourceInstance.setSourceDatabaseName(sourceDatabaseNameInstance);
+                    }
+                    
+                    Element targetServerNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetServerName");
+                    if (targetServerNameElement2 != null) {
+                        String targetServerNameInstance;
+                        targetServerNameInstance = targetServerNameElement2.getTextContent();
+                        serviceResourceInstance.setTargetServerName(targetServerNameInstance);
+                    }
+                    
+                    Element targetDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetDatabaseName");
+                    if (targetDatabaseNameElement2 != null) {
+                        String targetDatabaseNameInstance;
+                        targetDatabaseNameInstance = targetDatabaseNameElement2.getTextContent();
+                        serviceResourceInstance.setTargetDatabaseName(targetDatabaseNameInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
                 }
                 
-                Element sourceDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "SourceDatabaseName");
-                if (sourceDatabaseNameElement2 != null) {
-                    String sourceDatabaseNameInstance;
-                    sourceDatabaseNameInstance = sourceDatabaseNameElement2.getTextContent();
-                    serviceResourceInstance.setSourceDatabaseName(sourceDatabaseNameInstance);
-                }
-                
-                Element targetServerNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetServerName");
-                if (targetServerNameElement2 != null) {
-                    String targetServerNameInstance;
-                    targetServerNameInstance = targetServerNameElement2.getTextContent();
-                    serviceResourceInstance.setTargetServerName(targetServerNameInstance);
-                }
-                
-                Element targetDatabaseNameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "TargetDatabaseName");
-                if (targetDatabaseNameElement2 != null) {
-                    String targetDatabaseNameInstance;
-                    targetDatabaseNameInstance = targetDatabaseNameElement2.getTextContent();
-                    serviceResourceInstance.setTargetDatabaseName(targetDatabaseNameInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

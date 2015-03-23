@@ -252,7 +252,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
         this.databaseCopies = new DatabaseCopyOperationsImpl(this);

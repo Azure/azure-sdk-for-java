@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import System.Nullable;
+
 /**
 * Parameters supplied to the Update Deployment Status operation.
 */
@@ -56,8 +58,12 @@ public class DeploymentUpdateStatusParameters {
     * Initializes a new instance of the DeploymentUpdateStatusParameters class
     * with required arguments.
     *
+    * @param status The new status of the deployment.
     */
-    public DeploymentUpdateStatusParameters(UpdatedDeploymentStatus status) {
+    public DeploymentUpdateStatusParameters(Nullable<UpdatedDeploymentStatus> status) {
+        if (status == null) {
+            throw new NullPointerException("status");
+        }
         this.setStatus(status);
     }
 }

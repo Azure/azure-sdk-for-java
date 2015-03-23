@@ -76,6 +76,11 @@ public class PublishingCredentials {
     * Initializes a new instance of the PublishingCredentials class with
     * required arguments.
     *
+    * @param publishingPassword Hash value of the password used for publishing
+    * the web site.
+    * @param publishingUserName The username used for publishing the web site.
+    * This is normally a dollar sign prepended to the web site name (for
+    * example, "$contoso").
     */
     public PublishingCredentials(String publishingPassword, String publishingUserName) {
         if (publishingPassword == null) {

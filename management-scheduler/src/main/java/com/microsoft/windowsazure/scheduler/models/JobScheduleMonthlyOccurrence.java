@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import System.Nullable;
+
 /**
 * Occurrences of days within a month.
 */
@@ -78,8 +80,13 @@ public class JobScheduleMonthlyOccurrence {
     * Initializes a new instance of the JobScheduleMonthlyOccurrence class with
     * required arguments.
     *
+    * @param day Day of the occurrence. Must be one of monday, tuesday,
+    * wednesday, thursday, friday, saturday, sunday.
     */
-    public JobScheduleMonthlyOccurrence(JobScheduleDay day) {
+    public JobScheduleMonthlyOccurrence(Nullable<JobScheduleDay> day) {
+        if (day == null) {
+            throw new NullPointerException("day");
+        }
         this.setDay(day);
     }
 }

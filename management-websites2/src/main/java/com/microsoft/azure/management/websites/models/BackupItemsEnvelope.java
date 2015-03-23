@@ -61,6 +61,7 @@ public class BackupItemsEnvelope extends ResourceBase {
     * Initializes a new instance of the BackupItemsEnvelope class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public BackupItemsEnvelope(String location) {
         this();

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetailsResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueue;
@@ -97,7 +97,7 @@ public interface QueueOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String namespaceName, String queueName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String namespaceName, String queueName) throws IOException, ServiceException;
     
     /**
     * Deletes an existing queue. This operation will also remove all associated
@@ -110,7 +110,7 @@ public interface QueueOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String namespaceName, String queueName);
+    Future<AzureOperationResponse> deleteAsync(String namespaceName, String queueName);
     
     /**
     * The queue description is an XML AtomPub document that defines the desired

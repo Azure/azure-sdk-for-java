@@ -24,11 +24,13 @@
 package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateParameters;
+import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateResponse;
 import com.microsoft.azure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseListResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -38,8 +40,9 @@ import java.util.concurrent.Future;
 */
 public interface DatabaseOperations {
     /**
-    * Creates a new Azure SQL Database or updates an existing Azure SQL
-    * Database.
+    * Begins creating a new Azure SQL Database or updating an existing Azure
+    * SQL Database. To determine the status of the operation call
+    * GetDatabaseOperationStatus.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
@@ -53,9 +56,26 @@ public interface DatabaseOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Response for long running database operations.
     */
-    DatabaseGetResponse createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    DatabaseCreateOrUpdateResponse beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * Begins creating a new Azure SQL Database or updating an existing Azure
+    * SQL Database. To determine the status of the operation call
+    * GetDatabaseOperationStatus.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * operated on (Updated or created).
+    * @param parameters Required. The required parameters for createing or
+    * updating a database.
+    * @return Response for long running database operations.
+    */
+    Future<DatabaseCreateOrUpdateResponse> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters);
     
     /**
     * Creates a new Azure SQL Database or updates an existing Azure SQL
@@ -69,9 +89,36 @@ public interface DatabaseOperations {
     * operated on (Updated or created).
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @return Represents the response to a Get Database request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for long running database operations.
     */
-    Future<DatabaseGetResponse> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters);
+    DatabaseCreateOrUpdateResponse createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    
+    /**
+    * Creates a new Azure SQL Database or updates an existing Azure SQL
+    * Database.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * operated on (Updated or created).
+    * @param parameters Required. The required parameters for createing or
+    * updating a database.
+    * @return Response for long running database operations.
+    */
+    Future<DatabaseCreateOrUpdateResponse> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters);
     
     /**
     * Deletes the Azure SQL Database with the given name.
@@ -89,7 +136,7 @@ public interface DatabaseOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException;
     
     /**
     * Deletes the Azure SQL Database with the given name.
@@ -103,7 +150,7 @@ public interface DatabaseOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName, String databaseName);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName, String databaseName);
     
     /**
     * Returns information about an Azure SQL Database.
@@ -164,6 +211,28 @@ public interface DatabaseOperations {
     * @return Represents the response to a Get Database request.
     */
     Future<DatabaseListResponse> getByIdAsync(String resourceGroupName, String serverName, String databaseId);
+    
+    /**
+    * Gets the status of a database create or update operation.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for long running database operations.
+    */
+    DatabaseCreateOrUpdateResponse getDatabaseOperationStatus(String operationStatusLink) throws IOException, ServiceException;
+    
+    /**
+    * Gets the status of a database create or update operation.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation
+    * @return Response for long running database operations.
+    */
+    Future<DatabaseCreateOrUpdateResponse> getDatabaseOperationStatusAsync(String operationStatusLink);
     
     /**
     * Returns information about an Azure SQL Database.

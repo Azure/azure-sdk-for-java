@@ -27,6 +27,26 @@ package com.microsoft.windowsazure.management.websites.models;
 * A web hosting plan associated with the specified subscription.
 */
 public class WebHostingPlan {
+    private String adminSiteName;
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @return The AdminSiteName value.
+    */
+    public String getAdminSiteName() {
+        return this.adminSiteName;
+    }
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @param adminSiteNameValue The AdminSiteName value.
+    */
+    public void setAdminSiteName(final String adminSiteNameValue) {
+        this.adminSiteName = adminSiteNameValue;
+    }
+    
     private String name;
     
     /**

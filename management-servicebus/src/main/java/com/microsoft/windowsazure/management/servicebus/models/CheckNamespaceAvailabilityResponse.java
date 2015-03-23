@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The response to a query for the availability status of a namespace name.
 */
-public class CheckNamespaceAvailabilityResponse extends OperationResponse {
+public class CheckNamespaceAvailabilityResponse extends AzureOperationResponse {
     private boolean isAvailable;
     
     /**

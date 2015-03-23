@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Check Hosted Service Name Availability operation response.
 */
-public class HostedServiceCheckNameAvailabilityResponse extends OperationResponse {
+public class HostedServiceCheckNameAvailabilityResponse extends AzureOperationResponse {
     private boolean isAvailable;
     
     /**

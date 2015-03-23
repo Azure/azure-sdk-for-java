@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Web Spaces operation response.
 */
-public class WebSpacesListResponse extends OperationResponse implements Iterable<WebSpacesListResponse.WebSpace> {
+public class WebSpacesListResponse extends AzureOperationResponse implements Iterable<WebSpacesListResponse.WebSpace> {
     private ArrayList<WebSpacesListResponse.WebSpace> webSpaces;
     
     /**
@@ -107,14 +107,14 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
             this.currentNumberOfWorkers = currentNumberOfWorkersValue;
         }
         
-        private WebSpaceWorkerSize currentWorkerSize;
+        private WorkerSizeOptions currentWorkerSize;
         
         /**
         * Optional. The current worker size. Possible values are Small, Medium,
         * or Large.
         * @return The CurrentWorkerSize value.
         */
-        public WebSpaceWorkerSize getCurrentWorkerSize() {
+        public WorkerSizeOptions getCurrentWorkerSize() {
             return this.currentWorkerSize;
         }
         
@@ -123,7 +123,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * or Large.
         * @param currentWorkerSizeValue The CurrentWorkerSize value.
         */
-        public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue) {
+        public void setCurrentWorkerSize(final WorkerSizeOptions currentWorkerSizeValue) {
             this.currentWorkerSize = currentWorkerSizeValue;
         }
         
@@ -239,7 +239,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
             this.subscription = subscriptionValue;
         }
         
-        private WebSpaceWorkerSize workerSize;
+        private WorkerSizeOptions workerSize;
         
         /**
         * Optional. The worker size. Possible values are Small, Medium, and
@@ -247,7 +247,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * Large.
         * @return The WorkerSize value.
         */
-        public WebSpaceWorkerSize getWorkerSize() {
+        public WorkerSizeOptions getWorkerSize() {
             return this.workerSize;
         }
         
@@ -257,7 +257,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * Large.
         * @param workerSizeValue The WorkerSize value.
         */
-        public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {
+        public void setWorkerSize(final WorkerSizeOptions workerSizeValue) {
             this.workerSize = workerSizeValue;
         }
     }

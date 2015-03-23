@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
@@ -115,7 +115,7 @@ public interface SubscriptionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse registerResource(String resourceName) throws IOException, ServiceException;
+    AzureOperationResponse registerResource(String resourceName) throws IOException, ServiceException;
     
     /**
     * Register a resource with your subscription.
@@ -124,7 +124,7 @@ public interface SubscriptionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> registerResourceAsync(String resourceName);
+    Future<AzureOperationResponse> registerResourceAsync(String resourceName);
     
     /**
     * Unregister a resource with your subscription.
@@ -137,7 +137,7 @@ public interface SubscriptionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse unregisterResource(String resourceName) throws IOException, ServiceException;
+    AzureOperationResponse unregisterResource(String resourceName) throws IOException, ServiceException;
     
     /**
     * Unregister a resource with your subscription.
@@ -146,5 +146,5 @@ public interface SubscriptionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> unregisterResourceAsync(String resourceName);
+    Future<AzureOperationResponse> unregisterResourceAsync(String resourceName);
 }

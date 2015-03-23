@@ -57,6 +57,7 @@ public class WebHostingPlan extends ResourceBase {
     * Initializes a new instance of the WebHostingPlan class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebHostingPlan(String location) {
         this();

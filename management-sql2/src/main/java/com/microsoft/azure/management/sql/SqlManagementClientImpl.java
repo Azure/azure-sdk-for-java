@@ -110,6 +110,18 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
+    private AuditingPolicyOperations auditingPolicy;
+    
+    /**
+    * Represents all the operations to manage Azure SQL Database and Database
+    * Server Audit policy.  Contains operations to: Create, Retrieve and
+    * Update audit policy.
+    * @return The AuditingPolicyOperations value.
+    */
+    public AuditingPolicyOperations getAuditingPolicyOperations() {
+        return this.auditingPolicy;
+    }
+    
     private DatabaseOperations databases;
     
     /**
@@ -120,6 +132,19 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     */
     public DatabaseOperations getDatabasesOperations() {
         return this.databases;
+    }
+    
+    private DataMaskingOperations dataMasking;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database data
+    * masking. Contains operations to: Create, Retrieve, Update, and Delete
+    * data masking rules, as well as Create, Retreive and Update data masking
+    * policy.
+    * @return The DataMaskingOperations value.
+    */
+    public DataMaskingOperations getDataMaskingOperations() {
+        return this.dataMasking;
     }
     
     private FirewallRuleOperations firewallRules;
@@ -134,16 +159,16 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.firewallRules;
     }
     
-    private SecurityOperations databaseSecurity;
+    private SecureConnectionPolicyOperations secureConnection;
     
     /**
-    * Represents all the operations for operating on Azure SQL Database
-    * security policy.  Contains operations to: Retrieve and Update security
-    * policy
-    * @return The DatabaseSecurityOperations value.
+    * Represents all the operations for managing Azure SQL Database secure
+    * connection.  Contains operations to: Create, Retrieve and Update secure
+    * connection policy .
+    * @return The SecureConnectionOperations value.
     */
-    public SecurityOperations getDatabaseSecurityOperations() {
-        return this.databaseSecurity;
+    public SecureConnectionPolicyOperations getSecureConnectionOperations() {
+        return this.secureConnection;
     }
     
     private ServerOperations servers;
@@ -158,18 +183,32 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.servers;
     }
     
+    private ServiceObjectiveOperations serviceObjectives;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database Service
+    * Objectives.   Contains operations to: Retrieve service objectives.
+    * @return The ServiceObjectivesOperations value.
+    */
+    public ServiceObjectiveOperations getServiceObjectivesOperations() {
+        return this.serviceObjectives;
+    }
+    
     /**
     * Initializes a new instance of the SqlManagementClientImpl class.
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
+        this.auditingPolicy = new AuditingPolicyOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
+        this.dataMasking = new DataMaskingOperationsImpl(this);
         this.firewallRules = new FirewallRuleOperationsImpl(this);
-        this.databaseSecurity = new SecurityOperationsImpl(this);
+        this.secureConnection = new SecureConnectionPolicyOperationsImpl(this);
         this.servers = new ServerOperationsImpl(this);
+        this.serviceObjectives = new ServiceObjectiveOperationsImpl(this);
         this.apiVersion = "2014-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;

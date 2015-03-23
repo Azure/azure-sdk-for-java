@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * List of slot specific settings.
 */
-public class SlotConfigNamesResult extends OperationResponse {
+public class SlotConfigNamesResult extends AzureOperationResponse {
     private SlotConfigNamesEnvelope resource;
     
     /**

@@ -57,6 +57,7 @@ public class WebSiteBase extends ResourceBase {
     * Initializes a new instance of the WebSiteBase class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteBase(String location) {
         this();

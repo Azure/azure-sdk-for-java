@@ -86,6 +86,15 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
+    * The Application Gateway Management API includes operations for managing
+    * application gateways in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
+    * @return The ApplicationGatewaysOperations value.
+    */
+    ApplicationGatewayOperations getApplicationGatewaysOperations();
+    
+    /**
     * The Network Management API includes operations for managing the client
     * root certificates for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for

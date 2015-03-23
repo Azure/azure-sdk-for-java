@@ -58,6 +58,7 @@ public class WebSitePublishingCredentialsEnvelope extends ResourceBase {
     * Initializes a new instance of the WebSitePublishingCredentialsEnvelope
     * class with required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSitePublishingCredentialsEnvelope(String location) {
         this();

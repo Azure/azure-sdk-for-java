@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
@@ -57,7 +57,7 @@ public interface NetworkOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException;
+    AzureOperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
     * The Begin Setting Network Configuration operation asynchronously
@@ -70,7 +70,7 @@ public interface NetworkOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginSettingConfigurationAsync(NetworkSetConfigurationParameters parameters);
+    Future<AzureOperationResponse> beginSettingConfigurationAsync(NetworkSetConfigurationParameters parameters);
     
     /**
     * The Get Network Configuration operation retrieves the network

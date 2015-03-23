@@ -26,9 +26,10 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.sql.models.ServerCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.ServerGetResponse;
 import com.microsoft.azure.management.sql.models.ServerListResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -45,13 +46,21 @@ public interface ServerOperations {
     * which the database is hosted.
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
-    ServerGetResponse createOrUpdate(String resourceGroupName, String serverName, ServerCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    ServerGetResponse createOrUpdate(String resourceGroupName, String serverName, ServerCreateOrUpdateParameters parameters) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Creates a new Azure SQL Database server.
@@ -62,7 +71,8 @@ public interface ServerOperations {
     * which the database is hosted.
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
     Future<ServerGetResponse> createOrUpdateAsync(String resourceGroupName, String serverName, ServerCreateOrUpdateParameters parameters);
     
@@ -79,7 +89,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException;
     
     /**
     * Returns information about an Azure SQL Database Server.
@@ -90,7 +100,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName);
     
     /**
     * Returns information about an Azure SQL Database Server.
@@ -102,7 +112,8 @@ public interface ServerOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
     ServerGetResponse get(String resourceGroupName, String serverName) throws IOException, ServiceException;
     
@@ -112,7 +123,8 @@ public interface ServerOperations {
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
     * @param serverName Required. The name of the server to retrieve.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
     Future<ServerGetResponse> getAsync(String resourceGroupName, String serverName);
     
@@ -125,7 +137,8 @@ public interface ServerOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
     ServerListResponse list(String resourceGroupName) throws IOException, ServiceException;
     
@@ -134,7 +147,8 @@ public interface ServerOperations {
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database Server
+    * request.
     */
     Future<ServerListResponse> listAsync(String resourceGroupName);
 }

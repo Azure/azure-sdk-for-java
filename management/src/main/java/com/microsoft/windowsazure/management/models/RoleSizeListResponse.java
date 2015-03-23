@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Role Sizes operation response.
 */
-public class RoleSizeListResponse extends OperationResponse implements Iterable<RoleSizeListResponse.RoleSize> {
+public class RoleSizeListResponse extends AzureOperationResponse implements Iterable<RoleSizeListResponse.RoleSize> {
     private ArrayList<RoleSizeListResponse.RoleSize> roleSizes;
     
     /**

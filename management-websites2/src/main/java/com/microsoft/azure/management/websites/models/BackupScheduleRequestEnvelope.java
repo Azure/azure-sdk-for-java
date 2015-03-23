@@ -57,6 +57,7 @@ public class BackupScheduleRequestEnvelope extends ResourceBase {
     * Initializes a new instance of the BackupScheduleRequestEnvelope class
     * with required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public BackupScheduleRequestEnvelope(String location) {
         this();

@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import System.Nullable;
+
 /**
 * Action to invoke for the job.
 */
@@ -127,8 +129,12 @@ public class JobAction {
     /**
     * Initializes a new instance of the JobAction class with required arguments.
     *
+    * @param type Type of action. Can be one of http, https, storageQueue.
     */
-    public JobAction(JobActionType type) {
+    public JobAction(Nullable<JobActionType> type) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
         this.setType(type);
     }
 }

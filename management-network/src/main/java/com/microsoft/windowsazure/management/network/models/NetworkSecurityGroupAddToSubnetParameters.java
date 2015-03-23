@@ -59,6 +59,8 @@ public class NetworkSecurityGroupAddToSubnetParameters {
     * Initializes a new instance of the
     * NetworkSecurityGroupAddToSubnetParameters class with required arguments.
     *
+    * @param name Gets or sets name for a Network Security Group from this
+    * subscription.
     */
     public NetworkSecurityGroupAddToSubnetParameters(String name) {
         if (name == null) {

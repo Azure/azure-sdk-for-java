@@ -61,6 +61,7 @@ public class WebSiteMetadataEnvelope extends ResourceBase {
     * Initializes a new instance of the WebSiteMetadataEnvelope class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteMetadataEnvelope(String location) {
         this();

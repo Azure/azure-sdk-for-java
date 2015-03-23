@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * List of resource groups.
 */
-public class ResourceGroupListResult extends OperationResponse {
+public class ResourceGroupListResult extends AzureOperationResponse {
     private String nextLink;
     
     /**
@@ -49,13 +49,13 @@ public class ResourceGroupListResult extends OperationResponse {
         this.nextLink = nextLinkValue;
     }
     
-    private ArrayList<ResourceGroup> resourceGroups;
+    private ArrayList<ResourceGroupExtended> resourceGroups;
     
     /**
     * Optional. Gets or sets the list of resource groups.
     * @return The ResourceGroups value.
     */
-    public ArrayList<ResourceGroup> getResourceGroups() {
+    public ArrayList<ResourceGroupExtended> getResourceGroups() {
         return this.resourceGroups;
     }
     
@@ -63,7 +63,7 @@ public class ResourceGroupListResult extends OperationResponse {
     * Optional. Gets or sets the list of resource groups.
     * @param resourceGroupsValue The ResourceGroups value.
     */
-    public void setResourceGroups(final ArrayList<ResourceGroup> resourceGroupsValue) {
+    public void setResourceGroups(final ArrayList<ResourceGroupExtended> resourceGroupsValue) {
         this.resourceGroups = resourceGroupsValue;
     }
     
@@ -73,13 +73,14 @@ public class ResourceGroupListResult extends OperationResponse {
     */
     public ResourceGroupListResult() {
         super();
-        this.setResourceGroups(new LazyArrayList<ResourceGroup>());
+        this.setResourceGroups(new LazyArrayList<ResourceGroupExtended>());
     }
     
     /**
     * Initializes a new instance of the ResourceGroupListResult class with
     * required arguments.
     *
+    * @param nextLink Gets or sets the URL to get the next set of results.
     */
     public ResourceGroupListResult(String nextLink) {
         this();

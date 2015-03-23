@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Contains the response to a Get Database Event Logs request.
 */
-public class DatabaseGetEventLogsResponse extends OperationResponse implements Iterable<DatabaseEventLog> {
+public class DatabaseGetEventLogsResponse extends AzureOperationResponse implements Iterable<DatabaseEventLog> {
     private ArrayList<DatabaseEventLog> eventLogs;
     
     /**

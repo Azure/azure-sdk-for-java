@@ -214,6 +214,24 @@ public class WebSiteUpdateConfigurationDetails {
         this.httpLoggingEnabled = httpLoggingEnabledValue;
     }
     
+    private SiteLimits limits;
+    
+    /**
+    * Optional. The per site limits.
+    * @return The Limits value.
+    */
+    public SiteLimits getLimits() {
+        return this.limits;
+    }
+    
+    /**
+    * Optional. The per site limits.
+    * @param limitsValue The Limits value.
+    */
+    public void setLimits(final SiteLimits limitsValue) {
+        this.limits = limitsValue;
+    }
+    
     private Integer logsDirectorySizeLimit;
     
     /**

@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The list source controls operation response.
 */
-public class SourceControlListResponse extends OperationResponse implements Iterable<SourceControl> {
+public class SourceControlListResponse extends AzureOperationResponse implements Iterable<SourceControl> {
     private ArrayList<SourceControl> sourceControls;
     
     /**

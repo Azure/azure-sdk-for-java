@@ -90,14 +90,14 @@ public class VirtualMachineVMImageUpdateParameters {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -106,7 +106,7 @@ public class VirtualMachineVMImageUpdateParameters {
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -264,14 +264,14 @@ public class VirtualMachineVMImageUpdateParameters {
         this.showInGui = showInGuiValue;
     }
     
-    private URI smallIconUri;
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
     * image is presented in the Azure Management Portal.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -280,7 +280,7 @@ public class VirtualMachineVMImageUpdateParameters {
     * image is presented in the Azure Management Portal.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
     
@@ -297,6 +297,9 @@ public class VirtualMachineVMImageUpdateParameters {
     * Initializes a new instance of the VirtualMachineVMImageUpdateParameters
     * class with required arguments.
     *
+    * @param label Specifies the friendly name of the image to be updated. You
+    * cannot use this operation to update images provided by the Azure
+    * platform.
     */
     public VirtualMachineVMImageUpdateParameters(String label) {
         this();

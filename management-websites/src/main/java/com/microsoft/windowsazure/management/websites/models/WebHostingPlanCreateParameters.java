@@ -27,6 +27,26 @@ package com.microsoft.windowsazure.management.websites.models;
 * Parameters supplied to the Create Web Web Hosting Plan operation.
 */
 public class WebHostingPlanCreateParameters {
+    private String adminSiteName;
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @return The AdminSiteName value.
+    */
+    public String getAdminSiteName() {
+        return this.adminSiteName;
+    }
+    
+    /**
+    * Optional. The admin site. The admin site is used to deploy site
+    * extensions or contents shared by all site in the plan.
+    * @param adminSiteNameValue The AdminSiteName value.
+    */
+    public void setAdminSiteName(final String adminSiteNameValue) {
+        this.adminSiteName = adminSiteNameValue;
+    }
+    
     private String name;
     
     /**
@@ -112,6 +132,7 @@ public class WebHostingPlanCreateParameters {
     * Initializes a new instance of the WebHostingPlanCreateParameters class
     * with required arguments.
     *
+    * @param name Name of the Web hosting plan.
     */
     public WebHostingPlanCreateParameters(String name) {
         if (name == null) {

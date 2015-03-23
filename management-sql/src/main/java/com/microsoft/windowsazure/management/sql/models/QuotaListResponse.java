@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Represents the response structure for the Quota List operation.
 */
-public class QuotaListResponse extends OperationResponse implements Iterable<Quota> {
+public class QuotaListResponse extends AzureOperationResponse implements Iterable<Quota> {
     private ArrayList<Quota> quotas;
     
     /**

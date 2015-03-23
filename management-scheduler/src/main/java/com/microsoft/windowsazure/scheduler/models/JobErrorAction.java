@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import System.Nullable;
+
 /**
 * Action to invoke following the failure of all of the retries of a job
 * occurrence.
@@ -93,8 +95,12 @@ public class JobErrorAction {
     * Initializes a new instance of the JobErrorAction class with required
     * arguments.
     *
+    * @param type Type of action. Can be one of http, https, storageQueue.
     */
-    public JobErrorAction(JobActionType type) {
+    public JobErrorAction(Nullable<JobActionType> type) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
         this.setType(type);
     }
 }

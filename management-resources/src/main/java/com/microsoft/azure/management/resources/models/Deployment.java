@@ -24,49 +24,13 @@
 package com.microsoft.azure.management.resources.models;
 
 /**
-* Deployment information.
+* Deployment operation parameters.
 */
 public class Deployment {
-    private String id;
-    
-    /**
-    * Optional. Gets or sets the ID of the deployment.
-    * @return The Id value.
-    */
-    public String getId() {
-        return this.id;
-    }
-    
-    /**
-    * Optional. Gets or sets the ID of the deployment.
-    * @param idValue The Id value.
-    */
-    public void setId(final String idValue) {
-        this.id = idValue;
-    }
-    
-    private String name;
-    
-    /**
-    * Required. Gets or sets the name of the deployment.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Required. Gets or sets the name of the deployment.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
     private DeploymentProperties properties;
     
     /**
-    * Optional. Gets or sets deployment properties.
+    * Optional. Gets or sets the deployment properties.
     * @return The Properties value.
     */
     public DeploymentProperties getProperties() {
@@ -74,29 +38,10 @@ public class Deployment {
     }
     
     /**
-    * Optional. Gets or sets deployment properties.
+    * Optional. Gets or sets the deployment properties.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final DeploymentProperties propertiesValue) {
         this.properties = propertiesValue;
-    }
-    
-    /**
-    * Initializes a new instance of the Deployment class.
-    *
-    */
-    public Deployment() {
-    }
-    
-    /**
-    * Initializes a new instance of the Deployment class with required
-    * arguments.
-    *
-    */
-    public Deployment(String name) {
-        if (name == null) {
-            throw new NullPointerException("name");
-        }
-        this.setName(name);
     }
 }

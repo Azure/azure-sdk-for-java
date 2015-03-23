@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import System.Nullable;
+
 /**
 * Parameters supplied to the Get Job History With Filter operation.
 */
@@ -59,8 +61,13 @@ public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters {
     * Initializes a new instance of the JobGetHistoryWithFilterParameters class
     * with required arguments.
     *
+    * @param status Filter the job history to have it only return job execution
+    * attempts having a particular Status, 'completed' or 'failed'.
     */
-    public JobGetHistoryWithFilterParameters(JobHistoryStatus status) {
+    public JobGetHistoryWithFilterParameters(Nullable<JobHistoryStatus> status) {
+        if (status == null) {
+            throw new NullPointerException("status");
+        }
         this.setStatus(status);
     }
 }

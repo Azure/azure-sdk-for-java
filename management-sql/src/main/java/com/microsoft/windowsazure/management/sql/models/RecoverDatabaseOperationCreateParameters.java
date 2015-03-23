@@ -94,6 +94,8 @@ public class RecoverDatabaseOperationCreateParameters {
     * Initializes a new instance of the
     * RecoverDatabaseOperationCreateParameters class with required arguments.
     *
+    * @param sourceDatabaseName Gets or sets the name of the source Azure SQL
+    * Database.
     */
     public RecoverDatabaseOperationCreateParameters(String sourceDatabaseName) {
         if (sourceDatabaseName == null) {

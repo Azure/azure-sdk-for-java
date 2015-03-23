@@ -129,6 +129,7 @@ public class ResourceBase {
     * Initializes a new instance of the ResourceBase class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public ResourceBase(String location) {
         this();

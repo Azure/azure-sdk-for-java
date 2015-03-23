@@ -93,6 +93,8 @@ public class WebSpacesCreatePublishingUserParameters {
     * Initializes a new instance of the WebSpacesCreatePublishingUserParameters
     * class with required arguments.
     *
+    * @param publishingPassword The publishing user password.
+    * @param publishingUserName The publishing user username.
     */
     public WebSpacesCreatePublishingUserParameters(String publishingPassword, String publishingUserName) {
         if (publishingPassword == null) {

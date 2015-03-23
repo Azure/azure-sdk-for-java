@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import java.net.URI;
 
 /**
 * The Get Hosted Service operation response.
 */
-public class HostedServiceGetResponse extends OperationResponse {
+public class HostedServiceGetResponse extends AzureOperationResponse {
     private ComputeCapabilities computeCapabilities;
     
     /**

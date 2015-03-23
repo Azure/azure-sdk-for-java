@@ -26,7 +26,8 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.ProviderGetResult;
 import com.microsoft.azure.management.resources.models.ProviderListParameters;
 import com.microsoft.azure.management.resources.models.ProviderListResult;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.resources.models.ProviderRegistionResult;
+import com.microsoft.azure.management.resources.models.ProviderUnregistionResult;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -117,20 +118,18 @@ public interface ProviderOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
-    OperationResponse register(String resourceProviderNamespace) throws IOException, ServiceException;
+    ProviderRegistionResult register(String resourceProviderNamespace) throws IOException, ServiceException;
     
     /**
     * Registers provider to be used with a subscription.
     *
     * @param resourceProviderNamespace Required. Namespace of the resource
     * provider.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
-    Future<OperationResponse> registerAsync(String resourceProviderNamespace);
+    Future<ProviderRegistionResult> registerAsync(String resourceProviderNamespace);
     
     /**
     * Unregisters provider from a subscription.
@@ -141,18 +140,16 @@ public interface ProviderOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
-    OperationResponse unregister(String resourceProviderNamespace) throws IOException, ServiceException;
+    ProviderUnregistionResult unregister(String resourceProviderNamespace) throws IOException, ServiceException;
     
     /**
     * Unregisters provider from a subscription.
     *
     * @param resourceProviderNamespace Required. Namespace of the resource
     * provider.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
-    Future<OperationResponse> unregisterAsync(String resourceProviderNamespace);
+    Future<ProviderUnregistionResult> unregisterAsync(String resourceProviderNamespace);
 }

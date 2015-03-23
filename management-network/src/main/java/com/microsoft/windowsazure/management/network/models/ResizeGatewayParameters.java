@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public class ResizeGatewayParameters {
-    private GatewaySKU gatewaySKU;
+    private String gatewaySKU;
     
     /**
     * Optional.
     * @return The GatewaySKU value.
     */
-    public GatewaySKU getGatewaySKU() {
+    public String getGatewaySKU() {
         return this.gatewaySKU;
     }
     
@@ -38,7 +38,7 @@ public class ResizeGatewayParameters {
     * Optional.
     * @param gatewaySKUValue The GatewaySKU value.
     */
-    public void setGatewaySKU(final GatewaySKU gatewaySKUValue) {
+    public void setGatewaySKU(final String gatewaySKUValue) {
         this.gatewaySKU = gatewaySKUValue;
     }
     

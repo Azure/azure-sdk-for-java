@@ -23,13 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import Hyak.Common.CloudError;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
@@ -50,6 +52,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -115,10 +118,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginSharingAsync(final String imageName, final String permission) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> beginSharingAsync(final String imageName, final String permission) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return beginSharing(imageName, permission);
             }
          });
@@ -140,7 +143,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException {
+    public AzureOperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -161,8 +164,19 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/share" + "?";
-        url = url + "permission=" + URLEncoder.encode(permission.trim(), "UTF-8");
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
+        url = url + "/share";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("permission=" + URLEncoder.encode(permission, "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -200,8 +214,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -233,10 +248,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginUnreplicatingAsync(final String imageName) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> beginUnreplicatingAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return beginUnreplicating(imageName);
             }
          });
@@ -261,7 +276,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException {
+    public AzureOperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -278,7 +293,14 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/unreplicate";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
+        url = url + "/unreplicate";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -316,8 +338,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -417,7 +440,12 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -503,7 +531,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         if (parameters.getIconUri() != null) {
             Element iconUriElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IconUri");
-            iconUriElement.appendChild(requestDoc.createTextNode(parameters.getIconUri().toString()));
+            iconUriElement.appendChild(requestDoc.createTextNode(parameters.getIconUri()));
             oSImageElement.appendChild(iconUriElement);
         }
         
@@ -515,7 +543,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         if (parameters.getSmallIconUri() != null) {
             Element smallIconUriElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-            smallIconUriElement.appendChild(requestDoc.createTextNode(parameters.getSmallIconUri().toString()));
+            smallIconUriElement.appendChild(requestDoc.createTextNode(parameters.getSmallIconUri()));
             oSImageElement.appendChild(smallIconUriElement);
         }
         
@@ -558,156 +586,158 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
-            if (oSImageElement2 != null) {
-                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement != null) {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageCreateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
+                if (oSImageElement2 != null) {
+                    Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
+                    if (categoryElement != null) {
+                        String categoryInstance;
+                        categoryInstance = categoryElement.getTextContent();
+                        result.setCategory(categoryInstance);
+                    }
+                    
+                    Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement2 != null) {
+                        String labelInstance;
+                        labelInstance = labelElement2.getTextContent();
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                    if (logicalSizeInGBElement != null) {
+                        double logicalSizeInGBInstance;
+                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                        result.setLogicalSizeInGB(logicalSizeInGBInstance);
+                    }
+                    
+                    Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    if (mediaLinkElement2 != null) {
+                        URI mediaLinkInstance;
+                        mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
+                        result.setMediaLinkUri(mediaLinkInstance);
+                    }
+                    
+                    Element nameElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement2 != null) {
+                        String nameInstance;
+                        nameInstance = nameElement2.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element osElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
+                    if (osElement2 != null) {
+                        String osInstance;
+                        osInstance = osElement2.getTextContent();
+                        result.setOperatingSystemType(osInstance);
+                    }
+                    
+                    Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement2 != null) {
+                        String eulaInstance;
+                        eulaInstance = eulaElement2.getTextContent();
+                        result.setEula(eulaInstance);
+                    }
+                    
+                    Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
+                    if (descriptionElement2 != null) {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement2.getTextContent();
+                        result.setDescription(descriptionInstance);
+                    }
+                    
+                    Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                    if (imageFamilyElement2 != null) {
+                        String imageFamilyInstance;
+                        imageFamilyInstance = imageFamilyElement2.getTextContent();
+                        result.setImageFamily(imageFamilyInstance);
+                    }
+                    
+                    Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement2 != null && publishedDateElement2.getTextContent() != null && !publishedDateElement2.getTextContent().isEmpty()) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
+                        result.setPublishedDate(publishedDateInstance);
+                    }
+                    
+                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                    if (publisherNameElement != null) {
+                        String publisherNameInstance;
+                        publisherNameInstance = publisherNameElement.getTextContent();
+                        result.setPublisherName(publisherNameInstance);
+                    }
+                    
+                    Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                    if (isPremiumElement2 != null && isPremiumElement2.getTextContent() != null && !isPremiumElement2.getTextContent().isEmpty()) {
+                        boolean isPremiumInstance;
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
+                        result.setIsPremium(isPremiumInstance);
+                    }
+                    
+                    Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                    if (showInGuiElement2 != null && showInGuiElement2.getTextContent() != null && !showInGuiElement2.getTextContent().isEmpty()) {
+                        boolean showInGuiInstance;
+                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
+                        result.setShowInGui(showInGuiInstance);
+                    }
+                    
+                    Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement2 != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement2.getTextContent());
+                        result.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                    if (iconUriElement2 != null) {
+                        String iconUriInstance;
+                        iconUriInstance = iconUriElement2.getTextContent();
+                        result.setIconUri(iconUriInstance);
+                    }
+                    
+                    Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                    if (recommendedVMSizeElement2 != null) {
+                        String recommendedVMSizeInstance;
+                        recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
+                        result.setRecommendedVMSize(recommendedVMSizeInstance);
+                    }
+                    
+                    Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                    if (smallIconUriElement2 != null) {
+                        String smallIconUriInstance;
+                        smallIconUriInstance = smallIconUriElement2.getTextContent();
+                        result.setSmallIconUri(smallIconUriInstance);
+                    }
+                    
+                    Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
+                    if (languageElement2 != null) {
+                        String languageInstance;
+                        languageInstance = languageElement2.getTextContent();
+                        result.setLanguage(languageInstance);
+                    }
+                    
+                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
+                    if (iOTypeElement != null) {
+                        String iOTypeInstance;
+                        iOTypeInstance = iOTypeElement.getTextContent();
+                        result.setIOType(iOTypeInstance);
+                    }
                 }
                 
-                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
-                if (categoryElement != null) {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement2 != null) {
-                    String labelInstance;
-                    labelInstance = labelElement2.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                if (logicalSizeInGBElement != null) {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
-                if (mediaLinkElement2 != null) {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                Element nameElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement2 != null) {
-                    String nameInstance;
-                    nameInstance = nameElement2.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                Element osElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
-                if (osElement2 != null) {
-                    String osInstance;
-                    osInstance = osElement2.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
-                if (eulaElement2 != null) {
-                    String eulaInstance;
-                    eulaInstance = eulaElement2.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
-                if (descriptionElement2 != null) {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement2.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                if (imageFamilyElement2 != null) {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement2.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
-                    Calendar publishedDateInstance;
-                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
-                if (publisherNameElement != null) {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                if (privacyUriElement2 != null) {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement2.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
-                if (iconUriElement2 != null) {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement2.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                if (recommendedVMSizeElement2 != null) {
-                    String recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                if (smallIconUriElement2 != null) {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
-                if (languageElement2 != null) {
-                    String languageInstance;
-                    languageInstance = languageElement2.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-                
-                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
-                if (iOTypeElement != null) {
-                    String iOTypeInstance;
-                    iOTypeInstance = iOTypeElement.getTextContent();
-                    result.setIOType(iOTypeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -737,10 +767,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String imageName, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String imageName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(imageName, deleteFromStorage);
             }
          });
@@ -773,7 +803,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public AzureOperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -791,9 +821,19 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "?";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
         if (deleteFromStorage == true) {
-            url = url + "comp=" + "media";
+            queryParameters.add("comp=" + "media");
+        }
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -832,8 +872,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -906,7 +947,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -946,163 +993,165 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element oSImageElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
-            if (oSImageElement != null) {
-                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                if (affinityGroupElement != null) {
-                    String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
-                    result.setAffinityGroup(affinityGroupInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element oSImageElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
+                if (oSImageElement != null) {
+                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                    if (affinityGroupElement != null) {
+                        String affinityGroupInstance;
+                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        result.setAffinityGroup(affinityGroupInstance);
+                    }
+                    
+                    Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Category");
+                    if (categoryElement != null) {
+                        String categoryInstance;
+                        categoryInstance = categoryElement.getTextContent();
+                        result.setCategory(categoryInstance);
+                    }
+                    
+                    Element labelElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement != null) {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent();
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                    if (logicalSizeInGBElement != null) {
+                        double logicalSizeInGBInstance;
+                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                        result.setLogicalSizeInGB(logicalSizeInGBInstance);
+                    }
+                    
+                    Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    if (mediaLinkElement != null) {
+                        URI mediaLinkInstance;
+                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                        result.setMediaLinkUri(mediaLinkInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "OS");
+                    if (osElement != null) {
+                        String osInstance;
+                        osInstance = osElement.getTextContent();
+                        result.setOperatingSystemType(osInstance);
+                    }
+                    
+                    Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement != null) {
+                        String eulaInstance;
+                        eulaInstance = eulaElement.getTextContent();
+                        result.setEula(eulaInstance);
+                    }
+                    
+                    Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                    if (descriptionElement != null) {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement.getTextContent();
+                        result.setDescription(descriptionInstance);
+                    }
+                    
+                    Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                    if (imageFamilyElement != null) {
+                        String imageFamilyInstance;
+                        imageFamilyInstance = imageFamilyElement.getTextContent();
+                        result.setImageFamily(imageFamilyInstance);
+                    }
+                    
+                    Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                    if (showInGuiElement != null && showInGuiElement.getTextContent() != null && !showInGuiElement.getTextContent().isEmpty()) {
+                        boolean showInGuiInstance;
+                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                        result.setShowInGui(showInGuiInstance);
+                    }
+                    
+                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement != null) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                        result.setPublishedDate(publishedDateInstance);
+                    }
+                    
+                    Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                    if (isPremiumElement != null && isPremiumElement.getTextContent() != null && !isPremiumElement.getTextContent().isEmpty()) {
+                        boolean isPremiumInstance;
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
+                        result.setIsPremium(isPremiumInstance);
+                    }
+                    
+                    Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                    if (iconUriElement != null) {
+                        String iconUriInstance;
+                        iconUriInstance = iconUriElement.getTextContent();
+                        result.setIconUri(iconUriInstance);
+                    }
+                    
+                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                        result.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                    if (recommendedVMSizeElement != null) {
+                        String recommendedVMSizeInstance;
+                        recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
+                        result.setRecommendedVMSize(recommendedVMSizeInstance);
+                    }
+                    
+                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                    if (publisherNameElement != null) {
+                        String publisherNameInstance;
+                        publisherNameInstance = publisherNameElement.getTextContent();
+                        result.setPublisherName(publisherNameInstance);
+                    }
+                    
+                    Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                    if (smallIconUriElement != null) {
+                        String smallIconUriInstance;
+                        smallIconUriInstance = smallIconUriElement.getTextContent();
+                        result.setSmallIconUri(smallIconUriInstance);
+                    }
+                    
+                    Element languageElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                    if (languageElement != null) {
+                        String languageInstance;
+                        languageInstance = languageElement.getTextContent();
+                        result.setLanguage(languageInstance);
+                    }
+                    
+                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                    if (iOTypeElement != null) {
+                        String iOTypeInstance;
+                        iOTypeInstance = iOTypeElement.getTextContent();
+                        result.setIOType(iOTypeInstance);
+                    }
                 }
                 
-                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Category");
-                if (categoryElement != null) {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                Element labelElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement != null) {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement != null) {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                if (logicalSizeInGBElement != null) {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
-                if (mediaLinkElement != null) {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "OS");
-                if (osElement != null) {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Eula");
-                if (eulaElement != null) {
-                    String eulaInstance;
-                    eulaInstance = eulaElement.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                if (descriptionElement != null) {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                if (imageFamilyElement != null) {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                if (publishedDateElement != null) {
-                    Calendar publishedDateInstance;
-                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
-                if (iconUriElement != null) {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                if (privacyUriElement != null) {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                if (recommendedVMSizeElement != null) {
-                    String recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
-                if (publisherNameElement != null) {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                if (smallIconUriElement != null) {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                Element languageElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Language");
-                if (languageElement != null) {
-                    String languageInstance;
-                    languageInstance = languageElement.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-                
-                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                if (iOTypeElement != null) {
-                    String iOTypeInstance;
-                    iOTypeInstance = iOTypeElement.getTextContent();
-                    result.setIOType(iOTypeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1175,7 +1224,14 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/details";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
+        url = url + "/details";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1215,193 +1271,195 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageGetDetailsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageGetDetailsResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element oSImageDetailsElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImageDetails");
-            if (oSImageDetailsElement != null) {
-                Element isCorruptedElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsCorrupted");
-                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
-                    boolean isCorruptedInstance;
-                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent().toLowerCase());
-                    result.setIsCorrupted(isCorruptedInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageGetDetailsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element replicationProgressSequenceElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgress");
-                if (replicationProgressSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element replicationProgressElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").get(i1));
-                        VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement replicationProgressElementInstance = new VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement();
-                        result.getReplicationProgress().add(replicationProgressElementInstance);
-                        
-                        Element locationElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                        if (locationElement != null) {
-                            String locationInstance;
-                            locationInstance = locationElement.getTextContent();
-                            replicationProgressElementInstance.setLocation(locationInstance);
+                Element oSImageDetailsElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImageDetails");
+                if (oSImageDetailsElement != null) {
+                    Element isCorruptedElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsCorrupted");
+                    if (isCorruptedElement != null && isCorruptedElement.getTextContent() != null && !isCorruptedElement.getTextContent().isEmpty()) {
+                        boolean isCorruptedInstance;
+                        isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent().toLowerCase());
+                        result.setIsCorrupted(isCorruptedInstance);
+                    }
+                    
+                    Element replicationProgressSequenceElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgress");
+                    if (replicationProgressSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element replicationProgressElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(replicationProgressSequenceElement, "http://schemas.microsoft.com/windowsazure", "ReplicationProgressElement").get(i1));
+                            VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement replicationProgressElementInstance = new VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement();
+                            result.getReplicationProgress().add(replicationProgressElementInstance);
+                            
+                            Element locationElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                            if (locationElement != null) {
+                                String locationInstance;
+                                locationInstance = locationElement.getTextContent();
+                                replicationProgressElementInstance.setLocation(locationInstance);
+                            }
+                            
+                            Element progressElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Progress");
+                            if (progressElement != null) {
+                                String progressInstance;
+                                progressInstance = progressElement.getTextContent();
+                                replicationProgressElementInstance.setProgress(progressInstance);
+                            }
                         }
-                        
-                        Element progressElement = XmlUtility.getElementByTagNameNS(replicationProgressElement, "http://schemas.microsoft.com/windowsazure", "Progress");
-                        if (progressElement != null) {
-                            String progressInstance;
-                            progressInstance = progressElement.getTextContent();
-                            replicationProgressElementInstance.setProgress(progressInstance);
-                        }
+                    }
+                    
+                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                    if (affinityGroupElement != null) {
+                        String affinityGroupInstance;
+                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        result.setAffinityGroup(affinityGroupInstance);
+                    }
+                    
+                    Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Category");
+                    if (categoryElement != null) {
+                        String categoryInstance;
+                        categoryInstance = categoryElement.getTextContent();
+                        result.setCategory(categoryInstance);
+                    }
+                    
+                    Element labelElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement != null) {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent();
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element locationElement2 = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement2 != null) {
+                        String locationInstance2;
+                        locationInstance2 = locationElement2.getTextContent();
+                        result.setLocation(locationInstance2);
+                    }
+                    
+                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                    if (logicalSizeInGBElement != null) {
+                        double logicalSizeInGBInstance;
+                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                        result.setLogicalSizeInGB(logicalSizeInGBInstance);
+                    }
+                    
+                    Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    if (mediaLinkElement != null) {
+                        URI mediaLinkInstance;
+                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                        result.setMediaLinkUri(mediaLinkInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element osElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "OS");
+                    if (osElement != null) {
+                        String osInstance;
+                        osInstance = osElement.getTextContent();
+                        result.setOperatingSystemType(osInstance);
+                    }
+                    
+                    Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement != null) {
+                        String eulaInstance;
+                        eulaInstance = eulaElement.getTextContent();
+                        result.setEula(eulaInstance);
+                    }
+                    
+                    Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                    if (descriptionElement != null) {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement.getTextContent();
+                        result.setDescription(descriptionInstance);
+                    }
+                    
+                    Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                    if (imageFamilyElement != null) {
+                        String imageFamilyInstance;
+                        imageFamilyInstance = imageFamilyElement.getTextContent();
+                        result.setImageFamily(imageFamilyInstance);
+                    }
+                    
+                    Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                    if (showInGuiElement != null && showInGuiElement.getTextContent() != null && !showInGuiElement.getTextContent().isEmpty()) {
+                        boolean showInGuiInstance;
+                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                        result.setShowInGui(showInGuiInstance);
+                    }
+                    
+                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement != null) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                        result.setPublishedDate(publishedDateInstance);
+                    }
+                    
+                    Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                    if (isPremiumElement != null && isPremiumElement.getTextContent() != null && !isPremiumElement.getTextContent().isEmpty()) {
+                        boolean isPremiumInstance;
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
+                        result.setIsPremium(isPremiumInstance);
+                    }
+                    
+                    Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                    if (iconUriElement != null) {
+                        String iconUriInstance;
+                        iconUriInstance = iconUriElement.getTextContent();
+                        result.setIconUri(iconUriInstance);
+                    }
+                    
+                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                        result.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                    if (recommendedVMSizeElement != null) {
+                        String recommendedVMSizeInstance;
+                        recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
+                        result.setRecommendedVMSize(recommendedVMSizeInstance);
+                    }
+                    
+                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                    if (publisherNameElement != null) {
+                        String publisherNameInstance;
+                        publisherNameInstance = publisherNameElement.getTextContent();
+                        result.setPublisherName(publisherNameInstance);
+                    }
+                    
+                    Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                    if (smallIconUriElement != null) {
+                        String smallIconUriInstance;
+                        smallIconUriInstance = smallIconUriElement.getTextContent();
+                        result.setSmallIconUri(smallIconUriInstance);
+                    }
+                    
+                    Element languageElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                    if (languageElement != null) {
+                        String languageInstance;
+                        languageInstance = languageElement.getTextContent();
+                        result.setLanguage(languageInstance);
+                    }
+                    
+                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                    if (iOTypeElement != null) {
+                        String iOTypeInstance;
+                        iOTypeInstance = iOTypeElement.getTextContent();
+                        result.setIOType(iOTypeInstance);
                     }
                 }
                 
-                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                if (affinityGroupElement != null) {
-                    String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
-                    result.setAffinityGroup(affinityGroupInstance);
-                }
-                
-                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Category");
-                if (categoryElement != null) {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                Element labelElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement != null) {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                Element locationElement2 = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement2 != null) {
-                    String locationInstance2;
-                    locationInstance2 = locationElement2.getTextContent();
-                    result.setLocation(locationInstance2);
-                }
-                
-                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                if (logicalSizeInGBElement != null) {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
-                if (mediaLinkElement != null) {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                Element osElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "OS");
-                if (osElement != null) {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
-                if (eulaElement != null) {
-                    String eulaInstance;
-                    eulaInstance = eulaElement.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                if (descriptionElement != null) {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                if (imageFamilyElement != null) {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                if (publishedDateElement != null) {
-                    Calendar publishedDateInstance;
-                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
-                if (iconUriElement != null) {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                if (privacyUriElement != null) {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                if (recommendedVMSizeElement != null) {
-                    String recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
-                if (publisherNameElement != null) {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                if (smallIconUriElement != null) {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                Element languageElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Language");
-                if (languageElement != null) {
-                    String languageInstance;
-                    languageInstance = languageElement.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-                
-                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                if (iOTypeElement != null) {
-                    String iOTypeInstance;
-                    iOTypeInstance = iOTypeElement.getTextContent();
-                    result.setIOType(iOTypeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1468,7 +1526,12 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1508,169 +1571,178 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element imagesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Images");
-            if (imagesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").get(i1));
-                    VirtualMachineOSImageListResponse.VirtualMachineOSImage oSImageInstance = new VirtualMachineOSImageListResponse.VirtualMachineOSImage();
-                    result.getImages().add(oSImageInstance);
-                    
-                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                    if (affinityGroupElement != null) {
-                        String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement.getTextContent();
-                        oSImageInstance.setAffinityGroup(affinityGroupInstance);
-                    }
-                    
-                    Element categoryElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Category");
-                    if (categoryElement != null) {
-                        String categoryInstance;
-                        categoryInstance = categoryElement.getTextContent();
-                        oSImageInstance.setCategory(categoryInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        oSImageInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element locationElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                    if (locationElement != null) {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        oSImageInstance.setLocation(locationInstance);
-                    }
-                    
-                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                    if (logicalSizeInGBElement != null) {
-                        double logicalSizeInGBInstance;
-                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
-                        oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
-                    }
-                    
-                    Element mediaLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
-                    if (mediaLinkElement != null) {
-                        URI mediaLinkInstance;
-                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                        oSImageInstance.setMediaLinkUri(mediaLinkInstance);
-                    }
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        oSImageInstance.setName(nameInstance);
-                    }
-                    
-                    Element osElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "OS");
-                    if (osElement != null) {
-                        String osInstance;
-                        osInstance = osElement.getTextContent();
-                        oSImageInstance.setOperatingSystemType(osInstance);
-                    }
-                    
-                    Element eulaElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Eula");
-                    if (eulaElement != null) {
-                        String eulaInstance;
-                        eulaInstance = eulaElement.getTextContent();
-                        oSImageInstance.setEula(eulaInstance);
-                    }
-                    
-                    Element descriptionElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    if (descriptionElement != null) {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        oSImageInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    Element imageFamilyElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                    if (imageFamilyElement != null) {
-                        String imageFamilyInstance;
-                        imageFamilyInstance = imageFamilyElement.getTextContent();
-                        oSImageInstance.setImageFamily(imageFamilyInstance);
-                    }
-                    
-                    Element showInGuiElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                    if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
-                        boolean showInGuiInstance;
-                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
-                        oSImageInstance.setShowInGui(showInGuiInstance);
-                    }
-                    
-                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                    if (publishedDateElement != null) {
-                        Calendar publishedDateInstance;
-                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
-                        oSImageInstance.setPublishedDate(publishedDateInstance);
-                    }
-                    
-                    Element isPremiumElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
-                        boolean isPremiumInstance;
-                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
-                        oSImageInstance.setIsPremium(isPremiumInstance);
-                    }
-                    
-                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                    if (privacyUriElement != null) {
-                        URI privacyUriInstance;
-                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                        oSImageInstance.setPrivacyUri(privacyUriInstance);
-                    }
-                    
-                    Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                    if (recommendedVMSizeElement != null) {
-                        String recommendedVMSizeInstance;
-                        recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
-                        oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
-                    }
-                    
-                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
-                    if (publisherNameElement != null) {
-                        String publisherNameInstance;
-                        publisherNameInstance = publisherNameElement.getTextContent();
-                        oSImageInstance.setPublisherName(publisherNameInstance);
-                    }
-                    
-                    Element pricingDetailLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
-                    if (pricingDetailLinkElement != null) {
-                        URI pricingDetailLinkInstance;
-                        pricingDetailLinkInstance = new URI(pricingDetailLinkElement.getTextContent());
-                        oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
-                    }
-                    
-                    Element smallIconUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                    if (smallIconUriElement != null) {
-                        URI smallIconUriInstance;
-                        smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
-                        oSImageInstance.setSmallIconUri(smallIconUriInstance);
-                    }
-                    
-                    Element languageElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Language");
-                    if (languageElement != null) {
-                        String languageInstance;
-                        languageInstance = languageElement.getTextContent();
-                        oSImageInstance.setLanguage(languageInstance);
-                    }
-                    
-                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                    if (iOTypeElement != null) {
-                        String iOTypeInstance;
-                        iOTypeInstance = iOTypeElement.getTextContent();
-                        oSImageInstance.setIOType(iOTypeInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element imagesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Images");
+                if (imagesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").get(i1));
+                        VirtualMachineOSImageListResponse.VirtualMachineOSImage oSImageInstance = new VirtualMachineOSImageListResponse.VirtualMachineOSImage();
+                        result.getImages().add(oSImageInstance);
+                        
+                        Element affinityGroupElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                        if (affinityGroupElement != null) {
+                            String affinityGroupInstance;
+                            affinityGroupInstance = affinityGroupElement.getTextContent();
+                            oSImageInstance.setAffinityGroup(affinityGroupInstance);
+                        }
+                        
+                        Element categoryElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Category");
+                        if (categoryElement != null) {
+                            String categoryInstance;
+                            categoryInstance = categoryElement.getTextContent();
+                            oSImageInstance.setCategory(categoryInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            oSImageInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            oSImageInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                        if (logicalSizeInGBElement != null) {
+                            double logicalSizeInGBInstance;
+                            logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                            oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
+                        }
+                        
+                        Element mediaLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                        if (mediaLinkElement != null) {
+                            URI mediaLinkInstance;
+                            mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                            oSImageInstance.setMediaLinkUri(mediaLinkInstance);
+                        }
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            oSImageInstance.setName(nameInstance);
+                        }
+                        
+                        Element osElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "OS");
+                        if (osElement != null) {
+                            String osInstance;
+                            osInstance = osElement.getTextContent();
+                            oSImageInstance.setOperatingSystemType(osInstance);
+                        }
+                        
+                        Element eulaElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                        if (eulaElement != null) {
+                            String eulaInstance;
+                            eulaInstance = eulaElement.getTextContent();
+                            oSImageInstance.setEula(eulaInstance);
+                        }
+                        
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                        if (descriptionElement != null) {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionElement.getTextContent();
+                            oSImageInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        Element imageFamilyElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                        if (imageFamilyElement != null) {
+                            String imageFamilyInstance;
+                            imageFamilyInstance = imageFamilyElement.getTextContent();
+                            oSImageInstance.setImageFamily(imageFamilyInstance);
+                        }
+                        
+                        Element showInGuiElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                        if (showInGuiElement != null && showInGuiElement.getTextContent() != null && !showInGuiElement.getTextContent().isEmpty()) {
+                            boolean showInGuiInstance;
+                            showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
+                            oSImageInstance.setShowInGui(showInGuiInstance);
+                        }
+                        
+                        Element publishedDateElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                        if (publishedDateElement != null) {
+                            Calendar publishedDateInstance;
+                            publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                            oSImageInstance.setPublishedDate(publishedDateInstance);
+                        }
+                        
+                        Element isPremiumElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                        if (isPremiumElement != null && isPremiumElement.getTextContent() != null && !isPremiumElement.getTextContent().isEmpty()) {
+                            boolean isPremiumInstance;
+                            isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
+                            oSImageInstance.setIsPremium(isPremiumInstance);
+                        }
+                        
+                        Element privacyUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                        if (privacyUriElement != null) {
+                            URI privacyUriInstance;
+                            privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                            oSImageInstance.setPrivacyUri(privacyUriInstance);
+                        }
+                        
+                        Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                        if (recommendedVMSizeElement != null) {
+                            String recommendedVMSizeInstance;
+                            recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
+                            oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
+                        }
+                        
+                        Element publisherNameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                        if (publisherNameElement != null) {
+                            String publisherNameInstance;
+                            publisherNameInstance = publisherNameElement.getTextContent();
+                            oSImageInstance.setPublisherName(publisherNameInstance);
+                        }
+                        
+                        Element pricingDetailLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
+                        if (pricingDetailLinkElement != null) {
+                            URI pricingDetailLinkInstance;
+                            pricingDetailLinkInstance = new URI(pricingDetailLinkElement.getTextContent());
+                            oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
+                        }
+                        
+                        Element iconUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                        if (iconUriElement != null) {
+                            String iconUriInstance;
+                            iconUriInstance = iconUriElement.getTextContent();
+                            oSImageInstance.setIconUri(iconUriInstance);
+                        }
+                        
+                        Element smallIconUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                        if (smallIconUriElement != null) {
+                            String smallIconUriInstance;
+                            smallIconUriInstance = smallIconUriElement.getTextContent();
+                            oSImageInstance.setSmallIconUri(smallIconUriInstance);
+                        }
+                        
+                        Element languageElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                        if (languageElement != null) {
+                            String languageInstance;
+                            languageInstance = languageElement.getTextContent();
+                            oSImageInstance.setLanguage(languageInstance);
+                        }
+                        
+                        Element iOTypeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IOType");
+                        if (iOTypeElement != null) {
+                            String iOTypeInstance;
+                            iOTypeInstance = iOTypeElement.getTextContent();
+                            oSImageInstance.setIOType(iOTypeInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1751,7 +1823,14 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim() + "/replicate";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
+        url = url + "/replicate";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1824,20 +1903,22 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageReplicateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageReplicateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element virtualMachineOSImageReplicateResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "", "VirtualMachineOSImageReplicateResponse");
-            if (virtualMachineOSImageReplicateResponseElement != null) {
-                Element stringElement = XmlUtility.getElementByTagNameNS(virtualMachineOSImageReplicateResponseElement, "", "string");
-                if (stringElement != null) {
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageReplicateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element virtualMachineOSImageReplicateResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "", "VirtualMachineOSImageReplicateResponse");
+                if (virtualMachineOSImageReplicateResponseElement != null) {
+                    Element stringElement = XmlUtility.getElementByTagNameNS(virtualMachineOSImageReplicateResponseElement, "", "string");
+                    if (stringElement != null) {
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1927,7 +2008,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginSharingAsync(imageName, permission).get();
+            AzureOperationResponse response = client2.getVirtualMachineOSImagesOperations().beginSharingAsync(imageName, permission).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1949,8 +2030,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2050,7 +2132,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginUnreplicatingAsync(imageName).get();
+            AzureOperationResponse response = client2.getVirtualMachineOSImagesOperations().beginUnreplicatingAsync(imageName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -2072,8 +2154,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2177,7 +2260,13 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/images/" + imageName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/images/";
+        url = url + URLEncoder.encode(imageName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -2255,7 +2344,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         if (parameters.getIconUri() != null) {
             Element iconUriElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IconUri");
-            iconUriElement.appendChild(requestDoc.createTextNode(parameters.getIconUri().toString()));
+            iconUriElement.appendChild(requestDoc.createTextNode(parameters.getIconUri()));
             oSImageElement.appendChild(iconUriElement);
         }
         
@@ -2267,7 +2356,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         if (parameters.getSmallIconUri() != null) {
             Element smallIconUriElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-            smallIconUriElement.appendChild(requestDoc.createTextNode(parameters.getSmallIconUri().toString()));
+            smallIconUriElement.appendChild(requestDoc.createTextNode(parameters.getSmallIconUri()));
             oSImageElement.appendChild(smallIconUriElement);
         }
         
@@ -2310,156 +2399,158 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             // Create Result
             VirtualMachineOSImageUpdateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineOSImageUpdateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
-            if (oSImageElement2 != null) {
-                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement != null) {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineOSImageUpdateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
+                if (oSImageElement2 != null) {
+                    Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
+                    if (categoryElement != null) {
+                        String categoryInstance;
+                        categoryInstance = categoryElement.getTextContent();
+                        result.setCategory(categoryInstance);
+                    }
+                    
+                    Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement2 != null) {
+                        String labelInstance;
+                        labelInstance = labelElement2.getTextContent();
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                    if (logicalSizeInGBElement != null) {
+                        double logicalSizeInGBInstance;
+                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
+                        result.setLogicalSizeInGB(logicalSizeInGBInstance);
+                    }
+                    
+                    Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    if (mediaLinkElement != null) {
+                        URI mediaLinkInstance;
+                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                        result.setMediaLinkUri(mediaLinkInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
+                    if (osElement != null) {
+                        String osInstance;
+                        osInstance = osElement.getTextContent();
+                        result.setOperatingSystemType(osInstance);
+                    }
+                    
+                    Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement2 != null) {
+                        String eulaInstance;
+                        eulaInstance = eulaElement2.getTextContent();
+                        result.setEula(eulaInstance);
+                    }
+                    
+                    Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
+                    if (descriptionElement2 != null) {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement2.getTextContent();
+                        result.setDescription(descriptionInstance);
+                    }
+                    
+                    Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                    if (imageFamilyElement2 != null) {
+                        String imageFamilyInstance;
+                        imageFamilyInstance = imageFamilyElement2.getTextContent();
+                        result.setImageFamily(imageFamilyInstance);
+                    }
+                    
+                    Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    if (publishedDateElement2 != null && publishedDateElement2.getTextContent() != null && !publishedDateElement2.getTextContent().isEmpty()) {
+                        Calendar publishedDateInstance;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
+                        result.setPublishedDate(publishedDateInstance);
+                    }
+                    
+                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
+                    if (publisherNameElement != null) {
+                        String publisherNameInstance;
+                        publisherNameInstance = publisherNameElement.getTextContent();
+                        result.setPublisherName(publisherNameInstance);
+                    }
+                    
+                    Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
+                    if (isPremiumElement2 != null && isPremiumElement2.getTextContent() != null && !isPremiumElement2.getTextContent().isEmpty()) {
+                        boolean isPremiumInstance;
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
+                        result.setIsPremium(isPremiumInstance);
+                    }
+                    
+                    Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                    if (showInGuiElement2 != null && showInGuiElement2.getTextContent() != null && !showInGuiElement2.getTextContent().isEmpty()) {
+                        boolean showInGuiInstance;
+                        showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
+                        result.setShowInGui(showInGuiInstance);
+                    }
+                    
+                    Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement2 != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement2.getTextContent());
+                        result.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
+                    if (iconUriElement2 != null) {
+                        String iconUriInstance;
+                        iconUriInstance = iconUriElement2.getTextContent();
+                        result.setIconUri(iconUriInstance);
+                    }
+                    
+                    Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                    if (recommendedVMSizeElement2 != null) {
+                        String recommendedVMSizeInstance;
+                        recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
+                        result.setRecommendedVMSize(recommendedVMSizeInstance);
+                    }
+                    
+                    Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                    if (smallIconUriElement2 != null) {
+                        String smallIconUriInstance;
+                        smallIconUriInstance = smallIconUriElement2.getTextContent();
+                        result.setSmallIconUri(smallIconUriInstance);
+                    }
+                    
+                    Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
+                    if (languageElement2 != null) {
+                        String languageInstance;
+                        languageInstance = languageElement2.getTextContent();
+                        result.setLanguage(languageInstance);
+                    }
+                    
+                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
+                    if (iOTypeElement != null) {
+                        String iOTypeInstance;
+                        iOTypeInstance = iOTypeElement.getTextContent();
+                        result.setIOType(iOTypeInstance);
+                    }
                 }
                 
-                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
-                if (categoryElement != null) {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement2 != null) {
-                    String labelInstance;
-                    labelInstance = labelElement2.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                if (logicalSizeInGBElement != null) {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
-                if (mediaLinkElement != null) {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
-                if (osElement != null) {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
-                if (eulaElement2 != null) {
-                    String eulaInstance;
-                    eulaInstance = eulaElement2.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
-                if (descriptionElement2 != null) {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement2.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                if (imageFamilyElement2 != null) {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement2.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
-                    Calendar publishedDateInstance;
-                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
-                if (publisherNameElement != null) {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                if (privacyUriElement2 != null) {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement2.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
-                if (iconUriElement2 != null) {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement2.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                if (recommendedVMSizeElement2 != null) {
-                    String recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                if (smallIconUriElement2 != null) {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
-                if (languageElement2 != null) {
-                    String languageInstance;
-                    languageInstance = languageElement2.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-                
-                Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IOType");
-                if (iOTypeElement != null) {
-                    String iOTypeInstance;
-                    iOTypeInstance = iOTypeElement.getTextContent();
-                    result.setIOType(iOTypeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

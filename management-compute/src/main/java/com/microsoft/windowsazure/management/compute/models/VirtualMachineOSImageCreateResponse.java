@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import java.net.URI;
 import java.util.Calendar;
 
 /**
 * Parameters returned from the Create Virtual Machine Image operation.
 */
-public class VirtualMachineOSImageCreateResponse extends OperationResponse {
+public class VirtualMachineOSImageCreateResponse extends AzureOperationResponse {
     private String category;
     
     /**
@@ -91,14 +91,14 @@ public class VirtualMachineOSImageCreateResponse extends OperationResponse {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -107,7 +107,7 @@ public class VirtualMachineOSImageCreateResponse extends OperationResponse {
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -411,7 +411,7 @@ public class VirtualMachineOSImageCreateResponse extends OperationResponse {
         this.showInGui = showInGuiValue;
     }
     
-    private URI smallIconUri;
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
@@ -419,7 +419,7 @@ public class VirtualMachineOSImageCreateResponse extends OperationResponse {
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -429,7 +429,7 @@ public class VirtualMachineOSImageCreateResponse extends OperationResponse {
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
 }

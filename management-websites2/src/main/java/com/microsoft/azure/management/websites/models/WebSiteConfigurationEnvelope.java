@@ -27,13 +27,13 @@ package com.microsoft.azure.management.websites.models;
 * Configuration for the website.
 */
 public class WebSiteConfigurationEnvelope extends ResourceBase {
-    private WebSiteGetConfigurationResponse properties;
+    private WebSiteConfiguration properties;
     
     /**
     * Optional. Configuration for a web site.
     * @return The Properties value.
     */
-    public WebSiteGetConfigurationResponse getProperties() {
+    public WebSiteConfiguration getProperties() {
         return this.properties;
     }
     
@@ -41,7 +41,7 @@ public class WebSiteConfigurationEnvelope extends ResourceBase {
     * Optional. Configuration for a web site.
     * @param propertiesValue The Properties value.
     */
-    public void setProperties(final WebSiteGetConfigurationResponse propertiesValue) {
+    public void setProperties(final WebSiteConfiguration propertiesValue) {
         this.properties = propertiesValue;
     }
     
@@ -57,6 +57,7 @@ public class WebSiteConfigurationEnvelope extends ResourceBase {
     * Initializes a new instance of the WebSiteConfigurationEnvelope class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteConfigurationEnvelope(String location) {
         this();

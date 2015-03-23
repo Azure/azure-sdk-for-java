@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * A response to a request for a particular topic.
 */
-public class ServiceBusTopicResponse extends OperationResponse {
+public class ServiceBusTopicResponse extends AzureOperationResponse {
     private ServiceBusTopic topic;
     
     /**

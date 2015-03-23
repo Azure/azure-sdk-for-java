@@ -61,6 +61,9 @@ public class DeploymentWalkUpgradeDomainParameters {
     * Initializes a new instance of the DeploymentWalkUpgradeDomainParameters
     * class with required arguments.
     *
+    * @param upgradeDomain An integer value that identifies the update domain
+    * to update. Update domains are identified with a zero-based index: the
+    * first update domain has an ID of 0, the second has an ID of 1, and so on.
     */
     public DeploymentWalkUpgradeDomainParameters(int upgradeDomain) {
         this.setUpgradeDomain(upgradeDomain);

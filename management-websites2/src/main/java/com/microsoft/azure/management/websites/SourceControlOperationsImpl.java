@@ -30,12 +30,15 @@ import com.microsoft.azure.management.websites.models.SourceControlProperties;
 import com.microsoft.azure.management.websites.models.SourceControlUpdateParameters;
 import com.microsoft.azure.management.websites.models.SourceControlUpdateResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -124,8 +127,16 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
         }
         
         // Construct URL
-        String url = "/providers/" + "Microsoft.Web" + "/SourceControls/" + name.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/SourceControls/";
+        url = url + URLEncoder.encode(name, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -164,78 +175,80 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
             // Create Result
             SourceControlGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new SourceControlGetResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                SourceControl sourceControlInstance = new SourceControl();
-                result.setSourceControl(sourceControlInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new SourceControlGetResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
                 
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    SourceControlProperties propertiesInstance = new SourceControlProperties();
-                    sourceControlInstance.setProperties(propertiesInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    SourceControl sourceControlInstance = new SourceControl();
+                    result.setSourceControl(sourceControlInstance);
                     
-                    JsonNode tokenValue = propertiesValue.get("token");
-                    if (tokenValue != null && tokenValue instanceof NullNode == false) {
-                        String tokenInstance;
-                        tokenInstance = tokenValue.getTextValue();
-                        propertiesInstance.setToken(tokenInstance);
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        SourceControlProperties propertiesInstance = new SourceControlProperties();
+                        sourceControlInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode tokenValue = propertiesValue.get("token");
+                        if (tokenValue != null && tokenValue instanceof NullNode == false) {
+                            String tokenInstance;
+                            tokenInstance = tokenValue.getTextValue();
+                            propertiesInstance.setToken(tokenInstance);
+                        }
+                        
+                        JsonNode tokenSecretValue = propertiesValue.get("tokenSecret");
+                        if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
+                            String tokenSecretInstance;
+                            tokenSecretInstance = tokenSecretValue.getTextValue();
+                            propertiesInstance.setTokenSecret(tokenSecretInstance);
+                        }
                     }
                     
-                    JsonNode tokenSecretValue = propertiesValue.get("tokenSecret");
-                    if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
-                        String tokenSecretInstance;
-                        tokenSecretInstance = tokenSecretValue.getTextValue();
-                        propertiesInstance.setTokenSecret(tokenSecretInstance);
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        sourceControlInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        sourceControlInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        sourceControlInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            sourceControlInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        sourceControlInstance.setType(typeInstance);
                     }
                 }
                 
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    sourceControlInstance.setId(idInstance);
-                }
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    sourceControlInstance.setName(nameInstance);
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    sourceControlInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        sourceControlInstance.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    sourceControlInstance.setType(typeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -292,8 +305,15 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
         }
         
         // Construct URL
-        String url = "/providers/" + "Microsoft.Web" + "/SourceControls" + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/SourceControls";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -332,83 +352,85 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
             // Create Result
             SourceControlListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new SourceControlListResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        SourceControl propertiesInstance = new SourceControl();
-                        result.getSourceControls().add(propertiesInstance);
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            SourceControlProperties propertiesInstance2 = new SourceControlProperties();
-                            propertiesInstance.setProperties(propertiesInstance2);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new SourceControlListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            SourceControl propertiesInstance = new SourceControl();
+                            result.getSourceControls().add(propertiesInstance);
                             
-                            JsonNode tokenValue = propertiesValue.get("token");
-                            if (tokenValue != null && tokenValue instanceof NullNode == false) {
-                                String tokenInstance;
-                                tokenInstance = tokenValue.getTextValue();
-                                propertiesInstance2.setToken(tokenInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                SourceControlProperties propertiesInstance2 = new SourceControlProperties();
+                                propertiesInstance.setProperties(propertiesInstance2);
+                                
+                                JsonNode tokenValue = propertiesValue.get("token");
+                                if (tokenValue != null && tokenValue instanceof NullNode == false) {
+                                    String tokenInstance;
+                                    tokenInstance = tokenValue.getTextValue();
+                                    propertiesInstance2.setToken(tokenInstance);
+                                }
+                                
+                                JsonNode tokenSecretValue = propertiesValue.get("tokenSecret");
+                                if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
+                                    String tokenSecretInstance;
+                                    tokenSecretInstance = tokenSecretValue.getTextValue();
+                                    propertiesInstance2.setTokenSecret(tokenSecretInstance);
+                                }
                             }
                             
-                            JsonNode tokenSecretValue = propertiesValue.get("tokenSecret");
-                            if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
-                                String tokenSecretInstance;
-                                tokenSecretInstance = tokenSecretValue.getTextValue();
-                                propertiesInstance2.setTokenSecret(tokenSecretInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                propertiesInstance.setId(idInstance);
                             }
-                        }
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            propertiesInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            propertiesInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            propertiesInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                propertiesInstance.getTags().put(tagsKey, tagsValue);
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                propertiesInstance.setName(nameInstance);
                             }
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            propertiesInstance.setType(typeInstance);
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                propertiesInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    propertiesInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                            
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                propertiesInstance.setType(typeInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -482,8 +504,16 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
         }
         
         // Construct URL
-        String url = "/providers/" + "Microsoft.Web" + "/SourceControls/" + name.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/SourceControls/";
+        url = url + URLEncoder.encode(name, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -549,80 +579,82 @@ public class SourceControlOperationsImpl implements ServiceOperations<WebSiteMan
             // Create Result
             SourceControlUpdateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new SourceControlUpdateResponse();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            JsonNode sourceControlValue = responseDoc.get("SourceControl");
-            if (sourceControlValue != null && sourceControlValue instanceof NullNode == false) {
-                SourceControlUpdateResponse sourceControlInstance = new SourceControlUpdateResponse();
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new SourceControlUpdateResponse();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
                 
-                SourceControl sourceControlInstance2 = new SourceControl();
-                result.setSourceControl(sourceControlInstance2);
-                
-                JsonNode propertiesValue2 = sourceControlValue.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    SourceControlProperties propertiesInstance = new SourceControlProperties();
-                    sourceControlInstance2.setProperties(propertiesInstance);
+                JsonNode sourceControlValue = responseDoc.get("SourceControl");
+                if (sourceControlValue != null && sourceControlValue instanceof NullNode == false) {
+                    SourceControlUpdateResponse sourceControlInstance = new SourceControlUpdateResponse();
                     
-                    JsonNode tokenValue = propertiesValue2.get("token");
-                    if (tokenValue != null && tokenValue instanceof NullNode == false) {
-                        String tokenInstance;
-                        tokenInstance = tokenValue.getTextValue();
-                        propertiesInstance.setToken(tokenInstance);
+                    SourceControl sourceControlInstance2 = new SourceControl();
+                    result.setSourceControl(sourceControlInstance2);
+                    
+                    JsonNode propertiesValue2 = sourceControlValue.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        SourceControlProperties propertiesInstance = new SourceControlProperties();
+                        sourceControlInstance2.setProperties(propertiesInstance);
+                        
+                        JsonNode tokenValue = propertiesValue2.get("token");
+                        if (tokenValue != null && tokenValue instanceof NullNode == false) {
+                            String tokenInstance;
+                            tokenInstance = tokenValue.getTextValue();
+                            propertiesInstance.setToken(tokenInstance);
+                        }
+                        
+                        JsonNode tokenSecretValue = propertiesValue2.get("tokenSecret");
+                        if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
+                            String tokenSecretInstance;
+                            tokenSecretInstance = tokenSecretValue.getTextValue();
+                            propertiesInstance.setTokenSecret(tokenSecretInstance);
+                        }
                     }
                     
-                    JsonNode tokenSecretValue = propertiesValue2.get("tokenSecret");
-                    if (tokenSecretValue != null && tokenSecretValue instanceof NullNode == false) {
-                        String tokenSecretInstance;
-                        tokenSecretInstance = tokenSecretValue.getTextValue();
-                        propertiesInstance.setTokenSecret(tokenSecretInstance);
+                    JsonNode idValue = sourceControlValue.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        sourceControlInstance2.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = sourceControlValue.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        sourceControlInstance2.setName(nameInstance);
+                    }
+                    
+                    JsonNode locationValue = sourceControlValue.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        sourceControlInstance2.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) sourceControlValue.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            sourceControlInstance2.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                    
+                    JsonNode typeValue = sourceControlValue.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        sourceControlInstance2.setType(typeInstance);
                     }
                 }
                 
-                JsonNode idValue = sourceControlValue.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    sourceControlInstance2.setId(idInstance);
-                }
-                
-                JsonNode nameValue = sourceControlValue.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    sourceControlInstance2.setName(nameInstance);
-                }
-                
-                JsonNode locationValue = sourceControlValue.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    sourceControlInstance2.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) sourceControlValue.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        sourceControlInstance2.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-                
-                JsonNode typeValue = sourceControlValue.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    sourceControlInstance2.setType(typeInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

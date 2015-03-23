@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * List of subscription tags.
 */
-public class TagsListResult extends OperationResponse {
+public class TagsListResult extends AzureOperationResponse {
     private String nextLink;
     
     /**
@@ -80,6 +80,7 @@ public class TagsListResult extends OperationResponse {
     * Initializes a new instance of the TagsListResult class with required
     * arguments.
     *
+    * @param nextLink Gets or sets the URL to get the next set of results.
     */
     public TagsListResult(String nextLink) {
         this();

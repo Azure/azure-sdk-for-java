@@ -30,12 +30,14 @@ import com.microsoft.azure.management.resources.models.DeploymentOperationsListP
 import com.microsoft.azure.management.resources.models.DeploymentOperationsListResult;
 import com.microsoft.azure.management.resources.models.TargetResource;
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -140,8 +142,22 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/deployments/" + deploymentName.trim() + "/operations/" + operationId.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(operationId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -181,94 +197,96 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             // Create Result
             DeploymentOperationsGetResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DeploymentOperationsGetResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DeploymentOperationsGetResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    DeploymentOperation operationInstance = new DeploymentOperation();
+                    result.setOperation(operationInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        operationInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode operationIdValue = responseDoc.get("operationId");
+                    if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
+                        String operationIdInstance;
+                        operationIdInstance = operationIdValue.getTextValue();
+                        operationInstance.setOperationId(operationIdInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
+                        operationInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            propertiesInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                        
+                        JsonNode timestampValue = propertiesValue.get("timestamp");
+                        if (timestampValue != null && timestampValue instanceof NullNode == false) {
+                            Calendar timestampInstance;
+                            timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
+                            propertiesInstance.setTimestamp(timestampInstance);
+                        }
+                        
+                        JsonNode statusCodeValue = propertiesValue.get("statusCode");
+                        if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
+                            String statusCodeInstance;
+                            statusCodeInstance = statusCodeValue.getTextValue();
+                            propertiesInstance.setStatusCode(statusCodeInstance);
+                        }
+                        
+                        JsonNode statusMessageValue = propertiesValue.get("statusMessage");
+                        if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
+                            String statusMessageInstance;
+                            statusMessageInstance = statusMessageValue.getTextValue();
+                            propertiesInstance.setStatusMessage(statusMessageInstance);
+                        }
+                        
+                        JsonNode targetResourceValue = propertiesValue.get("targetResource");
+                        if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
+                            TargetResource targetResourceInstance = new TargetResource();
+                            propertiesInstance.setTargetResource(targetResourceInstance);
+                            
+                            JsonNode idValue2 = targetResourceValue.get("id");
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                String idInstance2;
+                                idInstance2 = idValue2.getTextValue();
+                                targetResourceInstance.setId(idInstance2);
+                            }
+                            
+                            JsonNode resourceNameValue = targetResourceValue.get("resourceName");
+                            if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
+                                String resourceNameInstance;
+                                resourceNameInstance = resourceNameValue.getTextValue();
+                                targetResourceInstance.setResourceName(resourceNameInstance);
+                            }
+                            
+                            JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
+                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                String resourceTypeInstance;
+                                resourceTypeInstance = resourceTypeValue.getTextValue();
+                                targetResourceInstance.setResourceType(resourceTypeInstance);
+                            }
+                        }
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                DeploymentOperation operationInstance = new DeploymentOperation();
-                result.setOperation(operationInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    operationInstance.setId(idInstance);
-                }
-                
-                JsonNode operationIdValue = responseDoc.get("operationId");
-                if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
-                    String operationIdInstance;
-                    operationIdInstance = operationIdValue.getTextValue();
-                    operationInstance.setOperationId(operationIdInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
-                    operationInstance.setProperties(propertiesInstance);
-                    
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        propertiesInstance.setProvisioningState(provisioningStateInstance);
-                    }
-                    
-                    JsonNode timestampValue = propertiesValue.get("timestamp");
-                    if (timestampValue != null && timestampValue instanceof NullNode == false) {
-                        Calendar timestampInstance;
-                        timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
-                        propertiesInstance.setTimestamp(timestampInstance);
-                    }
-                    
-                    JsonNode statusCodeValue = propertiesValue.get("statusCode");
-                    if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
-                        String statusCodeInstance;
-                        statusCodeInstance = statusCodeValue.getTextValue();
-                        propertiesInstance.setStatusCode(statusCodeInstance);
-                    }
-                    
-                    JsonNode statusMessageValue = propertiesValue.get("statusMessage");
-                    if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
-                        String statusMessageInstance;
-                        statusMessageInstance = statusMessageValue.getTextValue();
-                        propertiesInstance.setStatusMessage(statusMessageInstance);
-                    }
-                    
-                    JsonNode targetResourceValue = propertiesValue.get("targetResource");
-                    if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
-                        TargetResource targetResourceInstance = new TargetResource();
-                        propertiesInstance.setTargetResource(targetResourceInstance);
-                        
-                        JsonNode idValue2 = targetResourceValue.get("id");
-                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                            String idInstance2;
-                            idInstance2 = idValue2.getTextValue();
-                            targetResourceInstance.setId(idInstance2);
-                        }
-                        
-                        JsonNode resourceNameValue = targetResourceValue.get("resourceName");
-                        if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
-                            String resourceNameInstance;
-                            resourceNameInstance = resourceNameValue.getTextValue();
-                            targetResourceInstance.setResourceName(resourceNameInstance);
-                        }
-                        
-                        JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
-                        if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                            String resourceTypeInstance;
-                            resourceTypeInstance = resourceTypeValue.getTextValue();
-                            targetResourceInstance.setResourceType(resourceTypeInstance);
-                        }
-                    }
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -348,11 +366,24 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/deployments/" + deploymentName.trim() + "/operations" + "?";
-        if (parameters != null && parameters.getTop() != null) {
-            url = url + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
         }
-        url = url + "&" + "api-version=" + "2014-04-01-preview";
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/operations";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        if (parameters != null && parameters.getTop() != null) {
+            queryParameters.add("$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8"));
+        }
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -392,106 +423,108 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             // Create Result
             DeploymentOperationsListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DeploymentOperationsListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        DeploymentOperation deploymentOperationInstance = new DeploymentOperation();
-                        result.getOperations().add(deploymentOperationInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            deploymentOperationInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode operationIdValue = valueValue.get("operationId");
-                        if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
-                            String operationIdInstance;
-                            operationIdInstance = operationIdValue.getTextValue();
-                            deploymentOperationInstance.setOperationId(operationIdInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
-                            deploymentOperationInstance.setProperties(propertiesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DeploymentOperationsListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            DeploymentOperation deploymentOperationInstance = new DeploymentOperation();
+                            result.getOperations().add(deploymentOperationInstance);
                             
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                propertiesInstance.setProvisioningState(provisioningStateInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                deploymentOperationInstance.setId(idInstance);
                             }
                             
-                            JsonNode timestampValue = propertiesValue.get("timestamp");
-                            if (timestampValue != null && timestampValue instanceof NullNode == false) {
-                                Calendar timestampInstance;
-                                timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
-                                propertiesInstance.setTimestamp(timestampInstance);
+                            JsonNode operationIdValue = valueValue.get("operationId");
+                            if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
+                                String operationIdInstance;
+                                operationIdInstance = operationIdValue.getTextValue();
+                                deploymentOperationInstance.setOperationId(operationIdInstance);
                             }
                             
-                            JsonNode statusCodeValue = propertiesValue.get("statusCode");
-                            if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
-                                String statusCodeInstance;
-                                statusCodeInstance = statusCodeValue.getTextValue();
-                                propertiesInstance.setStatusCode(statusCodeInstance);
-                            }
-                            
-                            JsonNode statusMessageValue = propertiesValue.get("statusMessage");
-                            if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
-                                String statusMessageInstance;
-                                statusMessageInstance = statusMessageValue.getTextValue();
-                                propertiesInstance.setStatusMessage(statusMessageInstance);
-                            }
-                            
-                            JsonNode targetResourceValue = propertiesValue.get("targetResource");
-                            if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
-                                TargetResource targetResourceInstance = new TargetResource();
-                                propertiesInstance.setTargetResource(targetResourceInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
+                                deploymentOperationInstance.setProperties(propertiesInstance);
                                 
-                                JsonNode idValue2 = targetResourceValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    targetResourceInstance.setId(idInstance2);
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    propertiesInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
-                                JsonNode resourceNameValue = targetResourceValue.get("resourceName");
-                                if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
-                                    String resourceNameInstance;
-                                    resourceNameInstance = resourceNameValue.getTextValue();
-                                    targetResourceInstance.setResourceName(resourceNameInstance);
+                                JsonNode timestampValue = propertiesValue.get("timestamp");
+                                if (timestampValue != null && timestampValue instanceof NullNode == false) {
+                                    Calendar timestampInstance;
+                                    timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
+                                    propertiesInstance.setTimestamp(timestampInstance);
                                 }
                                 
-                                JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
-                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                                    String resourceTypeInstance;
-                                    resourceTypeInstance = resourceTypeValue.getTextValue();
-                                    targetResourceInstance.setResourceType(resourceTypeInstance);
+                                JsonNode statusCodeValue = propertiesValue.get("statusCode");
+                                if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
+                                    String statusCodeInstance;
+                                    statusCodeInstance = statusCodeValue.getTextValue();
+                                    propertiesInstance.setStatusCode(statusCodeInstance);
+                                }
+                                
+                                JsonNode statusMessageValue = propertiesValue.get("statusMessage");
+                                if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
+                                    String statusMessageInstance;
+                                    statusMessageInstance = statusMessageValue.getTextValue();
+                                    propertiesInstance.setStatusMessage(statusMessageInstance);
+                                }
+                                
+                                JsonNode targetResourceValue = propertiesValue.get("targetResource");
+                                if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
+                                    TargetResource targetResourceInstance = new TargetResource();
+                                    propertiesInstance.setTargetResource(targetResourceInstance);
+                                    
+                                    JsonNode idValue2 = targetResourceValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        targetResourceInstance.setId(idInstance2);
+                                    }
+                                    
+                                    JsonNode resourceNameValue = targetResourceValue.get("resourceName");
+                                    if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
+                                        String resourceNameInstance;
+                                        resourceNameInstance = resourceNameValue.getTextValue();
+                                        targetResourceInstance.setResourceName(resourceNameInstance);
+                                    }
+                                    
+                                    JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                        String resourceTypeInstance;
+                                        resourceTypeInstance = resourceTypeValue.getTextValue();
+                                        targetResourceInstance.setResourceType(resourceTypeInstance);
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -556,7 +589,9 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
         }
         
         // Construct URL
-        String url = nextLink.trim();
+        String url = "";
+        url = url + nextLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -586,106 +621,108 @@ public class DeploymentOperationOperationsImpl implements ServiceOperations<Reso
             // Create Result
             DeploymentOperationsListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DeploymentOperationsListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        DeploymentOperation deploymentOperationInstance = new DeploymentOperation();
-                        result.getOperations().add(deploymentOperationInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            deploymentOperationInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode operationIdValue = valueValue.get("operationId");
-                        if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
-                            String operationIdInstance;
-                            operationIdInstance = operationIdValue.getTextValue();
-                            deploymentOperationInstance.setOperationId(operationIdInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
-                            deploymentOperationInstance.setProperties(propertiesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DeploymentOperationsListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            DeploymentOperation deploymentOperationInstance = new DeploymentOperation();
+                            result.getOperations().add(deploymentOperationInstance);
                             
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                propertiesInstance.setProvisioningState(provisioningStateInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                deploymentOperationInstance.setId(idInstance);
                             }
                             
-                            JsonNode timestampValue = propertiesValue.get("timestamp");
-                            if (timestampValue != null && timestampValue instanceof NullNode == false) {
-                                Calendar timestampInstance;
-                                timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
-                                propertiesInstance.setTimestamp(timestampInstance);
+                            JsonNode operationIdValue = valueValue.get("operationId");
+                            if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
+                                String operationIdInstance;
+                                operationIdInstance = operationIdValue.getTextValue();
+                                deploymentOperationInstance.setOperationId(operationIdInstance);
                             }
                             
-                            JsonNode statusCodeValue = propertiesValue.get("statusCode");
-                            if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
-                                String statusCodeInstance;
-                                statusCodeInstance = statusCodeValue.getTextValue();
-                                propertiesInstance.setStatusCode(statusCodeInstance);
-                            }
-                            
-                            JsonNode statusMessageValue = propertiesValue.get("statusMessage");
-                            if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
-                                String statusMessageInstance;
-                                statusMessageInstance = statusMessageValue.getTextValue();
-                                propertiesInstance.setStatusMessage(statusMessageInstance);
-                            }
-                            
-                            JsonNode targetResourceValue = propertiesValue.get("targetResource");
-                            if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
-                                TargetResource targetResourceInstance = new TargetResource();
-                                propertiesInstance.setTargetResource(targetResourceInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                DeploymentOperationProperties propertiesInstance = new DeploymentOperationProperties();
+                                deploymentOperationInstance.setProperties(propertiesInstance);
                                 
-                                JsonNode idValue2 = targetResourceValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    targetResourceInstance.setId(idInstance2);
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    propertiesInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
-                                JsonNode resourceNameValue = targetResourceValue.get("resourceName");
-                                if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
-                                    String resourceNameInstance;
-                                    resourceNameInstance = resourceNameValue.getTextValue();
-                                    targetResourceInstance.setResourceName(resourceNameInstance);
+                                JsonNode timestampValue = propertiesValue.get("timestamp");
+                                if (timestampValue != null && timestampValue instanceof NullNode == false) {
+                                    Calendar timestampInstance;
+                                    timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
+                                    propertiesInstance.setTimestamp(timestampInstance);
                                 }
                                 
-                                JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
-                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                                    String resourceTypeInstance;
-                                    resourceTypeInstance = resourceTypeValue.getTextValue();
-                                    targetResourceInstance.setResourceType(resourceTypeInstance);
+                                JsonNode statusCodeValue = propertiesValue.get("statusCode");
+                                if (statusCodeValue != null && statusCodeValue instanceof NullNode == false) {
+                                    String statusCodeInstance;
+                                    statusCodeInstance = statusCodeValue.getTextValue();
+                                    propertiesInstance.setStatusCode(statusCodeInstance);
+                                }
+                                
+                                JsonNode statusMessageValue = propertiesValue.get("statusMessage");
+                                if (statusMessageValue != null && statusMessageValue instanceof NullNode == false) {
+                                    String statusMessageInstance;
+                                    statusMessageInstance = statusMessageValue.getTextValue();
+                                    propertiesInstance.setStatusMessage(statusMessageInstance);
+                                }
+                                
+                                JsonNode targetResourceValue = propertiesValue.get("targetResource");
+                                if (targetResourceValue != null && targetResourceValue instanceof NullNode == false) {
+                                    TargetResource targetResourceInstance = new TargetResource();
+                                    propertiesInstance.setTargetResource(targetResourceInstance);
+                                    
+                                    JsonNode idValue2 = targetResourceValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        targetResourceInstance.setId(idInstance2);
+                                    }
+                                    
+                                    JsonNode resourceNameValue = targetResourceValue.get("resourceName");
+                                    if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
+                                        String resourceNameInstance;
+                                        resourceNameInstance = resourceNameValue.getTextValue();
+                                        targetResourceInstance.setResourceName(resourceNameInstance);
+                                    }
+                                    
+                                    JsonNode resourceTypeValue = targetResourceValue.get("resourceType");
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                        String resourceTypeInstance;
+                                        resourceTypeInstance = resourceTypeValue.getTextValue();
+                                        targetResourceInstance.setResourceType(resourceTypeInstance);
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
