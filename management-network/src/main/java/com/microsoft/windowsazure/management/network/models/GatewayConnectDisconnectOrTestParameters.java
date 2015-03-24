@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import System.Nullable;
 import java.net.InetAddress;
 
 /**
@@ -93,7 +92,7 @@ public class GatewayConnectDisconnectOrTestParameters {
     * network, disconnect from a local network, or test the gateway's
     * connection to a local network site.
     */
-    public GatewayConnectDisconnectOrTestParameters(Nullable<GatewayConnectionUpdateOperation> operation) {
+    public GatewayConnectDisconnectOrTestParameters(GatewayConnectionUpdateOperation operation) {
         if (operation == null) {
             throw new NullPointerException("operation");
         }

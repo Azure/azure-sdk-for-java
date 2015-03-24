@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import System.Nullable;
 import java.util.Calendar;
 
 /**
@@ -137,7 +136,7 @@ public class JobRecurrence {
     *
     * @param frequency The frequency of recurrence.
     */
-    public JobRecurrence(Nullable<JobRecurrenceFrequency> frequency) {
+    public JobRecurrence(JobRecurrenceFrequency frequency) {
         if (frequency == null) {
             throw new NullPointerException("frequency");
         }

@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import System.Nullable;
-
 public class JobCollectionMaxRecurrence {
     private JobCollectionRecurrenceFrequency frequency;
     
@@ -79,7 +77,7 @@ public class JobCollectionMaxRecurrence {
     * any job in this job collection.
     * @param interval Defines the interval.
     */
-    public JobCollectionMaxRecurrence(Nullable<JobCollectionRecurrenceFrequency> frequency, int interval) {
+    public JobCollectionMaxRecurrence(JobCollectionRecurrenceFrequency frequency, int interval) {
         if (frequency == null) {
             throw new NullPointerException("frequency");
         }

@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import System.Nullable;
-
 public class ServiceBusNamespaceCreateParameters {
     private boolean createACSNamespace;
     
@@ -95,7 +93,7 @@ public class ServiceBusNamespaceCreateParameters {
     * @param region The namespace region.
     * @param namespaceType Gets or sets the namespace type.
     */
-    public ServiceBusNamespaceCreateParameters(String region, Nullable<NamespaceType> namespaceType) {
+    public ServiceBusNamespaceCreateParameters(String region, NamespaceType namespaceType) {
         if (region == null) {
             throw new NullPointerException("region");
         }

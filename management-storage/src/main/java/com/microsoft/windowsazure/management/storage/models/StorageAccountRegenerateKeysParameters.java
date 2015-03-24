@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import System.Nullable;
-
 /**
 * Parameters supplied to the Regenerate Keys operation.
 */
@@ -80,7 +78,7 @@ public class StorageAccountRegenerateKeysParameters {
     * @param name The name of the desired storage account.
     * @param keyType Specifies which key to regenerate.
     */
-    public StorageAccountRegenerateKeysParameters(String name, Nullable<StorageKeyType> keyType) {
+    public StorageAccountRegenerateKeysParameters(String name, StorageKeyType keyType) {
         if (name == null) {
             throw new NullPointerException("name");
         }

@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import System.Nullable;
-
 /**
 * Parameters supplied to the Create Service Certificate operation.
 */
@@ -103,7 +101,7 @@ public class ServiceCertificateCreateParameters {
     * @param certificateFormat The service certificate format. Azure supports
     * the pfx and cer file formats.
     */
-    public ServiceCertificateCreateParameters(byte[] data, Nullable<CertificateFormat> certificateFormat) {
+    public ServiceCertificateCreateParameters(byte[] data, CertificateFormat certificateFormat) {
         if (data == null) {
             throw new NullPointerException("data");
         }

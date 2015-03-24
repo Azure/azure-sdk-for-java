@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import System.Nullable;
-
 /**
 * The parameters to the Generate VPN Client Package request.
 */
@@ -61,7 +59,7 @@ public class GatewayGenerateVpnClientPackageParameters {
     *
     * @param processorArchitecture The client processor architecture.
     */
-    public GatewayGenerateVpnClientPackageParameters(Nullable<GatewayProcessorArchitecture> processorArchitecture) {
+    public GatewayGenerateVpnClientPackageParameters(GatewayProcessorArchitecture processorArchitecture) {
         if (processorArchitecture == null) {
             throw new NullPointerException("processorArchitecture");
         }

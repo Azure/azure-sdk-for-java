@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import System.Nullable;
-
 /**
 * Parameters supplied to the Update Jobs State operation.
 */
@@ -61,7 +59,7 @@ public class JobCollectionJobsUpdateStateParameters {
     *
     * @param state New state to update to: 'enabled' or 'disabled'.
     */
-    public JobCollectionJobsUpdateStateParameters(Nullable<JobState> state) {
+    public JobCollectionJobsUpdateStateParameters(JobState state) {
         if (state == null) {
             throw new NullPointerException("state");
         }

@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import System.Nullable;
-
 /**
 * Contains the type and certificate information for the listener.
 */
@@ -89,7 +87,7 @@ public class WindowsRemoteManagementListener {
     * @param listenerType Specifies the type of listener. This value can be
     * Http or Https. The value is case sensitive.
     */
-    public WindowsRemoteManagementListener(Nullable<VirtualMachineWindowsRemoteManagementListenerType> listenerType) {
+    public WindowsRemoteManagementListener(VirtualMachineWindowsRemoteManagementListenerType listenerType) {
         if (listenerType == null) {
             throw new NullPointerException("listenerType");
         }

@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import System.Nullable;
-
 /**
 * Parameters supplied to the List Jobs with filter operation.
 */
@@ -67,7 +65,7 @@ public class JobListWithFilterParameters extends JobListParameters {
     * attempts having a particular State, enabled, disabled, faulted, or
     * completed.
     */
-    public JobListWithFilterParameters(Nullable<JobState> state) {
+    public JobListWithFilterParameters(JobState state) {
         if (state == null) {
             throw new NullPointerException("state");
         }

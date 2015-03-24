@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import System.Nullable;
-
 /**
 * Parameters supplied to the Capture Virtual Machine operation.
 */
@@ -142,7 +140,7 @@ public class VirtualMachineCaptureOSImageParameters {
     * in the Azure Management Portal.
     * @param targetImageName Specifies the image name of the captured image.
     */
-    public VirtualMachineCaptureOSImageParameters(Nullable<PostCaptureAction> postCaptureAction, String targetImageLabel, String targetImageName) {
+    public VirtualMachineCaptureOSImageParameters(PostCaptureAction postCaptureAction, String targetImageLabel, String targetImageName) {
         if (postCaptureAction == null) {
             throw new NullPointerException("postCaptureAction");
         }
