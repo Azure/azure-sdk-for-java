@@ -92,7 +92,7 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     public void createGatewayOnEmptyNetworkFailed() throws Exception {     
         // Arrange
         GatewayCreateParameters gatewayCreateParameters = new GatewayCreateParameters();
-        gatewayCreateParameters.setGatewayType(GatewayType.StaticRouting);
+        gatewayCreateParameters.setGatewayType(GatewayType.STATICROUTING);
         
         // Act
         AzureOperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);

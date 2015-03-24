@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import Hyak.Common.CloudError;
 import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreateParameters;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;

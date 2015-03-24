@@ -47,12 +47,11 @@ public class ServiceException extends Exception {
 
     private static final long serialVersionUID = -4942076377009150131L;
 
+    private CloudError error;
     private int httpStatusCode;
     private String httpReasonPhrase;
     private String serviceName;
 
-    private String errorCode;
-    private String errorMessage;
     private Map<String, String> errorValues;
     private String rawResponseBody;
 
@@ -110,20 +109,12 @@ public class ServiceException extends Exception {
         this.httpReasonPhrase = httpReasonPhrase;
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public CloudError getError() {
+        return error;
     }
 
-    public void setErrorCode(final String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(final String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setError(final CloudError error) {
+        this.error = error;
     }
 
     public Map<String, String> getErrorValues() {
@@ -216,8 +207,8 @@ public class ServiceException extends Exception {
             serviceException = new ServiceException(buildExceptionMessage(code,
                     message, content, httpResponse));
 
-            serviceException.setErrorCode(code);
-            serviceException.setErrorMessage(message);
+            serviceException.getError().setCode(code);
+            serviceException.getError().setMessage(message);
         } catch (XPathExpressionException e) {
             return new ServiceException(content);
         } catch (ParserConfigurationException e) {
@@ -291,8 +282,8 @@ public class ServiceException extends Exception {
 
             serviceException = new ServiceException(buildExceptionMessage(code,
                     message, content, httpResponse));
-            serviceException.setErrorCode(code);
-            serviceException.setErrorMessage(message);
+            serviceException.getError().setCode(code);
+            serviceException.getError().setMessage(message);
         } catch (IOException e) {
             return new ServiceException();
         }

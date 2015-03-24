@@ -604,11 +604,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @return The website operation response.
     */
     @Override
-    public Future<WebSiteAsyncOperationResponse> cloneAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteCloneParameters parameters) {
+    public Future<WebSiteAsyncOperationResponse> cloneMethodAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteCloneParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<WebSiteAsyncOperationResponse>() { 
             @Override
             public WebSiteAsyncOperationResponse call() throws Exception {
-                return clone(resourceGroupName, webSiteName, slotName, parameters);
+                return cloneMethod(resourceGroupName, webSiteName, slotName, parameters);
             }
          });
     }
@@ -631,7 +631,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @return The website operation response.
     */
     @Override
-    public WebSiteAsyncOperationResponse clone(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters) throws IOException, ServiceException {
+    public WebSiteAsyncOperationResponse cloneMethod(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -659,7 +659,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             tracingParameters.put("webSiteName", webSiteName);
             tracingParameters.put("slotName", slotName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "cloneAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "cloneMethodAsync", tracingParameters);
         }
         
         // Construct URL

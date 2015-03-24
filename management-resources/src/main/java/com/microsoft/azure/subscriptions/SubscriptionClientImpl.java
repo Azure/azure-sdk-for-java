@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.subscriptions;
 
-import Hyak.Common.CloudCredentials;
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.credentials.CloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.net.URI;
 import java.net.URISyntaxException;

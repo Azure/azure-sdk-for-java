@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.subscriptions;
 
-import Hyak.Common.CloudCredentials;
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.credentials.CloudCredentials;
 import java.io.Closeable;
 import java.net.URI;
 

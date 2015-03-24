@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import Hyak.Common.CloudError;
 import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.AGHttpListener;
 import com.microsoft.windowsazure.management.network.models.ApplicationGatewayCertificate;
@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -2314,7 +2315,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                     Element instanceCountElement = XmlUtility.getElementByTagNameNS(applicationGatewayElement, "http://schemas.microsoft.com/windowsazure", "InstanceCount");
                     if (instanceCountElement != null) {
                         long instanceCountInstance;
-                        instanceCountInstance = instanceCountElement.getTextContent();
+                        instanceCountInstance = DatatypeConverter.parseLong(instanceCountElement.getTextContent());
                         result.setInstanceCount(instanceCountInstance);
                     }
                     
@@ -2698,7 +2699,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element portElement = XmlUtility.getElementByTagNameNS(frontendPortsElement, "http://schemas.microsoft.com/windowsazure", "Port");
                             if (portElement != null) {
                                 int portInstance;
-                                portInstance = portElement.getTextContent();
+                                portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                 frontendPortInstance.setPort(portInstance);
                             }
                         }
@@ -2750,7 +2751,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element portElement2 = XmlUtility.getElementByTagNameNS(backendHttpSettingsListElement, "http://schemas.microsoft.com/windowsazure", "Port");
                             if (portElement2 != null) {
                                 int portInstance2;
-                                portInstance2 = portElement2.getTextContent();
+                                portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                 backendHttpSettingsInstance.setPort(portInstance2);
                             }
                             
@@ -3213,7 +3214,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                         Element instanceCountElement = XmlUtility.getElementByTagNameNS(applicationGatewaysElement, "http://schemas.microsoft.com/windowsazure", "InstanceCount");
                         if (instanceCountElement != null) {
                             long instanceCountInstance;
-                            instanceCountInstance = instanceCountElement.getTextContent();
+                            instanceCountInstance = DatatypeConverter.parseLong(instanceCountElement.getTextContent());
                             applicationGatewayInstance.setInstanceCount(instanceCountInstance);
                         }
                         

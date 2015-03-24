@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import Hyak.Common.CloudError;
 import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerUpdateParameters;

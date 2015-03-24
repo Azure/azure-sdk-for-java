@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import Hyak.Common.CloudError;
 import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationStatus;
@@ -35,6 +34,7 @@ import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;

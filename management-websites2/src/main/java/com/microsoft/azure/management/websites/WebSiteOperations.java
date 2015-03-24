@@ -113,7 +113,7 @@ public interface WebSiteOperations {
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return The website operation response.
     */
-    WebSiteAsyncOperationResponse clone(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters) throws IOException, ServiceException;
+    WebSiteAsyncOperationResponse cloneMethod(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters) throws IOException, ServiceException;
     
     /**
     * You can clone a web site by using a PUT request that includes the name of
@@ -128,7 +128,7 @@ public interface WebSiteOperations {
     * operation.
     * @return The website operation response.
     */
-    Future<WebSiteAsyncOperationResponse> cloneAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters);
+    Future<WebSiteAsyncOperationResponse> cloneMethodAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteCloneParameters parameters);
     
     /**
     * You can create a web site by using a POST request that includes the name
