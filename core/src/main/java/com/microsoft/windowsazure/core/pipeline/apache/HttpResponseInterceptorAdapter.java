@@ -22,15 +22,25 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-public class HttpResponseInterceptorAdapter implements HttpResponseInterceptor {
-    private ServiceResponseFilter filter;
+import java.util.LinkedList;
 
-    public HttpResponseInterceptorAdapter(ServiceResponseFilter filter) {
-        this.filter = filter;
+public class HttpResponseInterceptorAdapter implements HttpResponseInterceptor {
+    private LinkedList<ServiceResponseFilter> filters;
+
+    public HttpResponseInterceptorAdapter() {
+        filters = new LinkedList<ServiceResponseFilter>();
+    }
+
+    public LinkedList<ServiceResponseFilter> getFilterList()
+    {
+        return filters;
     }
 
     @Override
     public void process(HttpResponse response, HttpContext context) {
-        filter.filter(null, new HttpServiceResponseContext(response, context));
+        HttpServiceResponseContext serviceResponseContext = new HttpServiceResponseContext(response, context);
+        for (ServiceResponseFilter filter : filters) {
+            filter.filter(null, serviceResponseContext);
+        }
     }
 }
