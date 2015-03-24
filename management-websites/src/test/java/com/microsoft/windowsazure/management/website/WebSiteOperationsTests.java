@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.TimeZone;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.management.websites.models.*;
 
 import org.junit.After;
@@ -172,7 +172,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters();
         updateParameters.setHostNames(hostNamesValue);
 
-        OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);            
+        AzureOperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
@@ -181,7 +181,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @Test
     public void repositoryoperationSuccess() throws Exception { 
         //Act
-        OperationResponse createResponse = webSiteManagementClient.getWebSitesOperations().createRepository(webSpaceName, websiteName);
+        AzureOperationResponse createResponse = webSiteManagementClient.getWebSitesOperations().createRepository(webSpaceName, websiteName);
         Assert.assertEquals(200, createResponse.getStatusCode());
         Assert.assertNotNull(createResponse.getRequestId());
 
@@ -214,7 +214,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
     @Test
     public void restartWebSiteSuccess() throws Exception {
-        OperationResponse  operationResponse = webSiteManagementClient.getWebSitesOperations().restart(webSpaceName, websiteName);
+        AzureOperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().restart(webSpaceName, websiteName);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -223,7 +223,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
     @Test
     public void generatePasswordSuccess() throws Exception {
-        OperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().generatePassword(webSpaceName, websiteName);
+        AzureOperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().generatePassword(webSpaceName, websiteName);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
