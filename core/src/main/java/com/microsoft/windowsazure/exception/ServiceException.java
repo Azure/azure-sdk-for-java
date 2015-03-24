@@ -78,6 +78,7 @@ public class ServiceException extends Exception {
 
     private void init() {
         errorValues = new HashMap<String, String>();
+        error = new CloudError();
     }
 
     @Override
