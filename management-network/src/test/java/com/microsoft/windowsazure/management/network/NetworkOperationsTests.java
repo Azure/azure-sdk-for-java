@@ -107,7 +107,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
         ArrayList<NetworkListResponse.VirtualNetworkSite> virtualnetwoksitelist = NetworkListResponse.getVirtualNetworkSites();
         for (NetworkListResponse.VirtualNetworkSite networksite : virtualnetwoksitelist) {
             assertNotNull(networksite.getName());
-            assertNotNull(networksite.getAffinityGroup());
+//            assertNotNull(networksite.getAffinityGroup());
             assertNotNull(networksite.getId());
             assertNotNull(networksite.getState());
             assertNotNull(networksite.getAddressSpace());
