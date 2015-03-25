@@ -23,9 +23,7 @@ import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.OperationStatus;
-import com.microsoft.windowsazure.core.OperationStatusResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 
@@ -114,7 +112,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setDescription(cloudServiceDesc);
         createParameters.setGeoRegion(hostedLocation);
 
-        OperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);  
+        AzureOperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);
         Assert.assertEquals(200, CloudServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(CloudServiceOperationResponse.getRequestId());
     }
@@ -127,7 +125,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setLabel(jcLabels);
 
         //act
-        OperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters); 
+        AzureOperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());

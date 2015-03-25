@@ -109,6 +109,10 @@ public class CloudServiceCreateParameters {
     * Initializes a new instance of the CloudServiceCreateParameters class with
     * required arguments.
     *
+    * @param label Label for the cloud service.
+    * @param description Description for the cloud service.
+    * @param geoRegion The region for the cloud service. This field cannot be
+    * updated after the cloud service is created.
     */
     public CloudServiceCreateParameters(String label, String description, String geoRegion) {
         if (label == null) {

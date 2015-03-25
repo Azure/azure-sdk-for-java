@@ -23,19 +23,19 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Resource information.
 */
-public class ResourceGetResult extends OperationResponse {
-    private Resource resource;
+public class ResourceGetResult extends AzureOperationResponse {
+    private GenericResourceExtended resource;
     
     /**
     * Optional. Gets or sets the resource.
     * @return The Resource value.
     */
-    public Resource getResource() {
+    public GenericResourceExtended getResource() {
         return this.resource;
     }
     
@@ -43,7 +43,7 @@ public class ResourceGetResult extends OperationResponse {
     * Optional. Gets or sets the resource.
     * @param resourceValue The Resource value.
     */
-    public void setResource(final Resource resourceValue) {
+    public void setResource(final GenericResourceExtended resourceValue) {
         this.resource = resourceValue;
     }
 }

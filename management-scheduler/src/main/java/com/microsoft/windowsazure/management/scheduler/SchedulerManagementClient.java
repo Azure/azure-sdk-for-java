@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.FilterableService;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.ResourceProviderGetPropertiesResponse;
@@ -174,7 +174,7 @@ public interface SchedulerManagementClient extends Closeable, FilterableService<
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse registerResourceProvider() throws IOException, ServiceException;
+    AzureOperationResponse registerResourceProvider() throws IOException, ServiceException;
     
     /**
     * Register the Scheduler resource provider with your subscription.
@@ -182,7 +182,7 @@ public interface SchedulerManagementClient extends Closeable, FilterableService<
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> registerResourceProviderAsync();
+    Future<AzureOperationResponse> registerResourceProviderAsync();
     
     /**
     * Unregister the Scheduler resource provider with your subscription.
@@ -194,7 +194,7 @@ public interface SchedulerManagementClient extends Closeable, FilterableService<
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse unregisterResourceProvider() throws IOException, ServiceException;
+    AzureOperationResponse unregisterResourceProvider() throws IOException, ServiceException;
     
     /**
     * Unregister the Scheduler resource provider with your subscription.
@@ -202,5 +202,5 @@ public interface SchedulerManagementClient extends Closeable, FilterableService<
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> unregisterResourceProviderAsync();
+    Future<AzureOperationResponse> unregisterResourceProviderAsync();
 }

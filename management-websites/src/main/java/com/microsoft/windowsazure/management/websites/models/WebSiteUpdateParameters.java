@@ -216,6 +216,10 @@ public class WebSiteUpdateParameters {
         * Initializes a new instance of the WebSiteHostNameSslState class with
         * required arguments.
         *
+        * @param name The host name.
+        * @param sslState The SSL state. Possible values are Disabled,
+        * SniEnabled, or IpBasedEnabled.
+        * @param toUpdate Indicates whether the SSL state will be updated.
         */
         public WebSiteHostNameSslState(String name, WebSiteSslState sslState, boolean toUpdate) {
             if (name == null) {

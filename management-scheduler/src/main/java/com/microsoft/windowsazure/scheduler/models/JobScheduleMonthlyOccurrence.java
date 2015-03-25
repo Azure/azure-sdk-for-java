@@ -78,8 +78,13 @@ public class JobScheduleMonthlyOccurrence {
     * Initializes a new instance of the JobScheduleMonthlyOccurrence class with
     * required arguments.
     *
+    * @param day Day of the occurrence. Must be one of monday, tuesday,
+    * wednesday, thursday, friday, saturday, sunday.
     */
     public JobScheduleMonthlyOccurrence(JobScheduleDay day) {
+        if (day == null) {
+            throw new NullPointerException("day");
+        }
         this.setDay(day);
     }
 }

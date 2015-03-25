@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Information from validate template deployment response.
 */
-public class DeploymentValidateResponse extends OperationResponse {
+public class DeploymentValidateResponse extends AzureOperationResponse {
     private ResourceManagementErrorWithDetails error;
     
     /**
@@ -67,13 +67,13 @@ public class DeploymentValidateResponse extends OperationResponse {
         this.isValid = isValidValue;
     }
     
-    private DeploymentProperties properties;
+    private DeploymentPropertiesExtended properties;
     
     /**
     * Optional. Gets or sets the template deployment properties.
     * @return The Properties value.
     */
-    public DeploymentProperties getProperties() {
+    public DeploymentPropertiesExtended getProperties() {
         return this.properties;
     }
     
@@ -81,7 +81,7 @@ public class DeploymentValidateResponse extends OperationResponse {
     * Optional. Gets or sets the template deployment properties.
     * @param propertiesValue The Properties value.
     */
-    public void setProperties(final DeploymentProperties propertiesValue) {
+    public void setProperties(final DeploymentPropertiesExtended propertiesValue) {
         this.properties = propertiesValue;
     }
 }

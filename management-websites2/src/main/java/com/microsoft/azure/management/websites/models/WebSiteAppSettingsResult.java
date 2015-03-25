@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * List of app settings for the website.
 */
-public class WebSiteAppSettingsResult extends OperationResponse {
+public class WebSiteAppSettingsResult extends AzureOperationResponse {
     private WebSiteAppSettingsEnvelope resource;
     
     /**

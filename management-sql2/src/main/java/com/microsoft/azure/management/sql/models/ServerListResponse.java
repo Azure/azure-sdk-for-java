@@ -23,19 +23,19 @@
 
 package com.microsoft.azure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Represents the response to a Get Database request.
+* Represents the response to a Get Azure Sql Database Server request.
 */
-public class ServerListResponse extends OperationResponse implements Iterable<Server> {
+public class ServerListResponse extends AzureOperationResponse implements Iterable<Server> {
     private ArrayList<Server> servers;
     
     /**
-    * Optional. Gets or sets the list of Azure Sql Database servers.
+    * Optional. Gets or sets the list of Azure Sql Database Servers.
     * @return The Servers value.
     */
     public ArrayList<Server> getServers() {
@@ -43,7 +43,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     }
     
     /**
-    * Optional. Gets or sets the list of Azure Sql Database servers.
+    * Optional. Gets or sets the list of Azure Sql Database Servers.
     * @param serversValue The Servers value.
     */
     public void setServers(final ArrayList<Server> serversValue) {

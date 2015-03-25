@@ -59,6 +59,9 @@ public class ServerCreateOrUpdateParameters extends CreateUpdateBase {
     * Initializes a new instance of the ServerCreateOrUpdateParameters class
     * with required arguments.
     *
+    * @param properties Gets or sets the properties of the request.
+    * @param location Gets or sets the location of the resource.
+    * @param tags Gets or sets the tags associated with the request.
     */
     public ServerCreateOrUpdateParameters(ServerCreateOrUpdateProperties properties, String location, HashMap<String, String> tags) {
         this();

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.*;
 
@@ -100,7 +100,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
      
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -120,7 +120,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
         
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -205,13 +205,13 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
         
         //Act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         Assert.assertEquals(200, operationResponse.getStatusCode());           
         
         StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();      
         updateParameters.setLabel(expectedUpdatedStorageAccountLabel);
         updateParameters.setDescription(expectedUpdatedDescription);
-        OperationResponse updateoperationResponse = storageManagementClient.getStorageAccountsOperations().update(expectedStorageAccountName, updateParameters);
+        AzureOperationResponse updateoperationResponse = storageManagementClient.getStorageAccountsOperations().update(expectedStorageAccountName, updateParameters);
                     
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
@@ -66,7 +66,7 @@ public interface ManagementCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Management Certificate operation adds a certificate to the
@@ -81,7 +81,7 @@ public interface ManagementCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> createAsync(ManagementCertificateCreateParameters parameters);
+    Future<AzureOperationResponse> createAsync(ManagementCertificateCreateParameters parameters);
     
     /**
     * The Delete Management Certificate operation deletes a certificate from
@@ -100,7 +100,7 @@ public interface ManagementCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String thumbprint) throws IOException, ServiceException;
+    AzureOperationResponse delete(String thumbprint) throws IOException, ServiceException;
     
     /**
     * The Delete Management Certificate operation deletes a certificate from
@@ -115,7 +115,7 @@ public interface ManagementCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String thumbprint);
+    Future<AzureOperationResponse> deleteAsync(String thumbprint);
     
     /**
     * The Get Management Certificate operation retrieves information about the

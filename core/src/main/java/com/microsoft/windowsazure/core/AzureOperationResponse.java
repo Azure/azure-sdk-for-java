@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.core;
 
-public class OperationResponse {
+public class AzureOperationResponse {
     private int httpStatusCode;
 
     /**

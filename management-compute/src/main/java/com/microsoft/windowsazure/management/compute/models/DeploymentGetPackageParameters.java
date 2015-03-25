@@ -80,6 +80,8 @@ public class DeploymentGetPackageParameters {
     * Initializes a new instance of the DeploymentGetPackageParameters class
     * with required arguments.
     *
+    * @param containerUri Specifies the URI of the container to which the
+    * packages will be saved.
     */
     public DeploymentGetPackageParameters(URI containerUri) {
         if (containerUri == null) {

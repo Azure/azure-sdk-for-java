@@ -57,6 +57,7 @@ public class WebSiteRestoreDiscover extends ResourceBase {
     * Initializes a new instance of the WebSiteRestoreDiscover class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteRestoreDiscover(String location) {
         this();

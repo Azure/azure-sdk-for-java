@@ -23,17 +23,17 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
-* Represents the response to a Get Database request.
+* Represents the response to a Get Azure Sql Database Server request.
 */
-public class ServerGetResponse extends OperationResponse {
+public class ServerGetResponse extends AzureOperationResponse {
     private Server server;
     
     /**
     * Optional. Gets or sets the object representing the Azure Sql Database
-    * server.
+    * Server.
     * @return The Server value.
     */
     public Server getServer() {
@@ -42,7 +42,7 @@ public class ServerGetResponse extends OperationResponse {
     
     /**
     * Optional. Gets or sets the object representing the Azure Sql Database
-    * server.
+    * Server.
     * @param serverValue The Server value.
     */
     public void setServer(final Server serverValue) {

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreateParameters;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;
@@ -56,7 +56,7 @@ public interface CloudServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreating(String cloudServiceName, CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCreating(String cloudServiceName, CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Create a cloud service.
@@ -67,7 +67,7 @@ public interface CloudServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCreatingAsync(String cloudServiceName, CloudServiceCreateParameters parameters);
+    Future<AzureOperationResponse> beginCreatingAsync(String cloudServiceName, CloudServiceCreateParameters parameters);
     
     /**
     * Delete a cloud service.
@@ -80,7 +80,7 @@ public interface CloudServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginDeleting(String cloudServiceName) throws IOException, ServiceException;
+    AzureOperationResponse beginDeleting(String cloudServiceName) throws IOException, ServiceException;
     
     /**
     * Delete a cloud service.
@@ -89,7 +89,7 @@ public interface CloudServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginDeletingAsync(String cloudServiceName);
+    Future<AzureOperationResponse> beginDeletingAsync(String cloudServiceName);
     
     /**
     * Create a cloud service.

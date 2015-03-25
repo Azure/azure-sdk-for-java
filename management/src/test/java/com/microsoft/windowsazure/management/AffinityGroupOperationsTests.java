@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
@@ -94,7 +94,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setDescription(affinityGroupDescription2);
   
         // Act
-        OperationResponse operationResponse = managementClient
+        AzureOperationResponse operationResponse = managementClient
                 .getAffinityGroupsOperations().create(createParameters);
 
         // Assert
@@ -142,13 +142,13 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setLabel(expectedAffinityGroupLabel );
 
         // Act
-        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters); 
+        AzureOperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters);
         Assert.assertEquals(201, operationResponse.getStatusCode());
 
         AffinityGroupUpdateParameters updateParameters = new AffinityGroupUpdateParameters();      
         updateParameters.setLabel(expectedUpdatedAffinityGroupLabel);
         updateParameters.setDescription(expectedDescription);
-        OperationResponse updateoperationResponse = managementClient.getAffinityGroupsOperations().update(expectedAffinityGroupName, updateParameters);
+        AzureOperationResponse updateoperationResponse = managementClient.getAffinityGroupsOperations().update(expectedAffinityGroupName, updateParameters);
 
         // Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());

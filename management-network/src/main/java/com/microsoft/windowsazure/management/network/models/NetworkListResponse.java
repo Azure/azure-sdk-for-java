@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The response structure for the Network Operations List operation.
 */
-public class NetworkListResponse extends OperationResponse implements Iterable<NetworkListResponse.VirtualNetworkSite> {
+public class NetworkListResponse extends AzureOperationResponse implements Iterable<NetworkListResponse.VirtualNetworkSite> {
     private ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites;
     
     /**
@@ -102,13 +102,13 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     * IPsec.
     */
     public static class Connection {
-        private LocalNetworkConnectionType type;
+        private String type;
         
         /**
         * Optional.
         * @return The Type value.
         */
-        public LocalNetworkConnectionType getType() {
+        public String getType() {
             return this.type;
         }
         
@@ -116,7 +116,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Optional.
         * @param typeValue The Type value.
         */
-        public void setType(final LocalNetworkConnectionType typeValue) {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
     }
@@ -164,13 +164,13 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     * network can connect to.
     */
     public static class Gateway {
-        private GatewayProfile profile;
+        private String profile;
         
         /**
         * Optional. The gateway connection size.
         * @return The Profile value.
         */
-        public GatewayProfile getProfile() {
+        public String getProfile() {
             return this.profile;
         }
         
@@ -178,7 +178,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Optional. The gateway connection size.
         * @param profileValue The Profile value.
         */
-        public void setProfile(final GatewayProfile profileValue) {
+        public void setProfile(final String profileValue) {
             this.profile = profileValue;
         }
         

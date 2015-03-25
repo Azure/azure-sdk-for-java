@@ -57,6 +57,7 @@ public class SlotConfigNamesEnvelope extends ResourceBase {
     * Initializes a new instance of the SlotConfigNamesEnvelope class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public SlotConfigNamesEnvelope(String location) {
         this();

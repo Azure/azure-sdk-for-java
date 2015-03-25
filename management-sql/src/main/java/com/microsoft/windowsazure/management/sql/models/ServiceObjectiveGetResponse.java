@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Response containing the service objective for a given Azure SQL Database
 * Server with matching service objective Id.
 */
-public class ServiceObjectiveGetResponse extends OperationResponse {
+public class ServiceObjectiveGetResponse extends AzureOperationResponse {
     private ServiceObjective serviceObjective;
     
     /**

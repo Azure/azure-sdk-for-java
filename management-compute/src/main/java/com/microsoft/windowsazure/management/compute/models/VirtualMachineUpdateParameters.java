@@ -231,6 +231,10 @@ public class VirtualMachineUpdateParameters {
     * Initializes a new instance of the VirtualMachineUpdateParameters class
     * with required arguments.
     *
+    * @param roleName Specifies the name for the virtual machine. The name must
+    * be unique within the deployment.
+    * @param oSVirtualHardDisk Contains the parameters Azure used to create the
+    * operating system disk for the virtual machine.
     */
     public VirtualMachineUpdateParameters(String roleName, OSVirtualHardDisk oSVirtualHardDisk) {
         this();

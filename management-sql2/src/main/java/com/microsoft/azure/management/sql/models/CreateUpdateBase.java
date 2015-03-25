@@ -75,6 +75,8 @@ public class CreateUpdateBase {
     * Initializes a new instance of the CreateUpdateBase class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
+    * @param tags Gets or sets the tags associated with the request.
     */
     public CreateUpdateBase(String location, HashMap<String, String> tags) {
         this();

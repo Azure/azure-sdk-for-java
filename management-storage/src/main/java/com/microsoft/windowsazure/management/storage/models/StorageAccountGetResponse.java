@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Storage Account Properties operation response.
 */
-public class StorageAccountGetResponse extends OperationResponse {
+public class StorageAccountGetResponse extends AzureOperationResponse {
     private StorageAccount storageAccount;
     
     /**

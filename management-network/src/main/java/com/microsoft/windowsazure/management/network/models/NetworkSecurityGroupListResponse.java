@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Definitions operation response.
 */
-public class NetworkSecurityGroupListResponse extends OperationResponse implements Iterable<NetworkSecurityGroup> {
+public class NetworkSecurityGroupListResponse extends AzureOperationResponse implements Iterable<NetworkSecurityGroup> {
     private ArrayList<NetworkSecurityGroup> networkSecurityGroups;
     
     /**

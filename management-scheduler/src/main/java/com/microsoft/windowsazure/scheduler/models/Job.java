@@ -147,6 +147,8 @@ public class Job {
     /**
     * Initializes a new instance of the Job class with required arguments.
     *
+    * @param id Job identifier.
+    * @param action Action to invoke for the job.
     */
     public Job(String id, JobAction action) {
         if (id == null) {

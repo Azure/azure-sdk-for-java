@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Represents the response to a Get Database request.
 */
-public class DatabaseGetResponse extends OperationResponse {
+public class DatabaseGetResponse extends AzureOperationResponse {
     private Database database;
     
     /**

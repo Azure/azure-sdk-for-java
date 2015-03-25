@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Operating System Families operation response.
 */
-public class OperatingSystemListFamiliesResponse extends OperationResponse implements Iterable<OperatingSystemListFamiliesResponse.OperatingSystemFamily> {
+public class OperatingSystemListFamiliesResponse extends AzureOperationResponse implements Iterable<OperatingSystemListFamiliesResponse.OperatingSystemFamily> {
     private ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamilies;
     
     /**

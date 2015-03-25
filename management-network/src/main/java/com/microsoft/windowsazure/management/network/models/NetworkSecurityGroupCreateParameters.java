@@ -99,6 +99,10 @@ public class NetworkSecurityGroupCreateParameters {
     * Initializes a new instance of the NetworkSecurityGroupCreateParameters
     * class with required arguments.
     *
+    * @param name Gets or sets name for the Network Security Group that is
+    * unique to the subscription.
+    * @param location Gets or sets the data center location where the Network
+    * Security Group will be created.
     */
     public NetworkSecurityGroupCreateParameters(String name, String location) {
         if (name == null) {

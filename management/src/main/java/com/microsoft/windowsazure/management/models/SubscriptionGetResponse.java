@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Subscription operation response.
 */
-public class SubscriptionGetResponse extends OperationResponse {
+public class SubscriptionGetResponse extends AzureOperationResponse {
     private String accountAdminLiveEmailId;
     
     /**

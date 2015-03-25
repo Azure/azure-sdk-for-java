@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The List Disks operation response.
 */
-public class VirtualMachineDiskListResponse extends OperationResponse implements Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk> {
+public class VirtualMachineDiskListResponse extends AzureOperationResponse implements Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk> {
     private ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks;
     
     /**

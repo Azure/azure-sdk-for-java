@@ -23,9 +23,14 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.BackupRequest;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionCreateParameters;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionCreateResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionGetResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionListResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionUpdateParameters;
 import com.microsoft.windowsazure.management.websites.models.RestoreRequest;
 import com.microsoft.windowsazure.management.websites.models.SlotConfigNames;
 import com.microsoft.windowsazure.management.websites.models.SlotConfigNamesUpdate;
@@ -79,7 +84,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse applySlotConfiguration(String webSpaceName, String webSiteName, String targetSwapSlot) throws IOException, ServiceException;
+    AzureOperationResponse applySlotConfiguration(String webSpaceName, String webSiteName, String targetSwapSlot) throws IOException, ServiceException;
     
     /**
     *
@@ -90,7 +95,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> applySlotConfigurationAsync(String webSpaceName, String webSiteName, String targetSwapSlot);
+    Future<AzureOperationResponse> applySlotConfigurationAsync(String webSpaceName, String webSiteName, String targetSwapSlot);
     
     /**
     * Backups a site on-demand.
@@ -205,6 +210,38 @@ public interface WebSiteOperations {
     Future<WebSiteCreateResponse> createAsync(String webSpaceName, WebSiteCreateParameters parameters);
     
     /**
+    * Creates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The Create Hybrid Connection operation response.
+    */
+    HybridConnectionCreateResponse createHybridConnection(String webSpaceName, String siteName, HybridConnectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Creates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @return The Create Hybrid Connection operation response.
+    */
+    Future<HybridConnectionCreateResponse> createHybridConnectionAsync(String webSpaceName, String siteName, HybridConnectionCreateParameters parameters);
+    
+    /**
     * A web site repository is essentially a Git repository that you can use to
     * manage your web site content. By using Git source control tools, you can
     * push or pull version-controlled changes to your site. This API executes
@@ -221,7 +258,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse createRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    AzureOperationResponse createRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     * A web site repository is essentially a Git repository that you can use to
@@ -236,7 +273,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> createRepositoryAsync(String webSpaceName, String webSiteName);
+    Future<AzureOperationResponse> createRepositoryAsync(String webSpaceName, String webSiteName);
     
     /**
     * You can delete a web site by issuing an HTTP DELETE request. If the web
@@ -257,7 +294,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters) throws IOException, ServiceException;
+    AzureOperationResponse delete(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters) throws IOException, ServiceException;
     
     /**
     * You can delete a web site by issuing an HTTP DELETE request. If the web
@@ -274,7 +311,35 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters);
+    Future<AzureOperationResponse> deleteAsync(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters);
+    
+    /**
+    * Deletes a hybrid connection on a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    AzureOperationResponse deleteHybridConnection(String webSpaceName, String webSiteName, String hybridConnectionName) throws IOException, ServiceException;
+    
+    /**
+    * Deletes a hybrid connection on a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<AzureOperationResponse> deleteHybridConnectionAsync(String webSpaceName, String webSiteName, String hybridConnectionName);
     
     /**
     * A web site repository is essentially a Git repository that you can use to
@@ -370,7 +435,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse generatePassword(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    AzureOperationResponse generatePassword(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     * You can generate a new random password for publishing a site by issuing
@@ -388,7 +453,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> generatePasswordAsync(String webSpaceName, String webSiteName);
+    Future<AzureOperationResponse> generatePasswordAsync(String webSpaceName, String webSiteName);
     
     /**
     * You can retrieve details for a web site by issuing an HTTP GET request.
@@ -515,6 +580,36 @@ public interface WebSiteOperations {
     * @return The Get Historical Usage Metrics Web Site operation response.
     */
     Future<WebSiteGetHistoricalUsageMetricsResponse> getHistoricalUsageMetricsAsync(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters);
+    
+    /**
+    * Retrieves a particular hybrid connection that belongs to a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Get Hybrid Connection operation response.
+    */
+    HybridConnectionGetResponse getHybridConnection(String webSpaceName, String webSiteName, String hybridConnectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Retrieves a particular hybrid connection that belongs to a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @return The Get Hybrid Connection operation response.
+    */
+    Future<HybridConnectionGetResponse> getHybridConnectionAsync(String webSpaceName, String webSiteName, String hybridConnectionName);
     
     /**
     * You can retrieve the list of active instances by ids for a web site by
@@ -731,6 +826,32 @@ public interface WebSiteOperations {
     Future<WebSiteGetBackupsResponse> listBackupsAsync(String webSpaceName, String webSiteName);
     
     /**
+    * Retrieves a list of all hybrid connections on a specific web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The List Hybrid Connection operation response.
+    */
+    HybridConnectionListResponse listHybridConnections(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Retrieves a list of all hybrid connections on a specific web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return The List Hybrid Connection operation response.
+    */
+    Future<HybridConnectionListResponse> listHybridConnectionsAsync(String webSpaceName, String webSiteName);
+    
+    /**
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
@@ -741,7 +862,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse resetSlotConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    AzureOperationResponse resetSlotConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     *
@@ -750,7 +871,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> resetSlotConfigurationAsync(String webSpaceName, String webSiteName);
+    Future<AzureOperationResponse> resetSlotConfigurationAsync(String webSpaceName, String webSiteName);
     
     /**
     * You can restart a web site by issuing an HTTP POST request.  (see
@@ -766,7 +887,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse restart(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    AzureOperationResponse restart(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     * You can restart a web site by issuing an HTTP POST request.  (see
@@ -778,7 +899,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> restartAsync(String webSpaceName, String webSiteName);
+    Future<AzureOperationResponse> restartAsync(String webSpaceName, String webSiteName);
     
     /**
     * Restores a site to either a new site or existing site (Overwrite flag has
@@ -877,7 +998,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse syncRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    AzureOperationResponse syncRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     * A web site repository is essentially a Git repository that you can use to
@@ -892,7 +1013,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> syncRepositoryAsync(String webSpaceName, String webSiteName);
+    Future<AzureOperationResponse> syncRepositoryAsync(String webSpaceName, String webSiteName);
     
     /**
     * You can update the settings for a web site by using the HTTP PUT method
@@ -953,7 +1074,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse updateBackupConfiguration(String webSpaceName, String webSiteName, BackupRequest backupRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse updateBackupConfiguration(String webSpaceName, String webSiteName, BackupRequest backupRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Updates a backup schedule for a site.
@@ -964,7 +1085,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateBackupConfigurationAsync(String webSpaceName, String webSiteName, BackupRequest backupRequest);
+    Future<AzureOperationResponse> updateBackupConfigurationAsync(String webSpaceName, String webSiteName, BackupRequest backupRequest);
     
     /**
     * You can update the config settings for a web site by issuing an HTTP PUT
@@ -983,7 +1104,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException;
+    AzureOperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
     * You can update the config settings for a web site by issuing an HTTP PUT
@@ -998,7 +1119,41 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateConfigurationAsync(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters);
+    Future<AzureOperationResponse> updateConfigurationAsync(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters);
+    
+    /**
+    * Updates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    AzureOperationResponse updateHybridConnection(String webSpaceName, String siteName, HybridConnectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Updates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<AzureOperationResponse> updateHybridConnectionAsync(String webSpaceName, String siteName, HybridConnectionUpdateParameters parameters);
     
     /**
     *
@@ -1012,7 +1167,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse updateSlotConfigNames(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters) throws IOException, ServiceException;
+    AzureOperationResponse updateSlotConfigNames(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters) throws IOException, ServiceException;
     
     /**
     *
@@ -1022,5 +1177,5 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateSlotConfigNamesAsync(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters);
+    Future<AzureOperationResponse> updateSlotConfigNamesAsync(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters);
 }

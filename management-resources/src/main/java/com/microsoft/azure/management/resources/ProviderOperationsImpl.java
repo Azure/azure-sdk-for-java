@@ -27,16 +27,21 @@ import com.microsoft.azure.management.resources.models.Provider;
 import com.microsoft.azure.management.resources.models.ProviderGetResult;
 import com.microsoft.azure.management.resources.models.ProviderListParameters;
 import com.microsoft.azure.management.resources.models.ProviderListResult;
+import com.microsoft.azure.management.resources.models.ProviderRegistionResult;
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.resources.models.ProviderUnregistionResult;
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.apache.http.HttpResponse;
@@ -120,8 +125,18 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/providers/" + resourceProviderNamespace.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(resourceProviderNamespace, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -161,62 +176,82 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ProviderGetResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ProviderGetResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                Provider providerInstance = new Provider();
-                result.setProvider(providerInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    providerInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ProviderGetResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode namespaceValue = responseDoc.get("namespace");
-                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
-                    String namespaceInstance;
-                    namespaceInstance = namespaceValue.getTextValue();
-                    providerInstance.setNamespace(namespaceInstance);
-                }
-                
-                JsonNode registrationStateValue = responseDoc.get("registrationState");
-                if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
-                    String registrationStateInstance;
-                    registrationStateInstance = registrationStateValue.getTextValue();
-                    providerInstance.setRegistrationState(registrationStateInstance);
-                }
-                
-                JsonNode resourceTypesArray = responseDoc.get("resourceTypes");
-                if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
-                    for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
-                        ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
-                        providerInstance.getResourceTypes().add(providerResourceTypeInstance);
-                        
-                        JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                        if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                            String resourceTypeInstance;
-                            resourceTypeInstance = resourceTypeValue.getTextValue();
-                            providerResourceTypeInstance.setName(resourceTypeInstance);
-                        }
-                        
-                        JsonNode locationsArray = resourceTypesValue.get("locations");
-                        if (locationsArray != null && locationsArray instanceof NullNode == false) {
-                            for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
-                                providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    Provider providerInstance = new Provider();
+                    result.setProvider(providerInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        providerInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode namespaceValue = responseDoc.get("namespace");
+                    if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                        String namespaceInstance;
+                        namespaceInstance = namespaceValue.getTextValue();
+                        providerInstance.setNamespace(namespaceInstance);
+                    }
+                    
+                    JsonNode registrationStateValue = responseDoc.get("registrationState");
+                    if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
+                        String registrationStateInstance;
+                        registrationStateInstance = registrationStateValue.getTextValue();
+                        providerInstance.setRegistrationState(registrationStateInstance);
+                    }
+                    
+                    JsonNode resourceTypesArray = responseDoc.get("resourceTypes");
+                    if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
+                        for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
+                            ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
+                            providerInstance.getResourceTypes().add(providerResourceTypeInstance);
+                            
+                            JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
+                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                String resourceTypeInstance;
+                                resourceTypeInstance = resourceTypeValue.getTextValue();
+                                providerResourceTypeInstance.setName(resourceTypeInstance);
+                            }
+                            
+                            JsonNode locationsArray = resourceTypesValue.get("locations");
+                            if (locationsArray != null && locationsArray instanceof NullNode == false) {
+                                for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
+                                    providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode apiVersionsArray = resourceTypesValue.get("apiVersions");
+                            if (apiVersionsArray != null && apiVersionsArray instanceof NullNode == false) {
+                                for (JsonNode apiVersionsValue : ((ArrayNode) apiVersionsArray)) {
+                                    providerResourceTypeInstance.getApiVersions().add(apiVersionsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode propertiesSequenceElement = ((JsonNode) resourceTypesValue.get("properties"));
+                            if (propertiesSequenceElement != null && propertiesSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = propertiesSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String propertiesKey = property.getKey();
+                                    String propertiesValue = property.getValue().getTextValue();
+                                    providerResourceTypeInstance.getProperties().put(propertiesKey, propertiesValue);
+                                }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -278,11 +313,20 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/providers" + "?";
-        if (parameters != null && parameters.getTop() != null) {
-            url = url + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
         }
-        url = url + "&" + "api-version=" + "2014-04-01-preview";
+        url = url + "/providers";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        if (parameters != null && parameters.getTop() != null) {
+            queryParameters.add("$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8"));
+        }
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -322,74 +366,94 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ProviderListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ProviderListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Provider providerInstance = new Provider();
-                        result.getProviders().add(providerInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            providerInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode namespaceValue = valueValue.get("namespace");
-                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
-                            String namespaceInstance;
-                            namespaceInstance = namespaceValue.getTextValue();
-                            providerInstance.setNamespace(namespaceInstance);
-                        }
-                        
-                        JsonNode registrationStateValue = valueValue.get("registrationState");
-                        if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
-                            String registrationStateInstance;
-                            registrationStateInstance = registrationStateValue.getTextValue();
-                            providerInstance.setRegistrationState(registrationStateInstance);
-                        }
-                        
-                        JsonNode resourceTypesArray = valueValue.get("resourceTypes");
-                        if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
-                            for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
-                                ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
-                                providerInstance.getResourceTypes().add(providerResourceTypeInstance);
-                                
-                                JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                                    String resourceTypeInstance;
-                                    resourceTypeInstance = resourceTypeValue.getTextValue();
-                                    providerResourceTypeInstance.setName(resourceTypeInstance);
-                                }
-                                
-                                JsonNode locationsArray = resourceTypesValue.get("locations");
-                                if (locationsArray != null && locationsArray instanceof NullNode == false) {
-                                    for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
-                                        providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ProviderListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            Provider providerInstance = new Provider();
+                            result.getProviders().add(providerInstance);
+                            
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                providerInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode namespaceValue = valueValue.get("namespace");
+                            if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                String namespaceInstance;
+                                namespaceInstance = namespaceValue.getTextValue();
+                                providerInstance.setNamespace(namespaceInstance);
+                            }
+                            
+                            JsonNode registrationStateValue = valueValue.get("registrationState");
+                            if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
+                                String registrationStateInstance;
+                                registrationStateInstance = registrationStateValue.getTextValue();
+                                providerInstance.setRegistrationState(registrationStateInstance);
+                            }
+                            
+                            JsonNode resourceTypesArray = valueValue.get("resourceTypes");
+                            if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
+                                for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
+                                    ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
+                                    providerInstance.getResourceTypes().add(providerResourceTypeInstance);
+                                    
+                                    JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                        String resourceTypeInstance;
+                                        resourceTypeInstance = resourceTypeValue.getTextValue();
+                                        providerResourceTypeInstance.setName(resourceTypeInstance);
+                                    }
+                                    
+                                    JsonNode locationsArray = resourceTypesValue.get("locations");
+                                    if (locationsArray != null && locationsArray instanceof NullNode == false) {
+                                        for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
+                                            providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode apiVersionsArray = resourceTypesValue.get("apiVersions");
+                                    if (apiVersionsArray != null && apiVersionsArray instanceof NullNode == false) {
+                                        for (JsonNode apiVersionsValue : ((ArrayNode) apiVersionsArray)) {
+                                            providerResourceTypeInstance.getApiVersions().add(apiVersionsValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode propertiesSequenceElement = ((JsonNode) resourceTypesValue.get("properties"));
+                                    if (propertiesSequenceElement != null && propertiesSequenceElement instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr = propertiesSequenceElement.getFields();
+                                        while (itr.hasNext()) {
+                                            Map.Entry<String, JsonNode> property = itr.next();
+                                            String propertiesKey = property.getKey();
+                                            String propertiesValue = property.getValue().getTextValue();
+                                            providerResourceTypeInstance.getProperties().put(propertiesKey, propertiesValue);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -454,7 +518,9 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = nextLink.trim();
+        String url = "";
+        url = url + nextLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -484,74 +550,94 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ProviderListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ProviderListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Provider providerInstance = new Provider();
-                        result.getProviders().add(providerInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            providerInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode namespaceValue = valueValue.get("namespace");
-                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
-                            String namespaceInstance;
-                            namespaceInstance = namespaceValue.getTextValue();
-                            providerInstance.setNamespace(namespaceInstance);
-                        }
-                        
-                        JsonNode registrationStateValue = valueValue.get("registrationState");
-                        if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
-                            String registrationStateInstance;
-                            registrationStateInstance = registrationStateValue.getTextValue();
-                            providerInstance.setRegistrationState(registrationStateInstance);
-                        }
-                        
-                        JsonNode resourceTypesArray = valueValue.get("resourceTypes");
-                        if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
-                            for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
-                                ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
-                                providerInstance.getResourceTypes().add(providerResourceTypeInstance);
-                                
-                                JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
-                                if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
-                                    String resourceTypeInstance;
-                                    resourceTypeInstance = resourceTypeValue.getTextValue();
-                                    providerResourceTypeInstance.setName(resourceTypeInstance);
-                                }
-                                
-                                JsonNode locationsArray = resourceTypesValue.get("locations");
-                                if (locationsArray != null && locationsArray instanceof NullNode == false) {
-                                    for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
-                                        providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ProviderListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            Provider providerInstance = new Provider();
+                            result.getProviders().add(providerInstance);
+                            
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                providerInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode namespaceValue = valueValue.get("namespace");
+                            if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                String namespaceInstance;
+                                namespaceInstance = namespaceValue.getTextValue();
+                                providerInstance.setNamespace(namespaceInstance);
+                            }
+                            
+                            JsonNode registrationStateValue = valueValue.get("registrationState");
+                            if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
+                                String registrationStateInstance;
+                                registrationStateInstance = registrationStateValue.getTextValue();
+                                providerInstance.setRegistrationState(registrationStateInstance);
+                            }
+                            
+                            JsonNode resourceTypesArray = valueValue.get("resourceTypes");
+                            if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
+                                for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
+                                    ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
+                                    providerInstance.getResourceTypes().add(providerResourceTypeInstance);
+                                    
+                                    JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
+                                    if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                        String resourceTypeInstance;
+                                        resourceTypeInstance = resourceTypeValue.getTextValue();
+                                        providerResourceTypeInstance.setName(resourceTypeInstance);
+                                    }
+                                    
+                                    JsonNode locationsArray = resourceTypesValue.get("locations");
+                                    if (locationsArray != null && locationsArray instanceof NullNode == false) {
+                                        for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
+                                            providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode apiVersionsArray = resourceTypesValue.get("apiVersions");
+                                    if (apiVersionsArray != null && apiVersionsArray instanceof NullNode == false) {
+                                        for (JsonNode apiVersionsValue : ((ArrayNode) apiVersionsArray)) {
+                                            providerResourceTypeInstance.getApiVersions().add(apiVersionsValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode propertiesSequenceElement = ((JsonNode) resourceTypesValue.get("properties"));
+                                    if (propertiesSequenceElement != null && propertiesSequenceElement instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr = propertiesSequenceElement.getFields();
+                                        while (itr.hasNext()) {
+                                            Map.Entry<String, JsonNode> property = itr.next();
+                                            String propertiesKey = property.getKey();
+                                            String propertiesValue = property.getValue().getTextValue();
+                                            providerResourceTypeInstance.getProperties().put(propertiesKey, propertiesValue);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -573,14 +659,13 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
     *
     * @param resourceProviderNamespace Required. Namespace of the resource
     * provider.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
     @Override
-    public Future<OperationResponse> registerAsync(final String resourceProviderNamespace) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<ProviderRegistionResult> registerAsync(final String resourceProviderNamespace) {
+        return this.getClient().getExecutorService().submit(new Callable<ProviderRegistionResult>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public ProviderRegistionResult call() throws Exception {
                 return register(resourceProviderNamespace);
             }
          });
@@ -595,11 +680,10 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
     @Override
-    public OperationResponse register(String resourceProviderNamespace) throws IOException, ServiceException {
+    public ProviderRegistionResult register(String resourceProviderNamespace) throws IOException, ServiceException {
         // Validate
         if (resourceProviderNamespace == null) {
             throw new NullPointerException("resourceProviderNamespace");
@@ -616,8 +700,19 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/providers/" + resourceProviderNamespace.trim() + "/register" + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(resourceProviderNamespace, "UTF-8");
+        url = url + "/register";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -647,7 +742,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
@@ -655,8 +750,84 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            ProviderRegistionResult result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ProviderRegistionResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    Provider providerInstance = new Provider();
+                    result.setProvider(providerInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        providerInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode namespaceValue = responseDoc.get("namespace");
+                    if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                        String namespaceInstance;
+                        namespaceInstance = namespaceValue.getTextValue();
+                        providerInstance.setNamespace(namespaceInstance);
+                    }
+                    
+                    JsonNode registrationStateValue = responseDoc.get("registrationState");
+                    if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
+                        String registrationStateInstance;
+                        registrationStateInstance = registrationStateValue.getTextValue();
+                        providerInstance.setRegistrationState(registrationStateInstance);
+                    }
+                    
+                    JsonNode resourceTypesArray = responseDoc.get("resourceTypes");
+                    if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
+                        for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
+                            ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
+                            providerInstance.getResourceTypes().add(providerResourceTypeInstance);
+                            
+                            JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
+                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                String resourceTypeInstance;
+                                resourceTypeInstance = resourceTypeValue.getTextValue();
+                                providerResourceTypeInstance.setName(resourceTypeInstance);
+                            }
+                            
+                            JsonNode locationsArray = resourceTypesValue.get("locations");
+                            if (locationsArray != null && locationsArray instanceof NullNode == false) {
+                                for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
+                                    providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode apiVersionsArray = resourceTypesValue.get("apiVersions");
+                            if (apiVersionsArray != null && apiVersionsArray instanceof NullNode == false) {
+                                for (JsonNode apiVersionsValue : ((ArrayNode) apiVersionsArray)) {
+                                    providerResourceTypeInstance.getApiVersions().add(apiVersionsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode propertiesSequenceElement = ((JsonNode) resourceTypesValue.get("properties"));
+                            if (propertiesSequenceElement != null && propertiesSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = propertiesSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String propertiesKey = property.getKey();
+                                    String propertiesValue = property.getValue().getTextValue();
+                                    providerResourceTypeInstance.getProperties().put(propertiesKey, propertiesValue);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -678,14 +849,13 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
     *
     * @param resourceProviderNamespace Required. Namespace of the resource
     * provider.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
     @Override
-    public Future<OperationResponse> unregisterAsync(final String resourceProviderNamespace) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<ProviderUnregistionResult> unregisterAsync(final String resourceProviderNamespace) {
+        return this.getClient().getExecutorService().submit(new Callable<ProviderUnregistionResult>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public ProviderUnregistionResult call() throws Exception {
                 return unregister(resourceProviderNamespace);
             }
          });
@@ -700,11 +870,10 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Resource provider registration information.
     */
     @Override
-    public OperationResponse unregister(String resourceProviderNamespace) throws IOException, ServiceException {
+    public ProviderUnregistionResult unregister(String resourceProviderNamespace) throws IOException, ServiceException {
         // Validate
         if (resourceProviderNamespace == null) {
             throw new NullPointerException("resourceProviderNamespace");
@@ -721,8 +890,19 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/providers/" + resourceProviderNamespace.trim() + "/unregister" + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(resourceProviderNamespace, "UTF-8");
+        url = url + "/unregister";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -752,7 +932,7 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
@@ -760,8 +940,84 @@ public class ProviderOperationsImpl implements ServiceOperations<ResourceManagem
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            ProviderUnregistionResult result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ProviderUnregistionResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    Provider providerInstance = new Provider();
+                    result.setProvider(providerInstance);
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        providerInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode namespaceValue = responseDoc.get("namespace");
+                    if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                        String namespaceInstance;
+                        namespaceInstance = namespaceValue.getTextValue();
+                        providerInstance.setNamespace(namespaceInstance);
+                    }
+                    
+                    JsonNode registrationStateValue = responseDoc.get("registrationState");
+                    if (registrationStateValue != null && registrationStateValue instanceof NullNode == false) {
+                        String registrationStateInstance;
+                        registrationStateInstance = registrationStateValue.getTextValue();
+                        providerInstance.setRegistrationState(registrationStateInstance);
+                    }
+                    
+                    JsonNode resourceTypesArray = responseDoc.get("resourceTypes");
+                    if (resourceTypesArray != null && resourceTypesArray instanceof NullNode == false) {
+                        for (JsonNode resourceTypesValue : ((ArrayNode) resourceTypesArray)) {
+                            ProviderResourceType providerResourceTypeInstance = new ProviderResourceType();
+                            providerInstance.getResourceTypes().add(providerResourceTypeInstance);
+                            
+                            JsonNode resourceTypeValue = resourceTypesValue.get("resourceType");
+                            if (resourceTypeValue != null && resourceTypeValue instanceof NullNode == false) {
+                                String resourceTypeInstance;
+                                resourceTypeInstance = resourceTypeValue.getTextValue();
+                                providerResourceTypeInstance.setName(resourceTypeInstance);
+                            }
+                            
+                            JsonNode locationsArray = resourceTypesValue.get("locations");
+                            if (locationsArray != null && locationsArray instanceof NullNode == false) {
+                                for (JsonNode locationsValue : ((ArrayNode) locationsArray)) {
+                                    providerResourceTypeInstance.getLocations().add(locationsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode apiVersionsArray = resourceTypesValue.get("apiVersions");
+                            if (apiVersionsArray != null && apiVersionsArray instanceof NullNode == false) {
+                                for (JsonNode apiVersionsValue : ((ArrayNode) apiVersionsArray)) {
+                                    providerResourceTypeInstance.getApiVersions().add(apiVersionsValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode propertiesSequenceElement = ((JsonNode) resourceTypesValue.get("properties"));
+                            if (propertiesSequenceElement != null && propertiesSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = propertiesSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String propertiesKey = property.getKey();
+                                    String propertiesValue = property.getValue().getTextValue();
+                                    providerResourceTypeInstance.getProperties().put(propertiesKey, propertiesValue);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

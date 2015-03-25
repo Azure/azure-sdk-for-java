@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The response returned from the Create Server operation.  This contains all
 * the information returned from the service when a server is created.
 */
-public class ServerCreateResponse extends OperationResponse {
+public class ServerCreateResponse extends AzureOperationResponse {
     private String fullyQualifiedDomainName;
     
     /**

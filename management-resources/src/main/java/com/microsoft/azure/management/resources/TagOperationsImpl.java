@@ -29,14 +29,17 @@ import com.microsoft.azure.management.resources.models.TagCreateValueResult;
 import com.microsoft.azure.management.resources.models.TagDetails;
 import com.microsoft.azure.management.resources.models.TagValue;
 import com.microsoft.azure.management.resources.models.TagsListResult;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -120,8 +123,18 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/tagNames/" + tagName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/tagNames/";
+        url = url + URLEncoder.encode(tagName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -161,95 +174,97 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             // Create Result
             TagCreateResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new TagCreateResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                TagDetails tagInstance = new TagDetails();
-                result.setTag(tagInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    tagInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new TagCreateResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode tagNameValue = responseDoc.get("tagName");
-                if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
-                    String tagNameInstance;
-                    tagNameInstance = tagNameValue.getTextValue();
-                    tagInstance.setName(tagNameInstance);
-                }
-                
-                JsonNode countValue = responseDoc.get("count");
-                if (countValue != null && countValue instanceof NullNode == false) {
-                    TagCount countInstance = new TagCount();
-                    tagInstance.setCount(countInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    TagDetails tagInstance = new TagDetails();
+                    result.setTag(tagInstance);
                     
-                    JsonNode typeValue = countValue.get("type");
-                    if (typeValue != null && typeValue instanceof NullNode == false) {
-                        String typeInstance;
-                        typeInstance = typeValue.getTextValue();
-                        countInstance.setType(typeInstance);
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        tagInstance.setId(idInstance);
                     }
                     
-                    JsonNode valueValue = countValue.get("value");
-                    if (valueValue != null && valueValue instanceof NullNode == false) {
-                        String valueInstance;
-                        valueInstance = valueValue.getTextValue();
-                        countInstance.setValue(valueInstance);
+                    JsonNode tagNameValue = responseDoc.get("tagName");
+                    if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
+                        String tagNameInstance;
+                        tagNameInstance = tagNameValue.getTextValue();
+                        tagInstance.setName(tagNameInstance);
+                    }
+                    
+                    JsonNode countValue = responseDoc.get("count");
+                    if (countValue != null && countValue instanceof NullNode == false) {
+                        TagCount countInstance = new TagCount();
+                        tagInstance.setCount(countInstance);
+                        
+                        JsonNode typeValue = countValue.get("type");
+                        if (typeValue != null && typeValue instanceof NullNode == false) {
+                            String typeInstance;
+                            typeInstance = typeValue.getTextValue();
+                            countInstance.setType(typeInstance);
+                        }
+                        
+                        JsonNode valueValue = countValue.get("value");
+                        if (valueValue != null && valueValue instanceof NullNode == false) {
+                            String valueInstance;
+                            valueInstance = valueValue.getTextValue();
+                            countInstance.setValue(valueInstance);
+                        }
+                    }
+                    
+                    JsonNode valuesArray = responseDoc.get("values");
+                    if (valuesArray != null && valuesArray instanceof NullNode == false) {
+                        for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                            TagValue tagValueInstance = new TagValue();
+                            tagInstance.getValues().add(tagValueInstance);
+                            
+                            JsonNode idValue2 = valuesValue.get("id");
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                String idInstance2;
+                                idInstance2 = idValue2.getTextValue();
+                                tagValueInstance.setId(idInstance2);
+                            }
+                            
+                            JsonNode tagValueValue = valuesValue.get("tagValue");
+                            if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
+                                String tagValueInstance2;
+                                tagValueInstance2 = tagValueValue.getTextValue();
+                                tagValueInstance.setValue(tagValueInstance2);
+                            }
+                            
+                            JsonNode countValue2 = valuesValue.get("count");
+                            if (countValue2 != null && countValue2 instanceof NullNode == false) {
+                                TagCount countInstance2 = new TagCount();
+                                tagValueInstance.setCount(countInstance2);
+                                
+                                JsonNode typeValue2 = countValue2.get("type");
+                                if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
+                                    String typeInstance2;
+                                    typeInstance2 = typeValue2.getTextValue();
+                                    countInstance2.setType(typeInstance2);
+                                }
+                                
+                                JsonNode valueValue2 = countValue2.get("value");
+                                if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
+                                    String valueInstance2;
+                                    valueInstance2 = valueValue2.getTextValue();
+                                    countInstance2.setValue(valueInstance2);
+                                }
+                            }
+                        }
                     }
                 }
                 
-                JsonNode valuesArray = responseDoc.get("values");
-                if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                    for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
-                        TagValue tagValueInstance = new TagValue();
-                        tagInstance.getValues().add(tagValueInstance);
-                        
-                        JsonNode idValue2 = valuesValue.get("id");
-                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                            String idInstance2;
-                            idInstance2 = idValue2.getTextValue();
-                            tagValueInstance.setId(idInstance2);
-                        }
-                        
-                        JsonNode tagValueValue = valuesValue.get("tagValue");
-                        if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
-                            String tagValueInstance2;
-                            tagValueInstance2 = tagValueValue.getTextValue();
-                            tagValueInstance.setValue(tagValueInstance2);
-                        }
-                        
-                        JsonNode countValue2 = valuesValue.get("count");
-                        if (countValue2 != null && countValue2 instanceof NullNode == false) {
-                            TagCount countInstance2 = new TagCount();
-                            tagValueInstance.setCount(countInstance2);
-                            
-                            JsonNode typeValue2 = countValue2.get("type");
-                            if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
-                                String typeInstance2;
-                                typeInstance2 = typeValue2.getTextValue();
-                                countInstance2.setType(typeInstance2);
-                            }
-                            
-                            JsonNode valueValue2 = countValue2.get("value");
-                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
-                                String valueInstance2;
-                                valueInstance2 = valueValue2.getTextValue();
-                                countInstance2.setValue(valueInstance2);
-                            }
-                        }
-                    }
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -316,8 +331,20 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/tagNames/" + tagName.trim() + "/tagValues/" + tagValue.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/tagNames/";
+        url = url + URLEncoder.encode(tagName, "UTF-8");
+        url = url + "/tagValues/";
+        url = url + URLEncoder.encode(tagValue, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -357,53 +384,55 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             // Create Result
             TagCreateValueResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new TagCreateValueResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                TagValue valueInstance = new TagValue();
-                result.setValue(valueInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    valueInstance.setId(idInstance);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new TagCreateValueResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode tagValueValue = responseDoc.get("tagValue");
-                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
-                    String tagValueInstance;
-                    tagValueInstance = tagValueValue.getTextValue();
-                    valueInstance.setValue(tagValueInstance);
-                }
-                
-                JsonNode countValue = responseDoc.get("count");
-                if (countValue != null && countValue instanceof NullNode == false) {
-                    TagCount countInstance = new TagCount();
-                    valueInstance.setCount(countInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    TagValue valueInstance = new TagValue();
+                    result.setValue(valueInstance);
                     
-                    JsonNode typeValue = countValue.get("type");
-                    if (typeValue != null && typeValue instanceof NullNode == false) {
-                        String typeInstance;
-                        typeInstance = typeValue.getTextValue();
-                        countInstance.setType(typeInstance);
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        valueInstance.setId(idInstance);
                     }
                     
-                    JsonNode valueValue = countValue.get("value");
-                    if (valueValue != null && valueValue instanceof NullNode == false) {
-                        String valueInstance2;
-                        valueInstance2 = valueValue.getTextValue();
-                        countInstance.setValue(valueInstance2);
+                    JsonNode tagValueValue = responseDoc.get("tagValue");
+                    if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
+                        String tagValueInstance;
+                        tagValueInstance = tagValueValue.getTextValue();
+                        valueInstance.setValue(tagValueInstance);
+                    }
+                    
+                    JsonNode countValue = responseDoc.get("count");
+                    if (countValue != null && countValue instanceof NullNode == false) {
+                        TagCount countInstance = new TagCount();
+                        valueInstance.setCount(countInstance);
+                        
+                        JsonNode typeValue = countValue.get("type");
+                        if (typeValue != null && typeValue instanceof NullNode == false) {
+                            String typeInstance;
+                            typeInstance = typeValue.getTextValue();
+                            countInstance.setType(typeInstance);
+                        }
+                        
+                        JsonNode valueValue = countValue.get("value");
+                        if (valueValue != null && valueValue instanceof NullNode == false) {
+                            String valueInstance2;
+                            valueInstance2 = valueValue.getTextValue();
+                            countInstance.setValue(valueInstance2);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -428,10 +457,10 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String tagName) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String tagName) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(tagName);
             }
          });
@@ -456,7 +485,7 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
     * request ID.
     */
     @Override
-    public OperationResponse delete(String tagName) throws InterruptedException, ExecutionException, IOException, ServiceException {
+    public AzureOperationResponse delete(String tagName) throws InterruptedException, ExecutionException, IOException, ServiceException {
         // Validate
         if (tagName == null) {
             throw new NullPointerException("tagName");
@@ -473,8 +502,18 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/tagNames/" + tagName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/tagNames/";
+        url = url + URLEncoder.encode(tagName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -512,8 +551,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -539,10 +579,10 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteValueAsync(final String tagName, final String tagValue) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteValueAsync(final String tagName, final String tagValue) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return deleteValue(tagName, tagValue);
             }
          });
@@ -561,7 +601,7 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
     * request ID.
     */
     @Override
-    public OperationResponse deleteValue(String tagName, String tagValue) throws IOException, ServiceException {
+    public AzureOperationResponse deleteValue(String tagName, String tagValue) throws IOException, ServiceException {
         // Validate
         if (tagName == null) {
             throw new NullPointerException("tagName");
@@ -582,8 +622,20 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/tagNames/" + tagName.trim() + "/tagValues/" + tagValue.trim() + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/tagNames/";
+        url = url + URLEncoder.encode(tagName, "UTF-8");
+        url = url + "/tagValues/";
+        url = url + URLEncoder.encode(tagValue, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -621,8 +673,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -679,8 +732,17 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/tagNames" + "?";
-        url = url + "api-version=" + "2014-04-01-preview";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/tagNames";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -720,107 +782,109 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             // Create Result
             TagsListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new TagsListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        TagDetails tagDetailsInstance = new TagDetails();
-                        result.getTags().add(tagDetailsInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            tagDetailsInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode tagNameValue = valueValue.get("tagName");
-                        if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
-                            String tagNameInstance;
-                            tagNameInstance = tagNameValue.getTextValue();
-                            tagDetailsInstance.setName(tagNameInstance);
-                        }
-                        
-                        JsonNode countValue = valueValue.get("count");
-                        if (countValue != null && countValue instanceof NullNode == false) {
-                            TagCount countInstance = new TagCount();
-                            tagDetailsInstance.setCount(countInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new TagsListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            TagDetails tagDetailsInstance = new TagDetails();
+                            result.getTags().add(tagDetailsInstance);
                             
-                            JsonNode typeValue = countValue.get("type");
-                            if (typeValue != null && typeValue instanceof NullNode == false) {
-                                String typeInstance;
-                                typeInstance = typeValue.getTextValue();
-                                countInstance.setType(typeInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                tagDetailsInstance.setId(idInstance);
                             }
                             
-                            JsonNode valueValue2 = countValue.get("value");
-                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
-                                String valueInstance;
-                                valueInstance = valueValue2.getTextValue();
-                                countInstance.setValue(valueInstance);
+                            JsonNode tagNameValue = valueValue.get("tagName");
+                            if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
+                                String tagNameInstance;
+                                tagNameInstance = tagNameValue.getTextValue();
+                                tagDetailsInstance.setName(tagNameInstance);
                             }
-                        }
-                        
-                        JsonNode valuesArray = valueValue.get("values");
-                        if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                            for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
-                                TagValue tagValueInstance = new TagValue();
-                                tagDetailsInstance.getValues().add(tagValueInstance);
+                            
+                            JsonNode countValue = valueValue.get("count");
+                            if (countValue != null && countValue instanceof NullNode == false) {
+                                TagCount countInstance = new TagCount();
+                                tagDetailsInstance.setCount(countInstance);
                                 
-                                JsonNode idValue2 = valuesValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    tagValueInstance.setId(idInstance2);
+                                JsonNode typeValue = countValue.get("type");
+                                if (typeValue != null && typeValue instanceof NullNode == false) {
+                                    String typeInstance;
+                                    typeInstance = typeValue.getTextValue();
+                                    countInstance.setType(typeInstance);
                                 }
                                 
-                                JsonNode tagValueValue = valuesValue.get("tagValue");
-                                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
-                                    String tagValueInstance2;
-                                    tagValueInstance2 = tagValueValue.getTextValue();
-                                    tagValueInstance.setValue(tagValueInstance2);
+                                JsonNode valueValue2 = countValue.get("value");
+                                if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
+                                    String valueInstance;
+                                    valueInstance = valueValue2.getTextValue();
+                                    countInstance.setValue(valueInstance);
                                 }
-                                
-                                JsonNode countValue2 = valuesValue.get("count");
-                                if (countValue2 != null && countValue2 instanceof NullNode == false) {
-                                    TagCount countInstance2 = new TagCount();
-                                    tagValueInstance.setCount(countInstance2);
+                            }
+                            
+                            JsonNode valuesArray = valueValue.get("values");
+                            if (valuesArray != null && valuesArray instanceof NullNode == false) {
+                                for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                                    TagValue tagValueInstance = new TagValue();
+                                    tagDetailsInstance.getValues().add(tagValueInstance);
                                     
-                                    JsonNode typeValue2 = countValue2.get("type");
-                                    if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
-                                        String typeInstance2;
-                                        typeInstance2 = typeValue2.getTextValue();
-                                        countInstance2.setType(typeInstance2);
+                                    JsonNode idValue2 = valuesValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        tagValueInstance.setId(idInstance2);
                                     }
                                     
-                                    JsonNode valueValue3 = countValue2.get("value");
-                                    if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
-                                        String valueInstance2;
-                                        valueInstance2 = valueValue3.getTextValue();
-                                        countInstance2.setValue(valueInstance2);
+                                    JsonNode tagValueValue = valuesValue.get("tagValue");
+                                    if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
+                                        String tagValueInstance2;
+                                        tagValueInstance2 = tagValueValue.getTextValue();
+                                        tagValueInstance.setValue(tagValueInstance2);
+                                    }
+                                    
+                                    JsonNode countValue2 = valuesValue.get("count");
+                                    if (countValue2 != null && countValue2 instanceof NullNode == false) {
+                                        TagCount countInstance2 = new TagCount();
+                                        tagValueInstance.setCount(countInstance2);
+                                        
+                                        JsonNode typeValue2 = countValue2.get("type");
+                                        if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
+                                            String typeInstance2;
+                                            typeInstance2 = typeValue2.getTextValue();
+                                            countInstance2.setType(typeInstance2);
+                                        }
+                                        
+                                        JsonNode valueValue3 = countValue2.get("value");
+                                        if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
+                                            String valueInstance2;
+                                            valueInstance2 = valueValue3.getTextValue();
+                                            countInstance2.setValue(valueInstance2);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -885,7 +949,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
         }
         
         // Construct URL
-        String url = nextLink.trim();
+        String url = "";
+        url = url + nextLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -915,107 +981,109 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
             // Create Result
             TagsListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new TagsListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        TagDetails tagDetailsInstance = new TagDetails();
-                        result.getTags().add(tagDetailsInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            tagDetailsInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode tagNameValue = valueValue.get("tagName");
-                        if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
-                            String tagNameInstance;
-                            tagNameInstance = tagNameValue.getTextValue();
-                            tagDetailsInstance.setName(tagNameInstance);
-                        }
-                        
-                        JsonNode countValue = valueValue.get("count");
-                        if (countValue != null && countValue instanceof NullNode == false) {
-                            TagCount countInstance = new TagCount();
-                            tagDetailsInstance.setCount(countInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new TagsListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            TagDetails tagDetailsInstance = new TagDetails();
+                            result.getTags().add(tagDetailsInstance);
                             
-                            JsonNode typeValue = countValue.get("type");
-                            if (typeValue != null && typeValue instanceof NullNode == false) {
-                                String typeInstance;
-                                typeInstance = typeValue.getTextValue();
-                                countInstance.setType(typeInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                tagDetailsInstance.setId(idInstance);
                             }
                             
-                            JsonNode valueValue2 = countValue.get("value");
-                            if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
-                                String valueInstance;
-                                valueInstance = valueValue2.getTextValue();
-                                countInstance.setValue(valueInstance);
+                            JsonNode tagNameValue = valueValue.get("tagName");
+                            if (tagNameValue != null && tagNameValue instanceof NullNode == false) {
+                                String tagNameInstance;
+                                tagNameInstance = tagNameValue.getTextValue();
+                                tagDetailsInstance.setName(tagNameInstance);
                             }
-                        }
-                        
-                        JsonNode valuesArray = valueValue.get("values");
-                        if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                            for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
-                                TagValue tagValueInstance = new TagValue();
-                                tagDetailsInstance.getValues().add(tagValueInstance);
+                            
+                            JsonNode countValue = valueValue.get("count");
+                            if (countValue != null && countValue instanceof NullNode == false) {
+                                TagCount countInstance = new TagCount();
+                                tagDetailsInstance.setCount(countInstance);
                                 
-                                JsonNode idValue2 = valuesValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    tagValueInstance.setId(idInstance2);
+                                JsonNode typeValue = countValue.get("type");
+                                if (typeValue != null && typeValue instanceof NullNode == false) {
+                                    String typeInstance;
+                                    typeInstance = typeValue.getTextValue();
+                                    countInstance.setType(typeInstance);
                                 }
                                 
-                                JsonNode tagValueValue = valuesValue.get("tagValue");
-                                if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
-                                    String tagValueInstance2;
-                                    tagValueInstance2 = tagValueValue.getTextValue();
-                                    tagValueInstance.setValue(tagValueInstance2);
+                                JsonNode valueValue2 = countValue.get("value");
+                                if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
+                                    String valueInstance;
+                                    valueInstance = valueValue2.getTextValue();
+                                    countInstance.setValue(valueInstance);
                                 }
-                                
-                                JsonNode countValue2 = valuesValue.get("count");
-                                if (countValue2 != null && countValue2 instanceof NullNode == false) {
-                                    TagCount countInstance2 = new TagCount();
-                                    tagValueInstance.setCount(countInstance2);
+                            }
+                            
+                            JsonNode valuesArray = valueValue.get("values");
+                            if (valuesArray != null && valuesArray instanceof NullNode == false) {
+                                for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                                    TagValue tagValueInstance = new TagValue();
+                                    tagDetailsInstance.getValues().add(tagValueInstance);
                                     
-                                    JsonNode typeValue2 = countValue2.get("type");
-                                    if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
-                                        String typeInstance2;
-                                        typeInstance2 = typeValue2.getTextValue();
-                                        countInstance2.setType(typeInstance2);
+                                    JsonNode idValue2 = valuesValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        tagValueInstance.setId(idInstance2);
                                     }
                                     
-                                    JsonNode valueValue3 = countValue2.get("value");
-                                    if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
-                                        String valueInstance2;
-                                        valueInstance2 = valueValue3.getTextValue();
-                                        countInstance2.setValue(valueInstance2);
+                                    JsonNode tagValueValue = valuesValue.get("tagValue");
+                                    if (tagValueValue != null && tagValueValue instanceof NullNode == false) {
+                                        String tagValueInstance2;
+                                        tagValueInstance2 = tagValueValue.getTextValue();
+                                        tagValueInstance.setValue(tagValueInstance2);
+                                    }
+                                    
+                                    JsonNode countValue2 = valuesValue.get("count");
+                                    if (countValue2 != null && countValue2 instanceof NullNode == false) {
+                                        TagCount countInstance2 = new TagCount();
+                                        tagValueInstance.setCount(countInstance2);
+                                        
+                                        JsonNode typeValue2 = countValue2.get("type");
+                                        if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
+                                            String typeInstance2;
+                                            typeInstance2 = typeValue2.getTextValue();
+                                            countInstance2.setType(typeInstance2);
+                                        }
+                                        
+                                        JsonNode valueValue3 = countValue2.get("value");
+                                        if (valueValue3 != null && valueValue3 instanceof NullNode == false) {
+                                            String valueInstance2;
+                                            valueInstance2 = valueValue3.getTextValue();
+                                            countInstance2.setValue(valueInstance2);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
+                    }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

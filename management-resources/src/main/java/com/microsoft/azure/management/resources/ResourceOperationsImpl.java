@@ -23,19 +23,21 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.BasicResource;
+import com.microsoft.azure.ResourceIdentity;
+import com.microsoft.azure.management.resources.models.GenericResource;
+import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.Plan;
-import com.microsoft.azure.management.resources.models.Resource;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
 import com.microsoft.azure.management.resources.models.ResourceGetResult;
-import com.microsoft.azure.management.resources.models.ResourceIdentity;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.management.resources.models.ResourceListResult;
+import com.microsoft.azure.management.resources.models.ResourcesMoveInfo;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -43,6 +45,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -53,6 +56,7 @@ import java.util.regex.Pattern;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
@@ -155,8 +159,28 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/providers/" + identity.getResourceProviderNamespace().trim() + "/" + (identity.getParentResourcePath() != null ? identity.getParentResourcePath().trim() : "") + "/" + identity.getResourceType().trim() + "/" + identity.getResourceName().trim() + "?";
-        url = url + "api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion().trim(), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(identity.getResourceProviderNamespace(), "UTF-8");
+        url = url + "/";
+        if (identity.getParentResourcePath() != null) {
+            url = url + identity.getParentResourcePath();
+        }
+        url = url + "/";
+        url = url + identity.getResourceType();
+        url = url + "/";
+        url = url + URLEncoder.encode(identity.getResourceName(), "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -195,6 +219,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             
             // Create Result
             ResourceExistsResult result = null;
+            // Deserialize Response
             result = new ResourceExistsResult();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -227,7 +252,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     * @return Resource information.
     */
     @Override
-    public Future<ResourceCreateOrUpdateResult> createOrUpdateAsync(final String resourceGroupName, final ResourceIdentity identity, final BasicResource parameters) {
+    public Future<ResourceCreateOrUpdateResult> createOrUpdateAsync(final String resourceGroupName, final ResourceIdentity identity, final GenericResource parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ResourceCreateOrUpdateResult>() { 
             @Override
             public ResourceCreateOrUpdateResult call() throws Exception {
@@ -252,7 +277,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     * @return Resource information.
     */
     @Override
-    public ResourceCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceIdentity identity, BasicResource parameters) throws IOException, ServiceException, URISyntaxException {
+    public ResourceCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceIdentity identity, GenericResource parameters) throws IOException, ServiceException, URISyntaxException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -298,8 +323,28 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/providers/" + identity.getResourceProviderNamespace().trim() + "/" + (identity.getParentResourcePath() != null ? identity.getParentResourcePath().trim() : "") + "/" + identity.getResourceType().trim() + "/" + identity.getResourceName().trim() + "?";
-        url = url + "api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion().trim(), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(identity.getResourceProviderNamespace(), "UTF-8");
+        url = url + "/";
+        if (identity.getParentResourcePath() != null) {
+            url = url + identity.getParentResourcePath();
+        }
+        url = url + "/";
+        url = url + identity.getResourceType();
+        url = url + "/";
+        url = url + URLEncoder.encode(identity.getResourceName(), "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -322,30 +367,32 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         JsonNode requestDoc = null;
         
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode basicResourceValue = objectMapper.createObjectNode();
-        requestDoc = basicResourceValue;
-        
-        ((ObjectNode) basicResourceValue).put("location", parameters.getLocation());
+        ObjectNode genericResourceValue = objectMapper.createObjectNode();
+        requestDoc = genericResourceValue;
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) basicResourceValue).put("properties", parameters.getProperties());
+            ((ObjectNode) genericResourceValue).put("properties", parameters.getProperties());
         }
         
+        if (parameters.getProvisioningState() != null) {
+            ((ObjectNode) genericResourceValue).put("provisioningState", parameters.getProvisioningState());
+        }
+        
+        ((ObjectNode) genericResourceValue).put("location", parameters.getLocation());
+        
         if (parameters.getTags() != null) {
-            if (parameters.getTags() instanceof LazyCollection == false || ((LazyCollection) parameters.getTags()).isInitialized()) {
-                ObjectNode tagsDictionary = objectMapper.createObjectNode();
-                for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
-                    String tagsKey = entry.getKey();
-                    String tagsValue = entry.getValue();
-                    ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
-                }
-                ((ObjectNode) basicResourceValue).put("tags", tagsDictionary);
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
+            for (Map.Entry<String, String> entry : parameters.getTags().entrySet()) {
+                String tagsKey = entry.getKey();
+                String tagsValue = entry.getValue();
+                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
+            ((ObjectNode) genericResourceValue).put("tags", tagsDictionary);
         }
         
         if (parameters.getPlan() != null) {
             ObjectNode planValue = objectMapper.createObjectNode();
-            ((ObjectNode) basicResourceValue).put("plan", planValue);
+            ((ObjectNode) genericResourceValue).put("plan", planValue);
             
             if (parameters.getPlan().getName() != null) {
                 ((ObjectNode) planValue).put("name", parameters.getPlan().getName());
@@ -362,10 +409,6 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             if (parameters.getPlan().getPromotionCode() != null) {
                 ((ObjectNode) planValue).put("promotionCode", parameters.getPlan().getPromotionCode());
             }
-        }
-        
-        if (parameters.getProvisioningState() != null) {
-            ((ObjectNode) basicResourceValue).put("provisioningState", parameters.getProvisioningState());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -397,115 +440,117 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ResourceCreateOrUpdateResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceCreateOrUpdateResult();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceCreateOrUpdateResult();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    GenericResourceExtended resourceInstance = new GenericResourceExtended();
+                    result.setResource(resourceInstance);
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            resourceInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        String propertiesInstance;
+                        propertiesInstance = propertiesValue2.getTextValue();
+                        resourceInstance.setProperties(propertiesInstance);
+                    }
+                    
+                    JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
+                    if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                        String provisioningStateInstance2;
+                        provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                        resourceInstance.setProvisioningState(provisioningStateInstance2);
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        resourceInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        resourceInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        resourceInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        resourceInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey2 = property.getKey();
+                            String tagsValue2 = property.getValue().getTextValue();
+                            resourceInstance.getTags().put(tagsKey2, tagsValue2);
+                        }
+                    }
+                    
+                    JsonNode planValue2 = responseDoc.get("plan");
+                    if (planValue2 != null && planValue2 instanceof NullNode == false) {
+                        Plan planInstance = new Plan();
+                        resourceInstance.setPlan(planInstance);
+                        
+                        JsonNode nameValue2 = planValue2.get("name");
+                        if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                            String nameInstance2;
+                            nameInstance2 = nameValue2.getTextValue();
+                            planInstance.setName(nameInstance2);
+                        }
+                        
+                        JsonNode publisherValue = planValue2.get("publisher");
+                        if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                            String publisherInstance;
+                            publisherInstance = publisherValue.getTextValue();
+                            planInstance.setPublisher(publisherInstance);
+                        }
+                        
+                        JsonNode productValue = planValue2.get("product");
+                        if (productValue != null && productValue instanceof NullNode == false) {
+                            String productInstance;
+                            productInstance = productValue.getTextValue();
+                            planInstance.setProduct(productInstance);
+                        }
+                        
+                        JsonNode promotionCodeValue = planValue2.get("promotionCode");
+                        if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                            String promotionCodeInstance;
+                            promotionCodeInstance = promotionCodeValue.getTextValue();
+                            planInstance.setPromotionCode(promotionCodeInstance);
+                        }
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                Resource resourceInstance = new Resource();
-                result.setResource(resourceInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    resourceInstance.setId(idInstance);
-                }
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    resourceInstance.setName(nameInstance);
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    resourceInstance.setType(typeInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        resourceInstance.setProvisioningState(provisioningStateInstance);
-                    }
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    resourceInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    String propertiesInstance;
-                    propertiesInstance = propertiesValue2.getTextValue();
-                    resourceInstance.setProperties(propertiesInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey2 = property.getKey();
-                        String tagsValue2 = property.getValue().getTextValue();
-                        resourceInstance.getTags().put(tagsKey2, tagsValue2);
-                    }
-                }
-                
-                JsonNode planValue2 = responseDoc.get("plan");
-                if (planValue2 != null && planValue2 instanceof NullNode == false) {
-                    Plan planInstance = new Plan();
-                    resourceInstance.setPlan(planInstance);
-                    
-                    JsonNode nameValue2 = planValue2.get("name");
-                    if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
-                        String nameInstance2;
-                        nameInstance2 = nameValue2.getTextValue();
-                        planInstance.setName(nameInstance2);
-                    }
-                    
-                    JsonNode publisherValue = planValue2.get("publisher");
-                    if (publisherValue != null && publisherValue instanceof NullNode == false) {
-                        String publisherInstance;
-                        publisherInstance = publisherValue.getTextValue();
-                        planInstance.setPublisher(publisherInstance);
-                    }
-                    
-                    JsonNode productValue = planValue2.get("product");
-                    if (productValue != null && productValue instanceof NullNode == false) {
-                        String productInstance;
-                        productInstance = productValue.getTextValue();
-                        planInstance.setProduct(productInstance);
-                    }
-                    
-                    JsonNode promotionCodeValue = planValue2.get("promotionCode");
-                    if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
-                        String promotionCodeInstance;
-                        promotionCodeInstance = promotionCodeValue.getTextValue();
-                        planInstance.setPromotionCode(promotionCodeInstance);
-                    }
-                }
-                
-                JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                    String provisioningStateInstance2;
-                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                    resourceInstance.setProvisioningState(provisioningStateInstance2);
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -532,10 +577,10 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final ResourceIdentity identity) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final ResourceIdentity identity) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(resourceGroupName, identity);
             }
          });
@@ -562,7 +607,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException {
+    public AzureOperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -601,8 +646,28 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/providers/" + identity.getResourceProviderNamespace().trim() + "/" + (identity.getParentResourcePath() != null ? identity.getParentResourcePath().trim() : "") + "/" + identity.getResourceType().trim() + "/" + identity.getResourceName().trim() + "?";
-        url = url + "api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion().trim(), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(identity.getResourceProviderNamespace(), "UTF-8");
+        url = url + "/";
+        if (identity.getParentResourcePath() != null) {
+            url = url + identity.getParentResourcePath();
+        }
+        url = url + "/";
+        url = url + identity.getResourceType();
+        url = url + "/";
+        url = url + URLEncoder.encode(identity.getResourceName(), "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -640,8 +705,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -730,8 +796,28 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourcegroups/" + resourceGroupName.trim() + "/providers/" + identity.getResourceProviderNamespace().trim() + "/" + (identity.getParentResourcePath() != null ? identity.getParentResourcePath().trim() : "") + "/" + identity.getResourceType().trim() + "/" + identity.getResourceName().trim() + "?";
-        url = url + "api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion().trim(), "UTF-8");
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + URLEncoder.encode(identity.getResourceProviderNamespace(), "UTF-8");
+        url = url + "/";
+        if (identity.getParentResourcePath() != null) {
+            url = url + identity.getParentResourcePath();
+        }
+        url = url + "/";
+        url = url + identity.getResourceType();
+        url = url + "/";
+        url = url + URLEncoder.encode(identity.getResourceName(), "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + URLEncoder.encode(identity.getResourceProviderApiVersion(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -771,116 +857,118 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ResourceGetResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceGetResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_NO_CONTENT) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceGetResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    GenericResourceExtended resourceInstance = new GenericResourceExtended();
+                    result.setResource(resourceInstance);
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                            String provisioningStateInstance;
+                            provisioningStateInstance = provisioningStateValue.getTextValue();
+                            resourceInstance.setProvisioningState(provisioningStateInstance);
+                        }
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        String propertiesInstance;
+                        propertiesInstance = propertiesValue2.getTextValue();
+                        resourceInstance.setProperties(propertiesInstance);
+                    }
+                    
+                    JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
+                    if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                        String provisioningStateInstance2;
+                        provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                        resourceInstance.setProvisioningState(provisioningStateInstance2);
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        resourceInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        resourceInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        resourceInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        resourceInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            resourceInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                    
+                    JsonNode planValue = responseDoc.get("plan");
+                    if (planValue != null && planValue instanceof NullNode == false) {
+                        Plan planInstance = new Plan();
+                        resourceInstance.setPlan(planInstance);
+                        
+                        JsonNode nameValue2 = planValue.get("name");
+                        if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                            String nameInstance2;
+                            nameInstance2 = nameValue2.getTextValue();
+                            planInstance.setName(nameInstance2);
+                        }
+                        
+                        JsonNode publisherValue = planValue.get("publisher");
+                        if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                            String publisherInstance;
+                            publisherInstance = publisherValue.getTextValue();
+                            planInstance.setPublisher(publisherInstance);
+                        }
+                        
+                        JsonNode productValue = planValue.get("product");
+                        if (productValue != null && productValue instanceof NullNode == false) {
+                            String productInstance;
+                            productInstance = productValue.getTextValue();
+                            planInstance.setProduct(productInstance);
+                        }
+                        
+                        JsonNode promotionCodeValue = planValue.get("promotionCode");
+                        if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                            String promotionCodeInstance;
+                            promotionCodeInstance = promotionCodeValue.getTextValue();
+                            planInstance.setPromotionCode(promotionCodeInstance);
+                        }
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                Resource resourceInstance = new Resource();
-                result.setResource(resourceInstance);
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    resourceInstance.setId(idInstance);
-                }
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    resourceInstance.setName(nameInstance);
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    resourceInstance.setType(typeInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                        String provisioningStateInstance;
-                        provisioningStateInstance = provisioningStateValue.getTextValue();
-                        resourceInstance.setProvisioningState(provisioningStateInstance);
-                    }
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    resourceInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    String propertiesInstance;
-                    propertiesInstance = propertiesValue2.getTextValue();
-                    resourceInstance.setProperties(propertiesInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        resourceInstance.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-                
-                JsonNode planValue = responseDoc.get("plan");
-                if (planValue != null && planValue instanceof NullNode == false) {
-                    Plan planInstance = new Plan();
-                    resourceInstance.setPlan(planInstance);
-                    
-                    JsonNode nameValue2 = planValue.get("name");
-                    if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
-                        String nameInstance2;
-                        nameInstance2 = nameValue2.getTextValue();
-                        planInstance.setName(nameInstance2);
-                    }
-                    
-                    JsonNode publisherValue = planValue.get("publisher");
-                    if (publisherValue != null && publisherValue instanceof NullNode == false) {
-                        String publisherInstance;
-                        publisherInstance = publisherValue.getTextValue();
-                        planInstance.setPublisher(publisherInstance);
-                    }
-                    
-                    JsonNode productValue = planValue.get("product");
-                    if (productValue != null && productValue instanceof NullNode == false) {
-                        String productInstance;
-                        productInstance = productValue.getTextValue();
-                        planInstance.setProduct(productInstance);
-                    }
-                    
-                    JsonNode promotionCodeValue = planValue.get("promotionCode");
-                    if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
-                        String promotionCodeInstance;
-                        promotionCodeInstance = promotionCodeValue.getTextValue();
-                        planInstance.setPromotionCode(promotionCodeInstance);
-                    }
-                }
-                
-                JsonNode provisioningStateValue2 = responseDoc.get("provisioningState");
-                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                    String provisioningStateInstance2;
-                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                    resourceInstance.setProvisioningState(provisioningStateInstance2);
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -942,38 +1030,37 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/";
-        if (parameters != null && parameters.getResourceGroupName() != null) {
-            url = url + "resourceGroups/" + URLEncoder.encode(parameters.getResourceGroupName() != null ? parameters.getResourceGroupName().trim() : "", "UTF-8") + "/";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
         }
-        url = url + "resources" + "?";
-        boolean appendFilter = true;
+        url = url + "/";
+        if (parameters != null && parameters.getResourceGroupName() != null) {
+            url = url + "resourceGroups/" + URLEncoder.encode(parameters.getResourceGroupName(), "UTF-8") + "/";
+        }
+        url = url + "resources";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        ArrayList<String> odataFilter = new ArrayList<String>();
         if (parameters != null && parameters.getResourceType() != null) {
-            appendFilter = false;
-            url = url + "$filter=" + "resourceType eq '" + URLEncoder.encode(parameters.getResourceType() != null ? parameters.getResourceType().trim() : "", "UTF-8") + "'";
+            odataFilter.add("resourceType eq '" + URLEncoder.encode(parameters.getResourceType(), "UTF-8") + "'");
         }
         if (parameters != null && parameters.getTagName() != null) {
-            if (appendFilter == true) {
-                appendFilter = false;
-                url = url + "$filter=";
-            } else {
-                url = url + " and ";
-            }
-            url = url + "tagname eq '" + URLEncoder.encode(parameters.getTagName() != null ? parameters.getTagName().trim() : "", "UTF-8") + "'";
+            odataFilter.add("tagname eq '" + URLEncoder.encode(parameters.getTagName(), "UTF-8") + "'");
         }
         if (parameters != null && parameters.getTagValue() != null) {
-            if (appendFilter == true) {
-                appendFilter = false;
-                url = url + "$filter=";
-            } else {
-                url = url + " and ";
-            }
-            url = url + "tagvalue eq '" + URLEncoder.encode(parameters.getTagValue() != null ? parameters.getTagValue().trim() : "", "UTF-8") + "'";
+            odataFilter.add("tagvalue eq '" + URLEncoder.encode(parameters.getTagValue(), "UTF-8") + "'");
+        }
+        if (odataFilter.size() > 0) {
+            queryParameters.add("$filter=" + CollectionStringBuilder.join(odataFilter, " and "));
         }
         if (parameters != null && parameters.getTop() != null) {
-            url = url + "&" + "$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+            queryParameters.add("$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8"));
         }
-        url = url + "&" + "api-version=" + "2014-04-01-preview";
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1013,128 +1100,130 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ResourceListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Resource resourceJsonFormatInstance = new Resource();
-                        result.getResources().add(resourceJsonFormatInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            resourceJsonFormatInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            resourceJsonFormatInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            resourceJsonFormatInstance.setType(typeInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
-                            }
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            resourceJsonFormatInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                            String propertiesInstance;
-                            propertiesInstance = propertiesValue2.getTextValue();
-                            resourceJsonFormatInstance.setProperties(propertiesInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                resourceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
-                            }
-                        }
-                        
-                        JsonNode planValue = valueValue.get("plan");
-                        if (planValue != null && planValue instanceof NullNode == false) {
-                            Plan planInstance = new Plan();
-                            resourceJsonFormatInstance.setPlan(planInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            GenericResourceExtended resourceJsonFormatInstance = new GenericResourceExtended();
+                            result.getResources().add(resourceJsonFormatInstance);
                             
-                            JsonNode nameValue2 = planValue.get("name");
-                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
-                                String nameInstance2;
-                                nameInstance2 = nameValue2.getTextValue();
-                                planInstance.setName(nameInstance2);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                }
                             }
                             
-                            JsonNode publisherValue = planValue.get("publisher");
-                            if (publisherValue != null && publisherValue instanceof NullNode == false) {
-                                String publisherInstance;
-                                publisherInstance = publisherValue.getTextValue();
-                                planInstance.setPublisher(publisherInstance);
+                            JsonNode propertiesValue2 = valueValue.get("properties");
+                            if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                String propertiesInstance;
+                                propertiesInstance = propertiesValue2.getTextValue();
+                                resourceJsonFormatInstance.setProperties(propertiesInstance);
                             }
                             
-                            JsonNode productValue = planValue.get("product");
-                            if (productValue != null && productValue instanceof NullNode == false) {
-                                String productInstance;
-                                productInstance = productValue.getTextValue();
-                                planInstance.setProduct(productInstance);
+                            JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
+                            if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                                String provisioningStateInstance2;
+                                provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                                resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
                             }
                             
-                            JsonNode promotionCodeValue = planValue.get("promotionCode");
-                            if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
-                                String promotionCodeInstance;
-                                promotionCodeInstance = promotionCodeValue.getTextValue();
-                                planInstance.setPromotionCode(promotionCodeInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                resourceJsonFormatInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                resourceJsonFormatInstance.setName(nameInstance);
+                            }
+                            
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                resourceJsonFormatInstance.setType(typeInstance);
+                            }
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                resourceJsonFormatInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    resourceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                            
+                            JsonNode planValue = valueValue.get("plan");
+                            if (planValue != null && planValue instanceof NullNode == false) {
+                                Plan planInstance = new Plan();
+                                resourceJsonFormatInstance.setPlan(planInstance);
+                                
+                                JsonNode nameValue2 = planValue.get("name");
+                                if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                                    String nameInstance2;
+                                    nameInstance2 = nameValue2.getTextValue();
+                                    planInstance.setName(nameInstance2);
+                                }
+                                
+                                JsonNode publisherValue = planValue.get("publisher");
+                                if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                                    String publisherInstance;
+                                    publisherInstance = publisherValue.getTextValue();
+                                    planInstance.setPublisher(publisherInstance);
+                                }
+                                
+                                JsonNode productValue = planValue.get("product");
+                                if (productValue != null && productValue instanceof NullNode == false) {
+                                    String productInstance;
+                                    productInstance = productValue.getTextValue();
+                                    planInstance.setProduct(productInstance);
+                                }
+                                
+                                JsonNode promotionCodeValue = planValue.get("promotionCode");
+                                if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                                    String promotionCodeInstance;
+                                    promotionCodeInstance = promotionCodeValue.getTextValue();
+                                    planInstance.setPromotionCode(promotionCodeInstance);
+                                }
                             }
                         }
-                        
-                        JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                            String provisioningStateInstance2;
-                            provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                            resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
-                        }
+                    }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
                     }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1199,7 +1288,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         }
         
         // Construct URL
-        String url = nextLink.trim();
+        String url = "";
+        url = url + nextLink;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1229,128 +1320,280 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             // Create Result
             ResourceListResult result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ResourceListResult();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Resource resourceJsonFormatInstance = new Resource();
-                        result.getResources().add(resourceJsonFormatInstance);
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            resourceJsonFormatInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            resourceJsonFormatInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            resourceJsonFormatInstance.setType(typeInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
-                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
-                                String provisioningStateInstance;
-                                provisioningStateInstance = provisioningStateValue.getTextValue();
-                                resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
-                            }
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            resourceJsonFormatInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode propertiesValue2 = valueValue.get("properties");
-                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                            String propertiesInstance;
-                            propertiesInstance = propertiesValue2.getTextValue();
-                            resourceJsonFormatInstance.setProperties(propertiesInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                resourceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
-                            }
-                        }
-                        
-                        JsonNode planValue = valueValue.get("plan");
-                        if (planValue != null && planValue instanceof NullNode == false) {
-                            Plan planInstance = new Plan();
-                            resourceJsonFormatInstance.setPlan(planInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ResourceListResult();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            GenericResourceExtended resourceJsonFormatInstance = new GenericResourceExtended();
+                            result.getResources().add(resourceJsonFormatInstance);
                             
-                            JsonNode nameValue2 = planValue.get("name");
-                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
-                                String nameInstance2;
-                                nameInstance2 = nameValue2.getTextValue();
-                                planInstance.setName(nameInstance2);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                    String provisioningStateInstance;
+                                    provisioningStateInstance = provisioningStateValue.getTextValue();
+                                    resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                }
                             }
                             
-                            JsonNode publisherValue = planValue.get("publisher");
-                            if (publisherValue != null && publisherValue instanceof NullNode == false) {
-                                String publisherInstance;
-                                publisherInstance = publisherValue.getTextValue();
-                                planInstance.setPublisher(publisherInstance);
+                            JsonNode propertiesValue2 = valueValue.get("properties");
+                            if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                String propertiesInstance;
+                                propertiesInstance = propertiesValue2.getTextValue();
+                                resourceJsonFormatInstance.setProperties(propertiesInstance);
                             }
                             
-                            JsonNode productValue = planValue.get("product");
-                            if (productValue != null && productValue instanceof NullNode == false) {
-                                String productInstance;
-                                productInstance = productValue.getTextValue();
-                                planInstance.setProduct(productInstance);
+                            JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
+                            if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                                String provisioningStateInstance2;
+                                provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                                resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
                             }
                             
-                            JsonNode promotionCodeValue = planValue.get("promotionCode");
-                            if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
-                                String promotionCodeInstance;
-                                promotionCodeInstance = promotionCodeValue.getTextValue();
-                                planInstance.setPromotionCode(promotionCodeInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                resourceJsonFormatInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                resourceJsonFormatInstance.setName(nameInstance);
+                            }
+                            
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                resourceJsonFormatInstance.setType(typeInstance);
+                            }
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                resourceJsonFormatInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    resourceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                            
+                            JsonNode planValue = valueValue.get("plan");
+                            if (planValue != null && planValue instanceof NullNode == false) {
+                                Plan planInstance = new Plan();
+                                resourceJsonFormatInstance.setPlan(planInstance);
+                                
+                                JsonNode nameValue2 = planValue.get("name");
+                                if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                                    String nameInstance2;
+                                    nameInstance2 = nameValue2.getTextValue();
+                                    planInstance.setName(nameInstance2);
+                                }
+                                
+                                JsonNode publisherValue = planValue.get("publisher");
+                                if (publisherValue != null && publisherValue instanceof NullNode == false) {
+                                    String publisherInstance;
+                                    publisherInstance = publisherValue.getTextValue();
+                                    planInstance.setPublisher(publisherInstance);
+                                }
+                                
+                                JsonNode productValue = planValue.get("product");
+                                if (productValue != null && productValue instanceof NullNode == false) {
+                                    String productInstance;
+                                    productInstance = productValue.getTextValue();
+                                    planInstance.setProduct(productInstance);
+                                }
+                                
+                                JsonNode promotionCodeValue = planValue.get("promotionCode");
+                                if (promotionCodeValue != null && promotionCodeValue instanceof NullNode == false) {
+                                    String promotionCodeInstance;
+                                    promotionCodeInstance = promotionCodeValue.getTextValue();
+                                    planInstance.setPromotionCode(promotionCodeInstance);
+                                }
                             }
                         }
-                        
-                        JsonNode provisioningStateValue2 = valueValue.get("provisioningState");
-                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
-                            String provisioningStateInstance2;
-                            provisioningStateInstance2 = provisioningStateValue2.getTextValue();
-                            resourceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
-                        }
+                    }
+                    
+                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
+                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
+                        String odatanextLinkInstance;
+                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
+                        result.setNextLink(odatanextLinkInstance);
                     }
                 }
                 
-                JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                    String odatanextLinkInstance;
-                    odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                    result.setNextLink(odatanextLinkInstance);
-                }
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Move resources within or across subscriptions.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<AzureOperationResponse> moveResourcesAsync(final String sourceResourceGroupName, final ResourcesMoveInfo parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+            @Override
+            public AzureOperationResponse call() throws Exception {
+                return moveResources(sourceResourceGroupName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Move resources within or across subscriptions.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public AzureOperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException {
+        // Validate
+        if (sourceResourceGroupName == null) {
+            throw new NullPointerException("sourceResourceGroupName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("sourceResourceGroupName", sourceResourceGroupName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "moveResourcesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(sourceResourceGroupName, "UTF-8");
+        url = url + "/moveResources";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Serialize Request
+        String requestContent = null;
+        JsonNode requestDoc = null;
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode resourcesMoveInfoValue = objectMapper.createObjectNode();
+        requestDoc = resourcesMoveInfoValue;
+        
+        if (parameters.getResources() != null) {
+            if (parameters.getResources() instanceof LazyCollection == false || ((LazyCollection) parameters.getResources()).isInitialized()) {
+                ArrayNode resourcesArray = objectMapper.createArrayNode();
+                for (String resourcesItem : parameters.getResources()) {
+                    resourcesArray.add(resourcesItem);
+                }
+                ((ObjectNode) resourcesMoveInfoValue).put("resources", resourcesArray);
+            }
+        }
+        
+        if (parameters.getTargetResourceGroup() != null) {
+            ((ObjectNode) resourcesMoveInfoValue).put("targetResourceGroup", parameters.getTargetResourceGroup());
+        }
+        
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, requestDoc);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

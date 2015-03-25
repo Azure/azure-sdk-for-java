@@ -508,6 +508,7 @@ public class ServiceBusQueueCreateParameters {
     * Initializes a new instance of the ServiceBusQueueCreateParameters class
     * with required arguments.
     *
+    * @param name The name of the queue.
     */
     public ServiceBusQueueCreateParameters(String name) {
         this();

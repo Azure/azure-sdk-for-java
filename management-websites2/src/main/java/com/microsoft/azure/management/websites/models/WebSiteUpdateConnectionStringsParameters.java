@@ -62,6 +62,8 @@ public class WebSiteUpdateConnectionStringsParameters extends ResourceBase {
     * Initializes a new instance of the
     * WebSiteUpdateConnectionStringsParameters class with required arguments.
     *
+    * @param properties The connection strings for the web site.
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteUpdateConnectionStringsParameters(ArrayList<ConnectionStringInfo> properties, String location) {
         this();

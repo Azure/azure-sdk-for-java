@@ -56,6 +56,7 @@ public class NetworkSetConfigurationParameters {
     * Initializes a new instance of the NetworkSetConfigurationParameters class
     * with required arguments.
     *
+    * @param configuration The network configuration for this subscription.
     */
     public NetworkSetConfigurationParameters(String configuration) {
         if (configuration == null) {

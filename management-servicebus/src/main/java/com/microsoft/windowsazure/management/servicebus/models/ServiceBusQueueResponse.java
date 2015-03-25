@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * A response to a request for a particular queue.
 */
-public class ServiceBusQueueResponse extends OperationResponse {
+public class ServiceBusQueueResponse extends AzureOperationResponse {
     private String name;
     
     /**

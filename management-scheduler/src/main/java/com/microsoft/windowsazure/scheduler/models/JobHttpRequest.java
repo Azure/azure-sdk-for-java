@@ -135,6 +135,8 @@ public class JobHttpRequest {
     * Initializes a new instance of the JobHttpRequest class with required
     * arguments.
     *
+    * @param uri Gets or sets Uri of the endpoint to invoke.
+    * @param method Gets or sets Http method e.g. GET, PUT, POST, DELETE.
     */
     public JobHttpRequest(URI uri, String method) {
         this();

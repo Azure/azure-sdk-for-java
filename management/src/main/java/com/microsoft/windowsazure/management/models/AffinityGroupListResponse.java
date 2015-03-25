@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The List Affinity Groups operation response.
 */
-public class AffinityGroupListResponse extends OperationResponse implements Iterable<AffinityGroupListResponse.AffinityGroup> {
+public class AffinityGroupListResponse extends AzureOperationResponse implements Iterable<AffinityGroupListResponse.AffinityGroup> {
     private ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups;
     
     /**

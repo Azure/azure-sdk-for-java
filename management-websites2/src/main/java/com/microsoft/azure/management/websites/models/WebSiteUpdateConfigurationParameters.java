@@ -58,6 +58,8 @@ public class WebSiteUpdateConfigurationParameters extends ResourceBase {
     * Initializes a new instance of the WebSiteUpdateConfigurationParameters
     * class with required arguments.
     *
+    * @param properties The name value pair parameters for the web site.
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteUpdateConfigurationParameters(WebSiteUpdateConfigurationDetails properties, String location) {
         this();

@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.BasicResourceGroup;
 import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupExistsResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -103,7 +103,7 @@ public interface ResourceGroupOperations {
     * the response.
     * @return Resource group information.
     */
-    ResourceGroupCreateOrUpdateResult createOrUpdate(String resourceGroupName, BasicResourceGroup parameters) throws IOException, ServiceException, URISyntaxException;
+    ResourceGroupCreateOrUpdateResult createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws IOException, ServiceException, URISyntaxException;
     
     /**
     * Create a resource group.
@@ -114,7 +114,7 @@ public interface ResourceGroupOperations {
     * resource group service operation.
     * @return Resource group information.
     */
-    Future<ResourceGroupCreateOrUpdateResult> createOrUpdateAsync(String resourceGroupName, BasicResourceGroup parameters);
+    Future<ResourceGroupCreateOrUpdateResult> createOrUpdateAsync(String resourceGroupName, ResourceGroup parameters);
     
     /**
     * Delete resource group and all of its resources.
@@ -135,7 +135,7 @@ public interface ResourceGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Delete resource group and all of its resources.
@@ -145,7 +145,7 @@ public interface ResourceGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName);
     
     /**
     * Get a resource group.
@@ -235,7 +235,7 @@ public interface ResourceGroupOperations {
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return Resource group information.
     */
-    ResourceGroupPatchResult patch(String resourceGroupName, BasicResourceGroup parameters) throws IOException, ServiceException;
+    ResourceGroupPatchResult patch(String resourceGroupName, ResourceGroup parameters) throws IOException, ServiceException;
     
     /**
     * Resource groups can be updated through a simple PATCH operation to a
@@ -249,5 +249,5 @@ public interface ResourceGroupOperations {
     * resource group service operation.
     * @return Resource group information.
     */
-    Future<ResourceGroupPatchResult> patchAsync(String resourceGroupName, BasicResourceGroup parameters);
+    Future<ResourceGroupPatchResult> patchAsync(String resourceGroupName, ResourceGroup parameters);
 }

@@ -61,6 +61,7 @@ public class WebSiteConnectionStringsEnvelope extends ResourceBase {
     * Initializes a new instance of the WebSiteConnectionStringsEnvelope class
     * with required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteConnectionStringsEnvelope(String location) {
         this();

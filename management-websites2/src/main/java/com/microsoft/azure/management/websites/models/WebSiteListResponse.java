@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Web Sites operation response.
 */
-public class WebSiteListResponse extends OperationResponse implements Iterable<WebSite> {
+public class WebSiteListResponse extends AzureOperationResponse implements Iterable<WebSite> {
     private ArrayList<WebSite> webSites;
     
     /**

@@ -23,13 +23,14 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
 * Resource provider information.
 */
-public class Provider {
+public class Provider extends AzureOperationResponse {
     private String id;
     
     /**
@@ -107,6 +108,7 @@ public class Provider {
     *
     */
     public Provider() {
+        super();
         this.setResourceTypes(new LazyArrayList<ProviderResourceType>());
     }
 }

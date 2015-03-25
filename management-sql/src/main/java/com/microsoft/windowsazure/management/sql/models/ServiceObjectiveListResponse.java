@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,7 +32,7 @@ import java.util.Iterator;
 * Response containing the list of service objective for a given server.  This
 * is returnedfrom a call to List Service Objectives.
 */
-public class ServiceObjectiveListResponse extends OperationResponse implements Iterable<ServiceObjective> {
+public class ServiceObjectiveListResponse extends AzureOperationResponse implements Iterable<ServiceObjective> {
     private ArrayList<ServiceObjective> serviceObjectives;
     
     /**

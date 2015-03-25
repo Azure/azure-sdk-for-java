@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Storage Accounts operation response.
 */
-public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccount> {
+public class StorageAccountListResponse extends AzureOperationResponse implements Iterable<StorageAccount> {
     private ArrayList<StorageAccount> storageAccounts;
     
     /**

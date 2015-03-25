@@ -25,23 +25,30 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.sql.models.Database;
 import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateParameters;
+import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateResponse;
 import com.microsoft.azure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseListResponse;
 import com.microsoft.azure.management.sql.models.DatabaseProperties;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.sql.models.ErrorResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.bind.DatatypeConverter;
 import org.apache.http.HttpResponse;
@@ -82,8 +89,9 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     }
     
     /**
-    * Creates a new Azure SQL Database or updates an existing Azure SQL
-    * Database.
+    * Begins creating a new Azure SQL Database or updating an existing Azure
+    * SQL Database. To determine the status of the operation call
+    * GetDatabaseOperationStatus.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
@@ -93,21 +101,22 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * operated on (Updated or created).
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @return Represents the response to a Get Database request.
+    * @return Response for long running database operations.
     */
     @Override
-    public Future<DatabaseGetResponse> createOrUpdateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseGetResponse>() { 
+    public Future<DatabaseCreateOrUpdateResponse> beginCreateOrUpdateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateOrUpdateResponse>() { 
             @Override
-            public DatabaseGetResponse call() throws Exception {
-                return createOrUpdate(resourceGroupName, serverName, databaseName, parameters);
+            public DatabaseCreateOrUpdateResponse call() throws Exception {
+                return beginCreateOrUpdate(resourceGroupName, serverName, databaseName, parameters);
             }
          });
     }
     
     /**
-    * Creates a new Azure SQL Database or updates an existing Azure SQL
-    * Database.
+    * Begins creating a new Azure SQL Database or updating an existing Azure
+    * SQL Database. To determine the status of the operation call
+    * GetDatabaseOperationStatus.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
@@ -121,10 +130,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Response for long running database operations.
     */
     @Override
-    public DatabaseGetResponse createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public DatabaseCreateOrUpdateResponse beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -158,12 +167,28 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("databaseName", databaseName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreateOrUpdateAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Sql" + "/servers/" + serverName.trim() + "/databases/" + databaseName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -238,7 +263,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED && statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -247,131 +272,166 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             // Create Result
-            DatabaseGetResponse result = null;
+            DatabaseCreateOrUpdateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DatabaseGetResponse();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED || statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseCreateOrUpdateResponse();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    ErrorResponse errorInstance = new ErrorResponse();
+                    result.setError(errorInstance);
+                    
+                    JsonNode codeValue = responseDoc.get("code");
+                    if (codeValue != null && codeValue instanceof NullNode == false) {
+                        String codeInstance;
+                        codeInstance = codeValue.getTextValue();
+                        errorInstance.setCode(codeInstance);
+                    }
+                    
+                    JsonNode messageValue = responseDoc.get("message");
+                    if (messageValue != null && messageValue instanceof NullNode == false) {
+                        String messageInstance;
+                        messageInstance = messageValue.getTextValue();
+                        errorInstance.setMessage(messageInstance);
+                    }
+                    
+                    JsonNode targetValue = responseDoc.get("target");
+                    if (targetValue != null && targetValue instanceof NullNode == false) {
+                        String targetInstance;
+                        targetInstance = targetValue.getTextValue();
+                        errorInstance.setTarget(targetInstance);
+                    }
+                    
+                    Database databaseInstance = new Database();
+                    result.setDatabase(databaseInstance);
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue2 = responseDoc.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        DatabaseProperties propertiesInstance = new DatabaseProperties();
+                        databaseInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode collationValue = propertiesValue2.get("collation");
+                        if (collationValue != null && collationValue instanceof NullNode == false) {
+                            String collationInstance;
+                            collationInstance = collationValue.getTextValue();
+                            propertiesInstance.setCollation(collationInstance);
+                        }
+                        
+                        JsonNode creationDateValue = propertiesValue2.get("creationDate");
+                        if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
+                            Calendar creationDateInstance;
+                            creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
+                            propertiesInstance.setCreationDate(creationDateInstance);
+                        }
+                        
+                        JsonNode currentServiceObjectiveIdValue = propertiesValue2.get("currentServiceObjectiveId");
+                        if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
+                            String currentServiceObjectiveIdInstance;
+                            currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode databaseIdValue = propertiesValue2.get("databaseId");
+                        if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
+                            String databaseIdInstance;
+                            databaseIdInstance = databaseIdValue.getTextValue();
+                            propertiesInstance.setDatabaseId(databaseIdInstance);
+                        }
+                        
+                        JsonNode editionValue = propertiesValue2.get("edition");
+                        if (editionValue != null && editionValue instanceof NullNode == false) {
+                            String editionInstance;
+                            editionInstance = editionValue.getTextValue();
+                            propertiesInstance.setEdition(editionInstance);
+                        }
+                        
+                        JsonNode maxSizeBytesValue = propertiesValue2.get("maxSizeBytes");
+                        if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
+                            long maxSizeBytesInstance;
+                            maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
+                            propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
+                        }
+                        
+                        JsonNode requestedServiceObjectiveIdValue = propertiesValue2.get("requestedServiceObjectiveId");
+                        if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveIdInstance;
+                            requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode serviceLevelObjectiveValue = propertiesValue2.get("serviceLevelObjective");
+                        if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
+                            String serviceLevelObjectiveInstance;
+                            serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
+                            propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
+                        }
+                        
+                        JsonNode statusValue = propertiesValue2.get("status");
+                        if (statusValue != null && statusValue instanceof NullNode == false) {
+                            String statusInstance;
+                            statusInstance = statusValue.getTextValue();
+                            propertiesInstance.setStatus(statusInstance);
+                        }
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        databaseInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        databaseInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey2 = property.getKey();
+                            String tagsValue2 = property.getValue().getTextValue();
+                            databaseInstance.getTags().put(tagsKey2, tagsValue2);
+                        }
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                Database databaseInstance = new Database();
-                result.setDatabase(databaseInstance);
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    databaseInstance.setName(nameInstance);
-                }
-                
-                JsonNode propertiesValue2 = responseDoc.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    DatabaseProperties propertiesInstance = new DatabaseProperties();
-                    databaseInstance.setProperties(propertiesInstance);
-                    
-                    JsonNode collationValue = propertiesValue2.get("collation");
-                    if (collationValue != null && collationValue instanceof NullNode == false) {
-                        String collationInstance;
-                        collationInstance = collationValue.getTextValue();
-                        propertiesInstance.setCollation(collationInstance);
-                    }
-                    
-                    JsonNode creationDateValue = propertiesValue2.get("creationDate");
-                    if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
-                        Calendar creationDateInstance;
-                        creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
-                        propertiesInstance.setCreationDate(creationDateInstance);
-                    }
-                    
-                    JsonNode currentServiceObjectiveIdValue = propertiesValue2.get("currentServiceObjectiveId");
-                    if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
-                        String currentServiceObjectiveIdInstance;
-                        currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
-                        propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
-                    }
-                    
-                    JsonNode databaseIdValue = propertiesValue2.get("databaseId");
-                    if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
-                        String databaseIdInstance;
-                        databaseIdInstance = databaseIdValue.getTextValue();
-                        propertiesInstance.setDatabaseId(databaseIdInstance);
-                    }
-                    
-                    JsonNode editionValue = propertiesValue2.get("edition");
-                    if (editionValue != null && editionValue instanceof NullNode == false) {
-                        String editionInstance;
-                        editionInstance = editionValue.getTextValue();
-                        propertiesInstance.setEdition(editionInstance);
-                    }
-                    
-                    JsonNode maxSizeBytesValue = propertiesValue2.get("maxSizeBytes");
-                    if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
-                        long maxSizeBytesInstance;
-                        maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
-                        propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
-                    }
-                    
-                    JsonNode requestedServiceObjectiveIdValue = propertiesValue2.get("requestedServiceObjectiveId");
-                    if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
-                        String requestedServiceObjectiveIdInstance;
-                        requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
-                        propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
-                    }
-                    
-                    JsonNode serviceLevelObjectiveValue = propertiesValue2.get("serviceLevelObjective");
-                    if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
-                        String serviceLevelObjectiveInstance;
-                        serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
-                        propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
-                    }
-                    
-                    JsonNode statusValue = propertiesValue2.get("status");
-                    if (statusValue != null && statusValue instanceof NullNode == false) {
-                        String statusInstance;
-                        statusInstance = statusValue.getTextValue();
-                        propertiesInstance.setStatus(statusInstance);
-                    }
-                }
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    databaseInstance.setId(idInstance);
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    databaseInstance.setType(typeInstance);
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    databaseInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey2 = property.getKey();
-                        String tagsValue2 = property.getValue().getTextValue();
-                        databaseInstance.getTags().put(tagsKey2, tagsValue2);
-                    }
-                }
-            }
-            
             result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("Location").length > 0) {
+                result.setOperationStatusLink(httpResponse.getFirstHeader("Location").getValue());
+            }
+            if (httpResponse.getHeaders("Retry-After").length > 0) {
+                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("Retry-After").getValue()));
+            }
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_CREATED) {
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -381,6 +441,110 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         } finally {
             if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Creates a new Azure SQL Database or updates an existing Azure SQL
+    * Database.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * operated on (Updated or created).
+    * @param parameters Required. The required parameters for createing or
+    * updating a database.
+    * @return Response for long running database operations.
+    */
+    @Override
+    public Future<DatabaseCreateOrUpdateResponse> createOrUpdateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateOrUpdateResponse>() { 
+            @Override
+            public DatabaseCreateOrUpdateResponse call() throws Exception {
+                return createOrUpdate(resourceGroupName, serverName, databaseName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Creates a new Azure SQL Database or updates an existing Azure SQL
+    * Database.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * operated on (Updated or created).
+    * @param parameters Required. The required parameters for createing or
+    * updating a database.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for long running database operations.
+    */
+    @Override
+    public DatabaseCreateOrUpdateResponse createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws InterruptedException, ExecutionException, IOException, ServiceException {
+        SqlManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("databaseName", databaseName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            DatabaseCreateOrUpdateResponse response = client2.getDatabasesOperations().beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            DatabaseCreateOrUpdateResponse result = client2.getDatabasesOperations().getDatabaseOperationStatusAsync(response.getOperationStatusLink()).get();
+            int delayInSeconds = response.getRetryAfter();
+            if (delayInSeconds == 0) {
+                delayInSeconds = 30;
+            }
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getDatabasesOperations().getDatabaseOperationStatusAsync(response.getOperationStatusLink()).get();
+                delayInSeconds = result.getRetryAfter();
+                if (delayInSeconds == 0) {
+                    delayInSeconds = 15;
+                }
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -398,10 +562,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(resourceGroupName, serverName, databaseName);
             }
          });
@@ -424,7 +588,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
+    public AzureOperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -449,8 +613,24 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Sql" + "/servers/" + serverName.trim() + "/databases/" + databaseName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -478,7 +658,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_NO_CONTENT) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NO_CONTENT) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -487,8 +667,9 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -567,8 +748,24 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Sql" + "/servers/" + serverName.trim() + "/databases/" + databaseName.trim() + "?";
-        url = url + "api-version=" + "2014-04-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -607,127 +804,129 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             // Create Result
             DatabaseGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DatabaseGetResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseGetResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    Database databaseInstance = new Database();
+                    result.setDatabase(databaseInstance);
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        DatabaseProperties propertiesInstance = new DatabaseProperties();
+                        databaseInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode collationValue = propertiesValue.get("collation");
+                        if (collationValue != null && collationValue instanceof NullNode == false) {
+                            String collationInstance;
+                            collationInstance = collationValue.getTextValue();
+                            propertiesInstance.setCollation(collationInstance);
+                        }
+                        
+                        JsonNode creationDateValue = propertiesValue.get("creationDate");
+                        if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
+                            Calendar creationDateInstance;
+                            creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
+                            propertiesInstance.setCreationDate(creationDateInstance);
+                        }
+                        
+                        JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
+                        if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
+                            String currentServiceObjectiveIdInstance;
+                            currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode databaseIdValue = propertiesValue.get("databaseId");
+                        if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
+                            String databaseIdInstance;
+                            databaseIdInstance = databaseIdValue.getTextValue();
+                            propertiesInstance.setDatabaseId(databaseIdInstance);
+                        }
+                        
+                        JsonNode editionValue = propertiesValue.get("edition");
+                        if (editionValue != null && editionValue instanceof NullNode == false) {
+                            String editionInstance;
+                            editionInstance = editionValue.getTextValue();
+                            propertiesInstance.setEdition(editionInstance);
+                        }
+                        
+                        JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
+                        if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
+                            long maxSizeBytesInstance;
+                            maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
+                            propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
+                        }
+                        
+                        JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
+                        if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveIdInstance;
+                            requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
+                        if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
+                            String serviceLevelObjectiveInstance;
+                            serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
+                            propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
+                        }
+                        
+                        JsonNode statusValue = propertiesValue.get("status");
+                        if (statusValue != null && statusValue instanceof NullNode == false) {
+                            String statusInstance;
+                            statusInstance = statusValue.getTextValue();
+                            propertiesInstance.setStatus(statusInstance);
+                        }
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        databaseInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        databaseInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            databaseInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                Database databaseInstance = new Database();
-                result.setDatabase(databaseInstance);
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    databaseInstance.setName(nameInstance);
-                }
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    DatabaseProperties propertiesInstance = new DatabaseProperties();
-                    databaseInstance.setProperties(propertiesInstance);
-                    
-                    JsonNode collationValue = propertiesValue.get("collation");
-                    if (collationValue != null && collationValue instanceof NullNode == false) {
-                        String collationInstance;
-                        collationInstance = collationValue.getTextValue();
-                        propertiesInstance.setCollation(collationInstance);
-                    }
-                    
-                    JsonNode creationDateValue = propertiesValue.get("creationDate");
-                    if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
-                        Calendar creationDateInstance;
-                        creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
-                        propertiesInstance.setCreationDate(creationDateInstance);
-                    }
-                    
-                    JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
-                    if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
-                        String currentServiceObjectiveIdInstance;
-                        currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
-                        propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
-                    }
-                    
-                    JsonNode databaseIdValue = propertiesValue.get("databaseId");
-                    if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
-                        String databaseIdInstance;
-                        databaseIdInstance = databaseIdValue.getTextValue();
-                        propertiesInstance.setDatabaseId(databaseIdInstance);
-                    }
-                    
-                    JsonNode editionValue = propertiesValue.get("edition");
-                    if (editionValue != null && editionValue instanceof NullNode == false) {
-                        String editionInstance;
-                        editionInstance = editionValue.getTextValue();
-                        propertiesInstance.setEdition(editionInstance);
-                    }
-                    
-                    JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
-                    if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
-                        long maxSizeBytesInstance;
-                        maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
-                        propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
-                    }
-                    
-                    JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
-                    if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
-                        String requestedServiceObjectiveIdInstance;
-                        requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
-                        propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
-                    }
-                    
-                    JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
-                    if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
-                        String serviceLevelObjectiveInstance;
-                        serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
-                        propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
-                    }
-                    
-                    JsonNode statusValue = propertiesValue.get("status");
-                    if (statusValue != null && statusValue instanceof NullNode == false) {
-                        String statusInstance;
-                        statusInstance = statusValue.getTextValue();
-                        propertiesInstance.setStatus(statusInstance);
-                    }
-                }
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    databaseInstance.setId(idInstance);
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    databaseInstance.setType(typeInstance);
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    databaseInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        databaseInstance.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -806,11 +1005,28 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Sql" + "/servers/" + serverName.trim() + "/databases" + "?";
-        boolean appendFilter = true;
-        appendFilter = false;
-        url = url + "$filter=" + "properties/databaseId eq guid'" + URLEncoder.encode(databaseId.trim(), "UTF-8") + "'";
-        url = url + "&" + "api-version=" + "2014-04-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        ArrayList<String> odataFilter = new ArrayList<String>();
+        odataFilter.add("properties/databaseId eq guid'" + URLEncoder.encode(databaseId, "UTF-8") + "'");
+        if (odataFilter.size() > 0) {
+            queryParameters.add("$filter=" + CollectionStringBuilder.join(odataFilter, null));
+        }
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -849,135 +1065,383 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             // Create Result
             DatabaseListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DatabaseListResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Database databaseInstance = new Database();
-                        result.getDatabases().add(databaseInstance);
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            databaseInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            DatabaseProperties propertiesInstance = new DatabaseProperties();
-                            databaseInstance.setProperties(propertiesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            Database databaseInstance = new Database();
+                            result.getDatabases().add(databaseInstance);
                             
-                            JsonNode collationValue = propertiesValue.get("collation");
-                            if (collationValue != null && collationValue instanceof NullNode == false) {
-                                String collationInstance;
-                                collationInstance = collationValue.getTextValue();
-                                propertiesInstance.setCollation(collationInstance);
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                databaseInstance.setName(nameInstance);
                             }
                             
-                            JsonNode creationDateValue = propertiesValue.get("creationDate");
-                            if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
-                                Calendar creationDateInstance;
-                                creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
-                                propertiesInstance.setCreationDate(creationDateInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                DatabaseProperties propertiesInstance = new DatabaseProperties();
+                                databaseInstance.setProperties(propertiesInstance);
+                                
+                                JsonNode collationValue = propertiesValue.get("collation");
+                                if (collationValue != null && collationValue instanceof NullNode == false) {
+                                    String collationInstance;
+                                    collationInstance = collationValue.getTextValue();
+                                    propertiesInstance.setCollation(collationInstance);
+                                }
+                                
+                                JsonNode creationDateValue = propertiesValue.get("creationDate");
+                                if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
+                                    Calendar creationDateInstance;
+                                    creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
+                                    propertiesInstance.setCreationDate(creationDateInstance);
+                                }
+                                
+                                JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
+                                if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
+                                    String currentServiceObjectiveIdInstance;
+                                    currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
+                                    propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                                }
+                                
+                                JsonNode databaseIdValue = propertiesValue.get("databaseId");
+                                if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
+                                    String databaseIdInstance;
+                                    databaseIdInstance = databaseIdValue.getTextValue();
+                                    propertiesInstance.setDatabaseId(databaseIdInstance);
+                                }
+                                
+                                JsonNode editionValue = propertiesValue.get("edition");
+                                if (editionValue != null && editionValue instanceof NullNode == false) {
+                                    String editionInstance;
+                                    editionInstance = editionValue.getTextValue();
+                                    propertiesInstance.setEdition(editionInstance);
+                                }
+                                
+                                JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
+                                if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
+                                    long maxSizeBytesInstance;
+                                    maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
+                                    propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
+                                }
+                                
+                                JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
+                                if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
+                                    String requestedServiceObjectiveIdInstance;
+                                    requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
+                                    propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
+                                }
+                                
+                                JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
+                                if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
+                                    String serviceLevelObjectiveInstance;
+                                    serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
+                                    propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
+                                }
+                                
+                                JsonNode statusValue = propertiesValue.get("status");
+                                if (statusValue != null && statusValue instanceof NullNode == false) {
+                                    String statusInstance;
+                                    statusInstance = statusValue.getTextValue();
+                                    propertiesInstance.setStatus(statusInstance);
+                                }
                             }
                             
-                            JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
-                            if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
-                                String currentServiceObjectiveIdInstance;
-                                currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
-                                propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                databaseInstance.setId(idInstance);
                             }
                             
-                            JsonNode databaseIdValue = propertiesValue.get("databaseId");
-                            if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
-                                String databaseIdInstance;
-                                databaseIdInstance = databaseIdValue.getTextValue();
-                                propertiesInstance.setDatabaseId(databaseIdInstance);
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                databaseInstance.setType(typeInstance);
                             }
                             
-                            JsonNode editionValue = propertiesValue.get("edition");
-                            if (editionValue != null && editionValue instanceof NullNode == false) {
-                                String editionInstance;
-                                editionInstance = editionValue.getTextValue();
-                                propertiesInstance.setEdition(editionInstance);
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                databaseInstance.setLocation(locationInstance);
                             }
                             
-                            JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
-                            if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
-                                long maxSizeBytesInstance;
-                                maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
-                                propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
-                            }
-                            
-                            JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
-                            if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
-                                String requestedServiceObjectiveIdInstance;
-                                requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
-                                propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
-                            }
-                            
-                            JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
-                            if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
-                                String serviceLevelObjectiveInstance;
-                                serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
-                                propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
-                            }
-                            
-                            JsonNode statusValue = propertiesValue.get("status");
-                            if (statusValue != null && statusValue instanceof NullNode == false) {
-                                String statusInstance;
-                                statusInstance = statusValue.getTextValue();
-                                propertiesInstance.setStatus(statusInstance);
-                            }
-                        }
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            databaseInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            databaseInstance.setType(typeInstance);
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            databaseInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                databaseInstance.getTags().put(tagsKey, tagsValue);
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    databaseInstance.getTags().put(tagsKey, tagsValue);
+                                }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Gets the status of a database create or update operation.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation
+    * @return Response for long running database operations.
+    */
+    @Override
+    public Future<DatabaseCreateOrUpdateResponse> getDatabaseOperationStatusAsync(final String operationStatusLink) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateOrUpdateResponse>() { 
+            @Override
+            public DatabaseCreateOrUpdateResponse call() throws Exception {
+                return getDatabaseOperationStatus(operationStatusLink);
+            }
+         });
+    }
+    
+    /**
+    * Gets the status of a database create or update operation.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for long running database operations.
+    */
+    @Override
+    public DatabaseCreateOrUpdateResponse getDatabaseOperationStatus(String operationStatusLink) throws IOException, ServiceException {
+        // Validate
+        if (operationStatusLink == null) {
+            throw new NullPointerException("operationStatusLink");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("operationStatusLink", operationStatusLink);
+            CloudTracing.enter(invocationId, this, "getDatabaseOperationStatusAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + operationStatusLink;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED && statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseCreateOrUpdateResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED || statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseCreateOrUpdateResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    ErrorResponse errorInstance = new ErrorResponse();
+                    result.setError(errorInstance);
+                    
+                    JsonNode codeValue = responseDoc.get("code");
+                    if (codeValue != null && codeValue instanceof NullNode == false) {
+                        String codeInstance;
+                        codeInstance = codeValue.getTextValue();
+                        errorInstance.setCode(codeInstance);
+                    }
+                    
+                    JsonNode messageValue = responseDoc.get("message");
+                    if (messageValue != null && messageValue instanceof NullNode == false) {
+                        String messageInstance;
+                        messageInstance = messageValue.getTextValue();
+                        errorInstance.setMessage(messageInstance);
+                    }
+                    
+                    JsonNode targetValue = responseDoc.get("target");
+                    if (targetValue != null && targetValue instanceof NullNode == false) {
+                        String targetInstance;
+                        targetInstance = targetValue.getTextValue();
+                        errorInstance.setTarget(targetInstance);
+                    }
+                    
+                    Database databaseInstance = new Database();
+                    result.setDatabase(databaseInstance);
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        DatabaseProperties propertiesInstance = new DatabaseProperties();
+                        databaseInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode collationValue = propertiesValue.get("collation");
+                        if (collationValue != null && collationValue instanceof NullNode == false) {
+                            String collationInstance;
+                            collationInstance = collationValue.getTextValue();
+                            propertiesInstance.setCollation(collationInstance);
+                        }
+                        
+                        JsonNode creationDateValue = propertiesValue.get("creationDate");
+                        if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
+                            Calendar creationDateInstance;
+                            creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
+                            propertiesInstance.setCreationDate(creationDateInstance);
+                        }
+                        
+                        JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
+                        if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
+                            String currentServiceObjectiveIdInstance;
+                            currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode databaseIdValue = propertiesValue.get("databaseId");
+                        if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
+                            String databaseIdInstance;
+                            databaseIdInstance = databaseIdValue.getTextValue();
+                            propertiesInstance.setDatabaseId(databaseIdInstance);
+                        }
+                        
+                        JsonNode editionValue = propertiesValue.get("edition");
+                        if (editionValue != null && editionValue instanceof NullNode == false) {
+                            String editionInstance;
+                            editionInstance = editionValue.getTextValue();
+                            propertiesInstance.setEdition(editionInstance);
+                        }
+                        
+                        JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
+                        if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
+                            long maxSizeBytesInstance;
+                            maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
+                            propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
+                        }
+                        
+                        JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
+                        if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveIdInstance;
+                            requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
+                        }
+                        
+                        JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
+                        if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
+                            String serviceLevelObjectiveInstance;
+                            serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
+                            propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
+                        }
+                        
+                        JsonNode statusValue = propertiesValue.get("status");
+                        if (statusValue != null && statusValue instanceof NullNode == false) {
+                            String statusInstance;
+                            statusInstance = statusValue.getTextValue();
+                            propertiesInstance.setStatus(statusInstance);
+                        }
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        databaseInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        databaseInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            databaseInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_OK) {
+                result.setStatus(OperationStatus.Succeeded);
+            }
+            if (statusCode == HttpStatus.SC_CREATED) {
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -1045,8 +1509,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Sql" + "/servers/" + serverName.trim() + "/databases" + "?";
-        url = url + "api-version=" + "2014-04-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1085,132 +1564,134 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             // Create Result
             DatabaseListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new DatabaseListResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        Database databaseInstance = new Database();
-                        result.getDatabases().add(databaseInstance);
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            databaseInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            DatabaseProperties propertiesInstance = new DatabaseProperties();
-                            databaseInstance.setProperties(propertiesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            Database databaseInstance = new Database();
+                            result.getDatabases().add(databaseInstance);
                             
-                            JsonNode collationValue = propertiesValue.get("collation");
-                            if (collationValue != null && collationValue instanceof NullNode == false) {
-                                String collationInstance;
-                                collationInstance = collationValue.getTextValue();
-                                propertiesInstance.setCollation(collationInstance);
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                databaseInstance.setName(nameInstance);
                             }
                             
-                            JsonNode creationDateValue = propertiesValue.get("creationDate");
-                            if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
-                                Calendar creationDateInstance;
-                                creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
-                                propertiesInstance.setCreationDate(creationDateInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                DatabaseProperties propertiesInstance = new DatabaseProperties();
+                                databaseInstance.setProperties(propertiesInstance);
+                                
+                                JsonNode collationValue = propertiesValue.get("collation");
+                                if (collationValue != null && collationValue instanceof NullNode == false) {
+                                    String collationInstance;
+                                    collationInstance = collationValue.getTextValue();
+                                    propertiesInstance.setCollation(collationInstance);
+                                }
+                                
+                                JsonNode creationDateValue = propertiesValue.get("creationDate");
+                                if (creationDateValue != null && creationDateValue instanceof NullNode == false) {
+                                    Calendar creationDateInstance;
+                                    creationDateInstance = DatatypeConverter.parseDateTime(creationDateValue.getTextValue());
+                                    propertiesInstance.setCreationDate(creationDateInstance);
+                                }
+                                
+                                JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
+                                if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
+                                    String currentServiceObjectiveIdInstance;
+                                    currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
+                                    propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                                }
+                                
+                                JsonNode databaseIdValue = propertiesValue.get("databaseId");
+                                if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
+                                    String databaseIdInstance;
+                                    databaseIdInstance = databaseIdValue.getTextValue();
+                                    propertiesInstance.setDatabaseId(databaseIdInstance);
+                                }
+                                
+                                JsonNode editionValue = propertiesValue.get("edition");
+                                if (editionValue != null && editionValue instanceof NullNode == false) {
+                                    String editionInstance;
+                                    editionInstance = editionValue.getTextValue();
+                                    propertiesInstance.setEdition(editionInstance);
+                                }
+                                
+                                JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
+                                if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
+                                    long maxSizeBytesInstance;
+                                    maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
+                                    propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
+                                }
+                                
+                                JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
+                                if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
+                                    String requestedServiceObjectiveIdInstance;
+                                    requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
+                                    propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
+                                }
+                                
+                                JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
+                                if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
+                                    String serviceLevelObjectiveInstance;
+                                    serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
+                                    propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
+                                }
+                                
+                                JsonNode statusValue = propertiesValue.get("status");
+                                if (statusValue != null && statusValue instanceof NullNode == false) {
+                                    String statusInstance;
+                                    statusInstance = statusValue.getTextValue();
+                                    propertiesInstance.setStatus(statusInstance);
+                                }
                             }
                             
-                            JsonNode currentServiceObjectiveIdValue = propertiesValue.get("currentServiceObjectiveId");
-                            if (currentServiceObjectiveIdValue != null && currentServiceObjectiveIdValue instanceof NullNode == false) {
-                                String currentServiceObjectiveIdInstance;
-                                currentServiceObjectiveIdInstance = currentServiceObjectiveIdValue.getTextValue();
-                                propertiesInstance.setCurrentServiceObjectiveId(currentServiceObjectiveIdInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                databaseInstance.setId(idInstance);
                             }
                             
-                            JsonNode databaseIdValue = propertiesValue.get("databaseId");
-                            if (databaseIdValue != null && databaseIdValue instanceof NullNode == false) {
-                                String databaseIdInstance;
-                                databaseIdInstance = databaseIdValue.getTextValue();
-                                propertiesInstance.setDatabaseId(databaseIdInstance);
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                databaseInstance.setType(typeInstance);
                             }
                             
-                            JsonNode editionValue = propertiesValue.get("edition");
-                            if (editionValue != null && editionValue instanceof NullNode == false) {
-                                String editionInstance;
-                                editionInstance = editionValue.getTextValue();
-                                propertiesInstance.setEdition(editionInstance);
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                databaseInstance.setLocation(locationInstance);
                             }
                             
-                            JsonNode maxSizeBytesValue = propertiesValue.get("maxSizeBytes");
-                            if (maxSizeBytesValue != null && maxSizeBytesValue instanceof NullNode == false) {
-                                long maxSizeBytesInstance;
-                                maxSizeBytesInstance = maxSizeBytesValue.getLongValue();
-                                propertiesInstance.setMaxSizeBytes(maxSizeBytesInstance);
-                            }
-                            
-                            JsonNode requestedServiceObjectiveIdValue = propertiesValue.get("requestedServiceObjectiveId");
-                            if (requestedServiceObjectiveIdValue != null && requestedServiceObjectiveIdValue instanceof NullNode == false) {
-                                String requestedServiceObjectiveIdInstance;
-                                requestedServiceObjectiveIdInstance = requestedServiceObjectiveIdValue.getTextValue();
-                                propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
-                            }
-                            
-                            JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
-                            if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
-                                String serviceLevelObjectiveInstance;
-                                serviceLevelObjectiveInstance = serviceLevelObjectiveValue.getTextValue();
-                                propertiesInstance.setServiceObjective(serviceLevelObjectiveInstance);
-                            }
-                            
-                            JsonNode statusValue = propertiesValue.get("status");
-                            if (statusValue != null && statusValue instanceof NullNode == false) {
-                                String statusInstance;
-                                statusInstance = statusValue.getTextValue();
-                                propertiesInstance.setStatus(statusInstance);
-                            }
-                        }
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            databaseInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            databaseInstance.setType(typeInstance);
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            databaseInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                databaseInstance.getTags().put(tagsKey, tagsValue);
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    databaseInstance.getTags().put(tagsKey, tagsValue);
+                                }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

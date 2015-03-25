@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * The Get Virtual Machine operation response.
 */
-public class VirtualMachineGetResponse extends OperationResponse {
+public class VirtualMachineGetResponse extends AzureOperationResponse {
     private String availabilitySetName;
     
     /**

@@ -133,6 +133,10 @@ public class RestoreDatabaseOperationCreateParameters {
     * Initializes a new instance of the
     * RestoreDatabaseOperationCreateParameters class with required arguments.
     *
+    * @param sourceDatabaseName Gets or sets the name of the source Azure SQL
+    * Database.
+    * @param targetDatabaseName Gets or sets the name of the target Azure SQL
+    * Database.
     */
     public RestoreDatabaseOperationCreateParameters(String sourceDatabaseName, String targetDatabaseName) {
         if (sourceDatabaseName == null) {

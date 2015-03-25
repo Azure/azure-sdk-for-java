@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import java.net.URI;
 
 /**
 * A virtual machine disk associated with your subscription.
 */
-public class VirtualMachineDiskUpdateResponse extends OperationResponse {
+public class VirtualMachineDiskUpdateResponse extends AzureOperationResponse {
     private String affinityGroup;
     
     /**

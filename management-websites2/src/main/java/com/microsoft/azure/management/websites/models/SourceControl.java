@@ -57,6 +57,7 @@ public class SourceControl extends ResourceBase {
     * Initializes a new instance of the SourceControl class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public SourceControl(String location) {
         this();

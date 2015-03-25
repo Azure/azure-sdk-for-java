@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetailsResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopic;
@@ -96,7 +96,7 @@ public interface TopicOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String namespaceName, String topicName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String namespaceName, String topicName) throws IOException, ServiceException;
     
     /**
     * Deletes an existing topic. This operation will also remove all associated
@@ -109,7 +109,7 @@ public interface TopicOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String namespaceName, String topicName);
+    Future<AzureOperationResponse> deleteAsync(String namespaceName, String topicName);
     
     /**
     * The topic description is an XML AtomPub document that defines the desired

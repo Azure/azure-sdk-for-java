@@ -26,9 +26,10 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.sql.models.FirewallRuleCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.azure.management.sql.models.FirewallRuleListResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -48,13 +49,20 @@ public interface FirewallRuleOperations {
     * Firewall Rule.
     * @param parameters Required. The required parameters for createing or
     * updating a firewall rule.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return Represents the response to a List Firewall Rules request.
     */
-    FirewallRuleGetResponse createOrUpdate(String resourceGroupName, String serverName, String firewallRule, FirewallRuleCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    FirewallRuleGetResponse createOrUpdate(String resourceGroupName, String serverName, String firewallRule, FirewallRuleCreateOrUpdateParameters parameters) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database Server Firewall rule.
@@ -87,7 +95,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException;
+    AzureOperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException;
     
     /**
     * Deletes an Azure SQL Database Server Firewall rule.
@@ -101,7 +109,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName, String firewallRule);
+    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName, String firewallRule);
     
     /**
     * Returns an Azure SQL Database Server Firewall rule.

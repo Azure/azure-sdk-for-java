@@ -59,8 +59,13 @@ public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters {
     * Initializes a new instance of the JobGetHistoryWithFilterParameters class
     * with required arguments.
     *
+    * @param status Filter the job history to have it only return job execution
+    * attempts having a particular Status, 'completed' or 'failed'.
     */
     public JobGetHistoryWithFilterParameters(JobHistoryStatus status) {
+        if (status == null) {
+            throw new NullPointerException("status");
+        }
         this.setStatus(status);
     }
 }

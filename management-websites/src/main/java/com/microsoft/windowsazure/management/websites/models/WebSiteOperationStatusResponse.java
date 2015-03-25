@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -36,7 +36,7 @@ import java.util.Calendar;
 * long-running operation failed, the response body includes error information
 * regarding the failure.
 */
-public class WebSiteOperationStatusResponse extends OperationResponse {
+public class WebSiteOperationStatusResponse extends AzureOperationResponse {
     private Calendar createdTime;
     
     /**

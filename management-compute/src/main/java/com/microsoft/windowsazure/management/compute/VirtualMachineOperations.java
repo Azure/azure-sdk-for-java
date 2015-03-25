@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureOSImageParameters;
@@ -87,7 +87,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Capturing Role operation creates a copy of the operating system
@@ -114,7 +114,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCapturingOSImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters);
+    Future<AzureOperationResponse> beginCapturingOSImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters);
     
     /**
     * Begin capturing role as VM template.
@@ -138,7 +138,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Begin capturing role as VM template.
@@ -152,7 +152,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCapturingVMImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters);
+    Future<AzureOperationResponse> beginCapturingVMImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters);
     
     /**
     * The Begin Creating Role operation adds a virtual machine to an existing
@@ -186,7 +186,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Creating Role operation adds a virtual machine to an existing
@@ -210,7 +210,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCreatingAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
+    Future<AzureOperationResponse> beginCreatingAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
     
     /**
     * The Begin Creating Virtual Machine Deployment operation provisions a
@@ -239,7 +239,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Creating Virtual Machine Deployment operation provisions a
@@ -258,7 +258,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCreatingDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
+    Future<AzureOperationResponse> beginCreatingDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
     
     /**
     * The Begin Deleting Role operation deletes the specified virtual machine.
@@ -278,7 +278,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException;
+    AzureOperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Role operation deletes the specified virtual machine.
@@ -294,7 +294,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginDeletingAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
+    Future<AzureOperationResponse> beginDeletingAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
     
     /**
     * The Begin Restarting role operation restarts the specified virtual
@@ -313,7 +313,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
+    AzureOperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
     
     /**
     * The Begin Restarting role operation restarts the specified virtual
@@ -328,7 +328,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginRestartingAsync(String serviceName, String deploymentName, String virtualMachineName);
+    Future<AzureOperationResponse> beginRestartingAsync(String serviceName, String deploymentName, String virtualMachineName);
     
     /**
     * The Shutdown Role operation shuts down the specified virtual machine.
@@ -353,7 +353,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Shutdown Role operation shuts down the specified virtual machine.
@@ -368,7 +368,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginShutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
+    Future<AzureOperationResponse> beginShutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
     
     /**
     * The Begin Shutting Down Roles operation stops the specified set of
@@ -393,7 +393,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Shutting Down Roles operation stops the specified set of
@@ -408,7 +408,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginShuttingDownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
+    Future<AzureOperationResponse> beginShuttingDownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
     
     /**
     * The Begin Starting Role operation starts the specified virtual machine.
@@ -426,7 +426,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
+    AzureOperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
     
     /**
     * The Begin Starting Role operation starts the specified virtual machine.
@@ -440,7 +440,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginStartingAsync(String serviceName, String deploymentName, String virtualMachineName);
+    Future<AzureOperationResponse> beginStartingAsync(String serviceName, String deploymentName, String virtualMachineName);
     
     /**
     * The Begin Starting Roles operation starts the specified set of virtual
@@ -465,7 +465,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Starting Roles operation starts the specified set of virtual
@@ -480,7 +480,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginStartingRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
+    Future<AzureOperationResponse> beginStartingRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
     
     /**
     * The Begin Updating Role operation adds a virtual machine to an existing
@@ -506,7 +506,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Updating Role operation adds a virtual machine to an existing
@@ -522,7 +522,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginUpdatingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
+    Future<AzureOperationResponse> beginUpdatingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
     
     /**
     * The Begin Updating Load Balanced Endpoint Set operation changes the
@@ -549,7 +549,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Updating Load Balanced Endpoint Set operation changes the
@@ -566,7 +566,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
+    Future<AzureOperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
     
     /**
     * The Capture Role operation creates a copy of the operating system virtual

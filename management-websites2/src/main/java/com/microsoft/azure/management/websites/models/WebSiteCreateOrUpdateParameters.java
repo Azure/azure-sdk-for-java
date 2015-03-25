@@ -58,6 +58,8 @@ public class WebSiteCreateOrUpdateParameters {
     * Initializes a new instance of the WebSiteCreateOrUpdateParameters class
     * with required arguments.
     *
+    * @param webSite Gets or sets information about a website being created of
+    * updated.
     */
     public WebSiteCreateOrUpdateParameters(WebSiteBase webSite) {
         if (webSite == null) {

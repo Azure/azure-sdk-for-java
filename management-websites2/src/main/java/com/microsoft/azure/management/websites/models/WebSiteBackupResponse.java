@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The backup record created based on the backup request.
 */
-public class WebSiteBackupResponse extends OperationResponse {
+public class WebSiteBackupResponse extends AzureOperationResponse {
     private BackupItemEnvelope backupItem;
     
     /**

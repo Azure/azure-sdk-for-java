@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetailsResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNotificationHubResponse;
@@ -51,7 +51,7 @@ public interface NotificationHubOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String namespaceName, String notificationHubName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String namespaceName, String notificationHubName) throws IOException, ServiceException;
     
     /**
     * Deletes a notification hub associated with a namespace.
@@ -61,7 +61,7 @@ public interface NotificationHubOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String namespaceName, String notificationHubName);
+    Future<AzureOperationResponse> deleteAsync(String namespaceName, String notificationHubName);
     
     /**
     * Lists the notification hubs associated with a namespace.

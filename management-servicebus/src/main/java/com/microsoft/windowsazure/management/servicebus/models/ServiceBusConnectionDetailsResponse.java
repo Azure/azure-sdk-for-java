@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The set of connection details for a service bus entity.
 */
-public class ServiceBusConnectionDetailsResponse extends OperationResponse implements Iterable<ServiceBusConnectionDetail> {
+public class ServiceBusConnectionDetailsResponse extends AzureOperationResponse implements Iterable<ServiceBusConnectionDetail> {
     private ArrayList<ServiceBusConnectionDetail> connectionDetails;
     
     /**

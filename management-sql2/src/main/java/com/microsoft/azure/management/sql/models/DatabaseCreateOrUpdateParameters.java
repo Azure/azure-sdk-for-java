@@ -59,6 +59,9 @@ public class DatabaseCreateOrUpdateParameters extends CreateUpdateBase {
     * Initializes a new instance of the DatabaseCreateOrUpdateParameters class
     * with required arguments.
     *
+    * @param properties Gets or sets the properties of the request.
+    * @param location Gets or sets the location of the resource.
+    * @param tags Gets or sets the tags associated with the request.
     */
     public DatabaseCreateOrUpdateParameters(DatabaseCreateOrUpdateProperties properties, String location, HashMap<String, String> tags) {
         this();

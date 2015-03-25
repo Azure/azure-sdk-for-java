@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -103,10 +104,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> createAsync(final ManagementCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -136,7 +137,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public AzureOperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -153,7 +154,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/certificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/certificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -230,8 +236,9 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -262,10 +269,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String thumbprint) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String thumbprint) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(thumbprint);
             }
          });
@@ -289,7 +296,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse delete(String thumbprint) throws IOException, ServiceException {
+    public AzureOperationResponse delete(String thumbprint) throws IOException, ServiceException {
         // Validate
         if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
@@ -306,7 +313,13 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/certificates/" + thumbprint.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/certificates/";
+        url = url + URLEncoder.encode(thumbprint, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -344,8 +357,9 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -426,7 +440,13 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/certificates/" + thumbprint.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/certificates/";
+        url = url + URLEncoder.encode(thumbprint, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -466,44 +486,46 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             // Create Result
             ManagementCertificateGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ManagementCertificateGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element subscriptionCertificateElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate");
-            if (subscriptionCertificateElement != null) {
-                Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
-                if (subscriptionCertificatePublicKeyElement != null) {
-                    byte[] subscriptionCertificatePublicKeyInstance;
-                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
-                    result.setPublicKey(subscriptionCertificatePublicKeyInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ManagementCertificateGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element subscriptionCertificateElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate");
+                if (subscriptionCertificateElement != null) {
+                    Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
+                    if (subscriptionCertificatePublicKeyElement != null) {
+                        byte[] subscriptionCertificatePublicKeyInstance;
+                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
+                        result.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                    }
+                    
+                    Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
+                    if (subscriptionCertificateThumbprintElement != null) {
+                        String subscriptionCertificateThumbprintInstance;
+                        subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                        result.setThumbprint(subscriptionCertificateThumbprintInstance);
+                    }
+                    
+                    Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
+                    if (subscriptionCertificateDataElement != null) {
+                        byte[] subscriptionCertificateDataInstance;
+                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
+                        result.setData(subscriptionCertificateDataInstance);
+                    }
+                    
+                    Element createdElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "Created");
+                    if (createdElement != null) {
+                        Calendar createdInstance;
+                        createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
+                        result.setCreated(createdInstance);
+                    }
                 }
                 
-                Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
-                if (subscriptionCertificateThumbprintElement != null) {
-                    String subscriptionCertificateThumbprintInstance;
-                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                    result.setThumbprint(subscriptionCertificateThumbprintInstance);
-                }
-                
-                Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
-                if (subscriptionCertificateDataElement != null) {
-                    byte[] subscriptionCertificateDataInstance;
-                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
-                    result.setData(subscriptionCertificateDataInstance);
-                }
-                
-                Element createdElement = XmlUtility.getElementByTagNameNS(subscriptionCertificateElement, "http://schemas.microsoft.com/windowsazure", "Created");
-                if (createdElement != null) {
-                    Calendar createdInstance;
-                    createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
-                    result.setCreated(createdInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -574,7 +596,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/certificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/certificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -614,50 +641,52 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             // Create Result
             ManagementCertificateListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ManagementCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element subscriptionCertificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificates");
-            if (subscriptionCertificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").get(i1));
-                    ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
-                    result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
-                    
-                    Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
-                    if (subscriptionCertificatePublicKeyElement != null) {
-                        byte[] subscriptionCertificatePublicKeyInstance;
-                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
-                        subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
-                    }
-                    
-                    Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
-                    if (subscriptionCertificateThumbprintElement != null) {
-                        String subscriptionCertificateThumbprintInstance;
-                        subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                        subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
-                    }
-                    
-                    Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
-                    if (subscriptionCertificateDataElement != null) {
-                        byte[] subscriptionCertificateDataInstance;
-                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
-                        subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
-                    }
-                    
-                    Element createdElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Created");
-                    if (createdElement != null) {
-                        Calendar createdInstance;
-                        createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
-                        subscriptionCertificateInstance.setCreated(createdInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ManagementCertificateListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element subscriptionCertificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificates");
+                if (subscriptionCertificatesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").get(i1));
+                        ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
+                        result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
+                        
+                        Element subscriptionCertificatePublicKeyElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
+                        if (subscriptionCertificatePublicKeyElement != null) {
+                            byte[] subscriptionCertificatePublicKeyInstance;
+                            subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decode(subscriptionCertificatePublicKeyElement.getTextContent()) : null;
+                            subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                        }
+                        
+                        Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
+                        if (subscriptionCertificateThumbprintElement != null) {
+                            String subscriptionCertificateThumbprintInstance;
+                            subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                            subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
+                        }
+                        
+                        Element subscriptionCertificateDataElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
+                        if (subscriptionCertificateDataElement != null) {
+                            byte[] subscriptionCertificateDataInstance;
+                            subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decode(subscriptionCertificateDataElement.getTextContent()) : null;
+                            subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
+                        }
+                        
+                        Element createdElement = XmlUtility.getElementByTagNameNS(subscriptionCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Created");
+                        if (createdElement != null) {
+                            Calendar createdInstance;
+                            createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
+                            subscriptionCertificateInstance.setCreated(createdInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

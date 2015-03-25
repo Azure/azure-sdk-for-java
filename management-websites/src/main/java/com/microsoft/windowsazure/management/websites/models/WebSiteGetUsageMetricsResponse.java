@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The Get Usage Metrics Web Site operation response.
 */
-public class WebSiteGetUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric> {
+public class WebSiteGetUsageMetricsResponse extends AzureOperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric> {
     private ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics;
     
     /**
