@@ -76,6 +76,7 @@ public class ParametersLink {
     * Initializes a new instance of the ParametersLink class with required
     * arguments.
     *
+    * @param uri URI referencing the template.
     */
     public ParametersLink(URI uri) {
         if (uri == null) {

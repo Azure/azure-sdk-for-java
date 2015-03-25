@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * A response to a request for a particular authorization rule.
 */
-public class ServiceBusAuthorizationRuleResponse extends OperationResponse {
+public class ServiceBusAuthorizationRuleResponse extends AzureOperationResponse {
     private ServiceBusSharedAccessAuthorizationRule authorizationRule;
     
     /**

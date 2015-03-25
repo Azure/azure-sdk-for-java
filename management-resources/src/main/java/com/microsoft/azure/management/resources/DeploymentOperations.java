@@ -23,13 +23,13 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.BasicDeployment;
+import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.DeploymentGetResult;
 import com.microsoft.azure.management.resources.models.DeploymentListParameters;
 import com.microsoft.azure.management.resources.models.DeploymentListResult;
 import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -52,7 +52,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
+    AzureOperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
     
     /**
     * Cancel a currently running template deployment.
@@ -63,7 +63,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> cancelAsync(String resourceGroupName, String deploymentName);
+    Future<AzureOperationResponse> cancelAsync(String resourceGroupName, String deploymentName);
     
     /**
     * Create a named template deployment using a template.
@@ -81,7 +81,7 @@ public interface DeploymentOperations {
     * the response.
     * @return Template deployment operation create result.
     */
-    DeploymentOperationsCreateResult createOrUpdate(String resourceGroupName, String deploymentName, BasicDeployment parameters) throws IOException, ServiceException, URISyntaxException;
+    DeploymentOperationsCreateResult createOrUpdate(String resourceGroupName, String deploymentName, Deployment parameters) throws IOException, ServiceException, URISyntaxException;
     
     /**
     * Create a named template deployment using a template.
@@ -93,7 +93,7 @@ public interface DeploymentOperations {
     * operation.
     * @return Template deployment operation create result.
     */
-    Future<DeploymentOperationsCreateResult> createOrUpdateAsync(String resourceGroupName, String deploymentName, BasicDeployment parameters);
+    Future<DeploymentOperationsCreateResult> createOrUpdateAsync(String resourceGroupName, String deploymentName, Deployment parameters);
     
     /**
     * Get a deployment.
@@ -188,7 +188,7 @@ public interface DeploymentOperations {
     * the response.
     * @return Information from validate template deployment response.
     */
-    DeploymentValidateResponse validate(String resourceGroupName, String deploymentName, BasicDeployment parameters) throws IOException, ServiceException, URISyntaxException;
+    DeploymentValidateResponse validate(String resourceGroupName, String deploymentName, Deployment parameters) throws IOException, ServiceException, URISyntaxException;
     
     /**
     * Validate a deployment template.
@@ -199,5 +199,5 @@ public interface DeploymentOperations {
     * @param parameters Required. Deployment to validate.
     * @return Information from validate template deployment response.
     */
-    Future<DeploymentValidateResponse> validateAsync(String resourceGroupName, String deploymentName, BasicDeployment parameters);
+    Future<DeploymentValidateResponse> validateAsync(String resourceGroupName, String deploymentName, Deployment parameters);
 }

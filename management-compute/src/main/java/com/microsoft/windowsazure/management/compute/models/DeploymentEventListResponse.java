@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * Identifies the list of reboot events due to planned maintenance that impacted
 * a deployment in the optionally provided timeframe.
 */
-public class DeploymentEventListResponse extends OperationResponse {
+public class DeploymentEventListResponse extends AzureOperationResponse {
     private String continuationToken;
     
     /**

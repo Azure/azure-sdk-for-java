@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The response to a storage account check name availability request.
 */
-public class CheckNameAvailabilityResponse extends OperationResponse {
+public class CheckNameAvailabilityResponse extends AzureOperationResponse {
     private boolean isAvailable;
     
     /**

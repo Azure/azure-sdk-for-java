@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Job Collection operation response.
 */
-public class JobCollectionGetResponse extends OperationResponse {
+public class JobCollectionGetResponse extends AzureOperationResponse {
     private String eTag;
     
     /**

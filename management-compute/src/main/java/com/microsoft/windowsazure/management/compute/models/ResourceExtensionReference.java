@@ -31,6 +31,28 @@ import java.util.ArrayList;
 * the Virtual Machine.
 */
 public class ResourceExtensionReference {
+    private Boolean forceUpdate;
+    
+    /**
+    * Optional. Optional.  Set to “true” if you want to reapply a configuration
+    * toan extension when the configuration has not been updated.Possible
+    * values are: true | false
+    * @return The ForceUpdate value.
+    */
+    public Boolean isForceUpdate() {
+        return this.forceUpdate;
+    }
+    
+    /**
+    * Optional. Optional.  Set to “true” if you want to reapply a configuration
+    * toan extension when the configuration has not been updated.Possible
+    * values are: true | false
+    * @param forceUpdateValue The ForceUpdate value.
+    */
+    public void setForceUpdate(final Boolean forceUpdateValue) {
+        this.forceUpdate = forceUpdateValue;
+    }
+    
     private String name;
     
     /**

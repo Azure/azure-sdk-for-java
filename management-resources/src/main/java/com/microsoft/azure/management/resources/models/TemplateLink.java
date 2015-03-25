@@ -76,6 +76,7 @@ public class TemplateLink {
     * Initializes a new instance of the TemplateLink class with required
     * arguments.
     *
+    * @param uri URI referencing the template.
     */
     public TemplateLink(URI uri) {
         if (uri == null) {

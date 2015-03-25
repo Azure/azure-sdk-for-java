@@ -58,6 +58,8 @@ public class WebSiteBaseProperties {
     * Initializes a new instance of the WebSiteBaseProperties class with
     * required arguments.
     *
+    * @param serverFarm The name of the Server Farm (Web Hosting Plan)
+    * associated with this website.
     */
     public WebSiteBaseProperties(String serverFarm) {
         if (serverFarm == null) {

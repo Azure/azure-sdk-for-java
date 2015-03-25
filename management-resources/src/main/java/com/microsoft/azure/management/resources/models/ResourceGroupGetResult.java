@@ -23,19 +23,19 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Resource group information.
 */
-public class ResourceGroupGetResult extends OperationResponse {
-    private ResourceGroup resourceGroup;
+public class ResourceGroupGetResult extends AzureOperationResponse {
+    private ResourceGroupExtended resourceGroup;
     
     /**
     * Optional. Gets or sets the resource group.
     * @return The ResourceGroup value.
     */
-    public ResourceGroup getResourceGroup() {
+    public ResourceGroupExtended getResourceGroup() {
         return this.resourceGroup;
     }
     
@@ -43,7 +43,7 @@ public class ResourceGroupGetResult extends OperationResponse {
     * Optional. Gets or sets the resource group.
     * @param resourceGroupValue The ResourceGroup value.
     */
-    public void setResourceGroup(final ResourceGroup resourceGroupValue) {
+    public void setResourceGroup(final ResourceGroupExtended resourceGroupValue) {
         this.resourceGroup = resourceGroupValue;
     }
 }

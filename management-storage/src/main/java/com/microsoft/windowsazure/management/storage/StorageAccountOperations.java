@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.storage;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
@@ -70,7 +70,7 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreating(StorageAccountCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse beginCreating(StorageAccountCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Creating Storage Account operation creates a new storage
@@ -83,7 +83,7 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCreatingAsync(StorageAccountCreateParameters parameters);
+    Future<AzureOperationResponse> beginCreatingAsync(StorageAccountCreateParameters parameters);
     
     /**
     * The Check Name Availability operation checks if a storage account name is
@@ -182,7 +182,7 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String accountName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String accountName) throws IOException, ServiceException;
     
     /**
     * The Delete Storage Account operation deletes the specified storage
@@ -195,7 +195,7 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String accountName);
+    Future<AzureOperationResponse> deleteAsync(String accountName);
     
     /**
     * The Get Storage Account Properties operation returns system properties
@@ -352,7 +352,7 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Storage Account operation updates the label and the
@@ -367,5 +367,5 @@ public interface StorageAccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateAsync(String accountName, StorageAccountUpdateParameters parameters);
+    Future<AzureOperationResponse> updateAsync(String accountName, StorageAccountUpdateParameters parameters);
 }

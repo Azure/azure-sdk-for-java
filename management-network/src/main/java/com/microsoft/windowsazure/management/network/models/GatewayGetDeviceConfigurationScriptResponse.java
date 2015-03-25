@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The configuration script returned from the get device configuration script
 * operation.
 */
-public class GatewayGetDeviceConfigurationScriptResponse extends OperationResponse {
+public class GatewayGetDeviceConfigurationScriptResponse extends AzureOperationResponse {
     private String configurationScript;
     
     /**

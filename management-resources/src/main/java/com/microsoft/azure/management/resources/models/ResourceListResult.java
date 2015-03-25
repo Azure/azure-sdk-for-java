@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * List of resource groups.
 */
-public class ResourceListResult extends OperationResponse {
+public class ResourceListResult extends AzureOperationResponse {
     private String nextLink;
     
     /**
@@ -49,13 +49,13 @@ public class ResourceListResult extends OperationResponse {
         this.nextLink = nextLinkValue;
     }
     
-    private ArrayList<Resource> resources;
+    private ArrayList<GenericResourceExtended> resources;
     
     /**
     * Optional. Gets or sets the list of resource groups.
     * @return The Resources value.
     */
-    public ArrayList<Resource> getResources() {
+    public ArrayList<GenericResourceExtended> getResources() {
         return this.resources;
     }
     
@@ -63,7 +63,7 @@ public class ResourceListResult extends OperationResponse {
     * Optional. Gets or sets the list of resource groups.
     * @param resourcesValue The Resources value.
     */
-    public void setResources(final ArrayList<Resource> resourcesValue) {
+    public void setResources(final ArrayList<GenericResourceExtended> resourcesValue) {
         this.resources = resourcesValue;
     }
     
@@ -73,13 +73,14 @@ public class ResourceListResult extends OperationResponse {
     */
     public ResourceListResult() {
         super();
-        this.setResources(new LazyArrayList<Resource>());
+        this.setResources(new LazyArrayList<GenericResourceExtended>());
     }
     
     /**
     * Initializes a new instance of the ResourceListResult class with required
     * arguments.
     *
+    * @param nextLink Gets or sets the URL to get the next set of results.
     */
     public ResourceListResult(String nextLink) {
         this();

@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,7 +32,7 @@ import java.util.Iterator;
 * Represents the response containing the list of database copies for a given
 * database.
 */
-public class DatabaseCopyListResponse extends OperationResponse implements Iterable<DatabaseCopy> {
+public class DatabaseCopyListResponse extends AzureOperationResponse implements Iterable<DatabaseCopy> {
     private ArrayList<DatabaseCopy> databaseCopies;
     
     /**

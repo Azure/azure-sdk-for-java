@@ -75,6 +75,7 @@ public class BasicAuthentication extends HttpAuthentication {
     * Initializes a new instance of the BasicAuthentication class with required
     * arguments.
     *
+    * @param username Gets or sets the username.
     */
     public BasicAuthentication(String username) {
         if (username == null) {

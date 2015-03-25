@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * List of metadata for the website.
 */
-public class WebSiteMetadataResult extends OperationResponse {
+public class WebSiteMetadataResult extends AzureOperationResponse {
     private WebSiteMetadataEnvelope resource;
     
     /**

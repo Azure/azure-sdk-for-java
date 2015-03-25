@@ -23,16 +23,16 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.LazyHashMap;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
 * Information about a retrieved Cloud Service.
 */
-public class CloudServiceGetResponse extends OperationResponse {
+public class CloudServiceGetResponse extends AzureOperationResponse {
     private String geoLocation;
     
     /**

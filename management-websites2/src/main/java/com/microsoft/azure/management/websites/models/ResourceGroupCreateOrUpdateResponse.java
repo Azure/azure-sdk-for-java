@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Create or Update resource group operation response.
 */
-public class ResourceGroupCreateOrUpdateResponse extends OperationResponse {
+public class ResourceGroupCreateOrUpdateResponse extends AzureOperationResponse {
     private String name;
     
     /**

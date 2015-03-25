@@ -70,14 +70,14 @@ public class VirtualMachineOSImageCreateParameters {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -86,7 +86,7 @@ public class VirtualMachineOSImageCreateParameters {
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -308,7 +308,7 @@ public class VirtualMachineOSImageCreateParameters {
         this.showInGui = showInGuiValue;
     }
     
-    private URI smallIconUri;
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
@@ -316,7 +316,7 @@ public class VirtualMachineOSImageCreateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -326,7 +326,7 @@ public class VirtualMachineOSImageCreateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
 }

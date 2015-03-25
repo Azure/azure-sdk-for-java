@@ -56,6 +56,7 @@ public class SourceControlUpdateParameters {
     * Initializes a new instance of the SourceControlUpdateParameters class
     * with required arguments.
     *
+    * @param properties Gets or sets the properties of the source control.
     */
     public SourceControlUpdateParameters(SourceControlProperties properties) {
         if (properties == null) {

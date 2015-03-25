@@ -25,7 +25,7 @@ import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
@@ -140,7 +140,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
 
     private WebResource addOptionalContainerIncludeQueryParam(
             ListContainersOptions options, WebResource webResource) {
-        CommaStringBuilder sb = new CommaStringBuilder();
+        CollectionStringBuilder sb = new CollectionStringBuilder();
         sb.addValue(options.isIncludeMetadata(), "metadata");
         webResource = addOptionalQueryParam(webResource, "include",
                 sb.toString());

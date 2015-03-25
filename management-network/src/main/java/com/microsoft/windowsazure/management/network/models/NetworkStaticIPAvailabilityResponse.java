@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 * A response that indicates the availability of a static IP address, and if
 * not, provides a list of suggestions.
 */
-public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
+public class NetworkStaticIPAvailabilityResponse extends AzureOperationResponse {
     private ArrayList<InetAddress> availableAddresses;
     
     /**

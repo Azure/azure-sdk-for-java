@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Geo Regions operation response.
 */
-public class WebSpacesListGeoRegionsResponse extends OperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
+public class WebSpacesListGeoRegionsResponse extends AzureOperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
     private ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions;
     
     /**

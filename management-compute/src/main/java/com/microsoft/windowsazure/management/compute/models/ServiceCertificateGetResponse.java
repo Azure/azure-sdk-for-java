@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Service Certificate operation response.
 */
-public class ServiceCertificateGetResponse extends OperationResponse {
+public class ServiceCertificateGetResponse extends AzureOperationResponse {
     private byte[] data;
     
     /**

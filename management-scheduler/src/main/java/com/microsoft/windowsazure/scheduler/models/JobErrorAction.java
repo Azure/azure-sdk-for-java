@@ -93,8 +93,12 @@ public class JobErrorAction {
     * Initializes a new instance of the JobErrorAction class with required
     * arguments.
     *
+    * @param type Type of action. Can be one of http, https, storageQueue.
     */
     public JobErrorAction(JobActionType type) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
         this.setType(type);
     }
 }

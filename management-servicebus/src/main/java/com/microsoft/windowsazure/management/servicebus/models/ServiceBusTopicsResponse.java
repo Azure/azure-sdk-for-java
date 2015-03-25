@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A response to a request for a list of topics.
 */
-public class ServiceBusTopicsResponse extends OperationResponse implements Iterable<ServiceBusTopic> {
+public class ServiceBusTopicsResponse extends AzureOperationResponse implements Iterable<ServiceBusTopic> {
     private ArrayList<ServiceBusTopic> topics;
     
     /**

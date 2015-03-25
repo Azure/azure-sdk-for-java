@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.FilterableService;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
@@ -107,7 +107,7 @@ public interface CloudServiceManagementClient extends Closeable, FilterableServi
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    AzureOperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * EntitleResource is used only for 3rd party Store providers. Each
@@ -119,7 +119,7 @@ public interface CloudServiceManagementClient extends Closeable, FilterableServi
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> entitleResourceAsync(EntitleResourceParameters parameters);
+    Future<AzureOperationResponse> entitleResourceAsync(EntitleResourceParameters parameters);
     
     /**
     * The Get Operation Status operation returns the status of thespecified

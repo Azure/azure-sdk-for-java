@@ -23,19 +23,19 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Template deployment operation create result.
 */
-public class DeploymentOperationsCreateResult extends OperationResponse {
-    private Deployment deployment;
+public class DeploymentOperationsCreateResult extends AzureOperationResponse {
+    private DeploymentExtended deployment;
     
     /**
     * Optional. Gets or sets the deployment.
     * @return The Deployment value.
     */
-    public Deployment getDeployment() {
+    public DeploymentExtended getDeployment() {
         return this.deployment;
     }
     
@@ -43,7 +43,7 @@ public class DeploymentOperationsCreateResult extends OperationResponse {
     * Optional. Gets or sets the deployment.
     * @param deploymentValue The Deployment value.
     */
-    public void setDeployment(final Deployment deploymentValue) {
+    public void setDeployment(final DeploymentExtended deploymentValue) {
         this.deployment = deploymentValue;
     }
 }

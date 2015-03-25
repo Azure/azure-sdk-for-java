@@ -23,9 +23,10 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageGetDetailsResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageListResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageReplicateParameters;
@@ -45,6 +46,42 @@ import org.xml.sax.SAXException;
 */
 public interface VirtualMachineVMImageOperations {
     /**
+    * The Create VM Image operation creates a VM image that in your image
+    * repository.  (see
+    * http://msdn.microsoft.com/en-us/library/azure/dn775054.aspx for more
+    * information)
+    *
+    * @param parameters Required. Parameters supplied to the virtual machine VM
+    * image create operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    AzureOperationResponse beginCreating(VirtualMachineVMImageCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Create VM Image operation creates a VM image that in your image
+    * repository.  (see
+    * http://msdn.microsoft.com/en-us/library/azure/dn775054.aspx for more
+    * information)
+    *
+    * @param parameters Required. Parameters supplied to the virtual machine VM
+    * image create operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<AzureOperationResponse> beginCreatingAsync(VirtualMachineVMImageCreateParameters parameters);
+    
+    /**
     * The Begin Deleting Virtual Machine Image operation deletes the specified
     * virtual machine image.
     *
@@ -59,7 +96,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException;
+    AzureOperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Virtual Machine Image operation deletes the specified
@@ -72,7 +109,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginDeletingAsync(String vmImageName, boolean deleteFromStorage);
+    Future<AzureOperationResponse> beginDeletingAsync(String vmImageName, boolean deleteFromStorage);
     
     /**
     * Share an already replicated VM image. This operation is only for
@@ -90,7 +127,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginSharing(String vmImageName, String permission) throws IOException, ServiceException;
+    AzureOperationResponse beginSharing(String vmImageName, String permission) throws IOException, ServiceException;
     
     /**
     * Share an already replicated VM image. This operation is only for
@@ -104,7 +141,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginSharingAsync(String vmImageName, String permission);
+    Future<AzureOperationResponse> beginSharingAsync(String vmImageName, String permission);
     
     /**
     * Unreplicate an VM image to multiple target locations. This operation is
@@ -124,7 +161,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUnreplicating(String vmImageName) throws IOException, ServiceException;
+    AzureOperationResponse beginUnreplicating(String vmImageName) throws IOException, ServiceException;
     
     /**
     * Unreplicate an VM image to multiple target locations. This operation is
@@ -140,7 +177,66 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginUnreplicatingAsync(String vmImageName);
+    Future<AzureOperationResponse> beginUnreplicatingAsync(String vmImageName);
+    
+    /**
+    * The Create VM Image operation creates a VM image that in your image
+    * repository.  (see
+    * http://msdn.microsoft.com/en-us/library/azure/dn775054.aspx for more
+    * information)
+    *
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse create(VirtualMachineVMImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    
+    /**
+    * The Create VM Image operation creates a VM image that in your image
+    * repository.  (see
+    * http://msdn.microsoft.com/en-us/library/azure/dn775054.aspx for more
+    * information)
+    *
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> createAsync(VirtualMachineVMImageCreateParameters parameters);
     
     /**
     * The Delete Virtual Machine Image operation deletes the specified virtual
@@ -428,7 +524,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String imageName, VirtualMachineVMImageUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    AzureOperationResponse update(String imageName, VirtualMachineVMImageUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Update VM Image operation updates a VM image that in your image
@@ -441,5 +537,5 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateAsync(String imageName, VirtualMachineVMImageUpdateParameters parameters);
+    Future<AzureOperationResponse> updateAsync(String imageName, VirtualMachineVMImageUpdateParameters parameters);
 }

@@ -23,13 +23,13 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import java.net.URI;
 
 /**
 * The Get Web Site Repository operation response.
 */
-public class WebSiteGetRepositoryResponse extends OperationResponse {
+public class WebSiteGetRepositoryResponse extends AzureOperationResponse {
     private URI uri;
     
     /**

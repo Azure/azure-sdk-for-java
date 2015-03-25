@@ -34,4 +34,6 @@ public enum SkuOptions {
     Basic,
     
     Standard,
+    
+    Premium,
 }

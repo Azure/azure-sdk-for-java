@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Check Name Availability operation response.
 */
-public class JobCollectionCheckNameAvailabilityResponse extends OperationResponse {
+public class JobCollectionCheckNameAvailabilityResponse extends AzureOperationResponse {
     private boolean isAvailable;
     
     /**

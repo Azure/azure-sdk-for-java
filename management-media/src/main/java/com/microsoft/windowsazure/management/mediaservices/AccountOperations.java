@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.mediaservices;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountCreateParameters;
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountCreateResponse;
@@ -86,7 +86,7 @@ public interface AccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String accountName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String accountName) throws IOException, ServiceException;
     
     /**
     * The Delete Media Services Account operation deletes an existing media
@@ -98,7 +98,7 @@ public interface AccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String accountName);
+    Future<AzureOperationResponse> deleteAsync(String accountName);
     
     /**
     * The Get Media Services Account operation gets detailed information about
@@ -174,7 +174,7 @@ public interface AccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse regenerateKey(String accountName, MediaServicesKeyType keyType) throws IOException, ServiceException;
+    AzureOperationResponse regenerateKey(String accountName, MediaServicesKeyType keyType) throws IOException, ServiceException;
     
     /**
     * The Regenerate Media Services Account Key operation regenerates an
@@ -188,5 +188,5 @@ public interface AccountOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> regenerateKeyAsync(String accountName, MediaServicesKeyType keyType);
+    Future<AzureOperationResponse> regenerateKeyAsync(String accountName, MediaServicesKeyType keyType);
 }

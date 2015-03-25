@@ -159,7 +159,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.sourceControls = new SourceControlOperationsImpl(this);
         this.webHostingPlans = new WebHostingPlanOperationsImpl(this);

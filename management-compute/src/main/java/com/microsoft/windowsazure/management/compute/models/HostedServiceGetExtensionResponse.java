@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Extension operation response.
 */
-public class HostedServiceGetExtensionResponse extends OperationResponse {
+public class HostedServiceGetExtensionResponse extends AzureOperationResponse {
     private String id;
     
     /**
@@ -179,6 +179,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     * Initializes a new instance of the HostedServiceGetExtensionResponse class
     * with required arguments.
     *
+    * @param type The type of the extension.
     */
     public HostedServiceGetExtensionResponse(String type) {
         if (type == null) {

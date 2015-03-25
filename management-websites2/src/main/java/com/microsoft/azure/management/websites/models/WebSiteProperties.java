@@ -287,6 +287,46 @@ public class WebSiteProperties {
         this.serverFarm = serverFarmValue;
     }
     
+    private String serverFarmId;
+    
+    /**
+    * Optional. The fully qualified name of the serverFarm allowing for server
+    * farms in different subscriptions and resource groups versus the
+    * ServerFarm property that is just the farm name.
+    * @return The ServerFarmId value.
+    */
+    public String getServerFarmId() {
+        return this.serverFarmId;
+    }
+    
+    /**
+    * Optional. The fully qualified name of the serverFarm allowing for server
+    * farms in different subscriptions and resource groups versus the
+    * ServerFarm property that is just the farm name.
+    * @param serverFarmIdValue The ServerFarmId value.
+    */
+    public void setServerFarmId(final String serverFarmIdValue) {
+        this.serverFarmId = serverFarmIdValue;
+    }
+    
+    private WebSiteConfiguration siteConfig;
+    
+    /**
+    * Optional. Contains site configuration
+    * @return The SiteConfig value.
+    */
+    public WebSiteConfiguration getSiteConfig() {
+        return this.siteConfig;
+    }
+    
+    /**
+    * Optional. Contains site configuration
+    * @param siteConfigValue The SiteConfig value.
+    */
+    public void setSiteConfig(final WebSiteConfiguration siteConfigValue) {
+        this.siteConfig = siteConfigValue;
+    }
+    
     private SkuOptions sku;
     
     /**
@@ -494,6 +534,24 @@ public class WebSiteProperties {
     * SSL states bound to a website.
     */
     public static class WebSiteHostNameSslState {
+        private HostType hostType;
+        
+        /**
+        * Optional. Type of host
+        * @return The HostType value.
+        */
+        public HostType getHostType() {
+            return this.hostType;
+        }
+        
+        /**
+        * Optional. Type of host
+        * @param hostTypeValue The HostType value.
+        */
+        public void setHostType(final HostType hostTypeValue) {
+            this.hostType = hostTypeValue;
+        }
+        
         private String ipBasedSslResult;
         
         /**

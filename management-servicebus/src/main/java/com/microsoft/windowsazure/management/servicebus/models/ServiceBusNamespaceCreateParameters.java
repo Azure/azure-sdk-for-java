@@ -90,10 +90,15 @@ public class ServiceBusNamespaceCreateParameters {
     * Initializes a new instance of the ServiceBusNamespaceCreateParameters
     * class with required arguments.
     *
+    * @param region The namespace region.
+    * @param namespaceType Gets or sets the namespace type.
     */
     public ServiceBusNamespaceCreateParameters(String region, NamespaceType namespaceType) {
         if (region == null) {
             throw new NullPointerException("region");
+        }
+        if (namespaceType == null) {
+            throw new NullPointerException("namespaceType");
         }
         this.setRegion(region);
         this.setNamespaceType(namespaceType);

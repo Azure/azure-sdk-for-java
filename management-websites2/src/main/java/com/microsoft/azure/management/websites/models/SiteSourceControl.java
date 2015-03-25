@@ -57,6 +57,7 @@ public class SiteSourceControl extends ResourceBase {
     * Initializes a new instance of the SiteSourceControl class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public SiteSourceControl(String location) {
         this();

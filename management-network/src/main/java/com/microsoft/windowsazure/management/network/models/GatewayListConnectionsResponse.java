@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The response to a ListConnections request to a Virtual Network Gateway.
 */
-public class GatewayListConnectionsResponse extends OperationResponse implements Iterable<GatewayListConnectionsResponse.GatewayConnection> {
+public class GatewayListConnectionsResponse extends AzureOperationResponse implements Iterable<GatewayListConnectionsResponse.GatewayConnection> {
     private ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections;
     
     /**

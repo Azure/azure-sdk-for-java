@@ -23,13 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.Base64;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.ExtensionEndpointConfiguration;
 import com.microsoft.windowsazure.management.compute.models.ExtensionImageRegisterParameters;
@@ -40,7 +42,9 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
@@ -102,10 +106,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginRegisteringAsync(final ExtensionImageRegisterParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> beginRegisteringAsync(final ExtensionImageRegisterParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return beginRegistering(parameters);
             }
          });
@@ -135,7 +139,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public AzureOperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -195,7 +199,12 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/extensions";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/extensions";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -452,6 +461,12 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             extensionImageElement.appendChild(companyNameElement);
         }
         
+        if (parameters.getRegions() != null) {
+            Element regionsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Regions");
+            regionsElement.appendChild(requestDoc.createTextNode(parameters.getRegions()));
+            extensionImageElement.appendChild(regionsElement);
+        }
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
@@ -483,8 +498,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -522,10 +538,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginUnregisteringAsync(final String providerNamespace, final String type, final String version) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> beginUnregisteringAsync(final String providerNamespace, final String type, final String version) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return beginUnregistering(providerNamespace, type, version);
             }
          });
@@ -556,7 +572,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException {
+    public AzureOperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException {
         // Validate
         if (providerNamespace == null) {
             throw new NullPointerException("providerNamespace");
@@ -581,7 +597,17 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/extensions/" + providerNamespace.trim() + "/" + type.trim() + "/" + version.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/extensions/";
+        url = url + URLEncoder.encode(providerNamespace, "UTF-8");
+        url = url + "/";
+        url = url + URLEncoder.encode(type, "UTF-8");
+        url = url + "/";
+        url = url + URLEncoder.encode(version, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -620,8 +646,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -652,10 +679,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginUpdatingAsync(final ExtensionImageUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> beginUpdatingAsync(final ExtensionImageUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return beginUpdating(parameters);
             }
          });
@@ -685,7 +712,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public AzureOperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -745,7 +772,17 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/extensions" + "?" + "action=update";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/extensions";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("action=update");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1002,6 +1039,12 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             extensionImageElement.appendChild(companyNameElement);
         }
         
+        if (parameters.getRegions() != null) {
+            Element regionsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Regions");
+            regionsElement.appendChild(requestDoc.createTextNode(parameters.getRegions()));
+            extensionImageElement.appendChild(regionsElement);
+        }
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
@@ -1033,8 +1076,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1127,7 +1171,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getExtensionImagesOperations().beginRegisteringAsync(parameters).get();
+            AzureOperationResponse response = client2.getExtensionImagesOperations().beginRegisteringAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1149,8 +1193,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1264,7 +1309,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getExtensionImagesOperations().beginUnregisteringAsync(providerNamespace, type, version).get();
+            AzureOperationResponse response = client2.getExtensionImagesOperations().beginUnregisteringAsync(providerNamespace, type, version).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1286,8 +1331,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1394,7 +1440,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getExtensionImagesOperations().beginUpdatingAsync(parameters).get();
+            AzureOperationResponse response = client2.getExtensionImagesOperations().beginUpdatingAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1416,8 +1462,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

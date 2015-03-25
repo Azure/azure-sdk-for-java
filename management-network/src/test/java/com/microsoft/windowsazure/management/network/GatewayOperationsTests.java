@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -95,7 +95,7 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
         gatewayCreateParameters.setGatewayType(GatewayType.STATICROUTING);
         
         // Act
-        OperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);
+        AzureOperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);
         
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
@@ -65,7 +65,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException;
+    AzureOperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException;
     
     /**
     * Share an already replicated OS image. This operation is only for
@@ -78,7 +78,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginSharingAsync(String imageName, String permission);
+    Future<AzureOperationResponse> beginSharingAsync(String imageName, String permission);
     
     /**
     * Unreplicate an OS image to multiple target locations. This operation is
@@ -98,7 +98,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException;
+    AzureOperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException;
     
     /**
     * Unreplicate an OS image to multiple target locations. This operation is
@@ -114,7 +114,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginUnreplicatingAsync(String imageName);
+    Future<AzureOperationResponse> beginUnreplicatingAsync(String imageName);
     
     /**
     * The Create OS Image operation adds an operating system image that is
@@ -189,7 +189,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    AzureOperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete OS Image operation deletes the specified OS image from your
@@ -203,7 +203,7 @@ public interface VirtualMachineOSImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String imageName, boolean deleteFromStorage);
+    Future<AzureOperationResponse> deleteAsync(String imageName, boolean deleteFromStorage);
     
     /**
     * The Get OS Image operation retrieves the details for an operating system

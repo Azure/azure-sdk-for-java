@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
@@ -122,7 +122,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
         createParameters.setAccountType("Standard_LRS");
 
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         Assert.assertEquals(200, operationResponse.getStatusCode());
          
         //use container inside storage account, needed for os image storage.
@@ -143,7 +143,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
         }
 
         if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))) {
-            OperationResponse operationResponse = null;
+            AzureOperationResponse operationResponse = null;
             try {
                 operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
             } catch (IOException e) {

@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Represents the response that the service returns once an import or export
 * operation has been initiated.
 */
-public class DacImportExportResponse extends OperationResponse {
+public class DacImportExportResponse extends AzureOperationResponse {
     private String guid;
     
     /**

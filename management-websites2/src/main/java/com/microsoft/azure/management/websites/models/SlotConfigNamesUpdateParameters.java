@@ -57,6 +57,8 @@ public class SlotConfigNamesUpdateParameters extends ResourceBase {
     * Initializes a new instance of the SlotConfigNamesUpdateParameters class
     * with required arguments.
     *
+    * @param properties The name value pair parameters for the web site.
+    * @param location Gets or sets the location of the resource.
     */
     public SlotConfigNamesUpdateParameters(SlotConfigNames properties, String location) {
         this();

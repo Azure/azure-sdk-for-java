@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Create Job operation response.
 */
-public class JobCreateResponse extends OperationResponse {
+public class JobCreateResponse extends AzureOperationResponse {
     private Job job;
     
     /**

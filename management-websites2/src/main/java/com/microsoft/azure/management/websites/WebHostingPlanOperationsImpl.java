@@ -36,10 +36,10 @@ import com.microsoft.azure.management.websites.models.WebHostingPlanGetResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanListResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanProperties;
 import com.microsoft.azure.management.websites.models.WorkerSizeOptions;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
-import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -48,6 +48,7 @@ import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -133,10 +134,12 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Create Web Hosting Plan operation response.
     */
     @Override
-    public WebHostingPlanCreateOrUpdateResponse createOrUpdate(String resourceGroupName, WebHostingPlanCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public WebHostingPlanCreateOrUpdateResponse createOrUpdate(String resourceGroupName, WebHostingPlanCreateOrUpdateParameters parameters) throws IOException, ServiceException, URISyntaxException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -163,8 +166,24 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms/" + parameters.getWebHostingPlan().getName().trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/serverFarms/";
+        if (parameters.getWebHostingPlan().getName() != null) {
+            url = url + URLEncoder.encode(parameters.getWebHostingPlan().getName(), "UTF-8");
+        }
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -194,11 +213,15 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             ObjectNode propertiesValue = objectMapper.createObjectNode();
             ((ObjectNode) webHostingPlanCreateOrUpdateParametersValue).put("properties", propertiesValue);
             
-            ((ObjectNode) propertiesValue).put("sku", parameters.getWebHostingPlan().getProperties().getSku().toString());
+            if (parameters.getWebHostingPlan().getProperties().getSku() != null) {
+                ((ObjectNode) propertiesValue).put("sku", parameters.getWebHostingPlan().getProperties().getSku().toString());
+            }
             
             ((ObjectNode) propertiesValue).put("numberOfWorkers", parameters.getWebHostingPlan().getProperties().getNumberOfWorkers());
             
-            ((ObjectNode) propertiesValue).put("workerSize", parameters.getWebHostingPlan().getProperties().getWorkerSize().toString());
+            if (parameters.getWebHostingPlan().getProperties().getWorkerSize() != null) {
+                ((ObjectNode) propertiesValue).put("workerSize", parameters.getWebHostingPlan().getProperties().getWorkerSize().toString());
+            }
             
             if (parameters.getWebHostingPlan().getProperties().getAdminSiteName() != null) {
                 ((ObjectNode) propertiesValue).put("adminSiteName", parameters.getWebHostingPlan().getProperties().getAdminSiteName());
@@ -258,94 +281,96 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             // Create Result
             WebHostingPlanCreateOrUpdateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new WebHostingPlanCreateOrUpdateResponse();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new WebHostingPlanCreateOrUpdateResponse();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                JsonNode serverFarmValue = responseDoc.get("ServerFarm");
+                if (serverFarmValue != null && serverFarmValue instanceof NullNode == false) {
+                    WebHostingPlanCreateOrUpdateResponse serverFarmInstance = new WebHostingPlanCreateOrUpdateResponse();
+                    
+                    WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
+                    result.setWebHostingPlan(webHostingPlanInstance);
+                    
+                    JsonNode propertiesValue2 = serverFarmValue.get("properties");
+                    if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                        WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
+                        webHostingPlanInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode skuValue = propertiesValue2.get("sku");
+                        if (skuValue != null && skuValue instanceof NullNode == false) {
+                            SkuOptions skuInstance;
+                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            propertiesInstance.setSku(skuInstance);
+                        }
+                        
+                        JsonNode numberOfWorkersValue = propertiesValue2.get("numberOfWorkers");
+                        if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
+                            int numberOfWorkersInstance;
+                            numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
+                            propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                        }
+                        
+                        JsonNode workerSizeValue = propertiesValue2.get("workerSize");
+                        if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
+                            WorkerSizeOptions workerSizeInstance;
+                            workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                            propertiesInstance.setWorkerSize(workerSizeInstance);
+                        }
+                        
+                        JsonNode adminSiteNameValue = propertiesValue2.get("adminSiteName");
+                        if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                            String adminSiteNameInstance;
+                            adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                            propertiesInstance.setAdminSiteName(adminSiteNameInstance);
+                        }
+                    }
+                    
+                    JsonNode idValue = serverFarmValue.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        webHostingPlanInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = serverFarmValue.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        webHostingPlanInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode locationValue = serverFarmValue.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        webHostingPlanInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) serverFarmValue.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey2 = property.getKey();
+                            String tagsValue2 = property.getValue().getTextValue();
+                            webHostingPlanInstance.getTags().put(tagsKey2, tagsValue2);
+                        }
+                    }
+                    
+                    JsonNode typeValue = serverFarmValue.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        webHostingPlanInstance.setType(typeInstance);
+                    }
+                }
+                
             }
-            
-            JsonNode serverFarmValue = responseDoc.get("ServerFarm");
-            if (serverFarmValue != null && serverFarmValue instanceof NullNode == false) {
-                WebHostingPlanCreateOrUpdateResponse serverFarmInstance = new WebHostingPlanCreateOrUpdateResponse();
-                
-                WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
-                result.setWebHostingPlan(webHostingPlanInstance);
-                
-                JsonNode propertiesValue2 = serverFarmValue.get("properties");
-                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
-                    WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
-                    webHostingPlanInstance.setProperties(propertiesInstance);
-                    
-                    JsonNode skuValue = propertiesValue2.get("sku");
-                    if (skuValue != null && skuValue instanceof NullNode == false) {
-                        SkuOptions skuInstance;
-                        skuInstance = SkuOptions.values()[skuValue.getIntValue()];
-                        propertiesInstance.setSku(skuInstance);
-                    }
-                    
-                    JsonNode numberOfWorkersValue = propertiesValue2.get("numberOfWorkers");
-                    if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
-                        int numberOfWorkersInstance;
-                        numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
-                        propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
-                    }
-                    
-                    JsonNode workerSizeValue = propertiesValue2.get("workerSize");
-                    if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
-                        WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
-                        propertiesInstance.setWorkerSize(workerSizeInstance);
-                    }
-                    
-                    JsonNode adminSiteNameValue = propertiesValue2.get("adminSiteName");
-                    if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
-                        String adminSiteNameInstance;
-                        adminSiteNameInstance = adminSiteNameValue.getTextValue();
-                        propertiesInstance.setAdminSiteName(adminSiteNameInstance);
-                    }
-                }
-                
-                JsonNode idValue = serverFarmValue.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    webHostingPlanInstance.setId(idInstance);
-                }
-                
-                JsonNode nameValue = serverFarmValue.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    webHostingPlanInstance.setName(nameInstance);
-                }
-                
-                JsonNode locationValue = serverFarmValue.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    webHostingPlanInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) serverFarmValue.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey2 = property.getKey();
-                        String tagsValue2 = property.getValue().getTextValue();
-                        webHostingPlanInstance.getTags().put(tagsKey2, tagsValue2);
-                    }
-                }
-                
-                JsonNode typeValue = serverFarmValue.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    webHostingPlanInstance.setType(typeInstance);
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -374,10 +399,10 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String webHostingPlanName) {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String webHostingPlanName) {
+        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public AzureOperationResponse call() throws Exception {
                 return delete(resourceGroupName, webHostingPlanName);
             }
          });
@@ -399,7 +424,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException {
+    public AzureOperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -420,8 +445,22 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms/" + webHostingPlanName.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/serverFarms/";
+        url = url + URLEncoder.encode(webHostingPlanName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -458,8 +497,9 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             }
             
             // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
+            AzureOperationResponse result = null;
+            // Deserialize Response
+            result = new AzureOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -532,8 +572,22 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms/" + webHostingPlanName.trim() + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/serverFarms/";
+        url = url + URLEncoder.encode(webHostingPlanName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -572,92 +626,94 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             // Create Result
             WebHostingPlanGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new WebHostingPlanGetResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new WebHostingPlanGetResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
+                    result.setWebHostingPlan(webHostingPlanInstance);
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
+                        webHostingPlanInstance.setProperties(propertiesInstance);
+                        
+                        JsonNode skuValue = propertiesValue.get("sku");
+                        if (skuValue != null && skuValue instanceof NullNode == false) {
+                            SkuOptions skuInstance;
+                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            propertiesInstance.setSku(skuInstance);
+                        }
+                        
+                        JsonNode numberOfWorkersValue = propertiesValue.get("numberOfWorkers");
+                        if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
+                            int numberOfWorkersInstance;
+                            numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
+                            propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                        }
+                        
+                        JsonNode workerSizeValue = propertiesValue.get("workerSize");
+                        if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
+                            WorkerSizeOptions workerSizeInstance;
+                            workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                            propertiesInstance.setWorkerSize(workerSizeInstance);
+                        }
+                        
+                        JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
+                        if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                            String adminSiteNameInstance;
+                            adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                            propertiesInstance.setAdminSiteName(adminSiteNameInstance);
+                        }
+                    }
+                    
+                    JsonNode idValue = responseDoc.get("id");
+                    if (idValue != null && idValue instanceof NullNode == false) {
+                        String idInstance;
+                        idInstance = idValue.getTextValue();
+                        webHostingPlanInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        webHostingPlanInstance.setName(nameInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        webHostingPlanInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            webHostingPlanInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        webHostingPlanInstance.setType(typeInstance);
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
-                result.setWebHostingPlan(webHostingPlanInstance);
-                
-                JsonNode propertiesValue = responseDoc.get("properties");
-                if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                    WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
-                    webHostingPlanInstance.setProperties(propertiesInstance);
-                    
-                    JsonNode skuValue = propertiesValue.get("sku");
-                    if (skuValue != null && skuValue instanceof NullNode == false) {
-                        SkuOptions skuInstance;
-                        skuInstance = SkuOptions.values()[skuValue.getIntValue()];
-                        propertiesInstance.setSku(skuInstance);
-                    }
-                    
-                    JsonNode numberOfWorkersValue = propertiesValue.get("numberOfWorkers");
-                    if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
-                        int numberOfWorkersInstance;
-                        numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
-                        propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
-                    }
-                    
-                    JsonNode workerSizeValue = propertiesValue.get("workerSize");
-                    if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
-                        WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
-                        propertiesInstance.setWorkerSize(workerSizeInstance);
-                    }
-                    
-                    JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
-                    if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
-                        String adminSiteNameInstance;
-                        adminSiteNameInstance = adminSiteNameValue.getTextValue();
-                        propertiesInstance.setAdminSiteName(adminSiteNameInstance);
-                    }
-                }
-                
-                JsonNode idValue = responseDoc.get("id");
-                if (idValue != null && idValue instanceof NullNode == false) {
-                    String idInstance;
-                    idInstance = idValue.getTextValue();
-                    webHostingPlanInstance.setId(idInstance);
-                }
-                
-                JsonNode nameValue = responseDoc.get("name");
-                if (nameValue != null && nameValue instanceof NullNode == false) {
-                    String nameInstance;
-                    nameInstance = nameValue.getTextValue();
-                    webHostingPlanInstance.setName(nameInstance);
-                }
-                
-                JsonNode locationValue = responseDoc.get("location");
-                if (locationValue != null && locationValue instanceof NullNode == false) {
-                    String locationInstance;
-                    locationInstance = locationValue.getTextValue();
-                    webHostingPlanInstance.setLocation(locationInstance);
-                }
-                
-                JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
-                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                    while (itr.hasNext()) {
-                        Map.Entry<String, JsonNode> property = itr.next();
-                        String tagsKey = property.getKey();
-                        String tagsValue = property.getValue().getTextValue();
-                        webHostingPlanInstance.getTags().put(tagsKey, tagsValue);
-                    }
-                }
-                
-                JsonNode typeValue = responseDoc.get("type");
-                if (typeValue != null && typeValue instanceof NullNode == false) {
-                    String typeInstance;
-                    typeInstance = typeValue.getTextValue();
-                    webHostingPlanInstance.setType(typeInstance);
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -740,25 +796,40 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms/" + webHostingPlanName.trim() + "/metrics" + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/serverFarms/";
+        url = url + URLEncoder.encode(webHostingPlanName, "UTF-8");
+        url = url + "/metrics";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
         if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0) {
-            url = url + "&" + "names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
+            queryParameters.add("names=" + URLEncoder.encode(CollectionStringBuilder.join(parameters.getMetricNames(), ","), "UTF-8"));
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (parameters.getStartTime() != null) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
+            queryParameters.add("StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8"));
         }
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+        simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         if (parameters.getEndTime() != null) {
-            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-            simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-            url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
+            queryParameters.add("EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8"));
         }
         if (parameters.getTimeGrain() != null) {
-            url = url + "&" + "timeGrain=" + URLEncoder.encode(parameters.getTimeGrain() != null ? parameters.getTimeGrain().trim() : "", "UTF-8");
+            queryParameters.add("timeGrain=" + URLEncoder.encode(parameters.getTimeGrain(), "UTF-8"));
         }
-        url = url + "&" + "details=" + URLEncoder.encode(Boolean.toString(parameters.isIncludeInstanceBreakdown()).toLowerCase(), "UTF-8");
+        queryParameters.add("details=" + URLEncoder.encode(Boolean.toString(parameters.isIncludeInstanceBreakdown()).toLowerCase(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -798,143 +869,145 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             // Create Result
             WebHostingPlanGetHistoricalUsageMetricsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new WebHostingPlanGetHistoricalUsageMetricsResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode propertiesArray = responseDoc.get("properties");
-                if (propertiesArray != null && propertiesArray instanceof NullNode == false) {
-                    for (JsonNode propertiesValue : ((ArrayNode) propertiesArray)) {
-                        HistoricalUsageMetric historicalUsageMetricInstance = new HistoricalUsageMetric();
-                        result.getUsageMetrics().add(historicalUsageMetricInstance);
-                        
-                        JsonNode codeValue = propertiesValue.get("code");
-                        if (codeValue != null && codeValue instanceof NullNode == false) {
-                            String codeInstance;
-                            codeInstance = codeValue.getTextValue();
-                            historicalUsageMetricInstance.setCode(codeInstance);
-                        }
-                        
-                        JsonNode dataValue = propertiesValue.get("data");
-                        if (dataValue != null && dataValue instanceof NullNode == false) {
-                            HistoricalUsageMetricData dataInstance = new HistoricalUsageMetricData();
-                            historicalUsageMetricInstance.setData(dataInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new WebHostingPlanGetHistoricalUsageMetricsResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode propertiesArray = responseDoc.get("properties");
+                    if (propertiesArray != null && propertiesArray instanceof NullNode == false) {
+                        for (JsonNode propertiesValue : ((ArrayNode) propertiesArray)) {
+                            HistoricalUsageMetric historicalUsageMetricInstance = new HistoricalUsageMetric();
+                            result.getUsageMetrics().add(historicalUsageMetricInstance);
                             
-                            JsonNode displayNameValue = dataValue.get("displayName");
-                            if (displayNameValue != null && displayNameValue instanceof NullNode == false) {
-                                String displayNameInstance;
-                                displayNameInstance = displayNameValue.getTextValue();
-                                dataInstance.setDisplayName(displayNameInstance);
+                            JsonNode codeValue = propertiesValue.get("code");
+                            if (codeValue != null && codeValue instanceof NullNode == false) {
+                                String codeInstance;
+                                codeInstance = codeValue.getTextValue();
+                                historicalUsageMetricInstance.setCode(codeInstance);
                             }
                             
-                            JsonNode endTimeValue = dataValue.get("EndTime");
-                            if (endTimeValue != null && endTimeValue instanceof NullNode == false) {
-                                Calendar endTimeInstance;
-                                endTimeInstance = DatatypeConverter.parseDateTime(endTimeValue.getTextValue());
-                                dataInstance.setEndTime(endTimeInstance);
-                            }
-                            
-                            JsonNode nameValue = dataValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                dataInstance.setName(nameInstance);
-                            }
-                            
-                            JsonNode primaryAggregationTypeValue = dataValue.get("primaryAggregationType");
-                            if (primaryAggregationTypeValue != null && primaryAggregationTypeValue instanceof NullNode == false) {
-                                String primaryAggregationTypeInstance;
-                                primaryAggregationTypeInstance = primaryAggregationTypeValue.getTextValue();
-                                dataInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
-                            }
-                            
-                            JsonNode startTimeValue = dataValue.get("startTime");
-                            if (startTimeValue != null && startTimeValue instanceof NullNode == false) {
-                                Calendar startTimeInstance;
-                                startTimeInstance = DatatypeConverter.parseDateTime(startTimeValue.getTextValue());
-                                dataInstance.setStartTime(startTimeInstance);
-                            }
-                            
-                            JsonNode timeGrainValue = dataValue.get("timeGrain");
-                            if (timeGrainValue != null && timeGrainValue instanceof NullNode == false) {
-                                String timeGrainInstance;
-                                timeGrainInstance = timeGrainValue.getTextValue();
-                                dataInstance.setTimeGrain(timeGrainInstance);
-                            }
-                            
-                            JsonNode unitValue = dataValue.get("unit");
-                            if (unitValue != null && unitValue instanceof NullNode == false) {
-                                String unitInstance;
-                                unitInstance = unitValue.getTextValue();
-                                dataInstance.setUnit(unitInstance);
-                            }
-                            
-                            JsonNode valuesArray = dataValue.get("values");
-                            if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                                for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
-                                    HistoricalUsageMetricSample metricSampleInstance = new HistoricalUsageMetricSample();
-                                    dataInstance.getValues().add(metricSampleInstance);
-                                    
-                                    JsonNode countValue = valuesValue.get("count");
-                                    if (countValue != null && countValue instanceof NullNode == false) {
-                                        int countInstance;
-                                        countInstance = countValue.getIntValue();
-                                        metricSampleInstance.setCount(countInstance);
-                                    }
-                                    
-                                    JsonNode maximumValue = valuesValue.get("maximum");
-                                    if (maximumValue != null && maximumValue instanceof NullNode == false) {
-                                        String maximumInstance;
-                                        maximumInstance = maximumValue.getTextValue();
-                                        metricSampleInstance.setMaximum(maximumInstance);
-                                    }
-                                    
-                                    JsonNode minimumValue = valuesValue.get("minimum");
-                                    if (minimumValue != null && minimumValue instanceof NullNode == false) {
-                                        String minimumInstance;
-                                        minimumInstance = minimumValue.getTextValue();
-                                        metricSampleInstance.setMinimum(minimumInstance);
-                                    }
-                                    
-                                    JsonNode timeCreatedValue = valuesValue.get("timeCreated");
-                                    if (timeCreatedValue != null && timeCreatedValue instanceof NullNode == false) {
-                                        Calendar timeCreatedInstance;
-                                        timeCreatedInstance = DatatypeConverter.parseDateTime(timeCreatedValue.getTextValue());
-                                        metricSampleInstance.setTimeCreated(timeCreatedInstance);
-                                    }
-                                    
-                                    JsonNode totalValue = valuesValue.get("total");
-                                    if (totalValue != null && totalValue instanceof NullNode == false) {
-                                        String totalInstance;
-                                        totalInstance = totalValue.getTextValue();
-                                        metricSampleInstance.setTotal(totalInstance);
-                                    }
-                                    
-                                    JsonNode instanceNameValue = valuesValue.get("instanceName");
-                                    if (instanceNameValue != null && instanceNameValue instanceof NullNode == false) {
-                                        String instanceNameInstance;
-                                        instanceNameInstance = instanceNameValue.getTextValue();
-                                        metricSampleInstance.setInstanceName(instanceNameInstance);
+                            JsonNode dataValue = propertiesValue.get("data");
+                            if (dataValue != null && dataValue instanceof NullNode == false) {
+                                HistoricalUsageMetricData dataInstance = new HistoricalUsageMetricData();
+                                historicalUsageMetricInstance.setData(dataInstance);
+                                
+                                JsonNode displayNameValue = dataValue.get("displayName");
+                                if (displayNameValue != null && displayNameValue instanceof NullNode == false) {
+                                    String displayNameInstance;
+                                    displayNameInstance = displayNameValue.getTextValue();
+                                    dataInstance.setDisplayName(displayNameInstance);
+                                }
+                                
+                                JsonNode endTimeValue = dataValue.get("EndTime");
+                                if (endTimeValue != null && endTimeValue instanceof NullNode == false) {
+                                    Calendar endTimeInstance;
+                                    endTimeInstance = DatatypeConverter.parseDateTime(endTimeValue.getTextValue());
+                                    dataInstance.setEndTime(endTimeInstance);
+                                }
+                                
+                                JsonNode nameValue = dataValue.get("name");
+                                if (nameValue != null && nameValue instanceof NullNode == false) {
+                                    String nameInstance;
+                                    nameInstance = nameValue.getTextValue();
+                                    dataInstance.setName(nameInstance);
+                                }
+                                
+                                JsonNode primaryAggregationTypeValue = dataValue.get("primaryAggregationType");
+                                if (primaryAggregationTypeValue != null && primaryAggregationTypeValue instanceof NullNode == false) {
+                                    String primaryAggregationTypeInstance;
+                                    primaryAggregationTypeInstance = primaryAggregationTypeValue.getTextValue();
+                                    dataInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
+                                }
+                                
+                                JsonNode startTimeValue = dataValue.get("startTime");
+                                if (startTimeValue != null && startTimeValue instanceof NullNode == false) {
+                                    Calendar startTimeInstance;
+                                    startTimeInstance = DatatypeConverter.parseDateTime(startTimeValue.getTextValue());
+                                    dataInstance.setStartTime(startTimeInstance);
+                                }
+                                
+                                JsonNode timeGrainValue = dataValue.get("timeGrain");
+                                if (timeGrainValue != null && timeGrainValue instanceof NullNode == false) {
+                                    String timeGrainInstance;
+                                    timeGrainInstance = timeGrainValue.getTextValue();
+                                    dataInstance.setTimeGrain(timeGrainInstance);
+                                }
+                                
+                                JsonNode unitValue = dataValue.get("unit");
+                                if (unitValue != null && unitValue instanceof NullNode == false) {
+                                    String unitInstance;
+                                    unitInstance = unitValue.getTextValue();
+                                    dataInstance.setUnit(unitInstance);
+                                }
+                                
+                                JsonNode valuesArray = dataValue.get("values");
+                                if (valuesArray != null && valuesArray instanceof NullNode == false) {
+                                    for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                                        HistoricalUsageMetricSample metricSampleInstance = new HistoricalUsageMetricSample();
+                                        dataInstance.getValues().add(metricSampleInstance);
+                                        
+                                        JsonNode countValue = valuesValue.get("count");
+                                        if (countValue != null && countValue instanceof NullNode == false) {
+                                            int countInstance;
+                                            countInstance = countValue.getIntValue();
+                                            metricSampleInstance.setCount(countInstance);
+                                        }
+                                        
+                                        JsonNode maximumValue = valuesValue.get("maximum");
+                                        if (maximumValue != null && maximumValue instanceof NullNode == false) {
+                                            String maximumInstance;
+                                            maximumInstance = maximumValue.getTextValue();
+                                            metricSampleInstance.setMaximum(maximumInstance);
+                                        }
+                                        
+                                        JsonNode minimumValue = valuesValue.get("minimum");
+                                        if (minimumValue != null && minimumValue instanceof NullNode == false) {
+                                            String minimumInstance;
+                                            minimumInstance = minimumValue.getTextValue();
+                                            metricSampleInstance.setMinimum(minimumInstance);
+                                        }
+                                        
+                                        JsonNode timeCreatedValue = valuesValue.get("timeCreated");
+                                        if (timeCreatedValue != null && timeCreatedValue instanceof NullNode == false) {
+                                            Calendar timeCreatedInstance;
+                                            timeCreatedInstance = DatatypeConverter.parseDateTime(timeCreatedValue.getTextValue());
+                                            metricSampleInstance.setTimeCreated(timeCreatedInstance);
+                                        }
+                                        
+                                        JsonNode totalValue = valuesValue.get("total");
+                                        if (totalValue != null && totalValue instanceof NullNode == false) {
+                                            String totalInstance;
+                                            totalInstance = totalValue.getTextValue();
+                                            metricSampleInstance.setTotal(totalInstance);
+                                        }
+                                        
+                                        JsonNode instanceNameValue = valuesValue.get("instanceName");
+                                        if (instanceNameValue != null && instanceNameValue instanceof NullNode == false) {
+                                            String instanceNameInstance;
+                                            instanceNameInstance = instanceNameValue.getTextValue();
+                                            metricSampleInstance.setInstanceName(instanceNameInstance);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        
-                        JsonNode messageValue = propertiesValue.get("message");
-                        if (messageValue != null && messageValue instanceof NullNode == false) {
-                            String messageInstance;
-                            messageInstance = messageValue.getTextValue();
-                            historicalUsageMetricInstance.setMessage(messageInstance);
+                            
+                            JsonNode messageValue = propertiesValue.get("message");
+                            if (messageValue != null && messageValue instanceof NullNode == false) {
+                                String messageInstance;
+                                messageInstance = messageValue.getTextValue();
+                                historicalUsageMetricInstance.setMessage(messageInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1001,8 +1074,21 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
         }
         
         // Construct URL
-        String url = "/subscriptions/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/resourceGroups/" + resourceGroupName.trim() + "/providers/" + "Microsoft.Web" + "/serverFarms" + "?";
-        url = url + "api-version=" + "2014-06-01";
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Web";
+        url = url + "/serverFarms";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-06-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1041,97 +1127,99 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             // Create Result
             WebHostingPlanListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new WebHostingPlanListResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valueArray = responseDoc.get("value");
-                if (valueArray != null && valueArray instanceof NullNode == false) {
-                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                        WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
-                        result.getWebHostingPlans().add(webHostingPlanInstance);
-                        
-                        JsonNode propertiesValue = valueValue.get("properties");
-                        if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
-                            WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
-                            webHostingPlanInstance.setProperties(propertiesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new WebHostingPlanListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            WebHostingPlan webHostingPlanInstance = new WebHostingPlan();
+                            result.getWebHostingPlans().add(webHostingPlanInstance);
                             
-                            JsonNode skuValue = propertiesValue.get("sku");
-                            if (skuValue != null && skuValue instanceof NullNode == false) {
-                                SkuOptions skuInstance;
-                                skuInstance = SkuOptions.values()[skuValue.getIntValue()];
-                                propertiesInstance.setSku(skuInstance);
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                WebHostingPlanProperties propertiesInstance = new WebHostingPlanProperties();
+                                webHostingPlanInstance.setProperties(propertiesInstance);
+                                
+                                JsonNode skuValue = propertiesValue.get("sku");
+                                if (skuValue != null && skuValue instanceof NullNode == false) {
+                                    SkuOptions skuInstance;
+                                    skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                                    propertiesInstance.setSku(skuInstance);
+                                }
+                                
+                                JsonNode numberOfWorkersValue = propertiesValue.get("numberOfWorkers");
+                                if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
+                                    int numberOfWorkersInstance;
+                                    numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
+                                    propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                                }
+                                
+                                JsonNode workerSizeValue = propertiesValue.get("workerSize");
+                                if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
+                                    WorkerSizeOptions workerSizeInstance;
+                                    workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                                    propertiesInstance.setWorkerSize(workerSizeInstance);
+                                }
+                                
+                                JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
+                                if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
+                                    String adminSiteNameInstance;
+                                    adminSiteNameInstance = adminSiteNameValue.getTextValue();
+                                    propertiesInstance.setAdminSiteName(adminSiteNameInstance);
+                                }
                             }
                             
-                            JsonNode numberOfWorkersValue = propertiesValue.get("numberOfWorkers");
-                            if (numberOfWorkersValue != null && numberOfWorkersValue instanceof NullNode == false) {
-                                int numberOfWorkersInstance;
-                                numberOfWorkersInstance = numberOfWorkersValue.getIntValue();
-                                propertiesInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                            JsonNode idValue = valueValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                webHostingPlanInstance.setId(idInstance);
                             }
                             
-                            JsonNode workerSizeValue = propertiesValue.get("workerSize");
-                            if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
-                                WorkerSizeOptions workerSizeInstance;
-                                workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
-                                propertiesInstance.setWorkerSize(workerSizeInstance);
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                webHostingPlanInstance.setName(nameInstance);
                             }
                             
-                            JsonNode adminSiteNameValue = propertiesValue.get("adminSiteName");
-                            if (adminSiteNameValue != null && adminSiteNameValue instanceof NullNode == false) {
-                                String adminSiteNameInstance;
-                                adminSiteNameInstance = adminSiteNameValue.getTextValue();
-                                propertiesInstance.setAdminSiteName(adminSiteNameInstance);
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                webHostingPlanInstance.setLocation(locationInstance);
                             }
-                        }
-                        
-                        JsonNode idValue = valueValue.get("id");
-                        if (idValue != null && idValue instanceof NullNode == false) {
-                            String idInstance;
-                            idInstance = idValue.getTextValue();
-                            webHostingPlanInstance.setId(idInstance);
-                        }
-                        
-                        JsonNode nameValue = valueValue.get("name");
-                        if (nameValue != null && nameValue instanceof NullNode == false) {
-                            String nameInstance;
-                            nameInstance = nameValue.getTextValue();
-                            webHostingPlanInstance.setName(nameInstance);
-                        }
-                        
-                        JsonNode locationValue = valueValue.get("location");
-                        if (locationValue != null && locationValue instanceof NullNode == false) {
-                            String locationInstance;
-                            locationInstance = locationValue.getTextValue();
-                            webHostingPlanInstance.setLocation(locationInstance);
-                        }
-                        
-                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
-                        if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
-                            Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
-                            while (itr.hasNext()) {
-                                Map.Entry<String, JsonNode> property = itr.next();
-                                String tagsKey = property.getKey();
-                                String tagsValue = property.getValue().getTextValue();
-                                webHostingPlanInstance.getTags().put(tagsKey, tagsValue);
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    webHostingPlanInstance.getTags().put(tagsKey, tagsValue);
+                                }
                             }
-                        }
-                        
-                        JsonNode typeValue = valueValue.get("type");
-                        if (typeValue != null && typeValue instanceof NullNode == false) {
-                            String typeInstance;
-                            typeInstance = typeValue.getTextValue();
-                            webHostingPlanInstance.setType(typeInstance);
+                            
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                webHostingPlanInstance.setType(typeInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

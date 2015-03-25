@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateResponse;
@@ -90,7 +90,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String serverName, String ruleName) throws IOException, ServiceException;
+    AzureOperationResponse delete(String serverName, String ruleName) throws IOException, ServiceException;
     
     /**
     * Deletes a server-level Firewall Rule from an Azure SQL Database Server.
@@ -101,7 +101,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String serverName, String ruleName);
+    Future<AzureOperationResponse> deleteAsync(String serverName, String ruleName);
     
     /**
     * Returns the Firewall rule for an Azure SQL Database Server with a

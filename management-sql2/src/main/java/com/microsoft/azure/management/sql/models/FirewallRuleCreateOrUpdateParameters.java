@@ -57,6 +57,7 @@ public class FirewallRuleCreateOrUpdateParameters {
     * Initializes a new instance of the FirewallRuleCreateOrUpdateParameters
     * class with required arguments.
     *
+    * @param properties Gets or sets the properties of the request.
     */
     public FirewallRuleCreateOrUpdateParameters(FirewallRuleCreateOrUpdateProperties properties) {
         if (properties == null) {

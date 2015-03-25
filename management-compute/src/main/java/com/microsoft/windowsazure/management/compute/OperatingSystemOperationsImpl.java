@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -137,7 +138,12 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/operatingsystems";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operatingsystems";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -177,64 +183,66 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             // Create Result
             OperatingSystemListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperatingSystemListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operatingSystemsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
-            if (operatingSystemsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").get(i1));
-                    OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
-                    result.getOperatingSystems().add(operatingSystemInstance);
-                    
-                    Element versionElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                    if (versionElement != null) {
-                        String versionInstance;
-                        versionInstance = versionElement.getTextContent();
-                        operatingSystemInstance.setVersion(versionInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
-                        operatingSystemInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
-                    if (isDefaultElement != null) {
-                        boolean isDefaultInstance;
-                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
-                        operatingSystemInstance.setIsDefault(isDefaultInstance);
-                    }
-                    
-                    Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
-                    if (isActiveElement != null) {
-                        boolean isActiveInstance;
-                        isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
-                        operatingSystemInstance.setIsActive(isActiveInstance);
-                    }
-                    
-                    Element familyElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Family");
-                    if (familyElement != null) {
-                        int familyInstance;
-                        familyInstance = DatatypeConverter.parseInt(familyElement.getTextContent());
-                        operatingSystemInstance.setFamily(familyInstance);
-                    }
-                    
-                    Element familyLabelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "FamilyLabel");
-                    if (familyLabelElement != null) {
-                        String familyLabelInstance;
-                        familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decode(familyLabelElement.getTextContent())) : null;
-                        operatingSystemInstance.setFamilyLabel(familyLabelInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperatingSystemListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element operatingSystemsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
+                if (operatingSystemsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").get(i1));
+                        OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
+                        result.getOperatingSystems().add(operatingSystemInstance);
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            operatingSystemInstance.setVersion(versionInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
+                            operatingSystemInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
+                        if (isDefaultElement != null) {
+                            boolean isDefaultInstance;
+                            isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
+                            operatingSystemInstance.setIsDefault(isDefaultInstance);
+                        }
+                        
+                        Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
+                        if (isActiveElement != null) {
+                            boolean isActiveInstance;
+                            isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
+                            operatingSystemInstance.setIsActive(isActiveInstance);
+                        }
+                        
+                        Element familyElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Family");
+                        if (familyElement != null) {
+                            int familyInstance;
+                            familyInstance = DatatypeConverter.parseInt(familyElement.getTextContent());
+                            operatingSystemInstance.setFamily(familyInstance);
+                        }
+                        
+                        Element familyLabelElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "FamilyLabel");
+                        if (familyLabelElement != null) {
+                            String familyLabelInstance;
+                            familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decode(familyLabelElement.getTextContent())) : null;
+                            operatingSystemInstance.setFamilyLabel(familyLabelInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -307,7 +315,12 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/operatingsystemfamilies";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operatingsystemfamilies";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -347,73 +360,75 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             // Create Result
             OperatingSystemListFamiliesResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperatingSystemListFamiliesResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operatingSystemFamiliesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamilies");
-            if (operatingSystemFamiliesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").get(i1));
-                    OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
-                    result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        int nameInstance;
-                        nameInstance = DatatypeConverter.parseInt(nameElement.getTextContent());
-                        operatingSystemFamilyInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
-                        operatingSystemFamilyInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element operatingSystemsSequenceElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
-                    if (operatingSystemsSequenceElement != null) {
-                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").size(); i2 = i2 + 1) {
-                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").get(i2));
-                            OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
-                            operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
-                            
-                            Element versionElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                            if (versionElement != null) {
-                                String versionInstance;
-                                versionInstance = versionElement.getTextContent();
-                                operatingSystemInstance.setVersion(versionInstance);
-                            }
-                            
-                            Element labelElement2 = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                            if (labelElement2 != null) {
-                                String labelInstance2;
-                                labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decode(labelElement2.getTextContent())) : null;
-                                operatingSystemInstance.setLabel(labelInstance2);
-                            }
-                            
-                            Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
-                            if (isDefaultElement != null) {
-                                boolean isDefaultInstance;
-                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
-                                operatingSystemInstance.setIsDefault(isDefaultInstance);
-                            }
-                            
-                            Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
-                            if (isActiveElement != null) {
-                                boolean isActiveInstance;
-                                isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
-                                operatingSystemInstance.setIsActive(isActiveInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperatingSystemListFamiliesResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element operatingSystemFamiliesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamilies");
+                if (operatingSystemFamiliesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").get(i1));
+                        OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
+                        result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            int nameInstance;
+                            nameInstance = DatatypeConverter.parseInt(nameElement.getTextContent());
+                            operatingSystemFamilyInstance.setName(nameInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
+                            operatingSystemFamilyInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element operatingSystemsSequenceElement = XmlUtility.getElementByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
+                        if (operatingSystemsSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").get(i2));
+                                OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
+                                operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
+                                
+                                Element versionElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                                if (versionElement != null) {
+                                    String versionInstance;
+                                    versionInstance = versionElement.getTextContent();
+                                    operatingSystemInstance.setVersion(versionInstance);
+                                }
+                                
+                                Element labelElement2 = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                                if (labelElement2 != null) {
+                                    String labelInstance2;
+                                    labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decode(labelElement2.getTextContent())) : null;
+                                    operatingSystemInstance.setLabel(labelInstance2);
+                                }
+                                
+                                Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
+                                if (isDefaultElement != null) {
+                                    boolean isDefaultInstance;
+                                    isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
+                                    operatingSystemInstance.setIsDefault(isDefaultInstance);
+                                }
+                                
+                                Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
+                                if (isActiveElement != null) {
+                                    boolean isActiveInstance;
+                                    isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
+                                    operatingSystemInstance.setIsActive(isActiveInstance);
+                                }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

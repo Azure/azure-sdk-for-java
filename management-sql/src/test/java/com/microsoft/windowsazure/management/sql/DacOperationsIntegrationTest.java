@@ -96,7 +96,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         DacImportParameters dacImportParameters = new DacImportParameters();
         dacImportParameters.setAzureEdition(azureEditionValue);
         dacImportParameters.setBlobCredentials(blobCredentialsValue);
-        dacOperations.importDatabase(serverName, dacImportParameters);
+        dacOperations.importMethod(serverName, dacImportParameters);
     }
 
     @Test

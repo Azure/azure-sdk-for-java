@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.mediaservices.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Create Media Services Account operation response.
 */
-public class MediaServicesAccountCreateResponse extends OperationResponse {
+public class MediaServicesAccountCreateResponse extends AzureOperationResponse {
     private MediaServicesCreatedAccount account;
     
     /**

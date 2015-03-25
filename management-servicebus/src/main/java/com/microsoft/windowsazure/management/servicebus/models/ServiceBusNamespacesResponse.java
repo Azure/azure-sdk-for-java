@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The response to the request for a listing of namespaces.
 */
-public class ServiceBusNamespacesResponse extends OperationResponse implements Iterable<ServiceBusNamespace> {
+public class ServiceBusNamespacesResponse extends AzureOperationResponse implements Iterable<ServiceBusNamespace> {
     private ArrayList<ServiceBusNamespace> namespaces;
     
     /**

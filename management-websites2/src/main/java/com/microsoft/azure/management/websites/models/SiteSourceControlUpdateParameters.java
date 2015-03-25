@@ -56,6 +56,8 @@ public class SiteSourceControlUpdateParameters {
     * Initializes a new instance of the SiteSourceControlUpdateParameters class
     * with required arguments.
     *
+    * @param properties Gets or sets the properties of the link site to source
+    * control.
     */
     public SiteSourceControlUpdateParameters(SiteSourceControlProperties properties) {
         if (properties == null) {

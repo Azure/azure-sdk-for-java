@@ -61,6 +61,7 @@ public class WebSiteAppSettingsEnvelope extends ResourceBase {
     * Initializes a new instance of the WebSiteAppSettingsEnvelope class with
     * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
     public WebSiteAppSettingsEnvelope(String location) {
         this();

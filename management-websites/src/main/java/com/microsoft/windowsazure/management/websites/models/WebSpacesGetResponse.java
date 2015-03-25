@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The Get Web Space Details operation response.
 */
-public class WebSpacesGetResponse extends OperationResponse {
+public class WebSpacesGetResponse extends AzureOperationResponse {
     private WebSpaceAvailabilityState availabilityState;
     
     /**
@@ -67,14 +67,14 @@ public class WebSpacesGetResponse extends OperationResponse {
         this.currentNumberOfWorkers = currentNumberOfWorkersValue;
     }
     
-    private WebSpaceWorkerSize currentWorkerSize;
+    private WorkerSizeOptions currentWorkerSize;
     
     /**
     * Optional. The current worker size. Possible values are Small, Medium, or
     * Large.
     * @return The CurrentWorkerSize value.
     */
-    public WebSpaceWorkerSize getCurrentWorkerSize() {
+    public WorkerSizeOptions getCurrentWorkerSize() {
         return this.currentWorkerSize;
     }
     
@@ -83,7 +83,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     * Large.
     * @param currentWorkerSizeValue The CurrentWorkerSize value.
     */
-    public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue) {
+    public void setCurrentWorkerSize(final WorkerSizeOptions currentWorkerSizeValue) {
         this.currentWorkerSize = currentWorkerSizeValue;
     }
     
@@ -199,14 +199,14 @@ public class WebSpacesGetResponse extends OperationResponse {
         this.subscription = subscriptionValue;
     }
     
-    private WebSpaceWorkerSize workerSize;
+    private WorkerSizeOptions workerSize;
     
     /**
     * Optional. The worker size. Possible values are Small, Medium, and Large.
     * For JSON, the equivalents are 0 = Small, 1 = Medium, and 2 = Large.
     * @return The WorkerSize value.
     */
-    public WebSpaceWorkerSize getWorkerSize() {
+    public WorkerSizeOptions getWorkerSize() {
         return this.workerSize;
     }
     
@@ -215,7 +215,7 @@ public class WebSpacesGetResponse extends OperationResponse {
     * For JSON, the equivalents are 0 = Small, 1 = Medium, and 2 = Large.
     * @param workerSizeValue The WorkerSize value.
     */
-    public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {
+    public void setWorkerSize(final WorkerSizeOptions workerSizeValue) {
         this.workerSize = workerSizeValue;
     }
 }

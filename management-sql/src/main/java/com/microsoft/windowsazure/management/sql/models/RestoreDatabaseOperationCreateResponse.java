@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Contains the response to the Create Restore Database Operation request.
 */
-public class RestoreDatabaseOperationCreateResponse extends OperationResponse {
+public class RestoreDatabaseOperationCreateResponse extends AzureOperationResponse {
     private RestoreDatabaseOperation operation;
     
     /**

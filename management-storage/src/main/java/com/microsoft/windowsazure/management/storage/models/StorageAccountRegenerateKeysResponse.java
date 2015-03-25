@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import java.net.URI;
 
 /**
 * The primary and secondary access keys for a storage account.
 */
-public class StorageAccountRegenerateKeysResponse extends OperationResponse {
+public class StorageAccountRegenerateKeysResponse extends AzureOperationResponse {
     private String primaryKey;
     
     /**

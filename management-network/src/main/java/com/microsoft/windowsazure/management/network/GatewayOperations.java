@@ -41,6 +41,7 @@ import com.microsoft.windowsazure.management.network.models.GatewayResetSharedKe
 import com.microsoft.windowsazure.management.network.models.GatewaySetDefaultSiteListParameters;
 import com.microsoft.windowsazure.management.network.models.GatewaySetIPsecParametersParameters;
 import com.microsoft.windowsazure.management.network.models.GatewaySetSharedKeyParameters;
+import com.microsoft.windowsazure.management.network.models.ResetGatewayParameters;
 import com.microsoft.windowsazure.management.network.models.ResizeGatewayParameters;
 import com.microsoft.windowsazure.management.network.models.StartGatewayPublicDiagnosticsParameters;
 import com.microsoft.windowsazure.management.network.models.StopGatewayPublicDiagnosticsParameters;
@@ -279,6 +280,42 @@ public interface GatewayOperations {
     * request ID.
     */
     Future<GatewayOperationResponse> beginRemoveDefaultSitesAsync(String networkName);
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    GatewayOperationResponse beginReset(String networkName, ResetGatewayParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<GatewayOperationResponse> beginResetAsync(String networkName, ResetGatewayParameters parameters);
     
     /**
     * The Begin Reset Virtual Network Gateway Shared Key operation resets the
@@ -596,14 +633,6 @@ public interface GatewayOperations {
     * gateway.
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Network Gateway operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -614,6 +643,13 @@ public interface GatewayOperations {
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is in
     * progress, or has failed. Note that this status is distinct from the HTTP
@@ -624,7 +660,7 @@ public interface GatewayOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
+    GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException;
     
     /**
     * The Create Virtual network Gateway operation creates a new network
@@ -655,14 +691,6 @@ public interface GatewayOperations {
     * more information)
     *
     * @param networkName Required. The name of the virtual network.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -673,6 +701,13 @@ public interface GatewayOperations {
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is in
     * progress, or has failed. Note that this status is distinct from the HTTP
@@ -683,7 +718,7 @@ public interface GatewayOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
+    GatewayGetOperationStatusResponse delete(String networkName) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException;
     
     /**
     * The Delete Virtual Network Gateway operation deletes a network gateway
@@ -1135,6 +1170,58 @@ public interface GatewayOperations {
     * failure.
     */
     Future<GatewayGetOperationStatusResponse> removeDefaultSitesAsync(String networkName);
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    GatewayGetOperationStatusResponse reset(String networkName, ResetGatewayParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<GatewayGetOperationStatusResponse> resetAsync(String networkName, ResetGatewayParameters parameters);
     
     /**
     * The Reset Virtual Network Gateway Shared Key operation resets the shared

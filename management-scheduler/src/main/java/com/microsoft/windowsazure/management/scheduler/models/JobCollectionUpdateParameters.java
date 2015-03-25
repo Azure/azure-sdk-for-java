@@ -116,6 +116,8 @@ public class JobCollectionUpdateParameters {
     * Initializes a new instance of the JobCollectionUpdateParameters class
     * with required arguments.
     *
+    * @param eTag The ETag of the job collection to update.  The update will
+    * fail ifthe ETag doesn't match.
     */
     public JobCollectionUpdateParameters(String eTag) {
         if (eTag == null) {

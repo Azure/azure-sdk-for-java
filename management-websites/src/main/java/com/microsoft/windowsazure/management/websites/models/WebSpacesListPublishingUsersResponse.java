@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Publishing Users operation response.
 */
-public class WebSpacesListPublishingUsersResponse extends OperationResponse implements Iterable<WebSpacesListPublishingUsersResponse.User> {
+public class WebSpacesListPublishingUsersResponse extends AzureOperationResponse implements Iterable<WebSpacesListPublishingUsersResponse.User> {
     private ArrayList<WebSpacesListPublishingUsersResponse.User> users;
     
     /**

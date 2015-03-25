@@ -56,8 +56,12 @@ public class DeploymentUpdateStatusParameters {
     * Initializes a new instance of the DeploymentUpdateStatusParameters class
     * with required arguments.
     *
+    * @param status The new status of the deployment.
     */
     public DeploymentUpdateStatusParameters(UpdatedDeploymentStatus status) {
+        if (status == null) {
+            throw new NullPointerException("status");
+        }
         this.setStatus(status);
     }
 }

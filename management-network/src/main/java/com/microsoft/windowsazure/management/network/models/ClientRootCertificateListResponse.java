@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The response for the List Client Root Certificates operation.
 */
-public class ClientRootCertificateListResponse extends OperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate> {
+public class ClientRootCertificateListResponse extends AzureOperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate> {
     private ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates;
     
     /**

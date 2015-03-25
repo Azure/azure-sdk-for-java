@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * The response body contains the status of the specified asynchronous
@@ -35,7 +35,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 * includes the HTTP status code for the failed request, and also includes
 * error information regarding the failure.
 */
-public class CloudServiceOperationStatusResponse extends OperationResponse {
+public class CloudServiceOperationStatusResponse extends AzureOperationResponse {
     private CloudServiceOperationStatusResponse.ErrorDetails error;
     
     /**

@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 
 /**
 * Represents the response structure for the Quota Get operation.
 */
-public class QuotaGetResponse extends OperationResponse {
+public class QuotaGetResponse extends AzureOperationResponse {
     private Quota quota;
     
     /**

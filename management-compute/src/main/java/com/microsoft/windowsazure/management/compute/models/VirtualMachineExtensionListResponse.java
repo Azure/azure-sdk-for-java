@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ import java.util.Iterator;
 /**
 * The List Resource Extensions operation response.
 */
-public class VirtualMachineExtensionListResponse extends OperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension> {
+public class VirtualMachineExtensionListResponse extends AzureOperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension> {
     private ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensions;
     
     /**
@@ -365,6 +365,26 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         */
         public void setPublisher(final String publisherValue) {
             this.publisher = publisherValue;
+        }
+        
+        private String regions;
+        
+        /**
+        * Optional. String property containing the name of the regions required
+        * for the slice.
+        * @return The Regions value.
+        */
+        public String getRegions() {
+            return this.regions;
+        }
+        
+        /**
+        * Optional. String property containing the name of the regions required
+        * for the slice.
+        * @param regionsValue The Regions value.
+        */
+        public void setRegions(final String regionsValue) {
+            this.regions = regionsValue;
         }
         
         private Boolean replicationCompleted;

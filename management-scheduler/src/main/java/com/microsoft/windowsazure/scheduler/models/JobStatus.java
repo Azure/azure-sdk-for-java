@@ -135,6 +135,7 @@ public class JobStatus {
     /**
     * Initializes a new instance of the JobStatus class with required arguments.
     *
+    * @param executionCount Number of times this job has executed.
     */
     public JobStatus(int executionCount) {
         this.setExecutionCount(executionCount);

@@ -159,7 +159,7 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.jobs = new JobOperationsImpl(this);
         this.apiVersion = "2013-03-01";

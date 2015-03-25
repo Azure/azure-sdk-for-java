@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The List Hosted Service operation response.
 */
-public class HostedServiceListResponse extends OperationResponse implements Iterable<HostedServiceListResponse.HostedService> {
+public class HostedServiceListResponse extends AzureOperationResponse implements Iterable<HostedServiceListResponse.HostedService> {
     private ArrayList<HostedServiceListResponse.HostedService> hostedServices;
     
     /**

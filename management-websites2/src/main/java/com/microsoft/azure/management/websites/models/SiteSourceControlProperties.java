@@ -136,6 +136,7 @@ public class SiteSourceControlProperties {
     * Initializes a new instance of the SiteSourceControlProperties class with
     * required arguments.
     *
+    * @param repoUrl Gets or sets the repository url.
     */
     public SiteSourceControlProperties(String repoUrl) {
         if (repoUrl == null) {

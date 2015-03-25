@@ -59,6 +59,8 @@ public class ResourceManagementErrorWithDetails extends ResourceManagementError 
     * Initializes a new instance of the ResourceManagementErrorWithDetails
     * class with required arguments.
     *
+    * @param code Gets or sets the error code returned from the server.
+    * @param message Gets or sets the error message returned from the server.
     */
     public ResourceManagementErrorWithDetails(String code, String message) {
         this();
