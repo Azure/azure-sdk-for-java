@@ -17,8 +17,11 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.sun.jersey.api.client.ClientRequest;
+
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JerseyServiceRequestContext implements ServiceRequestContext {
     private ClientRequest clientRequest;
@@ -35,6 +38,17 @@ public class JerseyServiceRequestContext implements ServiceRequestContext {
     @Override
     public void setProperty(String name, Object value) {
         clientRequest.getProperties().put(name, value);
+    }
+
+    @Override
+    public Map<String, String> getAllHeaders() {
+        Map<String, String> allHeaders = new HashMap<String, String>();
+        for (Map.Entry<String, List<Object>> header : clientRequest.getHeaders().entrySet()) {
+            if (header != null && header.getValue().size() > 0) {
+                allHeaders.put(header.getKey(), (String) header.getValue().get(0));
+            }
+        }
+        return allHeaders;
     }
 
     @Override

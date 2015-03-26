@@ -58,7 +58,7 @@
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>4.3.1</version>
+        <version>4.3.6</version>
       </dependency>
       <dependency>
         <groupId>commons-lang</groupId>
@@ -158,6 +158,12 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>1.47</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>adal4j</artifactId>
+        <version>0.0.3</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
