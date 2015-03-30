@@ -334,7 +334,7 @@
   </reporting>
   <modules>
     <module>../core</module>
-    <module>../core-test</module> 
+    <module>../core-test</module>
     <module>../management</module>
     <module>../management-compute</module>
     <module>../management-media</module>
