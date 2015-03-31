@@ -99,8 +99,8 @@ public abstract class SchedulerIntegrationTestBase extends MockIntegrationTestBa
         String baseUri = System.getenv(ManagementConfiguration.URI);
         if (IS_MOCKED) {
             return ManagementConfiguration.configure(
-                    new URI("http://localhost:8043"),
-                    "00000000-0000-0000-0000-000000000000",
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
                     null,
                     null,
                     null
@@ -120,8 +120,8 @@ public abstract class SchedulerIntegrationTestBase extends MockIntegrationTestBa
         String baseUri = System.getenv(ManagementConfiguration.URI);
         if (IS_MOCKED) {
             return ManagementConfiguration.configure(
-                    new URI("http://localhost:8043"),
-                    "00000000-0000-0000-0000-000000000000",
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
                     null,
                     null,
                     null,

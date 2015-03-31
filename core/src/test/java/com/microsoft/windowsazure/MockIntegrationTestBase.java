@@ -63,6 +63,8 @@ public class MockIntegrationTestBase {
 
     private final static String RECORD_FOLDER = "session-records/";
     private final static String SUBSCRIPTION_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected final static String MOCK_URI = "http://localhost:8043";
     protected final static String CLEANUP_SUFFIX = "Cleanup";
 
     // List of the clients the traffic through which will be mocked
@@ -289,7 +291,7 @@ public class MockIntegrationTestBase {
         for (int i = 0; i < clients.size(); i++) {
             Field f = clients.get(i).getClass().getDeclaredField("baseUri");
             f.setAccessible(true);
-            f.set(clients.get(i), new URI("http://localhost:8043"));
+            f.set(clients.get(i), new URI(MOCK_URI));
         }
     }
     
