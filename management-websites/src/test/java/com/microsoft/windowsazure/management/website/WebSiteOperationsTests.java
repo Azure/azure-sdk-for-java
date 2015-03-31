@@ -82,6 +82,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         } catch (Exception e) {
             // fine if it fails.
         }
+        resetTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void createWebSite() throws Exception {
