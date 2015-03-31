@@ -268,11 +268,13 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
 
+        setupTest();
         TestRequestFilter testFilter = new TestRequestFilter("filterUserAgent");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
 
         // Executing operation on the filtered service should execute the filter
         AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
+        resetTest();
 
         String userAgent = testFilter.getUserAgent();
         Assert.assertNotNull(userAgent);
