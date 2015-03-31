@@ -97,26 +97,48 @@ public abstract class SchedulerIntegrationTestBase extends MockIntegrationTestBa
 
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI("http://localhost:8043"),
+                    "00000000-0000-0000-0000-000000000000",
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
 
     protected static Configuration createConfiguration(String cloudServiceName, String jobCollectionName) throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE)),
-            cloudServiceName,
-            jobCollectionName
-        );
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI("http://localhost:8043"),
+                    "00000000-0000-0000-0000-000000000000",
+                    null,
+                    null,
+                    null,
+                    cloudServiceName,
+                    jobCollectionName
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE)),
+                    cloudServiceName,
+                    jobCollectionName
+            );
+        }
     }
 
     protected static void getLocation() throws Exception {

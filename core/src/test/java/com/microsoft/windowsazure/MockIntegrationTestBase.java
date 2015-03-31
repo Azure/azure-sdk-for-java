@@ -180,6 +180,8 @@ public class MockIntegrationTestBase {
                             Matcher m = Pattern.compile(rule.getKey()).matcher(url);
                             if (m.find()) {
                                 regexRules.put(rule.getKey(), m.group());
+                            } else {
+                                regexRules.put(rule.getKey(), null);
                             }
                         }
                         registerStub();
