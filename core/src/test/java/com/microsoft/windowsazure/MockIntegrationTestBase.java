@@ -39,19 +39,26 @@ import java.util.zip.GZIPInputStream;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class MockIntegrationTestBase {
-    protected final static Boolean IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null ?
-    		System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback") : true;
-    protected final static Boolean IS_RECORD = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null ?
-    		System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record") : false;
+    protected final static Boolean  IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) == null ||
+    		                                    System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
+    protected final static Boolean  IS_RECORD = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null &&
+    		                                    System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("record");
 
     private final static String RECORD_FOLDER = "session-records/";
     private final static String SUBSCRIPTION_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected final static String MOCK_URI = "http://localhost:8043";
     protected final static String CLEANUP_SUFFIX = "Cleanup";
-    
+
+    // List of the clients the traffic through which will be mocked
     private static List<ServiceClient<?>> clients = new ArrayList<ServiceClient<?>>();
+    // List of the functional calls to reset the clients (clean up the filters)
     private static List<Callable<?>> funcs = new ArrayList<Callable<?>>();
+    // List of the regex rules to be applied on URLs, response bodies, etc
     private static Map<String, String> regexRules = new HashMap<String, String>();
+    // Stores a map of all the HTTP properties in a session
     private static LinkedList<Map<String, String>> context;
+    // A state machine ensuring a test is always reset before another one is setup
     private static String currentTestName = null;
     
     @ClassRule
@@ -60,7 +67,12 @@ public class MockIntegrationTestBase {
     public WireMockClassRule instanceRule = wireMockRule;
     @Rule
     public TestName name = new TestName();
-    
+
+    /**
+     * Add a ServiceClient to the client list.
+     * @param client the ServiceClient to add.
+     * @param func the function to call to re-create or reset the client
+     */
     protected static void addClient(ServiceClient<?> client, Callable<?> func) {
         for (int i = 0; i < clients.size(); i++) {
             // Only one client of each class is allowed
@@ -73,7 +85,12 @@ public class MockIntegrationTestBase {
         clients.add(client);
         funcs.add(func);
     }
-    
+
+    /**
+     * Add a regex rule to filter on URLs and response bodies. The replacement
+     * for the pattern should be available in the URL.
+     * @param regex the regex pattern that a match will be found in the URL
+     */
     protected static void addRegexRule(String regex) {
         addRegexRule(regex, null);
     }
@@ -81,13 +98,29 @@ public class MockIntegrationTestBase {
     protected static void addRegexRule(String regex, String replacement) {
         regexRules.put(regex, replacement);
     }
-    
+
+    /**
+     * Turn on the test recording / mocking from this point on until
+     * resetTest() is called. The current test name will be set as the name of
+     * the current test running.
+     *
+     * Only call this if there's no other tests running. Otherwise the call
+     * will be ignored and the traffic will be stored in the record file from
+     * the last setupTest() call.
+     *
+     * @throws Exception
+     */
     protected void setupTest() throws Exception {
         setupTest(name.getMethodName());
     }
     
     /**
-     * Only change the current test name if there's no other tests running.
+     * Turn on the test recording / mocking from this point on until
+     * resetTest() is called with the file name of the mock record specified.
+     *
+     * Only call this if there's no other tests running. Otherwise the call
+     * will be ignored and the traffic will be stored in the record file from
+     * the last setupTest() call.
      * 
      * Example:
      * public void setup() {
@@ -136,6 +169,8 @@ public class MockIntegrationTestBase {
                             Matcher m = Pattern.compile(rule.getKey()).matcher(url);
                             if (m.find()) {
                                 regexRules.put(rule.getKey(), m.group());
+                            } else {
+                                regexRules.put(rule.getKey(), null);
                             }
                         }
                         registerStub();
@@ -195,7 +230,11 @@ public class MockIntegrationTestBase {
         }
         attachFilters(requestFilter, responseFilter);
     }
-    
+
+    /**
+     * Turn off the mocking / recording setup by a previous setupTest() call.
+     * @throws Exception
+     */
     protected void resetTest() throws Exception {
         resetTest(name.getMethodName());
     }
@@ -264,7 +303,7 @@ public class MockIntegrationTestBase {
         for (int i = 0; i < clients.size(); i++) {
             Field f = clients.get(i).getClass().getDeclaredField("baseUri");
             f.setAccessible(true);
-            f.set(clients.get(i), new URI("http://localhost:8043"));
+            f.set(clients.get(i), new URI(MOCK_URI));
         }
     }
     
