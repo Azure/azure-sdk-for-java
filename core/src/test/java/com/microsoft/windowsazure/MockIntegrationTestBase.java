@@ -169,8 +169,8 @@ public class MockIntegrationTestBase {
                             Matcher m = Pattern.compile(rule.getKey()).matcher(url);
                             if (m.find()) {
                                 regexRules.put(rule.getKey(), m.group());
-                            } else {
-                                regexRules.put(rule.getKey(), null);
+//                            } else {
+//                                regexRules.put(rule.getKey(), null);
                             }
                         }
                         registerStub();
@@ -350,7 +350,13 @@ public class MockIntegrationTestBase {
         ResponseDefinitionBuilder rBuilder = aResponse().withStatus(Integer.parseInt(responseData.get("StatusCode")));
         for (Entry<String, String> header : responseData.entrySet()) {
             if (!header.getKey().equals("StatusCode") && !header.getKey().equals("Body")) {
-                rBuilder.withHeader(header.getKey(), header.getValue());
+                String rawHeader = header.getValue();
+                for (Entry<String, String> rule : regexRules.entrySet()) {
+                    if (rule.getValue() != null) {
+                        rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
+                    }
+                }
+                rBuilder.withHeader(header.getKey(), rawHeader);
             }
         }
         

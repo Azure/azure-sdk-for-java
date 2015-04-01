@@ -35,7 +35,9 @@ public class Exports implements Builder.Exports {
                                                     Class<S> service, Builder builder,
                                                     Map<String, Object> properties) {
                 SubscriptionCloudCredentials credential = (SubscriptionCloudCredentials)properties.get(profile);
-                credential.applyConfig(profile, properties);
+                if (System.getenv("test.mode") != null && !System.getenv("test.mode").equals("playback")) {
+                    credential.applyConfig(profile, properties);
+                }
                 return credential;
             }
         });

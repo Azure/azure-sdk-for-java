@@ -53,23 +53,41 @@ public abstract class ResourceManagementIntegrationTestBase extends MockIntegrat
                 return null;
             }
         });
+        addRegexRule("https://management.azure.com", MOCK_URI);
     }
 
     public static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv("arm.url");
-        Configuration config = ManagementConfiguration.configure(
-                baseUri != null ? new URI(baseUri) : null,
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-                KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );
-        config = ARMManagementConfiguration.configure(
-                null,
-                config,
-                baseUri != null ? new URI(baseUri) : null,
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                getAccessTokenFromUserCredentials(System.getenv("arm.username"), System.getenv("arm.password")).getAccessToken());
+        Configuration config = null;
+        if (IS_MOCKED) {
+            config = ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+            config = ARMManagementConfiguration.configure(
+                    null,
+                    config,
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null);
+        } else {
+            config = ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+            config = ARMManagementConfiguration.configure(
+                    null,
+                    config,
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    getAccessTokenFromUserCredentials(System.getenv("arm.username"), System.getenv("arm.password")).getAccessToken());
+        }
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         // add LoggingFilter to any pipeline that is created
