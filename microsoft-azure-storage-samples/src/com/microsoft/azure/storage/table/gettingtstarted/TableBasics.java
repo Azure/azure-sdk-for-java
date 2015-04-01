@@ -16,6 +16,7 @@ package com.microsoft.azure.storage.table.gettingtstarted;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.UUID;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
@@ -56,7 +57,10 @@ public class TableBasics {
 
         try {
             // Retrieve a reference to a table.
-            table = tableClient.getTableReference(tableName);
+            // Append a random UUID to the end of the table name so that this
+            // sample can be run more than once in quick succession.
+            table = tableClient.getTableReference(tableName
+                    + UUID.randomUUID().toString().replace("-", ""));
 
             // Create the table if it doesn't already exist.
             table.createIfNotExists();

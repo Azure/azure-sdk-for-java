@@ -34,6 +34,7 @@ import com.microsoft.azure.storage.ServiceProperties;
 import com.microsoft.azure.storage.ServiceStats;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
@@ -437,6 +438,11 @@ public final class CloudTableClient extends ServiceClient {
                         queryToExecute.getTakeCount() == null ? clazzResponse.results.size()
                                 : queryToExecute.getTakeCount(), nextToken);
             }
+
+            @Override
+            public StorageExtendedErrorInformation parseErrorDetails() {
+                return TableStorageErrorDeserializer.parseErrorDetails(this);
+            }
         };
 
         return getRequest;
@@ -507,6 +513,11 @@ public final class CloudTableClient extends ServiceClient {
                         queryToExecute.getTakeCount() == null ? resolvedResponse.results.size()
                                 : queryToExecute.getTakeCount(), nextToken);
 
+            }
+
+            @Override
+            public StorageExtendedErrorInformation parseErrorDetails() {
+                return TableStorageErrorDeserializer.parseErrorDetails(this);
             }
         };
 

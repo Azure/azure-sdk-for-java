@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.azure.storage;
+package com.microsoft.azure.storage.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +25,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.core.Utility;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 
 /**
  * RESERVED FOR INTERNAL USE. A class used to deserialize storage errors.

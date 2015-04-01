@@ -97,7 +97,7 @@ final class BlobRequest {
                 Constants.HeaderConstants.COPY_ACTION_ABORT);
 
         if (accessCondition != null) {
-            accessCondition.applyConditionToRequest(request, true);
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;
@@ -198,7 +198,7 @@ final class BlobRequest {
         request.setRequestProperty(Constants.HeaderConstants.COPY_SOURCE_HEADER, source);
 
         if (sourceAccessCondition != null) {
-            sourceAccessCondition.applyConditionToRequest(request, true);
+            sourceAccessCondition.applySourceConditionToRequest(request);
         }
 
         if (destinationAccessCondition != null) {
@@ -376,8 +376,8 @@ final class BlobRequest {
 
         request.setRequestMethod(Constants.HTTP_GET);
 
-        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
-            BaseRequest.addLeaseId(request, accessCondition.getLeaseID());
+        if (accessCondition != null) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;
@@ -648,8 +648,8 @@ final class BlobRequest {
             throws IOException, URISyntaxException, StorageException {
         HttpURLConnection request = BaseRequest.getProperties(uri, blobOptions, builder, opContext);
 
-        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
-            BaseRequest.addLeaseId(request, accessCondition.getLeaseID());
+        if (accessCondition != null) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;
@@ -946,24 +946,8 @@ final class BlobRequest {
     public static HttpURLConnection listContainers(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final ListingContext listingContext,
             final ContainerListingDetails detailsIncluded) throws URISyntaxException, IOException, StorageException {
-
-        final UriQueryBuilder builder = getContainerUriQueryBuilder();
-        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.LIST);
-
-        if (listingContext != null) {
-            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
-                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix());
-            }
-
-            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
-                builder.add(Constants.QueryConstants.MARKER, listingContext.getMarker());
-            }
-
-            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
-                builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
-            }
-        }
-
+        final UriQueryBuilder builder = BaseRequest.getListUriQueryBuilder(listingContext);
+        
         if (detailsIncluded == ContainerListingDetails.ALL || detailsIncluded == ContainerListingDetails.METADATA) {
             builder.add(Constants.QueryConstants.INCLUDE, Constants.QueryConstants.METADATA);
         }
@@ -1180,6 +1164,7 @@ final class BlobRequest {
 
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);
+            accessCondition.applySequenceConditionToRequest(request);
         }
 
         return request;
@@ -1270,8 +1255,8 @@ final class BlobRequest {
             request.setRequestProperty(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER, publicAccess.toString().toLowerCase());
         }
 
-        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
-            BaseRequest.addLeaseId(request, accessCondition.getLeaseID());
+        if (accessCondition != null) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;

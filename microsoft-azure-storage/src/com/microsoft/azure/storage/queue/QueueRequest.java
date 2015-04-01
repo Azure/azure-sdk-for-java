@@ -27,7 +27,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.core.BaseRequest;
 import com.microsoft.azure.storage.core.ListingContext;
 import com.microsoft.azure.storage.core.UriQueryBuilder;
-import com.microsoft.azure.storage.core.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. Provides a set of methods for constructing web
@@ -282,23 +281,7 @@ final class QueueRequest {
     public static HttpURLConnection list(final URI uri, final QueueRequestOptions queueOptions,
             final OperationContext opContext, final ListingContext listingContext,
             final QueueListingDetails detailsIncluded) throws URISyntaxException, IOException, StorageException {
-
-        final UriQueryBuilder builder = new UriQueryBuilder();
-        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.LIST);
-
-        if (listingContext != null) {
-            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
-                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix());
-            }
-
-            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
-                builder.add(Constants.QueryConstants.MARKER, listingContext.getMarker());
-            }
-
-            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
-                builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
-            }
-        }
+        final UriQueryBuilder builder = BaseRequest.getListUriQueryBuilder(listingContext);
 
         if (detailsIncluded == QueueListingDetails.ALL || detailsIncluded == QueueListingDetails.METADATA) {
             builder.add(Constants.QueryConstants.INCLUDE, Constants.QueryConstants.METADATA);

@@ -1689,17 +1689,17 @@ public final class CloudBlobContainer {
             return putRequest;
         }
         catch (final IllegalArgumentException e) {
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (final XMLStreamException e) {
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (UnsupportedEncodingException e) {
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
     }

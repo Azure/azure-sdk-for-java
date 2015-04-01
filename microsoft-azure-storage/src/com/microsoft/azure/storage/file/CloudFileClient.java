@@ -343,7 +343,7 @@ public final class CloudFileClient extends ServiceClient {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null); //TODO
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
             }
 
             @Override

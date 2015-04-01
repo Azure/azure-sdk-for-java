@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -462,6 +463,36 @@ public class CloudBlobContainerTests {
         } while (token != null);
 
         assertTrue(blobNames.size() == 0);
+    }
+    
+    /**
+     * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all 
+     * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if 
+     * there were more elements to iterate on."
+     * 
+     * @throws URISyntaxException
+     * @throws StorageException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerListBlobsNext() throws StorageException, IOException, URISyntaxException {
+        this.container.create();
+        
+        int numBlobs = 10;
+        List<String> blobNames = BlobTestHelper.uploadNewBlobs(this.container, BlobType.PAGE_BLOB, 10, 512, null);
+        assertEquals(numBlobs, blobNames.size());
+
+        // hasNext first
+        Iterator<ListBlobItem> iter = this.container.listBlobs().iterator();
+        iter.hasNext();
+        iter.next();
+        iter.next();
+        
+        // next without hasNext
+        iter = this.container.listBlobs().iterator();
+        iter.next();
+        iter.next();
     }
     
     /**

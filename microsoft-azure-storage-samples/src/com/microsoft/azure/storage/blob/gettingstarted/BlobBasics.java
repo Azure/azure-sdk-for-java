@@ -16,6 +16,7 @@ package com.microsoft.azure.storage.blob.gettingstarted;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.UUID;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobContainerPermissions;
@@ -53,7 +54,10 @@ public class BlobBasics {
 		try {
 			// Get a reference to a container
 			// The container name must be lower case
-			CloudBlobContainer container = blobClient.getContainerReference("blobbasicscontainer");
+			// Append a random UUID to the end of the container name so that
+			// this sample can be run more than once in quick succession.
+			CloudBlobContainer container = blobClient.getContainerReference("blobbasicscontainer"
+					+ UUID.randomUUID().toString().replace("-", ""));
 
 			// Create the container if it does not exist
 			container.createIfNotExists();

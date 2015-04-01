@@ -770,18 +770,15 @@ public abstract class CloudBlob implements ListBlobItem {
             final AccessCondition sourceAccessCondition, final AccessCondition destinationAccessCondition,
             final BlobRequestOptions options) {
 
-        if (sourceAccessCondition != null && !Utility.isNullOrEmpty(sourceAccessCondition.getLeaseID())) {
-            throw new IllegalArgumentException(SR.LEASE_CONDITION_ON_SOURCE);
-        }
-
         final StorageRequest<CloudBlobClient, CloudBlob, String> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, String>(
                 options, this.getStorageUri()) {
 
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
+                // toASCIIString() must be used in order to appropriately encode the URI
                 return BlobRequest.copyFrom(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, sourceAccessCondition, destinationAccessCondition, source.toString(),
+                        options, context, sourceAccessCondition, destinationAccessCondition, source.toASCIIString(),
                         blob.snapshotID);
             }
 
@@ -2754,103 +2751,6 @@ public abstract class CloudBlob implements ListBlobItem {
     public abstract void upload(InputStream sourceStream, long length, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException;
 
-    /**
-     * Uploads a blob in a single operation.
-     *
-     * @param sourceStream
-     *            A <code>InputStream</code> object that represents the source stream to upload.
-     * @param length
-     *            The length, in bytes, of the stream, or -1 if unknown.
-     * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
-     * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    @DoesServiceRequest
-    protected final void uploadFullBlob(final InputStream sourceStream, final long length,
-            final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
-            throws StorageException {
-        assertNoWriteOperationForSnapshot();
-
-        // Mark sourceStream for current position.
-        sourceStream.mark(Constants.MAX_MARK_LENGTH);
-
-        if (length < 0 || length > BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES) {
-            throw new IllegalArgumentException(String.format(SR.INVALID_STREAM_LENGTH,
-                    BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES / Constants.MB));
-        }
-
-        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                uploadFullBlobImpl(sourceStream, length, accessCondition, options, opContext),
-                options.getRetryPolicyFactory(), opContext);
-    }
-
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> uploadFullBlobImpl(final InputStream sourceStream,
-            final long length, final AccessCondition accessCondition, final BlobRequestOptions options,
-            final OperationContext opContext) {
-        final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
-                options, this.getStorageUri()) {
-
-            @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
-                    throws Exception {
-                this.setSendStream(sourceStream);
-                this.setLength(length);
-                return BlobRequest.putBlob(blob.getTransformedAddress(opContext).getUri(this.getCurrentLocation()),
-                        options, opContext, accessCondition, blob.properties, blob.properties.getBlobType(),
-                        this.getLength());
-            }
-
-            @Override
-            public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
-                BlobRequest.addMetadata(connection, blob.metadata, opContext);
-            }
-
-            @Override
-            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, length, null);
-            }
-
-            @Override
-            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                    this.setNonExceptionedRetryableFailure(true);
-                    return null;
-                }
-
-                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
-                return null;
-            }
-
-            @Override
-            public void recoveryAction(OperationContext context) throws IOException {
-                sourceStream.reset();
-                sourceStream.mark(Constants.MAX_MARK_LENGTH);
-            }
-
-            @Override
-            public void validateStreamWrite(StreamMd5AndLength descriptor) throws StorageException {
-                if (this.getLength() != null && this.getLength() != -1) {
-                    if (length != descriptor.getLength()) {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_INPUT, SR.INCORRECT_STREAM_LENGTH,
-                                HttpURLConnection.HTTP_FORBIDDEN, null, null);
-                    }
-                }
-            }
-        };
-
-        return putRequest;
-    }
 
     /**
      * Uploads the blob's metadata to the storage service.

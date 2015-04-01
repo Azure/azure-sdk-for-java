@@ -155,6 +155,42 @@ public class CloudBlockBlobTests {
             InterruptedException {
         this.doCloudBlockBlobCopy(false, false);
     }
+    
+    @Test
+    public void testCopyWithChineseChars() throws StorageException, IOException, URISyntaxException {
+        String data = "sample data chinese chars 阿䶵";
+        CloudBlockBlob copySource = container.getBlockBlobReference("sourcechinescharsblob阿䶵.txt");
+        copySource.uploadText(data);
+
+        assertEquals(this.container.getUri() + "/sourcechinescharsblob阿䶵.txt", copySource.getUri().toString());
+        assertEquals(this.container.getUri() + "/sourcechinescharsblob%E9%98%BF%E4%B6%B5.txt", 
+                copySource.getUri().toASCIIString());
+
+        CloudBlockBlob copyDestination = container.getBlockBlobReference("destchinesecharsblob阿䶵.txt");
+
+        assertEquals(this.container.getUri() + "/destchinesecharsblob阿䶵.txt", copyDestination.getUri().toString());
+        assertEquals(this.container.getUri() + "/destchinesecharsblob%E9%98%BF%E4%B6%B5.txt",
+                copyDestination.getUri().toASCIIString());
+
+        OperationContext ctx = new OperationContext();
+        ctx.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                HttpURLConnection con = (HttpURLConnection) eventArg.getConnectionObject();
+                
+                // Test the copy destination request url
+                assertEquals(CloudBlockBlobTests.this.container.getUri() + "/destchinesecharsblob%E9%98%BF%E4%B6%B5.txt",
+                        con.getURL().toString());
+                
+                // Test the copy source request property
+                assertEquals(CloudBlockBlobTests.this.container.getUri() + "/sourcechinescharsblob%E9%98%BF%E4%B6%B5.txt",
+                        con.getRequestProperty("x-ms-copy-source"));
+            }
+        });
+        
+        copyDestination.startCopyFromBlob(copySource.getUri(), null, null, null, ctx);
+        copyDestination.startCopyFromBlob(copySource, null, null, null, ctx);
+    }
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })

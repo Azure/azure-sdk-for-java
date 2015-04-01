@@ -64,7 +64,10 @@ public class PayloadFormat {
 			
 			try {
 				// Retrieve a reference to a table.
-				CloudTable table = tableClient.getTableReference("tablepayloadformat");
+				// Append a random UUID to the end of the table name so that this
+				// sample can be run more than once in quick succession.
+				CloudTable table = tableClient.getTableReference("tablepayloadformat"
+						+ UUID.randomUUID().toString().replace("-", ""));
 
 				// Create the table if it doesn't already exist.
 				table.createIfNotExists();

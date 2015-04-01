@@ -315,6 +315,7 @@ public class BlobTestHelper extends TestHelper {
             Assert.assertEquals(prop1.getEtag(), prop2.getEtag());
             Assert.assertEquals(prop1.getLastModified(), prop2.getLastModified());
             Assert.assertEquals(prop1.getLength(), prop2.getLength());
+            Assert.assertEquals(prop1.getPageBlobSequenceNumber(), prop2.getPageBlobSequenceNumber());
         }
     }
 

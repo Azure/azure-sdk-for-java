@@ -17,7 +17,6 @@ package com.microsoft.azure.storage.queue;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -47,8 +46,7 @@ final class QueueMessageSerializer {
      */
     public static byte[] generateMessageRequestBody(final String message) throws XMLStreamException, StorageException {
         final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLStreamWriter xmlw = Utility.createXMLStreamWriter(outWriter);
 
         // default is UTF8
         xmlw.writeStartDocument();

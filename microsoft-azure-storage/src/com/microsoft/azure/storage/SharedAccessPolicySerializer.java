@@ -18,7 +18,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -45,8 +44,7 @@ public final class SharedAccessPolicySerializer {
         Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
         Utility.assertNotNull("outWriter", outWriter);
 
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLStreamWriter xmlw = Utility.createXMLStreamWriter(outWriter);
 
         if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
             final String errorMessage = String.format(SR.TOO_MANY_SHARED_ACCESS_POLICY_IDENTIFIERS,

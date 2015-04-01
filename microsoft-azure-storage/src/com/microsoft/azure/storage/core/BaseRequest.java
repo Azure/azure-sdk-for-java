@@ -49,20 +49,6 @@ public final class BaseRequest {
     private static String userAgent;
 
     /**
-     * Adds the lease id.
-     * 
-     * @param request
-     *            a HttpURLConnection for the operation.
-     * @param leaseId
-     *            the lease id to add to the HttpURLConnection.
-     */
-    public static void addLeaseId(final HttpURLConnection request, final String leaseId) {
-        if (leaseId != null) {
-            BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.LEASE_ID_HEADER, leaseId);
-        }
-    }
-
-    /**
      * Adds the metadata.
      * 
      * @param request
@@ -125,7 +111,8 @@ public final class BaseRequest {
      * @param uri
      *            the request Uri.
      * @param options
-     *            TODO
+     *            A {@link RequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. 
      * @param builder
      *            the UriQueryBuilder for the request
      * @param opContext
@@ -238,6 +225,37 @@ public final class BaseRequest {
     }
 
     /**
+     * Gets a {@link UriQueryBuilder} for listing.
+     * 
+     * @param listingContext
+     *            A {@link ListingContext} object that specifies parameters for
+     *            the listing operation, if any. May be <code>null</code>.
+     *            
+     * @throws StorageException
+     *             If a storage service error occurred during the operation.
+     */
+    public static UriQueryBuilder getListUriQueryBuilder(final ListingContext listingContext) throws StorageException {
+        final UriQueryBuilder builder = new UriQueryBuilder();    
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.LIST);
+
+        if (listingContext != null) {
+            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
+                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix());
+            }
+
+            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
+                builder.add(Constants.QueryConstants.MARKER, listingContext.getMarker());
+            }
+
+            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
+                builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
+            }
+        }
+
+        return builder;
+    }
+    
+    /**
      * Gets the properties. Sign with no length specified.
      * 
      * @param uri
@@ -345,7 +363,7 @@ public final class BaseRequest {
 
         return userAgent;
     }
-
+    
     /**
      * Sets the metadata. Sign with 0 length.
      * 

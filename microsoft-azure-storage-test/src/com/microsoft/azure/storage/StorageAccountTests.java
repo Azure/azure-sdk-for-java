@@ -78,17 +78,15 @@ public class StorageAccountTests {
 
     @Test
     public void testStorageCredentialsSAS() throws URISyntaxException, StorageException {
-        String token = "?sp=abcde&api-version=2014-02-14&sig=1";
-
+        String token = "?sig=1&api-version=2014-02-14&sp=abcde";  
         StorageCredentialsSharedAccessSignature cred = new StorageCredentialsSharedAccessSignature(token);
-
         assertNull(cred.getAccountName());
 
         URI testUri = new URI("http://test/abc");
         assertEquals(testUri + token, cred.transformUri(testUri).toString());
 
         testUri = new URI("http://test/abc?query=a&query2=b");
-        String expectedUri = "http://test/abc?sp=abcde&query=a&api-version=2014-02-14&query2=b&sig=1";
+        String expectedUri = "http://test/abc?sig=1&api-version=2014-02-14&query=a&sp=abcde&query2=b";
         assertEquals(expectedUri, cred.transformUri(testUri).toString());
     }
 

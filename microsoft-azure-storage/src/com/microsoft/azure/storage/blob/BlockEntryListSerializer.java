@@ -17,7 +17,6 @@ package com.microsoft.azure.storage.blob;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -44,10 +43,8 @@ final class BlockEntryListSerializer {
      */
     public static byte[] writeBlockListToStream(final Iterable<BlockEntry> blockList, final OperationContext opContext)
             throws XMLStreamException, StorageException {
-
         final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLStreamWriter xmlw = Utility.createXMLStreamWriter(outWriter);
 
         // default is UTF8
         xmlw.writeStartDocument();

@@ -18,7 +18,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -43,8 +42,7 @@ final class ServicePropertiesSerializer {
     public static byte[] serializeToByteArray(final ServiceProperties properties) throws XMLStreamException,
             StorageException {
         final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLStreamWriter xmlw = Utility.createXMLStreamWriter(outWriter);
 
         // default is UTF8
         xmlw.writeStartDocument();
