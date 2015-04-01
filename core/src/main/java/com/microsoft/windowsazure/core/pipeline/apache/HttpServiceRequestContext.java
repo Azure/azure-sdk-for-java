@@ -18,6 +18,9 @@ package com.microsoft.windowsazure.core.pipeline.apache;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.protocol.HttpContext;
@@ -40,6 +43,15 @@ public class HttpServiceRequestContext implements ServiceRequestContext {
     @Override
     public void setProperty(final String name, final Object value) {
         httpContext.setAttribute(name, value);
+    }
+
+    @Override
+    public Map<String, String> getAllHeaders() {
+        Map<String, String> allHeaders = new HashMap<String, String>();
+        for (Header header : clientRequest.getAllHeaders()) {
+            allHeaders.put(header.getName(), header.getValue());
+        }
+        return allHeaders;
     }
 
     @Override

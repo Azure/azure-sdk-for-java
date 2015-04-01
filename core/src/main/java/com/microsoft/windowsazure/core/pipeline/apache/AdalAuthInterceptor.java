@@ -15,34 +15,23 @@
  * limitations under the License.
  * 
  */
+package com.microsoft.windowsazure.core.pipeline.apache;
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.protocol.HttpContext;
 
-import java.net.URI;
-import java.util.Map;
+import com.microsoft.windowsazure.credentials.AdalAuthFilter;
 
-public interface ServiceRequestContext {
-    String getMethod();
+public class AdalAuthInterceptor implements HttpRequestInterceptor {
+    private AdalAuthFilter filter;
 
-    void setMethod(String method);
+    public AdalAuthInterceptor(AdalAuthFilter filter) {
+        this.filter = filter;
+    }
 
-    URI getURI();
-
-    void setURI(URI uri);
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
+    @Override
+    public void process(HttpRequest request, HttpContext context) {
+        filter.filter(new HttpServiceRequestContext(request, context));
+    }
 }

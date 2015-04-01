@@ -248,7 +248,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -259,7 +259,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             // Create Result
             WebSpacesCreatePublishingUserResponse result = null;
             // Deserialize Response
-            if (statusCode == HttpStatus.SC_CREATED) {
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED) {
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSpacesCreatePublishingUserResponse();
                 DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();

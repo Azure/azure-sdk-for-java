@@ -1,46 +1,5 @@
 package com.microsoft.windowsazure;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.patch;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.HttpStatus;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.protocol.HttpContext;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.rules.TestName;
-import org.mortbay.log.Log;
-
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.UrlMatchingStrategy;
@@ -54,6 +13,30 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.*;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.protocol.HttpContext;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+import org.mortbay.log.Log;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class MockIntegrationTestBase {
     protected final static Boolean  IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) == null ||
@@ -109,7 +92,11 @@ public class MockIntegrationTestBase {
      * @param regex the regex pattern that a match will be found in the URL
      */
     protected static void addRegexRule(String regex) {
-        regexRules.put(regex, null);
+        addRegexRule(regex, null);
+    }
+
+    protected static void addRegexRule(String regex, String replacement) {
+        regexRules.put(regex, replacement);
     }
 
     /**
@@ -182,8 +169,8 @@ public class MockIntegrationTestBase {
                             Matcher m = Pattern.compile(rule.getKey()).matcher(url);
                             if (m.find()) {
                                 regexRules.put(rule.getKey(), m.group());
-                            } else {
-                                regexRules.put(rule.getKey(), null);
+//                            } else {
+//                                regexRules.put(rule.getKey(), null);
                             }
                         }
                         registerStub();
@@ -200,10 +187,24 @@ public class MockIntegrationTestBase {
                 @Override
                 public void filter(ServiceRequestContext request) {
                     Map<String, String> requestHeader = new HashMap<String, String>();
-                    requestHeader.put("Xmsversion", request.getHeader("x-ms-version"));
-                    requestHeader.put("Method", request.getMethod());
-                    requestHeader.put("Uri", request.getURI().toString().replaceAll("\\?$", ""));
-                    context.add(requestHeader);
+                    try {
+                        if (request.getAllHeaders().containsKey("Content-Type")) {
+                            requestHeader.put("Content-Type", request.getAllHeaders().get("Content-Type"));
+                        }
+                        if (request.getAllHeaders().containsKey("x-ms-version")) {
+                            requestHeader.put("x-ms-version", request.getAllHeaders().get("x-ms-version"));
+                        }
+                        if (request.getAllHeaders().containsKey("User-Agent")) {
+                            requestHeader.put("User-Agent", request.getAllHeaders().get("User-Agent"));
+                        }
+
+                        requestHeader.put("Method", request.getMethod());
+                        requestHeader.put("Uri", request.getURI().toString().replaceAll("\\?$", ""));
+
+                        context.add(requestHeader);
+                    } catch (Exception e) {
+                        Log.warn("Fail to register recorder. " + e.getMessage());
+                    }
                 }
             };
             responseFilter = new ServiceResponseFilter() {
@@ -271,10 +272,21 @@ public class MockIntegrationTestBase {
         for (Header header : clientResponse.getAllHeaders()) {
             responseData.put(header.getName(), header.getValue());
         }
-        
+
         BufferedHttpEntity entity = new BufferedHttpEntity(clientResponse.getEntity());
-        responseData.put("Body", IOUtils.toString(entity.getContent()));
-        
+        String content = null;
+        if (clientResponse.getFirstHeader("Content-Encoding") == null) {
+            content = IOUtils.toString(entity.getContent());
+        } else if (clientResponse.getFirstHeader("Content-Encoding").getValue().equals("gzip")) {
+            GZIPInputStream gis = new GZIPInputStream(entity.getContent());
+            content = IOUtils.toString(gis);
+            responseData.remove("Content-Encoding");
+            responseData.put("Content-Length", Integer.toString(content.length()));
+        }
+        if (content != null) {
+            responseData.put("Body", content);
+        }
+
         // Set entity to be buffered otherwise it can't be consumed again
         clientResponse.setEntity(entity);
     }
@@ -334,23 +346,30 @@ public class MockIntegrationTestBase {
         } else {
             throw new Exception("Invalid HTTP method.");
         }
-        mBuilder.withHeader("x-ms-version", equalTo(requestHeader.get("Xmsversion")));
-        
+
         ResponseDefinitionBuilder rBuilder = aResponse().withStatus(Integer.parseInt(responseData.get("StatusCode")));
         for (Entry<String, String> header : responseData.entrySet()) {
             if (!header.getKey().equals("StatusCode") && !header.getKey().equals("Body")) {
-                rBuilder.withHeader(header.getKey(), header.getValue());
+                String rawHeader = header.getValue();
+                for (Entry<String, String> rule : regexRules.entrySet()) {
+                    if (rule.getValue() != null) {
+                        rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
+                    }
+                }
+                rBuilder.withHeader(header.getKey(), rawHeader);
             }
         }
         
         String rawBody = responseData.get("Body");
-        for (Entry<String, String> rule : regexRules.entrySet()) {
-            if (rule.getValue() != null) {
-                rawBody = rawBody.replaceAll(rule.getKey(), rule.getValue());
+        if (rawBody != null) {
+            for (Entry<String, String> rule : regexRules.entrySet()) {
+                if (rule.getValue() != null) {
+                    rawBody = rawBody.replaceAll(rule.getKey(), rule.getValue());
+                }
             }
+            rBuilder.withBody(rawBody);
         }
-        rBuilder.withBody(rawBody);
-        
+
         mBuilder.willReturn(rBuilder);
         stubFor(mBuilder);
     }
