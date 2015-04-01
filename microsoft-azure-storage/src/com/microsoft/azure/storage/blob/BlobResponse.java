@@ -99,7 +99,13 @@ final class BlobResponse extends BaseResponse {
                 properties.setLength(Long.parseLong(contentLength));
             }
         }
-
+        
+        // Get sequence number
+        final String sequenceNumber = request.getHeaderField(Constants.HeaderConstants.BLOB_SEQUENCE_NUMBER);
+        if (!Utility.isNullOrEmpty(sequenceNumber)) {
+            properties.setPageBlobSequenceNumber(Long.parseLong(sequenceNumber));
+        }
+        
         attributes.setStorageUri(resourceURI);
         attributes.setSnapshotID(snapshotID);
 

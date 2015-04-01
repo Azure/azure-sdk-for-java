@@ -344,6 +344,7 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                blob.getProperties().setLength(length);
                 return null;
             }
 
@@ -634,14 +635,14 @@ public final class CloudPageBlob extends CloudBlob {
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> putPagesImpl(final PageRange pageRange,
+    private StorageRequest<CloudBlobClient, CloudPageBlob, Void> putPagesImpl(final PageRange pageRange,
             final PageOperationType operationType, final byte[] data, final long length, final String md5,
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext) {
-        final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+        final StorageRequest<CloudBlobClient, CloudPageBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudPageBlob, Void>(
                 options, this.getStorageUri()) {
 
             @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudPageBlob blob, OperationContext context)
                     throws Exception {
                 if (operationType == PageOperationType.UPDATE) {
                     this.setSendStream(new ByteArrayInputStream(data));
@@ -653,7 +654,7 @@ public final class CloudPageBlob extends CloudBlob {
             }
 
             @Override
-            public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
+            public void setHeaders(HttpURLConnection connection, CloudPageBlob blob, OperationContext context) {
                 if (operationType == PageOperationType.UPDATE) {
                     if (options.getUseTransactionalContentMD5()) {
                         connection.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
@@ -673,7 +674,7 @@ public final class CloudPageBlob extends CloudBlob {
             }
 
             @Override
-            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
+            public Void preProcessResponse(CloudPageBlob blob, CloudBlobClient client, OperationContext context)
                     throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -681,11 +682,19 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                blob.updateSequenceNumberFromResponse(this.getConnection());
                 return null;
             }
         };
 
         return putRequest;
+    }
+    
+    protected void updateSequenceNumberFromResponse(HttpURLConnection request) {
+        final String sequenceNumber = request.getHeaderField(Constants.HeaderConstants.BLOB_SEQUENCE_NUMBER);
+        if (!Utility.isNullOrEmpty(sequenceNumber)) {
+            this.getProperties().setPageBlobSequenceNumber(Long.parseLong(sequenceNumber));
+        }
     }
 
     /**
@@ -739,13 +748,13 @@ public final class CloudPageBlob extends CloudBlob {
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, Void> resizeImpl(final long size,
+    private StorageRequest<CloudBlobClient, CloudPageBlob, Void> resizeImpl(final long size,
             final AccessCondition accessCondition, final BlobRequestOptions options) {
-        final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+        final StorageRequest<CloudBlobClient, CloudPageBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudPageBlob, Void>(
                 options, this.getStorageUri()) {
 
             @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudPageBlob blob, OperationContext context)
                     throws Exception {
                 return BlobRequest.resize(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
                         options, context, accessCondition, size);
@@ -758,7 +767,7 @@ public final class CloudPageBlob extends CloudBlob {
             }
 
             @Override
-            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
+            public Void preProcessResponse(CloudPageBlob blob, CloudBlobClient client, OperationContext context)
                     throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -767,6 +776,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 blob.getProperties().setLength(size);
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                blob.updateSequenceNumberFromResponse(this.getConnection());
                 return null;
             }
         };
@@ -860,8 +870,7 @@ public final class CloudPageBlob extends CloudBlob {
      *            An {@link IntputStream} object which represents the input stream to write to the page blob.
      * @param offset
      *            A <code>long</code> which represents the offset, in number of bytes, at which to begin writing the
-     *            data. This value must be a multiple of
-     *            512.
+     *            data. This value must be a multiple of 512.
      * @param length
      *            A <code>long</code> which represents the length, in bytes, of the data to write. This value must be a
      *            multiple of 512.

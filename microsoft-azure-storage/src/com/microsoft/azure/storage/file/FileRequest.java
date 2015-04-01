@@ -384,8 +384,8 @@ final class FileRequest {
             throws IOException, URISyntaxException, StorageException {
         HttpURLConnection request = BaseRequest.getProperties(uri, fileOptions, builder, opContext);
 
-        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
-            BaseRequest.addLeaseId(request, accessCondition.getLeaseID());
+        if (accessCondition != null) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;
@@ -419,22 +419,7 @@ final class FileRequest {
             final OperationContext opContext, final ListingContext listingContext,
             final ShareListingDetails detailsIncluded) throws URISyntaxException, IOException, StorageException {
 
-        final UriQueryBuilder builder = getShareUriQueryBuilder();
-        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.LIST);
-
-        if (listingContext != null) {
-            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
-                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix());
-            }
-
-            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
-                builder.add(Constants.QueryConstants.MARKER, listingContext.getMarker());
-            }
-
-            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
-                builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
-            }
-        }
+        final UriQueryBuilder builder = BaseRequest.getListUriQueryBuilder(listingContext);
 
         if (detailsIncluded == ShareListingDetails.ALL || detailsIncluded == ShareListingDetails.METADATA) {
             builder.add(Constants.QueryConstants.INCLUDE, Constants.QueryConstants.METADATA);

@@ -196,7 +196,7 @@ public class TestHelper {
                 }
             }
             catch (Exception e) {
-                throw StorageException.translateException(null, e, null);
+                throw StorageException.translateClientException(e);
             }
         }
         return account;

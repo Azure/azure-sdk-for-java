@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.RequestLocationMode;
 import com.microsoft.azure.storage.core.SR;
@@ -240,6 +241,10 @@ public class QueryTableOperation extends TableOperation {
                 return res;
             }
 
+            @Override
+            public StorageExtendedErrorInformation parseErrorDetails() {
+                return TableStorageErrorDeserializer.parseErrorDetails(this);
+            }
         };
 
         return getRequest;

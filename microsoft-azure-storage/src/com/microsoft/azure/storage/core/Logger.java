@@ -243,7 +243,7 @@ public class Logger {
         }
     }
 
-    private static boolean shouldLog(OperationContext opContext) {
+    public static boolean shouldLog(OperationContext opContext) {
         if (opContext != null) {
             return opContext.isLoggingEnabled();
         }

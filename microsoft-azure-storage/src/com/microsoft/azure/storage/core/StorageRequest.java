@@ -28,6 +28,7 @@ import com.microsoft.azure.storage.RequestOptions;
 import com.microsoft.azure.storage.RequestResult;
 import com.microsoft.azure.storage.ServiceClient;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.StorageLocation;
 import com.microsoft.azure.storage.StorageUri;
 
@@ -298,13 +299,12 @@ public abstract class StorageRequest<C, P, R> {
      *            an object used to track the execution of the operation
      * @return the exception to throw.
      */
-    protected final StorageException materializeException(final HttpURLConnection request,
-            final OperationContext opContext) {
+    protected final StorageException materializeException(final OperationContext opContext) {
         if (this.getException() != null) {
             return this.getException();
         }
 
-        return StorageException.translateException(request, null, opContext);
+        return StorageException.translateException(this, null, opContext);
     }
 
     public static final void signBlobQueueAndFileRequest(HttpURLConnection request, ServiceClient client,
@@ -631,5 +631,23 @@ public abstract class StorageRequest<C, P, R> {
      */
     public void recoveryAction(OperationContext context) throws IOException {
         // no-op
+    }
+
+    /**
+     * Returns extended error information for this request.
+     * 
+     * @return A {@link StorageExtendedErrorInformation} object that represents the error details for the specified
+     *         request.
+     */
+    public StorageExtendedErrorInformation parseErrorDetails() {
+        try {
+            if (this.getConnection() == null || this.getConnection().getErrorStream() == null) {
+                return null;
+            }
+
+            return StorageErrorHandler.getExtendedErrorInformation(this.getConnection().getErrorStream());
+        } catch (final Exception e) {
+            return null;
+        }
     }
 }

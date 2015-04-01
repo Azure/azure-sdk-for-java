@@ -1,3 +1,15 @@
+2015.04.01 Version 2.1.0
+ * Fixed a bug for all listing API's where next() would sometimes throw an exception if hasNext() had not been called even if there were more elements to iterate on.
+ * Added sequence number to the blob properties. This is populated for page blobs.
+ * Creating a page blob sets its length property.
+ * Added support for page blob sequence numbers and sequence number access conditions. 
+ * Fixed a bug in abort copy where the lease access condition was not sent to the service.
+ * Fixed an issue in startCopyFromBlob where if the URI of the source blob contained certain non-ASCII characters they would not be encoded appropriately. This would result in Authorization failures.
+ * Fixed a small performance issue in XML serialization.
+ * Fixed a bug in BlobOutputStream and FileOutputStream where flush added data to a request pool rather than immediately committing it to the Azure service.
+ * Refactored to remove the blob, queue, and file package dependency on table in the error handling code.
+ * Added additional client-side logging for REST requests, responses, and errors.
+
 2014.12.20 Version 2.0.0
  * Deprecated getSubDirectoryReference() for blob directories and file directories. Use getDirectoryReference() instead. 
  * Fixed a bug where maxResults was not verified to be positive for list operations.

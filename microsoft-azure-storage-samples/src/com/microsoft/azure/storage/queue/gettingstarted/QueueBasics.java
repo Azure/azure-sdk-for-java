@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.queue.gettingstarted;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.EnumSet;
+import java.util.UUID;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.queue.CloudQueue;
@@ -51,7 +52,10 @@ public class QueueBasics {
 		
 		try {
 			// Retrieve a reference to a queue
-			CloudQueue queue = queueClient.getQueueReference("queuebasics");
+			// Append a random UUID to the end of the queue name so that this
+			// sample can be run more than once in quick succession.
+			CloudQueue queue = queueClient.getQueueReference("queuebasics"
+					+ UUID.randomUUID().toString().replace("-", ""));
 
 			// Create the queue if it doesn't already exist
 			queue.createIfNotExists();

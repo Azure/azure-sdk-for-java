@@ -29,10 +29,13 @@ public final class Utility {
 	}
 
 	/**
-	 * Stores the storage connection strings.
+	 * MODIFY THIS!
 	 * 
+	 * Stores the storage connection string.
 	 */
-	public static final String storageConnectionString = "DefaultEndpointsProtocol=http;AccountName=myaccountname;AccountKey=myaccountkey";
+	public static final String storageConnectionString = "DefaultEndpointsProtocol=https;"
+		+ "AccountName=[MY_ACCOUNT_NAME];"
+		+ "AccountKey=[MY_ACCOUNT_KEY]";
 
 	/**
 	 * Prints out the exception information .

@@ -31,6 +31,7 @@ import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.RequestLocationMode;
 import com.microsoft.azure.storage.core.SR;
@@ -565,23 +566,28 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
 
                     return result;
                 }
+
+                @Override
+                public StorageExtendedErrorInformation parseErrorDetails() {
+                    return TableStorageErrorDeserializer.parseErrorDetails(this);
+                }
             };
 
             return batchRequest;
         }
         catch (IOException e) {
             // The request was not even made. There was an error while trying to read the batch contents. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (URISyntaxException e) {
             // The request was not even made. There was an error while trying to read the batch contents. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (XMLStreamException e) {
             // The request was not even made. There was an error while trying to read the batch contents. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
     }

@@ -24,6 +24,7 @@ import com.microsoft.azure.storage.queue.CloudQueueClientTests;
 import com.microsoft.azure.storage.queue.CloudQueueTests;
 import com.microsoft.azure.storage.table.TableBatchOperationTests;
 import com.microsoft.azure.storage.table.TableClientTests;
+import com.microsoft.azure.storage.table.TableDateTests;
 import com.microsoft.azure.storage.table.TableEscapingTests;
 import com.microsoft.azure.storage.table.TableODataTests;
 import com.microsoft.azure.storage.table.TableOperationTests;
@@ -102,7 +103,7 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ TableBatchOperationTests.class, TableClientTests.class, TableEscapingTests.class,
+    @SuiteClasses({ TableBatchOperationTests.class, TableClientTests.class, TableDateTests.class, TableEscapingTests.class,
             TableODataTests.class, TableOperationTests.class, TableQueryTests.class, TableSerializerTests.class,
             TableTests.class })
     public static class TableTestSuite {

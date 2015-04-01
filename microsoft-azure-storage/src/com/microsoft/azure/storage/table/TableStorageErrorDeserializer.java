@@ -16,6 +16,7 @@
 package com.microsoft.azure.storage.table;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 
@@ -30,11 +31,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.StorageRequest;
 
 /***
  * RESERVED FOR INTERNAL USE. A class to help parse the error details from an input stream, specific to tables
  */
-public final class TableStorageErrorDeserializer {
+final class TableStorageErrorDeserializer {
 
     /**
      * Gets the Extended Error information.
@@ -76,6 +78,35 @@ public final class TableStorageErrorDeserializer {
         }
     }
 
+    /**
+     * Parse the table extended error information from the response body.
+     * 
+     * @param request
+     *            the request whose body to examine for the error information.
+     * @return The {@link StorageExtendedErrorInformation} parsed from the body or null if parsing fails or the request
+     *         contains no body.
+     */
+    @SuppressWarnings({"deprecation" })
+    public static StorageExtendedErrorInformation parseErrorDetails(StorageRequest<CloudTableClient, ?, ?> request) {
+        try {
+            if (request == null || request.getConnection().getErrorStream() == null) {
+                return null;
+            }
+            
+            final TablePayloadFormat format;
+            final String type = request.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
+            if (type != null && type.startsWith("application/json")) {
+                format = TablePayloadFormat.Json;
+            } else {
+                format = TablePayloadFormat.AtomPub;
+            }
+    
+            return getExtendedErrorInformation(new InputStreamReader(request.getConnection().getErrorStream()), format);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
     /**
      * Parses the error exception details from the Json-formatted response.
      * 

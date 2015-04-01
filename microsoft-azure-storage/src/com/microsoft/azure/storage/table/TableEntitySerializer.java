@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -242,8 +241,7 @@ final class TableEntitySerializer {
      */
     private static void writeSingleAtomEntity(final OutputStream outStream, final TableEntity entity,
             final boolean isTableEntry, final OperationContext opContext) throws XMLStreamException, StorageException {
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outStream, Constants.UTF8_CHARSET);
+        XMLStreamWriter xmlw = Utility.createXMLStreamWriter(outStream, Constants.UTF8_CHARSET);
 
         // default is UTF8
         xmlw.writeStartDocument(Constants.UTF8_CHARSET, "1.0");
@@ -276,8 +274,7 @@ final class TableEntitySerializer {
      */
     private static void writeSingleAtomEntity(final StringWriter strWriter, final TableEntity entity,
             final boolean isTableEntry, final OperationContext opContext) throws XMLStreamException, StorageException {
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(strWriter);
+        final XMLStreamWriter xmlw = Utility.createXMLStreamWriter(strWriter);
 
         // default is UTF8
         xmlw.writeStartDocument(Constants.UTF8_CHARSET, "1.0");

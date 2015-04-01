@@ -376,7 +376,8 @@ public class CloudBlobDirectoryTests {
                 null), get22.getUri());
     }
 
-    @Test
+    // @Test
+    // Re-enable after fix in 3.0 with int->Integer
     public void testFlatListingWithDirectorySegmented() throws URISyntaxException, StorageException {
         for (int i = 0; i < delimiters.length; i++) {
             CloudBlobContainer container = null;

@@ -29,7 +29,7 @@ public class LogConstants {
     public static final String POST_PROCESS_DONE = "Response body was parsed successfully.";
     public static final String PRE_PROCESS = "Processing response headers.";
     public static final String PRE_PROCESS_DONE = "Response headers were processed successfully.";
-    public static final String RESPONSE_RECEIVED = "Response received. Status code = '%d', Request ID = '%s', Content-MD5 = '%s', ETag = '%s'.";
+    public static final String RESPONSE_RECEIVED = "Response received. Status code = '%d', Request ID = '%s', Content-MD5 = '%s', ETag = '%s', Date = '%s'.";
     public static final String RETRY = "Retrying failed operation.";
     public static final String RETRY_CHECK = "Checking if the operation should be retried. Retry count = '%d', HTTP status code = '%d', Error Message = '%s'.";
     public static final String RETRY_DELAY = "Operation will be retried after '%d'ms.";

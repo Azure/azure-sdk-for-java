@@ -269,16 +269,8 @@ public final class BlobOutputStream extends OutputStream {
             // flush any remaining data
             this.flush();
 
-            // Shut down the ExecutorService. Executes previously submitted tasks, but accepts no new tasks.
+            // shut down the ExecutorService.
             this.threadExecutor.shutdown();
-
-            // Waits for all submitted tasks to complete
-            while (this.outstandingRequests > 0) {
-                this.waitForTaskToComplete();
-            }
-
-            // if one of the tasks threw an exception, realize it now.
-            this.checkStreamState();
 
             // try to commit the blob
             try {
@@ -441,7 +433,17 @@ public final class BlobOutputStream extends OutputStream {
              */
         }
 
+        // Dispatch a write for the current bytes in the buffer
         this.dispatchWrite(this.currentBufferedBytes);
+
+        // Waits for all submitted tasks to complete
+        while (this.outstandingRequests > 0) {
+            // Wait for a task to complete
+            this.waitForTaskToComplete();
+
+            // If that task threw an error, fail fast
+            this.checkStreamState();
+        }
     }
 
     /**

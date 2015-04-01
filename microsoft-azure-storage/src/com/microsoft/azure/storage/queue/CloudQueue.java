@@ -327,7 +327,7 @@ public final class CloudQueue {
         }
         catch (XMLStreamException e) {
             // The request was not even made. There was an error while trying to generate the message body. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
     }
@@ -1624,17 +1624,17 @@ public final class CloudQueue {
         catch (IllegalArgumentException e) {
             // to do : Move this to multiple catch clause so we can avoid the duplicated code once we move to Java 1.7.
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (XMLStreamException e) {
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (UnsupportedEncodingException e) {
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
     }

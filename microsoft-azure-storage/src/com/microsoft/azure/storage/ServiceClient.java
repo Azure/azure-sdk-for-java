@@ -306,17 +306,17 @@ public abstract class ServiceClient {
         catch (IllegalArgumentException e) {
             // to do : Move this to multiple catch clause so we can avoid the duplicated code once we move to Java 1.7.
             // The request was not even made. There was an error while trying to read the permissions. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (XMLStreamException e) {
             // The request was not even made. There was an error while trying to read the serviceProperties and write to stream. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
         catch (IOException e) {
             // The request was not even made. There was an error while trying to read the serviceProperties and write to stream. Just throw.
-            StorageException translatedException = StorageException.translateException(null, e, null);
+            StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
     }
