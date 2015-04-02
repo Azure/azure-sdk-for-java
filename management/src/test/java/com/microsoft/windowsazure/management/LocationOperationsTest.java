@@ -46,5 +46,7 @@ public class LocationOperationsTest extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, locationsListResponse.getStatusCode());
         Assert.assertNotNull(locationsListResponse.getRequestId());
         Assert.assertTrue(locationsListResponse.getLocations().size() > 0);
+        Assert.assertEquals(locationsListResponse.getLocations().get(0).getName(), "South Central US");
+        Assert.assertEquals(locationsListResponse.getLocations().get(9).getName(), "Japan West");
     }
 }
