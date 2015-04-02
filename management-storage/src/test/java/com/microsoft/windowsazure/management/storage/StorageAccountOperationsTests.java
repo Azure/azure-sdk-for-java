@@ -217,4 +217,32 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());            
     }
+
+    @Test
+    public void deleteStorageAccountSuccess() throws Exception {
+        String storageAccountName = testStorageAccountPrefix + "csas"+randomString(7);
+        String storageAccountDescription = "create storage account success";
+
+        //Arrange
+        StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
+        createParameters.setName(storageAccountName);
+        createParameters.setLabel(storageAccountDescription);
+        createParameters.setLocation(storageLocation);
+        createParameters.setAccountType("Standard_LRS");
+
+        //act
+        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
+
+        //Assert
+        Assert.assertEquals(200, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+
+        //delete
+        addRegexRule(testStorageAccountPrefix + "csas" + "[a-z]{7}");
+        AzureOperationResponse deleteOperationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
+
+        //Assert
+        Assert.assertEquals(200, deleteOperationResponse.getStatusCode());
+        Assert.assertNotNull(deleteOperationResponse.getRequestId());
+    }
 }
