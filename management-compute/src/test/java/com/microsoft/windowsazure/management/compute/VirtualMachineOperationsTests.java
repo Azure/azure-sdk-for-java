@@ -371,8 +371,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     @Test
-    @Ignore("Because it takes too long to run")
-    public void deleteVirtualMachines() throws Exception {        
+    public void deleteVirtualMachines() throws Exception {
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
         //Assert
