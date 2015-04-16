@@ -108,6 +108,12 @@ public interface ResourceManagementClient extends Closeable, FilterableService<R
     ResourceOperations getResourcesOperations();
     
     /**
+    * Operations for managing Resource provider operations.
+    * @return The ResourceProviderOperationDetailsOperations value.
+    */
+    ResourceProviderOperationDetailsOperations getResourceProviderOperationDetailsOperations();
+    
+    /**
     * Operations for managing tags.
     * @return The TagsOperations value.
     */

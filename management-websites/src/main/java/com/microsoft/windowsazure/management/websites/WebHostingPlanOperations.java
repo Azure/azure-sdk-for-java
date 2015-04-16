@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanCreateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanCreateResponse;
@@ -92,7 +92,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String webSpaceName, String webHostingPlanName) throws IOException, ServiceException;
+    OperationResponse delete(String webSpaceName, String webHostingPlanName) throws IOException, ServiceException;
     
     /**
     * Deletes a Web Hosting Plan  (see
@@ -104,7 +104,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String webSpaceName, String webHostingPlanName);
+    Future<OperationResponse> deleteAsync(String webSpaceName, String webHostingPlanName);
     
     /**
     * Gets details of an existing Web Hosting Plan  (see

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -130,10 +130,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreatingDataDisk(serviceName, deploymentName, roleName, parameters);
             }
          });
@@ -178,7 +178,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -241,7 +241,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -319,9 +319,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -355,10 +355,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeletingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeletingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeletingDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
             }
          });
@@ -385,7 +385,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -447,7 +447,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -469,9 +469,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -501,10 +501,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUpdatingDiskAsync(final String name, final VirtualMachineDiskUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUpdatingDiskAsync(final String name, final VirtualMachineDiskUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUpdatingDisk(name, parameters);
             }
          });
@@ -533,7 +533,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUpdatingDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdatingDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (name == null) {
             throw new NullPointerException("name");
@@ -583,7 +583,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -657,9 +657,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -785,7 +785,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachineDisksOperations().beginCreatingDataDiskAsync(serviceName, deploymentName, roleName, parameters).get();
+            OperationResponse response = client2.getVirtualMachineDisksOperations().beginCreatingDataDiskAsync(serviceName, deploymentName, roleName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -922,7 +922,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1195,7 +1195,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
+            OperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1254,10 +1254,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteDiskAsync(final String name, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteDiskAsync(final String name, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return deleteDisk(name, deleteFromStorage);
             }
          });
@@ -1280,7 +1280,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
         if (name == null) {
             throw new NullPointerException("name");
@@ -1327,7 +1327,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1349,9 +1349,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1467,7 +1467,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1646,7 +1646,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1873,7 +1873,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2051,10 +2051,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDataDiskUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDataDiskUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return updateDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, parameters);
             }
          });
@@ -2086,7 +2086,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2151,7 +2151,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2223,9 +2223,9 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2337,7 +2337,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2579,7 +2579,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachineDisksOperations().beginUpdatingDiskAsync(name, parameters).get();
+            OperationResponse response = client2.getVirtualMachineDisksOperations().beginUpdatingDiskAsync(name, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

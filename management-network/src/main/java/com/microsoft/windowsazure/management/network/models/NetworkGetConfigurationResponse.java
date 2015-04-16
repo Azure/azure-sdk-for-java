@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Network Configuration operation response.
 */
-public class NetworkGetConfigurationResponse extends AzureOperationResponse {
+public class NetworkGetConfigurationResponse extends OperationResponse {
     private String configuration;
     
     /**

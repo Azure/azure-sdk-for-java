@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Contains the response to the Get Restorable Dropped Database request.
 */
-public class RestorableDroppedDatabaseGetResponse extends AzureOperationResponse {
+public class RestorableDroppedDatabaseGetResponse extends OperationResponse {
     private RestorableDroppedDatabase database;
     
     /**

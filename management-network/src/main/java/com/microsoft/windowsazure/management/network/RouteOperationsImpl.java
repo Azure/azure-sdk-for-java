@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -179,7 +179,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginAddRouteTableToSubnetAsync(vnetName, subnetName, parameters).get();
+            OperationResponse response = client2.getRoutesOperations().beginAddRouteTableToSubnetAsync(vnetName, subnetName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -239,10 +239,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginAddRouteTableToSubnetAsync(final String vnetName, final String subnetName, final AddRouteTableToSubnetParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginAddRouteTableToSubnetAsync(final String vnetName, final String subnetName, final AddRouteTableToSubnetParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginAddRouteTableToSubnet(vnetName, subnetName, parameters);
             }
          });
@@ -272,7 +272,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginAddRouteTableToSubnet(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginAddRouteTableToSubnet(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (vnetName == null) {
             throw new NullPointerException("vnetName");
@@ -371,9 +371,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -399,10 +399,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreateRouteTableAsync(final CreateRouteTableParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreateRouteTableAsync(final CreateRouteTableParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreateRouteTable(parameters);
             }
          });
@@ -427,7 +427,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreateRouteTable(CreateRouteTableParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreateRouteTable(CreateRouteTableParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -526,9 +526,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -556,10 +556,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeleteRouteAsync(final String routeTableName, final String routeName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeleteRouteAsync(final String routeTableName, final String routeName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleteRoute(routeTableName, routeName);
             }
          });
@@ -580,7 +580,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleteRoute(String routeTableName, String routeName) throws IOException, ServiceException {
+    public OperationResponse beginDeleteRoute(String routeTableName, String routeName) throws IOException, ServiceException {
         // Validate
         if (routeTableName == null) {
             throw new NullPointerException("routeTableName");
@@ -648,9 +648,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -675,10 +675,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeleteRouteTableAsync(final String routeTableName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeleteRouteTableAsync(final String routeTableName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleteRouteTable(routeTableName);
             }
          });
@@ -696,7 +696,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleteRouteTable(String routeTableName) throws IOException, ServiceException {
+    public OperationResponse beginDeleteRouteTable(String routeTableName) throws IOException, ServiceException {
         // Validate
         if (routeTableName == null) {
             throw new NullPointerException("routeTableName");
@@ -758,9 +758,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -789,10 +789,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginRemoveRouteTableFromSubnetAsync(final String vnetName, final String subnetName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginRemoveRouteTableFromSubnetAsync(final String vnetName, final String subnetName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginRemoveRouteTableFromSubnet(vnetName, subnetName);
             }
          });
@@ -814,7 +814,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginRemoveRouteTableFromSubnet(String vnetName, String subnetName) throws IOException, ServiceException {
+    public OperationResponse beginRemoveRouteTableFromSubnet(String vnetName, String subnetName) throws IOException, ServiceException {
         // Validate
         if (vnetName == null) {
             throw new NullPointerException("vnetName");
@@ -883,9 +883,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -915,10 +915,10 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginSetRouteAsync(final String routeTableName, final String routeName, final SetRouteParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginSetRouteAsync(final String routeTableName, final String routeName, final SetRouteParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginSetRoute(routeTableName, routeName, parameters);
             }
          });
@@ -947,7 +947,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginSetRoute(String routeTableName, String routeName, SetRouteParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginSetRoute(String routeTableName, String routeName, SetRouteParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (routeTableName == null) {
             throw new NullPointerException("routeTableName");
@@ -1062,9 +1062,9 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1149,7 +1149,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginCreateRouteTableAsync(parameters).get();
+            OperationResponse response = client2.getRoutesOperations().beginCreateRouteTableAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1268,7 +1268,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginDeleteRouteAsync(routeTableName, routeName).get();
+            OperationResponse response = client2.getRoutesOperations().beginDeleteRouteAsync(routeTableName, routeName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1380,7 +1380,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginDeleteRouteTableAsync(routeTableName).get();
+            OperationResponse response = client2.getRoutesOperations().beginDeleteRouteTableAsync(routeTableName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -2263,7 +2263,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginRemoveRouteTableFromSubnetAsync(vnetName, subnetName).get();
+            OperationResponse response = client2.getRoutesOperations().beginRemoveRouteTableFromSubnetAsync(vnetName, subnetName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -2387,7 +2387,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getRoutesOperations().beginSetRouteAsync(routeTableName, routeName, parameters).get();
+            OperationResponse response = client2.getRoutesOperations().beginSetRouteAsync(routeTableName, routeName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

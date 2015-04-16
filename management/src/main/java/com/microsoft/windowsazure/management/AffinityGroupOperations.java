@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
@@ -63,7 +63,7 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse create(AffinityGroupCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse create(AffinityGroupCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Affinity Group operation creates a new affinity group for the
@@ -76,7 +76,7 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createAsync(AffinityGroupCreateParameters parameters);
+    Future<OperationResponse> createAsync(AffinityGroupCreateParameters parameters);
     
     /**
     * The Delete Affinity Group operation deletes an affinity group in the
@@ -92,7 +92,7 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String affinityGroupName) throws IOException, ServiceException;
+    OperationResponse delete(String affinityGroupName) throws IOException, ServiceException;
     
     /**
     * The Delete Affinity Group operation deletes an affinity group in the
@@ -104,7 +104,7 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String affinityGroupName);
+    Future<OperationResponse> deleteAsync(String affinityGroupName);
     
     /**
     * The Get Affinity Group Properties operation returns the system properties
@@ -190,7 +190,7 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse update(String affinityGroupName, AffinityGroupUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse update(String affinityGroupName, AffinityGroupUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Affinity Group operation updates the label and/or the
@@ -204,5 +204,5 @@ public interface AffinityGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateAsync(String affinityGroupName, AffinityGroupUpdateParameters parameters);
+    Future<OperationResponse> updateAsync(String affinityGroupName, AffinityGroupUpdateParameters parameters);
 }

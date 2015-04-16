@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The List Service Certificates operation response.
 */
-public class ServiceCertificateListResponse extends AzureOperationResponse implements Iterable<ServiceCertificateListResponse.Certificate> {
+public class ServiceCertificateListResponse extends OperationResponse implements Iterable<ServiceCertificateListResponse.Certificate> {
     private ArrayList<ServiceCertificateListResponse.Certificate> certificates;
     
     /**

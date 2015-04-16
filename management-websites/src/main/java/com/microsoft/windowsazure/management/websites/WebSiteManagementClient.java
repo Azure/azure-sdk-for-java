@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
@@ -174,7 +174,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse registerSubscription() throws IOException, ServiceException;
+    OperationResponse registerSubscription() throws IOException, ServiceException;
     
     /**
     * Register your subscription to use Azure Web Sites.
@@ -182,7 +182,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> registerSubscriptionAsync();
+    Future<OperationResponse> registerSubscriptionAsync();
     
     /**
     * Unregister your subscription to use Azure Web Sites.
@@ -194,7 +194,7 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse unregisterSubscription() throws IOException, ServiceException;
+    OperationResponse unregisterSubscription() throws IOException, ServiceException;
     
     /**
     * Unregister your subscription to use Azure Web Sites.
@@ -202,5 +202,5 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> unregisterSubscriptionAsync();
+    Future<OperationResponse> unregisterSubscriptionAsync();
 }

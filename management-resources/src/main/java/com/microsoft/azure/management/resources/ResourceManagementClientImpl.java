@@ -165,6 +165,16 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
         return this.resources;
     }
     
+    private ResourceProviderOperationDetailsOperations resourceProviderOperationDetails;
+    
+    /**
+    * Operations for managing Resource provider operations.
+    * @return The ResourceProviderOperationDetailsOperations value.
+    */
+    public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetailsOperations() {
+        return this.resourceProviderOperationDetails;
+    }
+    
     private TagOperations tags;
     
     /**
@@ -188,6 +198,7 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
         this.providers = new ProviderOperationsImpl(this);
         this.resourceGroups = new ResourceGroupOperationsImpl(this);
         this.resources = new ResourceOperationsImpl(this);
+        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsOperationsImpl(this);
         this.tags = new TagOperationsImpl(this);
         this.apiVersion = "2014-04-01-preview";
         this.longRunningOperationInitialTimeout = -1;

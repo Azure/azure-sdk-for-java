@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +32,7 @@ import java.util.Calendar;
 /**
 * The Get Affinity Group operation response.
 */
-public class AffinityGroupGetResponse extends AzureOperationResponse {
+public class AffinityGroupGetResponse extends OperationResponse {
     private ArrayList<String> capabilities;
     
     /**

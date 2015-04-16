@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Represents the response to a List data masking rules request.
 */
-public class DataMaskingRuleListResponse extends AzureOperationResponse implements Iterable<DataMaskingRule> {
+public class DataMaskingRuleListResponse extends OperationResponse implements Iterable<DataMaskingRule> {
     private ArrayList<DataMaskingRule> dataMaskingRules;
     
     /**

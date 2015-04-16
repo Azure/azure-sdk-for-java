@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Config for the website.
 */
-public class WebSiteGetConfigurationResult extends AzureOperationResponse {
+public class WebSiteGetConfigurationResult extends OperationResponse {
     private WebSiteConfigurationEnvelope resource;
     
     /**

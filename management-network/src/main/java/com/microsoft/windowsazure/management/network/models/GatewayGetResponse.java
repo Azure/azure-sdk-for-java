@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class GatewayGetResponse extends AzureOperationResponse {
+public class GatewayGetResponse extends OperationResponse {
     private GatewayDefaultSite defaultSite;
     
     /**

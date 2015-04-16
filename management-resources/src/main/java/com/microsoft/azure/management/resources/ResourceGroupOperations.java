@@ -31,7 +31,7 @@ import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -135,7 +135,7 @@ public interface ResourceGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Delete resource group and all of its resources.
@@ -145,7 +145,7 @@ public interface ResourceGroupOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName);
+    Future<OperationResponse> deleteAsync(String resourceGroupName);
     
     /**
     * Get a resource group.

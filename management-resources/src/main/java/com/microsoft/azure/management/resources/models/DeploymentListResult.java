@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * List of deployments.
 */
-public class DeploymentListResult extends AzureOperationResponse {
+public class DeploymentListResult extends OperationResponse {
     private ArrayList<DeploymentExtended> deployments;
     
     /**

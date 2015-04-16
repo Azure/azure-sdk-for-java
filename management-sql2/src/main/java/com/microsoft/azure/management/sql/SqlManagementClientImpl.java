@@ -147,6 +147,17 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.dataMasking;
     }
     
+    private ElasticPoolOperations elasticPools;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database Elastic
+    * Pools.  Contains operations to: Create, Retrieve, Update, and Delete.
+    * @return The ElasticPoolsOperations value.
+    */
+    public ElasticPoolOperations getElasticPoolsOperations() {
+        return this.elasticPools;
+    }
+    
     private FirewallRuleOperations firewallRules;
     
     /**
@@ -205,6 +216,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         this.auditingPolicy = new AuditingPolicyOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
         this.dataMasking = new DataMaskingOperationsImpl(this);
+        this.elasticPools = new ElasticPoolOperationsImpl(this);
         this.firewallRules = new FirewallRuleOperationsImpl(this);
         this.secureConnection = new SecureConnectionPolicyOperationsImpl(this);
         this.servers = new ServerOperationsImpl(this);

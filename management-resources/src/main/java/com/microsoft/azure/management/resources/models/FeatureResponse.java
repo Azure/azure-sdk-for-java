@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Previewed feature information.
 */
-public class FeatureResponse extends AzureOperationResponse {
+public class FeatureResponse extends OperationResponse {
     private String id;
     
     /**

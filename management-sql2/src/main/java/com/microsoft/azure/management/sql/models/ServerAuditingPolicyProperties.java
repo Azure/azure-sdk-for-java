@@ -47,6 +47,26 @@ public class ServerAuditingPolicyProperties {
         this.auditingState = auditingStateValue;
     }
     
+    private String auditLogsTableName;
+    
+    /**
+    * Optional. Gets the name of the table audit logs are written to in the
+    * Azure SQL Database auditing policy.
+    * @return The AuditLogsTableName value.
+    */
+    public String getAuditLogsTableName() {
+        return this.auditLogsTableName;
+    }
+    
+    /**
+    * Optional. Gets the name of the table audit logs are written to in the
+    * Azure SQL Database auditing policy.
+    * @param auditLogsTableNameValue The AuditLogsTableName value.
+    */
+    public void setAuditLogsTableName(final String auditLogsTableNameValue) {
+        this.auditLogsTableName = auditLogsTableNameValue;
+    }
+    
     private String eventTypesToAudit;
     
     /**
@@ -65,6 +85,26 @@ public class ServerAuditingPolicyProperties {
     */
     public void setEventTypesToAudit(final String eventTypesToAuditValue) {
         this.eventTypesToAudit = eventTypesToAuditValue;
+    }
+    
+    private String retentionDays;
+    
+    /**
+    * Optional. Gets the retention in days of the Azure SQL Database auditing
+    * policy.
+    * @return The RetentionDays value.
+    */
+    public String getRetentionDays() {
+        return this.retentionDays;
+    }
+    
+    /**
+    * Optional. Gets the retention in days of the Azure SQL Database auditing
+    * policy.
+    * @param retentionDaysValue The RetentionDays value.
+    */
+    public void setRetentionDays(final String retentionDaysValue) {
+        this.retentionDays = retentionDaysValue;
     }
     
     private String storageAccountKey;

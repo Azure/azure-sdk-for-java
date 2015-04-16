@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * A Network Security Group associated with your subscription.
 */
-public class NetworkSecurityGroupGetResponse extends AzureOperationResponse {
+public class NetworkSecurityGroupGetResponse extends OperationResponse {
     private String label;
     
     /**

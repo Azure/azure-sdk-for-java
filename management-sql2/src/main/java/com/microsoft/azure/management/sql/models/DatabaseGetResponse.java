@@ -23,17 +23,17 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Represents the response to a Get Database request.
+* Represents the response to a Get Azure Sql Database request.
 */
-public class DatabaseGetResponse extends AzureOperationResponse {
+public class DatabaseGetResponse extends OperationResponse {
     private Database database;
     
     /**
-    * Optional. Gets or sets Database object that represents the Azure Sql
-    * Database.
+    * Optional. Gets or sets the Azure Sql Database object that represents the
+    * Azure Sql Database.
     * @return The Database value.
     */
     public Database getDatabase() {
@@ -41,8 +41,8 @@ public class DatabaseGetResponse extends AzureOperationResponse {
     }
     
     /**
-    * Optional. Gets or sets Database object that represents the Azure Sql
-    * Database.
+    * Optional. Gets or sets the Azure Sql Database object that represents the
+    * Azure Sql Database.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final Database databaseValue) {

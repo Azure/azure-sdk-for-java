@@ -24,13 +24,13 @@
 package com.microsoft.azure.management.resources.models;
 
 /**
-* Resource information with extended details.
+* Management lock information.
 */
-public class ResourceBaseExtended extends ResourceBase {
+public class ManagementLockObject {
     private String id;
     
     /**
-    * Optional. Gets or sets the ID of the resource.
+    * Optional. Gets or sets the Id of the lock.
     * @return The Id value.
     */
     public String getId() {
@@ -38,7 +38,7 @@ public class ResourceBaseExtended extends ResourceBase {
     }
     
     /**
-    * Optional. Gets or sets the ID of the resource.
+    * Optional. Gets or sets the Id of the lock.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -48,7 +48,7 @@ public class ResourceBaseExtended extends ResourceBase {
     private String name;
     
     /**
-    * Optional. Gets or sets the name of the resource.
+    * Optional. Gets or sets the name of the lock.
     * @return The Name value.
     */
     public String getName() {
@@ -56,17 +56,35 @@ public class ResourceBaseExtended extends ResourceBase {
     }
     
     /**
-    * Optional. Gets or sets the name of the resource.
+    * Optional. Gets or sets the name of the lock.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
+    private ManagementLockProperties properties;
+    
+    /**
+    * Optional. Gets or sets the properties of the lock.
+    * @return The Properties value.
+    */
+    public ManagementLockProperties getProperties() {
+        return this.properties;
+    }
+    
+    /**
+    * Optional. Gets or sets the properties of the lock.
+    * @param propertiesValue The Properties value.
+    */
+    public void setProperties(final ManagementLockProperties propertiesValue) {
+        this.properties = propertiesValue;
+    }
+    
     private String type;
     
     /**
-    * Optional. Gets or sets the type of the resource.
+    * Optional. Gets or sets the type of the lock.
     * @return The Type value.
     */
     public String getType() {
@@ -74,32 +92,10 @@ public class ResourceBaseExtended extends ResourceBase {
     }
     
     /**
-    * Optional. Gets or sets the type of the resource.
+    * Optional. Gets or sets the type of the lock.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {
         this.type = typeValue;
-    }
-    
-    /**
-    * Initializes a new instance of the ResourceBaseExtended class.
-    *
-    */
-    public ResourceBaseExtended() {
-        super();
-    }
-    
-    /**
-    * Initializes a new instance of the ResourceBaseExtended class with
-    * required arguments.
-    *
-    * @param location Gets or sets the location of the resource.
-    */
-    public ResourceBaseExtended(String location) {
-        this();
-        if (location == null) {
-            throw new NullPointerException("location");
-        }
-        this.setLocation(location);
     }
 }

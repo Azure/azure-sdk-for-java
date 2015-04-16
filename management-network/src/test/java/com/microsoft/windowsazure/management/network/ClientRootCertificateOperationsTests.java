@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -79,7 +79,7 @@ public class ClientRootCertificateOperationsTests extends NetworkManagementInteg
         createParameters.setCertificate(certificateValue); 
         
         // Act
-        AzureOperationResponse operationResponse = clientRootCertificateOperations.create(testNetworkName, createParameters);
+        OperationResponse operationResponse = clientRootCertificateOperations.create(testNetworkName, createParameters);
         
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());

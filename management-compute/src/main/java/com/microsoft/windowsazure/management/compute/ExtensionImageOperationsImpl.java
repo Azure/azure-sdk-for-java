@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -106,10 +106,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginRegisteringAsync(final ExtensionImageRegisterParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginRegisteringAsync(final ExtensionImageRegisterParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginRegistering(parameters);
             }
          });
@@ -139,7 +139,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -221,7 +221,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -498,9 +498,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -538,10 +538,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUnregisteringAsync(final String providerNamespace, final String type, final String version) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUnregisteringAsync(final String providerNamespace, final String type, final String version) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUnregistering(providerNamespace, type, version);
             }
          });
@@ -572,7 +572,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException {
+    public OperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException {
         // Validate
         if (providerNamespace == null) {
             throw new NullPointerException("providerNamespace");
@@ -624,7 +624,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -646,9 +646,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -679,10 +679,10 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUpdatingAsync(final ExtensionImageUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUpdatingAsync(final ExtensionImageUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUpdating(parameters);
             }
          });
@@ -712,7 +712,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -799,7 +799,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1076,9 +1076,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1171,7 +1171,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getExtensionImagesOperations().beginRegisteringAsync(parameters).get();
+            OperationResponse response = client2.getExtensionImagesOperations().beginRegisteringAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1309,7 +1309,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getExtensionImagesOperations().beginUnregisteringAsync(providerNamespace, type, version).get();
+            OperationResponse response = client2.getExtensionImagesOperations().beginUnregisteringAsync(providerNamespace, type, version).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -1440,7 +1440,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getExtensionImagesOperations().beginUpdatingAsync(parameters).get();
+            OperationResponse response = client2.getExtensionImagesOperations().beginUpdatingAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

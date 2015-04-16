@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The Update Jobs State operation response.
 */
-public class JobCollectionJobsUpdateStateResponse extends AzureOperationResponse implements Iterable<Job> {
+public class JobCollectionJobsUpdateStateResponse extends OperationResponse implements Iterable<Job> {
     private ArrayList<Job> jobs;
     
     /**

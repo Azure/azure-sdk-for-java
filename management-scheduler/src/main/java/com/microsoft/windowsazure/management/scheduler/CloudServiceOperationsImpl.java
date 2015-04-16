@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -94,10 +94,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingAsync(final String cloudServiceName, final CloudServiceCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingAsync(final String cloudServiceName, final CloudServiceCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreating(cloudServiceName, parameters);
             }
          });
@@ -123,7 +123,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreating(String cloudServiceName, CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(String cloudServiceName, CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
@@ -244,9 +244,9 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -271,10 +271,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeletingAsync(final String cloudServiceName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeletingAsync(final String cloudServiceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(cloudServiceName);
             }
          });
@@ -292,7 +292,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleting(String cloudServiceName) throws IOException, ServiceException {
+    public OperationResponse beginDeleting(String cloudServiceName) throws IOException, ServiceException {
         // Validate
         if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
@@ -352,9 +352,9 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -442,7 +442,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getCloudServicesOperations().beginCreatingAsync(cloudServiceName, parameters).get();
+            OperationResponse response = client2.getCloudServicesOperations().beginCreatingAsync(cloudServiceName, parameters).get();
             CloudServiceOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 10;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -554,7 +554,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getCloudServicesOperations().beginDeletingAsync(cloudServiceName).get();
+            OperationResponse response = client2.getCloudServicesOperations().beginDeletingAsync(cloudServiceName).get();
             CloudServiceOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 10;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

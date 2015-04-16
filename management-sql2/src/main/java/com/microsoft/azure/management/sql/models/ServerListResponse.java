@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Represents the response to a Get Azure Sql Database Server request.
 */
-public class ServerListResponse extends AzureOperationResponse implements Iterable<Server> {
+public class ServerListResponse extends OperationResponse implements Iterable<Server> {
     private ArrayList<Server> servers;
     
     /**

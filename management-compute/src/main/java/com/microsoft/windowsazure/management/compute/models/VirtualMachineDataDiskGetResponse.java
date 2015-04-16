@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
 * The Get Data Disk operation response.
 */
-public class VirtualMachineDataDiskGetResponse extends AzureOperationResponse {
+public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private String hostCaching;
     
     /**

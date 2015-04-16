@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Create Publishing User operation response.
 */
-public class WebSpacesCreatePublishingUserResponse extends AzureOperationResponse {
+public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     private String name;
     
     /**

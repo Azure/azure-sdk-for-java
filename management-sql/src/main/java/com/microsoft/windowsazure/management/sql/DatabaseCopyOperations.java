@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCopyCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCopyCreateResponse;
@@ -91,7 +91,7 @@ public interface DatabaseCopyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String serverName, String databaseName, String databaseCopyName) throws IOException, ServiceException;
+    OperationResponse delete(String serverName, String databaseName, String databaseCopyName) throws IOException, ServiceException;
     
     /**
     * Stops a SQL Server database copy.
@@ -104,7 +104,7 @@ public interface DatabaseCopyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String serverName, String databaseName, String databaseCopyName);
+    Future<OperationResponse> deleteAsync(String serverName, String databaseName, String databaseCopyName);
     
     /**
     * Retrieves information about a SQL Server database copy.

@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class ListRouteTablesResponse extends AzureOperationResponse implements Iterable<RouteTable> {
+public class ListRouteTablesResponse extends OperationResponse implements Iterable<RouteTable> {
     private ArrayList<RouteTable> routeTables;
     
     /**

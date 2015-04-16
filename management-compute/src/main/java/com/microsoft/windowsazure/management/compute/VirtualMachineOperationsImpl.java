@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -160,10 +160,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCapturingOSImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureOSImageParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCapturingOSImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureOSImageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCapturingOSImage(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -205,7 +205,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -342,7 +342,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -550,6 +550,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
                             idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
                             publicIPElement.appendChild(idleTimeoutInMinutesElement2);
+                        }
+                        
+                        if (publicIPsItem.getDomainNameLabel() != null) {
+                            Element domainNameLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainNameLabel");
+                            domainNameLabelElement.appendChild(requestDoc.createTextNode(publicIPsItem.getDomainNameLabel()));
+                            publicIPElement.appendChild(domainNameLabelElement);
                         }
                     }
                     provisioningConfigurationElement.appendChild(publicIPsSequenceElement);
@@ -847,9 +853,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -879,10 +885,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCapturingVMImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureVMImageParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCapturingVMImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureVMImageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCapturingVMImage(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -911,7 +917,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -968,7 +974,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1032,9 +1038,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1074,10 +1080,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreating(serviceName, deploymentName, parameters);
             }
          });
@@ -1116,7 +1122,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1243,7 +1249,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1454,6 +1460,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
                                     idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
                                     publicIPElement.appendChild(idleTimeoutInMinutesElement2);
+                                }
+                                
+                                if (publicIPsItem.getDomainNameLabel() != null) {
+                                    Element domainNameLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainNameLabel");
+                                    domainNameLabelElement.appendChild(requestDoc.createTextNode(publicIPsItem.getDomainNameLabel()));
+                                    publicIPElement.appendChild(domainNameLabelElement);
                                 }
                             }
                             configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -1975,9 +1987,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2012,10 +2024,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreatingDeployment(serviceName, parameters);
             }
          });
@@ -2049,7 +2061,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2186,7 +2198,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2425,6 +2437,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
                                             idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
                                             publicIPElement.appendChild(idleTimeoutInMinutesElement2);
+                                        }
+                                        
+                                        if (publicIPsItem.getDomainNameLabel() != null) {
+                                            Element domainNameLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainNameLabel");
+                                            domainNameLabelElement.appendChild(requestDoc.createTextNode(publicIPsItem.getDomainNameLabel()));
+                                            publicIPElement.appendChild(domainNameLabelElement);
                                         }
                                     }
                                     configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -3075,9 +3093,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3109,10 +3127,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeletingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeletingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(serviceName, deploymentName, virtualMachineName, deleteFromStorage);
             }
          });
@@ -3137,7 +3155,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3196,7 +3214,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3218,9 +3236,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3251,10 +3269,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginRestartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginRestartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginRestarting(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -3278,7 +3296,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
+    public OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3331,7 +3349,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
@@ -3359,9 +3377,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3392,10 +3410,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginShutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginShutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginShutdown(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -3425,7 +3443,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3482,7 +3500,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3534,9 +3552,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3567,10 +3585,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginShuttingDownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginShuttingDownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginShuttingDownRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -3600,7 +3618,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3651,7 +3669,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3715,9 +3733,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3747,10 +3765,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginStartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginStartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginStarting(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -3773,7 +3791,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
+    public OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3826,7 +3844,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
@@ -3854,9 +3872,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3887,10 +3905,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginStartingRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginStartingRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginStartingRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -3920,7 +3938,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3971,7 +3989,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4029,9 +4047,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -4063,10 +4081,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUpdating(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -4097,7 +4115,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -4232,7 +4250,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4443,6 +4461,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
                                     idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
                                     publicIPElement.appendChild(idleTimeoutInMinutesElement2);
+                                }
+                                
+                                if (publicIPsItem.getDomainNameLabel() != null) {
+                                    Element domainNameLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainNameLabel");
+                                    domainNameLabelElement.appendChild(requestDoc.createTextNode(publicIPsItem.getDomainNameLabel()));
+                                    publicIPElement.appendChild(domainNameLabelElement);
                                 }
                             }
                             configurationSetElement.appendChild(publicIPsSequenceElement);
@@ -4945,9 +4969,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -4980,10 +5004,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUpdatingLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
             }
          });
@@ -5015,7 +5039,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -5077,7 +5101,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -5257,9 +5281,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -5379,7 +5403,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginCapturingOSImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingOSImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -5502,7 +5526,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginCapturingVMImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingVMImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -5653,7 +5677,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -5784,7 +5808,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginCreatingDeploymentAsync(serviceName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingDeploymentAsync(serviceName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -5913,7 +5937,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(serviceName, deploymentName, virtualMachineName, deleteFromStorage).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(serviceName, deploymentName, virtualMachineName, deleteFromStorage).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -6053,7 +6077,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -6340,6 +6364,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         int idleTimeoutInMinutesInstance2;
                                         idleTimeoutInMinutesInstance2 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement2.getTextContent());
                                         publicIPInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
+                                    }
+                                    
+                                    Element domainNameLabelElement = XmlUtility.getElementByTagNameNS(publicIPsElement, "http://schemas.microsoft.com/windowsazure", "DomainNameLabel");
+                                    if (domainNameLabelElement != null) {
+                                        String domainNameLabelInstance;
+                                        domainNameLabelInstance = domainNameLabelElement.getTextContent();
+                                        publicIPInstance.setDomainNameLabel(domainNameLabelInstance);
                                     }
                                 }
                             }
@@ -6883,7 +6914,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -7005,7 +7036,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginRestartingAsync(serviceName, deploymentName, virtualMachineName).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginRestartingAsync(serviceName, deploymentName, virtualMachineName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7132,7 +7163,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7250,7 +7281,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7372,7 +7403,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginStartingAsync(serviceName, deploymentName, virtualMachineName).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginStartingAsync(serviceName, deploymentName, virtualMachineName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7490,7 +7521,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginStartingRolesAsync(serviceName, deploymentName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginStartingRolesAsync(serviceName, deploymentName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7626,7 +7657,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -7750,7 +7781,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

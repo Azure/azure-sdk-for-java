@@ -32,8 +32,8 @@ import com.microsoft.azure.management.resources.models.ResourceGroupGetResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupListParameters;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -597,10 +597,10 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName);
             }
          });
@@ -626,7 +626,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName) throws InterruptedException, ExecutionException, IOException, ServiceException {
         ResourceManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;

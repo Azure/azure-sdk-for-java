@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -567,10 +567,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> registerResourceProviderAsync() {
-        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> registerResourceProviderAsync() {
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return registerResourceProvider();
             }
          });
@@ -587,7 +587,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public AzureOperationResponse registerResourceProvider() throws IOException, ServiceException {
+    public OperationResponse registerResourceProvider() throws IOException, ServiceException {
         // Validate
         
         // Tracing
@@ -648,9 +648,9 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -674,10 +674,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> unregisterResourceProviderAsync() {
-        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> unregisterResourceProviderAsync() {
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return unregisterResourceProvider();
             }
          });
@@ -694,7 +694,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public AzureOperationResponse unregisterResourceProvider() throws IOException, ServiceException {
+    public OperationResponse unregisterResourceProvider() throws IOException, ServiceException {
         // Validate
         
         // Tracing
@@ -755,9 +755,9 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

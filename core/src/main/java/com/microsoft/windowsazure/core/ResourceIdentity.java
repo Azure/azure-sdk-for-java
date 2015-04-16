@@ -21,7 +21,7 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.azure;
+package com.microsoft.windowsazure.core;
 
 /**
 * Resource identity.

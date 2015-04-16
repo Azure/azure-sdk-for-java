@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -585,10 +585,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> registerResourceAsync(final String resourceName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> registerResourceAsync(final String resourceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return registerResource(resourceName);
             }
          });
@@ -606,7 +606,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse registerResource(String resourceName) throws IOException, ServiceException {
+    public OperationResponse registerResource(String resourceName) throws IOException, ServiceException {
         // Validate
         if (resourceName == null) {
             throw new NullPointerException("resourceName");
@@ -673,9 +673,9 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -700,10 +700,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> unregisterResourceAsync(final String resourceName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> unregisterResourceAsync(final String resourceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return unregisterResource(resourceName);
             }
          });
@@ -721,7 +721,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * request ID.
     */
     @Override
-    public AzureOperationResponse unregisterResource(String resourceName) throws IOException, ServiceException {
+    public OperationResponse unregisterResource(String resourceName) throws IOException, ServiceException {
         // Validate
         if (resourceName == null) {
             throw new NullPointerException("resourceName");
@@ -788,9 +788,9 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

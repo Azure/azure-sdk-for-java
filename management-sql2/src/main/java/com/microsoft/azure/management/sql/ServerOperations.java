@@ -26,7 +26,8 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.sql.models.ServerCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.ServerGetResponse;
 import com.microsoft.azure.management.sql.models.ServerListResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.azure.management.sql.models.ServerMetricListResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -89,7 +90,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException;
     
     /**
     * Returns information about an Azure SQL Database Server.
@@ -100,7 +101,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName);
     
     /**
     * Returns information about an Azure SQL Database Server.
@@ -151,4 +152,32 @@ public interface ServerOperations {
     * request.
     */
     Future<ServerListResponse> listAsync(String resourceGroupName);
+    
+    /**
+    * Returns information about Azure SQL Database Server usage.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Represents the response to a List Azure Sql Database Server
+    * metrics request.
+    */
+    ServerMetricListResponse listUsages(String resourceGroupName, String serverName) throws IOException, ServiceException;
+    
+    /**
+    * Returns information about Azure SQL Database Server usage.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @return Represents the response to a List Azure Sql Database Server
+    * metrics request.
+    */
+    Future<ServerMetricListResponse> listUsagesAsync(String resourceGroupName, String serverName);
 }

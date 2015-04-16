@@ -27,8 +27,10 @@ import com.microsoft.azure.management.sql.models.Server;
 import com.microsoft.azure.management.sql.models.ServerCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.ServerGetResponse;
 import com.microsoft.azure.management.sql.models.ServerListResponse;
+import com.microsoft.azure.management.sql.models.ServerMetric;
+import com.microsoft.azure.management.sql.models.ServerMetricListResponse;
 import com.microsoft.azure.management.sql.models.ServerProperties;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -39,12 +41,14 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -143,9 +147,6 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         if (parameters.getProperties() == null) {
             throw new NullPointerException("parameters.Properties");
-        }
-        if (parameters.getTags() == null) {
-            throw new NullPointerException("parameters.Tags");
         }
         
         // Tracing
@@ -270,13 +271,6 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                     Server serverInstance = new Server();
                     result.setServer(serverInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        serverInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue2 = responseDoc.get("properties");
                     if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                         ServerProperties propertiesInstance = new ServerProperties();
@@ -316,6 +310,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         serverInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        serverInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -371,10 +372,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String serverName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String serverName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, serverName);
             }
          });
@@ -394,7 +395,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -467,9 +468,9 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -607,13 +608,6 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                     Server serverInstance = new Server();
                     result.setServer(serverInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        serverInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         ServerProperties propertiesInstance = new ServerProperties();
@@ -653,6 +647,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         serverInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        serverInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -815,13 +816,6 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                             Server serverInstance = new Server();
                             result.getServers().add(serverInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                serverInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 ServerProperties propertiesInstance = new ServerProperties();
@@ -863,6 +857,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                                 serverInstance.setId(idInstance);
                             }
                             
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                serverInstance.setName(nameInstance);
+                            }
+                            
                             JsonNode typeValue = valueValue.get("type");
                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                 String typeInstance;
@@ -886,6 +887,195 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                                     String tagsValue = property.getValue().getTextValue();
                                     serverInstance.getTags().put(tagsKey, tagsValue);
                                 }
+                            }
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Returns information about Azure SQL Database Server usage.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @return Represents the response to a List Azure Sql Database Server
+    * metrics request.
+    */
+    @Override
+    public Future<ServerMetricListResponse> listUsagesAsync(final String resourceGroupName, final String serverName) {
+        return this.getClient().getExecutorService().submit(new Callable<ServerMetricListResponse>() { 
+            @Override
+            public ServerMetricListResponse call() throws Exception {
+                return listUsages(resourceGroupName, serverName);
+            }
+         });
+    }
+    
+    /**
+    * Returns information about Azure SQL Database Server usage.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Represents the response to a List Azure Sql Database Server
+    * metrics request.
+    */
+    @Override
+    public ServerMetricListResponse listUsages(String resourceGroupName, String serverName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("serverName", serverName);
+            CloudTracing.enter(invocationId, this, "listUsagesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/usages";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServerMetricListResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServerMetricListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            ServerMetric serverMetricInstance = new ServerMetric();
+                            result.getMetrics().add(serverMetricInstance);
+                            
+                            JsonNode resourceNameValue = valueValue.get("resourceName");
+                            if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
+                                String resourceNameInstance;
+                                resourceNameInstance = resourceNameValue.getTextValue();
+                                serverMetricInstance.setResourceName(resourceNameInstance);
+                            }
+                            
+                            JsonNode displayNameValue = valueValue.get("displayName");
+                            if (displayNameValue != null && displayNameValue instanceof NullNode == false) {
+                                String displayNameInstance;
+                                displayNameInstance = displayNameValue.getTextValue();
+                                serverMetricInstance.setDisplayName(displayNameInstance);
+                            }
+                            
+                            JsonNode currentValueValue = valueValue.get("currentValue");
+                            if (currentValueValue != null && currentValueValue instanceof NullNode == false) {
+                                double currentValueInstance;
+                                currentValueInstance = currentValueValue.getDoubleValue();
+                                serverMetricInstance.setCurrentValue(currentValueInstance);
+                            }
+                            
+                            JsonNode limitValue = valueValue.get("limit");
+                            if (limitValue != null && limitValue instanceof NullNode == false) {
+                                double limitInstance;
+                                limitInstance = limitValue.getDoubleValue();
+                                serverMetricInstance.setLimit(limitInstance);
+                            }
+                            
+                            JsonNode unitValue = valueValue.get("unit");
+                            if (unitValue != null && unitValue instanceof NullNode == false) {
+                                String unitInstance;
+                                unitInstance = unitValue.getTextValue();
+                                serverMetricInstance.setUnit(unitInstance);
+                            }
+                            
+                            JsonNode nextResetTimeValue = valueValue.get("nextResetTime");
+                            if (nextResetTimeValue != null && nextResetTimeValue instanceof NullNode == false) {
+                                Calendar nextResetTimeInstance;
+                                nextResetTimeInstance = DatatypeConverter.parseDateTime(nextResetTimeValue.getTextValue());
+                                serverMetricInstance.setNextResetTime(nextResetTimeInstance);
                             }
                         }
                     }

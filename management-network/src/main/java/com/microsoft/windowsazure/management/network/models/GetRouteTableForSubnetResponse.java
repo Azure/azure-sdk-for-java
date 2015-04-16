@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class GetRouteTableForSubnetResponse extends AzureOperationResponse {
+public class GetRouteTableForSubnetResponse extends OperationResponse {
     private String routeTableName;
     
     /**

@@ -25,7 +25,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicyCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicyGetResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.Future;
@@ -54,7 +54,7 @@ public interface SecureConnectionPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database Server Firewall rule.
@@ -70,7 +70,7 @@ public interface SecureConnectionPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createOrUpdateDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters);
+    Future<OperationResponse> createOrUpdateDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters);
     
     /**
     * Returns an Azure SQL Database secure connection policy.

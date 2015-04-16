@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -108,10 +108,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreating(serviceName, parameters);
             }
          });
@@ -142,7 +142,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -194,7 +194,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -250,9 +250,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -284,10 +284,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(parameters);
             }
          });
@@ -312,7 +312,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException {
+    public OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -365,7 +365,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -387,9 +387,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -494,7 +494,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getServiceCertificatesOperations().beginCreatingAsync(serviceName, parameters).get();
+            OperationResponse response = client2.getServiceCertificatesOperations().beginCreatingAsync(serviceName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -618,7 +618,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getServiceCertificatesOperations().beginDeletingAsync(parameters).get();
+            OperationResponse response = client2.getServiceCertificatesOperations().beginDeletingAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -758,7 +758,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -897,7 +897,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;

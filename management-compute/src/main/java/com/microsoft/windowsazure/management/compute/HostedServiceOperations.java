@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceAddExtensionParameters;
@@ -134,7 +134,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginAddingExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginAddingExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Adding Extension operation adds an available extension to your
@@ -151,7 +151,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginAddingExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
+    Future<OperationResponse> beginAddingExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
     
     /**
     * The DeleteAll Hosted Service operation deletes the specified cloud
@@ -168,7 +168,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException;
+    OperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException;
     
     /**
     * The DeleteAll Hosted Service operation deletes the specified cloud
@@ -181,7 +181,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingAllAsync(String serviceName);
+    Future<OperationResponse> beginDeletingAllAsync(String serviceName);
     
     /**
     * The Begin Deleting Extension operation deletes the specified extension
@@ -199,7 +199,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingExtension(String serviceName, String extensionId) throws IOException, ServiceException;
+    OperationResponse beginDeletingExtension(String serviceName, String extensionId) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Extension operation deletes the specified extension
@@ -213,7 +213,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingExtensionAsync(String serviceName, String extensionId);
+    Future<OperationResponse> beginDeletingExtensionAsync(String serviceName, String extensionId);
     
     /**
     * The Check Hosted Service Name Availability operation checks for the
@@ -278,7 +278,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Create Hosted Service operation creates a new cloud service in Azure.
@@ -290,7 +290,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createAsync(HostedServiceCreateParameters parameters);
+    Future<OperationResponse> createAsync(HostedServiceCreateParameters parameters);
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
@@ -316,7 +316,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
@@ -328,7 +328,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String serviceName);
+    Future<OperationResponse> deleteAsync(String serviceName);
     
     /**
     * The DeleteAll Hosted Service operation deletes the specified cloud
@@ -709,7 +709,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Update Hosted Service operation can update the label or description
@@ -723,5 +723,5 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateAsync(String serviceName, HostedServiceUpdateParameters parameters);
+    Future<OperationResponse> updateAsync(String serviceName, HostedServiceUpdateParameters parameters);
 }

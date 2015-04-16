@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Virtual Machine Template Capture Role operation response.
 */
-public class VirtualMachineCaptureVMImageParameters extends AzureOperationResponse {
+public class VirtualMachineCaptureVMImageParameters extends OperationResponse {
     private String operationType;
     
     /**

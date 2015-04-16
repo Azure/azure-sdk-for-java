@@ -23,28 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
+import com.microsoft.windowsazure.core.ResourceBaseExtended;
+
 /**
 * Represents an Azure SQL Database secure connection policy.
 */
-public class DatabaseSecureConnectionPolicy extends ResourceBase {
-    private String name;
-    
-    /**
-    * Optional. Gets or sets the name of the resource.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the resource.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
+public class DatabaseSecureConnectionPolicy extends ResourceBaseExtended {
     private DatabaseSecureConnectionPolicyProperties properties;
     
     /**
@@ -69,5 +53,19 @@ public class DatabaseSecureConnectionPolicy extends ResourceBase {
     */
     public DatabaseSecureConnectionPolicy() {
         super();
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseSecureConnectionPolicy class
+    * with required arguments.
+    *
+    * @param location Gets or sets the location of the resource.
+    */
+    public DatabaseSecureConnectionPolicy(String location) {
+        this();
+        if (location == null) {
+            throw new NullPointerException("location");
+        }
+        this.setLocation(location);
     }
 }

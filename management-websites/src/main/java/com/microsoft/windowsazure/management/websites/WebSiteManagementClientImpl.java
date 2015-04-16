@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -699,10 +699,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> registerSubscriptionAsync() {
-        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> registerSubscriptionAsync() {
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return registerSubscription();
             }
          });
@@ -719,7 +719,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public AzureOperationResponse registerSubscription() throws IOException, ServiceException {
+    public OperationResponse registerSubscription() throws IOException, ServiceException {
         // Validate
         
         // Tracing
@@ -782,9 +782,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -808,10 +808,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> unregisterSubscriptionAsync() {
-        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> unregisterSubscriptionAsync() {
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return unregisterSubscription();
             }
          });
@@ -828,7 +828,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public AzureOperationResponse unregisterSubscription() throws IOException, ServiceException {
+    public OperationResponse unregisterSubscription() throws IOException, ServiceException {
         // Validate
         
         // Tracing
@@ -891,9 +891,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

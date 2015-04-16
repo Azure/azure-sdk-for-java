@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Hybrid Connection operation response.
 */
-public class HybridConnectionListResponse extends AzureOperationResponse implements Iterable<HybridConnection> {
+public class HybridConnectionListResponse extends OperationResponse implements Iterable<HybridConnection> {
     private ArrayList<HybridConnection> hybridConnections;
     
     /**

@@ -28,7 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.management.network.models.*;
 
@@ -93,7 +93,7 @@ public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase
 
         NetworkSetConfigurationParameters parameters = new NetworkSetConfigurationParameters();
         parameters.setConfiguration(stringWriter.toString());
-        AzureOperationResponse response = networkOperations.setConfiguration(parameters);
+        OperationResponse response = networkOperations.setConfiguration(parameters);
 
         //Assert
         Assert.assertEquals(200, response.getStatusCode());

@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Web Space Details operation response.
 */
-public class WebSpacesGetResponse extends AzureOperationResponse {
+public class WebSpacesGetResponse extends OperationResponse {
     private WebSpaceAvailabilityState availabilityState;
     
     /**

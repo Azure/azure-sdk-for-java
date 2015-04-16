@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * List of connection strings for the website.
 */
-public class WebSiteConnectionStringsResult extends AzureOperationResponse {
+public class WebSiteConnectionStringsResult extends OperationResponse {
     private WebSiteConnectionStringsEnvelope resource;
     
     /**

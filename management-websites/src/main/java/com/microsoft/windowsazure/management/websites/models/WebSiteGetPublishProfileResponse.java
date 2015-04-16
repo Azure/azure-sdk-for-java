@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The Get Publish Profile Web Site operation response.
 */
-public class WebSiteGetPublishProfileResponse extends AzureOperationResponse implements Iterable<WebSiteGetPublishProfileResponse.PublishProfile> {
+public class WebSiteGetPublishProfileResponse extends OperationResponse implements Iterable<WebSiteGetPublishProfileResponse.PublishProfile> {
     private ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles;
     
     /**

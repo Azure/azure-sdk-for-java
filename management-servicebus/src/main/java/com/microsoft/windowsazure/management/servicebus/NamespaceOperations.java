@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.CheckNamespaceAvailabilityResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusAuthorizationRuleResponse;
@@ -196,7 +196,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String namespaceName) throws IOException, ServiceException;
+    OperationResponse delete(String namespaceName) throws IOException, ServiceException;
     
     /**
     * Deletes an existing namespace. This operation also removes all associated
@@ -209,7 +209,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String namespaceName);
+    Future<OperationResponse> deleteAsync(String namespaceName);
     
     /**
     * The delete namespace authorization rule operation deletes an
@@ -224,7 +224,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException;
+    OperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException;
     
     /**
     * The delete namespace authorization rule operation deletes an
@@ -235,7 +235,7 @@ public interface NamespaceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAuthorizationRuleAsync(String namespaceName, String ruleName);
+    Future<OperationResponse> deleteAuthorizationRuleAsync(String namespaceName, String ruleName);
     
     /**
     * Returns the description for the specified namespace.  (see

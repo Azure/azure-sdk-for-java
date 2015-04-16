@@ -530,6 +530,24 @@ public class ConfigurationSet {
     * addressable via the default deployment VIP.
     */
     public static class PublicIP {
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
         private Integer idleTimeoutInMinutes;
         
         /**

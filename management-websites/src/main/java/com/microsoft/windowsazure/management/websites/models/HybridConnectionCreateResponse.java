@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Create Hybrid Connection operation response.
 */
-public class HybridConnectionCreateResponse extends AzureOperationResponse {
+public class HybridConnectionCreateResponse extends OperationResponse {
     private HybridConnection hybridConnection;
     
     /**

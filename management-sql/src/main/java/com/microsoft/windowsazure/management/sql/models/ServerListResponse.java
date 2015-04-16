@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,7 +32,7 @@ import java.util.Iterator;
 * The response structure for the Server List operation.  Contains a list of all
 * the servers in a subscription.
 */
-public class ServerListResponse extends AzureOperationResponse implements Iterable<Server> {
+public class ServerListResponse extends OperationResponse implements Iterable<Server> {
     private ArrayList<Server> servers;
     
     /**

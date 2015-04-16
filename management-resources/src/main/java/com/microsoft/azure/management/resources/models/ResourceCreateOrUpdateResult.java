@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Resource information.
 */
-public class ResourceCreateOrUpdateResult extends AzureOperationResponse {
+public class ResourceCreateOrUpdateResult extends OperationResponse {
     private GenericResourceExtended resource;
     
     /**

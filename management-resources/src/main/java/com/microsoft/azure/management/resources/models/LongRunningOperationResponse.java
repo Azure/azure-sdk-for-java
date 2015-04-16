@@ -23,13 +23,13 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 
 /**
 * A standard service response for long running operations.
 */
-public class LongRunningOperationResponse extends AzureOperationResponse {
+public class LongRunningOperationResponse extends OperationResponse {
     private ResourceManagementError error;
     
     /**

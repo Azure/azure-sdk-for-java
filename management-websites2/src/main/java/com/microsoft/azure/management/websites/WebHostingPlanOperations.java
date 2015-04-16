@@ -29,7 +29,7 @@ import com.microsoft.azure.management.websites.models.WebHostingPlanGetHistorica
 import com.microsoft.azure.management.websites.models.WebHostingPlanGetHistoricalUsageMetricsResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanGetResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanListResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -94,7 +94,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException;
     
     /**
     * Deletes a Web Hosting Plan  (see
@@ -107,7 +107,7 @@ public interface WebHostingPlanOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String webHostingPlanName);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String webHostingPlanName);
     
     /**
     * Gets details of an existing Web Hosting Plan  (see

@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Represents the response to a Get database secure connection request.
 */
-public class DatabaseSecureConnectionPolicyGetResponse extends AzureOperationResponse {
+public class DatabaseSecureConnectionPolicyGetResponse extends OperationResponse {
     private DatabaseSecureConnectionPolicy secureConnectionPolicy;
     
     /**

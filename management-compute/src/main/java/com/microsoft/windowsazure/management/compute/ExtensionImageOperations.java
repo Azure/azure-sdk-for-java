@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.ExtensionImageRegisterParameters;
@@ -64,7 +64,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginRegistering(ExtensionImageRegisterParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Register a new extension. An extension is identified by the combination
@@ -79,7 +79,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRegisteringAsync(ExtensionImageRegisterParameters parameters);
+    Future<OperationResponse> beginRegisteringAsync(ExtensionImageRegisterParameters parameters);
     
     /**
     * Unregister a version of an extension that was previously registered using
@@ -105,7 +105,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException;
+    OperationResponse beginUnregistering(String providerNamespace, String type, String version) throws IOException, ServiceException;
     
     /**
     * Unregister a version of an extension that was previously registered using
@@ -127,7 +127,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUnregisteringAsync(String providerNamespace, String type, String version);
+    Future<OperationResponse> beginUnregisteringAsync(String providerNamespace, String type, String version);
     
     /**
     * Update a new extension. It is allowed to update an extension which had
@@ -152,7 +152,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpdating(ExtensionImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Update a new extension. It is allowed to update an extension which had
@@ -167,7 +167,7 @@ public interface ExtensionImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpdatingAsync(ExtensionImageUpdateParameters parameters);
+    Future<OperationResponse> beginUpdatingAsync(ExtensionImageUpdateParameters parameters);
     
     /**
     * Register a new extension. An extension is identified by the combination

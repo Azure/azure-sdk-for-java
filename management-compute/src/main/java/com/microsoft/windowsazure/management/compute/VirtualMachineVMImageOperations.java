@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageCreateParameters;
@@ -66,7 +66,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginCreating(VirtualMachineVMImageCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCreating(VirtualMachineVMImageCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create VM Image operation creates a VM image that in your image
@@ -79,7 +79,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginCreatingAsync(VirtualMachineVMImageCreateParameters parameters);
+    Future<OperationResponse> beginCreatingAsync(VirtualMachineVMImageCreateParameters parameters);
     
     /**
     * The Begin Deleting Virtual Machine Image operation deletes the specified
@@ -96,7 +96,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse beginDeleting(String vmImageName, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Virtual Machine Image operation deletes the specified
@@ -109,7 +109,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingAsync(String vmImageName, boolean deleteFromStorage);
+    Future<OperationResponse> beginDeletingAsync(String vmImageName, boolean deleteFromStorage);
     
     /**
     * Share an already replicated VM image. This operation is only for
@@ -127,7 +127,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginSharing(String vmImageName, String permission) throws IOException, ServiceException;
+    OperationResponse beginSharing(String vmImageName, String permission) throws IOException, ServiceException;
     
     /**
     * Share an already replicated VM image. This operation is only for
@@ -141,7 +141,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginSharingAsync(String vmImageName, String permission);
+    Future<OperationResponse> beginSharingAsync(String vmImageName, String permission);
     
     /**
     * Unreplicate an VM image to multiple target locations. This operation is
@@ -161,7 +161,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUnreplicating(String vmImageName) throws IOException, ServiceException;
+    OperationResponse beginUnreplicating(String vmImageName) throws IOException, ServiceException;
     
     /**
     * Unreplicate an VM image to multiple target locations. This operation is
@@ -177,7 +177,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUnreplicatingAsync(String vmImageName);
+    Future<OperationResponse> beginUnreplicatingAsync(String vmImageName);
     
     /**
     * The Create VM Image operation creates a VM image that in your image
@@ -524,7 +524,7 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse update(String imageName, VirtualMachineVMImageUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
+    OperationResponse update(String imageName, VirtualMachineVMImageUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Update VM Image operation updates a VM image that in your image
@@ -537,5 +537,5 @@ public interface VirtualMachineVMImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateAsync(String imageName, VirtualMachineVMImageUpdateParameters parameters);
+    Future<OperationResponse> updateAsync(String imageName, VirtualMachineVMImageUpdateParameters parameters);
 }

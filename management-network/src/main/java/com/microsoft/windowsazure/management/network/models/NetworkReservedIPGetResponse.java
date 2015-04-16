@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
 * A reserved IP associated with your subscription.
 */
-public class NetworkReservedIPGetResponse extends AzureOperationResponse {
+public class NetworkReservedIPGetResponse extends OperationResponse {
     private InetAddress address;
     
     /**

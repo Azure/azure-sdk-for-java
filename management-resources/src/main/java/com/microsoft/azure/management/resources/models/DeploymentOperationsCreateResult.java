@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Template deployment operation create result.
 */
-public class DeploymentOperationsCreateResult extends AzureOperationResponse {
+public class DeploymentOperationsCreateResult extends OperationResponse {
     private DeploymentExtended deployment;
     
     /**

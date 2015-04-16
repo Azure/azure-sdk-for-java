@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The web site instance ids response.
 */
-public class WebSiteInstanceIdsResponse extends AzureOperationResponse implements Iterable<String> {
+public class WebSiteInstanceIdsResponse extends OperationResponse implements Iterable<String> {
     private ArrayList<String> instanceIds;
     
     /**

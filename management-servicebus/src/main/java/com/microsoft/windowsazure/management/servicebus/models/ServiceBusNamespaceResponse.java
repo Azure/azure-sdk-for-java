@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The response to a request for a particular namespace.
 */
-public class ServiceBusNamespaceResponse extends AzureOperationResponse {
+public class ServiceBusNamespaceResponse extends OperationResponse {
     private ServiceBusNamespace namespace;
     
     /**

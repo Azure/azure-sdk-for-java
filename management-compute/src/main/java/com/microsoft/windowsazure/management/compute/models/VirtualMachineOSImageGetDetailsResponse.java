@@ -30,6 +30,30 @@ import java.util.ArrayList;
 * The Get Details OS Images operation response.
 */
 public class VirtualMachineOSImageGetDetailsResponse extends VirtualMachineOSImageGetResponse {
+    private ComputeImageAttributes computeImageAttributes;
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @return The ComputeImageAttributes value.
+    */
+    public ComputeImageAttributes getComputeImageAttributes() {
+        return this.computeImageAttributes;
+    }
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @param computeImageAttributesValue The ComputeImageAttributes value.
+    */
+    public void setComputeImageAttributes(final ComputeImageAttributes computeImageAttributesValue) {
+        this.computeImageAttributes = computeImageAttributesValue;
+    }
+    
     private Boolean isCorrupted;
     
     /**
@@ -46,6 +70,29 @@ public class VirtualMachineOSImageGetDetailsResponse extends VirtualMachineOSIma
     */
     public void setIsCorrupted(final Boolean isCorruptedValue) {
         this.isCorrupted = isCorruptedValue;
+    }
+    
+    private MarketplaceImageAttributes marketplaceImageAttributes;
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @return The MarketplaceImageAttributes value.
+    */
+    public MarketplaceImageAttributes getMarketplaceImageAttributes() {
+        return this.marketplaceImageAttributes;
+    }
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @param marketplaceImageAttributesValue The MarketplaceImageAttributes
+    * value.
+    */
+    public void setMarketplaceImageAttributes(final MarketplaceImageAttributes marketplaceImageAttributesValue) {
+        this.marketplaceImageAttributes = marketplaceImageAttributesValue;
     }
     
     private ArrayList<VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement> replicationProgress;
@@ -74,6 +121,23 @@ public class VirtualMachineOSImageGetDetailsResponse extends VirtualMachineOSIma
     public VirtualMachineOSImageGetDetailsResponse() {
         super();
         this.setReplicationProgress(new LazyArrayList<VirtualMachineOSImageGetDetailsResponse.ReplicationProgressElement>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineOSImageGetDetailsResponse
+    * class with required arguments.
+    *
+    * @param computeImageAttributes The compute image attributes. Metadata
+    * which is required for this image to be useablein the Microsoft.Compute
+    * Provider.The combination of values provided for Offer, Sku, and Verison
+    * must be unique for a publisher.
+    */
+    public VirtualMachineOSImageGetDetailsResponse(ComputeImageAttributes computeImageAttributes) {
+        this();
+        if (computeImageAttributes == null) {
+            throw new NullPointerException("computeImageAttributes");
+        }
+        this.setComputeImageAttributes(computeImageAttributes);
     }
     
     /**

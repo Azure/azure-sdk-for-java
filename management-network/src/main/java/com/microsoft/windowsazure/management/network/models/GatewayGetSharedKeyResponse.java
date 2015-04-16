@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The response to the get shared key request.
 */
-public class GatewayGetSharedKeyResponse extends AzureOperationResponse {
+public class GatewayGetSharedKeyResponse extends OperationResponse {
     private String sharedKey;
     
     /**

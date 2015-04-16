@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * Scheduled backup definition.
 */
-public class WebSiteGetBackupConfigurationResponse extends AzureOperationResponse {
+public class WebSiteGetBackupConfigurationResponse extends OperationResponse {
     private BackupSchedule backupSchedule;
     
     /**

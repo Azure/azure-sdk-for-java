@@ -31,7 +31,7 @@ import com.microsoft.azure.management.sql.models.ServerAuditingPolicy;
 import com.microsoft.azure.management.sql.models.ServerAuditingPolicyCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.ServerAuditingPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.ServerAuditingPolicyProperties;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -97,10 +97,10 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createOrUpdateDatebasePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseAuditingPolicyCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createOrUpdateDatebasePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseAuditingPolicyCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createOrUpdateDatebasePolicy(resourceGroupName, serverName, databaseName, parameters);
             }
          });
@@ -125,7 +125,7 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
     * request ID.
     */
     @Override
-    public AzureOperationResponse createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -236,8 +236,16 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
             ((ObjectNode) propertiesValue).put("storageAccountSubscriptionId", parameters.getProperties().getStorageAccountSubscriptionId());
         }
         
+        if (parameters.getProperties().getRetentionDays() != null) {
+            ((ObjectNode) propertiesValue).put("retentionDays", parameters.getProperties().getRetentionDays());
+        }
+        
         if (parameters.getProperties().getUseServerDefault() != null) {
             ((ObjectNode) propertiesValue).put("useServerDefault", parameters.getProperties().getUseServerDefault());
+        }
+        
+        if (parameters.getProperties().getAuditLogsTableName() != null) {
+            ((ObjectNode) propertiesValue).put("auditLogsTableName", parameters.getProperties().getAuditLogsTableName());
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -267,9 +275,9 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -299,10 +307,10 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createOrUpdateServerPolicyAsync(final String resourceGroupName, final String serverName, final ServerAuditingPolicyCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createOrUpdateServerPolicyAsync(final String resourceGroupName, final String serverName, final ServerAuditingPolicyCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createOrUpdateServerPolicy(resourceGroupName, serverName, parameters);
             }
          });
@@ -325,7 +333,7 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
     * request ID.
     */
     @Override
-    public AzureOperationResponse createOrUpdateServerPolicy(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse createOrUpdateServerPolicy(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -430,6 +438,14 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
             ((ObjectNode) propertiesValue).put("storageAccountSubscriptionId", parameters.getProperties().getStorageAccountSubscriptionId());
         }
         
+        if (parameters.getProperties().getRetentionDays() != null) {
+            ((ObjectNode) propertiesValue).put("retentionDays", parameters.getProperties().getRetentionDays());
+        }
+        
+        if (parameters.getProperties().getAuditLogsTableName() != null) {
+            ((ObjectNode) propertiesValue).put("auditLogsTableName", parameters.getProperties().getAuditLogsTableName());
+        }
+        
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
@@ -457,9 +473,9 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -608,13 +624,6 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                     DatabaseAuditingPolicy auditingPolicyInstance = new DatabaseAuditingPolicy();
                     result.setAuditingPolicy(auditingPolicyInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        auditingPolicyInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DatabaseAuditingPolicyProperties propertiesInstance = new DatabaseAuditingPolicyProperties();
@@ -676,11 +685,25 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                             propertiesInstance.setStorageAccountSubscriptionId(storageAccountSubscriptionIdInstance);
                         }
                         
+                        JsonNode retentionDaysValue = propertiesValue.get("retentionDays");
+                        if (retentionDaysValue != null && retentionDaysValue instanceof NullNode == false) {
+                            String retentionDaysInstance;
+                            retentionDaysInstance = retentionDaysValue.getTextValue();
+                            propertiesInstance.setRetentionDays(retentionDaysInstance);
+                        }
+                        
                         JsonNode useServerDefaultValue = propertiesValue.get("useServerDefault");
                         if (useServerDefaultValue != null && useServerDefaultValue instanceof NullNode == false) {
                             String useServerDefaultInstance;
                             useServerDefaultInstance = useServerDefaultValue.getTextValue();
                             propertiesInstance.setUseServerDefault(useServerDefaultInstance);
+                        }
+                        
+                        JsonNode auditLogsTableNameValue = propertiesValue.get("auditLogsTableName");
+                        if (auditLogsTableNameValue != null && auditLogsTableNameValue instanceof NullNode == false) {
+                            String auditLogsTableNameInstance;
+                            auditLogsTableNameInstance = auditLogsTableNameValue.getTextValue();
+                            propertiesInstance.setAuditLogsTableName(auditLogsTableNameInstance);
                         }
                     }
                     
@@ -689,6 +712,13 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         auditingPolicyInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        auditingPolicyInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -856,13 +886,6 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                     ServerAuditingPolicy auditingPolicyInstance = new ServerAuditingPolicy();
                     result.setAuditingPolicy(auditingPolicyInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        auditingPolicyInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         ServerAuditingPolicyProperties propertiesInstance = new ServerAuditingPolicyProperties();
@@ -923,6 +946,20 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                             storageAccountSubscriptionIdInstance = storageAccountSubscriptionIdValue.getTextValue();
                             propertiesInstance.setStorageAccountSubscriptionId(storageAccountSubscriptionIdInstance);
                         }
+                        
+                        JsonNode retentionDaysValue = propertiesValue.get("retentionDays");
+                        if (retentionDaysValue != null && retentionDaysValue instanceof NullNode == false) {
+                            String retentionDaysInstance;
+                            retentionDaysInstance = retentionDaysValue.getTextValue();
+                            propertiesInstance.setRetentionDays(retentionDaysInstance);
+                        }
+                        
+                        JsonNode auditLogsTableNameValue = propertiesValue.get("auditLogsTableName");
+                        if (auditLogsTableNameValue != null && auditLogsTableNameValue instanceof NullNode == false) {
+                            String auditLogsTableNameInstance;
+                            auditLogsTableNameInstance = auditLogsTableNameValue.getTextValue();
+                            propertiesInstance.setAuditLogsTableName(auditLogsTableNameInstance);
+                        }
                     }
                     
                     JsonNode idValue = responseDoc.get("id");
@@ -930,6 +967,13 @@ public class AuditingPolicyOperationsImpl implements ServiceOperations<SqlManage
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         auditingPolicyInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        auditingPolicyInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");

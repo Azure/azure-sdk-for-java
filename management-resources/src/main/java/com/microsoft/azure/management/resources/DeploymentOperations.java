@@ -29,7 +29,7 @@ import com.microsoft.azure.management.resources.models.DeploymentListParameters;
 import com.microsoft.azure.management.resources.models.DeploymentListResult;
 import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -52,7 +52,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
+    OperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
     
     /**
     * Cancel a currently running template deployment.
@@ -63,7 +63,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> cancelAsync(String resourceGroupName, String deploymentName);
+    Future<OperationResponse> cancelAsync(String resourceGroupName, String deploymentName);
     
     /**
     * Create a named template deployment using a template.

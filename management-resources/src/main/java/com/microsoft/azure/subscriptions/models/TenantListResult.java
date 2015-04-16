@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.subscriptions.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * Tenant Ids information.
 */
-public class TenantListResult extends AzureOperationResponse {
+public class TenantListResult extends OperationResponse {
     private ArrayList<TenantIdDescription> tenantIds;
     
     /**

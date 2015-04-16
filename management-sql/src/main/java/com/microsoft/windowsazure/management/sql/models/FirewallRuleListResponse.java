@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Contains the response from a request to List Firewall Rules.
 */
-public class FirewallRuleListResponse extends AzureOperationResponse implements Iterable<FirewallRule> {
+public class FirewallRuleListResponse extends OperationResponse implements Iterable<FirewallRule> {
     private ArrayList<FirewallRule> firewallRules;
     
     /**

@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.Calendar;
 
 /**
 * Parameters returned from the Create Virtual Machine Image operation.
 */
-public class VirtualMachineOSImageCreateResponse extends AzureOperationResponse {
+public class VirtualMachineOSImageCreateResponse extends OperationResponse {
     private String category;
     
     /**

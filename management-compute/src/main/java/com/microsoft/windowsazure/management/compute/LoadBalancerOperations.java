@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerCreateParameters;
@@ -265,7 +265,7 @@ public interface LoadBalancerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String serviceName, String deploymentName, String loadBalancerName) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    OperationResponse delete(String serviceName, String deploymentName, String loadBalancerName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * Delete an internal load balancer from the deployment.
@@ -276,7 +276,7 @@ public interface LoadBalancerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String serviceName, String deploymentName, String loadBalancerName);
+    Future<OperationResponse> deleteAsync(String serviceName, String deploymentName, String loadBalancerName);
     
     /**
     * Updates an internal load balancer associated with an existing deployment.

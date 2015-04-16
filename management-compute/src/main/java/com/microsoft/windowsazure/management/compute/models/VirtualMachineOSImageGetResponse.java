@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.Calendar;
 
 /**
 * A virtual machine image associated with your subscription.
 */
-public class VirtualMachineOSImageGetResponse extends AzureOperationResponse {
+public class VirtualMachineOSImageGetResponse extends OperationResponse {
     private String affinityGroup;
     
     /**

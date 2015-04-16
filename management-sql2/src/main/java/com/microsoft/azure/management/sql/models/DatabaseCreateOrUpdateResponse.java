@@ -23,13 +23,13 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 
 /**
-* Response for long running database operations.
+* Response for long running Azure Sql Database operations.
 */
-public class DatabaseCreateOrUpdateResponse extends AzureOperationResponse {
+public class DatabaseCreateOrUpdateResponse extends OperationResponse {
     private Database database;
     
     /**

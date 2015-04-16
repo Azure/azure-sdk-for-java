@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The website operation response.
 */
-public class WebSiteAsyncOperationResponse extends AzureOperationResponse {
+public class WebSiteAsyncOperationResponse extends OperationResponse {
     private String location;
     
     /**

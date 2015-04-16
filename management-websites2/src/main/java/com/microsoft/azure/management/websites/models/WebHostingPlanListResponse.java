@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Web Hosting Plans operation response.
 */
-public class WebHostingPlanListResponse extends AzureOperationResponse implements Iterable<WebHostingPlan> {
+public class WebHostingPlanListResponse extends OperationResponse implements Iterable<WebHostingPlan> {
     private ArrayList<WebHostingPlan> webHostingPlans;
     
     /**

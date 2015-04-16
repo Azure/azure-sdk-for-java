@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * The response to a GetApplicationGatewayConfiguation  request.
 */
-public class ApplicationGatewayGetConfiguration extends AzureOperationResponse {
+public class ApplicationGatewayGetConfiguration extends OperationResponse {
     private ArrayList<BackendAddressPool> backendAddressPools;
     
     /**

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -103,10 +103,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createAsync(final AffinityGroupCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createAsync(final AffinityGroupCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -134,7 +134,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public AzureOperationResponse create(AffinityGroupCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse create(AffinityGroupCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -248,9 +248,9 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -278,10 +278,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String affinityGroupName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String affinityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(affinityGroupName);
             }
          });
@@ -302,7 +302,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String affinityGroupName) throws IOException, ServiceException {
+    public OperationResponse delete(String affinityGroupName) throws IOException, ServiceException {
         // Validate
         if (affinityGroupName == null) {
             throw new NullPointerException("affinityGroupName");
@@ -363,9 +363,9 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -830,10 +830,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateAsync(final String affinityGroupName, final AffinityGroupUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateAsync(final String affinityGroupName, final AffinityGroupUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return update(affinityGroupName, parameters);
             }
          });
@@ -862,7 +862,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * request ID.
     */
     @Override
-    public AzureOperationResponse update(String affinityGroupName, AffinityGroupUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse update(String affinityGroupName, AffinityGroupUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (affinityGroupName == null) {
             throw new NullPointerException("affinityGroupName");
@@ -967,9 +967,9 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

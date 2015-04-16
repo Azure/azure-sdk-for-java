@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.subscriptions.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Subscription detailed information.
 */
-public class GetSubscriptionResult extends AzureOperationResponse {
+public class GetSubscriptionResult extends OperationResponse {
     private Subscription subscription;
     
     /**
