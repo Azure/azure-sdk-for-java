@@ -105,6 +105,13 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     DataMaskingOperations getDataMaskingOperations();
     
     /**
+    * Represents all the operations for operating on Azure SQL Database Elastic
+    * Pools.  Contains operations to: Create, Retrieve, Update, and Delete.
+    * @return The ElasticPoolsOperations value.
+    */
+    ElasticPoolOperations getElasticPoolsOperations();
+    
+    /**
     * Represents all the operations for operating on Azure SQL Database Server
     * Firewall Rules.  Contains operations to: Create, Retrieve, Update, and
     * Delete firewall rules.

@@ -105,6 +105,28 @@ public class DatabaseProperties {
         this.databaseId = databaseIdValue;
     }
     
+    private Calendar earliestRestoreDate;
+    
+    /**
+    * Optional. Gets the recovery period starte date of the Azure SQL Database.
+    * This records the start date and time when recovery is available for this
+    * Azure SQL Database.
+    * @return The EarliestRestoreDate value.
+    */
+    public Calendar getEarliestRestoreDate() {
+        return this.earliestRestoreDate;
+    }
+    
+    /**
+    * Optional. Gets the recovery period starte date of the Azure SQL Database.
+    * This records the start date and time when recovery is available for this
+    * Azure SQL Database.
+    * @param earliestRestoreDateValue The EarliestRestoreDate value.
+    */
+    public void setEarliestRestoreDate(final Calendar earliestRestoreDateValue) {
+        this.earliestRestoreDate = earliestRestoreDateValue;
+    }
+    
     private String edition;
     
     /**
@@ -123,6 +145,26 @@ public class DatabaseProperties {
     */
     public void setEdition(final String editionValue) {
         this.edition = editionValue;
+    }
+    
+    private String elasticPoolName;
+    
+    /**
+    * Optional. Gets or sets the name of the Azure SQL Database Elastic Pool
+    * the database is in.
+    * @return The ElasticPoolName value.
+    */
+    public String getElasticPoolName() {
+        return this.elasticPoolName;
+    }
+    
+    /**
+    * Optional. Gets or sets the name of the Azure SQL Database Elastic Pool
+    * the database is in.
+    * @param elasticPoolNameValue The ElasticPoolName value.
+    */
+    public void setElasticPoolName(final String elasticPoolNameValue) {
+        this.elasticPoolName = elasticPoolNameValue;
     }
     
     private long maxSizeBytes;
@@ -164,6 +206,29 @@ public class DatabaseProperties {
     */
     public void setRequestedServiceObjectiveId(final String requestedServiceObjectiveIdValue) {
         this.requestedServiceObjectiveId = requestedServiceObjectiveIdValue;
+    }
+    
+    private String requestedServiceObjectiveName;
+    
+    /**
+    * Optional. Gets the name of the configured Service Level Objective of the
+    * Azure SQL Database. This is the Service Level Objective that is being
+    * applied to the Azure SQL Database.
+    * @return The RequestedServiceObjectiveName value.
+    */
+    public String getRequestedServiceObjectiveName() {
+        return this.requestedServiceObjectiveName;
+    }
+    
+    /**
+    * Optional. Gets the name of the configured Service Level Objective of the
+    * Azure SQL Database. This is the Service Level Objective that is being
+    * applied to the Azure SQL Database.
+    * @param requestedServiceObjectiveNameValue The
+    * RequestedServiceObjectiveName value.
+    */
+    public void setRequestedServiceObjectiveName(final String requestedServiceObjectiveNameValue) {
+        this.requestedServiceObjectiveName = requestedServiceObjectiveNameValue;
     }
     
     private String serviceObjective;

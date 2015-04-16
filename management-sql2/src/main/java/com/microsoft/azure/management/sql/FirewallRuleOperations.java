@@ -26,7 +26,7 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.sql.models.FirewallRuleCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.azure.management.sql.models.FirewallRuleListResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -95,7 +95,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException;
     
     /**
     * Deletes an Azure SQL Database Server Firewall rule.
@@ -109,7 +109,7 @@ public interface FirewallRuleOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName, String firewallRule);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName, String firewallRule);
     
     /**
     * Returns an Azure SQL Database Server Firewall rule.

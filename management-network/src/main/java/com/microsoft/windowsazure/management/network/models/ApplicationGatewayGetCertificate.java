@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Response of GetApplicationGatewayCertificate request.
 */
-public class ApplicationGatewayGetCertificate extends AzureOperationResponse {
+public class ApplicationGatewayGetCertificate extends OperationResponse {
     private String data;
     
     /**

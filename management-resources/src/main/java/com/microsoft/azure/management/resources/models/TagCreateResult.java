@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Tag information.
 */
-public class TagCreateResult extends AzureOperationResponse {
+public class TagCreateResult extends OperationResponse {
     private TagDetails tag;
     
     /**

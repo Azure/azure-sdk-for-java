@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * List of backups for the website.
 */
-public class WebSiteGetBackupsResponse extends AzureOperationResponse {
+public class WebSiteGetBackupsResponse extends OperationResponse {
     private BackupItemsEnvelope backupList;
     
     /**

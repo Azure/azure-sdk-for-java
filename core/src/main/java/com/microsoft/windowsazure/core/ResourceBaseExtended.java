@@ -21,12 +21,12 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.azure.management.resources.models;
+package com.microsoft.windowsazure.core;
 
 /**
-* Resource group information.
+* Resource information with extended details.
 */
-public class Resource extends BasicResource {
+public class ResourceBaseExtended extends ResourceBase {
     private String id;
     
     /**
@@ -82,18 +82,20 @@ public class Resource extends BasicResource {
     }
     
     /**
-    * Initializes a new instance of the Resource class.
+    * Initializes a new instance of the ResourceBaseExtended class.
     *
     */
-    public Resource() {
+    public ResourceBaseExtended() {
         super();
     }
     
     /**
-    * Initializes a new instance of the Resource class with required arguments.
+    * Initializes a new instance of the ResourceBaseExtended class with
+    * required arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
-    public Resource(String location) {
+    public ResourceBaseExtended(String location) {
         this();
         if (location == null) {
             throw new NullPointerException("location");

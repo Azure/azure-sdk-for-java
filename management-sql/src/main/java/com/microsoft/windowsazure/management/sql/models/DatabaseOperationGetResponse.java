@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Represents the database operation for a given operation Guid.
 */
-public class DatabaseOperationGetResponse extends AzureOperationResponse {
+public class DatabaseOperationGetResponse extends OperationResponse {
     private DatabaseOperation databaseOperation;
     
     /**

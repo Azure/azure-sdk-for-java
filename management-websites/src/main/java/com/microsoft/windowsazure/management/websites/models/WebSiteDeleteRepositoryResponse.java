@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
 * The Delete Repository Web Site operation response.
 */
-public class WebSiteDeleteRepositoryResponse extends AzureOperationResponse {
+public class WebSiteDeleteRepositoryResponse extends OperationResponse {
     private URI uri;
     
     /**

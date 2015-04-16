@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkReservedIPCreateParameters;
@@ -198,7 +198,7 @@ public interface ReservedIPOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    OperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Begin Deleting Reserved IP operation removes a reserved IP from your
@@ -208,7 +208,7 @@ public interface ReservedIPOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingAsync(String ipName);
+    Future<OperationResponse> beginDeletingAsync(String ipName);
     
     /**
     * The BeginDisassociate begins to disassociate a Reserved IP from a service.

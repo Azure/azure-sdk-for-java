@@ -400,6 +400,42 @@ public class RoleInstance {
             this.address = addressValue;
         }
         
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
+        private ArrayList<String> fqdns;
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @return The Fqdns value.
+        */
+        public ArrayList<String> getFqdns() {
+            return this.fqdns;
+        }
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @param fqdnsValue The Fqdns value.
+        */
+        public void setFqdns(final ArrayList<String> fqdnsValue) {
+            this.fqdns = fqdnsValue;
+        }
+        
         private Integer idleTimeoutInMinutes;
         
         /**
@@ -434,6 +470,14 @@ public class RoleInstance {
         */
         public void setName(final String nameValue) {
             this.name = nameValue;
+        }
+        
+        /**
+        * Initializes a new instance of the PublicIP class.
+        *
+        */
+        public PublicIP() {
+            this.setFqdns(new LazyArrayList<String>());
         }
     }
 }

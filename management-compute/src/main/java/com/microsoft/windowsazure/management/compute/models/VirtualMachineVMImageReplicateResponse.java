@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The response body contains the published name of the image.
 */
-public class VirtualMachineVMImageReplicateResponse extends AzureOperationResponse {
+public class VirtualMachineVMImageReplicateResponse extends OperationResponse {
     private String publishedName;
     
     /**

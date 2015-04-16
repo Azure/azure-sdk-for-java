@@ -24,14 +24,15 @@
 package com.microsoft.azure.management.sql.models;
 
 /**
-* Create or update database parameters properties.
+* Create or update Azure Sql Database parameters properties.
 */
 public class DatabaseCreateOrUpdateProperties {
     private String collation;
     
     /**
-    * Optional. Gets or sets the collation of the database being created.  You
-    * cannot change change the collation of an existing database.
+    * Optional. Gets or sets the collation of the Azure Sql Database being
+    * created.  You cannot change change the collation of an existing Azure
+    * Sql Database.
     * @return The Collation value.
     */
     public String getCollation() {
@@ -39,8 +40,9 @@ public class DatabaseCreateOrUpdateProperties {
     }
     
     /**
-    * Optional. Gets or sets the collation of the database being created.  You
-    * cannot change change the collation of an existing database.
+    * Optional. Gets or sets the collation of the Azure Sql Database being
+    * created.  You cannot change change the collation of an existing Azure
+    * Sql Database.
     * @param collationValue The Collation value.
     */
     public void setCollation(final String collationValue) {
@@ -50,8 +52,8 @@ public class DatabaseCreateOrUpdateProperties {
     private String edition;
     
     /**
-    * Optional. Gets or sets the edition for the database being updated or
-    * created.
+    * Optional. Gets or sets the edition for the Azure Sql Database being
+    * updated or created.
     * @return The Edition value.
     */
     public String getEdition() {
@@ -59,19 +61,39 @@ public class DatabaseCreateOrUpdateProperties {
     }
     
     /**
-    * Optional. Gets or sets the edition for the database being updated or
-    * created.
+    * Optional. Gets or sets the edition for the Azure Sql Database being
+    * updated or created.
     * @param editionValue The Edition value.
     */
     public void setEdition(final String editionValue) {
         this.edition = editionValue;
     }
     
+    private String elasticPoolName;
+    
+    /**
+    * Optional. Gets or sets the name of the Elastic Pool to put the Azure Sql
+    * Database in.
+    * @return The ElasticPoolName value.
+    */
+    public String getElasticPoolName() {
+        return this.elasticPoolName;
+    }
+    
+    /**
+    * Optional. Gets or sets the name of the Elastic Pool to put the Azure Sql
+    * Database in.
+    * @param elasticPoolNameValue The ElasticPoolName value.
+    */
+    public void setElasticPoolName(final String elasticPoolNameValue) {
+        this.elasticPoolName = elasticPoolNameValue;
+    }
+    
     private Long maxSizeBytes;
     
     /**
-    * Optional. Gets or sets the maximum size of the database being created or
-    * updated in bytes.
+    * Optional. Gets or sets the maximum size of the Azure Sql Database being
+    * created or updated in bytes.
     * @return The MaxSizeBytes value.
     */
     public Long getMaxSizeBytes() {
@@ -79,8 +101,8 @@ public class DatabaseCreateOrUpdateProperties {
     }
     
     /**
-    * Optional. Gets or sets the maximum size of the database being created or
-    * updated in bytes.
+    * Optional. Gets or sets the maximum size of the Azure Sql Database being
+    * created or updated in bytes.
     * @param maxSizeBytesValue The MaxSizeBytes value.
     */
     public void setMaxSizeBytes(final Long maxSizeBytesValue) {
@@ -90,8 +112,8 @@ public class DatabaseCreateOrUpdateProperties {
     private String requestedServiceObjectiveId;
     
     /**
-    * Optional. Gets or sets the service objective to be applied to the
-    * database being created or updated.
+    * Optional. Gets or sets the service objective to be applied to the Azure
+    * Sql Database being created or updated.
     * @return The RequestedServiceObjectiveId value.
     */
     public String getRequestedServiceObjectiveId() {
@@ -99,12 +121,33 @@ public class DatabaseCreateOrUpdateProperties {
     }
     
     /**
-    * Optional. Gets or sets the service objective to be applied to the
-    * database being created or updated.
+    * Optional. Gets or sets the service objective to be applied to the Azure
+    * Sql Database being created or updated.
     * @param requestedServiceObjectiveIdValue The RequestedServiceObjectiveId
     * value.
     */
     public void setRequestedServiceObjectiveId(final String requestedServiceObjectiveIdValue) {
         this.requestedServiceObjectiveId = requestedServiceObjectiveIdValue;
+    }
+    
+    private String requestedServiceObjectiveName;
+    
+    /**
+    * Optional. Gets or sets the service objective to be applied to the Azure
+    * Sql Database being created or updated.
+    * @return The RequestedServiceObjectiveName value.
+    */
+    public String getRequestedServiceObjectiveName() {
+        return this.requestedServiceObjectiveName;
+    }
+    
+    /**
+    * Optional. Gets or sets the service objective to be applied to the Azure
+    * Sql Database being created or updated.
+    * @param requestedServiceObjectiveNameValue The
+    * RequestedServiceObjectiveName value.
+    */
+    public void setRequestedServiceObjectiveName(final String requestedServiceObjectiveNameValue) {
+        this.requestedServiceObjectiveName = requestedServiceObjectiveNameValue;
     }
 }

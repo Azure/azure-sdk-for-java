@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -194,7 +194,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -380,7 +380,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -532,7 +532,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -768,10 +768,10 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String serviceName, final String deploymentName, final String loadBalancerName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String serviceName, final String deploymentName, final String loadBalancerName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(serviceName, deploymentName, loadBalancerName);
             }
          });
@@ -801,7 +801,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String serviceName, String deploymentName, String loadBalancerName) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public OperationResponse delete(String serviceName, String deploymentName, String loadBalancerName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;

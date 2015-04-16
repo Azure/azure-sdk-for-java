@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.TimeSpan8601Converter;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -2443,10 +2443,10 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String jobId) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String jobId) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(jobId);
             }
          });
@@ -2464,7 +2464,7 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String jobId) throws IOException, ServiceException {
+    public OperationResponse delete(String jobId) throws IOException, ServiceException {
         // Validate
         if (jobId == null) {
             throw new NullPointerException("jobId");
@@ -2537,9 +2537,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

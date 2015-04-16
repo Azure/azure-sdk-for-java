@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The Get Job History operation response.
 */
-public class JobGetHistoryResponse extends AzureOperationResponse implements Iterable<JobGetHistoryResponse.JobHistoryEntry> {
+public class JobGetHistoryResponse extends OperationResponse implements Iterable<JobGetHistoryResponse.JobHistoryEntry> {
     private ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory;
     
     /**

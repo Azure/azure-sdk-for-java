@@ -23,10 +23,30 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.microsoft.windowsazure.core.ResourceBaseExtended;
+
 /**
 * Resource information.
 */
 public class GenericResourceExtended extends ResourceBaseExtended {
+    private Plan plan;
+    
+    /**
+    * Optional. Gets or sets the plan of the resource.
+    * @return The Plan value.
+    */
+    public Plan getPlan() {
+        return this.plan;
+    }
+    
+    /**
+    * Optional. Gets or sets the plan of the resource.
+    * @param planValue The Plan value.
+    */
+    public void setPlan(final Plan planValue) {
+        this.plan = planValue;
+    }
+    
     private String properties;
     
     /**

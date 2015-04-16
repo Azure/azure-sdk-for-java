@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Contains the response to the List Recoverable Databases request.
 */
-public class RecoverableDatabaseListResponse extends AzureOperationResponse implements Iterable<RecoverableDatabase> {
+public class RecoverableDatabaseListResponse extends OperationResponse implements Iterable<RecoverableDatabase> {
     private ArrayList<RecoverableDatabase> databases;
     
     /**

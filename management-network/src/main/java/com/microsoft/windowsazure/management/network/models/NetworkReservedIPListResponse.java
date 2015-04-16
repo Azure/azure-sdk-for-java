@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The response structure for the Server List operation.
 */
-public class NetworkReservedIPListResponse extends AzureOperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP> {
+public class NetworkReservedIPListResponse extends OperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP> {
     private ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs;
     
     /**

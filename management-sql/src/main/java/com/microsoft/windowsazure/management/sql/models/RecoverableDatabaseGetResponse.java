@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Contains the response to the Get Recoverable Database request.
 */
-public class RecoverableDatabaseGetResponse extends AzureOperationResponse {
+public class RecoverableDatabaseGetResponse extends OperationResponse {
     private RecoverableDatabase database;
     
     /**

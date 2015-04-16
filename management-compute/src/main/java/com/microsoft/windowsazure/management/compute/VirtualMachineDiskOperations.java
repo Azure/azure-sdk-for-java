@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskCreateParameters;
@@ -88,7 +88,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Data Disk operation adds a data disk to a virtual machine.
@@ -118,7 +118,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginCreatingDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
+    Future<OperationResponse> beginCreatingDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
     
     /**
     * The Begin Deleting Data Disk operation removes the specified data disk
@@ -140,7 +140,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Data Disk operation removes the specified data disk
@@ -158,7 +158,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
+    Future<OperationResponse> beginDeletingDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -182,7 +182,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpdatingDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpdatingDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -196,7 +196,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpdatingDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);
+    Future<OperationResponse> beginUpdatingDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);
     
     /**
     * The Create Data Disk operation adds a data disk to a virtual machine.
@@ -394,7 +394,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Delete Disk operation deletes the specified data or operating system
@@ -408,7 +408,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteDiskAsync(String name, boolean deleteFromStorage);
+    Future<OperationResponse> deleteDiskAsync(String name, boolean deleteFromStorage);
     
     /**
     * The Get Data Disk operation retrieves the specified data disk from a
@@ -535,7 +535,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Data Disk operation updates the specified data disk attached
@@ -552,7 +552,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters);
+    Future<OperationResponse> updateDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters);
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk

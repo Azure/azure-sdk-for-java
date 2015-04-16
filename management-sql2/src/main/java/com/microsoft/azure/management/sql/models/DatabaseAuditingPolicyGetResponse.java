@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Represents the response to a get database auditing policy request.
 */
-public class DatabaseAuditingPolicyGetResponse extends AzureOperationResponse {
+public class DatabaseAuditingPolicyGetResponse extends OperationResponse {
     private DatabaseAuditingPolicy auditingPolicy;
     
     /**

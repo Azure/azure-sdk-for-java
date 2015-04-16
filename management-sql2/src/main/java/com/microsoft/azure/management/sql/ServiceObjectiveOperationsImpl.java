@@ -204,13 +204,6 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     ServiceObjective serviceObjectiveInstance = new ServiceObjective();
                     result.setServiceObjective(serviceObjectiveInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        serviceObjectiveInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         ServiceObjectiveProperties propertiesInstance = new ServiceObjectiveProperties();
@@ -257,6 +250,13 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         serviceObjectiveInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        serviceObjectiveInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -427,13 +427,6 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             ServiceObjective serviceObjectiveInstance = new ServiceObjective();
                             result.getServiceObjectives().add(serviceObjectiveInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                serviceObjectiveInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 ServiceObjectiveProperties propertiesInstance = new ServiceObjectiveProperties();
@@ -480,6 +473,13 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 String idInstance;
                                 idInstance = idValue.getTextValue();
                                 serviceObjectiveInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                serviceObjectiveInstance.setName(nameInstance);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");

@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Contains the response to a Create Firewall Rule operation.
 */
-public class FirewallRuleCreateResponse extends AzureOperationResponse {
+public class FirewallRuleCreateResponse extends OperationResponse {
     private FirewallRule firewallRule;
     
     /**

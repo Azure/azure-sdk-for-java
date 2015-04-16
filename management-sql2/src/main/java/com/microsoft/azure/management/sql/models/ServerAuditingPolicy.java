@@ -23,28 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
+import com.microsoft.windowsazure.core.ResourceBaseExtended;
+
 /**
 * Represents an Azure SQL Database server auditing policy.
 */
-public class ServerAuditingPolicy extends ResourceBase {
-    private String name;
-    
-    /**
-    * Optional. Gets or sets the name of the resource.
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the resource.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
+public class ServerAuditingPolicy extends ResourceBaseExtended {
     private ServerAuditingPolicyProperties properties;
     
     /**
@@ -69,5 +53,19 @@ public class ServerAuditingPolicy extends ResourceBase {
     */
     public ServerAuditingPolicy() {
         super();
+    }
+    
+    /**
+    * Initializes a new instance of the ServerAuditingPolicy class with
+    * required arguments.
+    *
+    * @param location Gets or sets the location of the resource.
+    */
+    public ServerAuditingPolicy(String location) {
+        this();
+        if (location == null) {
+            throw new NullPointerException("location");
+        }
+        this.setLocation(location);
     }
 }

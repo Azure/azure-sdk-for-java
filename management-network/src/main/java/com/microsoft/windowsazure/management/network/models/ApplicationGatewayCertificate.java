@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Parameters supplied to AddApplicationGatewayCertificate
 */
-public class ApplicationGatewayCertificate extends AzureOperationResponse {
+public class ApplicationGatewayCertificate extends OperationResponse {
     private String certificateFormat;
     
     /**

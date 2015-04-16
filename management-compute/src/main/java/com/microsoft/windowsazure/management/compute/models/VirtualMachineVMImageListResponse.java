@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ import java.util.Iterator;
 /**
 * The List VM Images operation response.
 */
-public class VirtualMachineVMImageListResponse extends AzureOperationResponse implements Iterable<VirtualMachineVMImageListResponse.VirtualMachineVMImage> {
+public class VirtualMachineVMImageListResponse extends OperationResponse implements Iterable<VirtualMachineVMImageListResponse.VirtualMachineVMImage> {
     private ArrayList<VirtualMachineVMImageListResponse.VirtualMachineVMImage> vMImages;
     
     /**

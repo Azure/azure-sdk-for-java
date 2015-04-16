@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Information from validate template deployment response.
 */
-public class DeploymentValidateResponse extends AzureOperationResponse {
+public class DeploymentValidateResponse extends OperationResponse {
     private ResourceManagementErrorWithDetails error;
     
     /**

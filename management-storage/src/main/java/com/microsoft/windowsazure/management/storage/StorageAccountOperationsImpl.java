@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.storage;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -121,10 +121,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginCreatingAsync(final StorageAccountCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginCreatingAsync(final StorageAccountCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginCreating(parameters);
             }
          });
@@ -152,7 +152,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginCreating(StorageAccountCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(StorageAccountCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -316,9 +316,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -558,7 +558,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getStorageAccountsOperations().beginCreatingAsync(parameters).get();
+            OperationResponse response = client2.getStorageAccountsOperations().beginCreatingAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -616,10 +616,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String accountName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String accountName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(accountName);
             }
          });
@@ -641,7 +641,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String accountName) throws IOException, ServiceException {
+    public OperationResponse delete(String accountName) throws IOException, ServiceException {
         // Validate
         if (accountName == null) {
             throw new NullPointerException("accountName");
@@ -702,9 +702,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1593,10 +1593,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateAsync(final String accountName, final StorageAccountUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateAsync(final String accountName, final StorageAccountUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return update(accountName, parameters);
             }
          });
@@ -1626,7 +1626,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (accountName == null) {
             throw new NullPointerException("accountName");
@@ -1772,9 +1772,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

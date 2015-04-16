@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.ResourceIdentity;
 import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
@@ -31,7 +30,8 @@ import com.microsoft.azure.management.resources.models.ResourceGetResult;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.management.resources.models.ResourceListResult;
 import com.microsoft.azure.management.resources.models.ResourcesMoveInfo;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -114,7 +114,7 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, ResourceIdentity identity) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Delete resource and all of its resources.
@@ -125,7 +125,7 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, ResourceIdentity identity);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, ResourceIdentity identity);
     
     /**
     * Returns a resource belonging to a resource group.
@@ -213,7 +213,7 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException;
+    OperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException;
     
     /**
     * Move resources within or across subscriptions.
@@ -223,5 +223,5 @@ public interface ResourceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
+    Future<OperationResponse> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 }

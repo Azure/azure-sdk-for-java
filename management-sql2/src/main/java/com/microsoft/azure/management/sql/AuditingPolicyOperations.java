@@ -27,7 +27,7 @@ import com.microsoft.azure.management.sql.models.DatabaseAuditingPolicyCreateOrU
 import com.microsoft.azure.management.sql.models.DatabaseAuditingPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.ServerAuditingPolicyCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.ServerAuditingPolicyGetResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.Future;
@@ -56,7 +56,7 @@ public interface AuditingPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database auditing policy.
@@ -72,7 +72,7 @@ public interface AuditingPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters);
+    Future<OperationResponse> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyCreateOrUpdateParameters parameters);
     
     /**
     * Creates or updates an Azure SQL Database Server auditing policy.
@@ -90,7 +90,7 @@ public interface AuditingPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createOrUpdateServerPolicy(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse createOrUpdateServerPolicy(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database Server auditing policy.
@@ -104,7 +104,7 @@ public interface AuditingPolicyOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createOrUpdateServerPolicyAsync(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters);
+    Future<OperationResponse> createOrUpdateServerPolicyAsync(String resourceGroupName, String serverName, ServerAuditingPolicyCreateOrUpdateParameters parameters);
     
     /**
     * Returns an Azure SQL Database auditing policy.

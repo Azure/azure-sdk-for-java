@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A response to a request for a list of authorization rules.
 */
-public class ServiceBusAuthorizationRulesResponse extends AzureOperationResponse implements Iterable<ServiceBusSharedAccessAuthorizationRule> {
+public class ServiceBusAuthorizationRulesResponse extends OperationResponse implements Iterable<ServiceBusSharedAccessAuthorizationRule> {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**

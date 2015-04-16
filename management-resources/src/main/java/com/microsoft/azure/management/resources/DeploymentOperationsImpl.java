@@ -40,7 +40,7 @@ import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.management.resources.models.ResourceManagementError;
 import com.microsoft.azure.management.resources.models.ResourceManagementErrorWithDetails;
 import com.microsoft.azure.management.resources.models.TemplateLink;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -106,10 +106,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> cancelAsync(final String resourceGroupName, final String deploymentName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> cancelAsync(final String resourceGroupName, final String deploymentName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return cancel(resourceGroupName, deploymentName);
             }
          });
@@ -129,7 +129,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
     * request ID.
     */
     @Override
-    public AzureOperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException {
+    public OperationResponse cancel(String resourceGroupName, String deploymentName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -207,9 +207,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

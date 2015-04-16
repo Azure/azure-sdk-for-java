@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Web Hosting Plan operation response.
 */
-public class WebHostingPlanGetResponse extends AzureOperationResponse {
+public class WebHostingPlanGetResponse extends OperationResponse {
     private WebHostingPlan webHostingPlan;
     
     /**

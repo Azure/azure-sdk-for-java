@@ -28,7 +28,7 @@ import com.microsoft.azure.management.sql.models.FirewallRuleCreateOrUpdateParam
 import com.microsoft.azure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.azure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.azure.management.sql.models.FirewallRuleProperties;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -257,13 +257,6 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     FirewallRule firewallRuleInstance = new FirewallRule();
                     result.setFirewallRule(firewallRuleInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        firewallRuleInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue2 = responseDoc.get("properties");
                     if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                         FirewallRuleProperties propertiesInstance = new FirewallRuleProperties();
@@ -289,6 +282,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         firewallRuleInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        firewallRuleInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -347,10 +347,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String firewallRule) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String firewallRule) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, serverName, firewallRule);
             }
          });
@@ -373,7 +373,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -452,9 +452,9 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -602,13 +602,6 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     FirewallRule firewallRuleInstance = new FirewallRule();
                     result.setFirewallRule(firewallRuleInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        firewallRuleInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         FirewallRuleProperties propertiesInstance = new FirewallRuleProperties();
@@ -634,6 +627,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         firewallRuleInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        firewallRuleInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -804,13 +804,6 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                             FirewallRule firewallRuleInstance = new FirewallRule();
                             result.getFirewallRules().add(firewallRuleInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                firewallRuleInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 FirewallRuleProperties propertiesInstance = new FirewallRuleProperties();
@@ -836,6 +829,13 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                                 String idInstance;
                                 idInstance = idValue.getTextValue();
                                 firewallRuleInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                firewallRuleInstance.setName(nameInstance);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");

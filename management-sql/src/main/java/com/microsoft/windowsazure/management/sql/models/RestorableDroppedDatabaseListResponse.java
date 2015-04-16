@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * Contains the response to the List Restorable Dropped Databases request.
 */
-public class RestorableDroppedDatabaseListResponse extends AzureOperationResponse implements Iterable<RestorableDroppedDatabase> {
+public class RestorableDroppedDatabaseListResponse extends OperationResponse implements Iterable<RestorableDroppedDatabase> {
     private ArrayList<RestorableDroppedDatabase> databases;
     
     /**

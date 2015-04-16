@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.ServerChangeAdministratorPasswordParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
@@ -60,7 +60,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Changes the administrative password of an existing Azure SQL Database
@@ -73,7 +73,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> changeAdministratorPasswordAsync(String serverName, ServerChangeAdministratorPasswordParameters parameters);
+    Future<OperationResponse> changeAdministratorPasswordAsync(String serverName, ServerChangeAdministratorPasswordParameters parameters);
     
     /**
     * Provisions a new SQL Database server in a subscription.
@@ -117,7 +117,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String serverName) throws IOException, ServiceException;
+    OperationResponse delete(String serverName) throws IOException, ServiceException;
     
     /**
     * Deletes the specified Azure SQL Database Server from a subscription.
@@ -127,7 +127,7 @@ public interface ServerOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String serverName);
+    Future<OperationResponse> deleteAsync(String serverName);
     
     /**
     * Returns all SQL Database Servers that are provisioned for a subscription.

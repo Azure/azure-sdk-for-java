@@ -302,7 +302,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
         this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
-        this.apiVersion = "2014-10-01";
+        this.apiVersion = "2015-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -554,7 +554,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;

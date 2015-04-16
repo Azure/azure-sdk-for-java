@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The response body contains the status of the specified asynchronous
@@ -35,7 +35,7 @@ import com.microsoft.windowsazure.core.AzureOperationResponse;
 * includes the HTTP status code for the failed request, and also includes
 * error information regarding the failure.
 */
-public class GatewayGetOperationStatusResponse extends AzureOperationResponse {
+public class GatewayGetOperationStatusResponse extends OperationResponse {
     private GatewayGetOperationStatusResponse.ErrorDetails error;
     
     /**

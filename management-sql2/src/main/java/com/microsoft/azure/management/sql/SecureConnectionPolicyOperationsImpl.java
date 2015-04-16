@@ -27,7 +27,7 @@ import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicy;
 import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicyCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseSecureConnectionPolicyProperties;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -94,10 +94,10 @@ public class SecureConnectionPolicyOperationsImpl implements ServiceOperations<S
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createOrUpdateDatabasePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createOrUpdateDatabasePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createOrUpdateDatabasePolicy(resourceGroupName, serverName, databaseName, parameters);
             }
          });
@@ -122,7 +122,7 @@ public class SecureConnectionPolicyOperationsImpl implements ServiceOperations<S
     * request ID.
     */
     @Override
-    public AzureOperationResponse createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -232,9 +232,9 @@ public class SecureConnectionPolicyOperationsImpl implements ServiceOperations<S
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -385,13 +385,6 @@ public class SecureConnectionPolicyOperationsImpl implements ServiceOperations<S
                     DatabaseSecureConnectionPolicy secureConnectionPolicyInstance = new DatabaseSecureConnectionPolicy();
                     result.setSecureConnectionPolicy(secureConnectionPolicyInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        secureConnectionPolicyInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DatabaseSecureConnectionPolicyProperties propertiesInstance = new DatabaseSecureConnectionPolicyProperties();
@@ -424,6 +417,13 @@ public class SecureConnectionPolicyOperationsImpl implements ServiceOperations<S
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         secureConnectionPolicyInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        secureConnectionPolicyInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");

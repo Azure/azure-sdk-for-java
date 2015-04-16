@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.subscriptions.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * Subscription list operation response.
 */
-public class SubscriptionListResult extends AzureOperationResponse {
+public class SubscriptionListResult extends OperationResponse {
     private ArrayList<Subscription> subscriptions;
     
     /**

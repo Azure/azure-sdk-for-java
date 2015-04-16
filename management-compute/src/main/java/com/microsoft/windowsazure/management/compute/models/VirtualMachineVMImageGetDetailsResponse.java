@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +32,7 @@ import java.util.Calendar;
 /**
 * The Get Details VM Images operation response.
 */
-public class VirtualMachineVMImageGetDetailsResponse extends AzureOperationResponse {
+public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     private String affinityGroup;
     
     /**
@@ -67,6 +67,30 @@ public class VirtualMachineVMImageGetDetailsResponse extends AzureOperationRespo
     */
     public void setCategory(final String categoryValue) {
         this.category = categoryValue;
+    }
+    
+    private ComputeImageAttributes computeImageAttributes;
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @return The ComputeImageAttributes value.
+    */
+    public ComputeImageAttributes getComputeImageAttributes() {
+        return this.computeImageAttributes;
+    }
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @param computeImageAttributesValue The ComputeImageAttributes value.
+    */
+    public void setComputeImageAttributes(final ComputeImageAttributes computeImageAttributesValue) {
+        this.computeImageAttributes = computeImageAttributesValue;
     }
     
     private Calendar createdTime;
@@ -287,6 +311,29 @@ public class VirtualMachineVMImageGetDetailsResponse extends AzureOperationRespo
     */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
+    }
+    
+    private MarketplaceImageAttributes marketplaceImageAttributes;
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @return The MarketplaceImageAttributes value.
+    */
+    public MarketplaceImageAttributes getMarketplaceImageAttributes() {
+        return this.marketplaceImageAttributes;
+    }
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @param marketplaceImageAttributesValue The MarketplaceImageAttributes
+    * value.
+    */
+    public void setMarketplaceImageAttributes(final MarketplaceImageAttributes marketplaceImageAttributesValue) {
+        this.marketplaceImageAttributes = marketplaceImageAttributesValue;
     }
     
     private Calendar modifiedTime;
@@ -574,6 +621,23 @@ public class VirtualMachineVMImageGetDetailsResponse extends AzureOperationRespo
         super();
         this.setDataDiskConfigurations(new LazyArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
         this.setReplicationProgress(new LazyArrayList<VirtualMachineVMImageGetDetailsResponse.ReplicationProgressElement>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineVMImageGetDetailsResponse
+    * class with required arguments.
+    *
+    * @param computeImageAttributes The compute image attributes. Metadata
+    * which is required for this image to be useablein the Microsoft.Compute
+    * Provider.The combination of values provided for Offer, Sku, and Verison
+    * must be unique for a publisher.
+    */
+    public VirtualMachineVMImageGetDetailsResponse(ComputeImageAttributes computeImageAttributes) {
+        this();
+        if (computeImageAttributes == null) {
+            throw new NullPointerException("computeImageAttributes");
+        }
+        this.setComputeImageAttributes(computeImageAttributes);
     }
     
     /**

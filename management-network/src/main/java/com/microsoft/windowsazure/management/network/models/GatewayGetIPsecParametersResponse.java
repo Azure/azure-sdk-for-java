@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The response that will be returned from a GetIPsecParameters request. This
 * contains the IPsec parameters for the specified connection.
 */
-public class GatewayGetIPsecParametersResponse extends AzureOperationResponse {
+public class GatewayGetIPsecParametersResponse extends OperationResponse {
     private IPsecParameters iPsecParameters;
     
     /**

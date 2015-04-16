@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The information gathered about a backup storaged in a storage account.
 */
-public class WebSiteRestoreDiscoverResponse extends AzureOperationResponse {
+public class WebSiteRestoreDiscoverResponse extends OperationResponse {
     private WebSiteRestoreDiscover envelope;
     
     /**

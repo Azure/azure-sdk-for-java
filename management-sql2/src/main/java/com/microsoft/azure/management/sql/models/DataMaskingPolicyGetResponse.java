@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Represents the response to a data masking policy get request.
 */
-public class DataMaskingPolicyGetResponse extends AzureOperationResponse {
+public class DataMaskingPolicyGetResponse extends OperationResponse {
     private DataMaskingPolicy dataMaskingPolicy;
     
     /**

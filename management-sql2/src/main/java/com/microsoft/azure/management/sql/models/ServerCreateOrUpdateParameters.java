@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.sql.models;
 
-import java.util.HashMap;
+import com.microsoft.windowsazure.core.ResourceBase;
 
 /**
 * Create or update server parameters.
 */
-public class ServerCreateOrUpdateParameters extends CreateUpdateBase {
+public class ServerCreateOrUpdateParameters extends ResourceBase {
     private ServerCreateOrUpdateProperties properties;
     
     /**
@@ -61,9 +61,8 @@ public class ServerCreateOrUpdateParameters extends CreateUpdateBase {
     *
     * @param properties Gets or sets the properties of the request.
     * @param location Gets or sets the location of the resource.
-    * @param tags Gets or sets the tags associated with the request.
     */
-    public ServerCreateOrUpdateParameters(ServerCreateOrUpdateProperties properties, String location, HashMap<String, String> tags) {
+    public ServerCreateOrUpdateParameters(ServerCreateOrUpdateProperties properties, String location) {
         this();
         if (properties == null) {
             throw new NullPointerException("properties");
@@ -71,11 +70,7 @@ public class ServerCreateOrUpdateParameters extends CreateUpdateBase {
         if (location == null) {
             throw new NullPointerException("location");
         }
-        if (tags == null) {
-            throw new NullPointerException("tags");
-        }
         this.setProperties(properties);
         this.setLocation(location);
-        this.setTags(tags);
     }
 }

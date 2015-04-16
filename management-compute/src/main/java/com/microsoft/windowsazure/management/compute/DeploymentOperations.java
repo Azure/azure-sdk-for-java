@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationParameters;
@@ -84,7 +84,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginChangingConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginChangingConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Changing Deployment Configuration By Name operation initiates a
@@ -106,7 +106,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginChangingConfigurationByNameAsync(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters);
+    Future<OperationResponse> beginChangingConfigurationByNameAsync(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters);
     
     /**
     * The Begin Changing Deployment Configuration By Slot operation initiates a
@@ -138,7 +138,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginChangingConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginChangingConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Changing Deployment Configuration By Slot operation initiates a
@@ -160,7 +160,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginChangingConfigurationBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters);
+    Future<OperationResponse> beginChangingConfigurationBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters);
     
     /**
     * The Begin Creating Deployment operation uploads a new service package and
@@ -190,7 +190,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginCreating(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCreating(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Creating Deployment operation uploads a new service package and
@@ -210,7 +210,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginCreatingAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters);
+    Future<OperationResponse> beginCreatingAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters);
     
     /**
     * The Begin Deleting Deployment By Name operation deletes the specified
@@ -233,7 +233,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse beginDeletingByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Deployment By Name operation deletes the specified
@@ -252,7 +252,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingByNameAsync(String serviceName, String deploymentName, boolean deleteFromStorage);
+    Future<OperationResponse> beginDeletingByNameAsync(String serviceName, String deploymentName, boolean deleteFromStorage);
     
     /**
     * The Begin Deleting Deployment By Slot operation deletes the specified
@@ -273,7 +273,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException;
+    OperationResponse beginDeletingBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Deployment By Slot operation deletes the specified
@@ -290,7 +290,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingBySlotAsync(String serviceName, DeploymentSlot deploymentSlot);
+    Future<OperationResponse> beginDeletingBySlotAsync(String serviceName, DeploymentSlot deploymentSlot);
     
     /**
     * The Delete Role Instances operation deletes a role instance from a
@@ -314,7 +314,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingRoleInstanceByBeploymentSlot(String serviceName, String deploymentSlot, DeploymentDeleteRoleInstanceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginDeletingRoleInstanceByBeploymentSlot(String serviceName, String deploymentSlot, DeploymentDeleteRoleInstanceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Delete Role Instances operation deletes a role instance from a
@@ -328,7 +328,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingRoleInstanceByBeploymentSlotAsync(String serviceName, String deploymentSlot, DeploymentDeleteRoleInstanceParameters parameters);
+    Future<OperationResponse> beginDeletingRoleInstanceByBeploymentSlotAsync(String serviceName, String deploymentSlot, DeploymentDeleteRoleInstanceParameters parameters);
     
     /**
     * The Delete Role Instances operation deletes a role instance from a
@@ -352,7 +352,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeletingRoleInstanceByDeploymentName(String serviceName, String deploymentName, DeploymentDeleteRoleInstanceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginDeletingRoleInstanceByDeploymentName(String serviceName, String deploymentName, DeploymentDeleteRoleInstanceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Delete Role Instances operation deletes a role instance from a
@@ -366,7 +366,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentDeleteRoleInstanceParameters parameters);
+    Future<OperationResponse> beginDeletingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentDeleteRoleInstanceParameters parameters);
     
     /**
     * The Get Package By Name operation retrieves a cloud service package for a
@@ -390,7 +390,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginGettingPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    OperationResponse beginGettingPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
     
     /**
     * The Get Package By Name operation retrieves a cloud service package for a
@@ -410,7 +410,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginGettingPackageByNameAsync(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters);
+    Future<OperationResponse> beginGettingPackageByNameAsync(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters);
     
     /**
     * The Get Package By Slot operation retrieves a cloud service package for a
@@ -434,7 +434,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginGettingPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
+    OperationResponse beginGettingPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException;
     
     /**
     * The Get Package By Slot operation retrieves a cloud service package for a
@@ -454,7 +454,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginGettingPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
+    Future<OperationResponse> beginGettingPackageBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters);
     
     /**
     * The Begin Rebooting Role Instance By Deployment Name operation requests a
@@ -477,7 +477,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRebootingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException;
+    OperationResponse beginRebootingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException;
     
     /**
     * The Begin Rebooting Role Instance By Deployment Name operation requests a
@@ -496,7 +496,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRebootingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
+    Future<OperationResponse> beginRebootingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
     
     /**
     * The Begin Rebooting Role Instance By Deployment Slot operation requests a
@@ -519,7 +519,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRebootingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException;
+    OperationResponse beginRebootingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException;
     
     /**
     * The Begin Rebooting Role Instance By Deployment Slot operation requests a
@@ -538,7 +538,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRebootingRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    Future<OperationResponse> beginRebootingRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
     
     /**
     * The Rebuild Role Instance asynchronous operation reinstalls the operating
@@ -564,7 +564,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRebuildingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws IOException, ServiceException;
+    OperationResponse beginRebuildingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName, String resources) throws IOException, ServiceException;
     
     /**
     * The Rebuild Role Instance asynchronous operation reinstalls the operating
@@ -586,7 +586,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRebuildingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName, String resources);
+    Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName, String resources);
     
     /**
     * The Rebuild Role Instance asynchronous operation reinstalls the operating
@@ -612,7 +612,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRebuildingRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws IOException, ServiceException;
+    OperationResponse beginRebuildingRoleInstanceByDeploymentSlot(String serviceName, String deploymentSlot, String roleInstanceName, String resources) throws IOException, ServiceException;
     
     /**
     * The Rebuild Role Instance asynchronous operation reinstalls the operating
@@ -634,7 +634,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRebuildingRoleInstanceByDeploymentSlotAsync(String serviceName, String deploymentSlot, String roleInstanceName, String resources);
+    Future<OperationResponse> beginRebuildingRoleInstanceByDeploymentSlotAsync(String serviceName, String deploymentSlot, String roleInstanceName, String resources);
     
     /**
     * The Begin Reimaging Role Instance By Deployment Name operation requests a
@@ -657,7 +657,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginReimagingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException;
+    OperationResponse beginReimagingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException;
     
     /**
     * The Begin Reimaging Role Instance By Deployment Name operation requests a
@@ -676,7 +676,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginReimagingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
+    Future<OperationResponse> beginReimagingRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
     
     /**
     * The Begin Reimaging Role Instance By Deployment Slot operation requests a
@@ -699,7 +699,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginReimagingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException;
+    OperationResponse beginReimagingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException;
     
     /**
     * The Begin Reimaging Role Instance By Deployment Slot operation requests a
@@ -718,7 +718,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginReimagingRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    Future<OperationResponse> beginReimagingRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
     
     /**
     * The Begin Swapping Deployment operation initiates a virtual IP address
@@ -748,7 +748,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginSwapping(String serviceName, DeploymentSwapParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginSwapping(String serviceName, DeploymentSwapParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Swapping Deployment operation initiates a virtual IP address
@@ -768,7 +768,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginSwappingAsync(String serviceName, DeploymentSwapParameters parameters);
+    Future<OperationResponse> beginSwappingAsync(String serviceName, DeploymentSwapParameters parameters);
     
     /**
     * The Begin Updating Deployment Status By Deployment Name operation
@@ -799,7 +799,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpdatingStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpdatingStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Updating Deployment Status By Deployment Name operation
@@ -820,7 +820,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpdatingStatusByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters);
+    Future<OperationResponse> beginUpdatingStatusByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters);
     
     /**
     * The Begin Updating Deployment Status By Deployment Slot operation
@@ -851,7 +851,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpdatingStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpdatingStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Updating Deployment Status By Deployment Slot operation
@@ -872,7 +872,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpdatingStatusByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters);
+    Future<OperationResponse> beginUpdatingStatusByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters);
     
     /**
     * The Begin Upgrading Deployment By Name operation initiates an update of
@@ -927,7 +927,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpgradingByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpgradingByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Upgrading Deployment By Name operation initiates an update of
@@ -972,7 +972,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpgradingByNameAsync(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters);
+    Future<OperationResponse> beginUpgradingByNameAsync(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters);
     
     /**
     * The Begin Upgrading Deployment By Slot operation initiates an update of
@@ -1027,7 +1027,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginUpgradingBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpgradingBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Upgrading Deployment By Slot operation initiates an update of
@@ -1072,7 +1072,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginUpgradingBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters);
+    Future<OperationResponse> beginUpgradingBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters);
     
     /**
     * The Begin Walking Upgrade Domain By Deployment Name operation specifies
@@ -1123,7 +1123,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginWalkingUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginWalkingUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Walking Upgrade Domain By Deployment Name operation specifies
@@ -1164,7 +1164,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginWalkingUpgradeDomainByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters);
+    Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters);
     
     /**
     * The Begin Walking Upgrade Domain By Deployment Slot operation specifies
@@ -1215,7 +1215,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginWalkingUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginWalkingUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Walking Upgrade Domain By Deployment Slot operation specifies
@@ -1256,7 +1256,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginWalkingUpgradeDomainByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters);
+    Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters);
     
     /**
     * The Change Deployment Configuration By Name operation initiates a change
@@ -2373,7 +2373,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse rollbackUpdateOrUpgradeByDeploymentName(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse rollbackUpdateOrUpgradeByDeploymentName(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Rollback Update Or Upgrade By Deployment Name operation cancels an
@@ -2393,7 +2393,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> rollbackUpdateOrUpgradeByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters);
+    Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters);
     
     /**
     * The Rollback Update Or Upgrade By Deployment Slot operation cancels an
@@ -2423,7 +2423,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Rollback Update Or Upgrade By Deployment Slot operation cancels an
@@ -2443,7 +2443,7 @@ public interface DeploymentOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> rollbackUpdateOrUpgradeByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters);
+    Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters);
     
     /**
     * The Swap Deployment operation initiates a virtual IP address swap between

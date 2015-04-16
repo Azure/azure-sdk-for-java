@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.AddRouteTableToSubnetParameters;
@@ -123,7 +123,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginAddRouteTableToSubnet(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginAddRouteTableToSubnet(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Set the specified route table for the provided subnet in the provided
@@ -138,7 +138,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginAddRouteTableToSubnetAsync(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters);
+    Future<OperationResponse> beginAddRouteTableToSubnetAsync(String vnetName, String subnetName, AddRouteTableToSubnetParameters parameters);
     
     /**
     * Create the specified route table for this subscription.
@@ -158,7 +158,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginCreateRouteTable(CreateRouteTableParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCreateRouteTable(CreateRouteTableParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Create the specified route table for this subscription.
@@ -168,7 +168,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginCreateRouteTableAsync(CreateRouteTableParameters parameters);
+    Future<OperationResponse> beginCreateRouteTableAsync(CreateRouteTableParameters parameters);
     
     /**
     * Set the specified route for the provided table in this subscription.
@@ -184,7 +184,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleteRoute(String routeTableName, String routeName) throws IOException, ServiceException;
+    OperationResponse beginDeleteRoute(String routeTableName, String routeName) throws IOException, ServiceException;
     
     /**
     * Set the specified route for the provided table in this subscription.
@@ -196,7 +196,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeleteRouteAsync(String routeTableName, String routeName);
+    Future<OperationResponse> beginDeleteRouteAsync(String routeTableName, String routeName);
     
     /**
     * Delete the specified route table for this subscription.
@@ -209,7 +209,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleteRouteTable(String routeTableName) throws IOException, ServiceException;
+    OperationResponse beginDeleteRouteTable(String routeTableName) throws IOException, ServiceException;
     
     /**
     * Delete the specified route table for this subscription.
@@ -218,7 +218,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeleteRouteTableAsync(String routeTableName);
+    Future<OperationResponse> beginDeleteRouteTableAsync(String routeTableName);
     
     /**
     * Remove the route table from the provided subnet in the provided virtual
@@ -235,7 +235,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginRemoveRouteTableFromSubnet(String vnetName, String subnetName) throws IOException, ServiceException;
+    OperationResponse beginRemoveRouteTableFromSubnet(String vnetName, String subnetName) throws IOException, ServiceException;
     
     /**
     * Remove the route table from the provided subnet in the provided virtual
@@ -248,7 +248,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginRemoveRouteTableFromSubnetAsync(String vnetName, String subnetName);
+    Future<OperationResponse> beginRemoveRouteTableFromSubnetAsync(String vnetName, String subnetName);
     
     /**
     * Set the specified route for the provided table in this subscription.
@@ -272,7 +272,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginSetRoute(String routeTableName, String routeName, SetRouteParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginSetRoute(String routeTableName, String routeName, SetRouteParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Set the specified route for the provided table in this subscription.
@@ -286,7 +286,7 @@ public interface RouteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginSetRouteAsync(String routeTableName, String routeName, SetRouteParameters parameters);
+    Future<OperationResponse> beginSetRouteAsync(String routeTableName, String routeName, SetRouteParameters parameters);
     
     /**
     * Create the specified route table for this subscription.

@@ -30,7 +30,7 @@ import org.junit.Assert;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
@@ -149,7 +149,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         createParameters.setAccountType("Standard_LRS");
 
         //act
-        AzureOperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -290,7 +290,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
     }
 
     protected static void cleanStorageAccount(String storageAccountName) {
-        AzureOperationResponse operationResponse = null;
+        OperationResponse operationResponse = null;
         try {
             operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
         } catch (IOException e) {

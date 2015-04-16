@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ import java.util.Iterator;
 /**
 * The List Resource Extensions operation response.
 */
-public class VirtualMachineExtensionListResponse extends AzureOperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension> {
+public class VirtualMachineExtensionListResponse extends OperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension> {
     private ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensions;
     
     /**

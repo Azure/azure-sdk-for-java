@@ -30,10 +30,57 @@ import java.util.ArrayList;
 * Parameters supplied to the Replicate Virtual Machine Image operation.
 */
 public class VirtualMachineVMImageReplicateParameters {
+    private ComputeImageAttributes computeImageAttributes;
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @return The ComputeImageAttributes value.
+    */
+    public ComputeImageAttributes getComputeImageAttributes() {
+        return this.computeImageAttributes;
+    }
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @param computeImageAttributesValue The ComputeImageAttributes value.
+    */
+    public void setComputeImageAttributes(final ComputeImageAttributes computeImageAttributesValue) {
+        this.computeImageAttributes = computeImageAttributesValue;
+    }
+    
+    private MarketplaceImageAttributes marketplaceImageAttributes;
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @return The MarketplaceImageAttributes value.
+    */
+    public MarketplaceImageAttributes getMarketplaceImageAttributes() {
+        return this.marketplaceImageAttributes;
+    }
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @param marketplaceImageAttributesValue The MarketplaceImageAttributes
+    * value.
+    */
+    public void setMarketplaceImageAttributes(final MarketplaceImageAttributes marketplaceImageAttributesValue) {
+        this.marketplaceImageAttributes = marketplaceImageAttributesValue;
+    }
+    
     private ArrayList<String> targetLocations;
     
     /**
-    * Optional. The replication target regional locations.Note: The regions in
+    * Required. The replication target regional locations.Note: The regions in
     * the request body are not additive. If a VM Image has already been
     * replicated to Regions A, B, and C, and a request is made to replicate to
     * Regions A and D, the VM Image will remain in Region A, will be
@@ -45,7 +92,7 @@ public class VirtualMachineVMImageReplicateParameters {
     }
     
     /**
-    * Optional. The replication target regional locations.Note: The regions in
+    * Required. The replication target regional locations.Note: The regions in
     * the request body are not additive. If a VM Image has already been
     * replicated to Regions A, B, and C, and a request is made to replicate to
     * Regions A and D, the VM Image will remain in Region A, will be
@@ -63,5 +110,31 @@ public class VirtualMachineVMImageReplicateParameters {
     */
     public VirtualMachineVMImageReplicateParameters() {
         this.setTargetLocations(new LazyArrayList<String>());
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * VirtualMachineVMImageReplicateParameters class with required arguments.
+    *
+    * @param targetLocations The replication target regional locations.Note:
+    * The regions in the request body are not additive. If a VM Image has
+    * already been replicated to Regions A, B, and C, and a request is made to
+    * replicate to Regions A and D, the VM Image will remain in Region A, will
+    * be replicated in Region D, and will be unreplicated from Regions B and C.
+    * @param computeImageAttributes The compute image attributes. Metadata
+    * which is required for this image to be useablein the Microsoft.Compute
+    * Provider.The combination of values provided for Offer, Sku, and Verison
+    * must be unique for a publisher.
+    */
+    public VirtualMachineVMImageReplicateParameters(ArrayList<String> targetLocations, ComputeImageAttributes computeImageAttributes) {
+        this();
+        if (targetLocations == null) {
+            throw new NullPointerException("targetLocations");
+        }
+        if (computeImageAttributes == null) {
+            throw new NullPointerException("computeImageAttributes");
+        }
+        this.setTargetLocations(targetLocations);
+        this.setComputeImageAttributes(computeImageAttributes);
     }
 }

@@ -36,7 +36,7 @@ import com.microsoft.azure.management.websites.models.WebHostingPlanGetResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanListResponse;
 import com.microsoft.azure.management.websites.models.WebHostingPlanProperties;
 import com.microsoft.azure.management.websites.models.WorkerSizeOptions;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -399,10 +399,10 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String webHostingPlanName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String webHostingPlanName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, webHostingPlanName);
             }
          });
@@ -424,7 +424,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String webHostingPlanName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -497,9 +497,9 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

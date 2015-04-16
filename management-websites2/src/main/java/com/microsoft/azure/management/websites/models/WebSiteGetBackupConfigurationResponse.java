@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Scheduled backup definition.
 */
-public class WebSiteGetBackupConfigurationResponse extends AzureOperationResponse {
+public class WebSiteGetBackupConfigurationResponse extends OperationResponse {
     private BackupScheduleRequestEnvelope backupSchedule;
     
     /**

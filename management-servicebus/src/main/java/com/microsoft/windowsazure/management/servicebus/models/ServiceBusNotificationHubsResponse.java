@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class ServiceBusNotificationHubsResponse extends AzureOperationResponse implements Iterable<ServiceBusNotificationHub> {
+public class ServiceBusNotificationHubsResponse extends OperationResponse implements Iterable<ServiceBusNotificationHub> {
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
     
     /**

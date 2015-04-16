@@ -58,7 +58,7 @@ import com.microsoft.azure.management.websites.models.WebSiteRestoreDiscoverResp
 import com.microsoft.azure.management.websites.models.WebSiteRestoreResponse;
 import com.microsoft.azure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.azure.management.websites.models.WebSiteUpdateConnectionStringsParameters;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -185,7 +185,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createRepository(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
+    OperationResponse createRepository(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
     
     /**
     * A web site repository is essentially a GIT repository that you can use to
@@ -202,7 +202,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createRepositoryAsync(String resourceGroupName, String webSiteName, String slotName);
+    Future<OperationResponse> createRepositoryAsync(String resourceGroupName, String webSiteName, String slotName);
     
     /**
     * Deletes the web site.
@@ -218,7 +218,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters) throws IOException, ServiceException;
     
     /**
     * Deletes the web site.
@@ -230,7 +230,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters);
     
     /**
     * A web site repository is essentially a GIT repository that you can use to
@@ -284,7 +284,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException;
+    OperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException;
     
     /**
     * Unlink source control from website
@@ -296,7 +296,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteSiteSourceControlAsync(String resourceGroupName, String webSiteName, String slotName, String repoUrl);
+    Future<OperationResponse> deleteSiteSourceControlAsync(String resourceGroupName, String webSiteName, String slotName, String repoUrl);
     
     /**
     * Scans a backup in a storage account and returns database information etc.
@@ -355,7 +355,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse generatePassword(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
+    OperationResponse generatePassword(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
     
     /**
     * You can generate a new random password for publishing a site by issuing
@@ -374,7 +374,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> generatePasswordAsync(String resourceGroupName, String webSiteName, String slotName);
+    Future<OperationResponse> generatePasswordAsync(String resourceGroupName, String webSiteName, String slotName);
     
     /**
     * You can retrieve details for a web site by issuing an HTTP GET request.
@@ -821,7 +821,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse restart(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
+    OperationResponse restart(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
     
     /**
     * Restart the web site.
@@ -832,7 +832,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> restartAsync(String resourceGroupName, String webSiteName, String slotName);
+    Future<OperationResponse> restartAsync(String resourceGroupName, String webSiteName, String slotName);
     
     /**
     * Restores a site to either a new site or existing site (Overwrite flag has
@@ -875,7 +875,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse start(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
+    OperationResponse start(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
     
     /**
     * Restart the web site.
@@ -886,7 +886,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> startAsync(String resourceGroupName, String webSiteName, String slotName);
+    Future<OperationResponse> startAsync(String resourceGroupName, String webSiteName, String slotName);
     
     /**
     * Restart the web site.
@@ -901,7 +901,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse stop(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
+    OperationResponse stop(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException;
     
     /**
     * Restart the web site.
@@ -912,7 +912,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> stopAsync(String resourceGroupName, String webSiteName, String slotName);
+    Future<OperationResponse> stopAsync(String resourceGroupName, String webSiteName, String slotName);
     
     /**
     * You can retrieve the application settings for a web site by issuing an
@@ -962,7 +962,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse updateBackupConfiguration(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope) throws IOException, ServiceException;
+    OperationResponse updateBackupConfiguration(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope) throws IOException, ServiceException;
     
     /**
     * Updates a backup schedule for a site.
@@ -974,7 +974,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateBackupConfigurationAsync(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope);
+    Future<OperationResponse> updateBackupConfigurationAsync(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope);
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
@@ -994,7 +994,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse updateConfiguration(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException;
+    OperationResponse updateConfiguration(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
@@ -1010,7 +1010,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateConfigurationAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters);
+    Future<OperationResponse> updateConfigurationAsync(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters);
     
     /**
     * You can retrieve the connection strings for a web site by issuing an HTTP
@@ -1125,7 +1125,7 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse updateSlotConfigNames(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse updateSlotConfigNames(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Update list of app settings and connection strings which to be slot
@@ -1138,5 +1138,5 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateSlotConfigNamesAsync(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters);
+    Future<OperationResponse> updateSlotConfigNamesAsync(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters);
 }

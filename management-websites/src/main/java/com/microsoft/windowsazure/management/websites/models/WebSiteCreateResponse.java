@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Create Web Site operation response.
 */
-public class WebSiteCreateResponse extends AzureOperationResponse {
+public class WebSiteCreateResponse extends OperationResponse {
     private WebSite webSite;
     
     /**

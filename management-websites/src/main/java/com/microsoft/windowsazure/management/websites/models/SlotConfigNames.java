@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class SlotConfigNames extends AzureOperationResponse {
+public class SlotConfigNames extends OperationResponse {
     private ArrayList<String> appSettingNames;
     
     /**

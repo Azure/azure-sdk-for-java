@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCreateParameters;
@@ -89,7 +89,7 @@ public interface JobCollectionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleting(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException;
+    OperationResponse beginDeleting(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException;
     
     /**
     * Deletes a job collection.
@@ -100,7 +100,7 @@ public interface JobCollectionOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingAsync(String cloudServiceName, String jobCollectionName);
+    Future<OperationResponse> beginDeletingAsync(String cloudServiceName, String jobCollectionName);
     
     /**
     * Update a job collection.

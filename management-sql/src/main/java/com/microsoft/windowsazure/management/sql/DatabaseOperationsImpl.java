@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -447,10 +447,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String serverName, final String databaseName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(serverName, databaseName);
             }
          });
@@ -471,7 +471,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException {
+    public OperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -538,9 +538,9 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
@@ -256,10 +256,10 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> entitleResourceAsync(final EntitleResourceParameters parameters) {
-        return this.getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> entitleResourceAsync(final EntitleResourceParameters parameters) {
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return entitleResource(parameters);
             }
          });
@@ -286,7 +286,7 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
     * request ID.
     */
     @Override
-    public AzureOperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse entitleResource(EntitleResourceParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -386,9 +386,9 @@ public class CloudServiceManagementClientImpl extends ServiceClient<CloudService
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

@@ -99,8 +99,8 @@ import com.microsoft.azure.management.websites.models.WebSiteUpdateConfiguration
 import com.microsoft.azure.management.websites.models.WebSiteUpdateConnectionStringsParameters;
 import com.microsoft.azure.management.websites.models.WebSiteUsageState;
 import com.microsoft.azure.management.websites.models.WebSpaceAvailabilityState;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -1612,10 +1612,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createRepositoryAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createRepositoryAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createRepository(resourceGroupName, webSiteName, slotName);
             }
          });
@@ -1641,7 +1641,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse createRepository(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
+    public OperationResponse createRepository(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -1721,9 +1721,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1751,10 +1751,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteDeleteParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteDeleteParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, webSiteName, slotName, parameters);
             }
          });
@@ -1775,7 +1775,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String webSiteName, String slotName, WebSiteDeleteParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -1861,9 +1861,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2053,10 +2053,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteSiteSourceControlAsync(final String resourceGroupName, final String webSiteName, final String slotName, final String repoUrl) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteSiteSourceControlAsync(final String resourceGroupName, final String webSiteName, final String slotName, final String repoUrl) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return deleteSiteSourceControl(resourceGroupName, webSiteName, slotName, repoUrl);
             }
          });
@@ -2077,7 +2077,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException {
+    public OperationResponse deleteSiteSourceControl(String resourceGroupName, String webSiteName, String slotName, String repoUrl) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -2161,9 +2161,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2563,10 +2563,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> generatePasswordAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> generatePasswordAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return generatePassword(resourceGroupName, webSiteName, slotName);
             }
          });
@@ -2594,7 +2594,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse generatePassword(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
+    public OperationResponse generatePassword(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -2674,9 +2674,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -7215,10 +7215,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> restartAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> restartAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return restart(resourceGroupName, webSiteName, slotName);
             }
          });
@@ -7238,7 +7238,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse restart(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
+    public OperationResponse restart(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -7318,9 +7318,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -7592,10 +7592,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> startAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> startAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return start(resourceGroupName, webSiteName, slotName);
             }
          });
@@ -7615,7 +7615,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse start(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
+    public OperationResponse start(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -7695,9 +7695,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -7724,10 +7724,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> stopAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> stopAsync(final String resourceGroupName, final String webSiteName, final String slotName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return stop(resourceGroupName, webSiteName, slotName);
             }
          });
@@ -7747,7 +7747,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse stop(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
+    public OperationResponse stop(String resourceGroupName, String webSiteName, String slotName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -7827,9 +7827,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -8140,10 +8140,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateBackupConfigurationAsync(final String resourceGroupName, final String webSiteName, final String slotName, final BackupRequestEnvelope backupRequestEnvelope) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateBackupConfigurationAsync(final String resourceGroupName, final String webSiteName, final String slotName, final BackupRequestEnvelope backupRequestEnvelope) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return updateBackupConfiguration(resourceGroupName, webSiteName, slotName, backupRequestEnvelope);
             }
          });
@@ -8164,7 +8164,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse updateBackupConfiguration(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope) throws IOException, ServiceException {
+    public OperationResponse updateBackupConfiguration(String resourceGroupName, String webSiteName, String slotName, BackupRequestEnvelope backupRequestEnvelope) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -8363,9 +8363,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -8397,10 +8397,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateConfigurationAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteUpdateConfigurationParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateConfigurationAsync(final String resourceGroupName, final String webSiteName, final String slotName, final WebSiteUpdateConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return updateConfiguration(resourceGroupName, webSiteName, slotName, parameters);
             }
          });
@@ -8425,7 +8425,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse updateConfiguration(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException {
+    public OperationResponse updateConfiguration(String resourceGroupName, String webSiteName, String slotName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -8729,9 +8729,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -9607,10 +9607,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> updateSlotConfigNamesAsync(final String resourceGroupName, final String webSiteName, final SlotConfigNamesUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> updateSlotConfigNamesAsync(final String resourceGroupName, final String webSiteName, final SlotConfigNamesUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return updateSlotConfigNames(resourceGroupName, webSiteName, parameters);
             }
          });
@@ -9632,7 +9632,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse updateSlotConfigNames(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse updateSlotConfigNames(String resourceGroupName, String webSiteName, SlotConfigNamesUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -9782,9 +9782,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

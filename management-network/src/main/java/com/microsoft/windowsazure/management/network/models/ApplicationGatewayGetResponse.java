@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 
 /**
 * The response body contains details of the application gateway.
 */
-public class ApplicationGatewayGetResponse extends AzureOperationResponse {
+public class ApplicationGatewayGetResponse extends OperationResponse {
     private String description;
     
     /**

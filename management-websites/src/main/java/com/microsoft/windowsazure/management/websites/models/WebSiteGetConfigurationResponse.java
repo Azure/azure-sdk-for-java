@@ -23,9 +23,9 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.LazyHashMap;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 /**
 * The Get Configuration Web Site operation response.
 */
-public class WebSiteGetConfigurationResponse extends AzureOperationResponse {
+public class WebSiteGetConfigurationResponse extends OperationResponse {
     private Boolean alwaysOn;
     
     /**

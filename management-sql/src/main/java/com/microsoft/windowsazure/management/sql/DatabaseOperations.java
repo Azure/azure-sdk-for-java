@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
@@ -93,7 +93,7 @@ public interface DatabaseOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException;
+    OperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException;
     
     /**
     * Drops a database from an Azure SQL Database Server.
@@ -105,7 +105,7 @@ public interface DatabaseOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String serverName, String databaseName);
+    Future<OperationResponse> deleteAsync(String serverName, String databaseName);
     
     /**
     * Returns information about an Azure SQL Database.

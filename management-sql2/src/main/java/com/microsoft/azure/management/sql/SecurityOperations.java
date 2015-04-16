@@ -25,7 +25,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseSecurityPolicyUpdateParameters;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.Future;
@@ -87,7 +87,7 @@ public interface SecurityOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse update(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse update(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Updates an Azure SQL Database security policy object.
@@ -103,5 +103,5 @@ public interface SecurityOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> updateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters);
+    Future<OperationResponse> updateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecurityPolicyUpdateParameters parameters);
 }

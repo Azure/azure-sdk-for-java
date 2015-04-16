@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,7 @@ import java.util.Iterator;
 /**
 * The response structure for the Network Operations List operation.
 */
-public class NetworkListResponse extends AzureOperationResponse implements Iterable<NetworkListResponse.VirtualNetworkSite> {
+public class NetworkListResponse extends OperationResponse implements Iterable<NetworkListResponse.VirtualNetworkSite> {
     private ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites;
     
     /**

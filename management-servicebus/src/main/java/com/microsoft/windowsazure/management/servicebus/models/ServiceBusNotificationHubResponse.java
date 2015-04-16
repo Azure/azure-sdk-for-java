@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class ServiceBusNotificationHubResponse extends AzureOperationResponse {
+public class ServiceBusNotificationHubResponse extends OperationResponse {
     private ServiceBusNotificationHub notificationHub;
     
     /**

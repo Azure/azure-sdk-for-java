@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
@@ -104,10 +104,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createAsync(final ManagementCertificateCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -137,7 +137,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public AzureOperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -236,9 +236,9 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -269,10 +269,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String thumbprint) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String thumbprint) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(thumbprint);
             }
          });
@@ -296,7 +296,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String thumbprint) throws IOException, ServiceException {
+    public OperationResponse delete(String thumbprint) throws IOException, ServiceException {
         // Validate
         if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
@@ -357,9 +357,9 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

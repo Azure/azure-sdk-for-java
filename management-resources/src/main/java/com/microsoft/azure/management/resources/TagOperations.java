@@ -26,7 +26,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.TagCreateResult;
 import com.microsoft.azure.management.resources.models.TagCreateValueResult;
 import com.microsoft.azure.management.resources.models.TagsListResult;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -99,7 +99,7 @@ public interface TagOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String tagName) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    OperationResponse delete(String tagName) throws InterruptedException, ExecutionException, IOException, ServiceException;
     
     /**
     * Delete a subscription resource tag.
@@ -108,7 +108,7 @@ public interface TagOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String tagName);
+    Future<OperationResponse> deleteAsync(String tagName);
     
     /**
     * Delete a subscription resource tag value.
@@ -122,7 +122,7 @@ public interface TagOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse deleteValue(String tagName, String tagValue) throws IOException, ServiceException;
+    OperationResponse deleteValue(String tagName, String tagValue) throws IOException, ServiceException;
     
     /**
     * Delete a subscription resource tag value.
@@ -132,7 +132,7 @@ public interface TagOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteValueAsync(String tagName, String tagValue);
+    Future<OperationResponse> deleteValueAsync(String tagName, String tagValue);
     
     /**
     * Get a list of subscription resource tags.

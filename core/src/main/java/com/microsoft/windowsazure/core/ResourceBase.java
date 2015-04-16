@@ -21,15 +21,14 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.azure.management.resources.models;
+package com.microsoft.windowsazure.core;
 
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
 * Resource information.
 */
-public class BasicResource {
+public class ResourceBase {
     private String location;
     
     /**
@@ -46,60 +45,6 @@ public class BasicResource {
     */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
-    }
-    
-    private Plan plan;
-    
-    /**
-    * Optional. Gets or sets the plan of the resource.
-    * @return The Plan value.
-    */
-    public Plan getPlan() {
-        return this.plan;
-    }
-    
-    /**
-    * Optional. Gets or sets the plan of the resource.
-    * @param planValue The Plan value.
-    */
-    public void setPlan(final Plan planValue) {
-        this.plan = planValue;
-    }
-    
-    private String properties;
-    
-    /**
-    * Optional. Gets or sets the resource properties.
-    * @return The Properties value.
-    */
-    public String getProperties() {
-        return this.properties;
-    }
-    
-    /**
-    * Optional. Gets or sets the resource properties.
-    * @param propertiesValue The Properties value.
-    */
-    public void setProperties(final String propertiesValue) {
-        this.properties = propertiesValue;
-    }
-    
-    private String provisioningState;
-    
-    /**
-    * Optional. Gets or sets resource provisioning state.
-    * @return The ProvisioningState value.
-    */
-    public String getProvisioningState() {
-        return this.provisioningState;
-    }
-    
-    /**
-    * Optional. Gets or sets resource provisioning state.
-    * @param provisioningStateValue The ProvisioningState value.
-    */
-    public void setProvisioningState(final String provisioningStateValue) {
-        this.provisioningState = provisioningStateValue;
     }
     
     private HashMap<String, String> tags;
@@ -121,19 +66,20 @@ public class BasicResource {
     }
     
     /**
-    * Initializes a new instance of the BasicResource class.
+    * Initializes a new instance of the ResourceBase class.
     *
     */
-    public BasicResource() {
+    public ResourceBase() {
         this.setTags(new LazyHashMap<String, String>());
     }
     
     /**
-    * Initializes a new instance of the BasicResource class with required
+    * Initializes a new instance of the ResourceBase class with required
     * arguments.
     *
+    * @param location Gets or sets the location of the resource.
     */
-    public BasicResource(String location) {
+    public ResourceBase(String location) {
         this();
         if (location == null) {
             throw new NullPointerException("location");

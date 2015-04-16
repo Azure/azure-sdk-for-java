@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.scheduler;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.scheduler.models.JobCollectionJobsUpdateStateParameters;
 import com.microsoft.windowsazure.scheduler.models.JobCollectionJobsUpdateStateResponse;
@@ -110,7 +110,7 @@ public interface JobOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String jobId) throws IOException, ServiceException;
+    OperationResponse delete(String jobId) throws IOException, ServiceException;
     
     /**
     * Deletes a job.
@@ -119,7 +119,7 @@ public interface JobOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String jobId);
+    Future<OperationResponse> deleteAsync(String jobId);
     
     /**
     * Get the definition and status of a job.

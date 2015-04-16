@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -34,6 +34,9 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.compute.models.ComputeImageAttributes;
+import com.microsoft.windowsazure.management.compute.models.MarketplaceImageAttributes;
+import com.microsoft.windowsazure.management.compute.models.Plan;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetDetailsResponse;
@@ -118,10 +121,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginSharingAsync(final String imageName, final String permission) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginSharingAsync(final String imageName, final String permission) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginSharing(imageName, permission);
             }
          });
@@ -143,7 +146,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException {
+    public OperationResponse beginSharing(String imageName, String permission) throws IOException, ServiceException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -171,7 +174,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         }
         url = url + "/services/images/";
         url = url + URLEncoder.encode(imageName, "UTF-8");
-        url = url + "/share";
+        url = url + "/shareasync";
         ArrayList<String> queryParameters = new ArrayList<String>();
         queryParameters.add("permission=" + URLEncoder.encode(permission, "UTF-8"));
         if (queryParameters.size() > 0) {
@@ -192,7 +195,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -205,7 +208,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -214,9 +217,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -248,10 +251,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginUnreplicatingAsync(final String imageName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginUnreplicatingAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginUnreplicating(imageName);
             }
          });
@@ -276,7 +279,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException {
+    public OperationResponse beginUnreplicating(String imageName) throws IOException, ServiceException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -316,7 +319,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -338,9 +341,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -462,7 +465,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -767,10 +770,10 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String imageName, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String imageName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(imageName, deleteFromStorage);
             }
          });
@@ -803,7 +806,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -850,7 +853,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -872,9 +875,9 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -969,7 +972,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1247,7 +1250,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1311,6 +1314,73 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                         }
                     }
                     
+                    Element computeImageAttributesElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "ComputeImageAttributes");
+                    if (computeImageAttributesElement != null) {
+                        ComputeImageAttributes computeImageAttributesInstance = new ComputeImageAttributes();
+                        result.setComputeImageAttributes(computeImageAttributesInstance);
+                        
+                        Element offerElement = XmlUtility.getElementByTagNameNS(computeImageAttributesElement, "http://schemas.microsoft.com/windowsazure", "Offer");
+                        if (offerElement != null) {
+                            String offerInstance;
+                            offerInstance = offerElement.getTextContent();
+                            computeImageAttributesInstance.setOffer(offerInstance);
+                        }
+                        
+                        Element skuElement = XmlUtility.getElementByTagNameNS(computeImageAttributesElement, "http://schemas.microsoft.com/windowsazure", "Sku");
+                        if (skuElement != null) {
+                            String skuInstance;
+                            skuInstance = skuElement.getTextContent();
+                            computeImageAttributesInstance.setSku(skuInstance);
+                        }
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(computeImageAttributesElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            computeImageAttributesInstance.setVersion(versionInstance);
+                        }
+                    }
+                    
+                    Element marketplaceImageAttributesElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "MarketplaceImageAttributes");
+                    if (marketplaceImageAttributesElement != null) {
+                        MarketplaceImageAttributes marketplaceImageAttributesInstance = new MarketplaceImageAttributes();
+                        result.setMarketplaceImageAttributes(marketplaceImageAttributesInstance);
+                        
+                        Element publisherIdElement = XmlUtility.getElementByTagNameNS(marketplaceImageAttributesElement, "http://schemas.microsoft.com/windowsazure", "PublisherId");
+                        if (publisherIdElement != null) {
+                            String publisherIdInstance;
+                            publisherIdInstance = publisherIdElement.getTextContent();
+                            marketplaceImageAttributesInstance.setPublisherId(publisherIdInstance);
+                        }
+                        
+                        Element planElement = XmlUtility.getElementByTagNameNS(marketplaceImageAttributesElement, "http://schemas.microsoft.com/windowsazure", "Plan");
+                        if (planElement != null) {
+                            Plan planInstance = new Plan();
+                            marketplaceImageAttributesInstance.setPlan(planInstance);
+                            
+                            Element nameElement = XmlUtility.getElementByTagNameNS(planElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                            if (nameElement != null) {
+                                String nameInstance;
+                                nameInstance = nameElement.getTextContent();
+                                planInstance.setName(nameInstance);
+                            }
+                            
+                            Element publisherElement = XmlUtility.getElementByTagNameNS(planElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
+                            if (publisherElement != null) {
+                                String publisherInstance;
+                                publisherInstance = publisherElement.getTextContent();
+                                planInstance.setPublisher(publisherInstance);
+                            }
+                            
+                            Element productElement = XmlUtility.getElementByTagNameNS(planElement, "http://schemas.microsoft.com/windowsazure", "Product");
+                            if (productElement != null) {
+                                String productInstance;
+                                productInstance = productElement.getTextContent();
+                                planInstance.setProduct(productInstance);
+                            }
+                        }
+                    }
+                    
                     Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
@@ -1353,11 +1423,11 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                         result.setMediaLinkUri(mediaLinkInstance);
                     }
                     
-                    Element nameElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        result.setName(nameInstance);
+                    Element nameElement2 = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement2 != null) {
+                        String nameInstance2;
+                        nameInstance2 = nameElement2.getTextContent();
+                        result.setName(nameInstance2);
                     }
                     
                     Element osElement = XmlUtility.getElementByTagNameNS(oSImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "OS");
@@ -1547,7 +1617,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1810,6 +1880,35 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getComputeImageAttributes() == null) {
+            throw new NullPointerException("parameters.ComputeImageAttributes");
+        }
+        if (parameters.getComputeImageAttributes().getOffer() == null) {
+            throw new NullPointerException("parameters.ComputeImageAttributes.Offer");
+        }
+        if (parameters.getComputeImageAttributes().getSku() == null) {
+            throw new NullPointerException("parameters.ComputeImageAttributes.Sku");
+        }
+        if (parameters.getComputeImageAttributes().getVersion() == null) {
+            throw new NullPointerException("parameters.ComputeImageAttributes.Version");
+        }
+        if (parameters.getMarketplaceImageAttributes() != null) {
+            if (parameters.getMarketplaceImageAttributes().getPlan() == null) {
+                throw new NullPointerException("parameters.MarketplaceImageAttributes.Plan");
+            }
+            if (parameters.getMarketplaceImageAttributes().getPlan().getName() == null) {
+                throw new NullPointerException("parameters.MarketplaceImageAttributes.Plan.Name");
+            }
+            if (parameters.getMarketplaceImageAttributes().getPlan().getProduct() == null) {
+                throw new NullPointerException("parameters.MarketplaceImageAttributes.Plan.Product");
+            }
+            if (parameters.getMarketplaceImageAttributes().getPlan().getPublisher() == null) {
+                throw new NullPointerException("parameters.MarketplaceImageAttributes.Plan.Publisher");
+            }
+            if (parameters.getMarketplaceImageAttributes().getPublisherId() == null) {
+                throw new NullPointerException("parameters.MarketplaceImageAttributes.PublisherId");
+            }
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1847,7 +1946,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1868,6 +1967,45 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 }
                 replicationInputElement.appendChild(targetLocationsSequenceElement);
             }
+        }
+        
+        Element computeImageAttributesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputeImageAttributes");
+        replicationInputElement.appendChild(computeImageAttributesElement);
+        
+        Element offerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Offer");
+        offerElement.appendChild(requestDoc.createTextNode(parameters.getComputeImageAttributes().getOffer()));
+        computeImageAttributesElement.appendChild(offerElement);
+        
+        Element skuElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Sku");
+        skuElement.appendChild(requestDoc.createTextNode(parameters.getComputeImageAttributes().getSku()));
+        computeImageAttributesElement.appendChild(skuElement);
+        
+        Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+        versionElement.appendChild(requestDoc.createTextNode(parameters.getComputeImageAttributes().getVersion()));
+        computeImageAttributesElement.appendChild(versionElement);
+        
+        if (parameters.getMarketplaceImageAttributes() != null) {
+            Element marketplaceImageAttributesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MarketplaceImageAttributes");
+            replicationInputElement.appendChild(marketplaceImageAttributesElement);
+            
+            Element publisherIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublisherId");
+            publisherIdElement.appendChild(requestDoc.createTextNode(parameters.getMarketplaceImageAttributes().getPublisherId()));
+            marketplaceImageAttributesElement.appendChild(publisherIdElement);
+            
+            Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
+            marketplaceImageAttributesElement.appendChild(planElement);
+            
+            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+            nameElement.appendChild(requestDoc.createTextNode(parameters.getMarketplaceImageAttributes().getPlan().getName()));
+            planElement.appendChild(nameElement);
+            
+            Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+            publisherElement.appendChild(requestDoc.createTextNode(parameters.getMarketplaceImageAttributes().getPlan().getPublisher()));
+            planElement.appendChild(publisherElement);
+            
+            Element productElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Product");
+            productElement.appendChild(requestDoc.createTextNode(parameters.getMarketplaceImageAttributes().getPlan().getProduct()));
+            planElement.appendChild(productElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -2008,7 +2146,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachineOSImagesOperations().beginSharingAsync(imageName, permission).get();
+            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginSharingAsync(imageName, permission).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -2132,7 +2270,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getVirtualMachineOSImagesOperations().beginUnreplicatingAsync(imageName).get();
+            OperationResponse response = client2.getVirtualMachineOSImagesOperations().beginUnreplicatingAsync(imageName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
@@ -2283,7 +2421,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;

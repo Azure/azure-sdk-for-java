@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Download RDP file operation response.
 */
-public class VirtualMachineGetRemoteDesktopFileResponse extends AzureOperationResponse {
+public class VirtualMachineGetRemoteDesktopFileResponse extends OperationResponse {
     private byte[] remoteDesktopFile;
     
     /**

@@ -23,9 +23,9 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.LazyHashMap;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,7 +33,7 @@ import java.util.Iterator;
 /**
 * The response structure for the Cloud Service List operation.
 */
-public class CloudServiceListResponse extends AzureOperationResponse implements Iterable<CloudServiceListResponse.CloudService> {
+public class CloudServiceListResponse extends OperationResponse implements Iterable<CloudServiceListResponse.CloudService> {
     private ArrayList<CloudServiceListResponse.CloudService> cloudServices;
     
     /**

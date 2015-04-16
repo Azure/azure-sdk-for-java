@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Resource group information.
 */
-public class ResourceExistsResult extends AzureOperationResponse {
+public class ResourceExistsResult extends OperationResponse {
     private boolean exists;
     
     /**

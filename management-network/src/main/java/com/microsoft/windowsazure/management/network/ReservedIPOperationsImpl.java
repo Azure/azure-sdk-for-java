@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -573,10 +573,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> beginDeletingAsync(final String ipName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> beginDeletingAsync(final String ipName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(ipName);
             }
          });
@@ -599,7 +599,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * request ID.
     */
     @Override
-    public AzureOperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (ipName == null) {
             throw new NullPointerException("ipName");
@@ -661,9 +661,9 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1048,7 +1048,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AzureOperationResponse response = client2.getReservedIPsOperations().beginDeletingAsync(ipName).get();
+            OperationResponse response = client2.getReservedIPsOperations().beginDeletingAsync(ipName).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {

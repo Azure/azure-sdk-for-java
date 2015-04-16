@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The response of ListApplicationGateways request.
 */
-public class ApplicationGatewayListResponse extends AzureOperationResponse implements Iterable<ApplicationGatewayGetResponse> {
+public class ApplicationGatewayListResponse extends OperationResponse implements Iterable<ApplicationGatewayGetResponse> {
     private ArrayList<ApplicationGatewayGetResponse> applicationGateways;
     
     /**

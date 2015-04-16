@@ -23,15 +23,15 @@
 
 package com.microsoft.azure.management.websites.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The Get Historical Usage Metrics Web hosting plan operation response.
 */
-public class WebHostingPlanGetHistoricalUsageMetricsResponse extends AzureOperationResponse implements Iterable<HistoricalUsageMetric> {
+public class WebHostingPlanGetHistoricalUsageMetricsResponse extends OperationResponse implements Iterable<HistoricalUsageMetric> {
     private ArrayList<HistoricalUsageMetric> usageMetrics;
     
     /**

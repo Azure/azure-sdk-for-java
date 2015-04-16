@@ -32,7 +32,7 @@ import com.microsoft.azure.management.sql.models.DataMaskingRuleCreateOrUpdatePa
 import com.microsoft.azure.management.sql.models.DataMaskingRuleGetResponse;
 import com.microsoft.azure.management.sql.models.DataMaskingRuleListResponse;
 import com.microsoft.azure.management.sql.models.DataMaskingRuleProperties;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -100,10 +100,10 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createOrUpdatePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DataMaskingPolicyCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createOrUpdatePolicyAsync(final String resourceGroupName, final String serverName, final String databaseName, final DataMaskingPolicyCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createOrUpdatePolicy(resourceGroupName, serverName, databaseName, parameters);
             }
          });
@@ -128,7 +128,7 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -249,9 +249,9 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -285,10 +285,10 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> createOrUpdateRuleAsync(final String resourceGroupName, final String serverName, final String databaseName, final String dataMaskingRule, final DataMaskingRuleCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> createOrUpdateRuleAsync(final String resourceGroupName, final String serverName, final String databaseName, final String dataMaskingRule, final DataMaskingRuleCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return createOrUpdateRule(resourceGroupName, serverName, databaseName, dataMaskingRule, parameters);
             }
          });
@@ -315,7 +315,7 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse createOrUpdateRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters) throws IOException, ServiceException {
+    public OperationResponse createOrUpdateRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -468,9 +468,9 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -502,10 +502,10 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName, final String dataMaskingRule) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName, final String dataMaskingRule) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, serverName, databaseName, dataMaskingRule);
             }
          });
@@ -530,7 +530,7 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -615,9 +615,9 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -766,13 +766,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                     DataMaskingPolicy dataMaskingPolicyInstance = new DataMaskingPolicy();
                     result.setDataMaskingPolicy(dataMaskingPolicyInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        dataMaskingPolicyInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DataMaskingPolicyProperties propertiesInstance = new DataMaskingPolicyProperties();
@@ -805,6 +798,13 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         dataMaskingPolicyInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        dataMaskingPolicyInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -991,13 +991,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                     DataMaskingRule dataMaskingRuleInstance = new DataMaskingRule();
                     result.setDataMaskingRule(dataMaskingRuleInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        dataMaskingRuleInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DataMaskingRuleProperties propertiesInstance = new DataMaskingRuleProperties();
@@ -1079,6 +1072,13 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                         String idInstance2;
                         idInstance2 = idValue2.getTextValue();
                         dataMaskingRuleInstance.setId(idInstance2);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        dataMaskingRuleInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -1259,13 +1259,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                             DataMaskingRule dataMaskingRuleInstance = new DataMaskingRule();
                             result.getDataMaskingRules().add(dataMaskingRuleInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                dataMaskingRuleInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 DataMaskingRuleProperties propertiesInstance = new DataMaskingRuleProperties();
@@ -1347,6 +1340,13 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                                 String idInstance2;
                                 idInstance2 = idValue2.getTextValue();
                                 dataMaskingRuleInstance.setId(idInstance2);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                dataMaskingRuleInstance.setName(nameInstance);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");

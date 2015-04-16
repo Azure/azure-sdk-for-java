@@ -23,7 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
@@ -69,7 +69,7 @@ public interface ServiceCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Begin Creating Service Certificate operation adds a certificate to a
@@ -85,7 +85,7 @@ public interface ServiceCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginCreatingAsync(String serviceName, ServiceCertificateCreateParameters parameters);
+    Future<OperationResponse> beginCreatingAsync(String serviceName, ServiceCertificateCreateParameters parameters);
     
     /**
     * The Begin Deleting Service Certificate operation deletes a service
@@ -105,7 +105,7 @@ public interface ServiceCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException;
+    OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException;
     
     /**
     * The Begin Deleting Service Certificate operation deletes a service
@@ -121,7 +121,7 @@ public interface ServiceCertificateOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> beginDeletingAsync(ServiceCertificateDeleteParameters parameters);
+    Future<OperationResponse> beginDeletingAsync(ServiceCertificateDeleteParameters parameters);
     
     /**
     * The Create Service Certificate operation adds a certificate to a hosted

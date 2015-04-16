@@ -28,7 +28,7 @@ import com.microsoft.azure.management.sql.models.DataMaskingPolicyGetResponse;
 import com.microsoft.azure.management.sql.models.DataMaskingRuleCreateOrUpdateParameters;
 import com.microsoft.azure.management.sql.models.DataMaskingRuleGetResponse;
 import com.microsoft.azure.management.sql.models.DataMaskingRuleListResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.Future;
@@ -57,7 +57,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database data masking policy
@@ -73,7 +73,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters);
+    Future<OperationResponse> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyCreateOrUpdateParameters parameters);
     
     /**
     * Creates or updates an Azure SQL Database Server Firewall rule.
@@ -95,7 +95,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse createOrUpdateRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    OperationResponse createOrUpdateRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     * Creates or updates an Azure SQL Database Server Firewall rule.
@@ -113,7 +113,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> createOrUpdateRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters);
+    Future<OperationResponse> createOrUpdateRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleCreateOrUpdateParameters parameters);
     
     /**
     * Deletes an Azure SQL Server data masking rule.
@@ -133,7 +133,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    AzureOperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException;
     
     /**
     * Deletes an Azure SQL Server data masking rule.
@@ -149,7 +149,7 @@ public interface DataMaskingOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<AzureOperationResponse> deleteAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule);
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule);
     
     /**
     * Returns an Azure SQL Database data masking policy.

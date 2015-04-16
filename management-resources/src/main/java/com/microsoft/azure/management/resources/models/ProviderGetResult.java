@@ -23,12 +23,12 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * Resource provider information.
 */
-public class ProviderGetResult extends AzureOperationResponse {
+public class ProviderGetResult extends OperationResponse {
     private Provider provider;
     
     /**

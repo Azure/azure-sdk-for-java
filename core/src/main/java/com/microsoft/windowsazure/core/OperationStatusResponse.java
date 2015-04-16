@@ -25,7 +25,7 @@ package com.microsoft.windowsazure.core;
  * HTTP status code for the failed request, and also includes error information
  * regarding the failure.
  */
-public class OperationStatusResponse extends AzureOperationResponse {
+public class OperationStatusResponse extends OperationResponse {
     private OperationStatusResponse.ErrorDetails error;
 
     /**

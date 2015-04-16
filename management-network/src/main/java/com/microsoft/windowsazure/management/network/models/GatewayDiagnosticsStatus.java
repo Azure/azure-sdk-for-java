@@ -23,12 +23,12 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The status of a gateway diagnostics operation.
 */
-public class GatewayDiagnosticsStatus extends AzureOperationResponse {
+public class GatewayDiagnosticsStatus extends OperationResponse {
     private String diagnosticsUrl;
     
     /**

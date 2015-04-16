@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyHashMap;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.HashMap;
 
 /**
 * The Resource Provider Get Properties operation response.
 */
-public class ResourceProviderGetPropertiesResponse extends AzureOperationResponse {
+public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     private HashMap<String, String> properties;
     
     /**

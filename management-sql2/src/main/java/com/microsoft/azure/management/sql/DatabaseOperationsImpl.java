@@ -28,9 +28,11 @@ import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateParameter
 import com.microsoft.azure.management.sql.models.DatabaseCreateOrUpdateResponse;
 import com.microsoft.azure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.azure.management.sql.models.DatabaseListResponse;
+import com.microsoft.azure.management.sql.models.DatabaseMetric;
+import com.microsoft.azure.management.sql.models.DatabaseMetricListResponse;
 import com.microsoft.azure.management.sql.models.DatabaseProperties;
 import com.microsoft.azure.management.sql.models.ErrorResponse;
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -94,14 +96,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * GetDatabaseOperationStatus.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
-    * which the server belongs.
+    * which the Azure SQL Database Server belongs.
     * @param serverName Required. The name of the Azure SQL Database Server on
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * operated on (Updated or created).
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public Future<DatabaseCreateOrUpdateResponse> beginCreateOrUpdateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseCreateOrUpdateParameters parameters) {
@@ -119,7 +121,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * GetDatabaseOperationStatus.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
-    * which the server belongs.
+    * which the Azure SQL Database Server belongs.
     * @param serverName Required. The name of the Azure SQL Database Server on
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
@@ -130,7 +132,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public DatabaseCreateOrUpdateResponse beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws IOException, ServiceException {
@@ -152,9 +154,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         if (parameters.getProperties() == null) {
             throw new NullPointerException("parameters.Properties");
-        }
-        if (parameters.getTags() == null) {
-            throw new NullPointerException("parameters.Tags");
         }
         
         // Tracing
@@ -231,6 +230,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         if (parameters.getProperties().getRequestedServiceObjectiveId() != null) {
             ((ObjectNode) propertiesValue).put("requestedServiceObjectiveId", parameters.getProperties().getRequestedServiceObjectiveId());
+        }
+        
+        if (parameters.getProperties().getRequestedServiceObjectiveName() != null) {
+            ((ObjectNode) propertiesValue).put("requestedServiceObjectiveName", parameters.getProperties().getRequestedServiceObjectiveName());
+        }
+        
+        if (parameters.getProperties().getElasticPoolName() != null) {
+            ((ObjectNode) propertiesValue).put("resourcePoolName", parameters.getProperties().getElasticPoolName());
         }
         
         ((ObjectNode) databaseCreateOrUpdateParametersValue).put("location", parameters.getLocation());
@@ -310,13 +317,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     Database databaseInstance = new Database();
                     result.setDatabase(databaseInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        databaseInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue2 = responseDoc.get("properties");
                     if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
                         DatabaseProperties propertiesInstance = new DatabaseProperties();
@@ -350,6 +350,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setDatabaseId(databaseIdInstance);
                         }
                         
+                        JsonNode earliestRestoreDateValue = propertiesValue2.get("earliestRestoreDate");
+                        if (earliestRestoreDateValue != null && earliestRestoreDateValue instanceof NullNode == false) {
+                            Calendar earliestRestoreDateInstance;
+                            earliestRestoreDateInstance = DatatypeConverter.parseDateTime(earliestRestoreDateValue.getTextValue());
+                            propertiesInstance.setEarliestRestoreDate(earliestRestoreDateInstance);
+                        }
+                        
                         JsonNode editionValue = propertiesValue2.get("edition");
                         if (editionValue != null && editionValue instanceof NullNode == false) {
                             String editionInstance;
@@ -371,6 +378,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
                         }
                         
+                        JsonNode requestedServiceObjectiveNameValue = propertiesValue2.get("requestedServiceObjectiveName");
+                        if (requestedServiceObjectiveNameValue != null && requestedServiceObjectiveNameValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveNameInstance;
+                            requestedServiceObjectiveNameInstance = requestedServiceObjectiveNameValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveName(requestedServiceObjectiveNameInstance);
+                        }
+                        
                         JsonNode serviceLevelObjectiveValue = propertiesValue2.get("serviceLevelObjective");
                         if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
                             String serviceLevelObjectiveInstance;
@@ -384,6 +398,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             statusInstance = statusValue.getTextValue();
                             propertiesInstance.setStatus(statusInstance);
                         }
+                        
+                        JsonNode resourcePoolNameValue = propertiesValue2.get("resourcePoolName");
+                        if (resourcePoolNameValue != null && resourcePoolNameValue instanceof NullNode == false) {
+                            String resourcePoolNameInstance;
+                            resourcePoolNameInstance = resourcePoolNameValue.getTextValue();
+                            propertiesInstance.setElasticPoolName(resourcePoolNameInstance);
+                        }
                     }
                     
                     JsonNode idValue = responseDoc.get("id");
@@ -391,6 +412,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -457,7 +485,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * operated on (Updated or created).
     * @param parameters Required. The required parameters for createing or
     * updating a database.
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public Future<DatabaseCreateOrUpdateResponse> createOrUpdateAsync(final String resourceGroupName, final String serverName, final String databaseName, final DatabaseCreateOrUpdateParameters parameters) {
@@ -492,7 +520,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public DatabaseCreateOrUpdateResponse createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseCreateOrUpdateParameters parameters) throws InterruptedException, ExecutionException, IOException, ServiceException {
@@ -553,19 +581,19 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * Deletes the Azure SQL Database with the given name.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
-    * which the server belongs.
+    * which the Azure SQL Database Server belongs.
     * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database is hosted.
+    * which the Azure SQL Database Database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
-    * retrieved.
+    * deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<AzureOperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName) {
-        return this.getClient().getExecutorService().submit(new Callable<AzureOperationResponse>() { 
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public AzureOperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception {
                 return delete(resourceGroupName, serverName, databaseName);
             }
          });
@@ -575,11 +603,11 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * Deletes the Azure SQL Database with the given name.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
-    * which the server belongs.
+    * which the Azure SQL Database Server belongs.
     * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database is hosted.
+    * which the Azure SQL Database Database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
-    * retrieved.
+    * deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -588,7 +616,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public AzureOperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -667,9 +695,9 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             // Create Result
-            AzureOperationResponse result = null;
+            OperationResponse result = null;
             // Deserialize Response
-            result = new AzureOperationResponse();
+            result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -695,7 +723,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * retrieved.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database request.
     */
     @Override
     public Future<DatabaseGetResponse> getAsync(final String resourceGroupName, final String serverName, final String databaseName) {
@@ -720,7 +748,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a Get Azure Sql Database request.
     */
     @Override
     public DatabaseGetResponse get(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
@@ -817,13 +845,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     Database databaseInstance = new Database();
                     result.setDatabase(databaseInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        databaseInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DatabaseProperties propertiesInstance = new DatabaseProperties();
@@ -857,6 +878,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setDatabaseId(databaseIdInstance);
                         }
                         
+                        JsonNode earliestRestoreDateValue = propertiesValue.get("earliestRestoreDate");
+                        if (earliestRestoreDateValue != null && earliestRestoreDateValue instanceof NullNode == false) {
+                            Calendar earliestRestoreDateInstance;
+                            earliestRestoreDateInstance = DatatypeConverter.parseDateTime(earliestRestoreDateValue.getTextValue());
+                            propertiesInstance.setEarliestRestoreDate(earliestRestoreDateInstance);
+                        }
+                        
                         JsonNode editionValue = propertiesValue.get("edition");
                         if (editionValue != null && editionValue instanceof NullNode == false) {
                             String editionInstance;
@@ -878,6 +906,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
                         }
                         
+                        JsonNode requestedServiceObjectiveNameValue = propertiesValue.get("requestedServiceObjectiveName");
+                        if (requestedServiceObjectiveNameValue != null && requestedServiceObjectiveNameValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveNameInstance;
+                            requestedServiceObjectiveNameInstance = requestedServiceObjectiveNameValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveName(requestedServiceObjectiveNameInstance);
+                        }
+                        
                         JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
                         if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
                             String serviceLevelObjectiveInstance;
@@ -891,6 +926,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             statusInstance = statusValue.getTextValue();
                             propertiesInstance.setStatus(statusInstance);
                         }
+                        
+                        JsonNode resourcePoolNameValue = propertiesValue.get("resourcePoolName");
+                        if (resourcePoolNameValue != null && resourcePoolNameValue instanceof NullNode == false) {
+                            String resourcePoolNameInstance;
+                            resourcePoolNameInstance = resourcePoolNameValue.getTextValue();
+                            propertiesInstance.setElasticPoolName(resourcePoolNameInstance);
+                        }
                     }
                     
                     JsonNode idValue = responseDoc.get("id");
@@ -898,6 +940,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -952,7 +1001,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * which the database is hosted.
     * @param databaseId Required. The Id of the Azure SQL Database to be
     * retrieved.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a List Azure Sql Database request.
     */
     @Override
     public Future<DatabaseListResponse> getByIdAsync(final String resourceGroupName, final String serverName, final String databaseId) {
@@ -977,7 +1026,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a List Azure Sql Database request.
     */
     @Override
     public DatabaseListResponse getById(String resourceGroupName, String serverName, String databaseId) throws IOException, ServiceException {
@@ -1081,13 +1130,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             Database databaseInstance = new Database();
                             result.getDatabases().add(databaseInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                databaseInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 DatabaseProperties propertiesInstance = new DatabaseProperties();
@@ -1121,6 +1163,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     propertiesInstance.setDatabaseId(databaseIdInstance);
                                 }
                                 
+                                JsonNode earliestRestoreDateValue = propertiesValue.get("earliestRestoreDate");
+                                if (earliestRestoreDateValue != null && earliestRestoreDateValue instanceof NullNode == false) {
+                                    Calendar earliestRestoreDateInstance;
+                                    earliestRestoreDateInstance = DatatypeConverter.parseDateTime(earliestRestoreDateValue.getTextValue());
+                                    propertiesInstance.setEarliestRestoreDate(earliestRestoreDateInstance);
+                                }
+                                
                                 JsonNode editionValue = propertiesValue.get("edition");
                                 if (editionValue != null && editionValue instanceof NullNode == false) {
                                     String editionInstance;
@@ -1142,6 +1191,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
                                 }
                                 
+                                JsonNode requestedServiceObjectiveNameValue = propertiesValue.get("requestedServiceObjectiveName");
+                                if (requestedServiceObjectiveNameValue != null && requestedServiceObjectiveNameValue instanceof NullNode == false) {
+                                    String requestedServiceObjectiveNameInstance;
+                                    requestedServiceObjectiveNameInstance = requestedServiceObjectiveNameValue.getTextValue();
+                                    propertiesInstance.setRequestedServiceObjectiveName(requestedServiceObjectiveNameInstance);
+                                }
+                                
                                 JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
                                 if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
                                     String serviceLevelObjectiveInstance;
@@ -1155,6 +1211,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     statusInstance = statusValue.getTextValue();
                                     propertiesInstance.setStatus(statusInstance);
                                 }
+                                
+                                JsonNode resourcePoolNameValue = propertiesValue.get("resourcePoolName");
+                                if (resourcePoolNameValue != null && resourcePoolNameValue instanceof NullNode == false) {
+                                    String resourcePoolNameInstance;
+                                    resourcePoolNameInstance = resourcePoolNameValue.getTextValue();
+                                    propertiesInstance.setElasticPoolName(resourcePoolNameInstance);
+                                }
                             }
                             
                             JsonNode idValue = valueValue.get("id");
@@ -1162,6 +1225,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                 String idInstance;
                                 idInstance = idValue.getTextValue();
                                 databaseInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                databaseInstance.setName(nameInstance);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");
@@ -1210,11 +1280,11 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     }
     
     /**
-    * Gets the status of a database create or update operation.
+    * Gets the status of an Azure Sql Database create or update operation.
     *
     * @param operationStatusLink Required. Location value returned by the Begin
     * operation
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public Future<DatabaseCreateOrUpdateResponse> getDatabaseOperationStatusAsync(final String operationStatusLink) {
@@ -1227,7 +1297,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     }
     
     /**
-    * Gets the status of a database create or update operation.
+    * Gets the status of an Azure Sql Database create or update operation.
     *
     * @param operationStatusLink Required. Location value returned by the Begin
     * operation
@@ -1235,7 +1305,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Response for long running database operations.
+    * @return Response for long running Azure Sql Database operations.
     */
     @Override
     public DatabaseCreateOrUpdateResponse getDatabaseOperationStatus(String operationStatusLink) throws IOException, ServiceException {
@@ -1323,13 +1393,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     Database databaseInstance = new Database();
                     result.setDatabase(databaseInstance);
                     
-                    JsonNode nameValue = responseDoc.get("name");
-                    if (nameValue != null && nameValue instanceof NullNode == false) {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        databaseInstance.setName(nameInstance);
-                    }
-                    
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                         DatabaseProperties propertiesInstance = new DatabaseProperties();
@@ -1363,6 +1426,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setDatabaseId(databaseIdInstance);
                         }
                         
+                        JsonNode earliestRestoreDateValue = propertiesValue.get("earliestRestoreDate");
+                        if (earliestRestoreDateValue != null && earliestRestoreDateValue instanceof NullNode == false) {
+                            Calendar earliestRestoreDateInstance;
+                            earliestRestoreDateInstance = DatatypeConverter.parseDateTime(earliestRestoreDateValue.getTextValue());
+                            propertiesInstance.setEarliestRestoreDate(earliestRestoreDateInstance);
+                        }
+                        
                         JsonNode editionValue = propertiesValue.get("edition");
                         if (editionValue != null && editionValue instanceof NullNode == false) {
                             String editionInstance;
@@ -1384,6 +1454,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
                         }
                         
+                        JsonNode requestedServiceObjectiveNameValue = propertiesValue.get("requestedServiceObjectiveName");
+                        if (requestedServiceObjectiveNameValue != null && requestedServiceObjectiveNameValue instanceof NullNode == false) {
+                            String requestedServiceObjectiveNameInstance;
+                            requestedServiceObjectiveNameInstance = requestedServiceObjectiveNameValue.getTextValue();
+                            propertiesInstance.setRequestedServiceObjectiveName(requestedServiceObjectiveNameInstance);
+                        }
+                        
                         JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
                         if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
                             String serviceLevelObjectiveInstance;
@@ -1397,6 +1474,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             statusInstance = statusValue.getTextValue();
                             propertiesInstance.setStatus(statusInstance);
                         }
+                        
+                        JsonNode resourcePoolNameValue = propertiesValue.get("resourcePoolName");
+                        if (resourcePoolNameValue != null && resourcePoolNameValue instanceof NullNode == false) {
+                            String resourcePoolNameInstance;
+                            resourcePoolNameInstance = resourcePoolNameValue.getTextValue();
+                            propertiesInstance.setElasticPoolName(resourcePoolNameInstance);
+                        }
                     }
                     
                     JsonNode idValue = responseDoc.get("id");
@@ -1404,6 +1488,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         databaseInstance.setId(idInstance);
+                    }
+                    
+                    JsonNode nameValue = responseDoc.get("name");
+                    if (nameValue != null && nameValue instanceof NullNode == false) {
+                        String nameInstance;
+                        nameInstance = nameValue.getTextValue();
+                        databaseInstance.setName(nameInstance);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -1437,10 +1528,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-            if (statusCode == HttpStatus.SC_OK) {
+            if (statusCode == HttpStatus.SC_CREATED) {
                 result.setStatus(OperationStatus.Succeeded);
             }
-            if (statusCode == HttpStatus.SC_CREATED) {
+            if (statusCode == HttpStatus.SC_OK) {
                 result.setStatus(OperationStatus.Succeeded);
             }
             
@@ -1456,13 +1547,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     }
     
     /**
-    * Returns information about an Azure SQL Database.
+    * Returns information about Azure SQL Databases.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database is hosted.
-    * @return Represents the response to a Get Database request.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @return Represents the response to a List Azure Sql Database request.
     */
     @Override
     public Future<DatabaseListResponse> listAsync(final String resourceGroupName, final String serverName) {
@@ -1475,17 +1566,17 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     }
     
     /**
-    * Returns information about an Azure SQL Database.
+    * Returns information about Azure SQL Databases.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
     * which the server belongs.
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database is hosted.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents the response to a Get Database request.
+    * @return Represents the response to a List Azure Sql Database request.
     */
     @Override
     public DatabaseListResponse list(String resourceGroupName, String serverName) throws IOException, ServiceException {
@@ -1580,13 +1671,6 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             Database databaseInstance = new Database();
                             result.getDatabases().add(databaseInstance);
                             
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                String nameInstance;
-                                nameInstance = nameValue.getTextValue();
-                                databaseInstance.setName(nameInstance);
-                            }
-                            
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                                 DatabaseProperties propertiesInstance = new DatabaseProperties();
@@ -1620,6 +1704,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     propertiesInstance.setDatabaseId(databaseIdInstance);
                                 }
                                 
+                                JsonNode earliestRestoreDateValue = propertiesValue.get("earliestRestoreDate");
+                                if (earliestRestoreDateValue != null && earliestRestoreDateValue instanceof NullNode == false) {
+                                    Calendar earliestRestoreDateInstance;
+                                    earliestRestoreDateInstance = DatatypeConverter.parseDateTime(earliestRestoreDateValue.getTextValue());
+                                    propertiesInstance.setEarliestRestoreDate(earliestRestoreDateInstance);
+                                }
+                                
                                 JsonNode editionValue = propertiesValue.get("edition");
                                 if (editionValue != null && editionValue instanceof NullNode == false) {
                                     String editionInstance;
@@ -1641,6 +1732,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     propertiesInstance.setRequestedServiceObjectiveId(requestedServiceObjectiveIdInstance);
                                 }
                                 
+                                JsonNode requestedServiceObjectiveNameValue = propertiesValue.get("requestedServiceObjectiveName");
+                                if (requestedServiceObjectiveNameValue != null && requestedServiceObjectiveNameValue instanceof NullNode == false) {
+                                    String requestedServiceObjectiveNameInstance;
+                                    requestedServiceObjectiveNameInstance = requestedServiceObjectiveNameValue.getTextValue();
+                                    propertiesInstance.setRequestedServiceObjectiveName(requestedServiceObjectiveNameInstance);
+                                }
+                                
                                 JsonNode serviceLevelObjectiveValue = propertiesValue.get("serviceLevelObjective");
                                 if (serviceLevelObjectiveValue != null && serviceLevelObjectiveValue instanceof NullNode == false) {
                                     String serviceLevelObjectiveInstance;
@@ -1654,6 +1752,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     statusInstance = statusValue.getTextValue();
                                     propertiesInstance.setStatus(statusInstance);
                                 }
+                                
+                                JsonNode resourcePoolNameValue = propertiesValue.get("resourcePoolName");
+                                if (resourcePoolNameValue != null && resourcePoolNameValue instanceof NullNode == false) {
+                                    String resourcePoolNameInstance;
+                                    resourcePoolNameInstance = resourcePoolNameValue.getTextValue();
+                                    propertiesInstance.setElasticPoolName(resourcePoolNameInstance);
+                                }
                             }
                             
                             JsonNode idValue = valueValue.get("id");
@@ -1661,6 +1766,13 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                 String idInstance;
                                 idInstance = idValue.getTextValue();
                                 databaseInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = valueValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                databaseInstance.setName(nameInstance);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");
@@ -1686,6 +1798,203 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                                     String tagsValue = property.getValue().getTextValue();
                                     databaseInstance.getTags().put(tagsKey, tagsValue);
                                 }
+                            }
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Returns information about Azure SQL Database usages.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @return Represents the response to a List Azure Sql Database metrics
+    * request.
+    */
+    @Override
+    public Future<DatabaseMetricListResponse> listUsagesAsync(final String resourceGroupName, final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseMetricListResponse>() { 
+            @Override
+            public DatabaseMetricListResponse call() throws Exception {
+                return listUsages(resourceGroupName, serverName, databaseName);
+            }
+         });
+    }
+    
+    /**
+    * Returns information about Azure SQL Database usages.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Represents the response to a List Azure Sql Database metrics
+    * request.
+    */
+    @Override
+    public DatabaseMetricListResponse listUsages(String resourceGroupName, String serverName, String databaseName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
+        }
+        if (databaseName == null) {
+            throw new NullPointerException("databaseName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("databaseName", databaseName);
+            CloudTracing.enter(invocationId, this, "listUsagesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Sql";
+        url = url + "/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
+        url = url + "/usages";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseMetricListResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseMetricListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            DatabaseMetric databaseMetricInstance = new DatabaseMetric();
+                            result.getMetrics().add(databaseMetricInstance);
+                            
+                            JsonNode resourceNameValue = valueValue.get("resourceName");
+                            if (resourceNameValue != null && resourceNameValue instanceof NullNode == false) {
+                                String resourceNameInstance;
+                                resourceNameInstance = resourceNameValue.getTextValue();
+                                databaseMetricInstance.setResourceName(resourceNameInstance);
+                            }
+                            
+                            JsonNode displayNameValue = valueValue.get("displayName");
+                            if (displayNameValue != null && displayNameValue instanceof NullNode == false) {
+                                String displayNameInstance;
+                                displayNameInstance = displayNameValue.getTextValue();
+                                databaseMetricInstance.setDisplayName(displayNameInstance);
+                            }
+                            
+                            JsonNode currentValueValue = valueValue.get("currentValue");
+                            if (currentValueValue != null && currentValueValue instanceof NullNode == false) {
+                                double currentValueInstance;
+                                currentValueInstance = currentValueValue.getDoubleValue();
+                                databaseMetricInstance.setCurrentValue(currentValueInstance);
+                            }
+                            
+                            JsonNode limitValue = valueValue.get("limit");
+                            if (limitValue != null && limitValue instanceof NullNode == false) {
+                                double limitInstance;
+                                limitInstance = limitValue.getDoubleValue();
+                                databaseMetricInstance.setLimit(limitInstance);
+                            }
+                            
+                            JsonNode unitValue = valueValue.get("unit");
+                            if (unitValue != null && unitValue instanceof NullNode == false) {
+                                String unitInstance;
+                                unitInstance = unitValue.getTextValue();
+                                databaseMetricInstance.setUnit(unitInstance);
+                            }
+                            
+                            JsonNode nextResetTimeValue = valueValue.get("nextResetTime");
+                            if (nextResetTimeValue != null && nextResetTimeValue instanceof NullNode == false) {
+                                Calendar nextResetTimeInstance;
+                                nextResetTimeInstance = DatatypeConverter.parseDateTime(nextResetTimeValue.getTextValue());
+                                databaseMetricInstance.setNextResetTime(nextResetTimeInstance);
                             }
                         }
                     }

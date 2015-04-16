@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.Calendar;
 
 /**
 * The Get Management Certificate operation response.
 */
-public class ManagementCertificateGetResponse extends AzureOperationResponse {
+public class ManagementCertificateGetResponse extends OperationResponse {
     private Calendar created;
     
     /**

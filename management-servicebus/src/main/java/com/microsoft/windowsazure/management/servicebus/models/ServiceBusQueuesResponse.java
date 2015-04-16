@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.servicebus.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * A response to a request for a list of queues.
 */
-public class ServiceBusQueuesResponse extends AzureOperationResponse implements Iterable<ServiceBusQueue> {
+public class ServiceBusQueuesResponse extends OperationResponse implements Iterable<ServiceBusQueue> {
     private ArrayList<ServiceBusQueue> queues;
     
     /**

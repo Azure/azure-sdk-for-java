@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Locations operation response.
 */
-public class LocationsListResponse extends AzureOperationResponse implements Iterable<LocationsListResponse.Location> {
+public class LocationsListResponse extends OperationResponse implements Iterable<LocationsListResponse.Location> {
     private ArrayList<LocationsListResponse.Location> locations;
     
     /**

@@ -23,9 +23,9 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.LazyHashMap;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +34,7 @@ import java.util.HashMap;
 /**
 * A deployment that exists in the cloud service.
 */
-public class DeploymentGetResponse extends AzureOperationResponse {
+public class DeploymentGetResponse extends OperationResponse {
     private String configuration;
     
     /**

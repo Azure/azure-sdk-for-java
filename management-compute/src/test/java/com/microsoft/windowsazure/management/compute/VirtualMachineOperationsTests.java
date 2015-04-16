@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -36,7 +36,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -168,8 +167,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDiskSecond = createOSVirtualHardDisk(osVHarddiskNameSecond, operatingSystemName, mediaLinkUriValueSecond, sourceImageName);
         VirtualMachineCreateParameters createParametersSecond = createVirtualMachineCreateParameter(roleNameSecond, configlistSecond, oSVirtualHardDiskSecond, availabilitySetNameValue);
         //Act
-        AzureOperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
-        AzureOperationResponse operationResponseSecond = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParametersSecond);
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
+        OperationResponse operationResponseSecond = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParametersSecond);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -200,7 +199,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         VirtualMachineCreateParameters createParameters = createVirtualMachineCreateParameter(roleName, configlist, oSVirtualHardDisk, null);
         
         //Act
-        AzureOperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -217,7 +216,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setDescription(hostedServiceDescription);
         //required
         createParameters.setLocation(vmLocation);
-        AzureOperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);
+        OperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
         
@@ -285,7 +284,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         deploymentParameters.setRoles(rolelist);
         
         // Act
-        AzureOperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().createDeployment(hostedServiceName, deploymentParameters);
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().createDeployment(hostedServiceName, deploymentParameters);
         
         // Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -411,7 +410,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         updateParameters.setOSVirtualHardDisk(osVirtualHardDisk);
         updateParameters.setRoleName(virtualMachinesGetResponse.getRoleName());
 
-        AzureOperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachinesGetResponse.getRoleName(), updateParameters);
+        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachinesGetResponse.getRoleName(), updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
@@ -437,7 +436,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         updateParameters.setOSVirtualHardDisk(osVirtualHardDisk);
 
         //update
-        AzureOperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachineName, updateParameters);
+        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachineName, updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());

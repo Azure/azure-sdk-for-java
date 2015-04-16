@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Extensions operation response.
 */
-public class HostedServiceListExtensionsResponse extends AzureOperationResponse implements Iterable<HostedServiceListExtensionsResponse.Extension> {
+public class HostedServiceListExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListExtensionsResponse.Extension> {
     private ArrayList<HostedServiceListExtensionsResponse.Extension> extensions;
     
     /**

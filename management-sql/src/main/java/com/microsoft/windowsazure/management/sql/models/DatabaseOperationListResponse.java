@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.AzureOperationResponse;
 import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,7 +32,7 @@ import java.util.Iterator;
 * Represents the response containing the list of database operations for a
 * given server or database.
 */
-public class DatabaseOperationListResponse extends AzureOperationResponse implements Iterable<DatabaseOperation> {
+public class DatabaseOperationListResponse extends OperationResponse implements Iterable<DatabaseOperation> {
     private ArrayList<DatabaseOperation> databaseOperations;
     
     /**
