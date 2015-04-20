@@ -330,6 +330,7 @@
     <module>../management-sql</module>
     <module>../management-sql2</module>
     <module>../management-storage</module>
+    <module>../management-storage2</module>
     <module>../management-network</module>
     <module>../management-websites</module>
     <module>../management-websites2</module>
