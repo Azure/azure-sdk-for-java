@@ -28,9 +28,9 @@ import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.management.storage.models.Endpoints;
 import com.microsoft.azure.management.storage.models.KeyName;
-import com.microsoft.azure.management.storage.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.storage.models.ProvisioningState;
 import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
@@ -326,43 +326,43 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     }
     
     /**
-    * The Get Operation Status operation returns the status of the specified
-    * operation. After calling an asynchronous operation, you can call Get
-    * Operation Status to determine whether the operation has succeeded,
-    * failed, or is still in progress.
+    * The Get Create Operation Status operation returns the status of the
+    * specified create operation. After calling the asynchronous Begin Create
+    * operation, you can call Get Create Operation Status to determine whether
+    * the operation has succeeded, failed, or is still in progress.
     *
     * @param operationStatusLink Required. The URL where the status of the
-    * long-running operation can be checked.
-    * @return The GetLongRunningOperation response.
+    * long-running create operation can be checked.
+    * @return The Create storage account operation response.
     */
     @Override
-    public Future<LongRunningOperationResponse> getLongRunningOperationStatusAsync(final String operationStatusLink) {
-        return this.getExecutorService().submit(new Callable<LongRunningOperationResponse>() { 
+    public Future<StorageAccountCreateResponse> getCreateOperationStatusAsync(final String operationStatusLink) {
+        return this.getExecutorService().submit(new Callable<StorageAccountCreateResponse>() { 
             @Override
-            public LongRunningOperationResponse call() throws Exception {
-                return getLongRunningOperationStatus(operationStatusLink);
+            public StorageAccountCreateResponse call() throws Exception {
+                return getCreateOperationStatus(operationStatusLink);
             }
          });
     }
     
     /**
-    * The Get Operation Status operation returns the status of the specified
-    * operation. After calling an asynchronous operation, you can call Get
-    * Operation Status to determine whether the operation has succeeded,
-    * failed, or is still in progress.
+    * The Get Create Operation Status operation returns the status of the
+    * specified create operation. After calling the asynchronous Begin Create
+    * operation, you can call Get Create Operation Status to determine whether
+    * the operation has succeeded, failed, or is still in progress.
     *
     * @param operationStatusLink Required. The URL where the status of the
-    * long-running operation can be checked.
+    * long-running create operation can be checked.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
     @Override
-    public LongRunningOperationResponse getLongRunningOperationStatus(String operationStatusLink) throws IOException, ServiceException, URISyntaxException {
+    public StorageAccountCreateResponse getCreateOperationStatus(String operationStatusLink) throws IOException, ServiceException, URISyntaxException {
         // Validate
         if (operationStatusLink == null) {
             throw new NullPointerException("operationStatusLink");
@@ -375,7 +375,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("operationStatusLink", operationStatusLink);
-            CloudTracing.enter(invocationId, this, "getLongRunningOperationStatusAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getCreateOperationStatusAsync", tracingParameters);
         }
         
         // Construct URL
@@ -409,11 +409,11 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             }
             
             // Create Result
-            LongRunningOperationResponse result = null;
+            StorageAccountCreateResponse result = null;
             // Deserialize Response
             if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_ACCEPTED || statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 InputStream responseContent = httpResponse.getEntity().getContent();
-                result = new LongRunningOperationResponse();
+                result = new StorageAccountCreateResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
                 if (responseContent == null == false) {
@@ -608,10 +608,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             if (statusCode == HttpStatus.SC_CONFLICT) {
                 result.setStatus(OperationStatus.Failed);
             }
-            if (statusCode == HttpStatus.SC_ACCEPTED) {
+            if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 result.setStatus(OperationStatus.InProgress);
             }
-            if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
                 result.setStatus(OperationStatus.InProgress);
             }
             if (statusCode == HttpStatus.SC_OK) {

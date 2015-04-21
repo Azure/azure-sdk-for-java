@@ -29,7 +29,6 @@ import com.microsoft.azure.management.storage.models.CheckNameAvailabilityRespon
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.management.storage.models.Endpoints;
 import com.microsoft.azure.management.storage.models.KeyName;
-import com.microsoft.azure.management.storage.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.storage.models.ProvisioningState;
 import com.microsoft.azure.management.storage.models.Reason;
 import com.microsoft.azure.management.storage.models.StorageAccount;
@@ -678,13 +677,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * characters in length and use numbers and lower-case letters only.
     * @param parameters Required. The parameters to provide for the created
     * account.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
     @Override
-    public Future<LongRunningOperationResponse> createAsync(final String resourceGroupName, final String accountName, final StorageAccountCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<LongRunningOperationResponse>() { 
+    public Future<StorageAccountCreateResponse> createAsync(final String resourceGroupName, final String accountName, final StorageAccountCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountCreateResponse>() { 
             @Override
-            public LongRunningOperationResponse call() throws Exception {
+            public StorageAccountCreateResponse call() throws Exception {
                 return create(resourceGroupName, accountName, parameters);
             }
          });
@@ -715,10 +714,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * inspected using the Throwable.getCause() method.
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
     @Override
-    public LongRunningOperationResponse create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, IOException {
+    public StorageAccountCreateResponse create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, IOException {
         StorageManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -736,7 +735,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             StorageAccountCreateResponse response = client2.getStorageAccountsOperations().beginCreateAsync(resourceGroupName, accountName, parameters).get();
-            LongRunningOperationResponse result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            StorageAccountCreateResponse result = client2.getCreateOperationStatusAsync(response.getOperationStatusLink()).get();
             int delayInSeconds = response.getRetryAfter();
             if (delayInSeconds == 0) {
                 delayInSeconds = 25;
@@ -744,9 +746,9 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+                result = client2.getCreateOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
                 if (delayInSeconds == 0) {
                     delayInSeconds = 25;
