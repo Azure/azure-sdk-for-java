@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.storage.models.LongRunningOperationResponse;
+import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -88,32 +88,32 @@ public interface StorageManagementClient extends Closeable, FilterableService<St
     StorageAccountOperations getStorageAccountsOperations();
     
     /**
-    * The Get Operation Status operation returns the status of the specified
-    * operation. After calling an asynchronous operation, you can call Get
-    * Operation Status to determine whether the operation has succeeded,
-    * failed, or is still in progress.
+    * The Get Create Operation Status operation returns the status of the
+    * specified create operation. After calling the asynchronous Begin Create
+    * operation, you can call Get Create Operation Status to determine whether
+    * the operation has succeeded, failed, or is still in progress.
     *
     * @param operationStatusLink Required. The URL where the status of the
-    * long-running operation can be checked.
+    * long-running create operation can be checked.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
-    LongRunningOperationResponse getLongRunningOperationStatus(String operationStatusLink) throws IOException, ServiceException, URISyntaxException;
+    StorageAccountCreateResponse getCreateOperationStatus(String operationStatusLink) throws IOException, ServiceException, URISyntaxException;
     
     /**
-    * The Get Operation Status operation returns the status of the specified
-    * operation. After calling an asynchronous operation, you can call Get
-    * Operation Status to determine whether the operation has succeeded,
-    * failed, or is still in progress.
+    * The Get Create Operation Status operation returns the status of the
+    * specified create operation. After calling the asynchronous Begin Create
+    * operation, you can call Get Create Operation Status to determine whether
+    * the operation has succeeded, failed, or is still in progress.
     *
     * @param operationStatusLink Required. The URL where the status of the
-    * long-running operation can be checked.
-    * @return The GetLongRunningOperation response.
+    * long-running create operation can be checked.
+    * @return The Create storage account operation response.
     */
-    Future<LongRunningOperationResponse> getLongRunningOperationStatusAsync(String operationStatusLink);
+    Future<StorageAccountCreateResponse> getCreateOperationStatusAsync(String operationStatusLink);
 }

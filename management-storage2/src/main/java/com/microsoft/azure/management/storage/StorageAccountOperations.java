@@ -25,7 +25,6 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.azure.management.storage.models.KeyName;
-import com.microsoft.azure.management.storage.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
 import com.microsoft.azure.management.storage.models.StorageAccountGetPropertiesResponse;
@@ -136,9 +135,9 @@ public interface StorageAccountOperations {
     * inspected using the Throwable.getCause() method.
     * @throws IOException Thrown if there was an error setting up tracing for
     * the request.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
-    LongRunningOperationResponse create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, IOException;
+    StorageAccountCreateResponse create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, IOException;
     
     /**
     * Asynchronously creates a new storage account with the specified
@@ -155,9 +154,9 @@ public interface StorageAccountOperations {
     * characters in length and use numbers and lower-case letters only.
     * @param parameters Required. The parameters to provide for the created
     * account.
-    * @return The GetLongRunningOperation response.
+    * @return The Create storage account operation response.
     */
-    Future<LongRunningOperationResponse> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters);
+    Future<StorageAccountCreateResponse> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters);
     
     /**
     * Deletes a storage account in Microsoft Azure.
