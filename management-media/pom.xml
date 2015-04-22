@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-media</artifactId>
+  <artifactId>azure-svc-mgmt-media</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Media Services Management</name>
@@ -79,13 +79,13 @@
     </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>azure-management</artifactId>
+        <artifactId>azure-svc-mgmt</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>azure-management-storage</artifactId>
+        <artifactId>azure-svc-mgmt-storage</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>

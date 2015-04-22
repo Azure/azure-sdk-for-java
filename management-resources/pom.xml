@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-resources</artifactId>
+  <artifactId>azure-mgmt-resources</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Resources Management</name>

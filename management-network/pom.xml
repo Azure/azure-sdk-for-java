@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-network</artifactId>
+  <artifactId>azure-svc-mgmt-network</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Network Management.</name>
