@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-websites2</artifactId>
+  <artifactId>azure-mgmt-websites</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Website Resource Management</name>

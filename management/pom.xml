@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management</artifactId>
+  <artifactId>azure-svc-mgmt</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Management</name>

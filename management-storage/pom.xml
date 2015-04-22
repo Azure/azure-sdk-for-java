@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-storage</artifactId>
+  <artifactId>azure-svc-mgmt-storage</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Storage Management</name>
@@ -99,7 +99,7 @@
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-management</artifactId>
+      <artifactId>azure-svc-mgmt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
