@@ -74,10 +74,9 @@
     </dependency>
 
     <!-- Test dependencies -->
-    <dependency> 
+    <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-core</artifactId>
-      <classifier>tests</classifier>
+      <artifactId>azure-core-test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

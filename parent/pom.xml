@@ -122,13 +122,11 @@
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-all</artifactId>
         <version>1.3</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-all</artifactId>
         <version>1.9.0</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.bouncycastle</groupId>
@@ -140,13 +138,11 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-io</artifactId>
         <version>1.3.2</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock</artifactId>
         <version>1.47</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -322,6 +318,7 @@
   </reporting>
   <modules>
     <module>../core</module>
+    <module>../core-test</module>
     <module>../management</module>
     <module>../management-compute</module>
     <module>../management-media</module>
