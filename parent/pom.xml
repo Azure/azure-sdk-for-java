@@ -321,6 +321,7 @@
     <module>../core-test</module>
     <module>../management</module>
     <module>../management-compute</module>
+    <module>../management-compute2</module>
     <module>../management-media</module>
     <module>../management-resources</module>
     <module>../management-scheduler</module>
@@ -329,8 +330,11 @@
     <module>../management-storage</module>
     <module>../management-storage2</module>
     <module>../management-network</module>
+    <module>../management-network2</module>
     <module>../management-websites</module>
     <module>../management-websites2</module>
+    <module>../management-dns</module>
+    <module>../management-traffic-manager2</module>
     <module>../media</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>

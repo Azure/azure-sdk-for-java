@@ -22,11 +22,11 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-svc-mgmt-network</artifactId>
+  <artifactId>azure-mgmt-network</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Network Management SvcMgmt.</name>
-  <description>This package contains Microsoft Azure SDK for Network Management module for Service Management APIs.</description>
+  <name>Microsoft Azure SDK for Network Management</name>
+  <description>This package contains Microsoft Azure Network Management SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -73,6 +73,24 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-core-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-svc-mgmt-storage</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-svc-mgmt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
