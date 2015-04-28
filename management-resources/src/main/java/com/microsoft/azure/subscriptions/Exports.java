@@ -14,8 +14,6 @@
  */
 package com.microsoft.azure.subscriptions;
 
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
 import com.microsoft.windowsazure.core.Builder;
 
 /**
