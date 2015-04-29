@@ -44,9 +44,10 @@ public class BrokerPropertiesMapperTest {
             + "\"ScheduledEnqueueTimeUtc\": \" Sun, 06 Nov 1994 08:49:37 GMT\","
             + "\"ReplyToSessionId\": \"reptosesid\","
             + "\"MessageLocation\": \"mesloc\","
-            + "\"LockLocation\": \"locloc\"" + "}";
+            + "\"LockLocation\": \"locloc\""
+            + "\"EnqueuedTimeUtc\": \" Wed, 29 Apr 2015 16:48:16 GMT\"" + "}";
 
-    private static Date schedTimeUtc, lockedUntilUtc;
+    private static Date schedTimeUtc, lockedUntilUtc, enqueuedTimeUtc;
 
     @BeforeClass
     public static void setup() {
@@ -58,6 +59,9 @@ public class BrokerPropertiesMapperTest {
         calendar2.set(2011, 9, 14, 12, 34, 56);
         lockedUntilUtc = calendar2.getTime();
 
+        Calendar calendar3 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar3.set(2015, 3, 29, 16, 48, 16);
+        enqueuedTimeUtc = calendar3.getTime();
     }
 
     @Test
@@ -107,6 +111,8 @@ public class BrokerPropertiesMapperTest {
                 - lockedUntilUtc.getTime();
         long schedTimeDelta = properties.getScheduledEnqueueTimeUtc().getTime()
                 - schedTimeUtc.getTime();
+        long enqTimeDelta = properties.getEnqueuedTimeUtc().getTime()
+            - enqueuedTimeUtc.getTime();
 
         assertEquals("corid", properties.getCorrelationId());
         assertEquals("sesid", properties.getSessionId());
@@ -123,6 +129,7 @@ public class BrokerPropertiesMapperTest {
         assertEquals("reptosesid", properties.getReplyToSessionId());
         assertEquals("mesloc", properties.getMessageLocation());
         assertEquals("locloc", properties.getLockLocation());
+        assertTrue(Math.abs(enqTimeDelta) < 2000);
     }
 
     @Test

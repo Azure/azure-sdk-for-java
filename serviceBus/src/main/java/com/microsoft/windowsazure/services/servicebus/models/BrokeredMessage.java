@@ -489,4 +489,14 @@ public class BrokeredMessage {
     public String getLockLocation() {
         return brokerProperties.getLockLocation();
     }
+
+    /**
+     * Returns the enqueued date/time.
+     *
+     * @return A <code>Date</code> object that represents the date/time of the
+     *         message in UTC format.
+     */
+    public Date getEnqueuedTimeUtc() {
+        return brokerProperties.getEnqueuedTimeUtc();
+    }
 }

@@ -75,6 +75,9 @@ public class BrokerProperties {
     @JsonProperty("LockLocation")
     private String lockLocation;
 
+    @JsonProperty("EnqueuedTimeUtc")
+    private Date enqueuedTimeUtc;
+
     @JsonIgnore
     public Integer getDeliveryCount() {
         return deliveryCount;
@@ -208,6 +211,15 @@ public class BrokerProperties {
 
     public void setLockLocation(String lockLocation) {
         this.lockLocation = lockLocation;
+    }
+
+    @JsonIgnore
+    public Date getEnqueuedTimeUtc() {
+        return enqueuedTimeUtc;
+    }
+
+    public void setEnqueuedTimeUtc(Date enqueuedTimeUtc) {
+        this.enqueuedTimeUtc = enqueuedTimeUtc;
     }
 
 }
