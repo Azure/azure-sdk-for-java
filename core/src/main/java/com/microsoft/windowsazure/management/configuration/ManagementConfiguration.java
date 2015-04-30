@@ -318,6 +318,7 @@ public final class ManagementConfiguration {
      * @param subscriptionId            A <code>String</code> object that represents the subscription
      *            ID.
      *            the keystore.
+     * @param token          The authentication token
      * @return A <code>Configuration</code> object that can be used when
      *         creating an instance of the <code>ManagementContract</code>
      *         class.
