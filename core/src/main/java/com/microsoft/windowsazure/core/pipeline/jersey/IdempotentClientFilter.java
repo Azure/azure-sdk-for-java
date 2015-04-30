@@ -51,7 +51,6 @@ public abstract class IdempotentClientFilter extends ClientFilter {
      * @param cr
      *            The ClientRequest being processed
      * @return The returned ClientResponse
-     * @throws ClientHandlerException
      */
     protected abstract ClientResponse doHandle(ClientRequest cr);
 
