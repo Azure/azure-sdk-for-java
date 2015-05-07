@@ -15,23 +15,10 @@
  * limitations under the License.
  * 
  */
-package com.microsoft.windowsazure.core.pipeline.apache;
 
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.protocol.HttpContext;
+package com.microsoft.azure.keyvault.models;
 
-import com.microsoft.windowsazure.credentials.AdalAuthFilter;
-
-public class AdalAuthInterceptor implements HttpRequestInterceptor {
-    private AdalAuthFilter filter;
-
-    public AdalAuthInterceptor(AdalAuthFilter filter) {
-        this.filter = filter;
-    }
-
-    @Override
-    public void process(HttpRequest request, HttpContext context) {
-        filter.filter(new HttpServiceRequestContext(request, context));
-    }
+public class DeleteKeyRequestMessage {
+    // Since DELETE is a POST operation, it must have a body.
+    // But so far there is no field.
 }

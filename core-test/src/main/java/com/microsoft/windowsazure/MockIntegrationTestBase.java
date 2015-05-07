@@ -349,7 +349,7 @@ public class MockIntegrationTestBase {
 
         ResponseDefinitionBuilder rBuilder = aResponse().withStatus(Integer.parseInt(responseData.get("StatusCode")));
         for (Entry<String, String> header : responseData.entrySet()) {
-            if (!header.getKey().equals("StatusCode") && !header.getKey().equals("Body")) {
+            if (!header.getKey().equals("StatusCode") && !header.getKey().equals("Body") && !header.getKey().equals("Content-Length")) {
                 String rawHeader = header.getValue();
                 for (Entry<String, String> rule : regexRules.entrySet()) {
                     if (rule.getValue() != null) {
@@ -368,6 +368,7 @@ public class MockIntegrationTestBase {
                 }
             }
             rBuilder.withBody(rawBody);
+            rBuilder.withHeader("Content-Length", String.valueOf(rawBody.getBytes("UTF-8").length));
         }
 
         mBuilder.willReturn(rBuilder);

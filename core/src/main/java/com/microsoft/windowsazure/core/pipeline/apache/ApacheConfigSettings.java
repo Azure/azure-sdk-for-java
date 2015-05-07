@@ -104,10 +104,10 @@ public class ApacheConfigSettings {
         
         if (properties.containsKey("AuthFilters"))
         {
-        	ArrayList<AdalAuthFilter> filters = (ArrayList<AdalAuthFilter>)properties.get("AuthFilters");
-        	for (AdalAuthFilter filter : filters) {
-        		httpClientBuilder.addInterceptorFirst(new AdalAuthInterceptor(filter));
-        	}
+            ArrayList<ServiceRequestFilter> filters = (ArrayList<ServiceRequestFilter>) properties.get("AuthFilters");
+            for (ServiceRequestFilter filter : filters) {
+                httpClientBuilder.addInterceptorFirst(new FilterInterceptor(filter));
+            }
         }
 
         return httpClientBuilder;

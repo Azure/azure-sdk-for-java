@@ -16,35 +16,26 @@
  * 
  */
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+package com.microsoft.azure.keyvault.models;
 
-import java.net.URI;
-import java.util.Map;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-public interface ServiceRequestContext {
-    String getMethod();
+public class VerifyResponseMessage {
+    @JsonProperty(MessagePropertyNames.VALUE)
+    private boolean value;
 
-    void setMethod(String method);
+    /**
+     * @return The Value value
+     */
+    public boolean getValue() {
+        return this.value;
+    }
 
-    URI getURI();
-
-    void setURI(URI uri);
-
-    URI getFullURI();
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
+    /**
+     * @param valueValue
+     *            The Value value
+     */
+    public void setValue(boolean valueValue) {
+        this.value = valueValue;
+    }
 }
