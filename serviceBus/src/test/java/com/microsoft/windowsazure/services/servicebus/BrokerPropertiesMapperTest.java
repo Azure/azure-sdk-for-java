@@ -192,4 +192,21 @@ public class BrokerPropertiesMapperTest {
                 - lockedUntilUtc.getTime();
         assertTrue(Math.abs(lockedUntilDelta) < 2000);
     }
+    
+    @Test
+    public void dateSerializeCorrectlyToRFC2616() {
+    	// Arrange
+        BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
+        Date date = new Date(1432120118000L);
+
+        // Act
+        BrokerProperties properties = new BrokerProperties();
+        properties.setScheduledEnqueueTimeUtc(date);
+        String json = mapper.toString(properties);
+
+        // Assert
+        assertNotNull(json);
+        assertEquals("{\"ScheduledEnqueueTimeUtc\":\"Wed, 20 May 2015 11:08:38 GMT\"}", json);
+    	
+    }
 }

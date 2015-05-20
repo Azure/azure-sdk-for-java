@@ -17,8 +17,10 @@ package com.microsoft.windowsazure.services.servicebus.implementation;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -30,9 +32,7 @@ public class BrokerPropertiesMapper {
     public BrokerProperties fromString(String value) {
 
         ObjectMapper mapper = new ObjectMapper();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        mapper.setDateFormat(simpleDateFormat);
+        mapper.setDateFormat(getRFC2616DateFormatter());
         try {
             return mapper.readValue(value.getBytes("UTF-8"),
                     BrokerProperties.class);
@@ -47,6 +47,7 @@ public class BrokerPropertiesMapper {
 
     public String toString(BrokerProperties value) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(getRFC2616DateFormatter());
         Writer writer = new StringWriter();
         try {
             mapper.writeValue(writer, value);
@@ -58,6 +59,13 @@ public class BrokerPropertiesMapper {
             throw new RuntimeException(e);
         }
         return writer.toString();
+    }
+    
+    private DateFormat getRFC2616DateFormatter() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return simpleDateFormat;
     }
 
 }
