@@ -41,6 +41,7 @@ import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.table.TableQuery.QueryComparisons;
 import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 import com.microsoft.azure.storage.table.TableTestHelper.ComplexEntity;
+import com.microsoft.azure.storage.table.TableTestHelper.EmptyClass;
 
 /**
  * Table Query Tests
@@ -99,6 +100,72 @@ public class TableQueryTests {
         catch (IllegalArgumentException ex) {
             assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
         }
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testTableWithSelectOnMissingFields() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableWithSelectOnMissingFields(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableWithSelectOnMissingFields(options);
+        
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableWithSelectOnMissingFields(options);
+    }
+    
+    private void testTableWithSelectOnMissingFields(TableRequestOptions options) throws StorageException {
+        TableQuery<DynamicTableEntity> projectionQuery = TableQuery.from(DynamicTableEntity.class).where(
+                "(PartitionKey eq 'javatables_batch_0') and (RowKey eq '000000')");
+        
+        // A exists, F does not
+        projectionQuery.select(new String[]{"A", "F"});
+        
+        ResultSegment<DynamicTableEntity> seg = table.executeSegmented(projectionQuery, null, options, null);
+        assertEquals(1, seg.getResults().size());
+        
+        DynamicTableEntity ent = seg.getResults().get(0);
+        assertEquals("foo_A", ent.getProperties().get("A").getValueAsString());
+        assertEquals(null, ent.getProperties().get("F").getValueAsString());
+        assertEquals(EdmType.STRING, ent.getProperties().get("F").getEdmType());
+    }
+
+    @Test
+    public void testTableQueryWithSpecialChars() throws StorageException, URISyntaxException {
+        CloudTable table = TableTestHelper.getRandomTableReference();
+
+        try {
+            table.createIfNotExists();
+
+            testTableQueryWithSpecialChars('\'', table);
+            testTableQueryWithSpecialChars('=', table);
+            testTableQueryWithSpecialChars('_', table);
+            testTableQueryWithSpecialChars(' ', table);
+            testTableQueryWithSpecialChars('界', table);
+        }
+        finally {
+            table.deleteIfExists();
+        }
+    }
+    
+    private void testTableQueryWithSpecialChars(char charToTest, CloudTable table) 
+            throws StorageException, URISyntaxException {
+        String partitionKey = "partition" + charToTest + "key";
+        String rowKey = "row" + charToTest + "key";
+        
+        EmptyClass ref = new EmptyClass();
+        ref.setPartitionKey(partitionKey);
+        ref.setRowKey(rowKey);
+        
+        table.execute(TableOperation.insert(ref));
+        String condition = TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY, QueryComparisons.EQUAL, partitionKey);
+        ResultSegment<EmptyClass> seg = table.executeSegmented(TableQuery.from(EmptyClass.class).where(condition), null);
+        
+        assertEquals(1, seg.getLength());
+        assertEquals(partitionKey, seg.getResults().get(0).getPartitionKey());
     }
 
     @SuppressWarnings("deprecation")

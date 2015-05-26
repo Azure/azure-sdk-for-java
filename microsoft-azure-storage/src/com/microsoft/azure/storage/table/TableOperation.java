@@ -309,7 +309,7 @@ public class TableOperation {
             public HttpURLConnection buildRequest(CloudTableClient client, TableOperation operation,
                     OperationContext context) throws Exception {
                 return TableRequest.delete(client.getTransformedEndPoint(context).getUri(this.getCurrentLocation()),
-                        options, null, context, tableName, generateRequestIdentity(isTableEntry, tableIdentity, false),
+                        options, null, context, tableName, generateRequestIdentity(isTableEntry, tableIdentity),
                         operation.getEntity().getEtag());
             }
 
@@ -407,7 +407,7 @@ public class TableOperation {
                     this.setLength((long) entityBytes.length);
                     return TableRequest.insert(
                             client.getTransformedEndPoint(opContext).getUri(this.getCurrentLocation()), options, null,
-                            opContext, tableName, generateRequestIdentity(isTableEntry, tableIdentity, false),
+                            opContext, tableName, generateRequestIdentity(isTableEntry, tableIdentity),
                             operation.opType != TableOperationType.INSERT ? operation.getEntity().getEtag() : null,
                             operation.getEchoContent(), operation.opType.getUpdateType());
                 }
@@ -559,7 +559,7 @@ public class TableOperation {
                     this.setLength((long) entityBytes.length);
                     return TableRequest.merge(client.getTransformedEndPoint(opContext)
                             .getUri(this.getCurrentLocation()), options, null, opContext, tableName,
-                            generateRequestIdentity(false, null, false), operation.getEntity().getEtag());
+                            generateRequestIdentity(false, null), operation.getEntity().getEtag());
                 }
 
                 @Override
@@ -663,7 +663,7 @@ public class TableOperation {
                     this.setLength((long) entityBytes.length);
                     return TableRequest.update(
                             client.getTransformedEndPoint(context).getUri(this.getCurrentLocation()), options, null,
-                            context, tableName, generateRequestIdentity(false, null, false), operation.getEntity()
+                            context, tableName, generateRequestIdentity(false, null), operation.getEntity()
                                     .getEtag());
                 }
 
@@ -778,17 +778,15 @@ public class TableOperation {
      * @param entryName
      *            The entry name to use as the request identity if the <code>isSingleIndexEntry</code> parameter is
      *            <code>true</code>.
-     * @param encodeKeys
-     *            Pass <code>true</code> to url encode the partition & row keys
      * @return
      *         A <code>String</code> which represents the formatted request identity string.
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    protected String generateRequestIdentity(boolean isSingleIndexEntry, final String entryName, boolean encodeKeys)
+    protected String generateRequestIdentity(boolean isSingleIndexEntry, final String entryName)
             throws StorageException {
         if (isSingleIndexEntry) {
-            return String.format("'%s'", entryName);
+            return String.format("'%s'", entryName.replace("'", "''"));
         }
 
         if (this.opType == TableOperationType.INSERT) {
@@ -808,8 +806,9 @@ public class TableOperation {
                 rk = this.getEntity().getRowKey();
             }
 
-            return String.format("%s='%s',%s='%s'", TableConstants.PARTITION_KEY, encodeKeys ? Utility.safeEncode(pk)
-                    : pk, TableConstants.ROW_KEY, encodeKeys ? Utility.safeEncode(rk) : rk);
+            return String.format("%s='%s',%s='%s'", 
+                    TableConstants.PARTITION_KEY, pk.replace("'", "''"), 
+                    TableConstants.ROW_KEY, rk.replace("'", "''"));
         }
     }
 
@@ -825,7 +824,7 @@ public class TableOperation {
      * @throws StorageException
      */
     protected String generateRequestIdentityWithTable(final String tableName) throws StorageException {
-        return String.format("%s(%s)", tableName, generateRequestIdentity(false, null, false));
+        return String.format("%s(%s)", tableName, generateRequestIdentity(false, null));
     }
 
     /**

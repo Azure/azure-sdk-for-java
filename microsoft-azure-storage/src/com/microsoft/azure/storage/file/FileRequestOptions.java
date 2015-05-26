@@ -91,8 +91,27 @@ public final class FileRequestOptions extends RequestOptions {
      */
     protected static final FileRequestOptions applyDefaults(final FileRequestOptions options,
             final CloudFileClient client) {
+        return FileRequestOptions.applyDefaults(options, client, true);
+    }
+    
+    /**
+     * Uses the concurrent request count from the specified client if <code>null</code>, sets a default value for
+     * everything else, and sets defaults as defined in the parent class.
+     * 
+     * @param options
+     *            The input options to copy from when applying defaults
+     * @param client
+     *            A {@link CloudFileClient} object that represents the service client used to set the default timeout
+     *            interval and retry policy, if they are <code>null</code>. Additionally, if the
+     *            {@link #concurrentRequestCount} field's value is null, it will be set to the value specified by the
+     *            cloud blob client's {@link CloudFileClient#getConcurrentRequestCount} method.
+     * @param setStartTime
+     *            whether to initialize the startTimeInMs field, or not
+     */
+    protected static final FileRequestOptions applyDefaults(final FileRequestOptions options, 
+            final CloudFileClient client, final boolean setStartTime) {
         FileRequestOptions modifiedOptions = new FileRequestOptions(options);
-        FileRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions());
+        FileRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), setStartTime);
         return FileRequestOptions.applyDefaultsInternal(modifiedOptions, client);
     }
 
@@ -123,8 +142,8 @@ public final class FileRequestOptions extends RequestOptions {
      * Populates any null fields in the first requestOptions object with values from the second requestOptions object.
      */
     private static final FileRequestOptions populateRequestOptions(FileRequestOptions modifiedOptions,
-            final FileRequestOptions clientOptions) {
-        RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, false);
+            final FileRequestOptions clientOptions, boolean setStartTime) {
+        RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, setStartTime);
         if (modifiedOptions.getConcurrentRequestCount() == null) {
             modifiedOptions.setConcurrentRequestCount(clientOptions.getConcurrentRequestCount());
         }

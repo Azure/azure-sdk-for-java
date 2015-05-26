@@ -1,3 +1,11 @@
+2015.05.26 Version 2.2.0
+ * Fixed a bug where maximum execution time was ignored for file, queue, and table services.
+ * Changed the socket timeout to be set to the service side timeout plus 5 minutes when maximum execution time is not set.
+ * Changed the socket timeout to default to 5 minutes rather than infinite when neither service side timeout or maximum execution time are set.
+ * Fixed a bug where MD5 was calculated for commitBlockList even though UseTransactionalMD5 was set to false.
+ * Fixed a bug where selecting fields that did not exist returned an error rather than an EntityProperty with a null value.
+ * Fixed a bug where table entities with a single quote in their partition or row key could be inserted but not operated on in any other way.
+
 2015.04.01 Version 2.1.0
  * Fixed a bug for all listing API's where next() would sometimes throw an exception if hasNext() had not been called even if there were more elements to iterate on.
  * Added sequence number to the blob properties. This is populated for page blobs.

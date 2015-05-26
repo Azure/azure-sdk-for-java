@@ -87,6 +87,32 @@ public class TableOperationTests {
                     String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
         }
     }
+    
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testEntityWithSingleQuote() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testEntityWithSingleQuote(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testEntityWithSingleQuote(options);
+    }
+
+    private void testEntityWithSingleQuote(TableRequestOptions options) throws StorageException {
+        EmptyClass ref = new EmptyClass();
+        ref.setPartitionKey("partition'key");
+        ref.setRowKey("row'key");
+        
+       this.table.execute(TableOperation.insert(ref), options, null);
+       this.table.execute(TableOperation.merge(ref), options, null);
+       this.table.execute(TableOperation.insertOrReplace(ref), options, null);
+       this.table.execute(TableOperation.insertOrMerge(ref), options, null);
+       this.table.execute(TableOperation.replace(ref), options, null);
+       this.table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), EmptyClass.class), options, null);       
+       this.table.execute(TableOperation.delete(ref), options, null);
+    }
 
     @SuppressWarnings("deprecation")
     @Test

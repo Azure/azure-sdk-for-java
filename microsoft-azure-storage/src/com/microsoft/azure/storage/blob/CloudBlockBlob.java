@@ -259,7 +259,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
             // This also marks the stream. Therefore no need to mark it in buildRequest.
             final StreamMd5AndLength descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L,
-                    true /* rewindSourceStream */, true /* calculateMD5 */);
+                    true /* rewindSourceStream */, options.getUseTransactionalContentMD5() /* calculateMD5 */);
 
             final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
                     options, this.getStorageUri()) {
@@ -278,7 +278,9 @@ public final class CloudBlockBlob extends CloudBlob {
                 public void setHeaders(HttpURLConnection connection, CloudBlob blob, OperationContext context) {
                     BlobRequest.addMetadata(connection, blob.metadata, context);
 
-                    connection.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
+                    if (options.getUseTransactionalContentMD5()) {
+                        connection.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
+                    }
                 }
 
                 @Override
@@ -473,7 +475,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.applyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient, false);
+        options = BlobRequestOptions.applyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient, 
+                false /* setStartTime */);
 
         return new BlobOutputStream(this, accessCondition, options, opContext);
     }

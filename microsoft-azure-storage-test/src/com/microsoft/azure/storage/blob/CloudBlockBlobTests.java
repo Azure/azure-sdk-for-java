@@ -481,6 +481,47 @@ public class CloudBlockBlobTests {
         blockBlobRef.downloadBlockList();
         assertEquals(length, blockBlobRef.getProperties().getLength());
     }
+    
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCommitBlockListContentMd5() throws URISyntaxException, StorageException, IOException {
+        int length = 1024;
+        byte[] buffer = BlobTestHelper.getRandomBuffer(length);
+        Map<String, BlockEntry> blocks = BlobTestHelper.getBlockEntryList(3);
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("blob1");
+
+        CloudBlockBlob blob = this.container.getBlockBlobReference(blobName);
+        for (BlockEntry block : blocks.values()) {
+            blob.uploadBlock(block.getId(), new ByteArrayInputStream(buffer), length);
+        }
+        
+        OperationContext ctx = new OperationContext();
+        ctx.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                HttpURLConnection conn = (HttpURLConnection)eventArg.getConnectionObject();
+                assertNull(conn.getRequestProperty("Content-MD5"));
+            }
+        });
+        
+        blob.commitBlockList(blocks.values(), null, null, ctx);
+        
+        BlobRequestOptions opt = new BlobRequestOptions();
+        opt.setUseTransactionalContentMD5(true);
+        
+        ctx = new OperationContext();
+        ctx.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                HttpURLConnection conn = (HttpURLConnection)eventArg.getConnectionObject();
+                assertNotNull(conn.getRequestProperty("Content-MD5"));
+            }
+        });
+        
+        blob.commitBlockList(blocks.values(), null, opt, ctx);
+    }
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })

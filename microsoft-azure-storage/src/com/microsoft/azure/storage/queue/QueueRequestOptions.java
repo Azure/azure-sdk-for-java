@@ -53,7 +53,7 @@ public final class QueueRequestOptions extends RequestOptions {
      */
     protected static final QueueRequestOptions applyDefaults(QueueRequestOptions options, final CloudQueueClient client) {
         QueueRequestOptions modifiedOptions = new QueueRequestOptions(options);
-        RequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), false);
+        RequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), true /* setStartTime */);
         return QueueRequestOptions.applyDefaultsInternal(modifiedOptions, client);
     }
 
