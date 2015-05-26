@@ -379,15 +379,17 @@ public final class Utility {
     }
 
     /**
-     * Returns a value representing the remaining time before the operation expires. 0 represents an infinite timeout.
+     * Returns a value representing the remaining time before the operation expires.
      * 
      * @param operationExpiryTimeInMs
      *            the time the request expires
-     * @return the remaining time before the operation expires, or 0 to represent an infinite timeout
+     * @param timeoutIntervalInMs
+     *            the server side timeout interval
+     * @return the remaining time before the operation expires
      * @throws StorageException
      *             wraps a TimeoutException if there is no more time remaining
      */
-    public static int getRemainingTimeout(Long operationExpiryTimeInMs) throws StorageException {
+    public static int getRemainingTimeout(Long operationExpiryTimeInMs, Integer timeoutIntervalInMs) throws StorageException {
         if (operationExpiryTimeInMs != null) {
             long remainingTime = operationExpiryTimeInMs - new Date().getTime();
             if (remainingTime > Integer.MAX_VALUE) {
@@ -404,9 +406,11 @@ public final class Utility {
                 throw translatedException;
             }
         }
+        else if (timeoutIntervalInMs != null) {
+            return timeoutIntervalInMs + Constants.DEFAULT_READ_TIMEOUT;
+        }
         else {
-            // represents an infinite timeout
-            return 0;
+            return Constants.DEFAULT_READ_TIMEOUT;
         }
     }
 

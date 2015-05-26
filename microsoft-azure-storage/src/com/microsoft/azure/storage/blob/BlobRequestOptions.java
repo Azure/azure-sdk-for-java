@@ -119,11 +119,11 @@ public final class BlobRequestOptions extends RequestOptions {
             final CloudBlobClient client, final boolean setStartTime) {
         BlobRequestOptions modifiedOptions = new BlobRequestOptions(options);
         BlobRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), setStartTime);
-        return BlobRequestOptions.applyDefaultsInternal(modifiedOptions, blobType, client, setStartTime);
+        return BlobRequestOptions.applyDefaultsInternal(modifiedOptions, blobType, client);
     }
 
     private static final BlobRequestOptions applyDefaultsInternal(final BlobRequestOptions modifiedOptions,
-            final BlobType blobtype, final CloudBlobClient client, final boolean setStartTime) {
+            final BlobType blobtype, final CloudBlobClient client) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         RequestOptions.applyBaseDefaultsInternal(modifiedOptions);
         if (modifiedOptions.getConcurrentRequestCount() == null) {

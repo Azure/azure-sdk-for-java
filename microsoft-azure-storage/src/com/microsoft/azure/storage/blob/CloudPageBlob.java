@@ -574,7 +574,8 @@ public final class CloudPageBlob extends CloudBlob {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient, false);
+        options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient, 
+                false /* setStartTime */);
 
         if (options.getStoreBlobContentMD5()) {
             throw new IllegalArgumentException(SR.BLOB_MD5_NOT_SUPPORTED_FOR_PAGE_BLOBS);

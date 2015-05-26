@@ -206,7 +206,7 @@ public class QueryTableOperation extends TableOperation {
                 return TableRequest
                         .query(client.getTransformedEndPoint(context).getUri(this.getCurrentLocation()), options,
                                 null/* Query Builder */, context, tableName,
-                                generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false), null/* Continuation Token */);
+                                generateRequestIdentity(isTableEntry, operation.getPartitionKey()), null/* Continuation Token */);
             }
 
             @Override

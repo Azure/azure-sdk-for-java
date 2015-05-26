@@ -393,7 +393,7 @@ public class TableQuery<T extends TableEntity> {
             valueOperand = String.format("X'%s'", value);
         }
         else {
-            valueOperand = String.format("'%s'", value);
+            valueOperand = String.format("'%s'", value.replace("'", "''"));
         }
 
         return String.format("%s %s %s", propertyName, operation, valueOperand);

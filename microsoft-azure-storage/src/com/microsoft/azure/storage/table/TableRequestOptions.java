@@ -133,7 +133,7 @@ public class TableRequestOptions extends RequestOptions {
      */
     private static final RequestOptions populateRequestOptions(TableRequestOptions modifiedOptions,
             final TableRequestOptions clientOptions) {
-        RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, false);
+        RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, true /* setStartTime */);
         if (modifiedOptions.getTablePayloadFormat() == null) {
             modifiedOptions.setTablePayloadFormat(clientOptions.getTablePayloadFormat());
         }

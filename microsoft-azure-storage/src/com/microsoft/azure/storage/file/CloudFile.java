@@ -1526,7 +1526,7 @@ public class CloudFile implements ListFileItem {
             opContext = new OperationContext();
         }
 
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
         return new FileInputStream(this, accessCondition, options, opContext);
     }
@@ -1647,7 +1647,7 @@ public class CloudFile implements ListFileItem {
         if (opContext == null) {
             opContext = new OperationContext();
         }
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
         if (length != null) {
             if (options.getStoreFileContentMD5()) {
