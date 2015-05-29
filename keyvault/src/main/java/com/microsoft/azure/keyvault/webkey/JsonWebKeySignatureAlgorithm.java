@@ -16,35 +16,25 @@
  * 
  */
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+package com.microsoft.azure.keyvault.webkey;
 
-import java.net.URI;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public interface ServiceRequestContext {
-    String getMethod();
+/**
+ * Supported JsonWebKey Algorithms
+ */
+public final class JsonWebKeySignatureAlgorithm {
 
-    void setMethod(String method);
+    public static final String RS256 = "RS256";
+    public static final String RS384 = "RS384";
+    public static final String RS512 = "RS512";
+    public static final String RSNULL = "RSNULL";
 
-    URI getURI();
+    public static final List<String> ALL_ALGORITHMS = Collections.unmodifiableList(Arrays.asList(new String[] {RS256, RS384, RS512, RSNULL }));
 
-    void setURI(URI uri);
-
-    URI getFullURI();
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
+    private JsonWebKeySignatureAlgorithm() {
+        // not instantiable
+    }
 }

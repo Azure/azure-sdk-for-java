@@ -16,35 +16,24 @@
  * 
  */
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+package com.microsoft.azure.keyvault.webkey;
 
-import java.net.URI;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public interface ServiceRequestContext {
-    String getMethod();
+/**
+ * Supported JsonWebKey Algorithms
+ */
+public final class JsonWebKeyEncryptionAlgorithms {
 
-    void setMethod(String method);
+    public static final String RSAOAEP = "RSA-OAEP";
+    public static final String RSA15 = "RSA1_5";
 
-    URI getURI();
+    public static final List<String> ALL_ALGORITHMS = Collections.unmodifiableList(Arrays.asList(new String[] {RSA15, RSAOAEP }));
 
-    void setURI(URI uri);
+    private JsonWebKeyEncryptionAlgorithms() {
+        // not instantiable
+    }
 
-    URI getFullURI();
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
 }

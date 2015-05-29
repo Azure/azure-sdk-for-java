@@ -62,6 +62,26 @@ public class JerseyServiceRequestContext implements ServiceRequestContext {
     }
 
     @Override
+    public URI getFullURI() {
+        URI result = getURI();
+        if (isFullURI(result)) {
+            return result;
+        }
+        throw new UnsupportedOperationException("The full URI is not available");
+    }
+
+    private static boolean isFullURI(URI uri) {
+        if (uri == null) {
+            return false;
+        }
+        String host = uri.getHost();
+        if (host == null || host.length() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String getMethod() {
         return clientRequest.getMethod();
     }

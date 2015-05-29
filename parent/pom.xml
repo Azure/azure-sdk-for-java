@@ -320,6 +320,7 @@
   <modules>
     <module>../core</module>
     <module>../core-test</module>
+    <module>../keyvault</module>
     <module>../management</module>
     <module>../management-compute</module>
     <module>../management-compute2</module>

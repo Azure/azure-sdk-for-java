@@ -16,35 +16,22 @@
  * 
  */
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+package com.microsoft.azure.keyvault;
 
-import java.net.URI;
-import java.util.Map;
+import java.io.IOException;
+import java.util.concurrent.Future;
 
-public interface ServiceRequestContext {
-    String getMethod();
+import com.microsoft.azure.keyvault.models.Secret;
 
-    void setMethod(String method);
+final class SecretFuture extends FutureAdapter<SecretResponseMessageWithRawJsonContent, Secret> {
 
-    URI getURI();
+    public SecretFuture(Future<SecretResponseMessageWithRawJsonContent> inner) {
+        super(inner);
+    }
 
-    void setURI(URI uri);
+    @Override
+    protected Secret translate(SecretResponseMessageWithRawJsonContent a) throws IOException {
+        return JsonSupport.getJsonReader(Secret.class).readValue(a.getResponse());
+    }
 
-    URI getFullURI();
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
 }

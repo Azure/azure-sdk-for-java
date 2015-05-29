@@ -16,35 +16,22 @@
  * 
  */
 
-package com.microsoft.windowsazure.core.pipeline.filter;
+package com.microsoft.azure.keyvault.models;
 
-import java.net.URI;
-import java.util.Map;
+public final class SecretIdentifier extends ObjectIdentifier {
+    public static boolean isSecretIdentifier(String identifier) {
+        return ObjectIdentifier.isObjectIdentifier("secrets", identifier);
+    }
 
-public interface ServiceRequestContext {
-    String getMethod();
+    public SecretIdentifier(String vault, String name) {
+        this(vault, name, null);
+    }
 
-    void setMethod(String method);
+    public SecretIdentifier(String vault, String name, String version) {
+        super(vault, "secrets", name, version);
+    }
 
-    URI getURI();
-
-    void setURI(URI uri);
-
-    URI getFullURI();
-
-    String getHeader(String name);
-
-    void setHeader(String name, String value);
-
-    void removeHeader(String name);
-
-    Object getEntity();
-
-    void setEntity(Object entity);
-
-    Object getProperty(String name);
-
-    void setProperty(String name, Object value);
-
-    Map<String, String> getAllHeaders();
+    public SecretIdentifier(String identifier) {
+        super("secrets", identifier);
+    }
 }
