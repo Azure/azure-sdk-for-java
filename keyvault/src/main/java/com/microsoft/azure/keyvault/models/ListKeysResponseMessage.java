@@ -22,12 +22,12 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ListKeysResponseMessage {
     @JsonProperty(MessagePropertyNames.VALUE)
-    private Iterable<KeyItem> value;
+    private KeyItem[] value;
 
     /**
      * @return The Value value
      */
-    public Iterable<KeyItem> getValue() {
+    public KeyItem[] getValue() {
         return this.value;
     }
 
@@ -35,7 +35,7 @@ public class ListKeysResponseMessage {
      * @param valueValue
      *            The Value value
      */
-    public void setValue(Iterable<KeyItem> valueValue) {
+    public void setValue(KeyItem[] valueValue) {
         this.value = valueValue;
     }
 

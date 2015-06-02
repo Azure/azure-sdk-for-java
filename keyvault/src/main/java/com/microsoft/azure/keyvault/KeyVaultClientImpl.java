@@ -49,6 +49,7 @@ import com.microsoft.azure.keyvault.models.Secret;
 import com.microsoft.azure.keyvault.models.SecretAttributes;
 import com.microsoft.azure.keyvault.models.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.UpdateKeyRequestMessage;
+import com.microsoft.azure.keyvault.models.VerifyRequestMessage;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
@@ -197,8 +198,8 @@ public class KeyVaultClientImpl implements KeyVaultClient {
 
     @Override
     public Future<Boolean> verifyAsync(String keyIdentifier, String algorithm, byte[] digest, byte[] signature) {
-        KeyOpRequestMessageWithRawJsonContent keyOpRequest = createKeyOpRequest(algorithm, signature);
-        Future<KeyOpResponseMessageWithRawJsonContent> rawResult = getKeysOperations().decryptDataAsync(keyIdentifier, keyOpRequest);
+        KeyOpRequestMessageWithRawJsonContent keyOpRequest = createVerifyOpRequest(algorithm, digest, signature);
+        Future<KeyOpResponseMessageWithRawJsonContent> rawResult = getKeysOperations().verifyAsync(keyIdentifier, keyOpRequest);
         VerifyFuture result = new VerifyFuture(rawResult);
         return result;
     }
@@ -206,7 +207,7 @@ public class KeyVaultClientImpl implements KeyVaultClient {
     @Override
     public Future<KeyOperationResult> wrapKeyAsync(String vault, String keyName, String keyVersion, String algorithm, byte[] key) {
         String keyIdentifier = createKeyIdentifier(vault, keyName, keyVersion);
-        return signAsync(keyIdentifier, algorithm, key);
+        return wrapKeyAsync(keyIdentifier, algorithm, key);
     }
 
     @Override
@@ -420,6 +421,15 @@ public class KeyVaultClientImpl implements KeyVaultClient {
         KeyOperationRequest request = new KeyOperationRequest();
         request.setAlg(algorithm);
         request.setValue(data);
+        KeyOpRequestMessageWithRawJsonContent keyOpRequest = JsonSupport.serializeKeyOpRequest(request);
+        return keyOpRequest;
+    }
+
+    private static KeyOpRequestMessageWithRawJsonContent createVerifyOpRequest(String algorithm, byte[] digest, byte[] signature) {
+        VerifyRequestMessage request = new VerifyRequestMessage();
+        request.setAlg(algorithm);
+        request.setDigest(digest);
+        request.setValue(signature);
         KeyOpRequestMessageWithRawJsonContent keyOpRequest = JsonSupport.serializeKeyOpRequest(request);
         return keyOpRequest;
     }

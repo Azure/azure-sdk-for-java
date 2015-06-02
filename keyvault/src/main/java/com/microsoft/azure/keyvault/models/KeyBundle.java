@@ -36,14 +36,6 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 @JsonAutoDetect(getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class KeyBundle {
 
-    public KeyIdentifier getKeyIdentifier() {
-        if (this.key == null || this.key.getKid() == null || this.key.getKid().length() == 0) {
-            return null;
-        }
-
-        return new KeyIdentifier(this.key.getKid());
-    }
-
     /**
      * The Json web key
      */
@@ -113,6 +105,13 @@ public class KeyBundle {
     public KeyBundle() {
         this.key = new JsonWebKey();
         this.attributes = new KeyAttributes();
+    }
+
+    public KeyIdentifier getKeyIdentifier() {
+        if (key == null || key.getKid() == null || key.getKid().length() == 0) {
+            return null;
+        }
+        return new KeyIdentifier(key.getKid());
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Base64UrlSerializer extends JsonSerializer<byte[]> {
         } else if (value.length == 0) {
             text = "";
         } else {
-            text = new Base64(true).encodeAsString(value);
+            text = new Base64(-1, null, true).encodeAsString(value);
         }
         jgen.writeString(text);
     }

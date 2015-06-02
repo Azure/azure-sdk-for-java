@@ -19,7 +19,16 @@
 package com.microsoft.azure.keyvault.webkey;
 
 import java.io.IOException;
-import java.util.List;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Arrays;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
@@ -31,7 +40,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-@JsonAutoDetect(value = { JsonMethod.GETTER, JsonMethod.SETTER }, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.PUBLIC_ONLY)
+@JsonAutoDetect(value = {JsonMethod.GETTER, JsonMethod.SETTER }, getterVisibility = Visibility.PUBLIC_ONLY, setterVisibility = Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
 
     private String kid;
@@ -56,14 +65,14 @@ public class JsonWebKey {
         this.kty = kty;
     }
 
-    private List<String> keyOps;
+    private String[] keyOps;
 
     @JsonProperty("key_ops")
-    public List<String> getKeyOps() {
+    public String[] getKeyOps() {
         return keyOps;
     }
 
-    public void setKeyOps(List<String> keyOps) {
+    public void setKeyOps(String[] keyOps) {
         this.keyOps = keyOps;
     }
 
@@ -197,6 +206,46 @@ public class JsonWebKey {
         this.t = t;
     }
 
+    public void assign(RSAPublicKey key) {
+        setN(toByteArray(key.getModulus()));
+        setE(toByteArray(key.getPublicExponent()));
+        setD(null);
+        setP(null);
+        setQ(null);
+        setDP(null);
+        setDQ(null);
+        setQI(null);
+    }
+
+    public void assign(RSAPrivateCrtKey key) {
+        setN(toByteArray(key.getModulus()));
+        setE(toByteArray(key.getPublicExponent()));
+        setD(toByteArray(key.getPrivateExponent()));
+        setP(toByteArray(key.getPrimeP()));
+        setQ(toByteArray(key.getPrimeQ()));
+        setDP(toByteArray(key.getPrimeExponentP()));
+        setDQ(toByteArray(key.getPrimeExponentQ()));
+        setQI(toByteArray(key.getCrtCoefficient()));
+    }
+
+    private static byte[] toByteArray(BigInteger n) {
+        // System.out.println(vn + " = new BigInteger(\"" + n.toString() + "\");");
+        byte[] result = n.toByteArray();
+        if (result[0] == 0) {
+            return Arrays.copyOfRange(result, 1, result.length);
+        }
+        return result;
+    }
+
+    private static BigInteger toBigInteger(byte[] b) {
+        if (b[0] < 0) {
+            byte[] temp = new byte[1 + b.length];
+            System.arraycopy(b, 0, temp, 1, b.length);
+            b = temp;
+        }
+        return new BigInteger(b);
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -210,4 +259,37 @@ public class JsonWebKey {
             throw new IllegalStateException(e);
         }
     }
+
+    public RSAPublicKeySpec toRSAPublicKeySpec() {
+        BigInteger modulus = toBigInteger(n);
+        BigInteger publicExponent = toBigInteger(e);
+        return new RSAPublicKeySpec(modulus, publicExponent);
+    }
+
+    public RSAPrivateKeySpec toRSAPrivateKeySpec() {
+        BigInteger modulus = toBigInteger(n);
+        BigInteger privateExponent = toBigInteger(d);
+        return new RSAPrivateKeySpec(modulus, privateExponent);
+    }
+
+    public PublicKey toPublicKey() {
+        try {
+            RSAPublicKeySpec publicKeySpec = toRSAPublicKeySpec();
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+            return factory.generatePublic(publicKeySpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public PrivateKey toPrivateKey() {
+        try {
+            RSAPrivateKeySpec privateKeySpec = toRSAPrivateKeySpec();
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+            return factory.generatePrivate(privateKeySpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
 }

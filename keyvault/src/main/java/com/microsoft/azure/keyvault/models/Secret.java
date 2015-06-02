@@ -22,13 +22,16 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * A Secret consisting of a value and id.
  */
+@JsonAutoDetect(getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class Secret {
 
     @JsonProperty("value")
@@ -78,17 +81,11 @@ public class Secret {
     }
 
     /**
-     * @param idValue
+     * @param id
      *            The Id value
      */
-    public void setId(String idValue) {
-        this.id = idValue;
-
-        SecretIdentifier identifierValue = null;
-        if (idValue != null && idValue.length() != 0) {
-            identifierValue = new SecretIdentifier(idValue);
-        }
-        this.secretIdentifier = identifierValue;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @JsonProperty("attributes")
@@ -127,20 +124,18 @@ public class Secret {
         this.tags = tagsValue;
     }
 
-    private SecretIdentifier secretIdentifier;
-
-    /**
-     * @return The SecretIdentifier value
-     */
-    public SecretIdentifier getSecretIdentifier() {
-        return this.secretIdentifier;
-    }
-
     /**
      * Default constructor
      */
     public Secret() {
         this.attributes = new SecretAttributes();
+    }
+
+    public SecretIdentifier getSecretIdentifier() {
+        if (id == null || id.length() == 0) {
+            return null;
+        }
+        return new SecretIdentifier(id);
     }
 
     @Override
