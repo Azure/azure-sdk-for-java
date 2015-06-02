@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.concurrent.Future;
 
 import com.microsoft.azure.keyvault.models.ListSecretsResponseMessage;
-import com.microsoft.azure.keyvault.models.Secret;
 
 final class ListSecretsFuture extends FutureAdapter<SecretResponseMessageWithRawJsonContent, ListSecretsResponseMessage> {
 
@@ -32,7 +31,7 @@ final class ListSecretsFuture extends FutureAdapter<SecretResponseMessageWithRaw
 
     @Override
     protected ListSecretsResponseMessage translate(SecretResponseMessageWithRawJsonContent a) throws IOException {
-        return JsonSupport.getJsonReader(Secret.class).readValue(a.getResponse());
+        return JsonSupport.getJsonReader(ListSecretsResponseMessage.class).readValue(a.getResponse());
     }
 
 }

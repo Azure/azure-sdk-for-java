@@ -84,6 +84,14 @@ public class SecretAttributes {
         this.enabled = enabledValue;
     }
 
+    public Long getNotBeforeUnixTime() {
+        return notBeforeUnixTime;
+    }
+
+    public void setNotBeforeUnixTime(Long notBeforeUnixTime) {
+        this.notBeforeUnixTime = notBeforeUnixTime;
+    }
+
     /**
      * Optional.
      * 
@@ -101,6 +109,14 @@ public class SecretAttributes {
      */
     public void setNotBefore(Date notBeforeValue) {
         this.notBeforeUnixTime = toUnixTime(notBeforeValue);
+    }
+
+    public Long getExpiresUnixTime() {
+        return expiresUnixTime;
+    }
+
+    public void setExpiresUnixTime(Long expiresUnixTime) {
+        this.expiresUnixTime = expiresUnixTime;
     }
 
     /**
@@ -122,6 +138,14 @@ public class SecretAttributes {
         this.expiresUnixTime = toUnixTime(expiresValue);
     }
 
+    public Long getCreatedUnixTime() {
+        return createdUnixTime;
+    }
+
+    public void setCreatedUnixTime(Long createdUnixTime) {
+        this.createdUnixTime = createdUnixTime;
+    }
+
     /**
      * Optional.
      * 
@@ -129,6 +153,14 @@ public class SecretAttributes {
      */
     public Date getCreated() {
         return fromUnixTime(this.createdUnixTime);
+    }
+
+    public Long getUpdatedUnixTime() {
+        return updatedUnixTime;
+    }
+
+    public void setUpdatedUnixTime(Long updatedUnixTime) {
+        this.updatedUnixTime = updatedUnixTime;
     }
 
     /**

@@ -250,7 +250,7 @@ interface KeyOperations {
      *            Required.
      * @return Represents the response to a key operation request.
      */
-    Future<KeyOpResponseMessageWithRawJsonContent> listAsync(String vault, int top);
+    Future<KeyOpResponseMessageWithRawJsonContent> listAsync(String vault, Integer top);
 
     /**
      * List the next page of keys in the vault

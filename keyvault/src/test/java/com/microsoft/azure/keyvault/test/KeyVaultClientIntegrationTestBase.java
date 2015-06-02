@@ -26,6 +26,13 @@ import java.util.concurrent.Future;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectReader;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -176,6 +183,30 @@ public class KeyVaultClientIntegrationTestBase extends MockIntegrationTestBase {
             throw new RuntimeException("authentication result was null");
         }
         return result;
+    }
+
+    protected static ObjectWriter jsonWriter;
+    protected static ObjectReader jsonReader;
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        createKeyVaultClient();
+        jsonWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        jsonReader = new ObjectMapper().reader();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+    }
+
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest(getClass().getSimpleName() + "-" + name.getMethodName());
+    }
+
+    @After
+    public void afterTest() throws Exception {
+        resetTest(getClass().getSimpleName() + "-" + name.getMethodName());
     }
 
 }

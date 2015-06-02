@@ -890,7 +890,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
      * @return Represents the response to a key operation request.
      */
     @Override
-    public Future<KeyOpResponseMessageWithRawJsonContent> listAsync(final String vault, final int top) {
+    public Future<KeyOpResponseMessageWithRawJsonContent> listAsync(final String vault, final Integer top) {
         return this.getClient().getExecutorService().submit(new Callable<KeyOpResponseMessageWithRawJsonContent>() {
             @Override
             public KeyOpResponseMessageWithRawJsonContent call() throws Exception {
