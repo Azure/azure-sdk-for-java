@@ -364,6 +364,10 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             Future<KeyBundle> delPromise = keyVaultClient.deleteKeyAsync(getVaultUri(), keyName);
             delPromise.get();
         }
+        
+        if (!IS_MOCKED) {
+            Thread.sleep(5000); // Avoid throttling in the next test.
+        }        
     }
 
     @Test
@@ -420,6 +424,10 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         Future<KeyBundle> delPromise = keyVaultClient.deleteKeyAsync(getVaultUri(), KEY_NAME);
         delPromise.get();
+        
+        if (!IS_MOCKED) {
+            Thread.sleep(5000); // Avoid throttling in the next test.
+        }
     }
 
     @Test

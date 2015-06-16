@@ -228,24 +228,6 @@ public class JsonWebKey {
         setQI(toByteArray(key.getCrtCoefficient()));
     }
 
-    private static byte[] toByteArray(BigInteger n) {
-        // System.out.println(vn + " = new BigInteger(\"" + n.toString() + "\");");
-        byte[] result = n.toByteArray();
-        if (result[0] == 0) {
-            return Arrays.copyOfRange(result, 1, result.length);
-        }
-        return result;
-    }
-
-    private static BigInteger toBigInteger(byte[] b) {
-        if (b[0] < 0) {
-            byte[] temp = new byte[1 + b.length];
-            System.arraycopy(b, 0, temp, 1, b.length);
-            b = temp;
-        }
-        return new BigInteger(b);
-    }
-
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -261,12 +243,14 @@ public class JsonWebKey {
     }
 
     public RSAPublicKeySpec toRSAPublicKeySpec() {
+        checkRSACompatible();
         BigInteger modulus = toBigInteger(n);
         BigInteger publicExponent = toBigInteger(e);
         return new RSAPublicKeySpec(modulus, publicExponent);
     }
 
     public RSAPrivateKeySpec toRSAPrivateKeySpec() {
+        checkRSACompatible();
         BigInteger modulus = toBigInteger(n);
         BigInteger privateExponent = toBigInteger(d);
         return new RSAPrivateKeySpec(modulus, privateExponent);
@@ -290,6 +274,32 @@ public class JsonWebKey {
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private void checkRSACompatible() {
+        if (!JsonWebKeyType.RSA.equals(kty) && !JsonWebKeyType.RSAHSM.equals(kty)) {
+            throw new UnsupportedOperationException("Not an RSA key");
+        }
+    }
+
+    private static byte[] toByteArray(BigInteger n) {
+        byte[] result = n.toByteArray();
+        if (result[0] == 0) {
+            // The leading zero is used to let the number positive. Since RSA parameters are always positive, we remove it.
+            return Arrays.copyOfRange(result, 1, result.length);
+        }
+        return result;
+    }
+
+    private static BigInteger toBigInteger(byte[] b) {
+        if (b[0] < 0) {
+            // RSA parameters are always positive numbers, so if the first byte is negative, we need to add a leading zero
+            // to make the entire BigInteger positive.
+            byte[] temp = new byte[1 + b.length];
+            System.arraycopy(b, 0, temp, 1, b.length);
+            b = temp;
+        }
+        return new BigInteger(b);
     }
 
 }
