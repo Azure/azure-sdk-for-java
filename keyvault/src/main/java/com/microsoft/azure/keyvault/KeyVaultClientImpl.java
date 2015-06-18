@@ -402,19 +402,19 @@ public class KeyVaultClientImpl implements KeyVaultClient {
     }
 
     private static String createKeyIdentifier(String vault, String keyName) {
-        return new KeyIdentifier(vault, keyName).getBaseIdentifier();
+        return new KeyIdentifier(vault, keyName).getIdentifier();
     }
 
     private static String createKeyIdentifier(String vault, String keyName, String keyVersion) {
-        return new KeyIdentifier(vault, keyName, keyVersion).getBaseIdentifier();
+        return new KeyIdentifier(vault, keyName, keyVersion).getIdentifier();
     }
 
     private static String createSecretIdentifier(String vault, String secretName) {
-        return new SecretIdentifier(vault, secretName).getBaseIdentifier();
+        return new SecretIdentifier(vault, secretName).getIdentifier();
     }
 
     private static String createSecretIdentifier(String vault, String secretName, String secretVersion) {
-        return new SecretIdentifier(vault, secretName, secretVersion).getBaseIdentifier();
+        return new SecretIdentifier(vault, secretName, secretVersion).getIdentifier();
     }
 
     private static KeyOpRequestMessageWithRawJsonContent createKeyOpRequest(String algorithm, byte[] data) {

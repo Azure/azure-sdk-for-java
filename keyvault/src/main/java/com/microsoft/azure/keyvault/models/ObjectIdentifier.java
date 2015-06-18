@@ -22,17 +22,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
 
+//CHECKSTYLE.OFF: InnerAssignmentCheck - More readable than nesting ifs.
+
 public class ObjectIdentifier {
 
     protected static boolean isObjectIdentifier(String collection, String identifier) {
 
-        if (collection == null || collection.length() == 0) {
-            throw new IllegalArgumentException("collection");
-        }
-
-        if (identifier == null || identifier.length() == 0) {
-            throw new IllegalArgumentException("identifier");
-        }
+        collection = verifyNonEmpty(collection, "collection");
+        identifier = verifyNonEmpty(identifier, "identifier");
 
         URI baseUri;
         try {
@@ -54,8 +51,20 @@ public class ObjectIdentifier {
         return true;
     }
 
+    private static String verifyNonEmpty(String value, String argName) {
+        if (value != null) {
+            value = value.trim();
+            if (value.isEmpty()) {
+                value = null;
+            }
+        }
+        if (value == null) {
+            throw new IllegalArgumentException(argName);
+        }
+        return value;
+    }
+
     private final String vault;
-    private final String vaultWithoutScheme;
     private final String name;
     private final String version;
     private final String baseIdentifier;
@@ -67,16 +76,15 @@ public class ObjectIdentifier {
 
     protected ObjectIdentifier(String vault, String collection, String name, String version) {
 
-        if (vault == null || vault.length() == 0) {
-            throw new IllegalArgumentException("vault");
-        }
+        vault = verifyNonEmpty(vault, "vault");
+        collection = verifyNonEmpty(collection, "collection");
+        name = verifyNonEmpty(name, "name");
 
-        if (collection == null || collection.length() == 0) {
-            throw new IllegalArgumentException("collection");
-        }
-
-        if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException("name");
+        if (version != null) {
+            version = version.trim();
+            if (version.isEmpty()) {
+                version = null;
+            }
         }
 
         URI baseUri;
@@ -89,10 +97,8 @@ public class ObjectIdentifier {
         this.name = name;
         this.version = version;
         this.vault = String.format("%s://%s", baseUri.getScheme(), getFullAuthority(baseUri));
-        this.vaultWithoutScheme = baseUri.getAuthority();
         this.baseIdentifier = String.format("%s/%s/%s", this.vault, collection, this.name);
-        String suffix = this.version == null || this.version.length() == 0 ? this.name : String.format("%s/%s", this.name, this.version);
-        this.identifier = String.format("%s/%s/%s", this.vault, collection, suffix);
+        this.identifier = version == null ? this.baseIdentifier : String.format("%s/%s", this.baseIdentifier, version);
     }
 
     protected ObjectIdentifier(String collection, String identifier) {
@@ -124,12 +130,9 @@ public class ObjectIdentifier {
 
         this.name = segments[2];
         this.version = segments.length == 4 ? segments[3] : null;
-
         this.vault = String.format("%s://%s", baseUri.getScheme(), getFullAuthority(baseUri));
-        this.vaultWithoutScheme = baseUri.getAuthority();
         this.baseIdentifier = String.format("%s/%s/%s", this.vault, collection, this.name);
-        String suffix = this.version == null || this.version.length() == 0 ? this.name : String.format("%s/%s", this.name, this.version);
-        this.identifier = String.format("%s/%s/%s", this.vault, collection, suffix);
+        this.identifier = this.version == null ? this.baseIdentifier : String.format("%s/%s", this.baseIdentifier, this.version);
     }
 
     private static String getFullAuthority(URI uri) {
@@ -167,10 +170,6 @@ public class ObjectIdentifier {
      */
     public String getVault() {
         return this.vault;
-    }
-
-    public String getVaultWithoutScheme() {
-        return this.vaultWithoutScheme;
     }
 
     /**
