@@ -19,8 +19,7 @@ package com.microsoft.windowsazure.management;
 import java.net.URI;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;

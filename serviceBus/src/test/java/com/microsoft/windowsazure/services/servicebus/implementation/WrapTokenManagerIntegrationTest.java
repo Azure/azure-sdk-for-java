@@ -17,8 +17,7 @@ package com.microsoft.windowsazure.services.servicebus.implementation;
 import com.microsoft.windowsazure.Configuration;
 import java.net.URI;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;

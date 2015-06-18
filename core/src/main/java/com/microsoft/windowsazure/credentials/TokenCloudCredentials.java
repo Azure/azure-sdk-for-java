@@ -115,6 +115,7 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
      * @see com.microsoft.windowsazure.credentials.CloudCredentials#applyConfig(java.lang.String, java.util.Map)
      */
     @Override
+    @SuppressWarnings("unchecked")
     public <T> void applyConfig(String profile, Map<String, Object> properties) {
     	ArrayList<AdalAuthFilter> filters;
     	if (!properties.containsKey("AuthFilters"))

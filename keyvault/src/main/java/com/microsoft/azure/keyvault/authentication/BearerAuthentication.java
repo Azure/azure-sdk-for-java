@@ -104,6 +104,7 @@ public class BearerAuthentication extends RFC2617Scheme {
      * and returns whatever that call returns.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public Header authenticate(Credentials credentials, HttpRequest request) throws AuthenticationException {
         if (!(credentials instanceof BearerCredentialsSupport)) {
             return null;
