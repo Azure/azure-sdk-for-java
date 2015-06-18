@@ -29,7 +29,6 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.credentials.AdalAuthFilter;
 
 public class ApacheConfigSettings {
     private final String profile;
@@ -104,6 +103,7 @@ public class ApacheConfigSettings {
         
         if (properties.containsKey("AuthFilters"))
         {
+            @SuppressWarnings("unchecked")
             ArrayList<ServiceRequestFilter> filters = (ArrayList<ServiceRequestFilter>) properties.get("AuthFilters");
             for (ServiceRequestFilter filter : filters) {
                 httpClientBuilder.addInterceptorFirst(new FilterInterceptor(filter));
