@@ -43,23 +43,6 @@ public class ManagementCertificateOperationsTests extends ManagementIntegrationT
         resetTest();
     }
 
-    @Test
-    @Ignore
-    public void createManagementCertificate() throws Exception {
-        // Arrange
-
-//        ManagementCertificateCreateParameters createParameters = new ManagementCertificateCreateParameters();
-////        createParameters.setData(dataValue);
-////        createParameters.setPublicKey(publicKeyValue);
-////        createParameters.setThumbprint(thumbprintValue);
-//        
-//        // Act
-//        OperationResponse operationResponse = managementClient.getManagementCertificatesOperations().create(createParameters);
-//        
-//        // Assert
-//        Assert.assertEquals(201, operationResponse.getStatusCode());
-//        Assert.assertNotNull(operationResponse.getRequestId());
-    }
 
     @Test
     public void getManagementCertificateSuccess() throws Exception {

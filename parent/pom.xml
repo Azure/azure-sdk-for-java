@@ -102,6 +102,16 @@
         <version>1.2.0</version>
       </dependency>
       <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.2.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>adal4j</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.11</version>
@@ -110,11 +120,6 @@
         <groupId>junit</groupId>
         <artifactId>junit-dep</artifactId>
         <version>4.11</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.2.3</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -147,7 +152,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
-        <version>0.0.3</version>
+        <version>1.0.0</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -299,6 +304,9 @@
               <include>**/*Tests.java</include>
               <include>**/*TestCase.java</include>
             </includes>
+            <environmentVariables>
+              <test.mode>playback</test.mode>
+            </environmentVariables>
           </configuration>
         </plugin>
       </plugins>
@@ -309,7 +317,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>emma-maven-plugin</artifactId>
-        <version>1.0-alpha-3</version>
         <inherited>true</inherited>
       </plugin>
       <plugin>
@@ -344,5 +351,6 @@
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>
     <module>../tracing-util</module>
+    <module>../azure-mgmt-samples</module>
   </modules>
 </project>
