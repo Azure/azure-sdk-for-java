@@ -123,7 +123,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         String url = "";
         url = url + secretIdentifier;
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -227,7 +227,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         String url = "";
         url = url + secretIdentifier;
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -337,7 +337,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         url = url + vault;
         url = url + "/secrets/";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (top != null) {
             queryParameters.add("maxresults=" + URLEncoder.encode(Integer.toString(top), "UTF-8"));
         }
@@ -557,7 +557,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         url = url + URLEncoder.encode(secretName, "UTF-8");
         url = url + "/versions";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (top != null) {
             queryParameters.add("maxresults=" + URLEncoder.encode(Integer.toString(top), "UTF-8"));
         }
@@ -769,7 +769,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         String url = "";
         url = url + secretIdentifier;
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -887,7 +887,7 @@ class SecretOperationsImpl implements ServiceOperations<KeyVaultInternalClientIm
         String url = "";
         url = url + secretIdentifier;
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }

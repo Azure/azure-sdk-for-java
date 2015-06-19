@@ -125,7 +125,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/backup";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -248,7 +248,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + URLEncoder.encode(keyName, "UTF-8");
         url = url + "/create";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -367,7 +367,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/decrypt";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -487,7 +487,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + URLEncoder.encode(keyName, "UTF-8");
         url = url + "/delete";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -599,7 +599,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/encrypt";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -709,7 +709,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -821,7 +821,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/import";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -937,7 +937,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + vault;
         url = url + "/keys/";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (top != null) {
             queryParameters.add("maxresults=" + URLEncoder.encode(Integer.toString(top), "UTF-8"));
         }
@@ -1157,7 +1157,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + URLEncoder.encode(keyName, "UTF-8");
         url = url + "/versions";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (top != null) {
             queryParameters.add("maxresults=" + URLEncoder.encode(Integer.toString(top), "UTF-8"));
         }
@@ -1370,7 +1370,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + vault;
         url = url + "/keys/restore";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1489,7 +1489,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/sign";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1607,7 +1607,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/unwrapkey";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1725,7 +1725,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/update";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1844,7 +1844,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/verify";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1962,7 +1962,7 @@ class KeyOperationsImpl implements ServiceOperations<KeyVaultInternalClientImpl>
         url = url + keyIdentifier;
         url = url + "/wrapkey";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01-preview");
+        queryParameters.add("api-version=" + this.getClient().getApiVersion());
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
