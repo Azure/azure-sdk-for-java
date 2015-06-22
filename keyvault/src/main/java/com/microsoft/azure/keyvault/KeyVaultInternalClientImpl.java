@@ -155,7 +155,7 @@ class KeyVaultInternalClientImpl extends ServiceClient<KeyVaultInternalClient> i
         super(httpBuilder, executorService);
         this.keys = new KeyOperationsImpl(this);
         this.secrets = new SecretOperationsImpl(this);
-        this.apiVersion = "2015-02-01-preview";
+        this.apiVersion = "2015-06-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
