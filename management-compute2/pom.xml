@@ -84,19 +84,25 @@
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-svc-mgmt-storage</artifactId>
+      <artifactId>azure-mgmt-storage</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-storage</artifactId>
-      <version>1.2.0</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-mgmt-network</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-svc-mgmt</artifactId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-mgmt-utility</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -124,6 +130,11 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.github.tomakehurst</groupId>

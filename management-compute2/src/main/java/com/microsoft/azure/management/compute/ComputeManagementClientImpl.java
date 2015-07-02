@@ -648,7 +648,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                         JsonNode outputValue = propertiesValue.get("output");
                         if (outputValue != null && outputValue instanceof NullNode == false) {
                             String outputInstance;
-                            outputInstance = outputValue.getTextValue();
+                            /// LOCALFIX-START
+                            // outputInstance = outputValue.getTextValue();
+                            outputInstance = outputValue.toString();
+                            /// LOCALFIX-END
                             result.setOutput(outputInstance);
                         }
                     }

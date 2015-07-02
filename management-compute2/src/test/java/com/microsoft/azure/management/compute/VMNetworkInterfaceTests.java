@@ -1,0 +1,101 @@
+/**
+ * Copyright Microsoft Corporation
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.microsoft.azure.management.compute;
+
+import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.network.models.NetworkInterface;
+import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
+import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.utility.ResourceContext;
+import com.microsoft.azure.utility.VMHelper;
+import com.microsoft.windowsazure.exception.ServiceException;
+import org.apache.commons.logging.LogFactory;
+import org.junit.*;
+
+import java.util.function.Consumer;
+
+public class VMNetworkInterfaceTests extends ComputeTestBase {
+    static {
+        log = LogFactory.getLog(VMNetworkInterfaceTests.class);
+    }
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        ensureClientsInitialized();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        log.debug("after class, clean resource group: " + rgName);
+        cleanupResourceGroup();
+    }
+
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+
+    @Test
+    public void testVMWithMultipleNic() throws Exception {
+        log.info("creating VM...");
+        ResourceContext context = new ResourceContext(
+                m_location, rgName, m_subId, false);
+
+        createOrUpdateResourceGroup(rgName);
+
+        VirtualNetwork vnet = VMHelper.createVirtualNetwork(networkResourceProviderClient, context);
+
+        NetworkInterface nic1 = VMHelper.createNIC(
+                networkResourceProviderClient, context, vnet.getSubnets().get(0));
+
+        // create a new nic with same vnet
+        ResourceContext context2 = new ResourceContext(
+                m_location, rgName, m_subId, false);
+        final NetworkInterface nic2 = VMHelper.createNIC(
+                networkResourceProviderClient, context2, vnet.getSubnets().get(0));
+
+        VirtualMachine vm = createVM(context, generateName("VM"), new Consumer<VirtualMachine>() {
+            @Override
+            public void accept(VirtualMachine virtualMachine) {
+                virtualMachine.getHardwareProfile().setVirtualMachineSize(VirtualMachineSizeTypes.STANDARD_A4);
+                //add nic 2
+                virtualMachine.getNetworkProfile().getNetworkInterfaces().get(0).setPrimary(false);
+                NetworkInterfaceReference nic2Ref = new NetworkInterfaceReference();
+                nic2Ref.setReferenceUri(nic2.getId());
+                nic2Ref.setPrimary(true);
+                virtualMachine.getNetworkProfile().getNetworkInterfaces().add(1, nic2Ref);
+            }
+        });
+
+        NetworkInterfaceGetResponse getNic1Response = networkResourceProviderClient.getNetworkInterfacesOperations()
+                .get(rgName, context.getNetworkInterface().getName());
+        // TODO bug in NetworkInterfaceGetResponse Mac Address is not loaded, disable for now.
+        // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
+        Assert.assertNotNull(getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertFalse(getNic1Response.getNetworkInterface().isPrimary());
+
+        NetworkInterfaceGetResponse getNic2Response = networkResourceProviderClient.getNetworkInterfacesOperations()
+                .get(rgName, context2.getNetworkInterface().getName());
+        // Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
+        Assert.assertNotNull(getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertTrue(getNic2Response.getNetworkInterface().isPrimary());
+    }
+}
