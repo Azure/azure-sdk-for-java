@@ -176,4 +176,40 @@ public class ObjectFactory {
     public ProgramType createProgramType() {
         return new ProgramType();
     }
+    
+    /**
+     * Creates a instance of (@link @ContentKeyAuthorizationPolicyOptionType).
+     * 
+     * @return the content key authorization policy option type
+     */
+    public ContentKeyAuthorizationPolicyOptionType createContentKeyAuthorizationPolicyOptionType() {
+        return new ContentKeyAuthorizationPolicyOptionType();
+    }
+    
+    /**
+     * Creates a instance of (@link @ContentKeyAuthorizationPolicyRestrictionType).
+     * 
+     * @return the content key authorization policy restriction type
+     */
+    public ContentKeyAuthorizationPolicyRestrictionType createContentKeyAuthorizationPolicyRestrictionType() {
+        return new ContentKeyAuthorizationPolicyRestrictionType();
+    }
+    
+    /**
+     * Creates a instance of (@link @ContentKeyAuthorizationPolicyType).
+     * 
+     * @return the content key authorization policy type
+     */
+    public ContentKeyAuthorizationPolicyType createContentKeyAuthorizationPolicyType() {
+        return new ContentKeyAuthorizationPolicyType();
+    }
+    
+    /**
+     * Creates a instance of (@link @AssetDeliveryPolicyType).
+     * 
+     * @return the asset delivery policy type
+     */
+    public AssetDeliveryPolicyRestType createAssetDeliveryPolicyType() {
+        return new AssetDeliveryPolicyRestType();
+    }
 }
