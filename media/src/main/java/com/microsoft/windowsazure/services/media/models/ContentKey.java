@@ -405,7 +405,7 @@ public final class ContentKey {
     public static class Updater extends EntityOperationBase implements
         EntityUpdateOperation {
         
-        String contentKeyAuthorizationPolicyId;
+        private String contentKeyAuthorizationPolicyId;
         
         protected Updater(String contentKeyId, String contentKeyAuthorizationPolicyId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
