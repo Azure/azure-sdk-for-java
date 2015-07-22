@@ -203,7 +203,7 @@ public final class Asset {
                 new GenericType<ListResult<AssetInfo>>() {
                 });
     }
-De
+
     /**
      * Create an operation that will list all the assets at the given link.
      * 
