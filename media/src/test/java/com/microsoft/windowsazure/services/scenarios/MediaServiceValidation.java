@@ -239,9 +239,9 @@ class MediaServiceValidation {
 
     protected void assertDateApproxEquals(String message, Date expected,
             Date actual) {
-        // Default allows for a 30 seconds difference in dates, for clock skew,
+        // Default allows for a 2:30 minutes difference in dates, for clock skew,
         // network delays, etc.
-        long deltaInMilliseconds = 30000;
+        long deltaInMilliseconds = 150000;
 
         if (expected == null || actual == null) {
             assertEquals(message, expected, actual);

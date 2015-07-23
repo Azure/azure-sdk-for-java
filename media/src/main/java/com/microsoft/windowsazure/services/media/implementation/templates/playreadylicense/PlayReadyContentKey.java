@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlTransient
-@XmlSeeAlso({ContentEncryptionKeyFromHeader.class, ContentEncryptionKeyFromKeyIdentifier.class})
+@XmlSeeAlso({ ContentEncryptionKeyFromHeader.class, ContentEncryptionKeyFromKeyIdentifier.class })
 public abstract class PlayReadyContentKey {
 
 }
