@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
@@ -55,7 +56,7 @@ public final class AssetDeliveryPolicy {
         private String name;
         private EnumSet<AssetDeliveryProtocol> assetDeliveryProtocol;
         private AssetDeliveryPolicyType assetDeliveryPolicyType;
-        private String assetDeliveryConfiguration;
+        private Map<AssetDeliveryPolicyConfigurationKey, String> assetDeliveryConfiguration;
 
         public Creator() {
             super(ENTITY_SET, AssetDeliveryPolicyInfo.class);
@@ -108,12 +109,12 @@ public final class AssetDeliveryPolicy {
         /**
          * Set the configuration of the Asset Delivery Policy to be created.
          * 
-         * @param assetDeliveryConfiguration
+         * @param assetDeliveryPolicyConfiguration
          *            The configuration
          * @return The creator object (for call chaining)
          */
-        public Creator setAssetDeliveryConfiguration(String assetDeliveryConfiguration) {
-            this.assetDeliveryConfiguration = assetDeliveryConfiguration;
+        public Creator setAssetDeliveryConfiguration(Map<AssetDeliveryPolicyConfigurationKey, String> assetDeliveryPolicyConfiguration) {
+            this.assetDeliveryConfiguration = assetDeliveryPolicyConfiguration;
             return this;
         }
 

@@ -2,10 +2,7 @@ package com.microsoft.windowsazure.services.media.implementation.templates.token
 
 import static org.junit.Assert.*;
 
-import java.security.InvalidParameterException;
 import org.junit.Test;
-
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenType;
 
 public class TokenClaimTests {
     
@@ -39,6 +36,7 @@ public class TokenClaimTests {
         
         // Act
         try { 
+            @SuppressWarnings("unused")
             TokenClaim value = new TokenClaim(providedType, expectedValue);
             fail("Should thrown");
         } catch (NullPointerException e) {

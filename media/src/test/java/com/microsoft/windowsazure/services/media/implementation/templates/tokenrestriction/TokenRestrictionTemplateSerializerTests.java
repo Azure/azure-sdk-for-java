@@ -1,6 +1,10 @@
 package com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,15 +16,8 @@ import java.util.UUID;
 
 import javax.xml.bind.JAXBException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.SymmetricVerificationKey;
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenClaim;
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenRestrictionTemplate;
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenRestrictionTemplateSerializer;
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenType;
 
 public class TokenRestrictionTemplateSerializerTests {
 

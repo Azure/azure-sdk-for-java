@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
@@ -25,7 +23,6 @@ import com.microsoft.windowsazure.services.media.implementation.templates.playre
 import com.microsoft.windowsazure.services.media.implementation.templates.playreadylicense.PlayReadyPlayRight;
 import com.microsoft.windowsazure.services.media.implementation.templates.playreadylicense.ScmsRestriction;
 import com.microsoft.windowsazure.services.media.implementation.templates.playreadylicense.UnknownOutputPassingOption;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class MediaServicesLicenseTemplateSerializerTests {
 

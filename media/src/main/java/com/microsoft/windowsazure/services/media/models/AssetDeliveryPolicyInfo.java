@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Map;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -82,7 +83,7 @@ public class AssetDeliveryPolicyInfo extends ODataEntity<AssetDeliveryPolicyRest
      * 
      * @return the configuration.
      */
-    public String getAssetDeliveryConfiguration() {
+    public Map<AssetDeliveryPolicyConfigurationKey, String> getAssetDeliveryConfiguration() {
         return getContent().getAssetDeliveryConfiguration();
     }
 

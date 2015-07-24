@@ -367,8 +367,13 @@ public final class ContentKey {
 
         @Override
         public Object getRequestContents() throws ServiceException {
-            String document = "{\"keyDeliveryType\": " + contentKeyDeliveryType.getCode() + "}";
-            return document;
+            JSONObject document = new JSONObject();
+            try {
+                document.put("keyDeliveryType", contentKeyDeliveryType.getCode());
+            } catch (JSONException e) {
+                throw new ServiceException("JSON Exception", e);
+            }
+            return document.toString();
         }
         
         @Override
@@ -389,7 +394,7 @@ public final class ContentKey {
             } catch (JSONException e) {
                 throw new ServiceException(e);
             }
-        }        
+        }
     }    
     
     /** Updates a ContentKey with an ContentKeyAuthorizationPolicyId
@@ -420,8 +425,13 @@ public final class ContentKey {
         
         @Override
         public Object getRequestContents() {
-            String document = "{\"AuthorizationPolicyId\":\"" + contentKeyAuthorizationPolicyId + "\"}";
-            return document;
+            JSONObject document = new JSONObject();
+            try {
+                document.put("AuthorizationPolicyId", contentKeyAuthorizationPolicyId);
+            } catch (JSONException e) {
+                throw new RuntimeException("JSON Exception", e);
+            }
+            return document.toString();
         }
 
     }

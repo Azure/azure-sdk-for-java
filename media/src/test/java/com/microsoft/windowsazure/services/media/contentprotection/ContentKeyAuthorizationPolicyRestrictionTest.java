@@ -16,21 +16,9 @@
 package com.microsoft.windowsazure.services.media.contentprotection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.net.URLEncoder;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyType;
-import com.microsoft.windowsazure.services.media.implementation.templates.tokenrestriction.TokenType;
-import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicy;
-import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyRestriction;
 
 /**

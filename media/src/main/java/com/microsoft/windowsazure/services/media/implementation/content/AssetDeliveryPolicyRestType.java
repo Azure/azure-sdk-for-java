@@ -16,10 +16,17 @@
 package com.microsoft.windowsazure.services.media.implementation.content;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
+
+import com.microsoft.windowsazure.services.media.models.AssetDeliveryPolicyConfigurationKey;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization for Asset
@@ -49,7 +56,7 @@ public class AssetDeliveryPolicyRestType implements MediaServiceDTO {
     
     @XmlElement(name = "AssetDeliveryConfiguration", namespace = Constants.ODATA_DATA_NS)
     private String assetDeliveryConfiguration;
-
+      
     /**
      * @return the id
      */
@@ -149,18 +156,42 @@ public class AssetDeliveryPolicyRestType implements MediaServiceDTO {
     /**
      * @return the asset delivery configuration
      */
-    public String getAssetDeliveryConfiguration() {
-        return assetDeliveryConfiguration;
+    public Map<AssetDeliveryPolicyConfigurationKey, String> getAssetDeliveryConfiguration() {
+        try {
+            Map<AssetDeliveryPolicyConfigurationKey, String> results 
+                = new HashMap<AssetDeliveryPolicyConfigurationKey, String>();
+            JSONArray source = new JSONArray(assetDeliveryConfiguration);
+            for (int i = 0; i < source.length(); i++) {
+                JSONObject row = source.getJSONObject(i);
+                results.put(AssetDeliveryPolicyConfigurationKey.fromCode(row.getInt("Key")),
+                        row.getString("Value"));
+            }
+            return results;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-
+    
     /**
      * @param assetDeliveryConfiguration
-     *            the asset delivery configuration to set
+     *            the asset delivery configuration
+     * @return 
      */
-    public AssetDeliveryPolicyRestType setAssetDeliveryConfiguration(String assetDeliveryConfiguration) {
-        this.assetDeliveryConfiguration = assetDeliveryConfiguration;
+    public AssetDeliveryPolicyRestType setAssetDeliveryConfiguration(Map<AssetDeliveryPolicyConfigurationKey, String> assetDeliveryConfiguration) {
+        try {
+            JSONArray result = new JSONArray();
+            if (assetDeliveryConfiguration != null) {
+                for (Map.Entry<AssetDeliveryPolicyConfigurationKey, String> item : assetDeliveryConfiguration.entrySet()) {
+                    JSONObject obj = new JSONObject();
+                    obj.put("Key", item.getKey().getCode());
+                    obj.put("Value", item.getValue());
+                    result.put(obj);
+                }
+                this.assetDeliveryConfiguration = result.toString();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
-
-    
 }

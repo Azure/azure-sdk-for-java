@@ -2,7 +2,6 @@ package com.microsoft.windowsazure.services.media.implementation.templates.playr
 
 import static org.junit.Assert.*;
 
-import java.security.InvalidParameterException;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.templates.playreadylicense.AgcAndColorStripeRestriction;

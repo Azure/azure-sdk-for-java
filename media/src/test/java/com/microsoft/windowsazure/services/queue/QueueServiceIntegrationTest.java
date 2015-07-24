@@ -44,7 +44,6 @@ import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
-import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
 public class QueueServiceIntegrationTest extends IntegrationTestBase {
