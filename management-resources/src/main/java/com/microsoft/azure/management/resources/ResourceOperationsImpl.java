@@ -371,7 +371,7 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
         requestDoc = genericResourceValue;
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) genericResourceValue).put("properties", parameters.getProperties());
+            ((ObjectNode) genericResourceValue).put("properties", objectMapper.readTree(parameters.getProperties()));
         }
         
         if (parameters.getProvisioningState() != null) {
