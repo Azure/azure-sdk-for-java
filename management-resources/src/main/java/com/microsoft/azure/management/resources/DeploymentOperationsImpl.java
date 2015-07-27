@@ -350,7 +350,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             ((ObjectNode) deploymentValue).put("properties", propertiesValue);
             
             if (parameters.getProperties().getTemplate() != null) {
-                ((ObjectNode) propertiesValue).put("template", parameters.getProperties().getTemplate());
+                ((ObjectNode) propertiesValue).put("template", objectMapper.readTree(parameters.getProperties().getTemplate()));
             }
             
             if (parameters.getProperties().getTemplateLink() != null) {
@@ -365,7 +365,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             }
             
             if (parameters.getProperties().getParameters() != null) {
-                ((ObjectNode) propertiesValue).put("parameters", parameters.getProperties().getParameters());
+                ((ObjectNode) propertiesValue).put("parameters", objectMapper.readTree(parameters.getProperties().getParameters()));
             }
             
             if (parameters.getProperties().getParametersLink() != null) {
@@ -1897,7 +1897,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
         }
         url = url + "/resourcegroups/";
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
-        url = url + "/deployments/";
+        url = url + "/providers/microsoft.resources/deployments/";
         url = url + URLEncoder.encode(deploymentName, "UTF-8");
         url = url + "/validate";
         ArrayList<String> queryParameters = new ArrayList<String>();
@@ -1935,7 +1935,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             ((ObjectNode) deploymentValue).put("properties", propertiesValue);
             
             if (parameters.getProperties().getTemplate() != null) {
-                ((ObjectNode) propertiesValue).put("template", parameters.getProperties().getTemplate());
+                ((ObjectNode) propertiesValue).put("template", objectMapper.readTree(parameters.getProperties().getTemplate()));
             }
             
             if (parameters.getProperties().getTemplateLink() != null) {
@@ -1950,7 +1950,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             }
             
             if (parameters.getProperties().getParameters() != null) {
-                ((ObjectNode) propertiesValue).put("parameters", parameters.getProperties().getParameters());
+                ((ObjectNode) propertiesValue).put("parameters", objectMapper.readTree(parameters.getProperties().getParameters()));
             }
             
             if (parameters.getProperties().getParametersLink() != null) {

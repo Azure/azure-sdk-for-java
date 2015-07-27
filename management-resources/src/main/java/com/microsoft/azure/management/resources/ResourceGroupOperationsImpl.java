@@ -454,7 +454,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         ((ObjectNode) resourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) resourceGroupValue).put("properties", parameters.getProperties());
+            ((ObjectNode) resourceGroupValue).put("properties", objectMapper.readTree(parameters.getProperties()));
         }
         
         if (parameters.getTags() != null) {
@@ -1361,7 +1361,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
         ((ObjectNode) resourceGroupValue).put("location", parameters.getLocation());
         
         if (parameters.getProperties() != null) {
-            ((ObjectNode) resourceGroupValue).put("properties", parameters.getProperties());
+            ((ObjectNode) resourceGroupValue).put("properties", objectMapper.readTree(parameters.getProperties()));
         }
         
         if (parameters.getTags() != null) {
