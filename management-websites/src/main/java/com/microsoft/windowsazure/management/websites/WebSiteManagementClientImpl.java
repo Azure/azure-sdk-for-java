@@ -283,13 +283,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
      static ConnectionStringType parseConnectionStringType(String value) {
         if ("0".equalsIgnoreCase(value)) {
-            return ConnectionStringType.MY_SQL;
+            return ConnectionStringType.MYSQL;
         }
         if ("1".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SQL_SERVER;
+            return ConnectionStringType.SQLSERVER;
         }
         if ("2".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SQL_AZURE;
+            return ConnectionStringType.SQLAZURE;
         }
         if ("3".equalsIgnoreCase(value)) {
             return ConnectionStringType.CUSTOM;
@@ -304,13 +304,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @return The enum value as a string.
     */
      static String connectionStringTypeToString(ConnectionStringType value) {
-        if (value == ConnectionStringType.MY_SQL) {
+        if (value == ConnectionStringType.MYSQL) {
             return "0";
         }
-        if (value == ConnectionStringType.SQL_SERVER) {
+        if (value == ConnectionStringType.SQLSERVER) {
             return "1";
         }
-        if (value == ConnectionStringType.SQL_AZURE) {
+        if (value == ConnectionStringType.SQLAZURE) {
             return "2";
         }
         if (value == ConnectionStringType.CUSTOM) {
@@ -670,7 +670,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         WebSiteOperationStatus statusInstance;
-                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                 }

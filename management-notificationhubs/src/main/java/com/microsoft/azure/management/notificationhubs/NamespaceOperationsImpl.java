@@ -1039,7 +1039,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getNamespacesOperations().getDeleteNamespaceOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();

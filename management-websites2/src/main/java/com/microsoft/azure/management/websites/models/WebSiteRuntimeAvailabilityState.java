@@ -42,5 +42,5 @@ public enum WebSiteRuntimeAvailabilityState {
     * Due to an unexpected issue, the site has been excluded from provisioning.
     * This typically occurs only for free sites.
     */
-    NOT_AVAILABLE,
+    NOTAVAILABLE,
 }

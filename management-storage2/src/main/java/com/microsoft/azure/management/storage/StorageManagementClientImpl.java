@@ -251,19 +251,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     */
      static AccountType parseAccountType(String value) {
         if ("Standard_LRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARD_LRS;
+            return AccountType.STANDARDLRS;
         }
         if ("Standard_ZRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARD_ZRS;
+            return AccountType.STANDARDZRS;
         }
         if ("Standard_GRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARD_GRS;
+            return AccountType.STANDARDGRS;
         }
         if ("Standard_RAGRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARD_RAGRS;
+            return AccountType.STANDARDRAGRS;
         }
         if ("Premium_LRS".equalsIgnoreCase(value)) {
-            return AccountType.PREMIUM_LRS;
+            return AccountType.PREMIUMLRS;
         }
         throw new IllegalArgumentException("value");
     }
@@ -275,19 +275,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * @return The enum value as a string.
     */
      static String accountTypeToString(AccountType value) {
-        if (value == AccountType.STANDARD_LRS) {
+        if (value == AccountType.STANDARDLRS) {
             return "Standard_LRS";
         }
-        if (value == AccountType.STANDARD_ZRS) {
+        if (value == AccountType.STANDARDZRS) {
             return "Standard_ZRS";
         }
-        if (value == AccountType.STANDARD_GRS) {
+        if (value == AccountType.STANDARDGRS) {
             return "Standard_GRS";
         }
-        if (value == AccountType.STANDARD_RAGRS) {
+        if (value == AccountType.STANDARDRAGRS) {
             return "Standard_RAGRS";
         }
-        if (value == AccountType.PREMIUM_LRS) {
+        if (value == AccountType.PREMIUMLRS) {
             return "Premium_LRS";
         }
         throw new IllegalArgumentException("value");
@@ -609,10 +609,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                 result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                result.setStatus(OperationStatus.IN_PROGRESS);
+                result.setStatus(OperationStatus.INPROGRESS);
             }
             if (statusCode == HttpStatus.SC_ACCEPTED) {
-                result.setStatus(OperationStatus.IN_PROGRESS);
+                result.setStatus(OperationStatus.INPROGRESS);
             }
             if (statusCode == HttpStatus.SC_OK) {
                 result.setStatus(OperationStatus.SUCCEEDED);

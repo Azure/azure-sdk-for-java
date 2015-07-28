@@ -226,7 +226,7 @@ public abstract class ComputeManagementIntegrationTestBase extends MockIntegrati
         //has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
         ArrayList<String> serviceName = new ArrayList<String>();
         serviceName.add(LocationAvailableServiceNames.COMPUTE);
-        serviceName.add(LocationAvailableServiceNames.PERSISTENT_VMROLE);
+        serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
         serviceName.add(LocationAvailableServiceNames.STORAGE);
 
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();

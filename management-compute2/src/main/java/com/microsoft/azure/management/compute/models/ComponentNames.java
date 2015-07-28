@@ -30,5 +30,5 @@ public abstract class ComponentNames {
     /**
     * Microsoft-Windows-Shell-Setup componenet in unattend.xml file
     */
-    public static final String MICROSOFT_WINDOWS_SHELL_SETUP = "Microsoft-Windows-Shell-Setup";
+    public static final String MICROSOFTWINDOWSSHELLSETUP = "Microsoft-Windows-Shell-Setup";
 }

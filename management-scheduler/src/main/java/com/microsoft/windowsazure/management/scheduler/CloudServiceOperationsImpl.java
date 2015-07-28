@@ -448,7 +448,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;
@@ -560,7 +560,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;

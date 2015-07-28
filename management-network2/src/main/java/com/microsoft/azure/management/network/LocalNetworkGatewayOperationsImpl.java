@@ -31,7 +31,6 @@ import com.microsoft.azure.management.network.models.LocalNetworkGateway;
 import com.microsoft.azure.management.network.models.LocalNetworkGatewayGetResponse;
 import com.microsoft.azure.management.network.models.LocalNetworkGatewayListResponse;
 import com.microsoft.azure.management.network.models.LocalNetworkGatewayPutResponse;
-import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
@@ -681,7 +680,7 @@ public class LocalNetworkGatewayOperationsImpl implements ServiceOperations<Netw
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -771,7 +770,7 @@ public class LocalNetworkGatewayOperationsImpl implements ServiceOperations<Netw
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

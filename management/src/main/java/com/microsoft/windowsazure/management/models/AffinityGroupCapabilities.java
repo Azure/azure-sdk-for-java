@@ -32,5 +32,5 @@ public abstract class AffinityGroupCapabilities {
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
     */
-    public static final String PERSISTENT_VMROLE = "PersistentVMRole";
+    public static final String PERSISTENTVMROLE = "PersistentVMRole";
 }

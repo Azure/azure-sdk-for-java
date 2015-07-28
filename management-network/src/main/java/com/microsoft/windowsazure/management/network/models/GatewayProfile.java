@@ -33,5 +33,5 @@ public abstract class GatewayProfile {
     
     public static final String LARGE = "Large";
     
-    public static final String EXTRA_LARGE = "ExtraLarge";
+    public static final String EXTRALARGE = "ExtraLarge";
 }

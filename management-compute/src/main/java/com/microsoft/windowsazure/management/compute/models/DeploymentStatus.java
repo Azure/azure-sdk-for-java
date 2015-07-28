@@ -31,9 +31,9 @@ public enum DeploymentStatus {
     
     SUSPENDED,
     
-    RUNNING_TRANSITIONING,
+    RUNNINGTRANSITIONING,
     
-    SUSPENDED_TRANSITIONING,
+    SUSPENDEDTRANSITIONING,
     
     STARTING,
     

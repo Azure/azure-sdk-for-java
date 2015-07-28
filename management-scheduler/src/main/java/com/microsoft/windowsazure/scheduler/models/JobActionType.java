@@ -32,9 +32,9 @@ public enum JobActionType {
     
     HTTPS,
     
-    STORAGE_QUEUE,
+    STORAGEQUEUE,
     
-    SERVICE_BUS_QUEUE,
+    SERVICEBUSQUEUE,
     
-    SERVICE_BUS_TOPIC,
+    SERVICEBUSTOPIC,
 }

@@ -32,7 +32,7 @@ import org.junit.Test;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
-    private static String webSpaceName = WebSpaceNames.NORTH_CENTRAL_USWEB_SPACE;
+    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE;
     private static String hostName = ".azurewebsites.net";
     
     @BeforeClass
@@ -95,8 +95,8 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         webSiteManagementClient.getWebHostingPlansOperations().create(webSpaceName, params);
 
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
-        webSpaceDetails.setGeoRegion(GeoRegionNames.NORTH_CENTRAL_US);
-        webSpaceDetails.setPlan(WebSpacePlanNames.VIRTUAL_DEDICATED_PLAN);
+        webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
+        webSpaceDetails.setPlan(WebSpacePlanNames.VIRTUALDEDICATEDPLAN);
         webSpaceDetails.setName(webSpaceName);
 
         //Arrange
@@ -128,8 +128,8 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         hostNamesValue.add(webSiteName + hostName); 
 
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
-        webSpaceDetails.setGeoRegion(GeoRegionNames.NORTH_CENTRAL_US);
-        webSpaceDetails.setPlan(WebSpacePlanNames.VIRTUAL_DEDICATED_PLAN);
+        webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
+        webSpaceDetails.setPlan(WebSpacePlanNames.VIRTUALDEDICATEDPLAN);
         webSpaceDetails.setName(webSpaceName);
 
         //Arrange

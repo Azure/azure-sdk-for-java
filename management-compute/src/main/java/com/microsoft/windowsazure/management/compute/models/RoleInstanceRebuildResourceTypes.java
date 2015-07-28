@@ -28,5 +28,5 @@ package com.microsoft.windowsazure.management.compute.models;
 * value is 'allLocalDrives'.
 */
 public abstract class RoleInstanceRebuildResourceTypes {
-    public static final String ALL_LOCAL_DRIVES = "allLocalDrives";
+    public static final String ALLLOCALDRIVES = "allLocalDrives";
 }

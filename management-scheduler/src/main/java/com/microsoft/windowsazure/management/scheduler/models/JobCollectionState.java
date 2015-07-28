@@ -37,7 +37,7 @@ public enum JobCollectionState {
     /**
     * The resource provider did not respond with information for the resource.
     */
-    NOT_FOUND,
+    NOTFOUND,
     
     /**
     * Resource is running fine.

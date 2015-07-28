@@ -746,7 +746,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getCreateOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();

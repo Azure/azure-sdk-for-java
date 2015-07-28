@@ -31,7 +31,7 @@ public enum GatewayDiagnosticsState {
     
     SCHEDULED,
     
-    IN_PROGRESS,
+    INPROGRESS,
     
-    STOP_IN_PROGRESS,
+    STOPINPROGRESS,
 }

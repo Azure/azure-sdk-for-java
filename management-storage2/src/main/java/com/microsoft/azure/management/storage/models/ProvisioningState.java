@@ -37,7 +37,7 @@ public enum ProvisioningState {
     /**
     * The DNS name for the storage account is being propagated.
     */
-    RESOLVING_DNS,
+    RESOLVINGDNS,
     
     /**
     * The storage account is active for use.

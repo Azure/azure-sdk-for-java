@@ -102,7 +102,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk(); 
         //required
         oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READ_WRITE);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
         oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
         //required
         oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
@@ -127,7 +127,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             String adminuserPassword, String adminUserName) {
         ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
         ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWS_PROVISIONING_CONFIGURATION);
+        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
         //required
         configset.setComputerName(computerName);
         //required
@@ -238,7 +238,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         ArrayList<ConfigurationSet> configurationSetList = new ArrayList<ConfigurationSet>();
         ConfigurationSet configurationSet = new ConfigurationSet();
-         configurationSet.setConfigurationSetType(ConfigurationSetTypes.WINDOWS_PROVISIONING_CONFIGURATION);
+         configurationSet.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
         //required
         configurationSet.setComputerName(computerName);
         //required
@@ -253,7 +253,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk();
         //required
         oSVirtualHardDisk.setName(osVHarddiskName);
-        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READ_WRITE);
+        oSVirtualHardDisk.setHostCaching(VirtualHardDiskHostCaching.READWRITE);
         oSVirtualHardDisk.setOperatingSystem(operatingSystemName);
         //required
         oSVirtualHardDisk.setMediaLink(mediaLinkUriValue);
@@ -263,7 +263,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required        
         role.setRoleName(roleName);
         //required
-        role.setRoleType(VirtualMachineRoleType.PERSISTENT_VMROLE.toString());
+        role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
         role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
         role.setConfigurationSets(configurationSetList);
@@ -315,7 +315,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                     Assert.assertNotNull(rolelist);
 
                     for (Role role : rolelist) {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENT_VMROLE.toString()))) {
+                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString()))) {
                              Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
                              vmlist.add(role);
                         }
@@ -334,12 +334,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
         //vm always has VirtualMachineRoleType.PersistentVMRole property
-        Assert.assertEquals(VirtualMachineRoleType.PERSISTENT_VMROLE, virtualMachinesGetResponse.getRoleType());
+        Assert.assertEquals(VirtualMachineRoleType.PERSISTENTVMROLE, virtualMachinesGetResponse.getRoleType());
 
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
         Assert.assertTrue(osharddisk.getSourceImageName().contains("Win"));
-        Assert.assertEquals(VirtualHardDiskHostCaching.READ_WRITE, osharddisk.getHostCaching());
+        Assert.assertEquals(VirtualHardDiskHostCaching.READWRITE, osharddisk.getHostCaching());
     }
     
     @Test

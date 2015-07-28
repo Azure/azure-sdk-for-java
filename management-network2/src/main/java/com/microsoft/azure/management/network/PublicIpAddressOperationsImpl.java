@@ -26,7 +26,6 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.models.AzureAsyncOperationResponse;
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
-import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.PublicIpAddress;
 import com.microsoft.azure.management.network.models.PublicIpAddressDnsSettings;
 import com.microsoft.azure.management.network.models.PublicIpAddressGetResponse;
@@ -733,7 +732,7 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -821,7 +820,7 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

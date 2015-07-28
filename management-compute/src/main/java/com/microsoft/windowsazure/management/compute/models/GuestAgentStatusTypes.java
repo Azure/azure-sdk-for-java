@@ -29,5 +29,5 @@ package com.microsoft.windowsazure.management.compute.models;
 public abstract class GuestAgentStatusTypes {
     public static final String READY = "Ready";
     
-    public static final String NOT_READY = "NotReady";
+    public static final String NOTREADY = "NotReady";
 }

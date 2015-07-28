@@ -849,7 +849,7 @@ public class IPForwardingOperationsImpl implements ServiceOperations<NetworkMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -975,7 +975,7 @@ public class IPForwardingOperationsImpl implements ServiceOperations<NetworkMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;

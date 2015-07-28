@@ -435,14 +435,14 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         OperationStatus statusInstance;
-                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     

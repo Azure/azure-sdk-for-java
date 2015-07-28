@@ -4470,7 +4470,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4600,7 +4600,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4716,7 +4716,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5008,7 +5008,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5131,7 +5131,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5248,7 +5248,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5475,7 +5475,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5593,7 +5593,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -5718,7 +5718,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -6226,7 +6226,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                     Element stateElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
                         GatewayDiagnosticsState stateInstance;
-                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent());
+                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent().toUpperCase());
                         result.setState(stateInstance);
                     }
                     
@@ -6365,7 +6365,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                     Element stateElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
                         GatewayDiagnosticsState stateInstance;
-                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent());
+                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent().toUpperCase());
                         result.setState(stateInstance);
                     }
                     
@@ -7223,14 +7223,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                     Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         GatewayOperationStatus statusInstance;
-                        statusInstance = GatewayOperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = GatewayOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     
@@ -7933,7 +7933,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         Element connectivityStateElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "ConnectivityState");
                         if (connectivityStateElement != null && connectivityStateElement.getTextContent() != null && !connectivityStateElement.getTextContent().isEmpty()) {
                             GatewayConnectivityState connectivityStateInstance;
-                            connectivityStateInstance = GatewayConnectivityState.valueOf(connectivityStateElement.getTextContent());
+                            connectivityStateInstance = GatewayConnectivityState.valueOf(connectivityStateElement.getTextContent().toUpperCase());
                             connectionInstance.setConnectivityState(connectivityStateInstance);
                         }
                         
@@ -8832,7 +8832,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -8953,7 +8953,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9083,7 +9083,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9205,7 +9205,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9324,7 +9324,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9445,7 +9445,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9564,7 +9564,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9685,7 +9685,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9811,7 +9811,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -9933,7 +9933,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -10063,7 +10063,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -10185,7 +10185,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -10310,7 +10310,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -10429,7 +10429,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -10897,7 +10897,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;

@@ -30,7 +30,7 @@ public abstract class DiskCreateOptionTypes {
     /**
     * The option to create from image.
     */
-    public static final String FROM_IMAGE = "fromImage";
+    public static final String FROMIMAGE = "fromImage";
     
     /**
     * The option to create empty.

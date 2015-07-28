@@ -29,7 +29,7 @@ package com.microsoft.windowsazure.management.websites.models;
 public enum WebSiteSslState {
     DISABLED,
     
-    SNI_ENABLED,
+    SNIENABLED,
     
-    IP_BASED_ENABLED,
+    IPBASEDENABLED,
 }
