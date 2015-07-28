@@ -23,6 +23,9 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+/**
+* The remote debugging version.
+*/
 public enum RemoteDebuggingVersion {
     /**
     * Visual Studio 2012.

@@ -25,9 +25,9 @@ package com.microsoft.windowsazure.management.network;
 
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupAddToSubnetParameters;
+import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupAddAssociationParameters;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupCreateParameters;
-import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetForSubnetResponse;
+import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetAssociationResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupListResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecuritySetRuleParameters;
@@ -43,6 +43,112 @@ import org.xml.sax.SAXException;
 * Security Groups for your subscription.
 */
 public interface NetworkSecurityGroupOperations {
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse addToNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> addToNetworkInterfaceAsync(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters);
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse addToRole(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> addToRoleAsync(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters);
+    
     /**
     * Adds a Network Security Group to a subnet.
     *
@@ -72,7 +178,7 @@ public interface NetworkSecurityGroupOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse addToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse addToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * Adds a Network Security Group to a subnet.
@@ -91,7 +197,109 @@ public interface NetworkSecurityGroupOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<OperationStatusResponse> addToSubnetAsync(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters);
+    Future<OperationStatusResponse> addToSubnetAsync(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters);
+    
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse beginAddingToNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> beginAddingToNetworkInterfaceAsync(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters);
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse beginAddingToRole(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> beginAddingToRoleAsync(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters);
     
     /**
     * Adds a Network Security Group to a subnet.
@@ -120,7 +328,7 @@ public interface NetworkSecurityGroupOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse beginAddingToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationStatusResponse beginAddingToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Adds a Network Security Group to a subnet.
@@ -139,7 +347,7 @@ public interface NetworkSecurityGroupOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<OperationStatusResponse> beginAddingToSubnetAsync(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters);
+    Future<OperationStatusResponse> beginAddingToSubnetAsync(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters);
     
     /**
     * Creates a new Network Security Group.
@@ -272,6 +480,92 @@ public interface NetworkSecurityGroupOperations {
     * failure.
     */
     Future<OperationStatusResponse> beginDeletingRuleAsync(String networkSecurityGroupName, String ruleName);
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse beginRemovingFromNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName) throws IOException, ServiceException;
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> beginRemovingFromNetworkInterfaceAsync(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName);
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse beginRemovingFromRole(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName) throws IOException, ServiceException;
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> beginRemovingFromRoleAsync(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName);
     
     /**
     * Removes a Network Security Group from a subnet.
@@ -552,6 +846,68 @@ public interface NetworkSecurityGroupOperations {
     Future<NetworkSecurityGroupGetResponse> getAsync(String networkSecurityGroupName, String detailLevel);
     
     /**
+    * Gets the Network Security Group applied to a specific network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    NetworkSecurityGroupGetAssociationResponse getForNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Gets the Network Security Group applied to a specific network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    Future<NetworkSecurityGroupGetAssociationResponse> getForNetworkInterfaceAsync(String serviceName, String deploymentName, String roleName, String networkInterfaceName);
+    
+    /**
+    * Gets the Network Security Group applied to a specific role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    NetworkSecurityGroupGetAssociationResponse getForRole(String serviceName, String deploymentName, String roleName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Gets the Network Security Group applied to a specific role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    Future<NetworkSecurityGroupGetAssociationResponse> getForRoleAsync(String serviceName, String deploymentName, String roleName);
+    
+    /**
     * Gets the Network Security Group applied to a specific subnet.
     *
     * @param virtualNetworkName Required.
@@ -564,18 +920,20 @@ public interface NetworkSecurityGroupOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Network Security Group associated with a subnet.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
     */
-    NetworkSecurityGroupGetForSubnetResponse getForSubnet(String virtualNetworkName, String subnetName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    NetworkSecurityGroupGetAssociationResponse getForSubnet(String virtualNetworkName, String subnetName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Gets the Network Security Group applied to a specific subnet.
     *
     * @param virtualNetworkName Required.
     * @param subnetName Required.
-    * @return The Network Security Group associated with a subnet.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
     */
-    Future<NetworkSecurityGroupGetForSubnetResponse> getForSubnetAsync(String virtualNetworkName, String subnetName);
+    Future<NetworkSecurityGroupGetAssociationResponse> getForSubnetAsync(String virtualNetworkName, String subnetName);
     
     /**
     * Lists all of the Network Security Groups for the subscription.
@@ -598,6 +956,108 @@ public interface NetworkSecurityGroupOperations {
     * @return The List Definitions operation response.
     */
     Future<NetworkSecurityGroupListResponse> listAsync();
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse removeFromNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> removeFromNetworkInterfaceAsync(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName);
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse removeFromRole(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> removeFromRoleAsync(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName);
     
     /**
     * Removes a Network Security Group from a subnet.

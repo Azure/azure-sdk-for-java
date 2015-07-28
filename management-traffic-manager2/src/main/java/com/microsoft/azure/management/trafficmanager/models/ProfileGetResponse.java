@@ -26,13 +26,14 @@ package com.microsoft.azure.management.trafficmanager.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The response to a Profile Create operation.
+* The response to a Traffic Manager profile 'Create' operation.
 */
 public class ProfileGetResponse extends OperationResponse {
     private Profile profile;
     
     /**
-    * Optional. Gets or sets information about the profile in the response.
+    * Optional. Gets or sets information about the Traffic Manager profile in
+    * the response to the 'Create' operation.
     * @return The Profile value.
     */
     public Profile getProfile() {
@@ -40,7 +41,8 @@ public class ProfileGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets information about the profile in the response.
+    * Optional. Gets or sets information about the Traffic Manager profile in
+    * the response to the 'Create' operation.
     * @param profileValue The Profile value.
     */
     public void setProfile(final Profile profileValue) {

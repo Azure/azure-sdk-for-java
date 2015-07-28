@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -123,6 +124,34 @@ public interface ComputeManagementClient extends Closeable, FilterableService<Co
     * @return The VirtualMachineSizesOperations value.
     */
     VirtualMachineSizeOperations getVirtualMachineSizesOperations();
+    
+    /**
+    * The Get Delete Operation Status operation returns the status of the
+    * specified operation. After calling an asynchronous operation, you can
+    * call GetDeleteOperationStatus to determine whether the operation has
+    * succeeded, failed, or is still in progress.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The compute long running operation response.
+    */
+    DeleteOperationResponse getDeleteOperationStatus(String operationStatusLink) throws IOException, ServiceException;
+    
+    /**
+    * The Get Delete Operation Status operation returns the status of the
+    * specified operation. After calling an asynchronous operation, you can
+    * call GetDeleteOperationStatus to determine whether the operation has
+    * succeeded, failed, or is still in progress.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation.
+    * @return The compute long running operation response.
+    */
+    Future<DeleteOperationResponse> getDeleteOperationStatusAsync(String operationStatusLink);
     
     /**
     * The Get Operation Status operation returns the status of the specified

@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -150,8 +152,8 @@ public class DatabaseProperties {
     private String elasticPoolName;
     
     /**
-    * Optional. Gets or sets the name of the Azure SQL Database Elastic Pool
-    * the database is in.
+    * Optional. Gets the name of the Azure SQL Database Elastic Pool the
+    * database is in.
     * @return The ElasticPoolName value.
     */
     public String getElasticPoolName() {
@@ -159,8 +161,8 @@ public class DatabaseProperties {
     }
     
     /**
-    * Optional. Gets or sets the name of the Azure SQL Database Elastic Pool
-    * the database is in.
+    * Optional. Gets the name of the Azure SQL Database Elastic Pool the
+    * database is in.
     * @param elasticPoolNameValue The ElasticPoolName value.
     */
     public void setElasticPoolName(final String elasticPoolNameValue) {
@@ -231,6 +233,24 @@ public class DatabaseProperties {
         this.requestedServiceObjectiveName = requestedServiceObjectiveNameValue;
     }
     
+    private ArrayList<Schema> schemas;
+    
+    /**
+    * Optional. Gets the schemas from this database.
+    * @return The Schemas value.
+    */
+    public ArrayList<Schema> getSchemas() {
+        return this.schemas;
+    }
+    
+    /**
+    * Optional. Gets the schemas from this database.
+    * @param schemasValue The Schemas value.
+    */
+    public void setSchemas(final ArrayList<Schema> schemasValue) {
+        this.schemas = schemasValue;
+    }
+    
     private String serviceObjective;
     
     /**
@@ -249,6 +269,26 @@ public class DatabaseProperties {
         this.serviceObjective = serviceObjectiveValue;
     }
     
+    private ArrayList<ServiceTierAdvisor> serviceTierAdvisors;
+    
+    /**
+    * Optional. Gets the list of service tier advisors for this database.
+    * Expanded property
+    * @return The ServiceTierAdvisors value.
+    */
+    public ArrayList<ServiceTierAdvisor> getServiceTierAdvisors() {
+        return this.serviceTierAdvisors;
+    }
+    
+    /**
+    * Optional. Gets the list of service tier advisors for this database.
+    * Expanded property
+    * @param serviceTierAdvisorsValue The ServiceTierAdvisors value.
+    */
+    public void setServiceTierAdvisors(final ArrayList<ServiceTierAdvisor> serviceTierAdvisorsValue) {
+        this.serviceTierAdvisors = serviceTierAdvisorsValue;
+    }
+    
     private String status;
     
     /**
@@ -265,5 +305,32 @@ public class DatabaseProperties {
     */
     public void setStatus(final String statusValue) {
         this.status = statusValue;
+    }
+    
+    private UpgradeHint upgradeHint;
+    
+    /**
+    * Optional. Gets the upgrade hint for this database.
+    * @return The UpgradeHint value.
+    */
+    public UpgradeHint getUpgradeHint() {
+        return this.upgradeHint;
+    }
+    
+    /**
+    * Optional. Gets the upgrade hint for this database.
+    * @param upgradeHintValue The UpgradeHint value.
+    */
+    public void setUpgradeHint(final UpgradeHint upgradeHintValue) {
+        this.upgradeHint = upgradeHintValue;
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseProperties class.
+    *
+    */
+    public DatabaseProperties() {
+        this.setSchemas(new LazyArrayList<Schema>());
+        this.setServiceTierAdvisors(new LazyArrayList<ServiceTierAdvisor>());
     }
 }

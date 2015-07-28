@@ -116,4 +116,22 @@ public class NetworkReservedIPCreateParameters {
     public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
+    
+    private String virtualIPName;
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @return The VirtualIPName value.
+    */
+    public String getVirtualIPName() {
+        return this.virtualIPName;
+    }
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @param virtualIPNameValue The VirtualIPName value.
+    */
+    public void setVirtualIPName(final String virtualIPNameValue) {
+        this.virtualIPName = virtualIPNameValue;
+    }
 }

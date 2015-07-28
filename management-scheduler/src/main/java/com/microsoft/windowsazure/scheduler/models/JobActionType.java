@@ -24,7 +24,8 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Type of action. Can be one of http, https, storageQueue.
+* Type of action. Can be one of http, https, storageQueue, serviceBusQueue,
+* serviceBusTopic.
 */
 public enum JobActionType {
     Http,
@@ -32,4 +33,8 @@ public enum JobActionType {
     Https,
     
     StorageQueue,
+    
+    ServiceBusQueue,
+    
+    ServiceBusTopic,
 }

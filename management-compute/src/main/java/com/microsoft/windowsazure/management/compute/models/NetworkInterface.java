@@ -45,6 +45,26 @@ public class NetworkInterface {
         this.iPConfigurations = iPConfigurationsValue;
     }
     
+    private String iPForwarding;
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this network
+    * interface. Optional
+    * @return The IPForwarding value.
+    */
+    public String getIPForwarding() {
+        return this.iPForwarding;
+    }
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this network
+    * interface. Optional
+    * @param iPForwardingValue The IPForwarding value.
+    */
+    public void setIPForwarding(final String iPForwardingValue) {
+        this.iPForwarding = iPForwardingValue;
+    }
+    
     private String name;
     
     /**
@@ -61,6 +81,26 @@ public class NetworkInterface {
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
+    }
+    
+    private String networkSecurityGroup;
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * network interface. Optional
+    * @return The NetworkSecurityGroup value.
+    */
+    public String getNetworkSecurityGroup() {
+        return this.networkSecurityGroup;
+    }
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * network interface. Optional
+    * @param networkSecurityGroupValue The NetworkSecurityGroup value.
+    */
+    public void setNetworkSecurityGroup(final String networkSecurityGroupValue) {
+        this.networkSecurityGroup = networkSecurityGroupValue;
     }
     
     /**

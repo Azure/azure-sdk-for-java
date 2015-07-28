@@ -313,7 +313,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -333,7 +333,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -497,7 +497,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         }
         url = url + "/services/networking/ApplicationGateways";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -517,7 +517,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -700,7 +700,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -720,7 +720,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -849,7 +849,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -869,7 +869,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1003,7 +1003,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/Operations";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1023,7 +1023,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1183,7 +1183,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/configuration";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1203,7 +1203,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1553,7 +1553,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1573,7 +1573,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2238,7 +2238,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2257,7 +2257,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2444,7 +2444,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2463,7 +2463,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2599,7 +2599,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/configuration";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2618,7 +2618,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2977,7 +2977,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3132,7 +3132,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         }
         url = url + "/services/networking/ApplicationGateways";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3151,7 +3151,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3335,7 +3335,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/sslcertificates";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3354,7 +3354,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;

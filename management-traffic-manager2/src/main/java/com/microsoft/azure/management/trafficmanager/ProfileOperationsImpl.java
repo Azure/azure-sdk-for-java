@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
+import com.microsoft.azure.management.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityResponse;
 import com.microsoft.azure.management.trafficmanager.models.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.models.Endpoint;
 import com.microsoft.azure.management.trafficmanager.models.EndpointProperties;
@@ -33,6 +35,9 @@ import com.microsoft.azure.management.trafficmanager.models.ProfileCreateOrUpdat
 import com.microsoft.azure.management.trafficmanager.models.ProfileGetResponse;
 import com.microsoft.azure.management.trafficmanager.models.ProfileListResponse;
 import com.microsoft.azure.management.trafficmanager.models.ProfileProperties;
+import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateParameters;
+import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateResponse;
+import com.microsoft.azure.management.trafficmanager.models.Reason;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
@@ -52,6 +57,8 @@ import java.util.concurrent.Future;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
@@ -61,7 +68,7 @@ import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
-* Operations for managing WATMv2 profiles.
+* Operations for managing Traffic Manager profiles.
 */
 public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerManagementClientImpl>, ProfileOperations {
     /**
@@ -85,14 +92,194 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Create or update a WATMv2 profile within a resource group.
+    * Create or update a Traffic Manager endpoint.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @param parameters Required. Parameters supplied to the CreateOrUpdate
+    * @param parameters Required. The Traffic Manager name parameters supplied
+    * to the CheckTrafficManagerNameAvailability operation.
+    * @return The response to a 'CheckTrafficManagerNameAvailability' operation.
+    */
+    @Override
+    public Future<CheckTrafficManagerRelativeDnsNameAvailabilityResponse> checkTrafficManagerRelativeDnsNameAvailabilityAsync(final CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<CheckTrafficManagerRelativeDnsNameAvailabilityResponse>() { 
+            @Override
+            public CheckTrafficManagerRelativeDnsNameAvailabilityResponse call() throws Exception {
+                return checkTrafficManagerRelativeDnsNameAvailability(parameters);
+            }
+         });
+    }
+    
+    /**
+    * Create or update a Traffic Manager endpoint.
+    *
+    * @param parameters Required. The Traffic Manager name parameters supplied
+    * to the CheckTrafficManagerNameAvailability operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response to a 'CheckTrafficManagerNameAvailability' operation.
+    */
+    @Override
+    public CheckTrafficManagerRelativeDnsNameAvailabilityResponse checkTrafficManagerRelativeDnsNameAvailability(CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) throws IOException, ServiceException {
+        // Validate
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getName() == null) {
+            throw new NullPointerException("parameters.Name");
+        }
+        if (parameters.getType() == null) {
+            throw new NullPointerException("parameters.Type");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "checkTrafficManagerRelativeDnsNameAvailabilityAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "providers/";
+        url = url + "Microsoft.Network";
+        url = url + "/checkTrafficManagerNameAvailability";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-28-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Serialize Request
+        String requestContent = null;
+        JsonNode requestDoc = null;
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode checkTrafficManagerRelativeDnsNameAvailabilityParametersValue = objectMapper.createObjectNode();
+        requestDoc = checkTrafficManagerRelativeDnsNameAvailabilityParametersValue;
+        
+        ((ObjectNode) checkTrafficManagerRelativeDnsNameAvailabilityParametersValue).put("name", parameters.getName());
+        
+        ((ObjectNode) checkTrafficManagerRelativeDnsNameAvailabilityParametersValue).put("type", parameters.getType());
+        
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, requestDoc);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode >= HttpStatus.SC_BAD_REQUEST) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            CheckTrafficManagerRelativeDnsNameAvailabilityResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new CheckTrafficManagerRelativeDnsNameAvailabilityResponse();
+            JsonNode responseDoc = null;
+            if (responseContent == null == false) {
+                responseDoc = objectMapper.readTree(responseContent);
+            }
+            
+            if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                JsonNode nameValue = responseDoc.get("name");
+                if (nameValue != null && nameValue instanceof NullNode == false) {
+                    String nameInstance;
+                    nameInstance = nameValue.getTextValue();
+                    result.setName(nameInstance);
+                }
+                
+                JsonNode typeValue = responseDoc.get("type");
+                if (typeValue != null && typeValue instanceof NullNode == false) {
+                    String typeInstance;
+                    typeInstance = typeValue.getTextValue();
+                    result.setType(typeInstance);
+                }
+                
+                JsonNode nameAvailableValue = responseDoc.get("nameAvailable");
+                if (nameAvailableValue != null && nameAvailableValue instanceof NullNode == false) {
+                    boolean nameAvailableInstance;
+                    nameAvailableInstance = nameAvailableValue.getBooleanValue();
+                    result.setNameAvailable(nameAvailableInstance);
+                }
+                
+                JsonNode reasonValue = responseDoc.get("reason");
+                if (reasonValue != null && reasonValue instanceof NullNode == false) {
+                    Reason reasonInstance;
+                    reasonInstance = Reason.values()[reasonValue.getIntValue()];
+                    result.setReason(reasonInstance);
+                }
+                
+                JsonNode messageValue = responseDoc.get("message");
+                if (messageValue != null && messageValue instanceof NullNode == false) {
+                    String messageInstance;
+                    messageInstance = messageValue.getTextValue();
+                    result.setMessage(messageInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Create or update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the CreateOrUpdate operation.
+    * @return The response to a Traffic Manager profile 'CreateOrUpdate'
     * operation.
-    * @return The response to a Profile CreateOrUpdate operation.
     */
     @Override
     public Future<ProfileCreateOrUpdateResponse> createOrUpdateAsync(final String resourceGroupName, final String profileName, final ProfileCreateOrUpdateParameters parameters) {
@@ -105,18 +292,19 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Create or update a WATMv2 profile within a resource group.
+    * Create or update a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @param parameters Required. Parameters supplied to the CreateOrUpdate
-    * operation.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the CreateOrUpdate operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile CreateOrUpdate operation.
+    * @return The response to a Traffic Manager profile 'CreateOrUpdate'
+    * operation.
     */
     @Override
     public ProfileCreateOrUpdateResponse createOrUpdate(String resourceGroupName, String profileName, ProfileCreateOrUpdateParameters parameters) throws IOException, ServiceException {
@@ -137,36 +325,18 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
             throw new NullPointerException("parameters.Profile.Location");
         }
         if (parameters.getProfile().getProperties() != null) {
-            if (parameters.getProfile().getProperties().getDnsConfig() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.DnsConfig");
-            }
-            if (parameters.getProfile().getProperties().getDnsConfig().getRelativeName() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.DnsConfig.RelativeName");
-            }
-            if (parameters.getProfile().getProperties().getEndpoints() != null) {
-                for (Endpoint endpointsParameterItem : parameters.getProfile().getProperties().getEndpoints()) {
-                    if (endpointsParameterItem.getProperties() == null) {
-                        throw new NullPointerException("parameters.Profile.Properties.Endpoints.Properties");
-                    }
-                    if (endpointsParameterItem.getProperties().getEndpointStatus() == null) {
-                        throw new NullPointerException("parameters.Profile.Properties.Endpoints.Properties.EndpointStatus");
-                    }
-                    if (endpointsParameterItem.getProperties().getTarget() == null) {
-                        throw new NullPointerException("parameters.Profile.Properties.Endpoints.Properties.Target");
-                    }
+            if (parameters.getProfile().getProperties().getDnsConfig() != null) {
+                if (parameters.getProfile().getProperties().getDnsConfig().getRelativeName() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.DnsConfig.RelativeName");
                 }
             }
-            if (parameters.getProfile().getProperties().getMonitorConfig() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.MonitorConfig");
-            }
-            if (parameters.getProfile().getProperties().getMonitorConfig().getPath() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Path");
-            }
-            if (parameters.getProfile().getProperties().getMonitorConfig().getProtocol() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Protocol");
-            }
-            if (parameters.getProfile().getProperties().getTrafficRoutingMethod() == null) {
-                throw new NullPointerException("parameters.Profile.Properties.TrafficRoutingMethod");
+            if (parameters.getProfile().getProperties().getMonitorConfig() != null) {
+                if (parameters.getProfile().getProperties().getMonitorConfig().getPath() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Path");
+                }
+                if (parameters.getProfile().getProperties().getMonitorConfig().getProtocol() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Protocol");
+                }
             }
         }
         
@@ -191,7 +361,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/resourceGroups/";
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
         url = url + "/providers/";
-        url = url + "microsoft.network";
+        url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
@@ -232,31 +402,37 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                 ((ObjectNode) propertiesValue).put("profileStatus", parameters.getProfile().getProperties().getProfileStatus());
             }
             
-            ((ObjectNode) propertiesValue).put("trafficRoutingMethod", parameters.getProfile().getProperties().getTrafficRoutingMethod());
-            
-            ObjectNode dnsConfigValue = objectMapper.createObjectNode();
-            ((ObjectNode) propertiesValue).put("dnsConfig", dnsConfigValue);
-            
-            ((ObjectNode) dnsConfigValue).put("relativeName", parameters.getProfile().getProperties().getDnsConfig().getRelativeName());
-            
-            if (parameters.getProfile().getProperties().getDnsConfig().getFqdn() != null) {
-                ((ObjectNode) dnsConfigValue).put("fqdn", parameters.getProfile().getProperties().getDnsConfig().getFqdn());
+            if (parameters.getProfile().getProperties().getTrafficRoutingMethod() != null) {
+                ((ObjectNode) propertiesValue).put("trafficRoutingMethod", parameters.getProfile().getProperties().getTrafficRoutingMethod());
             }
             
-            ((ObjectNode) dnsConfigValue).put("ttl", parameters.getProfile().getProperties().getDnsConfig().getTtl());
-            
-            ObjectNode monitorConfigValue = objectMapper.createObjectNode();
-            ((ObjectNode) propertiesValue).put("monitorConfig", monitorConfigValue);
-            
-            if (parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus() != null) {
-                ((ObjectNode) monitorConfigValue).put("profileMonitorStatus", parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus());
+            if (parameters.getProfile().getProperties().getDnsConfig() != null) {
+                ObjectNode dnsConfigValue = objectMapper.createObjectNode();
+                ((ObjectNode) propertiesValue).put("dnsConfig", dnsConfigValue);
+                
+                ((ObjectNode) dnsConfigValue).put("relativeName", parameters.getProfile().getProperties().getDnsConfig().getRelativeName());
+                
+                if (parameters.getProfile().getProperties().getDnsConfig().getFqdn() != null) {
+                    ((ObjectNode) dnsConfigValue).put("fqdn", parameters.getProfile().getProperties().getDnsConfig().getFqdn());
+                }
+                
+                ((ObjectNode) dnsConfigValue).put("ttl", parameters.getProfile().getProperties().getDnsConfig().getTtl());
             }
             
-            ((ObjectNode) monitorConfigValue).put("protocol", parameters.getProfile().getProperties().getMonitorConfig().getProtocol());
-            
-            ((ObjectNode) monitorConfigValue).put("port", parameters.getProfile().getProperties().getMonitorConfig().getPort());
-            
-            ((ObjectNode) monitorConfigValue).put("path", parameters.getProfile().getProperties().getMonitorConfig().getPath());
+            if (parameters.getProfile().getProperties().getMonitorConfig() != null) {
+                ObjectNode monitorConfigValue = objectMapper.createObjectNode();
+                ((ObjectNode) propertiesValue).put("monitorConfig", monitorConfigValue);
+                
+                if (parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus() != null) {
+                    ((ObjectNode) monitorConfigValue).put("profileMonitorStatus", parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus());
+                }
+                
+                ((ObjectNode) monitorConfigValue).put("protocol", parameters.getProfile().getProperties().getMonitorConfig().getProtocol());
+                
+                ((ObjectNode) monitorConfigValue).put("port", parameters.getProfile().getProperties().getMonitorConfig().getPort());
+                
+                ((ObjectNode) monitorConfigValue).put("path", parameters.getProfile().getProperties().getMonitorConfig().getPath());
+            }
             
             if (parameters.getProfile().getProperties().getEndpoints() != null) {
                 ArrayNode endpointsArray = objectMapper.createArrayNode();
@@ -276,31 +452,37 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                         ((ObjectNode) endpointValue).put("type", endpointsItem.getType());
                     }
                     
-                    ObjectNode propertiesValue2 = objectMapper.createObjectNode();
-                    ((ObjectNode) endpointValue).put("properties", propertiesValue2);
-                    
-                    if (endpointsItem.getProperties().getTargetResourceId() != null) {
-                        ((ObjectNode) propertiesValue2).put("targetResourceId", endpointsItem.getProperties().getTargetResourceId());
-                    }
-                    
-                    ((ObjectNode) propertiesValue2).put("target", endpointsItem.getProperties().getTarget());
-                    
-                    ((ObjectNode) propertiesValue2).put("endpointStatus", endpointsItem.getProperties().getEndpointStatus());
-                    
-                    if (endpointsItem.getProperties().getWeight() != null) {
-                        ((ObjectNode) propertiesValue2).put("weight", endpointsItem.getProperties().getWeight());
-                    }
-                    
-                    if (endpointsItem.getProperties().getPriority() != null) {
-                        ((ObjectNode) propertiesValue2).put("priority", endpointsItem.getProperties().getPriority());
-                    }
-                    
-                    if (endpointsItem.getProperties().getEndpointLocation() != null) {
-                        ((ObjectNode) propertiesValue2).put("endpointLocation", endpointsItem.getProperties().getEndpointLocation());
-                    }
-                    
-                    if (endpointsItem.getProperties().getEndpointMonitorStatus() != null) {
-                        ((ObjectNode) propertiesValue2).put("endpointMonitorStatus", endpointsItem.getProperties().getEndpointMonitorStatus());
+                    if (endpointsItem.getProperties() != null) {
+                        ObjectNode propertiesValue2 = objectMapper.createObjectNode();
+                        ((ObjectNode) endpointValue).put("properties", propertiesValue2);
+                        
+                        if (endpointsItem.getProperties().getTargetResourceId() != null) {
+                            ((ObjectNode) propertiesValue2).put("targetResourceId", endpointsItem.getProperties().getTargetResourceId());
+                        }
+                        
+                        if (endpointsItem.getProperties().getTarget() != null) {
+                            ((ObjectNode) propertiesValue2).put("target", endpointsItem.getProperties().getTarget());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointStatus() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointStatus", endpointsItem.getProperties().getEndpointStatus());
+                        }
+                        
+                        if (endpointsItem.getProperties().getWeight() != null) {
+                            ((ObjectNode) propertiesValue2).put("weight", endpointsItem.getProperties().getWeight());
+                        }
+                        
+                        if (endpointsItem.getProperties().getPriority() != null) {
+                            ((ObjectNode) propertiesValue2).put("priority", endpointsItem.getProperties().getPriority());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointLocation() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointLocation", endpointsItem.getProperties().getEndpointLocation());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointMonitorStatus() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointMonitorStatus", endpointsItem.getProperties().getEndpointMonitorStatus());
+                        }
                     }
                 }
                 ((ObjectNode) propertiesValue).put("endpoints", endpointsArray);
@@ -594,11 +776,12 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Deletes a WATMv2 profile within a resource group.
+    * Deletes a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile to be deleted.
+    * @param profileName Required. The name of the Traffic Manager profile to
+    * be deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -613,11 +796,12 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Deletes a WATMv2 profile within a resource group.
+    * Deletes a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile to be deleted.
+    * @param profileName Required. The name of the Traffic Manager profile to
+    * be deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -655,7 +839,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/resourceGroups/";
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
         url = url + "/providers/";
-        url = url + "microsoft.network";
+        url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
@@ -720,12 +904,12 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Gets a WATMv2 profile within a resource group.
+    * Gets a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @return The response to a Profile Create operation.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @return The response to a Traffic Manager profile 'Create' operation.
     */
     @Override
     public Future<ProfileGetResponse> getAsync(final String resourceGroupName, final String profileName) {
@@ -738,16 +922,16 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Gets a WATMv2 profile within a resource group.
+    * Gets a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile Create operation.
+    * @return The response to a Traffic Manager profile 'Create' operation.
     */
     @Override
     public ProfileGetResponse get(String resourceGroupName, String profileName) throws IOException, ServiceException {
@@ -779,7 +963,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/resourceGroups/";
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
         url = url + "/providers/";
-        url = url + "microsoft.network";
+        url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
@@ -1061,9 +1245,10 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Lists all WATMv2 profile within a subscription.
+    * Lists all Traffic Manager profiles within a subscription.
     *
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     @Override
     public Future<ProfileListResponse> listAllAsync() {
@@ -1076,13 +1261,14 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Lists all WATMv2 profile within a subscription.
+    * Lists all Traffic Manager profiles within a subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     @Override
     public ProfileListResponse listAll() throws IOException, ServiceException {
@@ -1104,7 +1290,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
             url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
         }
         url = url + "/providers/";
-        url = url + "microsoft.network";
+        url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles";
         ArrayList<String> queryParameters = new ArrayList<String>();
         queryParameters.add("api-version=" + "2015-04-28-preview");
@@ -1390,10 +1576,12 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Lists all WATMv2 profiles within a resource group.
+    * Lists all Traffic Manager profiles within a resource group.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @return The response to a Profile ProfileListAll operation.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profiles to be listed.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     @Override
     public Future<ProfileListResponse> listAllInResourceGroupAsync(final String resourceGroupName) {
@@ -1406,14 +1594,16 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
     }
     
     /**
-    * Lists all WATMv2 profiles within a resource group.
+    * Lists all Traffic Manager profiles within a resource group.
     *
-    * @param resourceGroupName Required. The name of the resource group.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profiles to be listed.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     @Override
     public ProfileListResponse listAllInResourceGroup(String resourceGroupName) throws IOException, ServiceException {
@@ -1441,7 +1631,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/resourceGroups/";
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
         url = url + "/providers/";
-        url = url + "microsoft.network";
+        url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles";
         ArrayList<String> queryParameters = new ArrayList<String>();
         queryParameters.add("api-version=" + "2015-04-28-preview");
@@ -1706,6 +1896,512 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                 profileInstance.getTags().put(tagsKey, tagsValue);
                             }
                         }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the Update operation.
+    * @return Parameters supplied to update a Traffic Manager profile.
+    */
+    @Override
+    public Future<ProfileUpdateResponse> updateAsync(final String resourceGroupName, final String profileName, final ProfileUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ProfileUpdateResponse>() { 
+            @Override
+            public ProfileUpdateResponse call() throws Exception {
+                return update(resourceGroupName, profileName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the Update operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Parameters supplied to update a Traffic Manager profile.
+    */
+    @Override
+    public ProfileUpdateResponse update(String resourceGroupName, String profileName, ProfileUpdateParameters parameters) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (profileName == null) {
+            throw new NullPointerException("profileName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getProfile() == null) {
+            throw new NullPointerException("parameters.Profile");
+        }
+        if (parameters.getProfile().getLocation() == null) {
+            throw new NullPointerException("parameters.Profile.Location");
+        }
+        if (parameters.getProfile().getProperties() != null) {
+            if (parameters.getProfile().getProperties().getDnsConfig() != null) {
+                if (parameters.getProfile().getProperties().getDnsConfig().getRelativeName() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.DnsConfig.RelativeName");
+                }
+            }
+            if (parameters.getProfile().getProperties().getMonitorConfig() != null) {
+                if (parameters.getProfile().getProperties().getMonitorConfig().getPath() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Path");
+                }
+                if (parameters.getProfile().getProperties().getMonitorConfig().getProtocol() == null) {
+                    throw new NullPointerException("parameters.Profile.Properties.MonitorConfig.Protocol");
+                }
+            }
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("profileName", profileName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/";
+        url = url + "Microsoft.Network";
+        url = url + "/trafficmanagerprofiles/";
+        url = url + URLEncoder.encode(profileName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-28-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Serialize Request
+        String requestContent = null;
+        JsonNode requestDoc = null;
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode profileUpdateParametersValue = objectMapper.createObjectNode();
+        requestDoc = profileUpdateParametersValue;
+        
+        if (parameters.getProfile().getProperties() != null) {
+            ObjectNode propertiesValue = objectMapper.createObjectNode();
+            ((ObjectNode) profileUpdateParametersValue).put("properties", propertiesValue);
+            
+            if (parameters.getProfile().getProperties().getProfileStatus() != null) {
+                ((ObjectNode) propertiesValue).put("profileStatus", parameters.getProfile().getProperties().getProfileStatus());
+            }
+            
+            if (parameters.getProfile().getProperties().getTrafficRoutingMethod() != null) {
+                ((ObjectNode) propertiesValue).put("trafficRoutingMethod", parameters.getProfile().getProperties().getTrafficRoutingMethod());
+            }
+            
+            if (parameters.getProfile().getProperties().getDnsConfig() != null) {
+                ObjectNode dnsConfigValue = objectMapper.createObjectNode();
+                ((ObjectNode) propertiesValue).put("dnsConfig", dnsConfigValue);
+                
+                ((ObjectNode) dnsConfigValue).put("relativeName", parameters.getProfile().getProperties().getDnsConfig().getRelativeName());
+                
+                if (parameters.getProfile().getProperties().getDnsConfig().getFqdn() != null) {
+                    ((ObjectNode) dnsConfigValue).put("fqdn", parameters.getProfile().getProperties().getDnsConfig().getFqdn());
+                }
+                
+                ((ObjectNode) dnsConfigValue).put("ttl", parameters.getProfile().getProperties().getDnsConfig().getTtl());
+            }
+            
+            if (parameters.getProfile().getProperties().getMonitorConfig() != null) {
+                ObjectNode monitorConfigValue = objectMapper.createObjectNode();
+                ((ObjectNode) propertiesValue).put("monitorConfig", monitorConfigValue);
+                
+                if (parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus() != null) {
+                    ((ObjectNode) monitorConfigValue).put("profileMonitorStatus", parameters.getProfile().getProperties().getMonitorConfig().getProfileMonitorStatus());
+                }
+                
+                ((ObjectNode) monitorConfigValue).put("protocol", parameters.getProfile().getProperties().getMonitorConfig().getProtocol());
+                
+                ((ObjectNode) monitorConfigValue).put("port", parameters.getProfile().getProperties().getMonitorConfig().getPort());
+                
+                ((ObjectNode) monitorConfigValue).put("path", parameters.getProfile().getProperties().getMonitorConfig().getPath());
+            }
+            
+            if (parameters.getProfile().getProperties().getEndpoints() != null) {
+                ArrayNode endpointsArray = objectMapper.createArrayNode();
+                for (Endpoint endpointsItem : parameters.getProfile().getProperties().getEndpoints()) {
+                    ObjectNode endpointValue = objectMapper.createObjectNode();
+                    endpointsArray.add(endpointValue);
+                    
+                    if (endpointsItem.getId() != null) {
+                        ((ObjectNode) endpointValue).put("id", endpointsItem.getId());
+                    }
+                    
+                    if (endpointsItem.getName() != null) {
+                        ((ObjectNode) endpointValue).put("name", endpointsItem.getName());
+                    }
+                    
+                    if (endpointsItem.getType() != null) {
+                        ((ObjectNode) endpointValue).put("type", endpointsItem.getType());
+                    }
+                    
+                    if (endpointsItem.getProperties() != null) {
+                        ObjectNode propertiesValue2 = objectMapper.createObjectNode();
+                        ((ObjectNode) endpointValue).put("properties", propertiesValue2);
+                        
+                        if (endpointsItem.getProperties().getTargetResourceId() != null) {
+                            ((ObjectNode) propertiesValue2).put("targetResourceId", endpointsItem.getProperties().getTargetResourceId());
+                        }
+                        
+                        if (endpointsItem.getProperties().getTarget() != null) {
+                            ((ObjectNode) propertiesValue2).put("target", endpointsItem.getProperties().getTarget());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointStatus() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointStatus", endpointsItem.getProperties().getEndpointStatus());
+                        }
+                        
+                        if (endpointsItem.getProperties().getWeight() != null) {
+                            ((ObjectNode) propertiesValue2).put("weight", endpointsItem.getProperties().getWeight());
+                        }
+                        
+                        if (endpointsItem.getProperties().getPriority() != null) {
+                            ((ObjectNode) propertiesValue2).put("priority", endpointsItem.getProperties().getPriority());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointLocation() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointLocation", endpointsItem.getProperties().getEndpointLocation());
+                        }
+                        
+                        if (endpointsItem.getProperties().getEndpointMonitorStatus() != null) {
+                            ((ObjectNode) propertiesValue2).put("endpointMonitorStatus", endpointsItem.getProperties().getEndpointMonitorStatus());
+                        }
+                    }
+                }
+                ((ObjectNode) propertiesValue).put("endpoints", endpointsArray);
+            }
+        }
+        
+        if (parameters.getProfile().getId() != null) {
+            ((ObjectNode) profileUpdateParametersValue).put("id", parameters.getProfile().getId());
+        }
+        
+        if (parameters.getProfile().getName() != null) {
+            ((ObjectNode) profileUpdateParametersValue).put("name", parameters.getProfile().getName());
+        }
+        
+        if (parameters.getProfile().getType() != null) {
+            ((ObjectNode) profileUpdateParametersValue).put("type", parameters.getProfile().getType());
+        }
+        
+        ((ObjectNode) profileUpdateParametersValue).put("location", parameters.getProfile().getLocation());
+        
+        if (parameters.getProfile().getTags() != null) {
+            ObjectNode tagsDictionary = objectMapper.createObjectNode();
+            for (Map.Entry<String, String> entry : parameters.getProfile().getTags().entrySet()) {
+                String tagsKey = entry.getKey();
+                String tagsValue = entry.getValue();
+                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
+            }
+            ((ObjectNode) profileUpdateParametersValue).put("tags", tagsDictionary);
+        }
+        
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, requestDoc);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode >= HttpStatus.SC_BAD_REQUEST) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ProfileUpdateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ProfileUpdateResponse();
+            JsonNode responseDoc = null;
+            if (responseContent == null == false) {
+                responseDoc = objectMapper.readTree(responseContent);
+            }
+            
+            JsonNode profileUpdateResponseValue = responseDoc.get("ProfileUpdateResponse");
+            if (profileUpdateResponseValue != null && profileUpdateResponseValue instanceof NullNode == false) {
+                ProfileUpdateParameters profileUpdateResponseInstance = new ProfileUpdateParameters();
+                
+                Profile profileInstance = new Profile();
+                result.setProfile(profileInstance);
+                
+                JsonNode propertiesValue3 = profileUpdateResponseValue.get("properties");
+                if (propertiesValue3 != null && propertiesValue3 instanceof NullNode == false) {
+                    ProfileProperties propertiesInstance = new ProfileProperties();
+                    profileInstance.setProperties(propertiesInstance);
+                    
+                    JsonNode profileStatusValue = propertiesValue3.get("profileStatus");
+                    if (profileStatusValue != null && profileStatusValue instanceof NullNode == false) {
+                        String profileStatusInstance;
+                        profileStatusInstance = profileStatusValue.getTextValue();
+                        propertiesInstance.setProfileStatus(profileStatusInstance);
+                    }
+                    
+                    JsonNode trafficRoutingMethodValue = propertiesValue3.get("trafficRoutingMethod");
+                    if (trafficRoutingMethodValue != null && trafficRoutingMethodValue instanceof NullNode == false) {
+                        String trafficRoutingMethodInstance;
+                        trafficRoutingMethodInstance = trafficRoutingMethodValue.getTextValue();
+                        propertiesInstance.setTrafficRoutingMethod(trafficRoutingMethodInstance);
+                    }
+                    
+                    JsonNode dnsConfigValue2 = propertiesValue3.get("dnsConfig");
+                    if (dnsConfigValue2 != null && dnsConfigValue2 instanceof NullNode == false) {
+                        DnsConfig dnsConfigInstance = new DnsConfig();
+                        propertiesInstance.setDnsConfig(dnsConfigInstance);
+                        
+                        JsonNode relativeNameValue = dnsConfigValue2.get("relativeName");
+                        if (relativeNameValue != null && relativeNameValue instanceof NullNode == false) {
+                            String relativeNameInstance;
+                            relativeNameInstance = relativeNameValue.getTextValue();
+                            dnsConfigInstance.setRelativeName(relativeNameInstance);
+                        }
+                        
+                        JsonNode fqdnValue = dnsConfigValue2.get("fqdn");
+                        if (fqdnValue != null && fqdnValue instanceof NullNode == false) {
+                            String fqdnInstance;
+                            fqdnInstance = fqdnValue.getTextValue();
+                            dnsConfigInstance.setFqdn(fqdnInstance);
+                        }
+                        
+                        JsonNode ttlValue = dnsConfigValue2.get("ttl");
+                        if (ttlValue != null && ttlValue instanceof NullNode == false) {
+                            long ttlInstance;
+                            ttlInstance = ttlValue.getLongValue();
+                            dnsConfigInstance.setTtl(ttlInstance);
+                        }
+                    }
+                    
+                    JsonNode monitorConfigValue2 = propertiesValue3.get("monitorConfig");
+                    if (monitorConfigValue2 != null && monitorConfigValue2 instanceof NullNode == false) {
+                        MonitorConfig monitorConfigInstance = new MonitorConfig();
+                        propertiesInstance.setMonitorConfig(monitorConfigInstance);
+                        
+                        JsonNode profileMonitorStatusValue = monitorConfigValue2.get("profileMonitorStatus");
+                        if (profileMonitorStatusValue != null && profileMonitorStatusValue instanceof NullNode == false) {
+                            String profileMonitorStatusInstance;
+                            profileMonitorStatusInstance = profileMonitorStatusValue.getTextValue();
+                            monitorConfigInstance.setProfileMonitorStatus(profileMonitorStatusInstance);
+                        }
+                        
+                        JsonNode protocolValue = monitorConfigValue2.get("protocol");
+                        if (protocolValue != null && protocolValue instanceof NullNode == false) {
+                            String protocolInstance;
+                            protocolInstance = protocolValue.getTextValue();
+                            monitorConfigInstance.setProtocol(protocolInstance);
+                        }
+                        
+                        JsonNode portValue = monitorConfigValue2.get("port");
+                        if (portValue != null && portValue instanceof NullNode == false) {
+                            long portInstance;
+                            portInstance = portValue.getLongValue();
+                            monitorConfigInstance.setPort(portInstance);
+                        }
+                        
+                        JsonNode pathValue = monitorConfigValue2.get("path");
+                        if (pathValue != null && pathValue instanceof NullNode == false) {
+                            String pathInstance;
+                            pathInstance = pathValue.getTextValue();
+                            monitorConfigInstance.setPath(pathInstance);
+                        }
+                    }
+                    
+                    JsonNode endpointsArray2 = propertiesValue3.get("endpoints");
+                    if (endpointsArray2 != null && endpointsArray2 instanceof NullNode == false) {
+                        propertiesInstance.setEndpoints(new ArrayList<Endpoint>());
+                        for (JsonNode endpointsValue : ((ArrayNode) endpointsArray2)) {
+                            Endpoint endpointInstance = new Endpoint();
+                            propertiesInstance.getEndpoints().add(endpointInstance);
+                            
+                            JsonNode idValue = endpointsValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                endpointInstance.setId(idInstance);
+                            }
+                            
+                            JsonNode nameValue = endpointsValue.get("name");
+                            if (nameValue != null && nameValue instanceof NullNode == false) {
+                                String nameInstance;
+                                nameInstance = nameValue.getTextValue();
+                                endpointInstance.setName(nameInstance);
+                            }
+                            
+                            JsonNode typeValue = endpointsValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                endpointInstance.setType(typeInstance);
+                            }
+                            
+                            JsonNode propertiesValue4 = endpointsValue.get("properties");
+                            if (propertiesValue4 != null && propertiesValue4 instanceof NullNode == false) {
+                                EndpointProperties propertiesInstance2 = new EndpointProperties();
+                                endpointInstance.setProperties(propertiesInstance2);
+                                
+                                JsonNode targetResourceIdValue = propertiesValue4.get("targetResourceId");
+                                if (targetResourceIdValue != null && targetResourceIdValue instanceof NullNode == false) {
+                                    String targetResourceIdInstance;
+                                    targetResourceIdInstance = targetResourceIdValue.getTextValue();
+                                    propertiesInstance2.setTargetResourceId(targetResourceIdInstance);
+                                }
+                                
+                                JsonNode targetValue = propertiesValue4.get("target");
+                                if (targetValue != null && targetValue instanceof NullNode == false) {
+                                    String targetInstance;
+                                    targetInstance = targetValue.getTextValue();
+                                    propertiesInstance2.setTarget(targetInstance);
+                                }
+                                
+                                JsonNode endpointStatusValue = propertiesValue4.get("endpointStatus");
+                                if (endpointStatusValue != null && endpointStatusValue instanceof NullNode == false) {
+                                    String endpointStatusInstance;
+                                    endpointStatusInstance = endpointStatusValue.getTextValue();
+                                    propertiesInstance2.setEndpointStatus(endpointStatusInstance);
+                                }
+                                
+                                JsonNode weightValue = propertiesValue4.get("weight");
+                                if (weightValue != null && weightValue instanceof NullNode == false) {
+                                    long weightInstance;
+                                    weightInstance = weightValue.getLongValue();
+                                    propertiesInstance2.setWeight(weightInstance);
+                                }
+                                
+                                JsonNode priorityValue = propertiesValue4.get("priority");
+                                if (priorityValue != null && priorityValue instanceof NullNode == false) {
+                                    long priorityInstance;
+                                    priorityInstance = priorityValue.getLongValue();
+                                    propertiesInstance2.setPriority(priorityInstance);
+                                }
+                                
+                                JsonNode endpointLocationValue = propertiesValue4.get("endpointLocation");
+                                if (endpointLocationValue != null && endpointLocationValue instanceof NullNode == false) {
+                                    String endpointLocationInstance;
+                                    endpointLocationInstance = endpointLocationValue.getTextValue();
+                                    propertiesInstance2.setEndpointLocation(endpointLocationInstance);
+                                }
+                                
+                                JsonNode endpointMonitorStatusValue = propertiesValue4.get("endpointMonitorStatus");
+                                if (endpointMonitorStatusValue != null && endpointMonitorStatusValue instanceof NullNode == false) {
+                                    String endpointMonitorStatusInstance;
+                                    endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
+                                    propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                JsonNode idValue2 = profileUpdateResponseValue.get("id");
+                if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                    String idInstance2;
+                    idInstance2 = idValue2.getTextValue();
+                    profileInstance.setId(idInstance2);
+                }
+                
+                JsonNode nameValue2 = profileUpdateResponseValue.get("name");
+                if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                    String nameInstance2;
+                    nameInstance2 = nameValue2.getTextValue();
+                    profileInstance.setName(nameInstance2);
+                }
+                
+                JsonNode typeValue2 = profileUpdateResponseValue.get("type");
+                if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
+                    String typeInstance2;
+                    typeInstance2 = typeValue2.getTextValue();
+                    profileInstance.setType(typeInstance2);
+                }
+                
+                JsonNode locationValue = profileUpdateResponseValue.get("location");
+                if (locationValue != null && locationValue instanceof NullNode == false) {
+                    String locationInstance;
+                    locationInstance = locationValue.getTextValue();
+                    profileInstance.setLocation(locationInstance);
+                }
+                
+                JsonNode tagsSequenceElement = ((JsonNode) profileUpdateResponseValue.get("tags"));
+                if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                    Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                    while (itr.hasNext()) {
+                        Map.Entry<String, JsonNode> property = itr.next();
+                        String tagsKey2 = property.getKey();
+                        String tagsValue2 = property.getValue().getTextValue();
+                        profileInstance.getTags().put(tagsKey2, tagsValue2);
                     }
                 }
             }

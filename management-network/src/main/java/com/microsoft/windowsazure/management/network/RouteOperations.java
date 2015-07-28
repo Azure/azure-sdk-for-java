@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.AddRouteTableToSubnetParameters;
 import com.microsoft.windowsazure.management.network.models.CreateRouteTableParameters;
+import com.microsoft.windowsazure.management.network.models.GetEffectiveRouteTableResponse;
 import com.microsoft.windowsazure.management.network.models.GetRouteTableForSubnetResponse;
 import com.microsoft.windowsazure.management.network.models.GetRouteTableResponse;
 import com.microsoft.windowsazure.management.network.models.ListRouteTablesResponse;
@@ -427,6 +428,72 @@ public interface RouteOperations {
     * failure.
     */
     Future<OperationStatusResponse> deleteRouteTableAsync(String routeTableName);
+    
+    /**
+    * Get the effective route table for the provided network interface in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    GetEffectiveRouteTableResponse getEffectiveRouteTableForNetworkInterface(String serviceName, String deploymentName, String roleinstanceName, String networkInterfaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Get the effective route table for the provided network interface in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<GetEffectiveRouteTableResponse> getEffectiveRouteTableForNetworkInterfaceAsync(String serviceName, String deploymentName, String roleinstanceName, String networkInterfaceName);
+    
+    /**
+    * Get the effective route table for the provided role instance in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    GetEffectiveRouteTableResponse getEffectiveRouteTableForRoleInstance(String serviceName, String deploymentName, String roleinstanceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Get the effective route table for the provided role instance in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<GetEffectiveRouteTableResponse> getEffectiveRouteTableForRoleInstanceAsync(String serviceName, String deploymentName, String roleinstanceName);
     
     /**
     * Get the specified route table for this subscription.

@@ -24,13 +24,15 @@
 package com.microsoft.azure.management.trafficmanager.models;
 
 /**
-* A DnsConfig.
+* Class containing DNS settings in a Traffic Manager profile.
 */
 public class DnsConfig {
     private String fqdn;
     
     /**
-    * Optional. Gets or sets the fqdn of the dns config.
+    * Optional. Gets or sets the fully-qualified domain name (FQDN) of the
+    * Traffic Manager profile.  This is formed from the concatenation of the
+    * RelativeName with the DNS domain used by Azure Traffic Manager.
     * @return The Fqdn value.
     */
     public String getFqdn() {
@@ -38,7 +40,9 @@ public class DnsConfig {
     }
     
     /**
-    * Optional. Gets or sets the fqdn of the dns config.
+    * Optional. Gets or sets the fully-qualified domain name (FQDN) of the
+    * Traffic Manager profile.  This is formed from the concatenation of the
+    * RelativeName with the DNS domain used by Azure Traffic Manager.
     * @param fqdnValue The Fqdn value.
     */
     public void setFqdn(final String fqdnValue) {
@@ -48,7 +52,10 @@ public class DnsConfig {
     private String relativeName;
     
     /**
-    * Required. Gets or sets the relative name of the dns config.
+    * Required. Gets or sets the relative DNS name provided by this Traffic
+    * Manager profile.  This value is combined with the DNS domain name used
+    * by Azure Traffic Manager to form the fully-qualified domain name (FQDN)
+    * of the profile.
     * @return The RelativeName value.
     */
     public String getRelativeName() {
@@ -56,7 +63,10 @@ public class DnsConfig {
     }
     
     /**
-    * Required. Gets or sets the relative name of the dns config.
+    * Required. Gets or sets the relative DNS name provided by this Traffic
+    * Manager profile.  This value is combined with the DNS domain name used
+    * by Azure Traffic Manager to form the fully-qualified domain name (FQDN)
+    * of the profile.
     * @param relativeNameValue The RelativeName value.
     */
     public void setRelativeName(final String relativeNameValue) {
@@ -66,7 +76,9 @@ public class DnsConfig {
     private long ttl;
     
     /**
-    * Required. Gets or sets the ttl of the dns config.
+    * Required. Gets or sets the DNS Ttime-To-Live (TTL), in seconds.  This
+    * informs the local DNS resolvers and DNS clients how long to cache DNS
+    * responses provided by this Traffic Manager profile.
     * @return The Ttl value.
     */
     public long getTtl() {
@@ -74,7 +86,9 @@ public class DnsConfig {
     }
     
     /**
-    * Required. Gets or sets the ttl of the dns config.
+    * Required. Gets or sets the DNS Ttime-To-Live (TTL), in seconds.  This
+    * informs the local DNS resolvers and DNS clients how long to cache DNS
+    * responses provided by this Traffic Manager profile.
     * @param ttlValue The Ttl value.
     */
     public void setTtl(final long ttlValue) {
@@ -91,8 +105,13 @@ public class DnsConfig {
     /**
     * Initializes a new instance of the DnsConfig class with required arguments.
     *
-    * @param relativeName Gets or sets the relative name of the dns config.
-    * @param ttl Gets or sets the ttl of the dns config.
+    * @param relativeName Gets or sets the relative DNS name provided by this
+    * Traffic Manager profile.  This value is combined with the DNS domain
+    * name used by Azure Traffic Manager to form the fully-qualified domain
+    * name (FQDN) of the profile.
+    * @param ttl Gets or sets the DNS Ttime-To-Live (TTL), in seconds.  This
+    * informs the local DNS resolvers and DNS clients how long to cache DNS
+    * responses provided by this Traffic Manager profile.
     */
     public DnsConfig(String relativeName, long ttl) {
         if (relativeName == null) {

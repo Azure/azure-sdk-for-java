@@ -64,6 +64,42 @@ public class JobErrorAction {
         this.request = requestValue;
     }
     
+    private JobServiceBusQueueMessage serviceBusQueueMessage;
+    
+    /**
+    * Optional. Queue and content for a service bus topic message action type.
+    * @return The ServiceBusQueueMessage value.
+    */
+    public JobServiceBusQueueMessage getServiceBusQueueMessage() {
+        return this.serviceBusQueueMessage;
+    }
+    
+    /**
+    * Optional. Queue and content for a service bus topic message action type.
+    * @param serviceBusQueueMessageValue The ServiceBusQueueMessage value.
+    */
+    public void setServiceBusQueueMessage(final JobServiceBusQueueMessage serviceBusQueueMessageValue) {
+        this.serviceBusQueueMessage = serviceBusQueueMessageValue;
+    }
+    
+    private JobServiceBusTopicMessage serviceBusTopicMessage;
+    
+    /**
+    * Optional. Topic and content for a service bus topic message action type.
+    * @return The ServiceBusTopicMessage value.
+    */
+    public JobServiceBusTopicMessage getServiceBusTopicMessage() {
+        return this.serviceBusTopicMessage;
+    }
+    
+    /**
+    * Optional. Topic and content for a service bus topic message action type.
+    * @param serviceBusTopicMessageValue The ServiceBusTopicMessage value.
+    */
+    public void setServiceBusTopicMessage(final JobServiceBusTopicMessage serviceBusTopicMessageValue) {
+        this.serviceBusTopicMessage = serviceBusTopicMessageValue;
+    }
+    
     private JobActionType type;
     
     /**

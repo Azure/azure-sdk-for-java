@@ -23,6 +23,9 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* The status of the storage account.
+*/
 public enum AccountStatus {
     /**
     * Available.

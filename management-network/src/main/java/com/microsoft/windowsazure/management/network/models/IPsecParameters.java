@@ -42,6 +42,24 @@ public class IPsecParameters {
         this.encryptionType = encryptionTypeValue;
     }
     
+    private String hashAlgorithm;
+    
+    /**
+    * Optional.
+    * @return The HashAlgorithm value.
+    */
+    public String getHashAlgorithm() {
+        return this.hashAlgorithm;
+    }
+    
+    /**
+    * Optional.
+    * @param hashAlgorithmValue The HashAlgorithm value.
+    */
+    public void setHashAlgorithm(final String hashAlgorithmValue) {
+        this.hashAlgorithm = hashAlgorithmValue;
+    }
+    
     private String pfsGroup;
     
     /**

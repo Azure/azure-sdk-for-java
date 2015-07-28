@@ -27,7 +27,9 @@ import com.microsoft.azure.management.compute.models.ApiError;
 import com.microsoft.azure.management.compute.models.ApiErrorBase;
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
 import com.microsoft.azure.management.compute.models.ComputeOperationStatus;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.InnerError;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -215,7 +217,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachineImages = new VirtualMachineImageOperationsImpl(this);
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineSizes = new VirtualMachineSizeOperationsImpl(this);
-        this.apiVersion = "2015-05-01-preview";
+        this.apiVersion = "2015-06-15";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -303,6 +305,221 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
     protected ComputeManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new ComputeManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * The Get Delete Operation Status operation returns the status of the
+    * specified operation. After calling an asynchronous operation, you can
+    * call GetDeleteOperationStatus to determine whether the operation has
+    * succeeded, failed, or is still in progress.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation.
+    * @return The compute long running operation response.
+    */
+    @Override
+    public Future<DeleteOperationResponse> getDeleteOperationStatusAsync(final String operationStatusLink) {
+        return this.getExecutorService().submit(new Callable<DeleteOperationResponse>() { 
+            @Override
+            public DeleteOperationResponse call() throws Exception {
+                return getDeleteOperationStatus(operationStatusLink);
+            }
+         });
+    }
+    
+    /**
+    * The Get Delete Operation Status operation returns the status of the
+    * specified operation. After calling an asynchronous operation, you can
+    * call GetDeleteOperationStatus to determine whether the operation has
+    * succeeded, failed, or is still in progress.
+    *
+    * @param operationStatusLink Required. Location value returned by the Begin
+    * operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The compute long running operation response.
+    */
+    @Override
+    public DeleteOperationResponse getDeleteOperationStatus(String operationStatusLink) throws IOException, ServiceException {
+        // Validate
+        if (operationStatusLink == null) {
+            throw new NullPointerException("operationStatusLink");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("operationStatusLink", operationStatusLink);
+            CloudTracing.enter(invocationId, this, "getDeleteOperationStatusAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + operationStatusLink;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DeleteOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DeleteOperationResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode operationIdValue = responseDoc.get("operationId");
+                    if (operationIdValue != null && operationIdValue instanceof NullNode == false) {
+                        String operationIdInstance;
+                        operationIdInstance = operationIdValue.getTextValue();
+                        result.setTrackingOperationId(operationIdInstance);
+                    }
+                    
+                    JsonNode statusValue = responseDoc.get("status");
+                    if (statusValue != null && statusValue instanceof NullNode == false) {
+                        OperationStatus statusInstance;
+                        statusInstance = OperationStatus.values()[statusValue.getIntValue()];
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    JsonNode startTimeValue = responseDoc.get("startTime");
+                    if (startTimeValue != null && startTimeValue instanceof NullNode == false) {
+                        Calendar startTimeInstance;
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeValue.getTextValue());
+                        result.setStartTime(startTimeInstance);
+                    }
+                    
+                    JsonNode endTimeValue = responseDoc.get("endTime");
+                    if (endTimeValue != null && endTimeValue instanceof NullNode == false) {
+                        Calendar endTimeInstance;
+                        endTimeInstance = DatatypeConverter.parseDateTime(endTimeValue.getTextValue());
+                        result.setEndTime(endTimeInstance);
+                    }
+                    
+                    JsonNode errorValue = responseDoc.get("error");
+                    if (errorValue != null && errorValue instanceof NullNode == false) {
+                        ApiError errorInstance = new ApiError();
+                        result.setError(errorInstance);
+                        
+                        JsonNode detailsArray = errorValue.get("details");
+                        if (detailsArray != null && detailsArray instanceof NullNode == false) {
+                            for (JsonNode detailsValue : ((ArrayNode) detailsArray)) {
+                                ApiErrorBase apiErrorBaseInstance = new ApiErrorBase();
+                                errorInstance.getDetails().add(apiErrorBaseInstance);
+                                
+                                JsonNode codeValue = detailsValue.get("code");
+                                if (codeValue != null && codeValue instanceof NullNode == false) {
+                                    String codeInstance;
+                                    codeInstance = codeValue.getTextValue();
+                                    apiErrorBaseInstance.setCode(codeInstance);
+                                }
+                                
+                                JsonNode targetValue = detailsValue.get("target");
+                                if (targetValue != null && targetValue instanceof NullNode == false) {
+                                    String targetInstance;
+                                    targetInstance = targetValue.getTextValue();
+                                    apiErrorBaseInstance.setTarget(targetInstance);
+                                }
+                                
+                                JsonNode messageValue = detailsValue.get("message");
+                                if (messageValue != null && messageValue instanceof NullNode == false) {
+                                    String messageInstance;
+                                    messageInstance = messageValue.getTextValue();
+                                    apiErrorBaseInstance.setMessage(messageInstance);
+                                }
+                            }
+                        }
+                        
+                        JsonNode innererrorValue = errorValue.get("innererror");
+                        if (innererrorValue != null && innererrorValue instanceof NullNode == false) {
+                            InnerError innererrorInstance = new InnerError();
+                            errorInstance.setInnerError(innererrorInstance);
+                            
+                            JsonNode exceptiontypeValue = innererrorValue.get("exceptiontype");
+                            if (exceptiontypeValue != null && exceptiontypeValue instanceof NullNode == false) {
+                                String exceptiontypeInstance;
+                                exceptiontypeInstance = exceptiontypeValue.getTextValue();
+                                innererrorInstance.setExceptionType(exceptiontypeInstance);
+                            }
+                            
+                            JsonNode errordetailValue = innererrorValue.get("errordetail");
+                            if (errordetailValue != null && errordetailValue instanceof NullNode == false) {
+                                String errordetailInstance;
+                                errordetailInstance = errordetailValue.getTextValue();
+                                innererrorInstance.setErrorDetail(errordetailInstance);
+                            }
+                        }
+                        
+                        JsonNode codeValue2 = errorValue.get("code");
+                        if (codeValue2 != null && codeValue2 instanceof NullNode == false) {
+                            String codeInstance2;
+                            codeInstance2 = codeValue2.getTextValue();
+                            errorInstance.setCode(codeInstance2);
+                        }
+                        
+                        JsonNode targetValue2 = errorValue.get("target");
+                        if (targetValue2 != null && targetValue2 instanceof NullNode == false) {
+                            String targetInstance2;
+                            targetInstance2 = targetValue2.getTextValue();
+                            errorInstance.setTarget(targetInstance2);
+                        }
+                        
+                        JsonNode messageValue2 = errorValue.get("message");
+                        if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                            String messageInstance2;
+                            messageInstance2 = messageValue2.getTextValue();
+                            errorInstance.setMessage(messageInstance2);
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**

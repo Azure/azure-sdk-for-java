@@ -26,7 +26,7 @@ package com.microsoft.azure.management.trafficmanager.models;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
 /**
-* Describes a WATMv2 profile.
+* Class representing a Traffic Manager profile.
 */
 public class Profile extends ResourceBaseExtended {
     private ProfileProperties properties;

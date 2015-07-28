@@ -101,11 +101,11 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * or export operation has been initiated.
     */
     @Override
-    public Future<DacImportExportResponse> exportDatabaseAsync(final String serverName, final DacExportParameters parameters) {
+    public Future<DacImportExportResponse> exportAsync(final String serverName, final DacExportParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { 
             @Override
             public DacImportExportResponse call() throws Exception {
-                return exportDatabase(serverName, parameters);
+                return export(serverName, parameters);
             }
          });
     }
@@ -131,7 +131,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * or export operation has been initiated.
     */
     @Override
-    public DacImportExportResponse exportDatabase(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public DacImportExportResponse export(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -169,7 +169,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "exportDatabaseAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "exportAsync", tracingParameters);
         }
         
         // Construct URL

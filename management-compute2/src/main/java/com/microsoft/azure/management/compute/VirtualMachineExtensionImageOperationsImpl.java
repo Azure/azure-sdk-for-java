@@ -157,7 +157,7 @@ public class VirtualMachineExtensionImageOperationsImpl implements ServiceOperat
             url = url + URLEncoder.encode(parameters.getVersion(), "UTF-8");
         }
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -356,7 +356,7 @@ public class VirtualMachineExtensionImageOperationsImpl implements ServiceOperat
         }
         url = url + "/artifacttypes/vmextension/types";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -529,7 +529,7 @@ public class VirtualMachineExtensionImageOperationsImpl implements ServiceOperat
         }
         url = url + "/versions";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (parameters != null && parameters.getFilterExpression() != null) {
             queryParameters.add(parameters.getFilterExpression());
         }

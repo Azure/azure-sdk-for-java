@@ -62,4 +62,24 @@ public class NetworkReservedIPMobilityParameters {
     public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
+    
+    private String virtualIPName;
+    
+    /**
+    * Optional. The name of the virtual IP on which we want to perform the IP
+    * Mobility operation.
+    * @return The VirtualIPName value.
+    */
+    public String getVirtualIPName() {
+        return this.virtualIPName;
+    }
+    
+    /**
+    * Optional. The name of the virtual IP on which we want to perform the IP
+    * Mobility operation.
+    * @param virtualIPNameValue The VirtualIPName value.
+    */
+    public void setVirtualIPName(final String virtualIPNameValue) {
+        this.virtualIPName = virtualIPNameValue;
+    }
 }

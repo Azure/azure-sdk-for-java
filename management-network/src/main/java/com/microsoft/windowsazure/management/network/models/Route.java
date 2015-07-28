@@ -45,7 +45,7 @@ public class Route {
     private int metric;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the metric of this route.
     * @return The Metric value.
     */
     public int getMetric() {
@@ -53,7 +53,7 @@ public class Route {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the metric of this route.
     * @param metricValue The Metric value.
     */
     public void setMetric(final int metricValue) {
@@ -63,7 +63,7 @@ public class Route {
     private String name;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the name of this route.
     * @return The Name value.
     */
     public String getName() {
@@ -71,7 +71,7 @@ public class Route {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the name of this route.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -81,7 +81,7 @@ public class Route {
     private NextHop nextHop;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the next hop of this route.
     * @return The NextHop value.
     */
     public NextHop getNextHop() {
@@ -89,7 +89,7 @@ public class Route {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the next hop of this route.
     * @param nextHopValue The NextHop value.
     */
     public void setNextHop(final NextHop nextHopValue) {
@@ -99,7 +99,7 @@ public class Route {
     private RouteState state;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the state of this route.
     * @return The State value.
     */
     public RouteState getState() {
@@ -107,7 +107,7 @@ public class Route {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the state of this route.
     * @param stateValue The State value.
     */
     public void setState(final RouteState stateValue) {

@@ -245,6 +245,24 @@ public class ConfigurationSet {
         this.inputEndpoints = inputEndpointsValue;
     }
     
+    private String iPForwarding;
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @return The IPForwarding value.
+    */
+    public String getIPForwarding() {
+        return this.iPForwarding;
+    }
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @param iPForwardingValue The IPForwarding value.
+    */
+    public void setIPForwarding(final String iPForwardingValue) {
+        this.iPForwarding = iPForwardingValue;
+    }
+    
     private ArrayList<NetworkInterface> networkInterfaces;
     
     /**

@@ -23,6 +23,9 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* The state of the storage account at the time the operation was called.
+*/
 public enum ProvisioningState {
     /**
     * The storage account is being created. When an account is in “Creating”

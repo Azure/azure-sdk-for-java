@@ -24,13 +24,14 @@
 package com.microsoft.azure.management.trafficmanager.models;
 
 /**
-* A MonitorConfig.
+* Class containing endpoint monitoring settings in a Traffic Manager profile.
 */
 public class MonitorConfig {
     private String path;
     
     /**
-    * Required. Gets or sets the path of the monitor config.
+    * Required. Gets or sets the path relative to the endpoint domain name used
+    * to probe for endpoint health.
     * @return The Path value.
     */
     public String getPath() {
@@ -38,7 +39,8 @@ public class MonitorConfig {
     }
     
     /**
-    * Required. Gets or sets the path of the monitor config.
+    * Required. Gets or sets the path relative to the endpoint domain name used
+    * to probe for endpoint health.
     * @param pathValue The Path value.
     */
     public void setPath(final String pathValue) {
@@ -48,7 +50,7 @@ public class MonitorConfig {
     private long port;
     
     /**
-    * Required. Gets or sets the port of the monitor config.
+    * Required. Gets or sets the TCP port used to probe for endpoint health.
     * @return The Port value.
     */
     public long getPort() {
@@ -56,7 +58,7 @@ public class MonitorConfig {
     }
     
     /**
-    * Required. Gets or sets the port of the monitor config.
+    * Required. Gets or sets the TCP port used to probe for endpoint health.
     * @param portValue The Port value.
     */
     public void setPort(final long portValue) {
@@ -66,7 +68,8 @@ public class MonitorConfig {
     private String profileMonitorStatus;
     
     /**
-    * Optional. Gets or sets the profile monitor status of the monitor config.
+    * Optional. Gets or sets the profile-level monitoring status of the Traffic
+    * Manager profile.
     * @return The ProfileMonitorStatus value.
     */
     public String getProfileMonitorStatus() {
@@ -74,7 +77,8 @@ public class MonitorConfig {
     }
     
     /**
-    * Optional. Gets or sets the profile monitor status of the monitor config.
+    * Optional. Gets or sets the profile-level monitoring status of the Traffic
+    * Manager profile.
     * @param profileMonitorStatusValue The ProfileMonitorStatus value.
     */
     public void setProfileMonitorStatus(final String profileMonitorStatusValue) {
@@ -84,7 +88,8 @@ public class MonitorConfig {
     private String protocol;
     
     /**
-    * Required. Gets or sets the protocol of the monitor config.
+    * Required. Gets or sets the protocol (HTTP or HTTPS) used to probe for
+    * endpoint health.
     * @return The Protocol value.
     */
     public String getProtocol() {
@@ -92,7 +97,8 @@ public class MonitorConfig {
     }
     
     /**
-    * Required. Gets or sets the protocol of the monitor config.
+    * Required. Gets or sets the protocol (HTTP or HTTPS) used to probe for
+    * endpoint health.
     * @param protocolValue The Protocol value.
     */
     public void setProtocol(final String protocolValue) {
@@ -110,9 +116,11 @@ public class MonitorConfig {
     * Initializes a new instance of the MonitorConfig class with required
     * arguments.
     *
-    * @param protocol Gets or sets the protocol of the monitor config.
-    * @param port Gets or sets the port of the monitor config.
-    * @param path Gets or sets the path of the monitor config.
+    * @param protocol Gets or sets the protocol (HTTP or HTTPS) used to probe
+    * for endpoint health.
+    * @param port Gets or sets the TCP port used to probe for endpoint health.
+    * @param path Gets or sets the path relative to the endpoint domain name
+    * used to probe for endpoint health.
     */
     public MonitorConfig(String protocol, long port, String path) {
         if (protocol == null) {
