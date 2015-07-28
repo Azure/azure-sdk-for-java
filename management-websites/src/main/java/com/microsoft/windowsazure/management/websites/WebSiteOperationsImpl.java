@@ -3492,7 +3492,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     JsonNode remoteDebuggingVersionValue = responseDoc.get("RemoteDebuggingVersion");
                     if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                         RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                        remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
+                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
                         result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                     }
                     
@@ -6196,7 +6196,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             WebSiteOperationStatusResponse response = client2.getWebSitesOperations().beginSwappingSlotsAsync(webSpaceName, webSiteName, sourceSlotName, targetSlotName).get();
-            if (response.getStatus() == WebSiteOperationStatus.Succeeded) {
+            if (response.getStatus() == WebSiteOperationStatus.SUCCEEDED) {
                 return response;
             }
             WebSiteOperationStatusResponse result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
@@ -6204,7 +6204,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != WebSiteOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != WebSiteOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -6217,7 +6217,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != WebSiteOperationStatus.Succeeded) {
+            if (result.getStatus() != WebSiteOperationStatus.SUCCEEDED) {
                 if (result.getErrors() != null && result.getErrors().size() > 0) {
                     ServiceException ex = new ServiceException(result.getErrors().get(0).getCode() + " : " + result.getErrors().get(0).getMessage());
                     ex.setError(new CloudError());

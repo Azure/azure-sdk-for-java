@@ -558,7 +558,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<Notifica
                         JsonNode rightsArray2 = propertiesValue2.get("Rights");
                         if (rightsArray2 != null && rightsArray2 instanceof NullNode == false) {
                             for (JsonNode rightsValue : ((ArrayNode) rightsArray2)) {
-                                propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                             }
                         }
                         
@@ -1528,7 +1528,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<Notifica
                         JsonNode rightsArray = propertiesValue.get("Rights");
                         if (rightsArray != null && rightsArray instanceof NullNode == false) {
                             for (JsonNode rightsValue : ((ArrayNode) rightsArray)) {
-                                propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                             }
                         }
                         
@@ -2170,7 +2170,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<Notifica
                                 JsonNode rightsArray = propertiesValue.get("Rights");
                                 if (rightsArray != null && rightsArray instanceof NullNode == false) {
                                     for (JsonNode rightsValue : ((ArrayNode) rightsArray)) {
-                                        propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                        propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                                     }
                                 }
                                 

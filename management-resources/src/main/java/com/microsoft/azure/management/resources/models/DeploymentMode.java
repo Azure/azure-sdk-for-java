@@ -27,5 +27,5 @@ package com.microsoft.azure.management.resources.models;
 * Specifies the deployment type for the deployment operations.
 */
 public enum DeploymentMode {
-    Incremental,
+    INCREMENTAL,
 }

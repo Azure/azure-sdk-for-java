@@ -251,19 +251,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     */
      static AccountType parseAccountType(String value) {
         if ("Standard_LRS".equalsIgnoreCase(value)) {
-            return AccountType.StandardLRS;
+            return AccountType.STANDARD_LRS;
         }
         if ("Standard_ZRS".equalsIgnoreCase(value)) {
-            return AccountType.StandardZRS;
+            return AccountType.STANDARD_ZRS;
         }
         if ("Standard_GRS".equalsIgnoreCase(value)) {
-            return AccountType.StandardGRS;
+            return AccountType.STANDARD_GRS;
         }
         if ("Standard_RAGRS".equalsIgnoreCase(value)) {
-            return AccountType.StandardRAGRS;
+            return AccountType.STANDARD_RAGRS;
         }
         if ("Premium_LRS".equalsIgnoreCase(value)) {
-            return AccountType.PremiumLRS;
+            return AccountType.PREMIUM_LRS;
         }
         throw new IllegalArgumentException("value");
     }
@@ -275,19 +275,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * @return The enum value as a string.
     */
      static String accountTypeToString(AccountType value) {
-        if (value == AccountType.StandardLRS) {
+        if (value == AccountType.STANDARD_LRS) {
             return "Standard_LRS";
         }
-        if (value == AccountType.StandardZRS) {
+        if (value == AccountType.STANDARD_ZRS) {
             return "Standard_ZRS";
         }
-        if (value == AccountType.StandardGRS) {
+        if (value == AccountType.STANDARD_GRS) {
             return "Standard_GRS";
         }
-        if (value == AccountType.StandardRAGRS) {
+        if (value == AccountType.STANDARD_RAGRS) {
             return "Standard_RAGRS";
         }
-        if (value == AccountType.PremiumLRS) {
+        if (value == AccountType.PREMIUM_LRS) {
             return "Premium_LRS";
         }
         throw new IllegalArgumentException("value");
@@ -301,10 +301,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     */
      static KeyName parseKeyName(String value) {
         if ("key1".equalsIgnoreCase(value)) {
-            return KeyName.Key1;
+            return KeyName.KEY1;
         }
         if ("key2".equalsIgnoreCase(value)) {
-            return KeyName.Key2;
+            return KeyName.KEY2;
         }
         throw new IllegalArgumentException("value");
     }
@@ -316,10 +316,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * @return The enum value as a string.
     */
      static String keyNameToString(KeyName value) {
-        if (value == KeyName.Key1) {
+        if (value == KeyName.KEY1) {
             return "key1";
         }
-        if (value == KeyName.Key2) {
+        if (value == KeyName.KEY2) {
             return "key2";
         }
         throw new IllegalArgumentException("value");
@@ -468,7 +468,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -516,7 +516,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -537,7 +537,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -606,16 +606,16 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                result.setStatus(OperationStatus.InProgress);
+                result.setStatus(OperationStatus.IN_PROGRESS);
             }
             if (statusCode == HttpStatus.SC_ACCEPTED) {
-                result.setStatus(OperationStatus.InProgress);
+                result.setStatus(OperationStatus.IN_PROGRESS);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {

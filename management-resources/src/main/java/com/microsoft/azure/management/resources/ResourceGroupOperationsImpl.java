@@ -209,10 +209,10 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -650,7 +650,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();

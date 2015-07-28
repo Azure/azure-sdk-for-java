@@ -30,7 +30,7 @@ public abstract class ProviderRegistrationState {
     /**
     * Provider registration state is not registered.
     */
-    public static final String NOTREGISTERED = "NotRegistered";
+    public static final String NOT_REGISTERED = "NotRegistered";
     
     /**
     * Provider registration state is unregistering.

@@ -168,7 +168,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
         for (WebSite  webSite : webSiteslist) { 
              //Assert
-             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+             Assert.assertEquals(WebSpaceAvailabilityState.NORMAL, webSite.getAvailabilityState());
              Assert.assertNotNull(webSite.getName()); 
         }
     }

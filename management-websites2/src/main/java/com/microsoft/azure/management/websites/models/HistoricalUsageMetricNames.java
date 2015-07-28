@@ -27,27 +27,27 @@ package com.microsoft.azure.management.websites.models;
 * Supported historical usage metric names.
 */
 public abstract class HistoricalUsageMetricNames {
-    public static final String CPUTIME = "CpuTime";
+    public static final String CPU_TIME = "CpuTime";
     
-    public static final String BYTESRECEIVED = "BytesReceived";
+    public static final String BYTES_RECEIVED = "BytesReceived";
     
-    public static final String BYTESSENT = "BytesSent";
+    public static final String BYTES_SENT = "BytesSent";
     
-    public static final String INCOMINGREQUESTBYTES = "IncomingRequestBytes";
+    public static final String INCOMING_REQUEST_BYTES = "IncomingRequestBytes";
     
-    public static final String INCOMINGREQUESTRESPONSEBYTES = "IncomingRequestResponseBytes";
+    public static final String INCOMING_REQUEST_RESPONSE_BYTES = "IncomingRequestResponseBytes";
     
-    public static final String OUTGOINGREQUESTBYTES = "OutgoingRequestBytes";
+    public static final String OUTGOING_REQUEST_BYTES = "OutgoingRequestBytes";
     
-    public static final String OUTGOINGREQUESTRESPONSEBYTES = "OutgoingRequestResponseBytes";
+    public static final String OUTGOING_REQUEST_RESPONSE_BYTES = "OutgoingRequestResponseBytes";
     
-    public static final String LOCALREADBYTES = "LocalReadBytes";
+    public static final String LOCAL_READ_BYTES = "LocalReadBytes";
     
-    public static final String LOCALWRITTENBYTES = "LocalWrittenBytes";
+    public static final String LOCAL_WRITTEN_BYTES = "LocalWrittenBytes";
     
-    public static final String NETWORKREADBYTES = "NetworkReadBytes";
+    public static final String NETWORK_READ_BYTES = "NetworkReadBytes";
     
-    public static final String NETWORKWRITTENBYTES = "NetworkWrittenBytes";
+    public static final String NETWORK_WRITTEN_BYTES = "NetworkWrittenBytes";
     
     public static final String REQUESTS = "Requests";
     

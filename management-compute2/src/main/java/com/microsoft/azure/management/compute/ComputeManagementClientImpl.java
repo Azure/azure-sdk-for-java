@@ -410,7 +410,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     JsonNode statusValue = responseDoc.get("status");
                     if (statusValue != null && statusValue instanceof NullNode == false) {
                         OperationStatus statusInstance;
-                        statusInstance = OperationStatus.values()[statusValue.getIntValue()];
+                        statusInstance = Enum.valueOf(OperationStatus.class, statusValue.getTextValue().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
@@ -625,7 +625,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     JsonNode statusValue = responseDoc.get("status");
                     if (statusValue != null && statusValue instanceof NullNode == false) {
                         ComputeOperationStatus statusInstance;
-                        statusInstance = ComputeOperationStatus.values()[statusValue.getIntValue()];
+                        statusInstance = Enum.valueOf(ComputeOperationStatus.class, statusValue.getTextValue().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     

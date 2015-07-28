@@ -24,5 +24,5 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public enum UpdateGatewayOperation {
-    Resize,
+    RESIZE,
 }

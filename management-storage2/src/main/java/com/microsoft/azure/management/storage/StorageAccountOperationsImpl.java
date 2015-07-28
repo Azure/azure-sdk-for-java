@@ -338,7 +338,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -386,7 +386,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue2.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -407,7 +407,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue2.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -479,10 +479,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT || statusCode == HttpStatus.SC_BAD_REQUEST) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -633,7 +633,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     JsonNode reasonValue = responseDoc.get("reason");
                     if (reasonValue != null && reasonValue instanceof NullNode == false) {
                         Reason reasonInstance;
-                        reasonInstance = Reason.values()[reasonValue.getIntValue()];
+                        reasonInstance = Enum.valueOf(Reason.class, reasonValue.getTextValue().toUpperCase());
                         result.setReason(reasonInstance);
                     }
                     
@@ -735,7 +735,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             StorageAccountCreateResponse response = client2.getStorageAccountsOperations().beginCreateAsync(resourceGroupName, accountName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             StorageAccountCreateResponse result = client2.getCreateOperationStatusAsync(response.getOperationStatusLink()).get();
@@ -746,7 +746,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getCreateOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1092,7 +1092,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -1140,7 +1140,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -1161,7 +1161,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -1390,7 +1390,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                                 if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                     ProvisioningState provisioningStateInstance;
-                                    provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                                    provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
@@ -1438,7 +1438,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                                 if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfPrimaryInstance;
-                                    statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                                    statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                                 }
                                 
@@ -1459,7 +1459,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                                 if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfSecondaryInstance;
-                                    statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                                    statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                                 }
                                 
@@ -1709,7 +1709,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                                 if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                     ProvisioningState provisioningStateInstance;
-                                    provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                                    provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
@@ -1757,7 +1757,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                                 if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfPrimaryInstance;
-                                    statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                                    statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                                 }
                                 
@@ -1778,7 +1778,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                                 if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfSecondaryInstance;
-                                    statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                                    statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                                     storageAccountJsonInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                                 }
                                 
@@ -2470,7 +2470,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = ProvisioningState.values()[provisioningStateValue.getIntValue()];
+                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -2518,7 +2518,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue2.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = AccountStatus.values()[statusOfPrimaryValue.getIntValue()];
+                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -2539,7 +2539,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue2.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = AccountStatus.values()[statusOfSecondaryValue.getIntValue()];
+                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         

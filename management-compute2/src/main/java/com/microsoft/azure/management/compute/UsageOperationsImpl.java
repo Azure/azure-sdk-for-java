@@ -199,7 +199,7 @@ public class UsageOperationsImpl implements ServiceOperations<ComputeManagementC
                             JsonNode unitValue = valueValue.get("unit");
                             if (unitValue != null && unitValue instanceof NullNode == false) {
                                 UsageUnit unitInstance;
-                                unitInstance = UsageUnit.values()[unitValue.getIntValue()];
+                                unitInstance = Enum.valueOf(UsageUnit.class, unitValue.getTextValue().toUpperCase());
                                 usageInstance.setUnit(unitInstance);
                             }
                             

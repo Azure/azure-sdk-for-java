@@ -35,10 +35,10 @@ public abstract class CachingTypes {
     /**
     * Read Only Caching.
     */
-    public static final String READONLY = "ReadOnly";
+    public static final String READ_ONLY = "ReadOnly";
     
     /**
     * ReadWrite Caching, which is default for OS disks.
     */
-    public static final String READWRITE = "ReadWrite";
+    public static final String READ_WRITE = "ReadWrite";
 }

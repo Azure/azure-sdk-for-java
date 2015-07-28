@@ -30,10 +30,10 @@ public enum FrequencyUnit {
     /**
     * Units are days
     */
-    Day,
+    DAY,
     
     /**
     * Units are hours
     */
-    Hour,
+    HOUR,
 }

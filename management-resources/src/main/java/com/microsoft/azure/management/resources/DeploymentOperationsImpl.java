@@ -656,7 +656,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue2.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }
@@ -1036,7 +1036,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }
@@ -1421,7 +1421,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                 JsonNode modeValue = propertiesValue.get("mode");
                                 if (modeValue != null && modeValue instanceof NullNode == false) {
                                     DeploymentMode modeInstance;
-                                    modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
+                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
                                     propertiesInstance.setMode(modeInstance);
                                 }
                             }
@@ -1780,7 +1780,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                 JsonNode modeValue = propertiesValue.get("mode");
                                 if (modeValue != null && modeValue instanceof NullNode == false) {
                                     DeploymentMode modeInstance;
-                                    modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
+                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
                                     propertiesInstance.setMode(modeInstance);
                                 }
                             }
@@ -2280,7 +2280,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue2.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = DeploymentMode.values()[modeValue.getIntValue()];
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }

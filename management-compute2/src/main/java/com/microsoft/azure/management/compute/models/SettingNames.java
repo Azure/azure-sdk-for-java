@@ -30,10 +30,10 @@ public abstract class SettingNames {
     /**
     * Auto Logon setting
     */
-    public static final String AUTOLOGON = "AutoLogon";
+    public static final String AUTO_LOGON = "AutoLogon";
     
     /**
     * First Logon Commands setting
     */
-    public static final String FIRSTLOGONCOMMANDS = "FirstLogonCommands";
+    public static final String FIRST_LOGON_COMMANDS = "FirstLogonCommands";
 }

@@ -228,10 +228,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_BAD_REQUEST) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -686,7 +686,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                         JsonNode rightsArray2 = propertiesValue2.get("Rights");
                         if (rightsArray2 != null && rightsArray2 instanceof NullNode == false) {
                             for (JsonNode rightsValue : ((ArrayNode) rightsArray2)) {
-                                propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                             }
                         }
                         
@@ -1028,7 +1028,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
             }
             
             OperationResponse response = client2.getNamespacesOperations().beginDeleteAsync(resourceGroupName, namespaceName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             NamespaceLongRunningResponse result = client2.getNamespacesOperations().getDeleteNamespaceOperationStatusAsync(response.getOperationStatusLink()).get();
@@ -1039,7 +1039,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getNamespacesOperations().getDeleteNamespaceOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1602,7 +1602,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                         JsonNode rightsArray = propertiesValue.get("Rights");
                         if (rightsArray != null && rightsArray instanceof NullNode == false) {
                             for (JsonNode rightsValue : ((ArrayNode) rightsArray)) {
-                                propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                             }
                         }
                         
@@ -1842,10 +1842,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_BAD_REQUEST) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -1955,10 +1955,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_BAD_REQUEST) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -2380,7 +2380,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<NotificationHu
                                 JsonNode rightsArray = propertiesValue.get("Rights");
                                 if (rightsArray != null && rightsArray instanceof NullNode == false) {
                                     for (JsonNode rightsValue : ((ArrayNode) rightsArray)) {
-                                        propertiesInstance.getRights().add(AccessRight.values()[rightsValue.getIntValue()]);
+                                        propertiesInstance.getRights().add(Enum.valueOf(AccessRight.class, rightsValue.getTextValue().toUpperCase()));
                                     }
                                 }
                                 

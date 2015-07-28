@@ -30,12 +30,12 @@ public abstract class RegistrationState {
     /**
     * The registration state is not specified.
     */
-    public static final String NOTSPECIFIED = "NotSpecified";
+    public static final String NOT_SPECIFIED = "NotSpecified";
     
     /**
     * The registration state is not registered.
     */
-    public static final String NOTREGISTERED = "NotRegistered";
+    public static final String NOT_REGISTERED = "NotRegistered";
     
     /**
     * The registration state is not Pending.

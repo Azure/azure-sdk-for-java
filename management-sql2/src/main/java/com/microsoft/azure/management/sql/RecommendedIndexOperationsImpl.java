@@ -868,7 +868,7 @@ public class RecommendedIndexOperationsImpl implements ServiceOperations<SqlMana
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {

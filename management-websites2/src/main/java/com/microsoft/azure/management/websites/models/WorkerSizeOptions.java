@@ -24,9 +24,9 @@
 package com.microsoft.azure.management.websites.models;
 
 public enum WorkerSizeOptions {
-    Small,
+    SMALL,
     
-    Medium,
+    MEDIUM,
     
-    Large,
+    LARGE,
 }

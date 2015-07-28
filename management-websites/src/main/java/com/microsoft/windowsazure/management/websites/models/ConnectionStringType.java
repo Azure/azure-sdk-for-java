@@ -24,11 +24,11 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 public enum ConnectionStringType {
-    MySql,
+    MY_SQL,
     
-    SqlServer,
+    SQL_SERVER,
     
-    SqlAzure,
+    SQL_AZURE,
     
-    Custom,
+    CUSTOM,
 }

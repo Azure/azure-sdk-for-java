@@ -27,13 +27,13 @@ package com.microsoft.windowsazure.management.websites.models;
 * Usage of a web site's quota.
 */
 public enum SkuOptions {
-    Free,
+    FREE,
     
-    Shared,
+    SHARED,
     
-    Basic,
+    BASIC,
     
-    Standard,
+    STANDARD,
     
-    Premium,
+    PREMIUM,
 }

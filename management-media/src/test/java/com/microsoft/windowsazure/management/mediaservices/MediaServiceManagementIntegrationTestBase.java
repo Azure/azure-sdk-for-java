@@ -192,7 +192,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
     
     protected static void getLocation() throws Exception {
         ArrayList<String> serviceName = new ArrayList<String>();       
-        serviceName.add(LocationAvailableServiceNames.HIGHMEMORY);       
+        serviceName.add(LocationAvailableServiceNames.HIGH_MEMORY);
 
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         for (LocationsListResponse.Location location : locationsListResponse) {

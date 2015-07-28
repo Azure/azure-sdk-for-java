@@ -30,15 +30,15 @@ public enum CloudServiceOperationStatus {
     /**
     * The asynchronous request is in progress.
     */
-    InProgress,
+    IN_PROGRESS,
     
     /**
     * The asynchronous request succeeded.
     */
-    Succeeded,
+    SUCCEEDED,
     
     /**
     * The asynchronous request failed.
     */
-    Failed,
+    FAILED,
 }

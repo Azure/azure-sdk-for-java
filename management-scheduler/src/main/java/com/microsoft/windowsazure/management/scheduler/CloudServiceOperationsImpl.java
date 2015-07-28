@@ -448,7 +448,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;
@@ -461,7 +461,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != CloudServiceOperationStatus.Succeeded) {
+            if (result.getStatus() != CloudServiceOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -560,7 +560,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;
@@ -573,7 +573,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != CloudServiceOperationStatus.Succeeded) {
+            if (result.getStatus() != CloudServiceOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

@@ -30,25 +30,25 @@ public enum AccountType {
     /**
     * Locally-redundant storage.
     */
-    StandardLRS,
+    STANDARD_LRS,
     
     /**
     * Zone-redundant storage.
     */
-    StandardZRS,
+    STANDARD_ZRS,
     
     /**
     * Geo-redundant storage.
     */
-    StandardGRS,
+    STANDARD_GRS,
     
     /**
     * Read access geo-redundant storage.
     */
-    StandardRAGRS,
+    STANDARD_RAGRS,
     
     /**
     * Premium locally-redundant storage.
     */
-    PremiumLRS,
+    PREMIUM_LRS,
 }

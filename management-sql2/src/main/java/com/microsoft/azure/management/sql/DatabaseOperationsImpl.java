@@ -1146,10 +1146,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -1232,7 +1232,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             DatabaseCreateOrUpdateResponse response = client2.getDatabasesOperations().beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             DatabaseCreateOrUpdateResponse result = client2.getDatabasesOperations().getDatabaseOperationStatusAsync(response.getOperationStatusLink()).get();
@@ -1243,7 +1243,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getDatabasesOperations().getDatabaseOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -4241,10 +4241,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {

@@ -30,7 +30,7 @@ package com.microsoft.windowsazure.management.compute.models;
 public abstract class VirtualHardDiskHostCaching {
     public static final String NONE = "None";
     
-    public static final String READONLY = "ReadOnly";
+    public static final String READ_ONLY = "ReadOnly";
     
-    public static final String READWRITE = "ReadWrite";
+    public static final String READ_WRITE = "ReadWrite";
 }

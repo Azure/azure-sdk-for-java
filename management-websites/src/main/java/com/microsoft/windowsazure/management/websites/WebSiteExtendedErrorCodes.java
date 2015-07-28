@@ -40,78 +40,78 @@ public abstract class WebSiteExtendedErrorCodes {
     /**
     * Access is denied.
     */
-    public static final String ACCESSDENIED = "01001";
+    public static final String ACCESS_DENIED = "01001";
     
     /**
     * Command resource object is not present in the request body.
     */
-    public static final String COMMANDRESOURCENOTPRESENT = "01002";
+    public static final String COMMAND_RESOURCE_NOT_PRESENT = "01002";
     
     /**
     * Invalid name {0}.
     */
-    public static final String INVALIDNAME = "01003";
+    public static final String INVALID_NAME = "01003";
     
     /**
     * Cannot understand command verb {0}.
     */
-    public static final String UNKNOWNCOMMANDVERB = "01004";
+    public static final String UNKNOWN_COMMAND_VERB = "01004";
     
     /**
     * The service is currently in read only mode.
     */
-    public static final String ISINREADONLYMODE = "01005";
+    public static final String IS_IN_READ_ONLY_MODE = "01005";
     
     /**
     * The {0} parameter is not specified.
     */
-    public static final String PARAMETERISNOTSPECIFIED = "01006";
+    public static final String PARAMETER_IS_NOT_SPECIFIED = "01006";
     
     /**
     * Parameter {0} has invalid value.
     */
-    public static final String INVALIDPARAMETERVALUE = "01007";
+    public static final String INVALID_PARAMETER_VALUE = "01007";
     
     /**
     * {0} object is not present in the request body.
     */
-    public static final String INVALIDREQUEST = "01008";
+    public static final String INVALID_REQUEST = "01008";
     
     /**
     * The from value in the query string is bigger than or equal to the to
     * value.
     */
-    public static final String INCORRECTDATETIMERANGE = "01009";
+    public static final String INCORRECT_DATE_TIME_RANGE = "01009";
     
     /**
     * Required parameter {0} is missing.
     */
-    public static final String REQUIREDPARAMETERMISSING = "01010";
+    public static final String REQUIRED_PARAMETER_MISSING = "01010";
     
     /**
     * Name of the web quota cannot change.
     */
-    public static final String RESOURCENAMECANNOTCHANGE = "01011";
+    public static final String RESOURCE_NAME_CANNOT_CHANGE = "01011";
     
     /**
     * The value of the query string parameter cannot be converted to Boolean.
     */
-    public static final String FAILEDTOCONVERTPARAMETERVALUE = "01012";
+    public static final String FAILED_TO_CONVERT_PARAMETER_VALUE = "01012";
     
     /**
     * Parameter with name {0} already exists in the request.
     */
-    public static final String PARAMETERNAMEALREADYEXISTS = "01013";
+    public static final String PARAMETER_NAME_ALREADY_EXISTS = "01013";
     
     /**
     * Parameter name cannot be empty.
     */
-    public static final String PARAMETERNAMEISEMPTY = "01014";
+    public static final String PARAMETER_NAME_IS_EMPTY = "01014";
     
     /**
     * Not ready.
     */
-    public static final String NOTREADY = "01015";
+    public static final String NOT_READY = "01015";
     
     /**
     * Ready.
@@ -121,299 +121,299 @@ public abstract class WebSiteExtendedErrorCodes {
     /**
     * Update is not allowed for the {0} field.
     */
-    public static final String UPDATEFORFIELDNOTALLOWED = "01017";
+    public static final String UPDATE_FOR_FIELD_NOT_ALLOWED = "01017";
     
     /**
     * Web Service does not support Command {0}. Only supported command(s) is
     * {1}.
     */
-    public static final String NOTSUPPORTEDCOMMAND = "01018";
+    public static final String NOT_SUPPORTED_COMMAND = "01018";
     
     /**
     * Invalid data ({0}).
     */
-    public static final String INVALIDDATA = "01019";
+    public static final String INVALID_DATA = "01019";
     
     /**
     * There was a conflict. {0}
     */
-    public static final String GENERICCONFLICT = "01020";
+    public static final String GENERIC_CONFLICT = "01020";
     
     /**
     * Internal server error occurred. {0}
     */
-    public static final String INTERNALSERVERERROR = "01021";
+    public static final String INTERNAL_SERVER_ERROR = "01021";
     
     /**
     * Number of sites exceeds the maximum allowed.
     */
-    public static final String NUMBEROFSITESLIMIT = "03001";
+    public static final String NUMBER_OF_SITES_LIMIT = "03001";
     
     /**
     * Number of workers exceeds the maximum allowed.
     */
-    public static final String NUMBEROFWORKERSLIMIT = "03002";
+    public static final String NUMBER_OF_WORKERS_LIMIT = "03002";
     
     /**
     * There is not enough space on the disk.
     */
-    public static final String NOSTORAGEVOLUMEAVAILABLE = "03003";
+    public static final String NO_STORAGE_VOLUME_AVAILABLE = "03003";
     
     /**
     * WebSpace with name {0} already exists for subscription {1}.
     */
-    public static final String WEBSPACEALREADYEXISTS = "03004";
+    public static final String WEB_SPACE_ALREADY_EXISTS = "03004";
     
     /**
     * Cannot find webspace {0} for subscription {1}.
     */
-    public static final String WEBSPACENOTFOUND = "03005";
+    public static final String WEB_SPACE_NOT_FOUND = "03005";
     
     /**
     * Web space contains resources.
     */
-    public static final String WEBSPACECONTAINSRESOURCES = "03006";
+    public static final String WEB_SPACE_CONTAINS_RESOURCES = "03006";
     
     /**
     * The file storage capacity exceeds the limit.
     */
-    public static final String FILESTORAGELIMIT = "03007";
+    public static final String FILE_STORAGE_LIMIT = "03007";
     
     /**
     * Failed to delete web space {0}: {1}
     */
-    public static final String WEBSPACEDELETEERROR = "03008";
+    public static final String WEB_SPACE_DELETE_ERROR = "03008";
     
     /**
     * Not enough available Standard Instance servers to satisfy this request.
     */
-    public static final String NOWORKERSAVAILABLE = "03009";
+    public static final String NO_WORKERS_AVAILABLE = "03009";
     
     /**
     * Failed to create web space {0} on storage volume {1}: {2}.
     */
-    public static final String WEBSPACECREATEERROR = "03010";
+    public static final String WEB_SPACE_CREATE_ERROR = "03010";
     
     /**
     * Directory already exists for site {0}.
     */
-    public static final String DIRECTORYALREADYEXISTS = "04001";
+    public static final String DIRECTORY_ALREADY_EXISTS = "04001";
     
     /**
     * Failed to delete directory {0}.
     */
-    public static final String DIRECTORYDELETEERROR = "04002";
+    public static final String DIRECTORY_DELETE_ERROR = "04002";
     
     /**
     * Invalid host name {0}.
     */
-    public static final String INVALIDHOSTNAME = "04003";
+    public static final String INVALID_HOST_NAME = "04003";
     
     /**
     * NumberOfWorkers value must be more than zero.
     */
-    public static final String INVALIDNUMBEROFWORKERS = "04004";
+    public static final String INVALID_NUMBER_OF_WORKERS = "04004";
     
     /**
     * Hostname '{0}' already exists.
     */
-    public static final String HOSTNAMEALREADYEXISTS = "04005";
+    public static final String HOST_NAME_ALREADY_EXISTS = "04005";
     
     /**
     * No CNAME (or too many CNAMEs) pointing from {0} to a site in a default
     * DNS zone.
     */
-    public static final String INVALIDCUSTOMHOSTNAMEVALIDATION = "04006";
+    public static final String INVALID_CUSTOM_HOST_NAME_VALIDATION = "04006";
     
     /**
     * There are no hostnames which could be used for validation.
     */
-    public static final String INVALIDCUSTOMHOSTNAMEVALIDATIONNOBASEHOSTNAME = "04007";
+    public static final String INVALID_CUSTOM_HOST_NAME_VALIDATION_NO_BASE_HOST_NAME = "04007";
     
     /**
     * Site with name {0} already exists.
     */
-    public static final String SITEALREADYEXISTS = "04008";
+    public static final String SITE_ALREADY_EXISTS = "04008";
     
     /**
     * Cannot find site {0}.
     */
-    public static final String SITENOTFOUND = "04009";
+    public static final String SITE_NOT_FOUND = "04009";
     
     /**
     * The external URL "{0}" specified on request header "{1}" is invalid.
     */
-    public static final String INVALIDEXTERNALURIHEADER = "04010";
+    public static final String INVALID_EXTERNAL_URI_HEADER = "04010";
     
     /**
     * Failed to delete file {0}.
     */
-    public static final String FILEDELETEERROR = "04011";
+    public static final String FILE_DELETE_ERROR = "04011";
     
     /**
     * Number of workers for this site exceeds the maximum allowed.
     */
-    public static final String NUMBEROFWORKERSPERSITELIMIT = "04012";
+    public static final String NUMBER_OF_WORKERS_PER_SITE_LIMIT = "04012";
     
     /**
     * WebSiteManager.CreateWebSite: Creating Site using storageVolume {0}.
     */
-    public static final String TRACEWEBSITESTORAGEVOLUME = "04013";
+    public static final String TRACE_WEB_SITE_STORAGE_VOLUME = "04013";
     
     /**
     * Cannot delete repository with name {0}.
     */
-    public static final String REPOSITORYDELETEERROR = "05001";
+    public static final String REPOSITORY_DELETE_ERROR = "05001";
     
     /**
     * Development site already exists in the repository for site {0}.
     */
-    public static final String REPOSITORYDEVSITEALREADYEXISTS = "05002";
+    public static final String REPOSITORY_DEV_SITE_ALREADY_EXISTS = "05002";
     
     /**
     * Development site does not exist in the repository for site {0}.
     */
-    public static final String REPOSITORYDEVSITENOTEXIST = "05003";
+    public static final String REPOSITORY_DEV_SITE_NOT_EXIST = "05003";
     
     /**
     * Site {0} already has repository created for it.
     */
-    public static final String REPOSITORYSITEALREADYEXISTS = "05004";
+    public static final String REPOSITORY_SITE_ALREADY_EXISTS = "05004";
     
     /**
     * Repository does not exist for site {0}.
     */
-    public static final String REPOSITORYSITENOTEXIST = "05005";
+    public static final String REPOSITORY_SITE_NOT_EXIST = "05005";
     
     /**
     * Failed to create a development site.
     */
-    public static final String TRACEFAILEDTOCREATEDEVSITE = "05006";
+    public static final String TRACE_FAILED_TO_CREATE_DEV_SITE = "05006";
     
     /**
     * User {0} has been rejected.
     */
-    public static final String AUTHENTICATEDFAILED = "06001";
+    public static final String AUTHENTICATED_FAILED = "06001";
     
     /**
     * User {0} has been successfully authenticated.
     */
-    public static final String AUTHENTICATEDPASSED = "06002";
+    public static final String AUTHENTICATED_PASSED = "06002";
     
     /**
     * User {0} has been rejected.
     */
-    public static final String AUTHORIZATIONFAILED = "06003";
+    public static final String AUTHORIZATION_FAILED = "06003";
     
     /**
     * User {0} has been authorized.
     */
-    public static final String AUTHORIZATIONPASSED = "06004";
+    public static final String AUTHORIZATION_PASSED = "06004";
     
     /**
     * Publishing credentials have to be trimmed from white characters.
     */
-    public static final String PUBLISHINGCREDENTIALSNOTTRIMMED = "06005";
+    public static final String PUBLISHING_CREDENTIALS_NOT_TRIMMED = "06005";
     
     /**
     * Publishing password cannot be empty.
     */
-    public static final String PUBLISHINGPASSWORDISEMPTY = "06006";
+    public static final String PUBLISHING_PASSWORD_IS_EMPTY = "06006";
     
     /**
     * Publishing password must be specified.
     */
-    public static final String PUBLISHINGPASSWORDNOTSPECIFIED = "06007";
+    public static final String PUBLISHING_PASSWORD_NOT_SPECIFIED = "06007";
     
     /**
     * Publishing username {0} is already used. Specify a different publishing
     * username.
     */
-    public static final String PUBLISHINGUSERNAMEALREADYEXISTS = "06008";
+    public static final String PUBLISHING_USER_NAME_ALREADY_EXISTS = "06008";
     
     /**
     * Publishing user name cannot be empty.
     */
-    public static final String PUBLISHINGUSERNAMEISEMPTY = "06009";
+    public static final String PUBLISHING_USER_NAME_IS_EMPTY = "06009";
     
     /**
     * An error occurred when adding the {0} entry: {1}.
     */
-    public static final String ERRORADDING = "51001";
+    public static final String ERROR_ADDING = "51001";
     
     /**
     * An error occurred when deleting the {0} entry: {1}.
     */
-    public static final String ERRORDELETING = "51002";
+    public static final String ERROR_DELETING = "51002";
     
     /**
     * An error occurred when updating the {0} entry: {1}.
     */
-    public static final String ERRORUPDATING = "51003";
+    public static final String ERROR_UPDATING = "51003";
     
     /**
     * Cannot find {0} with name {1}.
     */
-    public static final String CANNOTFINDENTITY = "51004";
+    public static final String CANNOT_FIND_ENTITY = "51004";
     
     /**
     * Subscription with specified name already exists.
     */
-    public static final String SUBSCRIPTIONCONFLICT = "52001";
+    public static final String SUBSCRIPTION_CONFLICT = "52001";
     
     /**
     * Subscription Name cannot be null or empty.
     */
-    public static final String SUBSCRIPTIONNONEMPTY = "52002";
+    public static final String SUBSCRIPTION_NON_EMPTY = "52002";
     
     /**
     * Subscription {0} not found.
     */
-    public static final String SUBSCRIPTIONNOTFOUND = "52003";
+    public static final String SUBSCRIPTION_NOT_FOUND = "52003";
     
     /**
     * Subscription {0} is suspended.
     */
-    public static final String SUBSCRIPTIONSUSPENDED = "52004";
+    public static final String SUBSCRIPTION_SUSPENDED = "52004";
     
     /**
     * Subscription contains WebSpaces.
     */
-    public static final String NONEMPTYSUBSCRIPTION = "52005";
+    public static final String NON_EMPTY_SUBSCRIPTION = "52005";
     
     /**
     * WebSpace with specified name already exists.
     */
-    public static final String WEBSPACECONFLICT = "53001";
+    public static final String WEB_SPACE_CONFLICT = "53001";
     
     /**
     * WebSpace Name cannot be null or empty.
     */
-    public static final String WEBSPACENONEMPTY = "53002";
+    public static final String WEB_SPACE_NON_EMPTY = "53002";
     
     /**
     * WebSpace contains web sites.
     */
-    public static final String NONEMPTYWEBSPACE = "53003";
+    public static final String NON_EMPTY_WEB_SPACE = "53003";
     
     /**
     * An error occurred when picking Stamp for WebSpace {0}.
     */
-    public static final String ERRORPICKINGSTAMP = "53004";
+    public static final String ERROR_PICKING_STAMP = "53004";
     
     /**
     * Web site with given name {0} already exists in the specified Subscription
     * and Webspace.
     */
-    public static final String WEBSITECONFLICT = "54001";
+    public static final String WEB_SITE_CONFLICT = "54001";
     
     /**
     * WebSiteName cannot be null or empty.
     */
-    public static final String WEBSITENONEMPTY = "54002";
+    public static final String WEB_SITE_NON_EMPTY = "54002";
     
     /**
     * Specified Host Name {0} is already taken by another site.
     */
-    public static final String HOSTNAMECONFLICT = "54003";
+    public static final String HOST_NAME_CONFLICT = "54003";
 }

@@ -30,10 +30,10 @@ public enum KeyName {
     /**
     * The primary key.
     */
-    Key1,
+    KEY1,
     
     /**
     * The secondary key.
     */
-    Key2,
+    KEY2,
 }

@@ -27,9 +27,9 @@ package com.microsoft.windowsazure.scheduler.models;
 * Type of service bus transport
 */
 public enum JobServiceBusTransportType {
-    NotSpecified,
+    NOT_SPECIFIED,
     
-    NetMessaging,
+    NET_MESSAGING,
     
     AMQP,
 }

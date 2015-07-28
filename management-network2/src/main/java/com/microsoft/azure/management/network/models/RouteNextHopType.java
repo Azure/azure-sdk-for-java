@@ -30,7 +30,7 @@ public abstract class RouteNextHopType {
     /**
     * Represents an Azure S2S VPN Gateway.
     */
-    public static final String VIRTUALNETWORKGATEWAY = "VirtualNetworkGateway";
+    public static final String VIRTUAL_NETWORK_GATEWAY = "VirtualNetworkGateway";
     
     /**
     * Represents the local virtual network. For instance, if you have two
@@ -38,7 +38,7 @@ public abstract class RouteNextHopType {
     * route for each subnet in the route table will have a next hop value of
     * Local.
     */
-    public static final String VNETLOCAL = "VnetLocal";
+    public static final String VNET_LOCAL = "VnetLocal";
     
     /**
     * Represents the default Internet gateway provided by the Azure
@@ -49,7 +49,7 @@ public abstract class RouteNextHopType {
     /**
     * Represents a virtual appliance you added to your Azure virtual network.
     */
-    public static final String VIRTUALAPPLIANCE = "VirtualAppliance";
+    public static final String VIRTUAL_APPLIANCE = "VirtualAppliance";
     
     /**
     * Represents a black hole. Packets forwarded to a black hole will not be

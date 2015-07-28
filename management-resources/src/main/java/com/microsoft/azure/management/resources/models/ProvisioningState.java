@@ -30,7 +30,7 @@ public abstract class ProvisioningState {
     /**
     * The provisioning state is not specified.
     */
-    public static final String NOTSPECIFIED = "NotSpecified";
+    public static final String NOT_SPECIFIED = "NotSpecified";
     
     /**
     * The provisioning state is accepted.

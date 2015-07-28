@@ -32,15 +32,15 @@ public enum ProvisioningState {
     * state, only properties that are specified as input for Create operation
     * are returned.
     */
-    Creating,
+    CREATING,
     
     /**
     * The DNS name for the storage account is being propagated.
     */
-    ResolvingDNS,
+    RESOLVING_DNS,
     
     /**
     * The storage account is active for use.
     */
-    Succeeded,
+    SUCCEEDED,
 }

@@ -27,81 +27,81 @@ package com.microsoft.windowsazure.management.models;
 * The name of a subscription operation.
 */
 public abstract class SubscriptionOperationNames {
-    public static final String ACTIVATEDOMAINNAME = "ActivateDomainName";
+    public static final String ACTIVATE_DOMAIN_NAME = "ActivateDomainName";
     
-    public static final String ADDCERTIFICATES = "AddCertificates";
+    public static final String ADD_CERTIFICATES = "AddCertificates";
     
-    public static final String ADDSUBSCRIPTIONCERTIFICATE = "AddSubscriptionCertificate";
+    public static final String ADD_SUBSCRIPTION_CERTIFICATE = "AddSubscriptionCertificate";
     
-    public static final String CHANGEDEPLOYMENTCONFIGURATION = "ChangeDeploymentConfiguration";
+    public static final String CHANGE_DEPLOYMENT_CONFIGURATION = "ChangeDeploymentConfiguration";
     
-    public static final String CHANGEDEPLOYMENTCONFIGURATIONBYSLOT = "ChangeDeploymentConfigurationBySlot";
+    public static final String CHANGE_DEPLOYMENT_CONFIGURATION_BY_SLOT = "ChangeDeploymentConfigurationBySlot";
     
-    public static final String COMMITIMAGEUPLOAD = "CommitImageUpload";
+    public static final String COMMIT_IMAGE_UPLOAD = "CommitImageUpload";
     
-    public static final String CREATEAFFINITYGROUP = "CreateAffinityGroup";
+    public static final String CREATE_AFFINITY_GROUP = "CreateAffinityGroup";
     
-    public static final String CREATEDEPLOYMENT = "CreateDeployment";
+    public static final String CREATE_DEPLOYMENT = "CreateDeployment";
     
-    public static final String CREATEDEPLOYMENTBYSLOT = "CreateDeploymentBySlot";
+    public static final String CREATE_DEPLOYMENT_BY_SLOT = "CreateDeploymentBySlot";
     
-    public static final String CREATEHOSTEDSERVICE = "CreateHostedService";
+    public static final String CREATE_HOSTED_SERVICE = "CreateHostedService";
     
-    public static final String CREATESTORAGESERVICE = "CreateStorageService";
+    public static final String CREATE_STORAGE_SERVICE = "CreateStorageService";
     
-    public static final String DELETEAFFINITYGROUP = "DeleteAffinityGroup";
+    public static final String DELETE_AFFINITY_GROUP = "DeleteAffinityGroup";
     
-    public static final String DELETECERTIFICATE = "DeleteCertificate";
+    public static final String DELETE_CERTIFICATE = "DeleteCertificate";
     
-    public static final String DELETEDEPLOYMENT = "DeleteDeployment";
+    public static final String DELETE_DEPLOYMENT = "DeleteDeployment";
     
-    public static final String DELETEHOSTEDSERVICE = "DeleteHostedService";
+    public static final String DELETE_HOSTED_SERVICE = "DeleteHostedService";
     
-    public static final String DELETEIMAGE = "DeleteImage";
+    public static final String DELETE_IMAGE = "DeleteImage";
     
-    public static final String DELETESTORAGESERVICE = "DeleteStorageService";
+    public static final String DELETE_STORAGE_SERVICE = "DeleteStorageService";
     
-    public static final String PREPAREIMAGEUPLOAD = "PrepareImageUpload";
+    public static final String PREPARE_IMAGE_UPLOAD = "PrepareImageUpload";
     
-    public static final String REBOOTDEPLOYMENTROLEINSTANCE = "RebootDeploymentRoleInstance";
+    public static final String REBOOT_DEPLOYMENT_ROLE_INSTANCE = "RebootDeploymentRoleInstance";
     
-    public static final String REBOOTDEPLOYMENTROLEINSTANCEBYSLOT = "RebootDeploymentRoleInstanceBySlot";
+    public static final String REBOOT_DEPLOYMENT_ROLE_INSTANCE_BY_SLOT = "RebootDeploymentRoleInstanceBySlot";
     
-    public static final String REIMAGEDEPLOYMENTROLEINSTANCE = "ReimageDeploymentRoleInstance";
+    public static final String REIMAGE_DEPLOYMENT_ROLE_INSTANCE = "ReimageDeploymentRoleInstance";
     
-    public static final String REIMAGEDEPLOYMENTROLEINSTANCEBYSLOT = "ReimageDeploymentRoleInstanceBySlot";
+    public static final String REIMAGE_DEPLOYMENT_ROLE_INSTANCE_BY_SLOT = "ReimageDeploymentRoleInstanceBySlot";
     
-    public static final String REGENERATESTORAGESERVICEKEYS = "RegenerateStorageServiceKeys";
+    public static final String REGENERATE_STORAGE_SERVICE_KEYS = "RegenerateStorageServiceKeys";
     
-    public static final String REGISTERDOMAINNAME = "RegisterDomainName";
+    public static final String REGISTER_DOMAIN_NAME = "RegisterDomainName";
     
-    public static final String REMOVESUBSCRIPTIONCERTIFICATE = "RemoveSubscriptionCertificate";
+    public static final String REMOVE_SUBSCRIPTION_CERTIFICATE = "RemoveSubscriptionCertificate";
     
-    public static final String ROLLBACKDEPLOYMENTUPDATEORUPGRADE = "RollbackDeploymentUpdateOrUpgrade";
+    public static final String ROLLBACK_DEPLOYMENT_UPDATE_OR_UPGRADE = "RollbackDeploymentUpdateOrUpgrade";
     
-    public static final String SETIMAGEPROPERTIES = "SetImageProperties";
+    public static final String SET_IMAGE_PROPERTIES = "SetImageProperties";
     
-    public static final String SETPARENTIMAGE = "SetParentImage";
+    public static final String SET_PARENT_IMAGE = "SetParentImage";
     
-    public static final String SWAPDEPLOYMENT = "SwapDeployment";
+    public static final String SWAP_DEPLOYMENT = "SwapDeployment";
     
-    public static final String UNREGISTERDOMAINNAME = "UnregisterDomainName";
+    public static final String UNREGISTER_DOMAIN_NAME = "UnregisterDomainName";
     
-    public static final String UPDATEAFFINITYGROUP = "UpdateAffinityGroup";
+    public static final String UPDATE_AFFINITY_GROUP = "UpdateAffinityGroup";
     
-    public static final String UPDATEDEPLOYMENTSTATUS = "UpdateDeploymentStatus";
+    public static final String UPDATE_DEPLOYMENT_STATUS = "UpdateDeploymentStatus";
     
-    public static final String UPDATEDEPLOYMENTSTATUSBYSLOT = "UpdateDeploymentStatusBySlot";
+    public static final String UPDATE_DEPLOYMENT_STATUS_BY_SLOT = "UpdateDeploymentStatusBySlot";
     
-    public static final String UPDATEHOSTEDSERVICE = "UpdateHostedService";
+    public static final String UPDATE_HOSTED_SERVICE = "UpdateHostedService";
     
-    public static final String UPDATESTORAGESERVICE = "UpdateStorageService";
+    public static final String UPDATE_STORAGE_SERVICE = "UpdateStorageService";
     
-    public static final String UPGRADEDEPLOYMENT = "UpgradeDeployment";
+    public static final String UPGRADE_DEPLOYMENT = "UpgradeDeployment";
     
-    public static final String UPGRADEDEPLOYMENTBYSLOT = "UpgradeDeploymentBySlot";
+    public static final String UPGRADE_DEPLOYMENT_BY_SLOT = "UpgradeDeploymentBySlot";
     
-    public static final String WALKUPGRADEDOMAIN = "WalkUpgradeDomain";
+    public static final String WALK_UPGRADE_DOMAIN = "WalkUpgradeDomain";
     
-    public static final String WALKUPGRADEDOMAINBYSLOT = "WalkUpgradeDomainBySlot";
+    public static final String WALK_UPGRADE_DOMAIN_BY_SLOT = "WalkUpgradeDomainBySlot";
 }

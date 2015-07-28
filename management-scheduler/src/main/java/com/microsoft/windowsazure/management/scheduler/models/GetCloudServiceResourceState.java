@@ -36,7 +36,7 @@ public abstract class GetCloudServiceResourceState {
     /**
     * The resource provider did not respond with information for the resource.
     */
-    public static final String NOTFOUND = "NotFound";
+    public static final String NOT_FOUND = "NotFound";
     
     /**
     * The resource has started and is running fine.

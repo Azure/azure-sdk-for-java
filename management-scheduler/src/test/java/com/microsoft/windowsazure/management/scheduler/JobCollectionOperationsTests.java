@@ -210,7 +210,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             }else{

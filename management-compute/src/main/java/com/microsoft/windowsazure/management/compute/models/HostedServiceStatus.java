@@ -27,15 +27,15 @@ package com.microsoft.windowsazure.management.compute.models;
 * The status of the cloud service.
 */
 public enum HostedServiceStatus {
-    Created,
+    CREATED,
     
-    Creating,
+    CREATING,
     
-    Deleting,
+    DELETING,
     
-    Deleted,
+    DELETED,
     
-    Changing,
+    CHANGING,
     
-    ResolvingDns,
+    RESOLVING_DNS,
 }

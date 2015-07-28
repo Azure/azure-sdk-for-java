@@ -27,5 +27,5 @@ package com.microsoft.windowsazure.management.websites.models;
 * A web space plan.
 */
 public abstract class WebSpacePlanNames {
-    public static final String VIRTUALDEDICATEDPLAN = "VirtualDedicatedPlan";
+    public static final String VIRTUAL_DEDICATED_PLAN = "VirtualDedicatedPlan";
 }

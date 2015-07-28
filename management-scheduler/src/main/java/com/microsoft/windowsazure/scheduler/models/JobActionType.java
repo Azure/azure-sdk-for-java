@@ -28,13 +28,13 @@ package com.microsoft.windowsazure.scheduler.models;
 * serviceBusTopic.
 */
 public enum JobActionType {
-    Http,
+    HTTP,
     
-    Https,
+    HTTPS,
     
-    StorageQueue,
+    STORAGE_QUEUE,
     
-    ServiceBusQueue,
+    SERVICE_BUS_QUEUE,
     
-    ServiceBusTopic,
+    SERVICE_BUS_TOPIC,
 }

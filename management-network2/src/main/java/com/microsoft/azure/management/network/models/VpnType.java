@@ -27,10 +27,10 @@ public abstract class VpnType {
     /**
     * Virtual network StaticRouting gateway type
     */
-    public static final String POLICYBASED = "PolicyBased";
+    public static final String POLICY_BASED = "PolicyBased";
     
     /**
     * Virtual network DynamicRouting gateway type
     */
-    public static final String ROUTEBASED = "RouteBased";
+    public static final String ROUTE_BASED = "RouteBased";
 }

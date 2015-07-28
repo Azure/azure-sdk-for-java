@@ -27,11 +27,11 @@ package com.microsoft.windowsazure.management.network.models;
 * Standard states for Virtual Network Gateway Diagnostics Events.
 */
 public enum GatewayDiagnosticsState {
-    Ready,
+    READY,
     
-    Scheduled,
+    SCHEDULED,
     
-    InProgress,
+    IN_PROGRESS,
     
-    StopInProgress,
+    STOP_IN_PROGRESS,
 }
