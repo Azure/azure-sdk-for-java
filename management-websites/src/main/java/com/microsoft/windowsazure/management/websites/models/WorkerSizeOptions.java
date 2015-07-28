@@ -27,9 +27,9 @@ package com.microsoft.windowsazure.management.websites.models;
 * The size of a web worker.
 */
 public enum WorkerSizeOptions {
-    Small,
+    SMALL,
     
-    Medium,
+    MEDIUM,
     
-    Large,
+    LARGE,
 }

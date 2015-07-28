@@ -242,7 +242,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                 JsonNode reasonValue = responseDoc.get("reason");
                 if (reasonValue != null && reasonValue instanceof NullNode == false) {
                     Reason reasonInstance;
-                    reasonInstance = Reason.values()[reasonValue.getIntValue()];
+                    reasonInstance = Enum.valueOf(Reason.class, reasonValue.getTextValue().toUpperCase());
                     result.setReason(reasonInstance);
                 }
                 

@@ -177,7 +177,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToNetworkInterfaceAsync(serviceName, deploymentName, roleName, networkInterfaceName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -185,7 +185,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -198,7 +198,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -303,7 +303,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToRoleAsync(serviceName, deploymentName, roleName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -311,7 +311,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -324,7 +324,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -426,7 +426,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToSubnetAsync(virtualNetworkName, subnetName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -434,7 +434,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -447,7 +447,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2192,7 +2192,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginCreatingAsync(parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -2200,7 +2200,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2213,7 +2213,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2322,7 +2322,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginDeletingAsync(networkSecurityGroupName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -2330,7 +2330,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2343,7 +2343,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2444,7 +2444,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginDeletingRuleAsync(networkSecurityGroupName, ruleName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -2452,7 +2452,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2465,7 +2465,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3421,7 +3421,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginRemovingFromNetworkInterfaceAsync(serviceName, deploymentName, roleName, networkInterfaceName, networkSecurityGroupName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -3429,7 +3429,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -3442,7 +3442,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3545,7 +3545,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginRemovingFromRoleAsync(serviceName, deploymentName, roleName, networkSecurityGroupName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -3553,7 +3553,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -3566,7 +3566,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3666,7 +3666,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginRemovingFromSubnetAsync(virtualNetworkName, subnetName, networkSecurityGroupName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -3674,7 +3674,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -3687,7 +3687,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3789,7 +3789,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginSettingRuleAsync(networkSecurityGroupName, ruleName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -3797,7 +3797,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -3810,7 +3810,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

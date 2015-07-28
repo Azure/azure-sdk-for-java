@@ -687,7 +687,7 @@ public class TransparentDataEncryptionOperationsImpl implements ServiceOperation
                                 JsonNode percentCompleteValue = propertiesValue.get("percentComplete");
                                 if (percentCompleteValue != null && percentCompleteValue instanceof NullNode == false) {
                                     float percentCompleteInstance;
-                                    percentCompleteInstance = percentCompleteValue.getNumberValue();
+                                    percentCompleteInstance = percentCompleteValue.getNumberValue().floatValue();
                                     propertiesInstance.setPercentComplete(percentCompleteInstance);
                                 }
                             }

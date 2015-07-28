@@ -30,15 +30,15 @@ public abstract class LockLevel {
     /**
     * The lock level is not specified.
     */
-    public static final String NOTSPECIFIED = "NotSpecified";
+    public static final String NOT_SPECIFIED = "NotSpecified";
     
     /**
     * The lock blocks delete.
     */
-    public static final String CANNOTDELETE = "CanNotDelete";
+    public static final String CAN_NOT_DELETE = "CanNotDelete";
     
     /**
     * The lock blocks all updates and delete.
     */
-    public static final String READONLY = "ReadOnly";
+    public static final String READ_ONLY = "ReadOnly";
 }

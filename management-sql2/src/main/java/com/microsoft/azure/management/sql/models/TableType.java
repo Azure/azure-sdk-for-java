@@ -30,7 +30,7 @@ public abstract class TableType {
     /**
     * Standard SQL table.
     */
-    public static final String BASETABLE = "BaseTable";
+    public static final String BASE_TABLE = "BaseTable";
     
     /**
     * SQL View

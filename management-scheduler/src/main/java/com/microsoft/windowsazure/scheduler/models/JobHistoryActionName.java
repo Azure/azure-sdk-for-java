@@ -30,10 +30,10 @@ public enum JobHistoryActionName {
     /**
     * An execution attempt of the primary action.
     */
-    MainAction,
+    MAIN_ACTION,
     
     /**
     * An execution attempt of the error action.
     */
-    ErrorAction,
+    ERROR_ACTION,
 }

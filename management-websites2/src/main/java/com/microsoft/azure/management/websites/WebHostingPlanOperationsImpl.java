@@ -304,7 +304,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode skuValue = propertiesValue2.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -318,7 +318,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue2.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -647,7 +647,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode skuValue = propertiesValue.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -661,7 +661,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -1151,7 +1151,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 JsonNode skuValue = propertiesValue.get("sku");
                                 if (skuValue != null && skuValue instanceof NullNode == false) {
                                     SkuOptions skuInstance;
-                                    skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                                     propertiesInstance.setSku(skuInstance);
                                 }
                                 
@@ -1165,7 +1165,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 JsonNode workerSizeValue = propertiesValue.get("workerSize");
                                 if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                                     WorkerSizeOptions workerSizeInstance;
-                                    workerSizeInstance = WorkerSizeOptions.values()[workerSizeValue.getIntValue()];
+                                    workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
                                     propertiesInstance.setWorkerSize(workerSizeInstance);
                                 }
                                 

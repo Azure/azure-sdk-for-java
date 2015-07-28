@@ -31,7 +31,7 @@ public abstract class LocationAvailableServiceNames {
     
     public static final String STORAGE = "Storage";
     
-    public static final String PERSISTENTVMROLE = "PersistentVMRole";
+    public static final String PERSISTENT_VMROLE = "PersistentVMRole";
     
-    public static final String HIGHMEMORY = "HighMemory";
+    public static final String HIGH_MEMORY = "HighMemory";
 }

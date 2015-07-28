@@ -2604,13 +2604,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.Failed);
+                result.setStatus(OperationStatus.FAILED);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             if (statusCode == HttpStatus.SC_NO_CONTENT) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -3069,7 +3069,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3151,7 +3151,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3231,7 +3231,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3306,7 +3306,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             DeleteOperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(resourceGroupName, vmName).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             DeleteOperationResponse result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
@@ -3314,7 +3314,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -9899,7 +9899,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -9977,7 +9977,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -10055,7 +10055,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;

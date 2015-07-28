@@ -27,7 +27,7 @@ package com.microsoft.azure.management.websites.models;
 * The type of host
 */
 public enum HostType {
-    Standard,
+    STANDARD,
     
-    Repository,
+    REPOSITORY,
 }

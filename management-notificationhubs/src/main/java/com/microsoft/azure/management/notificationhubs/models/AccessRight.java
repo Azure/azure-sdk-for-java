@@ -30,15 +30,15 @@ public enum AccessRight {
     /**
     * Listen Access Right.
     */
-    Listen,
+    LISTEN,
     
     /**
     * Manage Access Right.
     */
-    Manage,
+    MANAGE,
     
     /**
     * Send Access Right.
     */
-    Send,
+    SEND,
 }

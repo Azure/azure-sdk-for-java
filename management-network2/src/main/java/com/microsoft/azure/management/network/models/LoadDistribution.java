@@ -37,11 +37,11 @@ public abstract class LoadDistribution {
     * Default distribution Azure Load Balancer configured to use a 5 tuple hash
     * to map traffic to available servers
     */
-    public static final String SOURCEIP = "SourceIP";
+    public static final String SOURCE_IP = "SourceIP";
     
     /**
     * Default distribution Azure Load Balancer configured to use a 5 tuple hash
     * to map traffic to available servers
     */
-    public static final String SOURCEIPPROTOCOL = "SourceIPProtocol";
+    public static final String SOURCE_IPPROTOCOL = "SourceIPProtocol";
 }

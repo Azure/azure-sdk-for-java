@@ -634,7 +634,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkResourcePro
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -723,7 +723,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkResourcePro
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

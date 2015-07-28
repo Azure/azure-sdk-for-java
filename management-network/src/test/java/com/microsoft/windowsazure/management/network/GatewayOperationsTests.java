@@ -92,7 +92,7 @@ public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase
     public void createGatewayOnEmptyNetworkFailed() throws Exception {     
         // Arrange
         GatewayCreateParameters gatewayCreateParameters = new GatewayCreateParameters();
-        gatewayCreateParameters.setGatewayType(GatewayType.STATICROUTING);
+        gatewayCreateParameters.setGatewayType(GatewayType.STATIC_ROUTING);
         
         // Act
         OperationResponse operationResponse = gatewayOperations.create(testNetworkName, gatewayCreateParameters);

@@ -27,7 +27,7 @@ package com.microsoft.azure.management.network.models;
 * The status of the asynchronous request.
 */
 public abstract class OperationStatus {
-    public static final String INPROGRESS = "InProgress";
+    public static final String IN_PROGRESS = "InProgress";
     
     public static final String SUCCEEDED = "Succeeded";
     

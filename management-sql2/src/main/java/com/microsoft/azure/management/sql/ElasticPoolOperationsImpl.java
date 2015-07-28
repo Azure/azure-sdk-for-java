@@ -450,7 +450,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -535,7 +535,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
             }
             
             ElasticPoolCreateOrUpdateResponse response = client2.getElasticPoolsOperations().beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             ElasticPoolCreateOrUpdateResponse result = client2.getElasticPoolsOperations().getElasticPoolOperationStatusAsync(response.getOperationStatusLink()).get();
@@ -546,7 +546,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getElasticPoolsOperations().getElasticPoolOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -2133,10 +2133,10 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.Succeeded);
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {

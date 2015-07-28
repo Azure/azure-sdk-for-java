@@ -27,17 +27,17 @@ package com.microsoft.windowsazure.scheduler.models;
 * Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.
 */
 public enum JobScheduleDay {
-    Monday,
+    MONDAY,
     
-    Tuesday,
+    TUESDAY,
     
-    Wednesday,
+    WEDNESDAY,
     
-    Thursday,
+    THURSDAY,
     
-    Friday,
+    FRIDAY,
     
-    Saturday,
+    SATURDAY,
     
-    Sunday,
+    SUNDAY,
 }

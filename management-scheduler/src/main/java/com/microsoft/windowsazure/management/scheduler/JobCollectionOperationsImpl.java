@@ -913,7 +913,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -926,7 +926,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1031,7 +1031,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1044,7 +1044,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1416,7 +1416,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1429,7 +1429,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
