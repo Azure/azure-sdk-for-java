@@ -26,6 +26,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.models.AzureAsyncOperationResponse;
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
+import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.management.network.models.SecurityRuleGetResponse;
 import com.microsoft.azure.management.network.models.SecurityRuleListResponse;
@@ -709,7 +710,7 @@ public class SecurityRuleOperationsImpl implements ServiceOperations<NetworkReso
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -802,7 +803,7 @@ public class SecurityRuleOperationsImpl implements ServiceOperations<NetworkReso
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

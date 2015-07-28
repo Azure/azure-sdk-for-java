@@ -163,7 +163,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/octet-stream");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = parameters.getConfiguration();
@@ -275,7 +275,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -390,7 +390,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;

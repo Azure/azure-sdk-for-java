@@ -84,24 +84,6 @@ public class StorageProfile {
         this.oSDisk = oSDiskValue;
     }
     
-    private SourceImageReference sourceImage;
-    
-    /**
-    * Optional. Gets or sets the source image reference.
-    * @return The SourceImage value.
-    */
-    public SourceImageReference getSourceImage() {
-        return this.sourceImage;
-    }
-    
-    /**
-    * Optional. Gets or sets the source image reference.
-    * @param sourceImageValue The SourceImage value.
-    */
-    public void setSourceImage(final SourceImageReference sourceImageValue) {
-        this.sourceImage = sourceImageValue;
-    }
-    
     /**
     * Initializes a new instance of the StorageProfile class.
     *

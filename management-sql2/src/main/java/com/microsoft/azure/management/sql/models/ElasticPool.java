@@ -32,7 +32,7 @@ public class ElasticPool extends ResourceBaseExtended {
     private ElasticPoolProperties properties;
     
     /**
-    * Optional. Represents the properties of the resource.
+    * Optional. Gets or sets the properties representing the resource.
     * @return The Properties value.
     */
     public ElasticPoolProperties getProperties() {
@@ -40,7 +40,7 @@ public class ElasticPool extends ResourceBaseExtended {
     }
     
     /**
-    * Optional. Represents the properties of the resource.
+    * Optional. Gets or sets the properties representing the resource.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final ElasticPoolProperties propertiesValue) {

@@ -33,9 +33,9 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroup;
-import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupAddToSubnetParameters;
+import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupAddAssociationParameters;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupCreateParameters;
-import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetForSubnetResponse;
+import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetAssociationResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupGetResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityGroupListResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSecurityRule;
@@ -97,12 +97,14 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     }
     
     /**
-    * Adds a Network Security Group to a subnet.
+    * Adds a Network Security Group to a network interface.
     *
-    * @param virtualNetworkName Required.
-    * @param subnetName Required.
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
     * @param parameters Required. Parameters supplied to the Add Network
-    * Security Group to subnet operation.
+    * Security Group to a network interface operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -114,22 +116,24 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public Future<OperationStatusResponse> addToSubnetAsync(final String virtualNetworkName, final String subnetName, final NetworkSecurityGroupAddToSubnetParameters parameters) {
+    public Future<OperationStatusResponse> addToNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleName, final String networkInterfaceName, final NetworkSecurityGroupAddAssociationParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
             public OperationStatusResponse call() throws Exception {
-                return addToSubnet(virtualNetworkName, subnetName, parameters);
+                return addToNetworkInterface(serviceName, deploymentName, roleName, networkInterfaceName, parameters);
             }
          });
     }
     
     /**
-    * Adds a Network Security Group to a subnet.
+    * Adds a Network Security Group to a network interface.
     *
-    * @param virtualNetworkName Required.
-    * @param subnetName Required.
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
     * @param parameters Required. Parameters supplied to the Add Network
-    * Security Group to subnet operation.
+    * Security Group to a network interface operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -153,24 +157,152 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public OperationStatusResponse addToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse addToNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("virtualNetworkName", virtualNetworkName);
-            tracingParameters.put("subnetName", subnetName);
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "addToSubnetAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "addToNetworkInterfaceAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToSubnetAsync(virtualNetworkName, subnetName, parameters).get();
+            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToNetworkInterfaceAsync(serviceName, deploymentName, roleName, networkInterfaceName, parameters).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> addToRoleAsync(final String serviceName, final String deploymentName, final String roleName, final NetworkSecurityGroupAddAssociationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return addToRole(serviceName, deploymentName, roleName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse addToRole(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "addToRoleAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToRoleAsync(serviceName, deploymentName, roleName, parameters).get();
             if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
@@ -237,7 +369,502 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public Future<OperationStatusResponse> beginAddingToSubnetAsync(final String virtualNetworkName, final String subnetName, final NetworkSecurityGroupAddToSubnetParameters parameters) {
+    public Future<OperationStatusResponse> addToSubnetAsync(final String virtualNetworkName, final String subnetName, final NetworkSecurityGroupAddAssociationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return addToSubnet(virtualNetworkName, subnetName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Adds a Network Security Group to a subnet.
+    *
+    * @param virtualNetworkName Required.
+    * @param subnetName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to subnet operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse addToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("virtualNetworkName", virtualNetworkName);
+            tracingParameters.put("subnetName", subnetName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "addToSubnetAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginAddingToSubnetAsync(virtualNetworkName, subnetName, parameters).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginAddingToNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleName, final String networkInterfaceName, final NetworkSecurityGroupAddAssociationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return beginAddingToNetworkInterface(serviceName, deploymentName, roleName, networkInterfaceName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Adds a Network Security Group to a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to a network interface operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse beginAddingToNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (networkInterfaceName == null) {
+            throw new NullPointerException("networkInterfaceName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getName() == null) {
+            throw new NullPointerException("parameters.Name");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginAddingToNetworkInterfaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networkinterfaces/";
+        url = url + URLEncoder.encode(networkInterfaceName, "UTF-8");
+        url = url + "/networksecuritygroups";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+        requestDoc.appendChild(networkSecurityGroupElement);
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+        networkSecurityGroupElement.appendChild(nameElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationStatusResponse result = null;
+            // Deserialize Response
+            result = new OperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginAddingToRoleAsync(final String serviceName, final String deploymentName, final String roleName, final NetworkSecurityGroupAddAssociationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return beginAddingToRole(serviceName, deploymentName, roleName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Adds a Network Security Group to a Role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to Role operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse beginAddingToRole(String serviceName, String deploymentName, String roleName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getName() == null) {
+            throw new NullPointerException("parameters.Name");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginAddingToRoleAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networksecuritygroups";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+        requestDoc.appendChild(networkSecurityGroupElement);
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+        networkSecurityGroupElement.appendChild(nameElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationStatusResponse result = null;
+            // Deserialize Response
+            result = new OperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Adds a Network Security Group to a subnet.
+    *
+    * @param virtualNetworkName Required.
+    * @param subnetName Required.
+    * @param parameters Required. Parameters supplied to the Add Network
+    * Security Group to subnet operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginAddingToSubnetAsync(final String virtualNetworkName, final String subnetName, final NetworkSecurityGroupAddAssociationParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
             public OperationStatusResponse call() throws Exception {
@@ -274,7 +901,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * failure.
     */
     @Override
-    public OperationStatusResponse beginAddingToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddToSubnetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationStatusResponse beginAddingToSubnet(String virtualNetworkName, String subnetName, NetworkSecurityGroupAddAssociationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
@@ -328,7 +955,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -489,7 +1116,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -659,7 +1286,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -792,7 +1419,309 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationStatusResponse result = null;
+            // Deserialize Response
+            result = new OperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginRemovingFromNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleName, final String networkInterfaceName, final String networkSecurityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return beginRemovingFromNetworkInterface(serviceName, deploymentName, roleName, networkInterfaceName, networkSecurityGroupName);
+            }
+         });
+    }
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse beginRemovingFromNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (networkInterfaceName == null) {
+            throw new NullPointerException("networkInterfaceName");
+        }
+        if (networkSecurityGroupName == null) {
+            throw new NullPointerException("networkSecurityGroupName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            tracingParameters.put("networkSecurityGroupName", networkSecurityGroupName);
+            CloudTracing.enter(invocationId, this, "beginRemovingFromNetworkInterfaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networkinterfaces/";
+        url = url + URLEncoder.encode(networkInterfaceName, "UTF-8");
+        url = url + "/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationStatusResponse result = null;
+            // Deserialize Response
+            result = new OperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginRemovingFromRoleAsync(final String serviceName, final String deploymentName, final String roleName, final String networkSecurityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return beginRemovingFromRole(serviceName, deploymentName, roleName, networkSecurityGroupName);
+            }
+         });
+    }
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse beginRemovingFromRole(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName) throws IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (networkSecurityGroupName == null) {
+            throw new NullPointerException("networkSecurityGroupName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkSecurityGroupName", networkSecurityGroupName);
+            CloudTracing.enter(invocationId, this, "beginRemovingFromRoleAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networksecuritygroups/";
+        url = url + URLEncoder.encode(networkSecurityGroupName, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -931,7 +1860,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1096,7 +2025,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1647,7 +2576,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1807,17 +2736,336 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     }
     
     /**
+    * Gets the Network Security Group applied to a specific network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    @Override
+    public Future<NetworkSecurityGroupGetAssociationResponse> getForNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleName, final String networkInterfaceName) {
+        return this.getClient().getExecutorService().submit(new Callable<NetworkSecurityGroupGetAssociationResponse>() { 
+            @Override
+            public NetworkSecurityGroupGetAssociationResponse call() throws Exception {
+                return getForNetworkInterface(serviceName, deploymentName, roleName, networkInterfaceName);
+            }
+         });
+    }
+    
+    /**
+    * Gets the Network Security Group applied to a specific network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    @Override
+    public NetworkSecurityGroupGetAssociationResponse getForNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (networkInterfaceName == null) {
+            throw new NullPointerException("networkInterfaceName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            CloudTracing.enter(invocationId, this, "getForNetworkInterfaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networkinterfaces/";
+        url = url + URLEncoder.encode(networkInterfaceName, "UTF-8");
+        url = url + "/networksecuritygroups";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkSecurityGroupGetAssociationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkSecurityGroupGetAssociationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                if (networkSecurityGroupElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        result.setState(stateInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Gets the Network Security Group applied to a specific role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    @Override
+    public Future<NetworkSecurityGroupGetAssociationResponse> getForRoleAsync(final String serviceName, final String deploymentName, final String roleName) {
+        return this.getClient().getExecutorService().submit(new Callable<NetworkSecurityGroupGetAssociationResponse>() { 
+            @Override
+            public NetworkSecurityGroupGetAssociationResponse call() throws Exception {
+                return getForRole(serviceName, deploymentName, roleName);
+            }
+         });
+    }
+    
+    /**
+    * Gets the Network Security Group applied to a specific role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
+    */
+    @Override
+    public NetworkSecurityGroupGetAssociationResponse getForRole(String serviceName, String deploymentName, String roleName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            CloudTracing.enter(invocationId, this, "getForRoleAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roles/";
+        url = url + URLEncoder.encode(roleName, "UTF-8");
+        url = url + "/networksecuritygroups";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkSecurityGroupGetAssociationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkSecurityGroupGetAssociationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                if (networkSecurityGroupElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(networkSecurityGroupElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        result.setState(stateInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * Gets the Network Security Group applied to a specific subnet.
     *
     * @param virtualNetworkName Required.
     * @param subnetName Required.
-    * @return The Network Security Group associated with a subnet.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
     */
     @Override
-    public Future<NetworkSecurityGroupGetForSubnetResponse> getForSubnetAsync(final String virtualNetworkName, final String subnetName) {
-        return this.getClient().getExecutorService().submit(new Callable<NetworkSecurityGroupGetForSubnetResponse>() { 
+    public Future<NetworkSecurityGroupGetAssociationResponse> getForSubnetAsync(final String virtualNetworkName, final String subnetName) {
+        return this.getClient().getExecutorService().submit(new Callable<NetworkSecurityGroupGetAssociationResponse>() { 
             @Override
-            public NetworkSecurityGroupGetForSubnetResponse call() throws Exception {
+            public NetworkSecurityGroupGetAssociationResponse call() throws Exception {
                 return getForSubnet(virtualNetworkName, subnetName);
             }
          });
@@ -1836,10 +3084,11 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The Network Security Group associated with a subnet.
+    * @return The Network Security Group associated with an entity: subnet,
+    * network interface or role.
     */
     @Override
-    public NetworkSecurityGroupGetForSubnetResponse getForSubnet(String virtualNetworkName, String subnetName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public NetworkSecurityGroupGetAssociationResponse getForSubnet(String virtualNetworkName, String subnetName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
@@ -1885,7 +3134,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1907,11 +3156,11 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
             
             // Create Result
-            NetworkSecurityGroupGetForSubnetResponse result = null;
+            NetworkSecurityGroupGetAssociationResponse result = null;
             // Deserialize Response
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream responseContent = httpResponse.getEntity().getContent();
-                result = new NetworkSecurityGroupGetForSubnetResponse();
+                result = new NetworkSecurityGroupGetAssociationResponse();
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 documentBuilderFactory.setNamespaceAware(true);
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -2014,7 +3263,7 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2089,6 +3338,257 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
         } finally {
             if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> removeFromNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleName, final String networkInterfaceName, final String networkSecurityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return removeFromNetworkInterface(serviceName, deploymentName, roleName, networkInterfaceName, networkSecurityGroupName);
+            }
+         });
+    }
+    
+    /**
+    * Removes a Network Security Group from a network interface.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkInterfaceName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse removeFromNetworkInterface(String serviceName, String deploymentName, String roleName, String networkInterfaceName, String networkSecurityGroupName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            tracingParameters.put("networkSecurityGroupName", networkSecurityGroupName);
+            CloudTracing.enter(invocationId, this, "removeFromNetworkInterfaceAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginRemovingFromNetworkInterfaceAsync(serviceName, deploymentName, roleName, networkInterfaceName, networkSecurityGroupName).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> removeFromRoleAsync(final String serviceName, final String deploymentName, final String roleName, final String networkSecurityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return removeFromRole(serviceName, deploymentName, roleName, networkSecurityGroupName);
+            }
+         });
+    }
+    
+    /**
+    * Removes a Network Security Group from a role.
+    *
+    * @param serviceName Required.
+    * @param deploymentName Required.
+    * @param roleName Required.
+    * @param networkSecurityGroupName Required.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse removeFromRole(String serviceName, String deploymentName, String roleName, String networkSecurityGroupName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleName", roleName);
+            tracingParameters.put("networkSecurityGroupName", networkSecurityGroupName);
+            CloudTracing.enter(invocationId, this, "removeFromRoleAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationStatusResponse response = client2.getNetworkSecurityGroupsOperations().beginRemovingFromRoleAsync(serviceName, deploymentName, roleName, networkSecurityGroupName).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

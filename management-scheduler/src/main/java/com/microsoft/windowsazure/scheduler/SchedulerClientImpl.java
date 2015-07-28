@@ -32,6 +32,8 @@ import com.microsoft.windowsazure.scheduler.models.JobHistoryActionName;
 import com.microsoft.windowsazure.scheduler.models.JobHistoryStatus;
 import com.microsoft.windowsazure.scheduler.models.JobRecurrenceFrequency;
 import com.microsoft.windowsazure.scheduler.models.JobScheduleDay;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusAuthenticationType;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusTransportType;
 import com.microsoft.windowsazure.scheduler.models.JobState;
 import com.microsoft.windowsazure.scheduler.models.RetryType;
 import java.net.URI;
@@ -338,6 +340,12 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         if ("storageQueue".equalsIgnoreCase(value)) {
             return JobActionType.StorageQueue;
         }
+        if ("serviceBusQueue".equalsIgnoreCase(value)) {
+            return JobActionType.ServiceBusQueue;
+        }
+        if ("serviceBusTopic".equalsIgnoreCase(value)) {
+            return JobActionType.ServiceBusTopic;
+        }
         throw new IllegalArgumentException("value");
     }
     
@@ -356,6 +364,12 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         if (value == JobActionType.StorageQueue) {
             return "storageQueue";
+        }
+        if (value == JobActionType.ServiceBusQueue) {
+            return "serviceBusQueue";
+        }
+        if (value == JobActionType.ServiceBusTopic) {
+            return "serviceBusTopic";
         }
         throw new IllegalArgumentException("value");
     }
@@ -544,6 +558,76 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         if (value == JobScheduleDay.Sunday) {
             return "sunday";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type JobServiceBusAuthenticationType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static JobServiceBusAuthenticationType parseJobServiceBusAuthenticationType(String value) {
+        if ("NotSpecified".equalsIgnoreCase(value)) {
+            return JobServiceBusAuthenticationType.NotSpecified;
+        }
+        if ("SharedAccessKey".equalsIgnoreCase(value)) {
+            return JobServiceBusAuthenticationType.SharedAccessKey;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type JobServiceBusAuthenticationType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String jobServiceBusAuthenticationTypeToString(JobServiceBusAuthenticationType value) {
+        if (value == JobServiceBusAuthenticationType.NotSpecified) {
+            return "NotSpecified";
+        }
+        if (value == JobServiceBusAuthenticationType.SharedAccessKey) {
+            return "SharedAccessKey";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type JobServiceBusTransportType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static JobServiceBusTransportType parseJobServiceBusTransportType(String value) {
+        if ("NotSpecified".equalsIgnoreCase(value)) {
+            return JobServiceBusTransportType.NotSpecified;
+        }
+        if ("NetMessaging".equalsIgnoreCase(value)) {
+            return JobServiceBusTransportType.NetMessaging;
+        }
+        if ("AMQP".equalsIgnoreCase(value)) {
+            return JobServiceBusTransportType.AMQP;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type JobServiceBusTransportType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String jobServiceBusTransportTypeToString(JobServiceBusTransportType value) {
+        if (value == JobServiceBusTransportType.NotSpecified) {
+            return "NotSpecified";
+        }
+        if (value == JobServiceBusTransportType.NetMessaging) {
+            return "NetMessaging";
+        }
+        if (value == JobServiceBusTransportType.AMQP) {
+            return "AMQP";
         }
         throw new IllegalArgumentException("value");
     }

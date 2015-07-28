@@ -24,14 +24,15 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.AzureAsyncOperationResponse;
-import com.microsoft.azure.management.network.models.DnsSettings;
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
 import com.microsoft.azure.management.network.models.NetworkInterface;
+import com.microsoft.azure.management.network.models.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.NetworkInterfaceListResponse;
 import com.microsoft.azure.management.network.models.NetworkInterfacePutResponse;
+import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
@@ -322,6 +323,14 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                     ((ObjectNode) dnsSettingsValue).put("appliedDnsServers", appliedDnsServersArray);
                 }
             }
+            
+            if (parameters.getDnsSettings().getInternalDnsNameLabel() != null) {
+                ((ObjectNode) dnsSettingsValue).put("internalDnsNameLabel", parameters.getDnsSettings().getInternalDnsNameLabel());
+            }
+            
+            if (parameters.getDnsSettings().getInternalFqdn() != null) {
+                ((ObjectNode) dnsSettingsValue).put("internalFqdn", parameters.getDnsSettings().getInternalFqdn());
+            }
         }
         
         if (parameters.getMacAddress() != null) {
@@ -331,6 +340,8 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
         if (parameters.isPrimary() != null) {
             ((ObjectNode) propertiesValue).put("primary", parameters.isPrimary());
         }
+        
+        ((ObjectNode) propertiesValue).put("enableIPForwarding", parameters.isEnableIPForwarding());
         
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
@@ -544,7 +555,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                         
                         JsonNode dnsSettingsValue2 = propertiesValue3.get("dnsSettings");
                         if (dnsSettingsValue2 != null && dnsSettingsValue2 instanceof NullNode == false) {
-                            DnsSettings dnsSettingsInstance = new DnsSettings();
+                            NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
                             networkInterfaceInstance.setDnsSettings(dnsSettingsInstance);
                             
                             JsonNode dnsServersArray2 = dnsSettingsValue2.get("dnsServers");
@@ -560,6 +571,20 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
                                 }
                             }
+                            
+                            JsonNode internalDnsNameLabelValue = dnsSettingsValue2.get("internalDnsNameLabel");
+                            if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                String internalDnsNameLabelInstance;
+                                internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                            }
+                            
+                            JsonNode internalFqdnValue = dnsSettingsValue2.get("internalFqdn");
+                            if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                String internalFqdnInstance;
+                                internalFqdnInstance = internalFqdnValue.getTextValue();
+                                dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                            }
                         }
                         
                         JsonNode macAddressValue = propertiesValue3.get("macAddress");
@@ -574,6 +599,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                             boolean primaryInstance;
                             primaryInstance = primaryValue.getBooleanValue();
                             networkInterfaceInstance.setPrimary(primaryInstance);
+                        }
+                        
+                        JsonNode enableIPForwardingValue = propertiesValue3.get("enableIPForwarding");
+                        if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                            boolean enableIPForwardingInstance;
+                            enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                            networkInterfaceInstance.setEnableIPForwarding(enableIPForwardingInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -931,7 +963,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1015,7 +1047,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1298,7 +1330,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                         
                         JsonNode dnsSettingsValue = propertiesValue.get("dnsSettings");
                         if (dnsSettingsValue != null && dnsSettingsValue instanceof NullNode == false) {
-                            DnsSettings dnsSettingsInstance = new DnsSettings();
+                            NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
                             networkInterfaceInstance.setDnsSettings(dnsSettingsInstance);
                             
                             JsonNode dnsServersArray = dnsSettingsValue.get("dnsServers");
@@ -1314,6 +1346,20 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
                                 }
                             }
+                            
+                            JsonNode internalDnsNameLabelValue = dnsSettingsValue.get("internalDnsNameLabel");
+                            if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                String internalDnsNameLabelInstance;
+                                internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                            }
+                            
+                            JsonNode internalFqdnValue = dnsSettingsValue.get("internalFqdn");
+                            if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                String internalFqdnInstance;
+                                internalFqdnInstance = internalFqdnValue.getTextValue();
+                                dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                            }
                         }
                         
                         JsonNode macAddressValue = propertiesValue.get("macAddress");
@@ -1328,6 +1374,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                             boolean primaryInstance;
                             primaryInstance = primaryValue.getBooleanValue();
                             networkInterfaceInstance.setPrimary(primaryInstance);
+                        }
+                        
+                        JsonNode enableIPForwardingValue = propertiesValue.get("enableIPForwarding");
+                        if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                            boolean enableIPForwardingInstance;
+                            enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                            networkInterfaceInstance.setEnableIPForwarding(enableIPForwardingInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1657,7 +1710,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                 
                                 JsonNode dnsSettingsValue = propertiesValue.get("dnsSettings");
                                 if (dnsSettingsValue != null && dnsSettingsValue instanceof NullNode == false) {
-                                    DnsSettings dnsSettingsInstance = new DnsSettings();
+                                    NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
                                     networkInterfaceJsonFormatInstance.setDnsSettings(dnsSettingsInstance);
                                     
                                     JsonNode dnsServersArray = dnsSettingsValue.get("dnsServers");
@@ -1673,6 +1726,20 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                             dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
                                         }
                                     }
+                                    
+                                    JsonNode internalDnsNameLabelValue = dnsSettingsValue.get("internalDnsNameLabel");
+                                    if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                        String internalDnsNameLabelInstance;
+                                        internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                        dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                                    }
+                                    
+                                    JsonNode internalFqdnValue = dnsSettingsValue.get("internalFqdn");
+                                    if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                        String internalFqdnInstance;
+                                        internalFqdnInstance = internalFqdnValue.getTextValue();
+                                        dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                                    }
                                 }
                                 
                                 JsonNode macAddressValue = propertiesValue.get("macAddress");
@@ -1687,6 +1754,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     boolean primaryInstance;
                                     primaryInstance = primaryValue.getBooleanValue();
                                     networkInterfaceJsonFormatInstance.setPrimary(primaryInstance);
+                                }
+                                
+                                JsonNode enableIPForwardingValue = propertiesValue.get("enableIPForwarding");
+                                if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                                    boolean enableIPForwardingInstance;
+                                    enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                                    networkInterfaceJsonFormatInstance.setEnableIPForwarding(enableIPForwardingInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -2017,7 +2091,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                 
                                 JsonNode dnsSettingsValue = propertiesValue.get("dnsSettings");
                                 if (dnsSettingsValue != null && dnsSettingsValue instanceof NullNode == false) {
-                                    DnsSettings dnsSettingsInstance = new DnsSettings();
+                                    NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
                                     networkInterfaceJsonFormatInstance.setDnsSettings(dnsSettingsInstance);
                                     
                                     JsonNode dnsServersArray = dnsSettingsValue.get("dnsServers");
@@ -2033,6 +2107,20 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                             dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
                                         }
                                     }
+                                    
+                                    JsonNode internalDnsNameLabelValue = dnsSettingsValue.get("internalDnsNameLabel");
+                                    if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                        String internalDnsNameLabelInstance;
+                                        internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                        dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                                    }
+                                    
+                                    JsonNode internalFqdnValue = dnsSettingsValue.get("internalFqdn");
+                                    if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                        String internalFqdnInstance;
+                                        internalFqdnInstance = internalFqdnValue.getTextValue();
+                                        dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                                    }
                                 }
                                 
                                 JsonNode macAddressValue = propertiesValue.get("macAddress");
@@ -2047,6 +2135,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     boolean primaryInstance;
                                     primaryInstance = primaryValue.getBooleanValue();
                                     networkInterfaceJsonFormatInstance.setPrimary(primaryInstance);
+                                }
+                                
+                                JsonNode enableIPForwardingValue = propertiesValue.get("enableIPForwarding");
+                                if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                                    boolean enableIPForwardingInstance;
+                                    enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                                    networkInterfaceJsonFormatInstance.setEnableIPForwarding(enableIPForwardingInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");

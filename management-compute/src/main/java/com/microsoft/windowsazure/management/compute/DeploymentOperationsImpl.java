@@ -6465,6 +6465,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
                                                 inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
                                             }
+                                            
+                                            Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                            if (virtualIPNameElement != null) {
+                                                String virtualIPNameInstance;
+                                                virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                                                inputEndpointInstance.setVirtualIPName(virtualIPNameInstance);
+                                            }
                                         }
                                     }
                                     
@@ -6549,14 +6556,35 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     }
                                                 }
                                             }
+                                            
+                                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                            if (networkSecurityGroupElement != null) {
+                                                String networkSecurityGroupInstance;
+                                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                                networkInterfaceInstance2.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                            }
+                                            
+                                            Element iPForwardingElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                            if (iPForwardingElement != null) {
+                                                String iPForwardingInstance;
+                                                iPForwardingInstance = iPForwardingElement.getTextContent();
+                                                networkInterfaceInstance2.setIPForwarding(iPForwardingInstance);
+                                            }
                                         }
                                     }
                                     
-                                    Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                    if (networkSecurityGroupElement != null) {
-                                        String networkSecurityGroupInstance;
-                                        networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    Element networkSecurityGroupElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    if (networkSecurityGroupElement2 != null) {
+                                        String networkSecurityGroupInstance2;
+                                        networkSecurityGroupInstance2 = networkSecurityGroupElement2.getTextContent();
+                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance2);
+                                    }
+                                    
+                                    Element iPForwardingElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    if (iPForwardingElement2 != null) {
+                                        String iPForwardingInstance2;
+                                        iPForwardingInstance2 = iPForwardingElement2.getTextContent();
+                                        configurationSetInstance.setIPForwarding(iPForwardingInstance2);
                                     }
                                     
                                     Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -7236,6 +7264,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setAddress(addressInstance4);
                             }
                             
+                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
+                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
+                                boolean isDnsProgrammedInstance;
+                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
+                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            }
+                            
                             Element nameElement13 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement13 != null) {
                                 String nameInstance13;
@@ -7243,11 +7278,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setName(nameInstance13);
                             }
                             
-                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
-                                boolean isDnsProgrammedInstance;
-                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
-                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                            if (reservedIPNameElement != null) {
+                                String reservedIPNameInstance;
+                                reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                                virtualIPInstance.setReservedIPName(reservedIPNameInstance);
                             }
                         }
                     }
@@ -7306,11 +7341,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                    if (reservedIPNameElement != null) {
-                        String reservedIPNameInstance;
-                        reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                        result.setReservedIPName(reservedIPNameInstance);
+                    Element reservedIPNameElement2 = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                    if (reservedIPNameElement2 != null) {
+                        String reservedIPNameInstance2;
+                        reservedIPNameInstance2 = reservedIPNameElement2.getTextContent();
+                        result.setReservedIPName(reservedIPNameInstance2);
                     }
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");
@@ -8334,6 +8369,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
                                                 inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
                                             }
+                                            
+                                            Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                            if (virtualIPNameElement != null) {
+                                                String virtualIPNameInstance;
+                                                virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                                                inputEndpointInstance.setVirtualIPName(virtualIPNameInstance);
+                                            }
                                         }
                                     }
                                     
@@ -8418,14 +8460,35 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     }
                                                 }
                                             }
+                                            
+                                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                            if (networkSecurityGroupElement != null) {
+                                                String networkSecurityGroupInstance;
+                                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                                networkInterfaceInstance2.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                            }
+                                            
+                                            Element iPForwardingElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                            if (iPForwardingElement != null) {
+                                                String iPForwardingInstance;
+                                                iPForwardingInstance = iPForwardingElement.getTextContent();
+                                                networkInterfaceInstance2.setIPForwarding(iPForwardingInstance);
+                                            }
                                         }
                                     }
                                     
-                                    Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                    if (networkSecurityGroupElement != null) {
-                                        String networkSecurityGroupInstance;
-                                        networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    Element networkSecurityGroupElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    if (networkSecurityGroupElement2 != null) {
+                                        String networkSecurityGroupInstance2;
+                                        networkSecurityGroupInstance2 = networkSecurityGroupElement2.getTextContent();
+                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance2);
+                                    }
+                                    
+                                    Element iPForwardingElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    if (iPForwardingElement2 != null) {
+                                        String iPForwardingInstance2;
+                                        iPForwardingInstance2 = iPForwardingElement2.getTextContent();
+                                        configurationSetInstance.setIPForwarding(iPForwardingInstance2);
                                     }
                                     
                                     Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -9105,6 +9168,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setAddress(addressInstance4);
                             }
                             
+                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
+                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
+                                boolean isDnsProgrammedInstance;
+                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
+                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            }
+                            
                             Element nameElement13 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement13 != null) {
                                 String nameInstance13;
@@ -9112,11 +9182,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setName(nameInstance13);
                             }
                             
-                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
-                                boolean isDnsProgrammedInstance;
-                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
-                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                            if (reservedIPNameElement != null) {
+                                String reservedIPNameInstance;
+                                reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                                virtualIPInstance.setReservedIPName(reservedIPNameInstance);
                             }
                         }
                     }
@@ -9175,11 +9245,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                    if (reservedIPNameElement != null) {
-                        String reservedIPNameInstance;
-                        reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                        result.setReservedIPName(reservedIPNameInstance);
+                    Element reservedIPNameElement2 = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                    if (reservedIPNameElement2 != null) {
+                        String reservedIPNameInstance2;
+                        reservedIPNameInstance2 = reservedIPNameElement2.getTextContent();
+                        result.setReservedIPName(reservedIPNameInstance2);
                     }
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");

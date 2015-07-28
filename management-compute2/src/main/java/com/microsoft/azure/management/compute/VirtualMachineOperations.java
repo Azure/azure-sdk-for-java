@@ -25,6 +25,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
 import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.ListParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
@@ -132,7 +133,7 @@ public interface VirtualMachineOperations {
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return The compute long running operation response.
     */
-    ComputeOperationResponse beginDeleting(String resourceGroupName, String vmName) throws IOException, ServiceException;
+    DeleteOperationResponse beginDeleting(String resourceGroupName, String vmName) throws IOException, ServiceException;
     
     /**
     * The operation to delete a virtual machine.
@@ -141,7 +142,7 @@ public interface VirtualMachineOperations {
     * @param vmName Required. The name of the virtual machine.
     * @return The compute long running operation response.
     */
-    Future<ComputeOperationResponse> beginDeletingAsync(String resourceGroupName, String vmName);
+    Future<DeleteOperationResponse> beginDeletingAsync(String resourceGroupName, String vmName);
     
     /**
     * The operation to power off (stop) a virtual machine.
@@ -322,18 +323,18 @@ public interface VirtualMachineOperations {
     * @throws ExecutionException Thrown when attempting to retrieve the result
     * of a task that aborted by throwing an exception. This exception can be
     * inspected using the Throwable.getCause() method.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
-    ComputeLongRunningOperationResponse delete(String resourceGroupName, String vmName) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    DeleteOperationResponse delete(String resourceGroupName, String vmName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The operation to delete a virtual machine.
     *
     * @param resourceGroupName Required. The name of the resource group.
     * @param vmName Required. The name of the virtual machine.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
-    Future<ComputeLongRunningOperationResponse> deleteAsync(String resourceGroupName, String vmName);
+    Future<DeleteOperationResponse> deleteAsync(String resourceGroupName, String vmName);
     
     /**
     * Sets the state of the VM as Generalized.

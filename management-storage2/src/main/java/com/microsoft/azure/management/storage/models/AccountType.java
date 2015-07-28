@@ -23,6 +23,9 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* The account type of the storage account.
+*/
 public enum AccountType {
     /**
     * Locally-redundant storage.

@@ -24,10 +24,28 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public class NextHop {
+    private String ipAddress;
+    
+    /**
+    * Optional. Gets or sets the next hop IP addresses.
+    * @return The IpAddress value.
+    */
+    public String getIpAddress() {
+        return this.ipAddress;
+    }
+    
+    /**
+    * Optional. Gets or sets the next hop IP addresses.
+    * @param ipAddressValue The IpAddress value.
+    */
+    public void setIpAddress(final String ipAddressValue) {
+        this.ipAddress = ipAddressValue;
+    }
+    
     private String type;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the type of the next hop.
     * @return The Type value.
     */
     public String getType() {
@@ -35,7 +53,7 @@ public class NextHop {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the type of the next hop.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {

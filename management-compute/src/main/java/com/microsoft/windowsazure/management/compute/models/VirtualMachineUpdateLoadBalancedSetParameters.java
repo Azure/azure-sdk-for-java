@@ -333,6 +333,24 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
             this.virtualIPAddress = virtualIPAddressValue;
         }
         
+        private String virtualIPName;
+        
+        /**
+        * Optional. Virtual IP Name for this endpoint.
+        * @return The VirtualIPName value.
+        */
+        public String getVirtualIPName() {
+            return this.virtualIPName;
+        }
+        
+        /**
+        * Optional. Virtual IP Name for this endpoint.
+        * @param virtualIPNameValue The VirtualIPName value.
+        */
+        public void setVirtualIPName(final String virtualIPNameValue) {
+            this.virtualIPName = virtualIPNameValue;
+        }
+        
         /**
         * Initializes a new instance of the InputEndpoint class.
         *

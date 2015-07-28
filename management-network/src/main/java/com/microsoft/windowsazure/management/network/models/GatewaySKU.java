@@ -30,4 +30,6 @@ public abstract class GatewaySKU {
     public static final String DEFAULT = "Default";
     
     public static final String HIGHPERFORMANCE = "HighPerformance";
+    
+    public static final String STANDARD = "Standard";
 }

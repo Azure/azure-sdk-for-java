@@ -113,6 +113,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     GatewayOperations getGatewaysOperations();
     
     /**
+    * The Network Management API includes operations for managing the IP
+    * Forwarding for your roles and network interfaces in your subscription.
+    * @return The IPForwardingOperations value.
+    */
+    IPForwardingOperations getIPForwardingOperations();
+    
+    /**
     * The Network Management API includes operations for managing the virtual
     * networks for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for
@@ -148,6 +155,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     * @return The StaticIPsOperations value.
     */
     StaticIPOperations getStaticIPsOperations();
+    
+    /**
+    * The Network Management API includes operations for managing the Virtual
+    * IPs for your deployment.
+    * @return The VirtualIPsOperations value.
+    */
+    VirtualIPOperations getVirtualIPsOperations();
     
     /**
     * The Get Operation Status operation returns the status of the specified

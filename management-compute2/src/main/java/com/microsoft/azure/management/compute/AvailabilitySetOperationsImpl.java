@@ -166,7 +166,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
             url = url + URLEncoder.encode(parameters.getName(), "UTF-8");
         }
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -523,7 +523,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
         url = url + "/availabilitySets/";
         url = url + URLEncoder.encode(availabilitySetName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -555,7 +555,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NO_CONTENT) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -647,7 +647,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
         url = url + "/availabilitySets/";
         url = url + URLEncoder.encode(availabilitySetName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -892,7 +892,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
         url = url + "Microsoft.Compute";
         url = url + "/availabilitySets";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1148,7 +1148,7 @@ public class AvailabilitySetOperationsImpl implements ServiceOperations<ComputeM
         url = url + URLEncoder.encode(availabilitySetName, "UTF-8");
         url = url + "/vmSizes";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }

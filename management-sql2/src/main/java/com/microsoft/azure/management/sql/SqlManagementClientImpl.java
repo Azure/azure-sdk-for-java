@@ -122,6 +122,29 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.auditingPolicy;
     }
     
+    private DatabaseActivationOperations databaseActivation;
+    
+    /**
+    * Represents all the operations for operating pertaining to activation on
+    * Azure SQL Data Warehouse databases. Contains operations to: Pause and
+    * Resume databases
+    * @return The DatabaseActivationOperations value.
+    */
+    public DatabaseActivationOperations getDatabaseActivationOperations() {
+        return this.databaseActivation;
+    }
+    
+    private DatabaseBackupOperations databaseBackup;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database restore
+    * points. Contains operations to: List restore points.
+    * @return The DatabaseBackupOperations value.
+    */
+    public DatabaseBackupOperations getDatabaseBackupOperations() {
+        return this.databaseBackup;
+    }
+    
     private DatabaseOperations databases;
     
     /**
@@ -170,6 +193,29 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.firewallRules;
     }
     
+    private RecommendedElasticPoolOperations recommendedElasticPools;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Recommended
+    * Elastic Pools.  Contains operations to: Retrieve.
+    * @return The RecommendedElasticPoolsOperations value.
+    */
+    public RecommendedElasticPoolOperations getRecommendedElasticPoolsOperations() {
+        return this.recommendedElasticPools;
+    }
+    
+    private RecommendedIndexOperations recommendedIndexes;
+    
+    /**
+    * Represents all the operations for managing recommended indexes on Azure
+    * SQL Databases. Contains operations to retrieve recommended index and
+    * update state.
+    * @return The RecommendedIndexesOperations value.
+    */
+    public RecommendedIndexOperations getRecommendedIndexesOperations() {
+        return this.recommendedIndexes;
+    }
+    
     private SecureConnectionPolicyOperations secureConnection;
     
     /**
@@ -194,6 +240,16 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.servers;
     }
     
+    private ServerUpgradeOperations serverUpgrades;
+    
+    /**
+    * Represents all the operations for Azure SQL Database Server Upgrade
+    * @return The ServerUpgradesOperations value.
+    */
+    public ServerUpgradeOperations getServerUpgradesOperations() {
+        return this.serverUpgrades;
+    }
+    
     private ServiceObjectiveOperations serviceObjectives;
     
     /**
@@ -205,6 +261,29 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.serviceObjectives;
     }
     
+    private ServiceTierAdvisorOperations serviceTierAdvisors;
+    
+    /**
+    * Represents all the operations for operating on service tier advisors.
+    * Contains operations to: Retrieve.
+    * @return The ServiceTierAdvisorsOperations value.
+    */
+    public ServiceTierAdvisorOperations getServiceTierAdvisorsOperations() {
+        return this.serviceTierAdvisors;
+    }
+    
+    private TransparentDataEncryptionOperations transparentDataEncryption;
+    
+    /**
+    * Represents all the operations of Azure SQL Database Transparent Data
+    * Encryption.  Contains operations to: Retrieve, and Update Transparent
+    * Data Encryption.
+    * @return The TransparentDataEncryptionOperations value.
+    */
+    public TransparentDataEncryptionOperations getTransparentDataEncryptionOperations() {
+        return this.transparentDataEncryption;
+    }
+    
     /**
     * Initializes a new instance of the SqlManagementClientImpl class.
     *
@@ -214,13 +293,20 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.auditingPolicy = new AuditingPolicyOperationsImpl(this);
+        this.databaseActivation = new DatabaseActivationOperationsImpl(this);
+        this.databaseBackup = new DatabaseBackupOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
         this.dataMasking = new DataMaskingOperationsImpl(this);
         this.elasticPools = new ElasticPoolOperationsImpl(this);
         this.firewallRules = new FirewallRuleOperationsImpl(this);
+        this.recommendedElasticPools = new RecommendedElasticPoolOperationsImpl(this);
+        this.recommendedIndexes = new RecommendedIndexOperationsImpl(this);
         this.secureConnection = new SecureConnectionPolicyOperationsImpl(this);
         this.servers = new ServerOperationsImpl(this);
+        this.serverUpgrades = new ServerUpgradeOperationsImpl(this);
         this.serviceObjectives = new ServiceObjectiveOperationsImpl(this);
+        this.serviceTierAdvisors = new ServiceTierAdvisorOperationsImpl(this);
+        this.transparentDataEncryption = new TransparentDataEncryptionOperationsImpl(this);
         this.apiVersion = "2014-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;

@@ -106,6 +106,24 @@ public class Subnet extends ChildResource {
         this.provisioningState = provisioningStateValue;
     }
     
+    private ResourceId routeTable;
+    
+    /**
+    * Optional. Gets or sets the reference of the RouteTable resource
+    * @return The RouteTable value.
+    */
+    public ResourceId getRouteTable() {
+        return this.routeTable;
+    }
+    
+    /**
+    * Optional. Gets or sets the reference of the RouteTable resource
+    * @param routeTableValue The RouteTable value.
+    */
+    public void setRouteTable(final ResourceId routeTableValue) {
+        this.routeTable = routeTableValue;
+    }
+    
     /**
     * Initializes a new instance of the Subnet class.
     *

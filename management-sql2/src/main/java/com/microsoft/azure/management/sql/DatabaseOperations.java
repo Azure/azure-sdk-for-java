@@ -51,7 +51,7 @@ public interface DatabaseOperations {
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * operated on (Updated or created).
-    * @param parameters Required. The required parameters for createing or
+    * @param parameters Required. The required parameters for creating or
     * updating a database.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -72,7 +72,7 @@ public interface DatabaseOperations {
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * operated on (Updated or created).
-    * @param parameters Required. The required parameters for createing or
+    * @param parameters Required. The required parameters for creating or
     * updating a database.
     * @return Response for long running Azure Sql Database operations.
     */
@@ -88,7 +88,7 @@ public interface DatabaseOperations {
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * operated on (Updated or created).
-    * @param parameters Required. The required parameters for createing or
+    * @param parameters Required. The required parameters for creating or
     * updating a database.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
@@ -115,7 +115,7 @@ public interface DatabaseOperations {
     * which the database is hosted.
     * @param databaseName Required. The name of the Azure SQL Database to be
     * operated on (Updated or created).
-    * @param parameters Required. The required parameters for createing or
+    * @param parameters Required. The required parameters for creating or
     * updating a database.
     * @return Response for long running Azure Sql Database operations.
     */
@@ -236,6 +236,40 @@ public interface DatabaseOperations {
     Future<DatabaseCreateOrUpdateResponse> getDatabaseOperationStatusAsync(String operationStatusLink);
     
     /**
+    * Returns information about an Azure SQL Database.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * retrieved.
+    * @param expand Required. The comma separated list of child objects that we
+    * want to expand on in response.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Represents the response to a Get Azure Sql Database request.
+    */
+    DatabaseGetResponse getExpanded(String resourceGroupName, String serverName, String databaseName, String expand) throws IOException, ServiceException;
+    
+    /**
+    * Returns information about an Azure SQL Database.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database to be
+    * retrieved.
+    * @param expand Required. The comma separated list of child objects that we
+    * want to expand on in response.
+    * @return Represents the response to a Get Azure Sql Database request.
+    */
+    Future<DatabaseGetResponse> getExpandedAsync(String resourceGroupName, String serverName, String databaseName, String expand);
+    
+    /**
     * Returns information about Azure SQL Databases.
     *
     * @param resourceGroupName Required. The name of the Resource Group to
@@ -260,6 +294,36 @@ public interface DatabaseOperations {
     * @return Represents the response to a List Azure Sql Database request.
     */
     Future<DatabaseListResponse> listAsync(String resourceGroupName, String serverName);
+    
+    /**
+    * Returns information about Azure SQL Databases.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @param expand Required. The comma separated list of child objects that we
+    * want to expand on in response.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Represents the response to a List Azure Sql Database request.
+    */
+    DatabaseListResponse listExpanded(String resourceGroupName, String serverName, String expand) throws IOException, ServiceException;
+    
+    /**
+    * Returns information about Azure SQL Databases.
+    *
+    * @param resourceGroupName Required. The name of the Resource Group to
+    * which the server belongs.
+    * @param serverName Required. The name of the Azure SQL Database Server in
+    * which the Azure SQL Databases are hosted.
+    * @param expand Required. The comma separated list of child objects that we
+    * want to expand on in response.
+    * @return Represents the response to a List Azure Sql Database request.
+    */
+    Future<DatabaseListResponse> listExpandedAsync(String resourceGroupName, String serverName, String expand);
     
     /**
     * Returns information about Azure SQL Database usages.

@@ -30,22 +30,40 @@ import java.util.ArrayList;
 * A NetworkInterface in a resource group
 */
 public class NetworkInterface extends TopLevelResource {
-    private DnsSettings dnsSettings;
+    private NetworkInterfaceDnsSettings dnsSettings;
     
     /**
-    * Optional. Gets or sets DNsSettings in  NetworkInterface
+    * Optional. Gets or sets DNS Settings in  NetworkInterface
     * @return The DnsSettings value.
     */
-    public DnsSettings getDnsSettings() {
+    public NetworkInterfaceDnsSettings getDnsSettings() {
         return this.dnsSettings;
     }
     
     /**
-    * Optional. Gets or sets DNsSettings in  NetworkInterface
+    * Optional. Gets or sets DNS Settings in  NetworkInterface
     * @param dnsSettingsValue The DnsSettings value.
     */
-    public void setDnsSettings(final DnsSettings dnsSettingsValue) {
+    public void setDnsSettings(final NetworkInterfaceDnsSettings dnsSettingsValue) {
         this.dnsSettings = dnsSettingsValue;
+    }
+    
+    private boolean enableIPForwarding;
+    
+    /**
+    * Optional. Gets or sets whether IPForwarding is enabled on the NIC
+    * @return The EnableIPForwarding value.
+    */
+    public boolean isEnableIPForwarding() {
+        return this.enableIPForwarding;
+    }
+    
+    /**
+    * Optional. Gets or sets whether IPForwarding is enabled on the NIC
+    * @param enableIPForwardingValue The EnableIPForwarding value.
+    */
+    public void setEnableIPForwarding(final boolean enableIPForwardingValue) {
+        this.enableIPForwarding = enableIPForwardingValue;
     }
     
     private ArrayList<NetworkInterfaceIpConfiguration> ipConfigurations;

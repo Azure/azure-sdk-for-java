@@ -34,12 +34,10 @@ import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
-* The Windows Azure Traffic Manager management API provides a RESTful set of
-* web services that interact with Windows Azure Traffic Manager service for
-* creating, updating, listing, and deleting Traffic Manager profiles and
-* definitions.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
-* information)
+* Client for creating, updating, listing and deleting Azure Traffic Manager
+* profiles  (see
+* http://azure.microsoft.com/en-gb/documentation/articles/traffic-manager-overview/
+* for more information)
 */
 public class TrafficManagerManagementClientImpl extends ServiceClient<TrafficManagerManagementClient> implements TrafficManagerManagementClient {
     private String apiVersion;
@@ -112,10 +110,20 @@ public class TrafficManagerManagementClientImpl extends ServiceClient<TrafficMan
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
+    private EndpointOperations endpoints;
+    
+    /**
+    * Operations for managing Traffic Manager endpoints.
+    * @return The EndpointsOperations value.
+    */
+    public EndpointOperations getEndpointsOperations() {
+        return this.endpoints;
+    }
+    
     private ProfileOperations profiles;
     
     /**
-    * Operations for managing WATMv2 profiles.
+    * Operations for managing Traffic Manager profiles.
     * @return The ProfilesOperations value.
     */
     public ProfileOperations getProfilesOperations() {
@@ -131,6 +139,7 @@ public class TrafficManagerManagementClientImpl extends ServiceClient<TrafficMan
     */
     public TrafficManagerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
+        this.endpoints = new EndpointOperationsImpl(this);
         this.profiles = new ProfileOperationsImpl(this);
         this.apiVersion = "2015-04-28-preview";
         this.longRunningOperationInitialTimeout = -1;

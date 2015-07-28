@@ -137,7 +137,7 @@ public class UsageOperationsImpl implements ServiceOperations<ComputeManagementC
         url = url + URLEncoder.encode(location, "UTF-8");
         url = url + "/usages";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }

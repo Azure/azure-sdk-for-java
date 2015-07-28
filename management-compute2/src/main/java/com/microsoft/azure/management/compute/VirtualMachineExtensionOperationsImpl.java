@@ -24,13 +24,15 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
-import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
+import com.microsoft.azure.management.compute.models.ComputeOperationStatus;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.InstanceViewStatus;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionCreateOrUpdateResponse;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionGetResponse;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionInstanceView;
 import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -172,7 +174,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             url = url + URLEncoder.encode(extensionParameters.getName(), "UTF-8");
         }
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -219,11 +221,11 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         ((ObjectNode) propertiesValue).put("autoUpgradeMinorVersion", extensionParameters.isAutoUpgradeMinorVersion());
         
         if (extensionParameters.getSettings() != null) {
-            ((ObjectNode) propertiesValue).put("settings", extensionParameters.getSettings());
+            ((ObjectNode) propertiesValue).put("settings", objectMapper.readTree(extensionParameters.getSettings()));
         }
         
         if (extensionParameters.getProtectedSettings() != null) {
-            ((ObjectNode) propertiesValue).put("protectedSettings", extensionParameters.getProtectedSettings());
+            ((ObjectNode) propertiesValue).put("protectedSettings", objectMapper.readTree(extensionParameters.getProtectedSettings()));
         }
         
         if (extensionParameters.getProvisioningState() != null) {
@@ -612,10 +614,10 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The compute long running operation response.
     */
     @Override
-    public Future<ComputeOperationResponse> beginDeletingAsync(final String resourceGroupName, final String vmName, final String vmExtensionName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationResponse>() { 
+    public Future<DeleteOperationResponse> beginDeletingAsync(final String resourceGroupName, final String vmName, final String vmExtensionName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeleteOperationResponse>() { 
             @Override
-            public ComputeOperationResponse call() throws Exception {
+            public DeleteOperationResponse call() throws Exception {
                 return beginDeleting(resourceGroupName, vmName, vmExtensionName);
             }
          });
@@ -636,7 +638,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The compute long running operation response.
     */
     @Override
-    public ComputeOperationResponse beginDeleting(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException {
+    public DeleteOperationResponse beginDeleting(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -677,7 +679,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         url = url + "/extensions/";
         url = url + URLEncoder.encode(vmExtensionName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -709,7 +711,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED && statusCode != HttpStatus.SC_NO_CONTENT) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -718,15 +720,24 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             }
             
             // Create Result
-            ComputeOperationResponse result = null;
+            DeleteOperationResponse result = null;
             // Deserialize Response
-            result = new ComputeOperationResponse();
+            result = new DeleteOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("Azure-AsyncOperation").length > 0) {
                 result.setAzureAsyncOperation(httpResponse.getFirstHeader("Azure-AsyncOperation").getValue());
             }
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_CONFLICT) {
+                result.setStatus(OperationStatus.Failed);
+            }
+            if (statusCode == HttpStatus.SC_OK) {
+                result.setStatus(OperationStatus.Succeeded);
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -806,7 +817,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -834,13 +845,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * extension should be deleted.
     * @param vmExtensionName Required. The name of the virtual machine
     * extension.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
     @Override
-    public Future<ComputeLongRunningOperationResponse> deleteAsync(final String resourceGroupName, final String vmName, final String vmExtensionName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeLongRunningOperationResponse>() { 
+    public Future<DeleteOperationResponse> deleteAsync(final String resourceGroupName, final String vmName, final String vmExtensionName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeleteOperationResponse>() { 
             @Override
-            public ComputeLongRunningOperationResponse call() throws Exception {
+            public DeleteOperationResponse call() throws Exception {
                 return delete(resourceGroupName, vmName, vmExtensionName);
             }
          });
@@ -865,10 +876,10 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @throws ExecutionException Thrown when attempting to retrieve the result
     * of a task that aborted by throwing an exception. This exception can be
     * inspected using the Throwable.getCause() method.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
     @Override
-    public ComputeLongRunningOperationResponse delete(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public DeleteOperationResponse delete(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -885,15 +896,18 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            ComputeOperationResponse response = client2.getVirtualMachineExtensionsOperations().beginDeletingAsync(resourceGroupName, vmName, vmExtensionName).get();
-            ComputeLongRunningOperationResponse result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
+            DeleteOperationResponse response = client2.getVirtualMachineExtensionsOperations().beginDeletingAsync(resourceGroupName, vmName, vmExtensionName).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
+            DeleteOperationResponse result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
+                result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
                 if (client2.getLongRunningOperationRetryTimeout() >= 0) {
                     delayInSeconds = client2.getLongRunningOperationRetryTimeout();
@@ -990,7 +1004,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         url = url + "/extensions/";
         url = url + URLEncoder.encode(vmExtensionName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1347,7 +1361,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         url = url + URLEncoder.encode(vmExtensionName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
         queryParameters.add("$expand=instanceView");
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }

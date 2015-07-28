@@ -23,53 +23,82 @@
 
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
+import com.microsoft.azure.management.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityResponse;
 import com.microsoft.azure.management.trafficmanager.models.ProfileCreateOrUpdateParameters;
 import com.microsoft.azure.management.trafficmanager.models.ProfileCreateOrUpdateResponse;
 import com.microsoft.azure.management.trafficmanager.models.ProfileGetResponse;
 import com.microsoft.azure.management.trafficmanager.models.ProfileListResponse;
+import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateParameters;
+import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
 /**
-* Operations for managing WATMv2 profiles.
+* Operations for managing Traffic Manager profiles.
 */
 public interface ProfileOperations {
     /**
-    * Create or update a WATMv2 profile within a resource group.
+    * Create or update a Traffic Manager endpoint.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @param parameters Required. Parameters supplied to the CreateOrUpdate
-    * operation.
+    * @param parameters Required. The Traffic Manager name parameters supplied
+    * to the CheckTrafficManagerNameAvailability operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile CreateOrUpdate operation.
+    * @return The response to a 'CheckTrafficManagerNameAvailability' operation.
+    */
+    CheckTrafficManagerRelativeDnsNameAvailabilityResponse checkTrafficManagerRelativeDnsNameAvailability(CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * Create or update a Traffic Manager endpoint.
+    *
+    * @param parameters Required. The Traffic Manager name parameters supplied
+    * to the CheckTrafficManagerNameAvailability operation.
+    * @return The response to a 'CheckTrafficManagerNameAvailability' operation.
+    */
+    Future<CheckTrafficManagerRelativeDnsNameAvailabilityResponse> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+    
+    /**
+    * Create or update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the CreateOrUpdate operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response to a Traffic Manager profile 'CreateOrUpdate'
+    * operation.
     */
     ProfileCreateOrUpdateResponse createOrUpdate(String resourceGroupName, String profileName, ProfileCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
-    * Create or update a WATMv2 profile within a resource group.
+    * Create or update a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @param parameters Required. Parameters supplied to the CreateOrUpdate
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the CreateOrUpdate operation.
+    * @return The response to a Traffic Manager profile 'CreateOrUpdate'
     * operation.
-    * @return The response to a Profile CreateOrUpdate operation.
     */
     Future<ProfileCreateOrUpdateResponse> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileCreateOrUpdateParameters parameters);
     
     /**
-    * Deletes a WATMv2 profile within a resource group.
+    * Deletes a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile to be deleted.
+    * @param profileName Required. The name of the Traffic Manager profile to
+    * be deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -80,75 +109,110 @@ public interface ProfileOperations {
     OperationResponse delete(String resourceGroupName, String profileName) throws IOException, ServiceException;
     
     /**
-    * Deletes a WATMv2 profile within a resource group.
+    * Deletes a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile to be deleted.
+    * @param profileName Required. The name of the Traffic Manager profile to
+    * be deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     Future<OperationResponse> deleteAsync(String resourceGroupName, String profileName);
     
     /**
-    * Gets a WATMv2 profile within a resource group.
+    * Gets a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile Create operation.
+    * @return The response to a Traffic Manager profile 'Create' operation.
     */
     ProfileGetResponse get(String resourceGroupName, String profileName) throws IOException, ServiceException;
     
     /**
-    * Gets a WATMv2 profile within a resource group.
+    * Gets a Traffic Manager profile.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @param profileName Required. The name of the zone without a terminating
-    * dot.
-    * @return The response to a Profile Create operation.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @return The response to a Traffic Manager profile 'Create' operation.
     */
     Future<ProfileGetResponse> getAsync(String resourceGroupName, String profileName);
     
     /**
-    * Lists all WATMv2 profile within a subscription.
+    * Lists all Traffic Manager profiles within a subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     ProfileListResponse listAll() throws IOException, ServiceException;
     
     /**
-    * Lists all WATMv2 profile within a subscription.
+    * Lists all Traffic Manager profiles within a subscription.
     *
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     Future<ProfileListResponse> listAllAsync();
     
     /**
-    * Lists all WATMv2 profiles within a resource group.
+    * Lists all Traffic Manager profiles within a resource group.
     *
-    * @param resourceGroupName Required. The name of the resource group.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profiles to be listed.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response to a Profile ProfileListAll operation.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     ProfileListResponse listAllInResourceGroup(String resourceGroupName) throws IOException, ServiceException;
     
     /**
-    * Lists all WATMv2 profiles within a resource group.
+    * Lists all Traffic Manager profiles within a resource group.
     *
-    * @param resourceGroupName Required. The name of the resource group.
-    * @return The response to a Profile ProfileListAll operation.
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profiles to be listed.
+    * @return The response to a Traffic Manager profile 'ListAll' or
+    * 'ListAllInResourceGroup' operation.
     */
     Future<ProfileListResponse> listAllInResourceGroupAsync(String resourceGroupName);
+    
+    /**
+    * Update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the Update operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Parameters supplied to update a Traffic Manager profile.
+    */
+    ProfileUpdateResponse update(String resourceGroupName, String profileName, ProfileUpdateParameters parameters) throws IOException, ServiceException;
+    
+    /**
+    * Update a Traffic Manager profile.
+    *
+    * @param resourceGroupName Required. The name of the resource group
+    * containing the Traffic Manager profile.
+    * @param profileName Required. The name of the Traffic Manager profile.
+    * @param parameters Required. The Traffic Manager profile parameters
+    * supplied to the Update operation.
+    * @return Parameters supplied to update a Traffic Manager profile.
+    */
+    Future<ProfileUpdateResponse> updateAsync(String resourceGroupName, String profileName, ProfileUpdateParameters parameters);
 }

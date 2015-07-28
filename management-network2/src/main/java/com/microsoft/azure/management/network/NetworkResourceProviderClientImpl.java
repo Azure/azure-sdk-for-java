@@ -131,6 +131,17 @@ public class NetworkResourceProviderClientImpl extends ServiceClient<NetworkReso
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
+    private ApplicationGatewayOperations applicationGateways;
+    
+    /**
+    * The Network Resource Provider API includes operations managing the
+    * application gateways for your subscription.
+    * @return The ApplicationGatewaysOperations value.
+    */
+    public ApplicationGatewayOperations getApplicationGatewaysOperations() {
+        return this.applicationGateways;
+    }
+    
     private LoadBalancerOperations loadBalancers;
     
     /**
@@ -140,6 +151,17 @@ public class NetworkResourceProviderClientImpl extends ServiceClient<NetworkReso
     */
     public LoadBalancerOperations getLoadBalancersOperations() {
         return this.loadBalancers;
+    }
+    
+    private LocalNetworkGatewayOperations localNetworkGateways;
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The LocalNetworkGatewaysOperations value.
+    */
+    public LocalNetworkGatewayOperations getLocalNetworkGatewaysOperations() {
+        return this.localNetworkGateways;
     }
     
     private NetworkInterfaceOperations networkInterfaces;
@@ -175,6 +197,28 @@ public class NetworkResourceProviderClientImpl extends ServiceClient<NetworkReso
         return this.publicIpAddresses;
     }
     
+    private RouteOperations routes;
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Routes for your subscription.
+    * @return The RoutesOperations value.
+    */
+    public RouteOperations getRoutesOperations() {
+        return this.routes;
+    }
+    
+    private RouteTableOperations routeTables;
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * RouteTables for your subscription.
+    * @return The RouteTablesOperations value.
+    */
+    public RouteTableOperations getRouteTablesOperations() {
+        return this.routeTables;
+    }
+    
     private SecurityRuleOperations securityRules;
     
     /**
@@ -207,6 +251,28 @@ public class NetworkResourceProviderClientImpl extends ServiceClient<NetworkReso
         return this.usages;
     }
     
+    private VirtualNetworkGatewayConnectionOperations virtualNetworkGatewayConnections;
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The VirtualNetworkGatewayConnectionsOperations value.
+    */
+    public VirtualNetworkGatewayConnectionOperations getVirtualNetworkGatewayConnectionsOperations() {
+        return this.virtualNetworkGatewayConnections;
+    }
+    
+    private VirtualNetworkGatewayOperations virtualNetworkGateways;
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The VirtualNetworkGatewaysOperations value.
+    */
+    public VirtualNetworkGatewayOperations getVirtualNetworkGatewaysOperations() {
+        return this.virtualNetworkGateways;
+    }
+    
     private VirtualNetworkOperations virtualNetworks;
     
     /**
@@ -226,13 +292,19 @@ public class NetworkResourceProviderClientImpl extends ServiceClient<NetworkReso
     */
     public NetworkResourceProviderClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
+        this.applicationGateways = new ApplicationGatewayOperationsImpl(this);
         this.loadBalancers = new LoadBalancerOperationsImpl(this);
+        this.localNetworkGateways = new LocalNetworkGatewayOperationsImpl(this);
         this.networkInterfaces = new NetworkInterfaceOperationsImpl(this);
         this.networkSecurityGroups = new NetworkSecurityGroupOperationsImpl(this);
         this.publicIpAddresses = new PublicIpAddressOperationsImpl(this);
+        this.routes = new RouteOperationsImpl(this);
+        this.routeTables = new RouteTableOperationsImpl(this);
         this.securityRules = new SecurityRuleOperationsImpl(this);
         this.subnets = new SubnetOperationsImpl(this);
         this.usages = new UsageOperationsImpl(this);
+        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionOperationsImpl(this);
+        this.virtualNetworkGateways = new VirtualNetworkGatewayOperationsImpl(this);
         this.virtualNetworks = new VirtualNetworkOperationsImpl(this);
         this.apiVersion = "2015-05-01-preview";
         this.longRunningOperationInitialTimeout = -1;

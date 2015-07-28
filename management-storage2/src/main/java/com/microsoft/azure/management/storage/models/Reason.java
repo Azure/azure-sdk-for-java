@@ -23,6 +23,9 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* Specifies the reason that a storage account name could not be used.
+*/
 public enum Reason {
     /**
     * This indicates that the name has syntactic errors (invalid characters,

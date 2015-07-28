@@ -26,14 +26,14 @@ package com.microsoft.azure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Represents the response to a Get Azure Sql Database Resource pool request.
+* Represents the response to a Get Azure Sql Elastic Pool request.
 */
 public class ElasticPoolGetResponse extends OperationResponse {
     private ElasticPool elasticPool;
     
     /**
-    * Optional. Gets or sets the Azure Sql Database Elastic Pool object that
-    * represents the Azure Sql Database Elastic Pool.
+    * Optional. Gets or sets the Azure Sql Elastic Pool object that represents
+    * the Azure Sql Database Elastic Pool.
     * @return The ElasticPool value.
     */
     public ElasticPool getElasticPool() {
@@ -41,8 +41,8 @@ public class ElasticPoolGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets the Azure Sql Database Elastic Pool object that
-    * represents the Azure Sql Database Elastic Pool.
+    * Optional. Gets or sets the Azure Sql Elastic Pool object that represents
+    * the Azure Sql Database Elastic Pool.
     * @param elasticPoolValue The ElasticPool value.
     */
     public void setElasticPool(final ElasticPool elasticPoolValue) {
