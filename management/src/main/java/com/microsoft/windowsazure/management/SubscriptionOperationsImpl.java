@@ -205,7 +205,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     Element subscriptionStatusElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
                     if (subscriptionStatusElement != null && subscriptionStatusElement.getTextContent() != null && !subscriptionStatusElement.getTextContent().isEmpty()) {
                         SubscriptionStatus subscriptionStatusInstance;
-                        subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
+                        subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent().toUpperCase());
                         result.setSubscriptionStatus(subscriptionStatusInstance);
                     }
                     

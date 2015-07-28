@@ -25,7 +25,7 @@ public enum OperationStatus {
     /**
      * The asynchronous request is in progress.
      */
-    IN_PROGRESS,
+    INPROGRESS,
 
     /**
      * The asynchronous request succeeded.

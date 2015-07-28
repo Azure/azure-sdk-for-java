@@ -37,5 +37,5 @@ public enum HostedServiceStatus {
     
     CHANGING,
     
-    RESOLVING_DNS,
+    RESOLVINGDNS,
 }

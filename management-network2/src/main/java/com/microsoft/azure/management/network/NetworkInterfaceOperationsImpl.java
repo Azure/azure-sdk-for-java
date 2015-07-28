@@ -32,7 +32,6 @@ import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.NetworkInterfaceListResponse;
 import com.microsoft.azure.management.network.models.NetworkInterfacePutResponse;
-import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
@@ -963,7 +962,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1047,7 +1046,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

@@ -40,7 +40,7 @@ public abstract class VirtualNetworkGatewayConnectionType {
     /**
     * Virtual network gateway dedicated connection type:ExpressRoute
     */
-    public static final String EXPRESS_ROUTE = "ExpressRoute";
+    public static final String EXPRESSROUTE = "ExpressRoute";
     
     /**
     * Virtual network gateway connection type:VPNClient

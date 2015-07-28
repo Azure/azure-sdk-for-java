@@ -26,5 +26,5 @@ package com.microsoft.windowsazure.management.servicebus.models;
 public enum NamespaceType {
     MESSAGING,
     
-    NOTIFICATION_HUB,
+    NOTIFICATIONHUB,
 }

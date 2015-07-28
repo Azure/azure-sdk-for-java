@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public abstract class EncryptionType {
-    public static final String NO_ENCRYPTION = "NoEncryption";
+    public static final String NOENCRYPTION = "NoEncryption";
     
     public static final String AES256 = "AES256";
     
@@ -32,5 +32,5 @@ public abstract class EncryptionType {
     
     public static final String DES3 = "DES3";
     
-    public static final String REQUIRE_ENCRYPTION = "RequireEncryption";
+    public static final String REQUIREENCRYPTION = "RequireEncryption";
 }

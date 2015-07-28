@@ -24,7 +24,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
-import com.microsoft.azure.management.compute.models.ComputeOperationStatus;
 import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.InstanceViewStatus;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
@@ -817,7 +816,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -905,7 +904,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;

@@ -913,7 +913,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1031,7 +1031,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1203,7 +1203,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     Element stateElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
                         JobCollectionState stateInstance;
-                        stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
+                        stateInstance = JobCollectionState.valueOf(stateElement.getTextContent().toUpperCase());
                         result.setState(stateInstance);
                     }
                     
@@ -1229,7 +1229,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         Element planElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
                         if (planElement != null && planElement.getTextContent() != null && !planElement.getTextContent().isEmpty()) {
                             JobCollectionPlan planInstance;
-                            planInstance = JobCollectionPlan.valueOf(planElement.getTextContent());
+                            planInstance = JobCollectionPlan.valueOf(planElement.getTextContent().toUpperCase());
                             intrinsicSettingsInstance.setPlan(planInstance);
                         }
                         
@@ -1260,7 +1260,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                                 Element frequencyElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Frequency");
                                 if (frequencyElement != null && frequencyElement.getTextContent() != null && !frequencyElement.getTextContent().isEmpty()) {
                                     JobCollectionRecurrenceFrequency frequencyInstance;
-                                    frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
+                                    frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent().toUpperCase());
                                     maxRecurrenceInstance.setFrequency(frequencyInstance);
                                 }
                                 
@@ -1294,7 +1294,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                             Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
                             if (httpCodeElement != null && httpCodeElement.getTextContent() != null && !httpCodeElement.getTextContent().isEmpty()) {
                                 Integer httpCodeInstance;
-                                httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
+                                httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent().toUpperCase());
                                 errorInstance.setStatusCode(httpCodeInstance);
                             }
                             
@@ -1309,7 +1309,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
                         if (resultElement != null && resultElement.getTextContent() != null && !resultElement.getTextContent().isEmpty()) {
                             SchedulerOperationStatus resultInstance;
-                            resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
+                            resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent().toUpperCase());
                             operationStatusInstance.setStatus(resultInstance);
                         }
                     }
@@ -1416,7 +1416,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;

@@ -30,7 +30,7 @@ public enum WebSiteOperationStatus {
     /**
     * The asynchronous request is in progress.
     */
-    IN_PROGRESS,
+    INPROGRESS,
     
     /**
     * The asynchronous request failed.
@@ -45,7 +45,7 @@ public enum WebSiteOperationStatus {
     /**
     * The asynchronous request timed out.
     */
-    TIMED_OUT,
+    TIMEDOUT,
     
     /**
     * The asynchronous request was created.

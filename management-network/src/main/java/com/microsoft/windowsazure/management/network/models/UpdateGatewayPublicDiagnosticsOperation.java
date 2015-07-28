@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public enum UpdateGatewayPublicDiagnosticsOperation {
-    START_DIAGNOSTICS,
+    STARTDIAGNOSTICS,
     
-    STOP_DIAGNOSTICS,
+    STOPDIAGNOSTICS,
 }

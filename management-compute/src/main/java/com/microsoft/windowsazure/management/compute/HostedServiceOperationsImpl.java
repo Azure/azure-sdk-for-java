@@ -247,7 +247,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1306,7 +1306,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1427,7 +1427,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1633,7 +1633,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element statusElement = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                         if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                             HostedServiceStatus statusInstance;
-                            statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent());
+                            statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent().toUpperCase());
                             hostedServicePropertiesInstance.setStatus(statusInstance);
                         }
                         
@@ -1849,7 +1849,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentsElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                             if (deploymentSlotElement != null && deploymentSlotElement.getTextContent() != null && !deploymentSlotElement.getTextContent().isEmpty()) {
                                 DeploymentSlot deploymentSlotInstance;
-                                deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
+                                deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent().toUpperCase());
                                 deploymentInstance.setDeploymentSlot(deploymentSlotInstance);
                             }
                             
@@ -1863,7 +1863,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             Element statusElement = XmlUtility.getElementByTagNameNS(deploymentsElement, "http://schemas.microsoft.com/windowsazure", "Status");
                             if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                                 DeploymentStatus statusInstance;
-                                statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
+                                statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent().toUpperCase());
                                 deploymentInstance.setStatus(statusInstance);
                             }
                             
@@ -2332,7 +2332,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                                     if (powerStateElement != null && powerStateElement.getTextContent() != null && !powerStateElement.getTextContent().isEmpty()) {
                                         RoleInstancePowerState powerStateInstance;
-                                        powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                                        powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent().toUpperCase());
                                         roleInstanceInstance.setPowerState(powerStateInstance);
                                     }
                                     
@@ -2451,14 +2451,14 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                                 if (upgradeTypeElement != null && upgradeTypeElement.getTextContent() != null && !upgradeTypeElement.getTextContent().isEmpty()) {
                                     DeploymentUpgradeType upgradeTypeInstance;
-                                    upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                                    upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent().toUpperCase());
                                     upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                                 }
                                 
                                 Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                                 if (currentUpgradeDomainStateElement != null && currentUpgradeDomainStateElement.getTextContent() != null && !currentUpgradeDomainStateElement.getTextContent().isEmpty()) {
                                     UpgradeDomainState currentUpgradeDomainStateInstance;
-                                    currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                                    currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent().toUpperCase());
                                     upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                                 }
                                 
@@ -2938,7 +2938,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                         Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                                         if (protocolElement4 != null && protocolElement4.getTextContent() != null && !protocolElement4.getTextContent().isEmpty()) {
                                                             VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                            protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                            protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent().toUpperCase());
                                                             listenerInstance.setListenerType(protocolInstance4);
                                                         }
                                                         
@@ -3553,7 +3553,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element statusElement7 = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                         if (statusElement7 != null && statusElement7.getTextContent() != null && !statusElement7.getTextContent().isEmpty()) {
                             HostedServiceStatus statusInstance7;
-                            statusInstance7 = HostedServiceStatus.valueOf(statusElement7.getTextContent());
+                            statusInstance7 = HostedServiceStatus.valueOf(statusElement7.getTextContent().toUpperCase());
                             hostedServicePropertiesInstance.setStatus(statusInstance7);
                         }
                         
@@ -3977,7 +3977,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             Element statusElement = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                             if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                                 HostedServiceStatus statusInstance;
-                                statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent());
+                                statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent().toUpperCase());
                                 hostedServicePropertiesInstance.setStatus(statusInstance);
                             }
                             

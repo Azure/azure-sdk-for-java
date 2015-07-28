@@ -650,7 +650,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();

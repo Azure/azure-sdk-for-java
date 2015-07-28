@@ -32,7 +32,7 @@ public abstract class ResourceExtensionStatusTypes {
     
     public static final String READY = "Ready";
     
-    public static final String NOR_READY = "NorReady";
+    public static final String NORREADY = "NorReady";
     
     public static final String UNRESPONSIVE = "Unresponsive";
 }

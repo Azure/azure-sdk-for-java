@@ -28,7 +28,7 @@ public enum GatewayConnectivityState {
     
     CONNECTING,
     
-    NOT_CONNECTED,
+    NOTCONNECTED,
     
     UNKNOWN,
 }

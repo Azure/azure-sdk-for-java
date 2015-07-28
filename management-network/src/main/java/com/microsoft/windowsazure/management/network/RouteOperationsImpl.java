@@ -189,7 +189,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1165,7 +1165,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1284,7 +1284,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1396,7 +1396,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1982,7 +1982,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                     Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTableElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                     if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                         RouteTableState routeTableStateInstance;
-                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                         routeTableInstance.setRouteTableState(routeTableStateInstance);
                     }
                     
@@ -2037,7 +2037,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                             Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                             if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                 RouteState routeStateInstance;
-                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                 routeInstance.setState(routeStateInstance);
                             }
                         }
@@ -2347,7 +2347,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                     Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTableElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                     if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                         RouteTableState routeTableStateInstance;
-                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                         routeTableInstance.setRouteTableState(routeTableStateInstance);
                     }
                     
@@ -2402,7 +2402,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                             Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                             if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                 RouteState routeStateInstance;
-                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                 routeInstance.setState(routeStateInstance);
                             }
                         }
@@ -2552,7 +2552,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                         Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTablesElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                         if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                             RouteTableState routeTableStateInstance;
-                            routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                            routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                             routeTableInstance.setRouteTableState(routeTableStateInstance);
                         }
                         
@@ -2607,7 +2607,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                                 Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                                 if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                     RouteState routeStateInstance;
-                                    routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                    routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                     routeInstance.setState(routeStateInstance);
                                 }
                             }
@@ -2710,7 +2710,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2834,7 +2834,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;

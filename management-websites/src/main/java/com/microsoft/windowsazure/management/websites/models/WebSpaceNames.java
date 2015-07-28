@@ -24,15 +24,15 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 public abstract class WebSpaceNames {
-    public static final String EAST_USWEB_SPACE = "eastuswebspace";
+    public static final String EASTUSWEBSPACE = "eastuswebspace";
     
-    public static final String WEST_USWEB_SPACE = "westuswebspace";
+    public static final String WESTUSWEBSPACE = "westuswebspace";
     
-    public static final String NORTH_CENTRAL_USWEB_SPACE = "northcentraluswebspace";
+    public static final String NORTHCENTRALUSWEBSPACE = "northcentraluswebspace";
     
-    public static final String NORTH_EUROPE_WEB_SPACE = "northeuropewebspace";
+    public static final String NORTHEUROPEWEBSPACE = "northeuropewebspace";
     
-    public static final String WEST_EUROPE_WEB_SPACE = "westeuropewebspace";
+    public static final String WESTEUROPEWEBSPACE = "westeuropewebspace";
     
-    public static final String EAST_ASIA_WEB_SPACE = "eastasiawebspace";
+    public static final String EASTASIAWEBSPACE = "eastasiawebspace";
 }

@@ -27,7 +27,7 @@ package com.microsoft.windowsazure.scheduler.models;
 * Type of service bus authentication
 */
 public enum JobServiceBusAuthenticationType {
-    NOT_SPECIFIED,
+    NOTSPECIFIED,
     
-    SHARED_ACCESS_KEY,
+    SHAREDACCESSKEY,
 }

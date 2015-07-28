@@ -27,11 +27,11 @@ package com.microsoft.windowsazure.scheduler.models;
 * Type of authentication
 */
 public enum HttpAuthenticationType {
-    NOT_SPECIFIED,
+    NOTSPECIFIED,
     
-    CLIENT_CERTIFICATE,
+    CLIENTCERTIFICATE,
     
-    ACTIVE_DIRECTORY_OAUTH,
+    ACTIVEDIRECTORYOAUTH,
     
     BASIC,
 }

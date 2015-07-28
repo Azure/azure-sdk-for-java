@@ -30,7 +30,7 @@ public enum DatabaseServerType {
     /**
     * My SQL Server
     */
-    MY_SQL,
+    MYSQL,
     
     /**
     * MS SQL server

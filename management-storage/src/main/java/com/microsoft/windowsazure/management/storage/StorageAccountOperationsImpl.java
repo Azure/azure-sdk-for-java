@@ -564,7 +564,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -895,7 +895,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Element statusElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                         if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                             StorageAccountStatus statusInstance;
-                            statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
+                            statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent().toUpperCase());
                             storageServicePropertiesInstance.setStatus(statusInstance);
                         }
                         
@@ -917,7 +917,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Element statusOfPrimaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
                         if (statusOfPrimaryElement != null && statusOfPrimaryElement.getTextContent() != null && !statusOfPrimaryElement.getTextContent().isEmpty()) {
                             GeoRegionStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
+                            statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent().toUpperCase());
                             storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                         }
                         
@@ -938,7 +938,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Element statusOfSecondaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
                         if (statusOfSecondaryElement != null && statusOfSecondaryElement.getTextContent() != null && !statusOfSecondaryElement.getTextContent().isEmpty()) {
                             GeoRegionStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
+                            statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent().toUpperCase());
                             storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
                         }
                         
@@ -1300,7 +1300,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             Element statusElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                             if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                                 StorageAccountStatus statusInstance;
-                                statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
+                                statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent().toUpperCase());
                                 storageServicePropertiesInstance.setStatus(statusInstance);
                             }
                             
@@ -1322,7 +1322,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             Element statusOfPrimaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
                             if (statusOfPrimaryElement != null && statusOfPrimaryElement.getTextContent() != null && !statusOfPrimaryElement.getTextContent().isEmpty()) {
                                 GeoRegionStatus statusOfPrimaryInstance;
-                                statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
+                                statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent().toUpperCase());
                                 storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                             }
                             
@@ -1343,7 +1343,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             Element statusOfSecondaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
                             if (statusOfSecondaryElement != null && statusOfSecondaryElement.getTextContent() != null && !statusOfSecondaryElement.getTextContent().isEmpty()) {
                                 GeoRegionStatus statusOfSecondaryInstance;
-                                statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
+                                statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent().toUpperCase());
                                 storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
                             }
                             

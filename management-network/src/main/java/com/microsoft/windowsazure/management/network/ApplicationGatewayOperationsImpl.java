@@ -193,7 +193,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1771,7 +1771,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1894,7 +1894,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2013,7 +2013,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2136,7 +2136,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2758,7 +2758,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement = XmlUtility.getElementByTagNameNS(backendHttpSettingsListElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement != null && protocolElement.getTextContent() != null && !protocolElement.getTextContent().isEmpty()) {
                                 Protocol protocolInstance;
-                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent());
+                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent().toUpperCase());
                                 backendHttpSettingsInstance.setProtocol(protocolInstance);
                             }
                             
@@ -2802,7 +2802,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement2 = XmlUtility.getElementByTagNameNS(httpListenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement2 != null && protocolElement2.getTextContent() != null && !protocolElement2.getTextContent().isEmpty()) {
                                 Protocol protocolInstance2;
-                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent());
+                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent().toUpperCase());
                                 httpListenerInstance.setProtocol(protocolInstance2);
                             }
                             
@@ -3021,14 +3021,14 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                     Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         AsyncOperationStatus statusInstance;
-                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     
@@ -3516,7 +3516,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3639,7 +3639,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.IN_PROGRESS) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;

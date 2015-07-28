@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public abstract class GatewayType {
-    public static final String STATIC_ROUTING = "StaticRouting";
+    public static final String STATICROUTING = "StaticRouting";
     
-    public static final String DYNAMIC_ROUTING = "DynamicRouting";
+    public static final String DYNAMICROUTING = "DynamicRouting";
 }

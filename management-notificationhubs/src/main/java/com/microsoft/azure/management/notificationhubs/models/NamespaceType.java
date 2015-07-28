@@ -26,5 +26,5 @@ package com.microsoft.azure.management.notificationhubs.models;
 public enum NamespaceType {
     MESSAGING,
     
-    NOTIFICATION_HUB,
+    NOTIFICATIONHUB,
 }

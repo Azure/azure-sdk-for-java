@@ -40,7 +40,7 @@ public enum StorageAccountStatus {
     /**
     * The DNS name for the storage account is being propagated.
     */
-    RESOLVING_DNS,
+    RESOLVINGDNS,
     
     /**
     * The Storage Account is being deleted.
