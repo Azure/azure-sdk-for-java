@@ -185,7 +185,7 @@ public class TokenRestrictionTemplateSerializerTests {
     }
     
     @Test
-    public void NullContentKeyIdentifierClaimShouldThrown() throws Exception {
+    public void NullContentKeyIdentifierClaimShouldThrownSWT() throws Exception {
         byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -193,6 +193,31 @@ public class TokenRestrictionTemplateSerializerTests {
         String knownAudience = "http://audience.com";
         String knownIssuer = "http://issuer.com";
         TokenRestrictionTemplate template = new TokenRestrictionTemplate(TokenType.SWT);
+        template.setPrimaryVerificationKey(new SymmetricVerificationKey(knownSymetricKey));
+        template.setAudience(new URI(knownAudience));
+        template.setIssuer(new URI(knownIssuer));
+        template.getRequiredClaims().add(TokenClaim.getContentKeyIdentifierClaim());
+
+        // Act
+        try {
+            TokenRestrictionTemplateSerializer.generateTestToken(template,
+                    template.getPrimaryVerificationKey(), null, knownExpireOn, null);
+            fail("Null ContentKeyIdentifier Claim Should thrown.");
+        } catch(IllegalArgumentException e) {
+            // Assert
+            assertTrue(e.getMessage().contains("keyIdForContentKeyIdentifierClaim"));
+        }
+    }
+    
+    @Test
+    public void NullContentKeyIdentifierClaimShouldThrownJWT() throws Exception {
+        byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date knownExpireOn = sdf.parse("2016-01-01");
+        String knownAudience = "http://audience.com";
+        String knownIssuer = "http://issuer.com";
+        TokenRestrictionTemplate template = new TokenRestrictionTemplate(TokenType.JWT);
         template.setPrimaryVerificationKey(new SymmetricVerificationKey(knownSymetricKey));
         template.setAudience(new URI(knownAudience));
         template.setIssuer(new URI(knownIssuer));
