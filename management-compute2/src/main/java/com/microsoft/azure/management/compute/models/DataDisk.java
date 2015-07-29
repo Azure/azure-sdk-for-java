@@ -27,26 +27,6 @@ package com.microsoft.azure.management.compute.models;
 * Describes a data disk.
 */
 public class DataDisk extends Disk {
-    private Integer diskSizeGB;
-    
-    /**
-    * Optional. Gets or sets the disk size in GB for a blank data disk to be
-    * created.
-    * @return The DiskSizeGB value.
-    */
-    public Integer getDiskSizeGB() {
-        return this.diskSizeGB;
-    }
-    
-    /**
-    * Optional. Gets or sets the disk size in GB for a blank data disk to be
-    * created.
-    * @param diskSizeGBValue The DiskSizeGB value.
-    */
-    public void setDiskSizeGB(final Integer diskSizeGBValue) {
-        this.diskSizeGB = diskSizeGBValue;
-    }
-    
     private int lun;
     
     /**

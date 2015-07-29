@@ -4683,7 +4683,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4696,7 +4696,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -4821,7 +4821,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4834,7 +4834,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -4964,7 +4964,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4977,7 +4977,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5096,7 +5096,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5109,7 +5109,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5221,7 +5221,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5234,7 +5234,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5343,7 +5343,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5356,7 +5356,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5465,7 +5465,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5478,7 +5478,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5635,7 +5635,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                     if (deploymentSlotElement != null && deploymentSlotElement.getTextContent() != null && !deploymentSlotElement.getTextContent().isEmpty()) {
                         DeploymentSlot deploymentSlotInstance;
-                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
+                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent().toUpperCase());
                         result.setDeploymentSlot(deploymentSlotInstance);
                     }
                     
@@ -5649,7 +5649,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         DeploymentStatus statusInstance;
-                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
@@ -6118,7 +6118,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                             if (powerStateElement != null && powerStateElement.getTextContent() != null && !powerStateElement.getTextContent().isEmpty()) {
                                 RoleInstancePowerState powerStateInstance;
-                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent().toUpperCase());
                                 roleInstanceInstance.setPowerState(powerStateInstance);
                             }
                             
@@ -6237,14 +6237,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                         if (upgradeTypeElement != null && upgradeTypeElement.getTextContent() != null && !upgradeTypeElement.getTextContent().isEmpty()) {
                             DeploymentUpgradeType upgradeTypeInstance;
-                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent().toUpperCase());
                             upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                         }
                         
                         Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                         if (currentUpgradeDomainStateElement != null && currentUpgradeDomainStateElement.getTextContent() != null && !currentUpgradeDomainStateElement.getTextContent().isEmpty()) {
                             UpgradeDomainState currentUpgradeDomainStateInstance;
-                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent().toUpperCase());
                             upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                         }
                         
@@ -6465,6 +6465,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
                                                 inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
                                             }
+                                            
+                                            Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                            if (virtualIPNameElement != null) {
+                                                String virtualIPNameInstance;
+                                                virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                                                inputEndpointInstance.setVirtualIPName(virtualIPNameInstance);
+                                            }
                                         }
                                     }
                                     
@@ -6549,14 +6556,35 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     }
                                                 }
                                             }
+                                            
+                                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                            if (networkSecurityGroupElement != null) {
+                                                String networkSecurityGroupInstance;
+                                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                                networkInterfaceInstance2.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                            }
+                                            
+                                            Element iPForwardingElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                            if (iPForwardingElement != null) {
+                                                String iPForwardingInstance;
+                                                iPForwardingInstance = iPForwardingElement.getTextContent();
+                                                networkInterfaceInstance2.setIPForwarding(iPForwardingInstance);
+                                            }
                                         }
                                     }
                                     
-                                    Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                    if (networkSecurityGroupElement != null) {
-                                        String networkSecurityGroupInstance;
-                                        networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    Element networkSecurityGroupElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    if (networkSecurityGroupElement2 != null) {
+                                        String networkSecurityGroupInstance2;
+                                        networkSecurityGroupInstance2 = networkSecurityGroupElement2.getTextContent();
+                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance2);
+                                    }
+                                    
+                                    Element iPForwardingElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    if (iPForwardingElement2 != null) {
+                                        String iPForwardingInstance2;
+                                        iPForwardingInstance2 = iPForwardingElement2.getTextContent();
+                                        configurationSetInstance.setIPForwarding(iPForwardingInstance2);
                                     }
                                     
                                     Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -6696,7 +6724,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                                 if (protocolElement4 != null && protocolElement4.getTextContent() != null && !protocolElement4.getTextContent().isEmpty()) {
                                                     VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent().toUpperCase());
                                                     listenerInstance.setListenerType(protocolInstance4);
                                                 }
                                                 
@@ -7236,6 +7264,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setAddress(addressInstance4);
                             }
                             
+                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
+                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
+                                boolean isDnsProgrammedInstance;
+                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
+                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            }
+                            
                             Element nameElement13 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement13 != null) {
                                 String nameInstance13;
@@ -7243,11 +7278,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setName(nameInstance13);
                             }
                             
-                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
-                                boolean isDnsProgrammedInstance;
-                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
-                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                            if (reservedIPNameElement != null) {
+                                String reservedIPNameInstance;
+                                reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                                virtualIPInstance.setReservedIPName(reservedIPNameInstance);
                             }
                         }
                     }
@@ -7306,11 +7341,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                    if (reservedIPNameElement != null) {
-                        String reservedIPNameInstance;
-                        reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                        result.setReservedIPName(reservedIPNameInstance);
+                    Element reservedIPNameElement2 = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                    if (reservedIPNameElement2 != null) {
+                        String reservedIPNameInstance2;
+                        reservedIPNameInstance2 = reservedIPNameElement2.getTextContent();
+                        result.setReservedIPName(reservedIPNameInstance2);
                     }
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");
@@ -7504,7 +7539,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                     if (deploymentSlotElement != null && deploymentSlotElement.getTextContent() != null && !deploymentSlotElement.getTextContent().isEmpty()) {
                         DeploymentSlot deploymentSlotInstance;
-                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
+                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent().toUpperCase());
                         result.setDeploymentSlot(deploymentSlotInstance);
                     }
                     
@@ -7518,7 +7553,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         DeploymentStatus statusInstance;
-                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
@@ -7987,7 +8022,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                             if (powerStateElement != null && powerStateElement.getTextContent() != null && !powerStateElement.getTextContent().isEmpty()) {
                                 RoleInstancePowerState powerStateInstance;
-                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent().toUpperCase());
                                 roleInstanceInstance.setPowerState(powerStateInstance);
                             }
                             
@@ -8106,14 +8141,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                         if (upgradeTypeElement != null && upgradeTypeElement.getTextContent() != null && !upgradeTypeElement.getTextContent().isEmpty()) {
                             DeploymentUpgradeType upgradeTypeInstance;
-                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent().toUpperCase());
                             upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                         }
                         
                         Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                         if (currentUpgradeDomainStateElement != null && currentUpgradeDomainStateElement.getTextContent() != null && !currentUpgradeDomainStateElement.getTextContent().isEmpty()) {
                             UpgradeDomainState currentUpgradeDomainStateInstance;
-                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent().toUpperCase());
                             upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                         }
                         
@@ -8334,6 +8369,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
                                                 inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
                                             }
+                                            
+                                            Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                            if (virtualIPNameElement != null) {
+                                                String virtualIPNameInstance;
+                                                virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                                                inputEndpointInstance.setVirtualIPName(virtualIPNameInstance);
+                                            }
                                         }
                                     }
                                     
@@ -8418,14 +8460,35 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     }
                                                 }
                                             }
+                                            
+                                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                            if (networkSecurityGroupElement != null) {
+                                                String networkSecurityGroupInstance;
+                                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                                networkInterfaceInstance2.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                            }
+                                            
+                                            Element iPForwardingElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement2, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                            if (iPForwardingElement != null) {
+                                                String iPForwardingInstance;
+                                                iPForwardingInstance = iPForwardingElement.getTextContent();
+                                                networkInterfaceInstance2.setIPForwarding(iPForwardingInstance);
+                                            }
                                         }
                                     }
                                     
-                                    Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                    if (networkSecurityGroupElement != null) {
-                                        String networkSecurityGroupInstance;
-                                        networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    Element networkSecurityGroupElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    if (networkSecurityGroupElement2 != null) {
+                                        String networkSecurityGroupInstance2;
+                                        networkSecurityGroupInstance2 = networkSecurityGroupElement2.getTextContent();
+                                        configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance2);
+                                    }
+                                    
+                                    Element iPForwardingElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    if (iPForwardingElement2 != null) {
+                                        String iPForwardingInstance2;
+                                        iPForwardingInstance2 = iPForwardingElement2.getTextContent();
+                                        configurationSetInstance.setIPForwarding(iPForwardingInstance2);
                                     }
                                     
                                     Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -8565,7 +8628,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                                 if (protocolElement4 != null && protocolElement4.getTextContent() != null && !protocolElement4.getTextContent().isEmpty()) {
                                                     VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent().toUpperCase());
                                                     listenerInstance.setListenerType(protocolInstance4);
                                                 }
                                                 
@@ -9105,6 +9168,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setAddress(addressInstance4);
                             }
                             
+                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
+                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
+                                boolean isDnsProgrammedInstance;
+                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
+                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            }
+                            
                             Element nameElement13 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement13 != null) {
                                 String nameInstance13;
@@ -9112,11 +9182,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 virtualIPInstance.setName(nameInstance13);
                             }
                             
-                            Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                            if (isDnsProgrammedElement != null && isDnsProgrammedElement.getTextContent() != null && !isDnsProgrammedElement.getTextContent().isEmpty()) {
-                                boolean isDnsProgrammedInstance;
-                                isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
-                                virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                            Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                            if (reservedIPNameElement != null) {
+                                String reservedIPNameInstance;
+                                reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                                virtualIPInstance.setReservedIPName(reservedIPNameInstance);
                             }
                         }
                     }
@@ -9175,11 +9245,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                    if (reservedIPNameElement != null) {
-                        String reservedIPNameInstance;
-                        reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                        result.setReservedIPName(reservedIPNameInstance);
+                    Element reservedIPNameElement2 = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
+                    if (reservedIPNameElement2 != null) {
+                        String reservedIPNameInstance2;
+                        reservedIPNameInstance2 = reservedIPNameElement2.getTextContent();
+                        result.setReservedIPName(reservedIPNameInstance2);
                     }
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");
@@ -9337,7 +9407,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -9350,7 +9420,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -9471,7 +9541,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -9484,7 +9554,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10001,7 +10071,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10014,7 +10084,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10133,7 +10203,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10146,7 +10216,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10272,7 +10342,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10285,7 +10355,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10411,7 +10481,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10424,7 +10494,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10543,7 +10613,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10556,7 +10626,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10675,7 +10745,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10688,7 +10758,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11180,7 +11250,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11193,7 +11263,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11316,7 +11386,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11329,7 +11399,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11452,7 +11522,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11465,7 +11535,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11636,7 +11706,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11649,7 +11719,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11820,7 +11890,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11833,7 +11903,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11996,7 +12066,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -12009,7 +12079,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -12172,7 +12242,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -12185,7 +12255,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

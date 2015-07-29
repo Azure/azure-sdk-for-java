@@ -23,14 +23,17 @@
 
 package com.microsoft.azure.management.websites.models;
 
+/**
+* The managed pipeline mode of a website.
+*/
 public enum ManagedPipelineMode {
     /**
     * Integrated Managed Pipeline Mode.
     */
-    Integrated,
+    INTEGRATED,
     
     /**
     * Classic Managed Pipeline Mode.
     */
-    Classic,
+    CLASSIC,
 }

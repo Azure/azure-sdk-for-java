@@ -170,6 +170,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.gateways;
     }
     
+    private IPForwardingOperations iPForwarding;
+    
+    /**
+    * The Network Management API includes operations for managing the IP
+    * Forwarding for your roles and network interfaces in your subscription.
+    * @return The IPForwardingOperations value.
+    */
+    public IPForwardingOperations getIPForwardingOperations() {
+        return this.iPForwarding;
+    }
+    
     private NetworkOperations networks;
     
     /**
@@ -227,6 +238,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.staticIPs;
     }
     
+    private VirtualIPOperations virtualIPs;
+    
+    /**
+    * The Network Management API includes operations for managing the Virtual
+    * IPs for your deployment.
+    * @return The VirtualIPsOperations value.
+    */
+    public VirtualIPOperations getVirtualIPsOperations() {
+        return this.virtualIPs;
+    }
+    
     /**
     * Initializes a new instance of the NetworkManagementClientImpl class.
     *
@@ -238,12 +260,14 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         this.applicationGateways = new ApplicationGatewayOperationsImpl(this);
         this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
         this.gateways = new GatewayOperationsImpl(this);
+        this.iPForwarding = new IPForwardingOperationsImpl(this);
         this.networks = new NetworkOperationsImpl(this);
         this.networkSecurityGroups = new NetworkSecurityGroupOperationsImpl(this);
         this.reservedIPs = new ReservedIPOperationsImpl(this);
         this.routes = new RouteOperationsImpl(this);
         this.staticIPs = new StaticIPOperationsImpl(this);
-        this.apiVersion = "2015-02-01";
+        this.virtualIPs = new VirtualIPOperationsImpl(this);
+        this.apiVersion = "2015-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -433,7 +457,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -477,14 +501,14 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         OperationStatus statusInstance;
-                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     

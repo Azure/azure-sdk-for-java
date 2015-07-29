@@ -193,7 +193,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -206,7 +206,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -313,7 +313,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -333,7 +333,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -497,7 +497,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         }
         url = url + "/services/networking/ApplicationGateways";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -517,7 +517,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -700,7 +700,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -720,7 +720,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -849,7 +849,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -869,7 +869,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1003,7 +1003,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/Operations";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1023,7 +1023,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1183,7 +1183,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/configuration";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1203,7 +1203,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1553,7 +1553,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1573,7 +1573,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1771,7 +1771,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1784,7 +1784,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1894,7 +1894,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1907,7 +1907,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2013,7 +2013,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2026,7 +2026,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2136,7 +2136,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2149,7 +2149,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2238,7 +2238,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/services/networking/ApplicationGateways/";
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2257,7 +2257,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2444,7 +2444,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + "/sslcertificates/";
         url = url + URLEncoder.encode(certificateName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2463,7 +2463,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2599,7 +2599,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/configuration";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2618,7 +2618,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2758,7 +2758,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement = XmlUtility.getElementByTagNameNS(backendHttpSettingsListElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement != null && protocolElement.getTextContent() != null && !protocolElement.getTextContent().isEmpty()) {
                                 Protocol protocolInstance;
-                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent());
+                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent().toUpperCase());
                                 backendHttpSettingsInstance.setProtocol(protocolInstance);
                             }
                             
@@ -2802,7 +2802,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement2 = XmlUtility.getElementByTagNameNS(httpListenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement2 != null && protocolElement2.getTextContent() != null && !protocolElement2.getTextContent().isEmpty()) {
                                 Protocol protocolInstance2;
-                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent());
+                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent().toUpperCase());
                                 httpListenerInstance.setProtocol(protocolInstance2);
                             }
                             
@@ -2977,7 +2977,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3021,14 +3021,14 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                     Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         AsyncOperationStatus statusInstance;
-                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     
@@ -3132,7 +3132,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         }
         url = url + "/services/networking/ApplicationGateways";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3151,7 +3151,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3335,7 +3335,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         url = url + URLEncoder.encode(gatewayName, "UTF-8");
         url = url + "/sslcertificates";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-02-01");
+        queryParameters.add("api-version=" + "2015-04-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3354,7 +3354,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3516,7 +3516,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3529,7 +3529,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3639,7 +3639,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3652,7 +3652,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.Successful) {
+            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

@@ -400,10 +400,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static CertificateFormat parseCertificateFormat(String value) {
         if ("pfx".equalsIgnoreCase(value)) {
-            return CertificateFormat.Pfx;
+            return CertificateFormat.PFX;
         }
         if ("cer".equalsIgnoreCase(value)) {
-            return CertificateFormat.Cer;
+            return CertificateFormat.CER;
         }
         throw new IllegalArgumentException("value");
     }
@@ -415,10 +415,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value as a string.
     */
      static String certificateFormatToString(CertificateFormat value) {
-        if (value == CertificateFormat.Pfx) {
+        if (value == CertificateFormat.PFX) {
             return "pfx";
         }
-        if (value == CertificateFormat.Cer) {
+        if (value == CertificateFormat.CER) {
             return "cer";
         }
         throw new IllegalArgumentException("value");
@@ -432,10 +432,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
         if ("tcp".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Tcp;
+            return LoadBalancerProbeTransportProtocol.TCP;
         }
         if ("http".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Http;
+            return LoadBalancerProbeTransportProtocol.HTTP;
         }
         throw new IllegalArgumentException("value");
     }
@@ -447,10 +447,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value as a string.
     */
      static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
-        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
+        if (value == LoadBalancerProbeTransportProtocol.TCP) {
             return "tcp";
         }
-        if (value == LoadBalancerProbeTransportProtocol.Http) {
+        if (value == LoadBalancerProbeTransportProtocol.HTTP) {
             return "http";
         }
         throw new IllegalArgumentException("value");
@@ -598,14 +598,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         OperationStatus statusInstance;
-                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     

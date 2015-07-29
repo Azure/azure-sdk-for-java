@@ -510,6 +510,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
                             inputEndpointElement.appendChild(loadBalancerDistributionElement);
                         }
+                        
+                        if (inputEndpointsItem.getVirtualIPName() != null) {
+                            Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                            virtualIPNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPName()));
+                            inputEndpointElement.appendChild(virtualIPNameElement);
+                        }
                     }
                     provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
                 }
@@ -597,15 +603,33 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
                             }
                         }
+                        
+                        if (networkInterfacesItem.getNetworkSecurityGroup() != null) {
+                            Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                            networkSecurityGroupElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getNetworkSecurityGroup()));
+                            networkInterfaceElement.appendChild(networkSecurityGroupElement);
+                        }
+                        
+                        if (networkInterfacesItem.getIPForwarding() != null) {
+                            Element iPForwardingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                            iPForwardingElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getIPForwarding()));
+                            networkInterfaceElement.appendChild(iPForwardingElement);
+                        }
                     }
                     provisioningConfigurationElement.appendChild(networkInterfacesSequenceElement);
                 }
             }
             
             if (parameters.getProvisioningConfiguration().getNetworkSecurityGroup() != null) {
-                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getNetworkSecurityGroup()));
-                provisioningConfigurationElement.appendChild(networkSecurityGroupElement);
+                Element networkSecurityGroupElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                networkSecurityGroupElement2.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getNetworkSecurityGroup()));
+                provisioningConfigurationElement.appendChild(networkSecurityGroupElement2);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getIPForwarding() != null) {
+                Element iPForwardingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                iPForwardingElement2.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getIPForwarding()));
+                provisioningConfigurationElement.appendChild(iPForwardingElement2);
             }
             
             if (parameters.getProvisioningConfiguration().getComputerName() != null) {
@@ -1420,6 +1444,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
                                     inputEndpointElement.appendChild(loadBalancerDistributionElement);
                                 }
+                                
+                                if (inputEndpointsItem.getVirtualIPName() != null) {
+                                    Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                    virtualIPNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPName()));
+                                    inputEndpointElement.appendChild(virtualIPNameElement);
+                                }
                             }
                             configurationSetElement.appendChild(inputEndpointsSequenceElement);
                         }
@@ -1507,15 +1537,33 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
                                     }
                                 }
+                                
+                                if (networkInterfacesItem.getNetworkSecurityGroup() != null) {
+                                    Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    networkSecurityGroupElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getNetworkSecurityGroup()));
+                                    networkInterfaceElement.appendChild(networkSecurityGroupElement);
+                                }
+                                
+                                if (networkInterfacesItem.getIPForwarding() != null) {
+                                    Element iPForwardingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    iPForwardingElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getIPForwarding()));
+                                    networkInterfaceElement.appendChild(iPForwardingElement);
+                                }
                             }
                             configurationSetElement.appendChild(networkInterfacesSequenceElement);
                         }
                     }
                     
                     if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                        configurationSetElement.appendChild(networkSecurityGroupElement);
+                        Element networkSecurityGroupElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                        networkSecurityGroupElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                        configurationSetElement.appendChild(networkSecurityGroupElement2);
+                    }
+                    
+                    if (configurationSetsItem.getIPForwarding() != null) {
+                        Element iPForwardingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                        iPForwardingElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getIPForwarding()));
+                        configurationSetElement.appendChild(iPForwardingElement2);
                     }
                     
                     if (configurationSetsItem.getComputerName() != null) {
@@ -2397,6 +2445,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
                                             inputEndpointElement.appendChild(loadBalancerDistributionElement);
                                         }
+                                        
+                                        if (inputEndpointsItem.getVirtualIPName() != null) {
+                                            Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                            virtualIPNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPName()));
+                                            inputEndpointElement.appendChild(virtualIPNameElement);
+                                        }
                                     }
                                     configurationSetElement.appendChild(inputEndpointsSequenceElement);
                                 }
@@ -2484,15 +2538,33 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
                                             }
                                         }
+                                        
+                                        if (networkInterfacesItem.getNetworkSecurityGroup() != null) {
+                                            Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                            networkSecurityGroupElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getNetworkSecurityGroup()));
+                                            networkInterfaceElement.appendChild(networkSecurityGroupElement);
+                                        }
+                                        
+                                        if (networkInterfacesItem.getIPForwarding() != null) {
+                                            Element iPForwardingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                            iPForwardingElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getIPForwarding()));
+                                            networkInterfaceElement.appendChild(iPForwardingElement);
+                                        }
                                     }
                                     configurationSetElement.appendChild(networkInterfacesSequenceElement);
                                 }
                             }
                             
                             if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                                configurationSetElement.appendChild(networkSecurityGroupElement);
+                                Element networkSecurityGroupElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                networkSecurityGroupElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                                configurationSetElement.appendChild(networkSecurityGroupElement2);
+                            }
+                            
+                            if (configurationSetsItem.getIPForwarding() != null) {
+                                Element iPForwardingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                iPForwardingElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getIPForwarding()));
+                                configurationSetElement.appendChild(iPForwardingElement2);
                             }
                             
                             if (configurationSetsItem.getComputerName() != null) {
@@ -4421,6 +4493,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
                                     inputEndpointElement.appendChild(loadBalancerDistributionElement);
                                 }
+                                
+                                if (inputEndpointsItem.getVirtualIPName() != null) {
+                                    Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                    virtualIPNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPName()));
+                                    inputEndpointElement.appendChild(virtualIPNameElement);
+                                }
                             }
                             configurationSetElement.appendChild(inputEndpointsSequenceElement);
                         }
@@ -4508,15 +4586,33 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
                                     }
                                 }
+                                
+                                if (networkInterfacesItem.getNetworkSecurityGroup() != null) {
+                                    Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    networkSecurityGroupElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getNetworkSecurityGroup()));
+                                    networkInterfaceElement.appendChild(networkSecurityGroupElement);
+                                }
+                                
+                                if (networkInterfacesItem.getIPForwarding() != null) {
+                                    Element iPForwardingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    iPForwardingElement.appendChild(requestDoc.createTextNode(networkInterfacesItem.getIPForwarding()));
+                                    networkInterfaceElement.appendChild(iPForwardingElement);
+                                }
                             }
                             configurationSetElement.appendChild(networkInterfacesSequenceElement);
                         }
                     }
                     
                     if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                        configurationSetElement.appendChild(networkSecurityGroupElement);
+                        Element networkSecurityGroupElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                        networkSecurityGroupElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
+                        configurationSetElement.appendChild(networkSecurityGroupElement2);
+                    }
+                    
+                    if (configurationSetsItem.getIPForwarding() != null) {
+                        Element iPForwardingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                        iPForwardingElement2.appendChild(requestDoc.createTextNode(configurationSetsItem.getIPForwarding()));
+                        configurationSetElement.appendChild(iPForwardingElement2);
                     }
                     
                     if (configurationSetsItem.getComputerName() != null) {
@@ -5246,6 +5342,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerDistribution()));
                         inputEndpointElement.appendChild(loadBalancerDistributionElement);
                     }
+                    
+                    if (loadBalancedEndpointsItem.getVirtualIPName() != null) {
+                        Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                        virtualIPNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPName()));
+                        inputEndpointElement.appendChild(virtualIPNameElement);
+                    }
                 }
             }
         }
@@ -5409,7 +5511,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5422,7 +5524,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5532,7 +5634,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5545,7 +5647,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5683,7 +5785,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5696,7 +5798,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5814,7 +5916,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5827,7 +5929,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5943,7 +6045,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5956,7 +6058,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -6128,7 +6230,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     Element roleTypeElement = XmlUtility.getElementByTagNameNS(persistentVMRoleElement, "http://schemas.microsoft.com/windowsazure", "RoleType");
                     if (roleTypeElement != null && roleTypeElement.getTextContent() != null && !roleTypeElement.getTextContent().isEmpty()) {
                         VirtualMachineRoleType roleTypeInstance;
-                        roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
+                        roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent().toUpperCase());
                         result.setRoleType(roleTypeInstance);
                     }
                     
@@ -6327,6 +6429,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
                                         inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
                                     }
+                                    
+                                    Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                                    if (virtualIPNameElement != null) {
+                                        String virtualIPNameInstance;
+                                        virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                                        inputEndpointInstance.setVirtualIPName(virtualIPNameInstance);
+                                    }
                                 }
                             }
                             
@@ -6411,14 +6520,35 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             }
                                         }
                                     }
+                                    
+                                    Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                    if (networkSecurityGroupElement != null) {
+                                        String networkSecurityGroupInstance;
+                                        networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                        networkInterfaceInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    }
+                                    
+                                    Element iPForwardingElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                                    if (iPForwardingElement != null) {
+                                        String iPForwardingInstance;
+                                        iPForwardingInstance = iPForwardingElement.getTextContent();
+                                        networkInterfaceInstance.setIPForwarding(iPForwardingInstance);
+                                    }
                                 }
                             }
                             
-                            Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                            if (networkSecurityGroupElement != null) {
-                                String networkSecurityGroupInstance;
-                                networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                                configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                            Element networkSecurityGroupElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                            if (networkSecurityGroupElement2 != null) {
+                                String networkSecurityGroupInstance2;
+                                networkSecurityGroupInstance2 = networkSecurityGroupElement2.getTextContent();
+                                configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance2);
+                            }
+                            
+                            Element iPForwardingElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "IPForwarding");
+                            if (iPForwardingElement2 != null) {
+                                String iPForwardingInstance2;
+                                iPForwardingInstance2 = iPForwardingElement2.getTextContent();
+                                configurationSetInstance.setIPForwarding(iPForwardingInstance2);
                             }
                             
                             Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -6558,7 +6688,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         Element protocolElement3 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                         if (protocolElement3 != null && protocolElement3.getTextContent() != null && !protocolElement3.getTextContent().isEmpty()) {
                                             VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
-                                            protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
+                                            protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent().toUpperCase());
                                             listenerInstance.setListenerType(protocolInstance3);
                                         }
                                         
@@ -7042,7 +7172,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7055,7 +7185,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7169,7 +7299,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7182,7 +7312,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7287,7 +7417,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7300,7 +7430,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7409,7 +7539,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7422,7 +7552,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7527,7 +7657,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7540,7 +7670,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7663,7 +7793,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7676,7 +7806,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7787,7 +7917,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7800,7 +7930,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

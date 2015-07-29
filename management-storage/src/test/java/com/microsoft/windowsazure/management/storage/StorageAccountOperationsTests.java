@@ -169,7 +169,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     public void generateKeysSuccess() throws Exception {
         StorageAccountRegenerateKeysParameters storageAccountRegenerateKeysParameters = new StorageAccountRegenerateKeysParameters();        
         storageAccountRegenerateKeysParameters.setName(storageAccountName);
-        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.Primary); 
+        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.PRIMARY);
         
         //Act   
         StorageAccountGetKeysResponse  storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);

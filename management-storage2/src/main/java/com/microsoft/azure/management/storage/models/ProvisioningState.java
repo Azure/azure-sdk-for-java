@@ -23,21 +23,24 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* The state of the storage account at the time the operation was called.
+*/
 public enum ProvisioningState {
     /**
     * The storage account is being created. When an account is in “Creating”
     * state, only properties that are specified as input for Create operation
     * are returned.
     */
-    Creating,
+    CREATING,
     
     /**
     * The DNS name for the storage account is being propagated.
     */
-    ResolvingDNS,
+    RESOLVINGDNS,
     
     /**
     * The storage account is active for use.
     */
-    Succeeded,
+    SUCCEEDED,
 }

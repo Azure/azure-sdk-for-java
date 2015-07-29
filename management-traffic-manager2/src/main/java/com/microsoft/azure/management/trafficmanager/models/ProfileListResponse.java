@@ -29,13 +29,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response to a Profile ProfileListAll operation.
+* The response to a Traffic Manager profile 'ListAll' or
+* 'ListAllInResourceGroup' operation.
 */
 public class ProfileListResponse extends OperationResponse implements Iterable<Profile> {
     private ArrayList<Profile> profiles;
     
     /**
-    * Required. Gets or sets information about the Profiles in the response.
+    * Required. Gets or sets information about the Traffic Manager profiles in
+    * the response to the 'ListAll' or 'ListAllInResourceGroup' operation.
     * @return The Profiles value.
     */
     public ArrayList<Profile> getProfiles() {
@@ -43,7 +45,8 @@ public class ProfileListResponse extends OperationResponse implements Iterable<P
     }
     
     /**
-    * Required. Gets or sets information about the Profiles in the response.
+    * Required. Gets or sets information about the Traffic Manager profiles in
+    * the response to the 'ListAll' or 'ListAllInResourceGroup' operation.
     * @param profilesValue The Profiles value.
     */
     public void setProfiles(final ArrayList<Profile> profilesValue) {
@@ -63,8 +66,9 @@ public class ProfileListResponse extends OperationResponse implements Iterable<P
     * Initializes a new instance of the ProfileListResponse class with required
     * arguments.
     *
-    * @param profiles Gets or sets information about the Profiles in the
-    * response.
+    * @param profiles Gets or sets information about the Traffic Manager
+    * profiles in the response to the 'ListAll' or 'ListAllInResourceGroup'
+    * operation.
     */
     public ProfileListResponse(ArrayList<Profile> profiles) {
         this();

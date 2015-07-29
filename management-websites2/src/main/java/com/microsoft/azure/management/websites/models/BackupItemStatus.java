@@ -30,36 +30,36 @@ public enum BackupItemStatus {
     /**
     * In progress
     */
-    InProgress,
+    INPROGRESS,
     
     /**
     * Failed
     */
-    Failed,
+    FAILED,
     
     /**
     * Succeeded
     */
-    Succeeded,
+    SUCCEEDED,
     
     /**
     * Timed out
     */
-    TimedOut,
+    TIMEDOUT,
     
     /**
     * Created, pending
     */
-    Created,
+    CREATED,
     
     /**
     * Skipped
     */
-    Skipped,
+    SKIPPED,
     
     /**
     * Partially succeeded. Some file were not included in the backup due to
     * locking conflicts
     */
-    PartiallySucceeded,
+    PARTIALLYSUCCEEDED,
 }

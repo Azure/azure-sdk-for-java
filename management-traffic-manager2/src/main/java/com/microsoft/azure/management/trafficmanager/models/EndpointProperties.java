@@ -24,13 +24,14 @@
 package com.microsoft.azure.management.trafficmanager.models;
 
 /**
-* Properties of an endpoint.
+* Class containing the properties of a Traffic Manager endpoint.
 */
 public class EndpointProperties {
     private String endpointLocation;
     
     /**
-    * Optional. Gets or sets the location of the endpoint.
+    * Optional. Specifies the location of the external or nested endpoints when
+    * using the ‘Performance’ traffic routing method.
     * @return The EndpointLocation value.
     */
     public String getEndpointLocation() {
@@ -38,7 +39,8 @@ public class EndpointProperties {
     }
     
     /**
-    * Optional. Gets or sets the location of the endpoint.
+    * Optional. Specifies the location of the external or nested endpoints when
+    * using the ‘Performance’ traffic routing method.
     * @param endpointLocationValue The EndpointLocation value.
     */
     public void setEndpointLocation(final String endpointLocationValue) {
@@ -48,7 +50,7 @@ public class EndpointProperties {
     private String endpointMonitorStatus;
     
     /**
-    * Optional. Gets or sets the monitor status of the endpoint.
+    * Optional. Gets or sets the monitoring status of the endpoint.
     * @return The EndpointMonitorStatus value.
     */
     public String getEndpointMonitorStatus() {
@@ -56,7 +58,7 @@ public class EndpointProperties {
     }
     
     /**
-    * Optional. Gets or sets the monitor status of the endpoint.
+    * Optional. Gets or sets the monitoring status of the endpoint.
     * @param endpointMonitorStatusValue The EndpointMonitorStatus value.
     */
     public void setEndpointMonitorStatus(final String endpointMonitorStatusValue) {
@@ -66,7 +68,9 @@ public class EndpointProperties {
     private String endpointStatus;
     
     /**
-    * Required. Gets or sets the status of the endpoint.
+    * Optional. Gets or sets the status of the endpoint..  If the endpoint is
+    * Enabled, it is probed for endpoint health and is included in the traffic
+    * routing method.  Possible values are 'Enabled' and 'Disabled'.
     * @return The EndpointStatus value.
     */
     public String getEndpointStatus() {
@@ -74,7 +78,9 @@ public class EndpointProperties {
     }
     
     /**
-    * Required. Gets or sets the status of the endpoint.
+    * Optional. Gets or sets the status of the endpoint..  If the endpoint is
+    * Enabled, it is probed for endpoint health and is included in the traffic
+    * routing method.  Possible values are 'Enabled' and 'Disabled'.
     * @param endpointStatusValue The EndpointStatus value.
     */
     public void setEndpointStatus(final String endpointStatusValue) {
@@ -84,7 +90,11 @@ public class EndpointProperties {
     private Long priority;
     
     /**
-    * Optional. Gets or sets the priority of the endpoint.
+    * Optional. Gets or sets the priority of this endpoint when using the
+    * ‘Priority’ traffic routing method. Possible values are from 1 to 1000,
+    * lower values represent higher priority. This is an optional parameter.
+    * If specified, it must be specified on all endpoints, and no two
+    * endpoints can share the same priority value.
     * @return The Priority value.
     */
     public Long getPriority() {
@@ -92,7 +102,11 @@ public class EndpointProperties {
     }
     
     /**
-    * Optional. Gets or sets the priority of the endpoint.
+    * Optional. Gets or sets the priority of this endpoint when using the
+    * ‘Priority’ traffic routing method. Possible values are from 1 to 1000,
+    * lower values represent higher priority. This is an optional parameter.
+    * If specified, it must be specified on all endpoints, and no two
+    * endpoints can share the same priority value.
     * @param priorityValue The Priority value.
     */
     public void setPriority(final Long priorityValue) {
@@ -102,7 +116,9 @@ public class EndpointProperties {
     private String target;
     
     /**
-    * Required. Gets or sets the target of the endpoint.
+    * Optional. Gets or sets the fully-qualified DNS name of the endpoint.
+    * Traffic Manager returns this value in DNS responses to direct traffic
+    * to this endpoint.
     * @return The Target value.
     */
     public String getTarget() {
@@ -110,7 +126,9 @@ public class EndpointProperties {
     }
     
     /**
-    * Required. Gets or sets the target of the endpoint.
+    * Optional. Gets or sets the fully-qualified DNS name of the endpoint.
+    * Traffic Manager returns this value in DNS responses to direct traffic
+    * to this endpoint.
     * @param targetValue The Target value.
     */
     public void setTarget(final String targetValue) {
@@ -120,7 +138,8 @@ public class EndpointProperties {
     private String targetResourceId;
     
     /**
-    * Optional. Gets or sets the targetResourceId of the endpoint.
+    * Optional. Gets or sets the Azure Resource URI of the of the endpoint.
+    * Not applicable to endpoints of type 'ExternalEndpoints'.
     * @return The TargetResourceId value.
     */
     public String getTargetResourceId() {
@@ -128,7 +147,8 @@ public class EndpointProperties {
     }
     
     /**
-    * Optional. Gets or sets the targetResourceId of the endpoint.
+    * Optional. Gets or sets the Azure Resource URI of the of the endpoint.
+    * Not applicable to endpoints of type 'ExternalEndpoints'.
     * @param targetResourceIdValue The TargetResourceId value.
     */
     public void setTargetResourceId(final String targetResourceIdValue) {
@@ -138,7 +158,8 @@ public class EndpointProperties {
     private Long weight;
     
     /**
-    * Optional. Gets or sets the weight of the endpoint.
+    * Optional. Gets or sets the weight of this endpoint when using the
+    * 'Weighted' traffic routing method. Possible values are from 1 to 1000.
     * @return The Weight value.
     */
     public Long getWeight() {
@@ -146,35 +167,11 @@ public class EndpointProperties {
     }
     
     /**
-    * Optional. Gets or sets the weight of the endpoint.
+    * Optional. Gets or sets the weight of this endpoint when using the
+    * 'Weighted' traffic routing method. Possible values are from 1 to 1000.
     * @param weightValue The Weight value.
     */
     public void setWeight(final Long weightValue) {
         this.weight = weightValue;
-    }
-    
-    /**
-    * Initializes a new instance of the EndpointProperties class.
-    *
-    */
-    public EndpointProperties() {
-    }
-    
-    /**
-    * Initializes a new instance of the EndpointProperties class with required
-    * arguments.
-    *
-    * @param target Gets or sets the target of the endpoint.
-    * @param endpointStatus Gets or sets the status of the endpoint.
-    */
-    public EndpointProperties(String target, String endpointStatus) {
-        if (target == null) {
-            throw new NullPointerException("target");
-        }
-        if (endpointStatus == null) {
-            throw new NullPointerException("endpointStatus");
-        }
-        this.setTarget(target);
-        this.setEndpointStatus(endpointStatus);
     }
 }

@@ -85,11 +85,25 @@ public interface NetworkResourceProviderClient extends Closeable, FilterableServ
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
+    * The Network Resource Provider API includes operations managing the
+    * application gateways for your subscription.
+    * @return The ApplicationGatewaysOperations value.
+    */
+    ApplicationGatewayOperations getApplicationGatewaysOperations();
+    
+    /**
     * The Network Resource Provider API includes operations for managing the
     * load balancers for your subscription.
     * @return The LoadBalancersOperations value.
     */
     LoadBalancerOperations getLoadBalancersOperations();
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The LocalNetworkGatewaysOperations value.
+    */
+    LocalNetworkGatewayOperations getLocalNetworkGatewaysOperations();
     
     /**
     * The Network Resource Provider API includes operations for managing the
@@ -114,6 +128,20 @@ public interface NetworkResourceProviderClient extends Closeable, FilterableServ
     
     /**
     * The Network Resource Provider API includes operations for managing the
+    * Routes for your subscription.
+    * @return The RoutesOperations value.
+    */
+    RouteOperations getRoutesOperations();
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * RouteTables for your subscription.
+    * @return The RouteTablesOperations value.
+    */
+    RouteTableOperations getRouteTablesOperations();
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
     * SecurityRules for your subscription.
     * @return The SecurityRulesOperations value.
     */
@@ -131,6 +159,20 @@ public interface NetworkResourceProviderClient extends Closeable, FilterableServ
     * @return The UsagesOperations value.
     */
     UsageOperations getUsagesOperations();
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The VirtualNetworkGatewayConnectionsOperations value.
+    */
+    VirtualNetworkGatewayConnectionOperations getVirtualNetworkGatewayConnectionsOperations();
+    
+    /**
+    * The Network Resource Provider API includes operations for managing the
+    * Virtual network Gateway for your subscription.
+    * @return The VirtualNetworkGatewaysOperations value.
+    */
+    VirtualNetworkGatewayOperations getVirtualNetworkGatewaysOperations();
     
     /**
     * The Network Resource Provider API includes operations for managing the

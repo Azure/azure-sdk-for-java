@@ -292,14 +292,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement2 != null && sKUElement2.getTextContent() != null && !sKUElement2.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent());
+                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent().toUpperCase());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement2 != null && workerSizeElement2.getTextContent() != null && !workerSizeElement2.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent().toUpperCase());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     
@@ -587,14 +587,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     
@@ -1066,14 +1066,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         Element sKUElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                         if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                             SkuOptions sKUInstance;
-                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
+                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
                             serverFarmInstance.setSKU(sKUInstance);
                         }
                         
                         Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                         if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
+                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
                             serverFarmInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -1296,14 +1296,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement2 != null && sKUElement2.getTextContent() != null && !sKUElement2.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent());
+                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent().toUpperCase());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement2 != null && workerSizeElement2.getTextContent() != null && !workerSizeElement2.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent().toUpperCase());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     

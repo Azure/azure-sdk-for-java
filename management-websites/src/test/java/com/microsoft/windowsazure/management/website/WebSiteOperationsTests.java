@@ -32,7 +32,7 @@ import org.junit.Test;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
-    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE; 
+    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE;
     private static String hostName = ".azurewebsites.net";
     
     @BeforeClass
@@ -91,7 +91,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
         WebHostingPlanCreateParameters params = new WebHostingPlanCreateParameters();
         params.setName("DefaultSF");
-        params.setSKU(SkuOptions.Free);
+        params.setSKU(SkuOptions.FREE);
         webSiteManagementClient.getWebHostingPlansOperations().create(webSpaceName, params);
 
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();

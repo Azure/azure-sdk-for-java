@@ -60,6 +60,12 @@ import com.microsoft.windowsazure.scheduler.models.JobRecurrenceFrequency;
 import com.microsoft.windowsazure.scheduler.models.JobRecurrenceSchedule;
 import com.microsoft.windowsazure.scheduler.models.JobScheduleDay;
 import com.microsoft.windowsazure.scheduler.models.JobScheduleMonthlyOccurrence;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusAuthentication;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusAuthenticationType;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusBrokeredMessageProperties;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusQueueMessage;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusTopicMessage;
+import com.microsoft.windowsazure.scheduler.models.JobServiceBusTransportType;
 import com.microsoft.windowsazure.scheduler.models.JobState;
 import com.microsoft.windowsazure.scheduler.models.JobStatus;
 import com.microsoft.windowsazure.scheduler.models.JobUpdateStateParameters;
@@ -182,6 +188,58 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                     throw new NullPointerException("parameters.Action.ErrorAction.Request.Uri");
                 }
             }
+            if (parameters.getAction().getErrorAction().getServiceBusQueueMessage() != null) {
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKey() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.SasKey");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.SasKeyName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.Type");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getMessage() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Message");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getNamespace() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Namespace");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getQueueName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.QueueName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getTransportType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.TransportType");
+                }
+            }
+            if (parameters.getAction().getErrorAction().getServiceBusTopicMessage() != null) {
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKey() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.SasKey");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.SasKeyName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.Type");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getMessage() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Message");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getNamespace() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Namespace");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTopicPath() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.TopicPath");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTransportType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.TransportType");
+                }
+            }
             if (parameters.getAction().getErrorAction().getType() == null) {
                 throw new NullPointerException("parameters.Action.ErrorAction.Type");
             }
@@ -211,6 +269,58 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         if (parameters.getAction().getRetryPolicy() != null) {
             if (parameters.getAction().getRetryPolicy().getRetryType() == null) {
                 throw new NullPointerException("parameters.Action.RetryPolicy.RetryType");
+            }
+        }
+        if (parameters.getAction().getServiceBusQueueMessage() != null) {
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKey() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.SasKey");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.SasKeyName");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.Type");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getMessage() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Message");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getNamespace() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Namespace");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getQueueName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.QueueName");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getTransportType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.TransportType");
+            }
+        }
+        if (parameters.getAction().getServiceBusTopicMessage() != null) {
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKey() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.SasKey");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.SasKeyName");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.Type");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getMessage() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Message");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getNamespace() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Namespace");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getTopicPath() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.TopicPath");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getTransportType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.TransportType");
             }
         }
         if (parameters.getAction().getType() == null) {
@@ -428,6 +538,188 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 
                 ((ObjectNode) queueMessageValue).put("message", parameters.getAction().getErrorAction().getQueueMessage().getMessage());
             }
+            
+            if (parameters.getAction().getErrorAction().getServiceBusTopicMessage() != null) {
+                ObjectNode serviceBusTopicMessageValue = objectMapper.createObjectNode();
+                ((ObjectNode) errorActionValue).put("serviceBusTopicMessage", serviceBusTopicMessageValue);
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("topicPath", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTopicPath());
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("namespace", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getNamespace());
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTransportType()));
+                
+                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusTopicMessageValue).put("authentication", authenticationValue2);
+                
+                ((ObjectNode) authenticationValue2).put("sasKeyName", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName());
+                
+                ((ObjectNode) authenticationValue2).put("sasKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKey());
+                
+                ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getType()));
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("message", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getMessage());
+                
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties() != null) {
+                    ObjectNode brokeredMessagePropertiesValue = objectMapper.createObjectNode();
+                    ((ObjectNode) serviceBusTopicMessageValue).put("brokeredMessageProperties", brokeredMessagePropertiesValue);
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("contentType", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("correlationId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId());
+                    }
+                    
+                    ((ObjectNode) brokeredMessagePropertiesValue).put("forcePersistence", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().isForcePersistence());
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("label", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("messageId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("partitionKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("replyTo", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("replyToSessionId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("scheduledEnqueueTimeUtc", simpleDateFormat3.format(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("sessionId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("timeToLive", simpleDateFormat4.format(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("to", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("viaPartitionKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                    }
+                }
+                
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getCustomMessageProperties() != null) {
+                    ObjectNode customMessagePropertiesDictionary = objectMapper.createObjectNode();
+                    for (Map.Entry<String, String> entry2 : parameters.getAction().getErrorAction().getServiceBusTopicMessage().getCustomMessageProperties().entrySet()) {
+                        String customMessagePropertiesKey = entry2.getKey();
+                        String customMessagePropertiesValue = entry2.getValue();
+                        ((ObjectNode) customMessagePropertiesDictionary).put(customMessagePropertiesKey, customMessagePropertiesValue);
+                    }
+                    ((ObjectNode) serviceBusTopicMessageValue).put("customMessageProperties", customMessagePropertiesDictionary);
+                }
+            }
+            
+            if (parameters.getAction().getErrorAction().getServiceBusQueueMessage() != null) {
+                ObjectNode serviceBusQueueMessageValue = objectMapper.createObjectNode();
+                ((ObjectNode) errorActionValue).put("serviceBusQueueMessage", serviceBusQueueMessageValue);
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("queueName", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getQueueName());
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("namespace", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getNamespace());
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getTransportType()));
+                
+                ObjectNode authenticationValue3 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusQueueMessageValue).put("authentication", authenticationValue3);
+                
+                ((ObjectNode) authenticationValue3).put("sasKeyName", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName());
+                
+                ((ObjectNode) authenticationValue3).put("sasKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKey());
+                
+                ((ObjectNode) authenticationValue3).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getType()));
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("message", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getMessage());
+                
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties() != null) {
+                    ObjectNode brokeredMessagePropertiesValue2 = objectMapper.createObjectNode();
+                    ((ObjectNode) serviceBusQueueMessageValue).put("brokeredMessageProperties", brokeredMessagePropertiesValue2);
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("contentType", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("correlationId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId());
+                    }
+                    
+                    ((ObjectNode) brokeredMessagePropertiesValue2).put("forcePersistence", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().isForcePersistence());
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("label", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("messageId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("partitionKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("replyTo", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("replyToSessionId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("scheduledEnqueueTimeUtc", simpleDateFormat5.format(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("sessionId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat6.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("timeToLive", simpleDateFormat6.format(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("to", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("viaPartitionKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                    }
+                }
+                
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getCustomMessageProperties() != null) {
+                    ObjectNode customMessagePropertiesDictionary2 = objectMapper.createObjectNode();
+                    for (Map.Entry<String, String> entry3 : parameters.getAction().getErrorAction().getServiceBusQueueMessage().getCustomMessageProperties().entrySet()) {
+                        String customMessagePropertiesKey2 = entry3.getKey();
+                        String customMessagePropertiesValue2 = entry3.getValue();
+                        ((ObjectNode) customMessagePropertiesDictionary2).put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                    }
+                    ((ObjectNode) serviceBusQueueMessageValue).put("customMessageProperties", customMessagePropertiesDictionary2);
+                }
+            }
         }
         
         if (parameters.getAction().getRequest() != null) {
@@ -441,9 +733,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             if (parameters.getAction().getRequest().getHeaders() != null) {
                 if (parameters.getAction().getRequest().getHeaders() instanceof LazyCollection == false || ((LazyCollection) parameters.getAction().getRequest().getHeaders()).isInitialized()) {
                     ObjectNode headersDictionary2 = objectMapper.createObjectNode();
-                    for (Map.Entry<String, String> entry2 : parameters.getAction().getRequest().getHeaders().entrySet()) {
-                        String headersKey2 = entry2.getKey();
-                        String headersValue2 = entry2.getValue();
+                    for (Map.Entry<String, String> entry4 : parameters.getAction().getRequest().getHeaders().entrySet()) {
+                        String headersKey2 = entry4.getKey();
+                        String headersValue2 = entry4.getValue();
                         ((ObjectNode) headersDictionary2).put(headersKey2, headersValue2);
                     }
                     ((ObjectNode) requestValue2).put("headers", headersDictionary2);
@@ -455,74 +747,74 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getAction().getRequest().getAuthentication() != null) {
-                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
-                ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
+                ObjectNode authenticationValue4 = objectMapper.createObjectNode();
+                ((ObjectNode) requestValue2).put("authentication", authenticationValue4);
                 if (parameters.getAction().getRequest().getAuthentication() instanceof ClientCertAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
+                    ((ObjectNode) authenticationValue4).put("type", "ClientCertificate");
                     ClientCertAuthentication derived4 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
                     if (derived4.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived4.getPassword());
+                        ((ObjectNode) authenticationValue4).put("password", derived4.getPassword());
                     }
                     
                     if (derived4.getPfx() != null) {
-                        ((ObjectNode) authenticationValue2).put("pfx", derived4.getPfx());
+                        ((ObjectNode) authenticationValue4).put("pfx", derived4.getPfx());
                     }
                     
                     if (derived4.getCertificateThumbprint() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived4.getCertificateThumbprint());
+                        ((ObjectNode) authenticationValue4).put("certificateThumbprint", derived4.getCertificateThumbprint());
                     }
                     
                     if (derived4.getCertificateExpiration() != null) {
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived4.getCertificateExpiration().getTime()));
+                        SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat7.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) authenticationValue4).put("certificateExpiration", simpleDateFormat7.format(derived4.getCertificateExpiration().getTime()));
                     }
                     
                     if (derived4.getCertificateSubjectName() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived4.getCertificateSubjectName());
+                        ((ObjectNode) authenticationValue4).put("certificateSubjectName", derived4.getCertificateSubjectName());
                     }
                     
                     if (derived4.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
                     }
                 }
                 if (parameters.getAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "ActiveDirectoryOAuth");
+                    ((ObjectNode) authenticationValue4).put("type", "ActiveDirectoryOAuth");
                     AADOAuthAuthentication derived5 = ((AADOAuthAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
                     if (derived5.getSecret() != null) {
-                        ((ObjectNode) authenticationValue2).put("secret", derived5.getSecret());
+                        ((ObjectNode) authenticationValue4).put("secret", derived5.getSecret());
                     }
                     
                     if (derived5.getTenant() != null) {
-                        ((ObjectNode) authenticationValue2).put("tenant", derived5.getTenant());
+                        ((ObjectNode) authenticationValue4).put("tenant", derived5.getTenant());
                     }
                     
                     if (derived5.getAudience() != null) {
-                        ((ObjectNode) authenticationValue2).put("audience", derived5.getAudience());
+                        ((ObjectNode) authenticationValue4).put("audience", derived5.getAudience());
                     }
                     
                     if (derived5.getClientId() != null) {
-                        ((ObjectNode) authenticationValue2).put("clientId", derived5.getClientId());
+                        ((ObjectNode) authenticationValue4).put("clientId", derived5.getClientId());
                     }
                     
                     if (derived5.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
                     }
                 }
                 if (parameters.getAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "Basic");
+                    ((ObjectNode) authenticationValue4).put("type", "Basic");
                     BasicAuthentication derived6 = ((BasicAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
-                    ((ObjectNode) authenticationValue2).put("username", derived6.getUsername());
+                    ((ObjectNode) authenticationValue4).put("username", derived6.getUsername());
                     
                     if (derived6.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived6.getPassword());
+                        ((ObjectNode) authenticationValue4).put("password", derived6.getPassword());
                     }
                     
                     if (derived6.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
                     }
                 }
             }
@@ -541,6 +833,188 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             ((ObjectNode) queueMessageValue2).put("message", parameters.getAction().getQueueMessage().getMessage());
         }
         
+        if (parameters.getAction().getServiceBusTopicMessage() != null) {
+            ObjectNode serviceBusTopicMessageValue2 = objectMapper.createObjectNode();
+            ((ObjectNode) actionValue).put("serviceBusTopicMessage", serviceBusTopicMessageValue2);
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("topicPath", parameters.getAction().getServiceBusTopicMessage().getTopicPath());
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("namespace", parameters.getAction().getServiceBusTopicMessage().getNamespace());
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getServiceBusTopicMessage().getTransportType()));
+            
+            ObjectNode authenticationValue5 = objectMapper.createObjectNode();
+            ((ObjectNode) serviceBusTopicMessageValue2).put("authentication", authenticationValue5);
+            
+            ((ObjectNode) authenticationValue5).put("sasKeyName", parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName());
+            
+            ((ObjectNode) authenticationValue5).put("sasKey", parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKey());
+            
+            ((ObjectNode) authenticationValue5).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getServiceBusTopicMessage().getAuthentication().getType()));
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("message", parameters.getAction().getServiceBusTopicMessage().getMessage());
+            
+            if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties() != null) {
+                ObjectNode brokeredMessagePropertiesValue3 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusTopicMessageValue2).put("brokeredMessageProperties", brokeredMessagePropertiesValue3);
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("contentType", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("correlationId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId());
+                }
+                
+                ((ObjectNode) brokeredMessagePropertiesValue3).put("forcePersistence", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().isForcePersistence());
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("label", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("messageId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("partitionKey", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("replyTo", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("replyToSessionId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                    SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat8.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("scheduledEnqueueTimeUtc", simpleDateFormat8.format(parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("sessionId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                    SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat9.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("timeToLive", simpleDateFormat9.format(parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("to", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("viaPartitionKey", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                }
+            }
+            
+            if (parameters.getAction().getServiceBusTopicMessage().getCustomMessageProperties() != null) {
+                ObjectNode customMessagePropertiesDictionary3 = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry5 : parameters.getAction().getServiceBusTopicMessage().getCustomMessageProperties().entrySet()) {
+                    String customMessagePropertiesKey3 = entry5.getKey();
+                    String customMessagePropertiesValue3 = entry5.getValue();
+                    ((ObjectNode) customMessagePropertiesDictionary3).put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                }
+                ((ObjectNode) serviceBusTopicMessageValue2).put("customMessageProperties", customMessagePropertiesDictionary3);
+            }
+        }
+        
+        if (parameters.getAction().getServiceBusQueueMessage() != null) {
+            ObjectNode serviceBusQueueMessageValue2 = objectMapper.createObjectNode();
+            ((ObjectNode) actionValue).put("serviceBusQueueMessage", serviceBusQueueMessageValue2);
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("queueName", parameters.getAction().getServiceBusQueueMessage().getQueueName());
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("namespace", parameters.getAction().getServiceBusQueueMessage().getNamespace());
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getServiceBusQueueMessage().getTransportType()));
+            
+            ObjectNode authenticationValue6 = objectMapper.createObjectNode();
+            ((ObjectNode) serviceBusQueueMessageValue2).put("authentication", authenticationValue6);
+            
+            ((ObjectNode) authenticationValue6).put("sasKeyName", parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName());
+            
+            ((ObjectNode) authenticationValue6).put("sasKey", parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKey());
+            
+            ((ObjectNode) authenticationValue6).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getServiceBusQueueMessage().getAuthentication().getType()));
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("message", parameters.getAction().getServiceBusQueueMessage().getMessage());
+            
+            if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties() != null) {
+                ObjectNode brokeredMessagePropertiesValue4 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusQueueMessageValue2).put("brokeredMessageProperties", brokeredMessagePropertiesValue4);
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("contentType", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("correlationId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId());
+                }
+                
+                ((ObjectNode) brokeredMessagePropertiesValue4).put("forcePersistence", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().isForcePersistence());
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("label", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("messageId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("partitionKey", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("replyTo", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("replyToSessionId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                    SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat10.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("scheduledEnqueueTimeUtc", simpleDateFormat10.format(parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("sessionId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                    SimpleDateFormat simpleDateFormat11 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat11.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("timeToLive", simpleDateFormat11.format(parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("to", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("viaPartitionKey", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                }
+            }
+            
+            if (parameters.getAction().getServiceBusQueueMessage().getCustomMessageProperties() != null) {
+                ObjectNode customMessagePropertiesDictionary4 = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry6 : parameters.getAction().getServiceBusQueueMessage().getCustomMessageProperties().entrySet()) {
+                    String customMessagePropertiesKey4 = entry6.getKey();
+                    String customMessagePropertiesValue4 = entry6.getValue();
+                    ((ObjectNode) customMessagePropertiesDictionary4).put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                }
+                ((ObjectNode) serviceBusQueueMessageValue2).put("customMessageProperties", customMessagePropertiesDictionary4);
+            }
+        }
+        
         if (parameters.getRecurrence() != null) {
             ObjectNode recurrenceValue = objectMapper.createObjectNode();
             ((ObjectNode) jobCreateParametersValue).put("recurrence", recurrenceValue);
@@ -556,9 +1030,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getRecurrence().getEndTime() != null) {
-                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat4.format(parameters.getRecurrence().getEndTime().getTime()));
+                SimpleDateFormat simpleDateFormat12 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                simpleDateFormat12.setTimeZone(TimeZone.getTimeZone("UTC"));
+                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat12.format(parameters.getRecurrence().getEndTime().getTime()));
             }
             
             if (parameters.getRecurrence().getSchedule() != null) {
@@ -765,48 +1239,48 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     requestInstance.setBody(bodyInstance);
                                 }
                                 
-                                JsonNode authenticationValue3 = requestValue3.get("authentication");
-                                if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
-                                    String typeName = authenticationValue3.get("type").getTextValue();
+                                JsonNode authenticationValue7 = requestValue3.get("authentication");
+                                if (authenticationValue7 != null && authenticationValue7 instanceof NullNode == false) {
+                                    String typeName = authenticationValue7.get("type").getTextValue();
                                     if ("ClientCertificate".equals(typeName)) {
                                         ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
                                         
-                                        JsonNode passwordValue = authenticationValue3.get("password");
+                                        JsonNode passwordValue = authenticationValue7.get("password");
                                         if (passwordValue != null && passwordValue instanceof NullNode == false) {
                                             String passwordInstance;
                                             passwordInstance = passwordValue.getTextValue();
                                             clientCertAuthenticationInstance.setPassword(passwordInstance);
                                         }
                                         
-                                        JsonNode pfxValue = authenticationValue3.get("pfx");
+                                        JsonNode pfxValue = authenticationValue7.get("pfx");
                                         if (pfxValue != null && pfxValue instanceof NullNode == false) {
                                             String pfxInstance;
                                             pfxInstance = pfxValue.getTextValue();
                                             clientCertAuthenticationInstance.setPfx(pfxInstance);
                                         }
                                         
-                                        JsonNode certificateThumbprintValue = authenticationValue3.get("certificateThumbprint");
+                                        JsonNode certificateThumbprintValue = authenticationValue7.get("certificateThumbprint");
                                         if (certificateThumbprintValue != null && certificateThumbprintValue instanceof NullNode == false) {
                                             String certificateThumbprintInstance;
                                             certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
                                             clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
                                         }
                                         
-                                        JsonNode certificateExpirationValue = authenticationValue3.get("certificateExpiration");
+                                        JsonNode certificateExpirationValue = authenticationValue7.get("certificateExpiration");
                                         if (certificateExpirationValue != null && certificateExpirationValue instanceof NullNode == false) {
                                             Calendar certificateExpirationInstance;
                                             certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
                                             clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
                                         }
                                         
-                                        JsonNode certificateSubjectNameValue = authenticationValue3.get("certificateSubjectName");
+                                        JsonNode certificateSubjectNameValue = authenticationValue7.get("certificateSubjectName");
                                         if (certificateSubjectNameValue != null && certificateSubjectNameValue instanceof NullNode == false) {
                                             String certificateSubjectNameInstance;
                                             certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
                                             clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
                                         }
                                         
-                                        JsonNode typeValue3 = authenticationValue3.get("type");
+                                        JsonNode typeValue3 = authenticationValue7.get("type");
                                         if (typeValue3 != null && typeValue3 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance3;
                                             typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
@@ -817,35 +1291,35 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("ActiveDirectoryOAuth".equals(typeName)) {
                                         AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
                                         
-                                        JsonNode secretValue = authenticationValue3.get("secret");
+                                        JsonNode secretValue = authenticationValue7.get("secret");
                                         if (secretValue != null && secretValue instanceof NullNode == false) {
                                             String secretInstance;
                                             secretInstance = secretValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setSecret(secretInstance);
                                         }
                                         
-                                        JsonNode tenantValue = authenticationValue3.get("tenant");
+                                        JsonNode tenantValue = authenticationValue7.get("tenant");
                                         if (tenantValue != null && tenantValue instanceof NullNode == false) {
                                             String tenantInstance;
                                             tenantInstance = tenantValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setTenant(tenantInstance);
                                         }
                                         
-                                        JsonNode audienceValue = authenticationValue3.get("audience");
+                                        JsonNode audienceValue = authenticationValue7.get("audience");
                                         if (audienceValue != null && audienceValue instanceof NullNode == false) {
                                             String audienceInstance;
                                             audienceInstance = audienceValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setAudience(audienceInstance);
                                         }
                                         
-                                        JsonNode clientIdValue = authenticationValue3.get("clientId");
+                                        JsonNode clientIdValue = authenticationValue7.get("clientId");
                                         if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
                                             String clientIdInstance;
                                             clientIdInstance = clientIdValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
                                         }
                                         
-                                        JsonNode typeValue4 = authenticationValue3.get("type");
+                                        JsonNode typeValue4 = authenticationValue7.get("type");
                                         if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance4;
                                             typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
@@ -856,21 +1330,21 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("Basic".equals(typeName)) {
                                         BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
                                         
-                                        JsonNode usernameValue = authenticationValue3.get("username");
+                                        JsonNode usernameValue = authenticationValue7.get("username");
                                         if (usernameValue != null && usernameValue instanceof NullNode == false) {
                                             String usernameInstance;
                                             usernameInstance = usernameValue.getTextValue();
                                             basicAuthenticationInstance.setUsername(usernameInstance);
                                         }
                                         
-                                        JsonNode passwordValue2 = authenticationValue3.get("password");
+                                        JsonNode passwordValue2 = authenticationValue7.get("password");
                                         if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
                                             String passwordInstance2;
                                             passwordInstance2 = passwordValue2.getTextValue();
                                             basicAuthenticationInstance.setPassword(passwordInstance2);
                                         }
                                         
-                                        JsonNode typeValue5 = authenticationValue3.get("type");
+                                        JsonNode typeValue5 = authenticationValue7.get("type");
                                         if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance5;
                                             typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
@@ -914,6 +1388,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     queueMessageInstance.setMessage(messageInstance);
                                 }
                             }
+                            
+                            JsonNode serviceBusTopicMessageValue3 = errorActionValue2.get("serviceBusTopicMessage");
+                            if (serviceBusTopicMessageValue3 != null && serviceBusTopicMessageValue3 instanceof NullNode == false) {
+                                JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                
+                                JsonNode topicPathValue = serviceBusTopicMessageValue3.get("topicPath");
+                                if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                    String topicPathInstance;
+                                    topicPathInstance = topicPathValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                }
+                                
+                                JsonNode namespaceValue = serviceBusTopicMessageValue3.get("namespace");
+                                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                    String namespaceInstance;
+                                    namespaceInstance = namespaceValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                }
+                                
+                                JsonNode transportTypeValue = serviceBusTopicMessageValue3.get("transportType");
+                                if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance;
+                                    transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                    serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                }
+                                
+                                JsonNode authenticationValue8 = serviceBusTopicMessageValue3.get("authentication");
+                                if (authenticationValue8 != null && authenticationValue8 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                    serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                    
+                                    JsonNode sasKeyNameValue = authenticationValue8.get("sasKeyName");
+                                    if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                        String sasKeyNameInstance;
+                                        sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                        authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                    }
+                                    
+                                    JsonNode sasKeyValue = authenticationValue8.get("sasKey");
+                                    if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                        String sasKeyInstance;
+                                        sasKeyInstance = sasKeyValue.getTextValue();
+                                        authenticationInstance.setSasKey(sasKeyInstance);
+                                    }
+                                    
+                                    JsonNode typeValue6 = authenticationValue8.get("type");
+                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance6;
+                                        typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                        authenticationInstance.setType(typeInstance6);
+                                    }
+                                }
+                                
+                                JsonNode messageValue2 = serviceBusTopicMessageValue3.get("message");
+                                if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageValue2.getTextValue();
+                                    serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue5 = serviceBusTopicMessageValue3.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue5 != null && brokeredMessagePropertiesValue5 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                    
+                                    JsonNode contentTypeValue = brokeredMessagePropertiesValue5.get("contentType");
+                                    if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                        String contentTypeInstance;
+                                        contentTypeInstance = contentTypeValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                    }
+                                    
+                                    JsonNode correlationIdValue = brokeredMessagePropertiesValue5.get("correlationId");
+                                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                        String correlationIdInstance;
+                                        correlationIdInstance = correlationIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue = brokeredMessagePropertiesValue5.get("forcePersistence");
+                                    if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance;
+                                        forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                        brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                    }
+                                    
+                                    JsonNode labelValue = brokeredMessagePropertiesValue5.get("label");
+                                    if (labelValue != null && labelValue instanceof NullNode == false) {
+                                        String labelInstance;
+                                        labelInstance = labelValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                    }
+                                    
+                                    JsonNode messageIdValue = brokeredMessagePropertiesValue5.get("messageId");
+                                    if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                        String messageIdInstance;
+                                        messageIdInstance = messageIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue = brokeredMessagePropertiesValue5.get("partitionKey");
+                                    if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                        String partitionKeyInstance;
+                                        partitionKeyInstance = partitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                    }
+                                    
+                                    JsonNode replyToValue = brokeredMessagePropertiesValue5.get("replyTo");
+                                    if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                        String replyToInstance;
+                                        replyToInstance = replyToValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue5.get("replyToSessionId");
+                                    if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                        String replyToSessionIdInstance;
+                                        replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue5.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance;
+                                        scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                    }
+                                    
+                                    JsonNode sessionIdValue = brokeredMessagePropertiesValue5.get("sessionId");
+                                    if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                        String sessionIdInstance;
+                                        sessionIdInstance = sessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue = brokeredMessagePropertiesValue5.get("timeToLive");
+                                    if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance;
+                                        timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                    }
+                                    
+                                    JsonNode toValue = brokeredMessagePropertiesValue5.get("to");
+                                    if (toValue != null && toValue instanceof NullNode == false) {
+                                        String toInstance;
+                                        toInstance = toValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setTo(toInstance);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue5.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance;
+                                        viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue3.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                    while (itr2.hasNext()) {
+                                        Map.Entry<String, JsonNode> property2 = itr2.next();
+                                        String customMessagePropertiesKey5 = property2.getKey();
+                                        String customMessagePropertiesValue5 = property2.getValue().getTextValue();
+                                        serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey5, customMessagePropertiesValue5);
+                                    }
+                                }
+                            }
+                            
+                            JsonNode serviceBusQueueMessageValue3 = errorActionValue2.get("serviceBusQueueMessage");
+                            if (serviceBusQueueMessageValue3 != null && serviceBusQueueMessageValue3 instanceof NullNode == false) {
+                                JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                
+                                JsonNode queueNameValue2 = serviceBusQueueMessageValue3.get("queueName");
+                                if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                    String queueNameInstance2;
+                                    queueNameInstance2 = queueNameValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                }
+                                
+                                JsonNode namespaceValue2 = serviceBusQueueMessageValue3.get("namespace");
+                                if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                    String namespaceInstance2;
+                                    namespaceInstance2 = namespaceValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                }
+                                
+                                JsonNode transportTypeValue2 = serviceBusQueueMessageValue3.get("transportType");
+                                if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance2;
+                                    transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                    serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                }
+                                
+                                JsonNode authenticationValue9 = serviceBusQueueMessageValue3.get("authentication");
+                                if (authenticationValue9 != null && authenticationValue9 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                    serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                    
+                                    JsonNode sasKeyNameValue2 = authenticationValue9.get("sasKeyName");
+                                    if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                        String sasKeyNameInstance2;
+                                        sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                        authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                    }
+                                    
+                                    JsonNode sasKeyValue2 = authenticationValue9.get("sasKey");
+                                    if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                        String sasKeyInstance2;
+                                        sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                        authenticationInstance2.setSasKey(sasKeyInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue7 = authenticationValue9.get("type");
+                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance7;
+                                        typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                        authenticationInstance2.setType(typeInstance7);
+                                    }
+                                }
+                                
+                                JsonNode messageValue3 = serviceBusQueueMessageValue3.get("message");
+                                if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                    String messageInstance3;
+                                    messageInstance3 = messageValue3.getTextValue();
+                                    serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue6 = serviceBusQueueMessageValue3.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue6 != null && brokeredMessagePropertiesValue6 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                    
+                                    JsonNode contentTypeValue2 = brokeredMessagePropertiesValue6.get("contentType");
+                                    if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                        String contentTypeInstance2;
+                                        contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                    }
+                                    
+                                    JsonNode correlationIdValue2 = brokeredMessagePropertiesValue6.get("correlationId");
+                                    if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                        String correlationIdInstance2;
+                                        correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue6.get("forcePersistence");
+                                    if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance2;
+                                        forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                        brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                    }
+                                    
+                                    JsonNode labelValue2 = brokeredMessagePropertiesValue6.get("label");
+                                    if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                        String labelInstance2;
+                                        labelInstance2 = labelValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                    }
+                                    
+                                    JsonNode messageIdValue2 = brokeredMessagePropertiesValue6.get("messageId");
+                                    if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                        String messageIdInstance2;
+                                        messageIdInstance2 = messageIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue6.get("partitionKey");
+                                    if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                        String partitionKeyInstance2;
+                                        partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                    }
+                                    
+                                    JsonNode replyToValue2 = brokeredMessagePropertiesValue6.get("replyTo");
+                                    if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                        String replyToInstance2;
+                                        replyToInstance2 = replyToValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue6.get("replyToSessionId");
+                                    if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                        String replyToSessionIdInstance2;
+                                        replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue6.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance2;
+                                        scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                    }
+                                    
+                                    JsonNode sessionIdValue2 = brokeredMessagePropertiesValue6.get("sessionId");
+                                    if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                        String sessionIdInstance2;
+                                        sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue6.get("timeToLive");
+                                    if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance2;
+                                        timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                    }
+                                    
+                                    JsonNode toValue2 = brokeredMessagePropertiesValue6.get("to");
+                                    if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                        String toInstance2;
+                                        toInstance2 = toValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue6.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance2;
+                                        viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue3.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                    while (itr3.hasNext()) {
+                                        Map.Entry<String, JsonNode> property3 = itr3.next();
+                                        String customMessagePropertiesKey6 = property3.getKey();
+                                        String customMessagePropertiesValue6 = property3.getValue().getTextValue();
+                                        serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey6, customMessagePropertiesValue6);
+                                    }
+                                }
+                            }
                         }
                         
                         JsonNode requestValue4 = actionValue2.get("request");
@@ -937,11 +1749,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             
                             JsonNode headersSequenceElement2 = ((JsonNode) requestValue4.get("headers"));
                             if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext()) {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
-                                    String headersKey4 = property2.getKey();
-                                    String headersValue4 = property2.getValue().getTextValue();
+                                Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                while (itr4.hasNext()) {
+                                    Map.Entry<String, JsonNode> property4 = itr4.next();
+                                    String headersKey4 = property4.getKey();
+                                    String headersValue4 = property4.getValue().getTextValue();
                                     requestInstance2.getHeaders().put(headersKey4, headersValue4);
                                 }
                             }
@@ -953,116 +1765,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 requestInstance2.setBody(bodyInstance2);
                             }
                             
-                            JsonNode authenticationValue4 = requestValue4.get("authentication");
-                            if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
-                                String typeName2 = authenticationValue4.get("type").getTextValue();
+                            JsonNode authenticationValue10 = requestValue4.get("authentication");
+                            if (authenticationValue10 != null && authenticationValue10 instanceof NullNode == false) {
+                                String typeName2 = authenticationValue10.get("type").getTextValue();
                                 if ("ClientCertificate".equals(typeName2)) {
                                     ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                     
-                                    JsonNode passwordValue3 = authenticationValue4.get("password");
+                                    JsonNode passwordValue3 = authenticationValue10.get("password");
                                     if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                         String passwordInstance3;
                                         passwordInstance3 = passwordValue3.getTextValue();
                                         clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                     }
                                     
-                                    JsonNode pfxValue2 = authenticationValue4.get("pfx");
+                                    JsonNode pfxValue2 = authenticationValue10.get("pfx");
                                     if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                         String pfxInstance2;
                                         pfxInstance2 = pfxValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                     }
                                     
-                                    JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
+                                    JsonNode certificateThumbprintValue2 = authenticationValue10.get("certificateThumbprint");
                                     if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                         String certificateThumbprintInstance2;
                                         certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                     }
                                     
-                                    JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
+                                    JsonNode certificateExpirationValue2 = authenticationValue10.get("certificateExpiration");
                                     if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                         Calendar certificateExpirationInstance2;
                                         certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                         clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                     }
                                     
-                                    JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
+                                    JsonNode certificateSubjectNameValue2 = authenticationValue10.get("certificateSubjectName");
                                     if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                         String certificateSubjectNameInstance2;
                                         certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                     }
                                     
-                                    JsonNode typeValue6 = authenticationValue4.get("type");
-                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance6;
-                                        typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                        clientCertAuthenticationInstance2.setType(typeInstance6);
+                                    JsonNode typeValue8 = authenticationValue10.get("type");
+                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance8;
+                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                        clientCertAuthenticationInstance2.setType(typeInstance8);
                                     }
                                     requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                 }
                                 if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                     AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                     
-                                    JsonNode secretValue2 = authenticationValue4.get("secret");
+                                    JsonNode secretValue2 = authenticationValue10.get("secret");
                                     if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                         String secretInstance2;
                                         secretInstance2 = secretValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                     }
                                     
-                                    JsonNode tenantValue2 = authenticationValue4.get("tenant");
+                                    JsonNode tenantValue2 = authenticationValue10.get("tenant");
                                     if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                         String tenantInstance2;
                                         tenantInstance2 = tenantValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                     }
                                     
-                                    JsonNode audienceValue2 = authenticationValue4.get("audience");
+                                    JsonNode audienceValue2 = authenticationValue10.get("audience");
                                     if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                         String audienceInstance2;
                                         audienceInstance2 = audienceValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                     }
                                     
-                                    JsonNode clientIdValue2 = authenticationValue4.get("clientId");
+                                    JsonNode clientIdValue2 = authenticationValue10.get("clientId");
                                     if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                         String clientIdInstance2;
                                         clientIdInstance2 = clientIdValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                     }
                                     
-                                    JsonNode typeValue7 = authenticationValue4.get("type");
-                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance7;
-                                        typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                        aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                    JsonNode typeValue9 = authenticationValue10.get("type");
+                                    if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance9;
+                                        typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                        aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                     }
                                     requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                 }
                                 if ("Basic".equals(typeName2)) {
                                     BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                     
-                                    JsonNode usernameValue2 = authenticationValue4.get("username");
+                                    JsonNode usernameValue2 = authenticationValue10.get("username");
                                     if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                         String usernameInstance2;
                                         usernameInstance2 = usernameValue2.getTextValue();
                                         basicAuthenticationInstance2.setUsername(usernameInstance2);
                                     }
                                     
-                                    JsonNode passwordValue4 = authenticationValue4.get("password");
+                                    JsonNode passwordValue4 = authenticationValue10.get("password");
                                     if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                         String passwordInstance4;
                                         passwordInstance4 = passwordValue4.getTextValue();
                                         basicAuthenticationInstance2.setPassword(passwordInstance4);
                                     }
                                     
-                                    JsonNode typeValue8 = authenticationValue4.get("type");
-                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance8;
-                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                        basicAuthenticationInstance2.setType(typeInstance8);
+                                    JsonNode typeValue10 = authenticationValue10.get("type");
+                                    if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance10;
+                                        typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                        basicAuthenticationInstance2.setType(typeInstance10);
                                     }
                                     requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                 }
@@ -1081,11 +1893,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                             }
                             
-                            JsonNode queueNameValue2 = queueMessageValue4.get("queueName");
-                            if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                            JsonNode queueNameValue3 = queueMessageValue4.get("queueName");
+                            if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                String queueNameInstance3;
+                                queueNameInstance3 = queueNameValue3.getTextValue();
+                                queueMessageInstance2.setQueueName(queueNameInstance3);
                             }
                             
                             JsonNode sasTokenValue2 = queueMessageValue4.get("sasToken");
@@ -1095,11 +1907,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setSasToken(sasTokenInstance2);
                             }
                             
-                            JsonNode messageValue2 = queueMessageValue4.get("message");
-                            if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                String messageInstance2;
-                                messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                            JsonNode messageValue4 = queueMessageValue4.get("message");
+                            if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                String messageInstance4;
+                                messageInstance4 = messageValue4.getTextValue();
+                                queueMessageInstance2.setMessage(messageInstance4);
+                            }
+                        }
+                        
+                        JsonNode serviceBusTopicMessageValue4 = actionValue2.get("serviceBusTopicMessage");
+                        if (serviceBusTopicMessageValue4 != null && serviceBusTopicMessageValue4 instanceof NullNode == false) {
+                            JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                            actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                            
+                            JsonNode topicPathValue2 = serviceBusTopicMessageValue4.get("topicPath");
+                            if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                String topicPathInstance2;
+                                topicPathInstance2 = topicPathValue2.getTextValue();
+                                serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                            }
+                            
+                            JsonNode namespaceValue3 = serviceBusTopicMessageValue4.get("namespace");
+                            if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                String namespaceInstance3;
+                                namespaceInstance3 = namespaceValue3.getTextValue();
+                                serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                            }
+                            
+                            JsonNode transportTypeValue3 = serviceBusTopicMessageValue4.get("transportType");
+                            if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance3;
+                                transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                            }
+                            
+                            JsonNode authenticationValue11 = serviceBusTopicMessageValue4.get("authentication");
+                            if (authenticationValue11 != null && authenticationValue11 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                
+                                JsonNode sasKeyNameValue3 = authenticationValue11.get("sasKeyName");
+                                if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                    String sasKeyNameInstance3;
+                                    sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                    authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                }
+                                
+                                JsonNode sasKeyValue3 = authenticationValue11.get("sasKey");
+                                if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                    String sasKeyInstance3;
+                                    sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                    authenticationInstance3.setSasKey(sasKeyInstance3);
+                                }
+                                
+                                JsonNode typeValue11 = authenticationValue11.get("type");
+                                if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance11;
+                                    typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                    authenticationInstance3.setType(typeInstance11);
+                                }
+                            }
+                            
+                            JsonNode messageValue5 = serviceBusTopicMessageValue4.get("message");
+                            if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                String messageInstance5;
+                                messageInstance5 = messageValue5.getTextValue();
+                                serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue7 = serviceBusTopicMessageValue4.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue7 != null && brokeredMessagePropertiesValue7 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                
+                                JsonNode contentTypeValue3 = brokeredMessagePropertiesValue7.get("contentType");
+                                if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                    String contentTypeInstance3;
+                                    contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                }
+                                
+                                JsonNode correlationIdValue3 = brokeredMessagePropertiesValue7.get("correlationId");
+                                if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                    String correlationIdInstance3;
+                                    correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                }
+                                
+                                JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue7.get("forcePersistence");
+                                if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance3;
+                                    forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                    brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                }
+                                
+                                JsonNode labelValue3 = brokeredMessagePropertiesValue7.get("label");
+                                if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                    String labelInstance3;
+                                    labelInstance3 = labelValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                }
+                                
+                                JsonNode messageIdValue3 = brokeredMessagePropertiesValue7.get("messageId");
+                                if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                    String messageIdInstance3;
+                                    messageIdInstance3 = messageIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                }
+                                
+                                JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue7.get("partitionKey");
+                                if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                    String partitionKeyInstance3;
+                                    partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                }
+                                
+                                JsonNode replyToValue3 = brokeredMessagePropertiesValue7.get("replyTo");
+                                if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                    String replyToInstance3;
+                                    replyToInstance3 = replyToValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                }
+                                
+                                JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue7.get("replyToSessionId");
+                                if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance3;
+                                    replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue7.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance3;
+                                    scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                }
+                                
+                                JsonNode sessionIdValue3 = brokeredMessagePropertiesValue7.get("sessionId");
+                                if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                    String sessionIdInstance3;
+                                    sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                }
+                                
+                                JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue7.get("timeToLive");
+                                if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance3;
+                                    timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                }
+                                
+                                JsonNode toValue3 = brokeredMessagePropertiesValue7.get("to");
+                                if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                    String toInstance3;
+                                    toInstance3 = toValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue7.get("viaPartitionKey");
+                                if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance3;
+                                    viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue4.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                while (itr5.hasNext()) {
+                                    Map.Entry<String, JsonNode> property5 = itr5.next();
+                                    String customMessagePropertiesKey7 = property5.getKey();
+                                    String customMessagePropertiesValue7 = property5.getValue().getTextValue();
+                                    serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey7, customMessagePropertiesValue7);
+                                }
+                            }
+                        }
+                        
+                        JsonNode serviceBusQueueMessageValue4 = actionValue2.get("serviceBusQueueMessage");
+                        if (serviceBusQueueMessageValue4 != null && serviceBusQueueMessageValue4 instanceof NullNode == false) {
+                            JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                            actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                            
+                            JsonNode queueNameValue4 = serviceBusQueueMessageValue4.get("queueName");
+                            if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                String queueNameInstance4;
+                                queueNameInstance4 = queueNameValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                            }
+                            
+                            JsonNode namespaceValue4 = serviceBusQueueMessageValue4.get("namespace");
+                            if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                String namespaceInstance4;
+                                namespaceInstance4 = namespaceValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                            }
+                            
+                            JsonNode transportTypeValue4 = serviceBusQueueMessageValue4.get("transportType");
+                            if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance4;
+                                transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                            }
+                            
+                            JsonNode authenticationValue12 = serviceBusQueueMessageValue4.get("authentication");
+                            if (authenticationValue12 != null && authenticationValue12 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                
+                                JsonNode sasKeyNameValue4 = authenticationValue12.get("sasKeyName");
+                                if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                    String sasKeyNameInstance4;
+                                    sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                    authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                }
+                                
+                                JsonNode sasKeyValue4 = authenticationValue12.get("sasKey");
+                                if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                    String sasKeyInstance4;
+                                    sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                    authenticationInstance4.setSasKey(sasKeyInstance4);
+                                }
+                                
+                                JsonNode typeValue12 = authenticationValue12.get("type");
+                                if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance12;
+                                    typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                    authenticationInstance4.setType(typeInstance12);
+                                }
+                            }
+                            
+                            JsonNode messageValue6 = serviceBusQueueMessageValue4.get("message");
+                            if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                String messageInstance6;
+                                messageInstance6 = messageValue6.getTextValue();
+                                serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue8 = serviceBusQueueMessageValue4.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue8 != null && brokeredMessagePropertiesValue8 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                
+                                JsonNode contentTypeValue4 = brokeredMessagePropertiesValue8.get("contentType");
+                                if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                    String contentTypeInstance4;
+                                    contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                }
+                                
+                                JsonNode correlationIdValue4 = brokeredMessagePropertiesValue8.get("correlationId");
+                                if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                    String correlationIdInstance4;
+                                    correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                }
+                                
+                                JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue8.get("forcePersistence");
+                                if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance4;
+                                    forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                    brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                }
+                                
+                                JsonNode labelValue4 = brokeredMessagePropertiesValue8.get("label");
+                                if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                    String labelInstance4;
+                                    labelInstance4 = labelValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                }
+                                
+                                JsonNode messageIdValue4 = brokeredMessagePropertiesValue8.get("messageId");
+                                if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                    String messageIdInstance4;
+                                    messageIdInstance4 = messageIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                }
+                                
+                                JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue8.get("partitionKey");
+                                if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                    String partitionKeyInstance4;
+                                    partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                }
+                                
+                                JsonNode replyToValue4 = brokeredMessagePropertiesValue8.get("replyTo");
+                                if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                    String replyToInstance4;
+                                    replyToInstance4 = replyToValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                }
+                                
+                                JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue8.get("replyToSessionId");
+                                if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance4;
+                                    replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue8.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance4;
+                                    scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                }
+                                
+                                JsonNode sessionIdValue4 = brokeredMessagePropertiesValue8.get("sessionId");
+                                if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                    String sessionIdInstance4;
+                                    sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                }
+                                
+                                JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue8.get("timeToLive");
+                                if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance4;
+                                    timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                }
+                                
+                                JsonNode toValue4 = brokeredMessagePropertiesValue8.get("to");
+                                if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                    String toInstance4;
+                                    toInstance4 = toValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue8.get("viaPartitionKey");
+                                if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance4;
+                                    viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue4.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                while (itr6.hasNext()) {
+                                    Map.Entry<String, JsonNode> property6 = itr6.next();
+                                    String customMessagePropertiesKey8 = property6.getKey();
+                                    String customMessagePropertiesValue8 = property6.getValue().getTextValue();
+                                    serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey8, customMessagePropertiesValue8);
+                                }
                             }
                         }
                     }
@@ -1342,6 +2492,58 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                     throw new NullPointerException("parameters.Action.ErrorAction.Request.Uri");
                 }
             }
+            if (parameters.getAction().getErrorAction().getServiceBusQueueMessage() != null) {
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKey() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.SasKey");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.SasKeyName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Authentication.Type");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getMessage() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Message");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getNamespace() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.Namespace");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getQueueName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.QueueName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getTransportType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusQueueMessage.TransportType");
+                }
+            }
+            if (parameters.getAction().getErrorAction().getServiceBusTopicMessage() != null) {
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKey() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.SasKey");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.SasKeyName");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Authentication.Type");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getMessage() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Message");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getNamespace() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.Namespace");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTopicPath() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.TopicPath");
+                }
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTransportType() == null) {
+                    throw new NullPointerException("parameters.Action.ErrorAction.ServiceBusTopicMessage.TransportType");
+                }
+            }
             if (parameters.getAction().getErrorAction().getType() == null) {
                 throw new NullPointerException("parameters.Action.ErrorAction.Type");
             }
@@ -1371,6 +2573,58 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         if (parameters.getAction().getRetryPolicy() != null) {
             if (parameters.getAction().getRetryPolicy().getRetryType() == null) {
                 throw new NullPointerException("parameters.Action.RetryPolicy.RetryType");
+            }
+        }
+        if (parameters.getAction().getServiceBusQueueMessage() != null) {
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKey() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.SasKey");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.SasKeyName");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getAuthentication().getType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Authentication.Type");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getMessage() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Message");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getNamespace() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.Namespace");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getQueueName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.QueueName");
+            }
+            if (parameters.getAction().getServiceBusQueueMessage().getTransportType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusQueueMessage.TransportType");
+            }
+        }
+        if (parameters.getAction().getServiceBusTopicMessage() != null) {
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKey() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.SasKey");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.SasKeyName");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getAuthentication().getType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Authentication.Type");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getMessage() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Message");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getNamespace() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.Namespace");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getTopicPath() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.TopicPath");
+            }
+            if (parameters.getAction().getServiceBusTopicMessage().getTransportType() == null) {
+                throw new NullPointerException("parameters.Action.ServiceBusTopicMessage.TransportType");
             }
         }
         if (parameters.getAction().getType() == null) {
@@ -1590,6 +2844,188 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                 
                 ((ObjectNode) queueMessageValue).put("message", parameters.getAction().getErrorAction().getQueueMessage().getMessage());
             }
+            
+            if (parameters.getAction().getErrorAction().getServiceBusTopicMessage() != null) {
+                ObjectNode serviceBusTopicMessageValue = objectMapper.createObjectNode();
+                ((ObjectNode) errorActionValue).put("serviceBusTopicMessage", serviceBusTopicMessageValue);
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("topicPath", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTopicPath());
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("namespace", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getNamespace());
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getTransportType()));
+                
+                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusTopicMessageValue).put("authentication", authenticationValue2);
+                
+                ((ObjectNode) authenticationValue2).put("sasKeyName", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName());
+                
+                ((ObjectNode) authenticationValue2).put("sasKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getSasKey());
+                
+                ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getAuthentication().getType()));
+                
+                ((ObjectNode) serviceBusTopicMessageValue).put("message", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getMessage());
+                
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties() != null) {
+                    ObjectNode brokeredMessagePropertiesValue = objectMapper.createObjectNode();
+                    ((ObjectNode) serviceBusTopicMessageValue).put("brokeredMessageProperties", brokeredMessagePropertiesValue);
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("contentType", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("correlationId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId());
+                    }
+                    
+                    ((ObjectNode) brokeredMessagePropertiesValue).put("forcePersistence", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().isForcePersistence());
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("label", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("messageId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("partitionKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("replyTo", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("replyToSessionId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("scheduledEnqueueTimeUtc", simpleDateFormat3.format(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("sessionId", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("timeToLive", simpleDateFormat4.format(parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("to", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue).put("viaPartitionKey", parameters.getAction().getErrorAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                    }
+                }
+                
+                if (parameters.getAction().getErrorAction().getServiceBusTopicMessage().getCustomMessageProperties() != null) {
+                    ObjectNode customMessagePropertiesDictionary = objectMapper.createObjectNode();
+                    for (Map.Entry<String, String> entry2 : parameters.getAction().getErrorAction().getServiceBusTopicMessage().getCustomMessageProperties().entrySet()) {
+                        String customMessagePropertiesKey = entry2.getKey();
+                        String customMessagePropertiesValue = entry2.getValue();
+                        ((ObjectNode) customMessagePropertiesDictionary).put(customMessagePropertiesKey, customMessagePropertiesValue);
+                    }
+                    ((ObjectNode) serviceBusTopicMessageValue).put("customMessageProperties", customMessagePropertiesDictionary);
+                }
+            }
+            
+            if (parameters.getAction().getErrorAction().getServiceBusQueueMessage() != null) {
+                ObjectNode serviceBusQueueMessageValue = objectMapper.createObjectNode();
+                ((ObjectNode) errorActionValue).put("serviceBusQueueMessage", serviceBusQueueMessageValue);
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("queueName", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getQueueName());
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("namespace", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getNamespace());
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getTransportType()));
+                
+                ObjectNode authenticationValue3 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusQueueMessageValue).put("authentication", authenticationValue3);
+                
+                ((ObjectNode) authenticationValue3).put("sasKeyName", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName());
+                
+                ((ObjectNode) authenticationValue3).put("sasKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getSasKey());
+                
+                ((ObjectNode) authenticationValue3).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getAuthentication().getType()));
+                
+                ((ObjectNode) serviceBusQueueMessageValue).put("message", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getMessage());
+                
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties() != null) {
+                    ObjectNode brokeredMessagePropertiesValue2 = objectMapper.createObjectNode();
+                    ((ObjectNode) serviceBusQueueMessageValue).put("brokeredMessageProperties", brokeredMessagePropertiesValue2);
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("contentType", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("correlationId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId());
+                    }
+                    
+                    ((ObjectNode) brokeredMessagePropertiesValue2).put("forcePersistence", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().isForcePersistence());
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("label", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("messageId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("partitionKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("replyTo", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("replyToSessionId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("scheduledEnqueueTimeUtc", simpleDateFormat5.format(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("sessionId", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat6.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("timeToLive", simpleDateFormat6.format(parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("to", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo());
+                    }
+                    
+                    if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                        ((ObjectNode) brokeredMessagePropertiesValue2).put("viaPartitionKey", parameters.getAction().getErrorAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                    }
+                }
+                
+                if (parameters.getAction().getErrorAction().getServiceBusQueueMessage().getCustomMessageProperties() != null) {
+                    ObjectNode customMessagePropertiesDictionary2 = objectMapper.createObjectNode();
+                    for (Map.Entry<String, String> entry3 : parameters.getAction().getErrorAction().getServiceBusQueueMessage().getCustomMessageProperties().entrySet()) {
+                        String customMessagePropertiesKey2 = entry3.getKey();
+                        String customMessagePropertiesValue2 = entry3.getValue();
+                        ((ObjectNode) customMessagePropertiesDictionary2).put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                    }
+                    ((ObjectNode) serviceBusQueueMessageValue).put("customMessageProperties", customMessagePropertiesDictionary2);
+                }
+            }
         }
         
         if (parameters.getAction().getRequest() != null) {
@@ -1603,9 +3039,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             if (parameters.getAction().getRequest().getHeaders() != null) {
                 if (parameters.getAction().getRequest().getHeaders() instanceof LazyCollection == false || ((LazyCollection) parameters.getAction().getRequest().getHeaders()).isInitialized()) {
                     ObjectNode headersDictionary2 = objectMapper.createObjectNode();
-                    for (Map.Entry<String, String> entry2 : parameters.getAction().getRequest().getHeaders().entrySet()) {
-                        String headersKey2 = entry2.getKey();
-                        String headersValue2 = entry2.getValue();
+                    for (Map.Entry<String, String> entry4 : parameters.getAction().getRequest().getHeaders().entrySet()) {
+                        String headersKey2 = entry4.getKey();
+                        String headersValue2 = entry4.getValue();
                         ((ObjectNode) headersDictionary2).put(headersKey2, headersValue2);
                     }
                     ((ObjectNode) requestValue2).put("headers", headersDictionary2);
@@ -1617,74 +3053,74 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getAction().getRequest().getAuthentication() != null) {
-                ObjectNode authenticationValue2 = objectMapper.createObjectNode();
-                ((ObjectNode) requestValue2).put("authentication", authenticationValue2);
+                ObjectNode authenticationValue4 = objectMapper.createObjectNode();
+                ((ObjectNode) requestValue2).put("authentication", authenticationValue4);
                 if (parameters.getAction().getRequest().getAuthentication() instanceof ClientCertAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "ClientCertificate");
+                    ((ObjectNode) authenticationValue4).put("type", "ClientCertificate");
                     ClientCertAuthentication derived4 = ((ClientCertAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
                     if (derived4.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived4.getPassword());
+                        ((ObjectNode) authenticationValue4).put("password", derived4.getPassword());
                     }
                     
                     if (derived4.getPfx() != null) {
-                        ((ObjectNode) authenticationValue2).put("pfx", derived4.getPfx());
+                        ((ObjectNode) authenticationValue4).put("pfx", derived4.getPfx());
                     }
                     
                     if (derived4.getCertificateThumbprint() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateThumbprint", derived4.getCertificateThumbprint());
+                        ((ObjectNode) authenticationValue4).put("certificateThumbprint", derived4.getCertificateThumbprint());
                     }
                     
                     if (derived4.getCertificateExpiration() != null) {
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        ((ObjectNode) authenticationValue2).put("certificateExpiration", simpleDateFormat3.format(derived4.getCertificateExpiration().getTime()));
+                        SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                        simpleDateFormat7.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        ((ObjectNode) authenticationValue4).put("certificateExpiration", simpleDateFormat7.format(derived4.getCertificateExpiration().getTime()));
                     }
                     
                     if (derived4.getCertificateSubjectName() != null) {
-                        ((ObjectNode) authenticationValue2).put("certificateSubjectName", derived4.getCertificateSubjectName());
+                        ((ObjectNode) authenticationValue4).put("certificateSubjectName", derived4.getCertificateSubjectName());
                     }
                     
                     if (derived4.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived4.getType()));
                     }
                 }
                 if (parameters.getAction().getRequest().getAuthentication() instanceof AADOAuthAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "ActiveDirectoryOAuth");
+                    ((ObjectNode) authenticationValue4).put("type", "ActiveDirectoryOAuth");
                     AADOAuthAuthentication derived5 = ((AADOAuthAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
                     if (derived5.getSecret() != null) {
-                        ((ObjectNode) authenticationValue2).put("secret", derived5.getSecret());
+                        ((ObjectNode) authenticationValue4).put("secret", derived5.getSecret());
                     }
                     
                     if (derived5.getTenant() != null) {
-                        ((ObjectNode) authenticationValue2).put("tenant", derived5.getTenant());
+                        ((ObjectNode) authenticationValue4).put("tenant", derived5.getTenant());
                     }
                     
                     if (derived5.getAudience() != null) {
-                        ((ObjectNode) authenticationValue2).put("audience", derived5.getAudience());
+                        ((ObjectNode) authenticationValue4).put("audience", derived5.getAudience());
                     }
                     
                     if (derived5.getClientId() != null) {
-                        ((ObjectNode) authenticationValue2).put("clientId", derived5.getClientId());
+                        ((ObjectNode) authenticationValue4).put("clientId", derived5.getClientId());
                     }
                     
                     if (derived5.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived5.getType()));
                     }
                 }
                 if (parameters.getAction().getRequest().getAuthentication() instanceof BasicAuthentication) {
-                    ((ObjectNode) authenticationValue2).put("type", "Basic");
+                    ((ObjectNode) authenticationValue4).put("type", "Basic");
                     BasicAuthentication derived6 = ((BasicAuthentication) parameters.getAction().getRequest().getAuthentication());
                     
-                    ((ObjectNode) authenticationValue2).put("username", derived6.getUsername());
+                    ((ObjectNode) authenticationValue4).put("username", derived6.getUsername());
                     
                     if (derived6.getPassword() != null) {
-                        ((ObjectNode) authenticationValue2).put("password", derived6.getPassword());
+                        ((ObjectNode) authenticationValue4).put("password", derived6.getPassword());
                     }
                     
                     if (derived6.getType() != null) {
-                        ((ObjectNode) authenticationValue2).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
+                        ((ObjectNode) authenticationValue4).put("type", SchedulerClientImpl.httpAuthenticationTypeToString(derived6.getType()));
                     }
                 }
             }
@@ -1703,6 +3139,188 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             ((ObjectNode) queueMessageValue2).put("message", parameters.getAction().getQueueMessage().getMessage());
         }
         
+        if (parameters.getAction().getServiceBusTopicMessage() != null) {
+            ObjectNode serviceBusTopicMessageValue2 = objectMapper.createObjectNode();
+            ((ObjectNode) actionValue).put("serviceBusTopicMessage", serviceBusTopicMessageValue2);
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("topicPath", parameters.getAction().getServiceBusTopicMessage().getTopicPath());
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("namespace", parameters.getAction().getServiceBusTopicMessage().getNamespace());
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getServiceBusTopicMessage().getTransportType()));
+            
+            ObjectNode authenticationValue5 = objectMapper.createObjectNode();
+            ((ObjectNode) serviceBusTopicMessageValue2).put("authentication", authenticationValue5);
+            
+            ((ObjectNode) authenticationValue5).put("sasKeyName", parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKeyName());
+            
+            ((ObjectNode) authenticationValue5).put("sasKey", parameters.getAction().getServiceBusTopicMessage().getAuthentication().getSasKey());
+            
+            ((ObjectNode) authenticationValue5).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getServiceBusTopicMessage().getAuthentication().getType()));
+            
+            ((ObjectNode) serviceBusTopicMessageValue2).put("message", parameters.getAction().getServiceBusTopicMessage().getMessage());
+            
+            if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties() != null) {
+                ObjectNode brokeredMessagePropertiesValue3 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusTopicMessageValue2).put("brokeredMessageProperties", brokeredMessagePropertiesValue3);
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("contentType", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getContentType());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("correlationId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getCorrelationId());
+                }
+                
+                ((ObjectNode) brokeredMessagePropertiesValue3).put("forcePersistence", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().isForcePersistence());
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("label", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getLabel());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("messageId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getMessageId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("partitionKey", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getPartitionKey());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("replyTo", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyTo());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("replyToSessionId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                    SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat8.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("scheduledEnqueueTimeUtc", simpleDateFormat8.format(parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("sessionId", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                    SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat9.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("timeToLive", simpleDateFormat9.format(parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("to", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getTo());
+                }
+                
+                if (parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue3).put("viaPartitionKey", parameters.getAction().getServiceBusTopicMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                }
+            }
+            
+            if (parameters.getAction().getServiceBusTopicMessage().getCustomMessageProperties() != null) {
+                ObjectNode customMessagePropertiesDictionary3 = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry5 : parameters.getAction().getServiceBusTopicMessage().getCustomMessageProperties().entrySet()) {
+                    String customMessagePropertiesKey3 = entry5.getKey();
+                    String customMessagePropertiesValue3 = entry5.getValue();
+                    ((ObjectNode) customMessagePropertiesDictionary3).put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                }
+                ((ObjectNode) serviceBusTopicMessageValue2).put("customMessageProperties", customMessagePropertiesDictionary3);
+            }
+        }
+        
+        if (parameters.getAction().getServiceBusQueueMessage() != null) {
+            ObjectNode serviceBusQueueMessageValue2 = objectMapper.createObjectNode();
+            ((ObjectNode) actionValue).put("serviceBusQueueMessage", serviceBusQueueMessageValue2);
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("queueName", parameters.getAction().getServiceBusQueueMessage().getQueueName());
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("namespace", parameters.getAction().getServiceBusQueueMessage().getNamespace());
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("transportType", SchedulerClientImpl.jobServiceBusTransportTypeToString(parameters.getAction().getServiceBusQueueMessage().getTransportType()));
+            
+            ObjectNode authenticationValue6 = objectMapper.createObjectNode();
+            ((ObjectNode) serviceBusQueueMessageValue2).put("authentication", authenticationValue6);
+            
+            ((ObjectNode) authenticationValue6).put("sasKeyName", parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKeyName());
+            
+            ((ObjectNode) authenticationValue6).put("sasKey", parameters.getAction().getServiceBusQueueMessage().getAuthentication().getSasKey());
+            
+            ((ObjectNode) authenticationValue6).put("type", SchedulerClientImpl.jobServiceBusAuthenticationTypeToString(parameters.getAction().getServiceBusQueueMessage().getAuthentication().getType()));
+            
+            ((ObjectNode) serviceBusQueueMessageValue2).put("message", parameters.getAction().getServiceBusQueueMessage().getMessage());
+            
+            if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties() != null) {
+                ObjectNode brokeredMessagePropertiesValue4 = objectMapper.createObjectNode();
+                ((ObjectNode) serviceBusQueueMessageValue2).put("brokeredMessageProperties", brokeredMessagePropertiesValue4);
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("contentType", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getContentType());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("correlationId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getCorrelationId());
+                }
+                
+                ((ObjectNode) brokeredMessagePropertiesValue4).put("forcePersistence", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().isForcePersistence());
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("label", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getLabel());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("messageId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getMessageId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("partitionKey", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getPartitionKey());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("replyTo", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyTo());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("replyToSessionId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getReplyToSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc() != null) {
+                    SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat10.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("scheduledEnqueueTimeUtc", simpleDateFormat10.format(parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getScheduledEnqueueTimeUtc().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("sessionId", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getSessionId());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive() != null) {
+                    SimpleDateFormat simpleDateFormat11 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                    simpleDateFormat11.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("timeToLive", simpleDateFormat11.format(parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTimeToLive().getTime()));
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("to", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getTo());
+                }
+                
+                if (parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey() != null) {
+                    ((ObjectNode) brokeredMessagePropertiesValue4).put("viaPartitionKey", parameters.getAction().getServiceBusQueueMessage().getBrokeredMessageProperties().getViaPartitionKey());
+                }
+            }
+            
+            if (parameters.getAction().getServiceBusQueueMessage().getCustomMessageProperties() != null) {
+                ObjectNode customMessagePropertiesDictionary4 = objectMapper.createObjectNode();
+                for (Map.Entry<String, String> entry6 : parameters.getAction().getServiceBusQueueMessage().getCustomMessageProperties().entrySet()) {
+                    String customMessagePropertiesKey4 = entry6.getKey();
+                    String customMessagePropertiesValue4 = entry6.getValue();
+                    ((ObjectNode) customMessagePropertiesDictionary4).put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                }
+                ((ObjectNode) serviceBusQueueMessageValue2).put("customMessageProperties", customMessagePropertiesDictionary4);
+            }
+        }
+        
         if (parameters.getRecurrence() != null) {
             ObjectNode recurrenceValue = objectMapper.createObjectNode();
             ((ObjectNode) jobCreateOrUpdateParametersValue).put("recurrence", recurrenceValue);
@@ -1718,9 +3336,9 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
             }
             
             if (parameters.getRecurrence().getEndTime() != null) {
-                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
-                simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat4.format(parameters.getRecurrence().getEndTime().getTime()));
+                SimpleDateFormat simpleDateFormat12 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
+                simpleDateFormat12.setTimeZone(TimeZone.getTimeZone("UTC"));
+                ((ObjectNode) recurrenceValue).put("endTime", simpleDateFormat12.format(parameters.getRecurrence().getEndTime().getTime()));
             }
             
             if (parameters.getRecurrence().getSchedule() != null) {
@@ -1927,48 +3545,48 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     requestInstance.setBody(bodyInstance);
                                 }
                                 
-                                JsonNode authenticationValue3 = requestValue3.get("authentication");
-                                if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
-                                    String typeName = authenticationValue3.get("type").getTextValue();
+                                JsonNode authenticationValue7 = requestValue3.get("authentication");
+                                if (authenticationValue7 != null && authenticationValue7 instanceof NullNode == false) {
+                                    String typeName = authenticationValue7.get("type").getTextValue();
                                     if ("ClientCertificate".equals(typeName)) {
                                         ClientCertAuthentication clientCertAuthenticationInstance = new ClientCertAuthentication();
                                         
-                                        JsonNode passwordValue = authenticationValue3.get("password");
+                                        JsonNode passwordValue = authenticationValue7.get("password");
                                         if (passwordValue != null && passwordValue instanceof NullNode == false) {
                                             String passwordInstance;
                                             passwordInstance = passwordValue.getTextValue();
                                             clientCertAuthenticationInstance.setPassword(passwordInstance);
                                         }
                                         
-                                        JsonNode pfxValue = authenticationValue3.get("pfx");
+                                        JsonNode pfxValue = authenticationValue7.get("pfx");
                                         if (pfxValue != null && pfxValue instanceof NullNode == false) {
                                             String pfxInstance;
                                             pfxInstance = pfxValue.getTextValue();
                                             clientCertAuthenticationInstance.setPfx(pfxInstance);
                                         }
                                         
-                                        JsonNode certificateThumbprintValue = authenticationValue3.get("certificateThumbprint");
+                                        JsonNode certificateThumbprintValue = authenticationValue7.get("certificateThumbprint");
                                         if (certificateThumbprintValue != null && certificateThumbprintValue instanceof NullNode == false) {
                                             String certificateThumbprintInstance;
                                             certificateThumbprintInstance = certificateThumbprintValue.getTextValue();
                                             clientCertAuthenticationInstance.setCertificateThumbprint(certificateThumbprintInstance);
                                         }
                                         
-                                        JsonNode certificateExpirationValue = authenticationValue3.get("certificateExpiration");
+                                        JsonNode certificateExpirationValue = authenticationValue7.get("certificateExpiration");
                                         if (certificateExpirationValue != null && certificateExpirationValue instanceof NullNode == false) {
                                             Calendar certificateExpirationInstance;
                                             certificateExpirationInstance = DatatypeConverter.parseDateTime(certificateExpirationValue.getTextValue());
                                             clientCertAuthenticationInstance.setCertificateExpiration(certificateExpirationInstance);
                                         }
                                         
-                                        JsonNode certificateSubjectNameValue = authenticationValue3.get("certificateSubjectName");
+                                        JsonNode certificateSubjectNameValue = authenticationValue7.get("certificateSubjectName");
                                         if (certificateSubjectNameValue != null && certificateSubjectNameValue instanceof NullNode == false) {
                                             String certificateSubjectNameInstance;
                                             certificateSubjectNameInstance = certificateSubjectNameValue.getTextValue();
                                             clientCertAuthenticationInstance.setCertificateSubjectName(certificateSubjectNameInstance);
                                         }
                                         
-                                        JsonNode typeValue3 = authenticationValue3.get("type");
+                                        JsonNode typeValue3 = authenticationValue7.get("type");
                                         if (typeValue3 != null && typeValue3 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance3;
                                             typeInstance3 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue3.getTextValue());
@@ -1979,35 +3597,35 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("ActiveDirectoryOAuth".equals(typeName)) {
                                         AADOAuthAuthentication aADOAuthAuthenticationInstance = new AADOAuthAuthentication();
                                         
-                                        JsonNode secretValue = authenticationValue3.get("secret");
+                                        JsonNode secretValue = authenticationValue7.get("secret");
                                         if (secretValue != null && secretValue instanceof NullNode == false) {
                                             String secretInstance;
                                             secretInstance = secretValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setSecret(secretInstance);
                                         }
                                         
-                                        JsonNode tenantValue = authenticationValue3.get("tenant");
+                                        JsonNode tenantValue = authenticationValue7.get("tenant");
                                         if (tenantValue != null && tenantValue instanceof NullNode == false) {
                                             String tenantInstance;
                                             tenantInstance = tenantValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setTenant(tenantInstance);
                                         }
                                         
-                                        JsonNode audienceValue = authenticationValue3.get("audience");
+                                        JsonNode audienceValue = authenticationValue7.get("audience");
                                         if (audienceValue != null && audienceValue instanceof NullNode == false) {
                                             String audienceInstance;
                                             audienceInstance = audienceValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setAudience(audienceInstance);
                                         }
                                         
-                                        JsonNode clientIdValue = authenticationValue3.get("clientId");
+                                        JsonNode clientIdValue = authenticationValue7.get("clientId");
                                         if (clientIdValue != null && clientIdValue instanceof NullNode == false) {
                                             String clientIdInstance;
                                             clientIdInstance = clientIdValue.getTextValue();
                                             aADOAuthAuthenticationInstance.setClientId(clientIdInstance);
                                         }
                                         
-                                        JsonNode typeValue4 = authenticationValue3.get("type");
+                                        JsonNode typeValue4 = authenticationValue7.get("type");
                                         if (typeValue4 != null && typeValue4 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance4;
                                             typeInstance4 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue4.getTextValue());
@@ -2018,21 +3636,21 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     if ("Basic".equals(typeName)) {
                                         BasicAuthentication basicAuthenticationInstance = new BasicAuthentication();
                                         
-                                        JsonNode usernameValue = authenticationValue3.get("username");
+                                        JsonNode usernameValue = authenticationValue7.get("username");
                                         if (usernameValue != null && usernameValue instanceof NullNode == false) {
                                             String usernameInstance;
                                             usernameInstance = usernameValue.getTextValue();
                                             basicAuthenticationInstance.setUsername(usernameInstance);
                                         }
                                         
-                                        JsonNode passwordValue2 = authenticationValue3.get("password");
+                                        JsonNode passwordValue2 = authenticationValue7.get("password");
                                         if (passwordValue2 != null && passwordValue2 instanceof NullNode == false) {
                                             String passwordInstance2;
                                             passwordInstance2 = passwordValue2.getTextValue();
                                             basicAuthenticationInstance.setPassword(passwordInstance2);
                                         }
                                         
-                                        JsonNode typeValue5 = authenticationValue3.get("type");
+                                        JsonNode typeValue5 = authenticationValue7.get("type");
                                         if (typeValue5 != null && typeValue5 instanceof NullNode == false) {
                                             HttpAuthenticationType typeInstance5;
                                             typeInstance5 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue5.getTextValue());
@@ -2076,6 +3694,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     queueMessageInstance.setMessage(messageInstance);
                                 }
                             }
+                            
+                            JsonNode serviceBusTopicMessageValue3 = errorActionValue2.get("serviceBusTopicMessage");
+                            if (serviceBusTopicMessageValue3 != null && serviceBusTopicMessageValue3 instanceof NullNode == false) {
+                                JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                
+                                JsonNode topicPathValue = serviceBusTopicMessageValue3.get("topicPath");
+                                if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                    String topicPathInstance;
+                                    topicPathInstance = topicPathValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                }
+                                
+                                JsonNode namespaceValue = serviceBusTopicMessageValue3.get("namespace");
+                                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                    String namespaceInstance;
+                                    namespaceInstance = namespaceValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                }
+                                
+                                JsonNode transportTypeValue = serviceBusTopicMessageValue3.get("transportType");
+                                if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance;
+                                    transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                    serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                }
+                                
+                                JsonNode authenticationValue8 = serviceBusTopicMessageValue3.get("authentication");
+                                if (authenticationValue8 != null && authenticationValue8 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                    serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                    
+                                    JsonNode sasKeyNameValue = authenticationValue8.get("sasKeyName");
+                                    if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                        String sasKeyNameInstance;
+                                        sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                        authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                    }
+                                    
+                                    JsonNode sasKeyValue = authenticationValue8.get("sasKey");
+                                    if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                        String sasKeyInstance;
+                                        sasKeyInstance = sasKeyValue.getTextValue();
+                                        authenticationInstance.setSasKey(sasKeyInstance);
+                                    }
+                                    
+                                    JsonNode typeValue6 = authenticationValue8.get("type");
+                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance6;
+                                        typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                        authenticationInstance.setType(typeInstance6);
+                                    }
+                                }
+                                
+                                JsonNode messageValue2 = serviceBusTopicMessageValue3.get("message");
+                                if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageValue2.getTextValue();
+                                    serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue5 = serviceBusTopicMessageValue3.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue5 != null && brokeredMessagePropertiesValue5 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                    
+                                    JsonNode contentTypeValue = brokeredMessagePropertiesValue5.get("contentType");
+                                    if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                        String contentTypeInstance;
+                                        contentTypeInstance = contentTypeValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                    }
+                                    
+                                    JsonNode correlationIdValue = brokeredMessagePropertiesValue5.get("correlationId");
+                                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                        String correlationIdInstance;
+                                        correlationIdInstance = correlationIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue = brokeredMessagePropertiesValue5.get("forcePersistence");
+                                    if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance;
+                                        forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                        brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                    }
+                                    
+                                    JsonNode labelValue = brokeredMessagePropertiesValue5.get("label");
+                                    if (labelValue != null && labelValue instanceof NullNode == false) {
+                                        String labelInstance;
+                                        labelInstance = labelValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                    }
+                                    
+                                    JsonNode messageIdValue = brokeredMessagePropertiesValue5.get("messageId");
+                                    if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                        String messageIdInstance;
+                                        messageIdInstance = messageIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue = brokeredMessagePropertiesValue5.get("partitionKey");
+                                    if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                        String partitionKeyInstance;
+                                        partitionKeyInstance = partitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                    }
+                                    
+                                    JsonNode replyToValue = brokeredMessagePropertiesValue5.get("replyTo");
+                                    if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                        String replyToInstance;
+                                        replyToInstance = replyToValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue5.get("replyToSessionId");
+                                    if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                        String replyToSessionIdInstance;
+                                        replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue5.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance;
+                                        scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                    }
+                                    
+                                    JsonNode sessionIdValue = brokeredMessagePropertiesValue5.get("sessionId");
+                                    if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                        String sessionIdInstance;
+                                        sessionIdInstance = sessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue = brokeredMessagePropertiesValue5.get("timeToLive");
+                                    if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance;
+                                        timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                    }
+                                    
+                                    JsonNode toValue = brokeredMessagePropertiesValue5.get("to");
+                                    if (toValue != null && toValue instanceof NullNode == false) {
+                                        String toInstance;
+                                        toInstance = toValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setTo(toInstance);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue5.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance;
+                                        viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue3.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                    while (itr2.hasNext()) {
+                                        Map.Entry<String, JsonNode> property2 = itr2.next();
+                                        String customMessagePropertiesKey5 = property2.getKey();
+                                        String customMessagePropertiesValue5 = property2.getValue().getTextValue();
+                                        serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey5, customMessagePropertiesValue5);
+                                    }
+                                }
+                            }
+                            
+                            JsonNode serviceBusQueueMessageValue3 = errorActionValue2.get("serviceBusQueueMessage");
+                            if (serviceBusQueueMessageValue3 != null && serviceBusQueueMessageValue3 instanceof NullNode == false) {
+                                JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                
+                                JsonNode queueNameValue2 = serviceBusQueueMessageValue3.get("queueName");
+                                if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                    String queueNameInstance2;
+                                    queueNameInstance2 = queueNameValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                }
+                                
+                                JsonNode namespaceValue2 = serviceBusQueueMessageValue3.get("namespace");
+                                if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                    String namespaceInstance2;
+                                    namespaceInstance2 = namespaceValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                }
+                                
+                                JsonNode transportTypeValue2 = serviceBusQueueMessageValue3.get("transportType");
+                                if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance2;
+                                    transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                    serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                }
+                                
+                                JsonNode authenticationValue9 = serviceBusQueueMessageValue3.get("authentication");
+                                if (authenticationValue9 != null && authenticationValue9 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                    serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                    
+                                    JsonNode sasKeyNameValue2 = authenticationValue9.get("sasKeyName");
+                                    if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                        String sasKeyNameInstance2;
+                                        sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                        authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                    }
+                                    
+                                    JsonNode sasKeyValue2 = authenticationValue9.get("sasKey");
+                                    if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                        String sasKeyInstance2;
+                                        sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                        authenticationInstance2.setSasKey(sasKeyInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue7 = authenticationValue9.get("type");
+                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance7;
+                                        typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                        authenticationInstance2.setType(typeInstance7);
+                                    }
+                                }
+                                
+                                JsonNode messageValue3 = serviceBusQueueMessageValue3.get("message");
+                                if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                    String messageInstance3;
+                                    messageInstance3 = messageValue3.getTextValue();
+                                    serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue6 = serviceBusQueueMessageValue3.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue6 != null && brokeredMessagePropertiesValue6 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                    
+                                    JsonNode contentTypeValue2 = brokeredMessagePropertiesValue6.get("contentType");
+                                    if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                        String contentTypeInstance2;
+                                        contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                    }
+                                    
+                                    JsonNode correlationIdValue2 = brokeredMessagePropertiesValue6.get("correlationId");
+                                    if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                        String correlationIdInstance2;
+                                        correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue6.get("forcePersistence");
+                                    if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance2;
+                                        forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                        brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                    }
+                                    
+                                    JsonNode labelValue2 = brokeredMessagePropertiesValue6.get("label");
+                                    if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                        String labelInstance2;
+                                        labelInstance2 = labelValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                    }
+                                    
+                                    JsonNode messageIdValue2 = brokeredMessagePropertiesValue6.get("messageId");
+                                    if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                        String messageIdInstance2;
+                                        messageIdInstance2 = messageIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue6.get("partitionKey");
+                                    if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                        String partitionKeyInstance2;
+                                        partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                    }
+                                    
+                                    JsonNode replyToValue2 = brokeredMessagePropertiesValue6.get("replyTo");
+                                    if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                        String replyToInstance2;
+                                        replyToInstance2 = replyToValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue6.get("replyToSessionId");
+                                    if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                        String replyToSessionIdInstance2;
+                                        replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue6.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance2;
+                                        scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                    }
+                                    
+                                    JsonNode sessionIdValue2 = brokeredMessagePropertiesValue6.get("sessionId");
+                                    if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                        String sessionIdInstance2;
+                                        sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue6.get("timeToLive");
+                                    if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance2;
+                                        timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                    }
+                                    
+                                    JsonNode toValue2 = brokeredMessagePropertiesValue6.get("to");
+                                    if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                        String toInstance2;
+                                        toInstance2 = toValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue6.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance2;
+                                        viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue3.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                    while (itr3.hasNext()) {
+                                        Map.Entry<String, JsonNode> property3 = itr3.next();
+                                        String customMessagePropertiesKey6 = property3.getKey();
+                                        String customMessagePropertiesValue6 = property3.getValue().getTextValue();
+                                        serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey6, customMessagePropertiesValue6);
+                                    }
+                                }
+                            }
                         }
                         
                         JsonNode requestValue4 = actionValue2.get("request");
@@ -2099,11 +4055,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             
                             JsonNode headersSequenceElement2 = ((JsonNode) requestValue4.get("headers"));
                             if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext()) {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
-                                    String headersKey4 = property2.getKey();
-                                    String headersValue4 = property2.getValue().getTextValue();
+                                Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                while (itr4.hasNext()) {
+                                    Map.Entry<String, JsonNode> property4 = itr4.next();
+                                    String headersKey4 = property4.getKey();
+                                    String headersValue4 = property4.getValue().getTextValue();
                                     requestInstance2.getHeaders().put(headersKey4, headersValue4);
                                 }
                             }
@@ -2115,116 +4071,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 requestInstance2.setBody(bodyInstance2);
                             }
                             
-                            JsonNode authenticationValue4 = requestValue4.get("authentication");
-                            if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
-                                String typeName2 = authenticationValue4.get("type").getTextValue();
+                            JsonNode authenticationValue10 = requestValue4.get("authentication");
+                            if (authenticationValue10 != null && authenticationValue10 instanceof NullNode == false) {
+                                String typeName2 = authenticationValue10.get("type").getTextValue();
                                 if ("ClientCertificate".equals(typeName2)) {
                                     ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                     
-                                    JsonNode passwordValue3 = authenticationValue4.get("password");
+                                    JsonNode passwordValue3 = authenticationValue10.get("password");
                                     if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                         String passwordInstance3;
                                         passwordInstance3 = passwordValue3.getTextValue();
                                         clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                     }
                                     
-                                    JsonNode pfxValue2 = authenticationValue4.get("pfx");
+                                    JsonNode pfxValue2 = authenticationValue10.get("pfx");
                                     if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                         String pfxInstance2;
                                         pfxInstance2 = pfxValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                     }
                                     
-                                    JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
+                                    JsonNode certificateThumbprintValue2 = authenticationValue10.get("certificateThumbprint");
                                     if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                         String certificateThumbprintInstance2;
                                         certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                     }
                                     
-                                    JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
+                                    JsonNode certificateExpirationValue2 = authenticationValue10.get("certificateExpiration");
                                     if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                         Calendar certificateExpirationInstance2;
                                         certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                         clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                     }
                                     
-                                    JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
+                                    JsonNode certificateSubjectNameValue2 = authenticationValue10.get("certificateSubjectName");
                                     if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                         String certificateSubjectNameInstance2;
                                         certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                     }
                                     
-                                    JsonNode typeValue6 = authenticationValue4.get("type");
-                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance6;
-                                        typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                        clientCertAuthenticationInstance2.setType(typeInstance6);
+                                    JsonNode typeValue8 = authenticationValue10.get("type");
+                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance8;
+                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                        clientCertAuthenticationInstance2.setType(typeInstance8);
                                     }
                                     requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                 }
                                 if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                     AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                     
-                                    JsonNode secretValue2 = authenticationValue4.get("secret");
+                                    JsonNode secretValue2 = authenticationValue10.get("secret");
                                     if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                         String secretInstance2;
                                         secretInstance2 = secretValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                     }
                                     
-                                    JsonNode tenantValue2 = authenticationValue4.get("tenant");
+                                    JsonNode tenantValue2 = authenticationValue10.get("tenant");
                                     if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                         String tenantInstance2;
                                         tenantInstance2 = tenantValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                     }
                                     
-                                    JsonNode audienceValue2 = authenticationValue4.get("audience");
+                                    JsonNode audienceValue2 = authenticationValue10.get("audience");
                                     if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                         String audienceInstance2;
                                         audienceInstance2 = audienceValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                     }
                                     
-                                    JsonNode clientIdValue2 = authenticationValue4.get("clientId");
+                                    JsonNode clientIdValue2 = authenticationValue10.get("clientId");
                                     if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                         String clientIdInstance2;
                                         clientIdInstance2 = clientIdValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                     }
                                     
-                                    JsonNode typeValue7 = authenticationValue4.get("type");
-                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance7;
-                                        typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                        aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                    JsonNode typeValue9 = authenticationValue10.get("type");
+                                    if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance9;
+                                        typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                        aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                     }
                                     requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                 }
                                 if ("Basic".equals(typeName2)) {
                                     BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                     
-                                    JsonNode usernameValue2 = authenticationValue4.get("username");
+                                    JsonNode usernameValue2 = authenticationValue10.get("username");
                                     if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                         String usernameInstance2;
                                         usernameInstance2 = usernameValue2.getTextValue();
                                         basicAuthenticationInstance2.setUsername(usernameInstance2);
                                     }
                                     
-                                    JsonNode passwordValue4 = authenticationValue4.get("password");
+                                    JsonNode passwordValue4 = authenticationValue10.get("password");
                                     if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                         String passwordInstance4;
                                         passwordInstance4 = passwordValue4.getTextValue();
                                         basicAuthenticationInstance2.setPassword(passwordInstance4);
                                     }
                                     
-                                    JsonNode typeValue8 = authenticationValue4.get("type");
-                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance8;
-                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                        basicAuthenticationInstance2.setType(typeInstance8);
+                                    JsonNode typeValue10 = authenticationValue10.get("type");
+                                    if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance10;
+                                        typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                        basicAuthenticationInstance2.setType(typeInstance10);
                                     }
                                     requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                 }
@@ -2243,11 +4199,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                             }
                             
-                            JsonNode queueNameValue2 = queueMessageValue4.get("queueName");
-                            if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                            JsonNode queueNameValue3 = queueMessageValue4.get("queueName");
+                            if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                String queueNameInstance3;
+                                queueNameInstance3 = queueNameValue3.getTextValue();
+                                queueMessageInstance2.setQueueName(queueNameInstance3);
                             }
                             
                             JsonNode sasTokenValue2 = queueMessageValue4.get("sasToken");
@@ -2257,11 +4213,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setSasToken(sasTokenInstance2);
                             }
                             
-                            JsonNode messageValue2 = queueMessageValue4.get("message");
-                            if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                String messageInstance2;
-                                messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                            JsonNode messageValue4 = queueMessageValue4.get("message");
+                            if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                String messageInstance4;
+                                messageInstance4 = messageValue4.getTextValue();
+                                queueMessageInstance2.setMessage(messageInstance4);
+                            }
+                        }
+                        
+                        JsonNode serviceBusTopicMessageValue4 = actionValue2.get("serviceBusTopicMessage");
+                        if (serviceBusTopicMessageValue4 != null && serviceBusTopicMessageValue4 instanceof NullNode == false) {
+                            JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                            actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                            
+                            JsonNode topicPathValue2 = serviceBusTopicMessageValue4.get("topicPath");
+                            if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                String topicPathInstance2;
+                                topicPathInstance2 = topicPathValue2.getTextValue();
+                                serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                            }
+                            
+                            JsonNode namespaceValue3 = serviceBusTopicMessageValue4.get("namespace");
+                            if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                String namespaceInstance3;
+                                namespaceInstance3 = namespaceValue3.getTextValue();
+                                serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                            }
+                            
+                            JsonNode transportTypeValue3 = serviceBusTopicMessageValue4.get("transportType");
+                            if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance3;
+                                transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                            }
+                            
+                            JsonNode authenticationValue11 = serviceBusTopicMessageValue4.get("authentication");
+                            if (authenticationValue11 != null && authenticationValue11 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                
+                                JsonNode sasKeyNameValue3 = authenticationValue11.get("sasKeyName");
+                                if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                    String sasKeyNameInstance3;
+                                    sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                    authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                }
+                                
+                                JsonNode sasKeyValue3 = authenticationValue11.get("sasKey");
+                                if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                    String sasKeyInstance3;
+                                    sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                    authenticationInstance3.setSasKey(sasKeyInstance3);
+                                }
+                                
+                                JsonNode typeValue11 = authenticationValue11.get("type");
+                                if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance11;
+                                    typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                    authenticationInstance3.setType(typeInstance11);
+                                }
+                            }
+                            
+                            JsonNode messageValue5 = serviceBusTopicMessageValue4.get("message");
+                            if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                String messageInstance5;
+                                messageInstance5 = messageValue5.getTextValue();
+                                serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue7 = serviceBusTopicMessageValue4.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue7 != null && brokeredMessagePropertiesValue7 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                
+                                JsonNode contentTypeValue3 = brokeredMessagePropertiesValue7.get("contentType");
+                                if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                    String contentTypeInstance3;
+                                    contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                }
+                                
+                                JsonNode correlationIdValue3 = brokeredMessagePropertiesValue7.get("correlationId");
+                                if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                    String correlationIdInstance3;
+                                    correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                }
+                                
+                                JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue7.get("forcePersistence");
+                                if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance3;
+                                    forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                    brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                }
+                                
+                                JsonNode labelValue3 = brokeredMessagePropertiesValue7.get("label");
+                                if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                    String labelInstance3;
+                                    labelInstance3 = labelValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                }
+                                
+                                JsonNode messageIdValue3 = brokeredMessagePropertiesValue7.get("messageId");
+                                if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                    String messageIdInstance3;
+                                    messageIdInstance3 = messageIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                }
+                                
+                                JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue7.get("partitionKey");
+                                if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                    String partitionKeyInstance3;
+                                    partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                }
+                                
+                                JsonNode replyToValue3 = brokeredMessagePropertiesValue7.get("replyTo");
+                                if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                    String replyToInstance3;
+                                    replyToInstance3 = replyToValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                }
+                                
+                                JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue7.get("replyToSessionId");
+                                if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance3;
+                                    replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue7.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance3;
+                                    scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                }
+                                
+                                JsonNode sessionIdValue3 = brokeredMessagePropertiesValue7.get("sessionId");
+                                if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                    String sessionIdInstance3;
+                                    sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                }
+                                
+                                JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue7.get("timeToLive");
+                                if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance3;
+                                    timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                }
+                                
+                                JsonNode toValue3 = brokeredMessagePropertiesValue7.get("to");
+                                if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                    String toInstance3;
+                                    toInstance3 = toValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue7.get("viaPartitionKey");
+                                if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance3;
+                                    viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue4.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                while (itr5.hasNext()) {
+                                    Map.Entry<String, JsonNode> property5 = itr5.next();
+                                    String customMessagePropertiesKey7 = property5.getKey();
+                                    String customMessagePropertiesValue7 = property5.getValue().getTextValue();
+                                    serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey7, customMessagePropertiesValue7);
+                                }
+                            }
+                        }
+                        
+                        JsonNode serviceBusQueueMessageValue4 = actionValue2.get("serviceBusQueueMessage");
+                        if (serviceBusQueueMessageValue4 != null && serviceBusQueueMessageValue4 instanceof NullNode == false) {
+                            JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                            actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                            
+                            JsonNode queueNameValue4 = serviceBusQueueMessageValue4.get("queueName");
+                            if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                String queueNameInstance4;
+                                queueNameInstance4 = queueNameValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                            }
+                            
+                            JsonNode namespaceValue4 = serviceBusQueueMessageValue4.get("namespace");
+                            if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                String namespaceInstance4;
+                                namespaceInstance4 = namespaceValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                            }
+                            
+                            JsonNode transportTypeValue4 = serviceBusQueueMessageValue4.get("transportType");
+                            if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance4;
+                                transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                            }
+                            
+                            JsonNode authenticationValue12 = serviceBusQueueMessageValue4.get("authentication");
+                            if (authenticationValue12 != null && authenticationValue12 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                
+                                JsonNode sasKeyNameValue4 = authenticationValue12.get("sasKeyName");
+                                if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                    String sasKeyNameInstance4;
+                                    sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                    authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                }
+                                
+                                JsonNode sasKeyValue4 = authenticationValue12.get("sasKey");
+                                if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                    String sasKeyInstance4;
+                                    sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                    authenticationInstance4.setSasKey(sasKeyInstance4);
+                                }
+                                
+                                JsonNode typeValue12 = authenticationValue12.get("type");
+                                if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance12;
+                                    typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                    authenticationInstance4.setType(typeInstance12);
+                                }
+                            }
+                            
+                            JsonNode messageValue6 = serviceBusQueueMessageValue4.get("message");
+                            if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                String messageInstance6;
+                                messageInstance6 = messageValue6.getTextValue();
+                                serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue8 = serviceBusQueueMessageValue4.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue8 != null && brokeredMessagePropertiesValue8 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                
+                                JsonNode contentTypeValue4 = brokeredMessagePropertiesValue8.get("contentType");
+                                if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                    String contentTypeInstance4;
+                                    contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                }
+                                
+                                JsonNode correlationIdValue4 = brokeredMessagePropertiesValue8.get("correlationId");
+                                if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                    String correlationIdInstance4;
+                                    correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                }
+                                
+                                JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue8.get("forcePersistence");
+                                if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance4;
+                                    forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                    brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                }
+                                
+                                JsonNode labelValue4 = brokeredMessagePropertiesValue8.get("label");
+                                if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                    String labelInstance4;
+                                    labelInstance4 = labelValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                }
+                                
+                                JsonNode messageIdValue4 = brokeredMessagePropertiesValue8.get("messageId");
+                                if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                    String messageIdInstance4;
+                                    messageIdInstance4 = messageIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                }
+                                
+                                JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue8.get("partitionKey");
+                                if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                    String partitionKeyInstance4;
+                                    partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                }
+                                
+                                JsonNode replyToValue4 = brokeredMessagePropertiesValue8.get("replyTo");
+                                if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                    String replyToInstance4;
+                                    replyToInstance4 = replyToValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                }
+                                
+                                JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue8.get("replyToSessionId");
+                                if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance4;
+                                    replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue8.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance4;
+                                    scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                }
+                                
+                                JsonNode sessionIdValue4 = brokeredMessagePropertiesValue8.get("sessionId");
+                                if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                    String sessionIdInstance4;
+                                    sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                }
+                                
+                                JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue8.get("timeToLive");
+                                if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance4;
+                                    timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                }
+                                
+                                JsonNode toValue4 = brokeredMessagePropertiesValue8.get("to");
+                                if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                    String toInstance4;
+                                    toInstance4 = toValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue8.get("viaPartitionKey");
+                                if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance4;
+                                    viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue4.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                while (itr6.hasNext()) {
+                                    Map.Entry<String, JsonNode> property6 = itr6.next();
+                                    String customMessagePropertiesKey8 = property6.getKey();
+                                    String customMessagePropertiesValue8 = property6.getValue().getTextValue();
+                                    serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey8, customMessagePropertiesValue8);
+                                }
                             }
                         }
                     }
@@ -2924,6 +5218,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     queueMessageInstance.setMessage(messageInstance);
                                 }
                             }
+                            
+                            JsonNode serviceBusTopicMessageValue = errorActionValue.get("serviceBusTopicMessage");
+                            if (serviceBusTopicMessageValue != null && serviceBusTopicMessageValue instanceof NullNode == false) {
+                                JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                
+                                JsonNode topicPathValue = serviceBusTopicMessageValue.get("topicPath");
+                                if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                    String topicPathInstance;
+                                    topicPathInstance = topicPathValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                }
+                                
+                                JsonNode namespaceValue = serviceBusTopicMessageValue.get("namespace");
+                                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                    String namespaceInstance;
+                                    namespaceInstance = namespaceValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                }
+                                
+                                JsonNode transportTypeValue = serviceBusTopicMessageValue.get("transportType");
+                                if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance;
+                                    transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                    serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                }
+                                
+                                JsonNode authenticationValue2 = serviceBusTopicMessageValue.get("authentication");
+                                if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                    serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                    
+                                    JsonNode sasKeyNameValue = authenticationValue2.get("sasKeyName");
+                                    if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                        String sasKeyNameInstance;
+                                        sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                        authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                    }
+                                    
+                                    JsonNode sasKeyValue = authenticationValue2.get("sasKey");
+                                    if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                        String sasKeyInstance;
+                                        sasKeyInstance = sasKeyValue.getTextValue();
+                                        authenticationInstance.setSasKey(sasKeyInstance);
+                                    }
+                                    
+                                    JsonNode typeValue6 = authenticationValue2.get("type");
+                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance6;
+                                        typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                        authenticationInstance.setType(typeInstance6);
+                                    }
+                                }
+                                
+                                JsonNode messageValue2 = serviceBusTopicMessageValue.get("message");
+                                if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageValue2.getTextValue();
+                                    serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue = serviceBusTopicMessageValue.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue != null && brokeredMessagePropertiesValue instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                    
+                                    JsonNode contentTypeValue = brokeredMessagePropertiesValue.get("contentType");
+                                    if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                        String contentTypeInstance;
+                                        contentTypeInstance = contentTypeValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                    }
+                                    
+                                    JsonNode correlationIdValue = brokeredMessagePropertiesValue.get("correlationId");
+                                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                        String correlationIdInstance;
+                                        correlationIdInstance = correlationIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue = brokeredMessagePropertiesValue.get("forcePersistence");
+                                    if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance;
+                                        forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                        brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                    }
+                                    
+                                    JsonNode labelValue = brokeredMessagePropertiesValue.get("label");
+                                    if (labelValue != null && labelValue instanceof NullNode == false) {
+                                        String labelInstance;
+                                        labelInstance = labelValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                    }
+                                    
+                                    JsonNode messageIdValue = brokeredMessagePropertiesValue.get("messageId");
+                                    if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                        String messageIdInstance;
+                                        messageIdInstance = messageIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue = brokeredMessagePropertiesValue.get("partitionKey");
+                                    if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                        String partitionKeyInstance;
+                                        partitionKeyInstance = partitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                    }
+                                    
+                                    JsonNode replyToValue = brokeredMessagePropertiesValue.get("replyTo");
+                                    if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                        String replyToInstance;
+                                        replyToInstance = replyToValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue.get("replyToSessionId");
+                                    if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                        String replyToSessionIdInstance;
+                                        replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance;
+                                        scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                    }
+                                    
+                                    JsonNode sessionIdValue = brokeredMessagePropertiesValue.get("sessionId");
+                                    if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                        String sessionIdInstance;
+                                        sessionIdInstance = sessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue = brokeredMessagePropertiesValue.get("timeToLive");
+                                    if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance;
+                                        timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                    }
+                                    
+                                    JsonNode toValue = brokeredMessagePropertiesValue.get("to");
+                                    if (toValue != null && toValue instanceof NullNode == false) {
+                                        String toInstance;
+                                        toInstance = toValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setTo(toInstance);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance;
+                                        viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                    while (itr2.hasNext()) {
+                                        Map.Entry<String, JsonNode> property2 = itr2.next();
+                                        String customMessagePropertiesKey = property2.getKey();
+                                        String customMessagePropertiesValue = property2.getValue().getTextValue();
+                                        serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey, customMessagePropertiesValue);
+                                    }
+                                }
+                            }
+                            
+                            JsonNode serviceBusQueueMessageValue = errorActionValue.get("serviceBusQueueMessage");
+                            if (serviceBusQueueMessageValue != null && serviceBusQueueMessageValue instanceof NullNode == false) {
+                                JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                
+                                JsonNode queueNameValue2 = serviceBusQueueMessageValue.get("queueName");
+                                if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                    String queueNameInstance2;
+                                    queueNameInstance2 = queueNameValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                }
+                                
+                                JsonNode namespaceValue2 = serviceBusQueueMessageValue.get("namespace");
+                                if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                    String namespaceInstance2;
+                                    namespaceInstance2 = namespaceValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                }
+                                
+                                JsonNode transportTypeValue2 = serviceBusQueueMessageValue.get("transportType");
+                                if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance2;
+                                    transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                    serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                }
+                                
+                                JsonNode authenticationValue3 = serviceBusQueueMessageValue.get("authentication");
+                                if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                    serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                    
+                                    JsonNode sasKeyNameValue2 = authenticationValue3.get("sasKeyName");
+                                    if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                        String sasKeyNameInstance2;
+                                        sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                        authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                    }
+                                    
+                                    JsonNode sasKeyValue2 = authenticationValue3.get("sasKey");
+                                    if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                        String sasKeyInstance2;
+                                        sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                        authenticationInstance2.setSasKey(sasKeyInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue7 = authenticationValue3.get("type");
+                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance7;
+                                        typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                        authenticationInstance2.setType(typeInstance7);
+                                    }
+                                }
+                                
+                                JsonNode messageValue3 = serviceBusQueueMessageValue.get("message");
+                                if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                    String messageInstance3;
+                                    messageInstance3 = messageValue3.getTextValue();
+                                    serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue2 = serviceBusQueueMessageValue.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue2 != null && brokeredMessagePropertiesValue2 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                    
+                                    JsonNode contentTypeValue2 = brokeredMessagePropertiesValue2.get("contentType");
+                                    if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                        String contentTypeInstance2;
+                                        contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                    }
+                                    
+                                    JsonNode correlationIdValue2 = brokeredMessagePropertiesValue2.get("correlationId");
+                                    if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                        String correlationIdInstance2;
+                                        correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue2.get("forcePersistence");
+                                    if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance2;
+                                        forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                        brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                    }
+                                    
+                                    JsonNode labelValue2 = brokeredMessagePropertiesValue2.get("label");
+                                    if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                        String labelInstance2;
+                                        labelInstance2 = labelValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                    }
+                                    
+                                    JsonNode messageIdValue2 = brokeredMessagePropertiesValue2.get("messageId");
+                                    if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                        String messageIdInstance2;
+                                        messageIdInstance2 = messageIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue2.get("partitionKey");
+                                    if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                        String partitionKeyInstance2;
+                                        partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                    }
+                                    
+                                    JsonNode replyToValue2 = brokeredMessagePropertiesValue2.get("replyTo");
+                                    if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                        String replyToInstance2;
+                                        replyToInstance2 = replyToValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue2.get("replyToSessionId");
+                                    if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                        String replyToSessionIdInstance2;
+                                        replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue2.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance2;
+                                        scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                    }
+                                    
+                                    JsonNode sessionIdValue2 = brokeredMessagePropertiesValue2.get("sessionId");
+                                    if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                        String sessionIdInstance2;
+                                        sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue2.get("timeToLive");
+                                    if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance2;
+                                        timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                    }
+                                    
+                                    JsonNode toValue2 = brokeredMessagePropertiesValue2.get("to");
+                                    if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                        String toInstance2;
+                                        toInstance2 = toValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue2.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance2;
+                                        viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                    while (itr3.hasNext()) {
+                                        Map.Entry<String, JsonNode> property3 = itr3.next();
+                                        String customMessagePropertiesKey2 = property3.getKey();
+                                        String customMessagePropertiesValue2 = property3.getValue().getTextValue();
+                                        serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                                    }
+                                }
+                            }
                         }
                         
                         JsonNode requestValue2 = actionValue.get("request");
@@ -2947,11 +5579,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             
                             JsonNode headersSequenceElement2 = ((JsonNode) requestValue2.get("headers"));
                             if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext()) {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
-                                    String headersKey2 = property2.getKey();
-                                    String headersValue2 = property2.getValue().getTextValue();
+                                Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                while (itr4.hasNext()) {
+                                    Map.Entry<String, JsonNode> property4 = itr4.next();
+                                    String headersKey2 = property4.getKey();
+                                    String headersValue2 = property4.getValue().getTextValue();
                                     requestInstance2.getHeaders().put(headersKey2, headersValue2);
                                 }
                             }
@@ -2963,116 +5595,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 requestInstance2.setBody(bodyInstance2);
                             }
                             
-                            JsonNode authenticationValue2 = requestValue2.get("authentication");
-                            if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
-                                String typeName2 = authenticationValue2.get("type").getTextValue();
+                            JsonNode authenticationValue4 = requestValue2.get("authentication");
+                            if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
+                                String typeName2 = authenticationValue4.get("type").getTextValue();
                                 if ("ClientCertificate".equals(typeName2)) {
                                     ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                     
-                                    JsonNode passwordValue3 = authenticationValue2.get("password");
+                                    JsonNode passwordValue3 = authenticationValue4.get("password");
                                     if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                         String passwordInstance3;
                                         passwordInstance3 = passwordValue3.getTextValue();
                                         clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                     }
                                     
-                                    JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                    JsonNode pfxValue2 = authenticationValue4.get("pfx");
                                     if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                         String pfxInstance2;
                                         pfxInstance2 = pfxValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                     }
                                     
-                                    JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                    JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
                                     if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                         String certificateThumbprintInstance2;
                                         certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                     }
                                     
-                                    JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                    JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
                                     if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                         Calendar certificateExpirationInstance2;
                                         certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                         clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                     }
                                     
-                                    JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                    JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
                                     if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                         String certificateSubjectNameInstance2;
                                         certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                     }
                                     
-                                    JsonNode typeValue6 = authenticationValue2.get("type");
-                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance6;
-                                        typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                        clientCertAuthenticationInstance2.setType(typeInstance6);
+                                    JsonNode typeValue8 = authenticationValue4.get("type");
+                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance8;
+                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                        clientCertAuthenticationInstance2.setType(typeInstance8);
                                     }
                                     requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                 }
                                 if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                     AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                     
-                                    JsonNode secretValue2 = authenticationValue2.get("secret");
+                                    JsonNode secretValue2 = authenticationValue4.get("secret");
                                     if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                         String secretInstance2;
                                         secretInstance2 = secretValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                     }
                                     
-                                    JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                    JsonNode tenantValue2 = authenticationValue4.get("tenant");
                                     if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                         String tenantInstance2;
                                         tenantInstance2 = tenantValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                     }
                                     
-                                    JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                    JsonNode audienceValue2 = authenticationValue4.get("audience");
                                     if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                         String audienceInstance2;
                                         audienceInstance2 = audienceValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                     }
                                     
-                                    JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                    JsonNode clientIdValue2 = authenticationValue4.get("clientId");
                                     if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                         String clientIdInstance2;
                                         clientIdInstance2 = clientIdValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                     }
                                     
-                                    JsonNode typeValue7 = authenticationValue2.get("type");
-                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance7;
-                                        typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                        aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                    JsonNode typeValue9 = authenticationValue4.get("type");
+                                    if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance9;
+                                        typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                        aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                     }
                                     requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                 }
                                 if ("Basic".equals(typeName2)) {
                                     BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                     
-                                    JsonNode usernameValue2 = authenticationValue2.get("username");
+                                    JsonNode usernameValue2 = authenticationValue4.get("username");
                                     if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                         String usernameInstance2;
                                         usernameInstance2 = usernameValue2.getTextValue();
                                         basicAuthenticationInstance2.setUsername(usernameInstance2);
                                     }
                                     
-                                    JsonNode passwordValue4 = authenticationValue2.get("password");
+                                    JsonNode passwordValue4 = authenticationValue4.get("password");
                                     if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                         String passwordInstance4;
                                         passwordInstance4 = passwordValue4.getTextValue();
                                         basicAuthenticationInstance2.setPassword(passwordInstance4);
                                     }
                                     
-                                    JsonNode typeValue8 = authenticationValue2.get("type");
-                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance8;
-                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                        basicAuthenticationInstance2.setType(typeInstance8);
+                                    JsonNode typeValue10 = authenticationValue4.get("type");
+                                    if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance10;
+                                        typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                        basicAuthenticationInstance2.setType(typeInstance10);
                                     }
                                     requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                 }
@@ -3091,11 +5723,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                             }
                             
-                            JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                            if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                            JsonNode queueNameValue3 = queueMessageValue2.get("queueName");
+                            if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                String queueNameInstance3;
+                                queueNameInstance3 = queueNameValue3.getTextValue();
+                                queueMessageInstance2.setQueueName(queueNameInstance3);
                             }
                             
                             JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
@@ -3105,11 +5737,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setSasToken(sasTokenInstance2);
                             }
                             
-                            JsonNode messageValue2 = queueMessageValue2.get("message");
-                            if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                String messageInstance2;
-                                messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                            JsonNode messageValue4 = queueMessageValue2.get("message");
+                            if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                String messageInstance4;
+                                messageInstance4 = messageValue4.getTextValue();
+                                queueMessageInstance2.setMessage(messageInstance4);
+                            }
+                        }
+                        
+                        JsonNode serviceBusTopicMessageValue2 = actionValue.get("serviceBusTopicMessage");
+                        if (serviceBusTopicMessageValue2 != null && serviceBusTopicMessageValue2 instanceof NullNode == false) {
+                            JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                            actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                            
+                            JsonNode topicPathValue2 = serviceBusTopicMessageValue2.get("topicPath");
+                            if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                String topicPathInstance2;
+                                topicPathInstance2 = topicPathValue2.getTextValue();
+                                serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                            }
+                            
+                            JsonNode namespaceValue3 = serviceBusTopicMessageValue2.get("namespace");
+                            if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                String namespaceInstance3;
+                                namespaceInstance3 = namespaceValue3.getTextValue();
+                                serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                            }
+                            
+                            JsonNode transportTypeValue3 = serviceBusTopicMessageValue2.get("transportType");
+                            if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance3;
+                                transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                            }
+                            
+                            JsonNode authenticationValue5 = serviceBusTopicMessageValue2.get("authentication");
+                            if (authenticationValue5 != null && authenticationValue5 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                
+                                JsonNode sasKeyNameValue3 = authenticationValue5.get("sasKeyName");
+                                if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                    String sasKeyNameInstance3;
+                                    sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                    authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                }
+                                
+                                JsonNode sasKeyValue3 = authenticationValue5.get("sasKey");
+                                if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                    String sasKeyInstance3;
+                                    sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                    authenticationInstance3.setSasKey(sasKeyInstance3);
+                                }
+                                
+                                JsonNode typeValue11 = authenticationValue5.get("type");
+                                if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance11;
+                                    typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                    authenticationInstance3.setType(typeInstance11);
+                                }
+                            }
+                            
+                            JsonNode messageValue5 = serviceBusTopicMessageValue2.get("message");
+                            if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                String messageInstance5;
+                                messageInstance5 = messageValue5.getTextValue();
+                                serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue3 = serviceBusTopicMessageValue2.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue3 != null && brokeredMessagePropertiesValue3 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                
+                                JsonNode contentTypeValue3 = brokeredMessagePropertiesValue3.get("contentType");
+                                if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                    String contentTypeInstance3;
+                                    contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                }
+                                
+                                JsonNode correlationIdValue3 = brokeredMessagePropertiesValue3.get("correlationId");
+                                if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                    String correlationIdInstance3;
+                                    correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                }
+                                
+                                JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue3.get("forcePersistence");
+                                if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance3;
+                                    forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                    brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                }
+                                
+                                JsonNode labelValue3 = brokeredMessagePropertiesValue3.get("label");
+                                if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                    String labelInstance3;
+                                    labelInstance3 = labelValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                }
+                                
+                                JsonNode messageIdValue3 = brokeredMessagePropertiesValue3.get("messageId");
+                                if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                    String messageIdInstance3;
+                                    messageIdInstance3 = messageIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                }
+                                
+                                JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue3.get("partitionKey");
+                                if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                    String partitionKeyInstance3;
+                                    partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                }
+                                
+                                JsonNode replyToValue3 = brokeredMessagePropertiesValue3.get("replyTo");
+                                if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                    String replyToInstance3;
+                                    replyToInstance3 = replyToValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                }
+                                
+                                JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue3.get("replyToSessionId");
+                                if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance3;
+                                    replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue3.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance3;
+                                    scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                }
+                                
+                                JsonNode sessionIdValue3 = brokeredMessagePropertiesValue3.get("sessionId");
+                                if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                    String sessionIdInstance3;
+                                    sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                }
+                                
+                                JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue3.get("timeToLive");
+                                if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance3;
+                                    timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                }
+                                
+                                JsonNode toValue3 = brokeredMessagePropertiesValue3.get("to");
+                                if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                    String toInstance3;
+                                    toInstance3 = toValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue3.get("viaPartitionKey");
+                                if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance3;
+                                    viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue2.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                while (itr5.hasNext()) {
+                                    Map.Entry<String, JsonNode> property5 = itr5.next();
+                                    String customMessagePropertiesKey3 = property5.getKey();
+                                    String customMessagePropertiesValue3 = property5.getValue().getTextValue();
+                                    serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                                }
+                            }
+                        }
+                        
+                        JsonNode serviceBusQueueMessageValue2 = actionValue.get("serviceBusQueueMessage");
+                        if (serviceBusQueueMessageValue2 != null && serviceBusQueueMessageValue2 instanceof NullNode == false) {
+                            JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                            actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                            
+                            JsonNode queueNameValue4 = serviceBusQueueMessageValue2.get("queueName");
+                            if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                String queueNameInstance4;
+                                queueNameInstance4 = queueNameValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                            }
+                            
+                            JsonNode namespaceValue4 = serviceBusQueueMessageValue2.get("namespace");
+                            if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                String namespaceInstance4;
+                                namespaceInstance4 = namespaceValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                            }
+                            
+                            JsonNode transportTypeValue4 = serviceBusQueueMessageValue2.get("transportType");
+                            if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance4;
+                                transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                            }
+                            
+                            JsonNode authenticationValue6 = serviceBusQueueMessageValue2.get("authentication");
+                            if (authenticationValue6 != null && authenticationValue6 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                
+                                JsonNode sasKeyNameValue4 = authenticationValue6.get("sasKeyName");
+                                if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                    String sasKeyNameInstance4;
+                                    sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                    authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                }
+                                
+                                JsonNode sasKeyValue4 = authenticationValue6.get("sasKey");
+                                if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                    String sasKeyInstance4;
+                                    sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                    authenticationInstance4.setSasKey(sasKeyInstance4);
+                                }
+                                
+                                JsonNode typeValue12 = authenticationValue6.get("type");
+                                if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance12;
+                                    typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                    authenticationInstance4.setType(typeInstance12);
+                                }
+                            }
+                            
+                            JsonNode messageValue6 = serviceBusQueueMessageValue2.get("message");
+                            if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                String messageInstance6;
+                                messageInstance6 = messageValue6.getTextValue();
+                                serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue4 = serviceBusQueueMessageValue2.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue4 != null && brokeredMessagePropertiesValue4 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                
+                                JsonNode contentTypeValue4 = brokeredMessagePropertiesValue4.get("contentType");
+                                if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                    String contentTypeInstance4;
+                                    contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                }
+                                
+                                JsonNode correlationIdValue4 = brokeredMessagePropertiesValue4.get("correlationId");
+                                if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                    String correlationIdInstance4;
+                                    correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                }
+                                
+                                JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue4.get("forcePersistence");
+                                if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance4;
+                                    forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                    brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                }
+                                
+                                JsonNode labelValue4 = brokeredMessagePropertiesValue4.get("label");
+                                if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                    String labelInstance4;
+                                    labelInstance4 = labelValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                }
+                                
+                                JsonNode messageIdValue4 = brokeredMessagePropertiesValue4.get("messageId");
+                                if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                    String messageIdInstance4;
+                                    messageIdInstance4 = messageIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                }
+                                
+                                JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue4.get("partitionKey");
+                                if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                    String partitionKeyInstance4;
+                                    partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                }
+                                
+                                JsonNode replyToValue4 = brokeredMessagePropertiesValue4.get("replyTo");
+                                if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                    String replyToInstance4;
+                                    replyToInstance4 = replyToValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                }
+                                
+                                JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue4.get("replyToSessionId");
+                                if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance4;
+                                    replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue4.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance4;
+                                    scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                }
+                                
+                                JsonNode sessionIdValue4 = brokeredMessagePropertiesValue4.get("sessionId");
+                                if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                    String sessionIdInstance4;
+                                    sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                }
+                                
+                                JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue4.get("timeToLive");
+                                if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance4;
+                                    timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                }
+                                
+                                JsonNode toValue4 = brokeredMessagePropertiesValue4.get("to");
+                                if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                    String toInstance4;
+                                    toInstance4 = toValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue4.get("viaPartitionKey");
+                                if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance4;
+                                    viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue2.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                while (itr6.hasNext()) {
+                                    Map.Entry<String, JsonNode> property6 = itr6.next();
+                                    String customMessagePropertiesKey4 = property6.getKey();
+                                    String customMessagePropertiesValue4 = property6.getValue().getTextValue();
+                                    serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                                }
                             }
                         }
                     }
@@ -4115,6 +7085,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             queueMessageInstance.setMessage(messageInstance);
                                         }
                                     }
+                                    
+                                    JsonNode serviceBusTopicMessageValue = errorActionValue.get("serviceBusTopicMessage");
+                                    if (serviceBusTopicMessageValue != null && serviceBusTopicMessageValue instanceof NullNode == false) {
+                                        JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                        errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                        
+                                        JsonNode topicPathValue = serviceBusTopicMessageValue.get("topicPath");
+                                        if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                            String topicPathInstance;
+                                            topicPathInstance = topicPathValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                        }
+                                        
+                                        JsonNode namespaceValue = serviceBusTopicMessageValue.get("namespace");
+                                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                            String namespaceInstance;
+                                            namespaceInstance = namespaceValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                        }
+                                        
+                                        JsonNode transportTypeValue = serviceBusTopicMessageValue.get("transportType");
+                                        if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance;
+                                            transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                            serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                        }
+                                        
+                                        JsonNode authenticationValue2 = serviceBusTopicMessageValue.get("authentication");
+                                        if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                            serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                            
+                                            JsonNode sasKeyNameValue = authenticationValue2.get("sasKeyName");
+                                            if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                                String sasKeyNameInstance;
+                                                sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                                authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                            }
+                                            
+                                            JsonNode sasKeyValue = authenticationValue2.get("sasKey");
+                                            if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                                String sasKeyInstance;
+                                                sasKeyInstance = sasKeyValue.getTextValue();
+                                                authenticationInstance.setSasKey(sasKeyInstance);
+                                            }
+                                            
+                                            JsonNode typeValue6 = authenticationValue2.get("type");
+                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance6;
+                                                typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                                authenticationInstance.setType(typeInstance6);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue2 = serviceBusTopicMessageValue.get("message");
+                                        if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                            String messageInstance2;
+                                            messageInstance2 = messageValue2.getTextValue();
+                                            serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue = serviceBusTopicMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue != null && brokeredMessagePropertiesValue instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                            
+                                            JsonNode contentTypeValue = brokeredMessagePropertiesValue.get("contentType");
+                                            if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                                String contentTypeInstance;
+                                                contentTypeInstance = contentTypeValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                            }
+                                            
+                                            JsonNode correlationIdValue = brokeredMessagePropertiesValue.get("correlationId");
+                                            if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                                String correlationIdInstance;
+                                                correlationIdInstance = correlationIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue = brokeredMessagePropertiesValue.get("forcePersistence");
+                                            if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance;
+                                                forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                                brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                            }
+                                            
+                                            JsonNode labelValue = brokeredMessagePropertiesValue.get("label");
+                                            if (labelValue != null && labelValue instanceof NullNode == false) {
+                                                String labelInstance;
+                                                labelInstance = labelValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                            }
+                                            
+                                            JsonNode messageIdValue = brokeredMessagePropertiesValue.get("messageId");
+                                            if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                                String messageIdInstance;
+                                                messageIdInstance = messageIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue = brokeredMessagePropertiesValue.get("partitionKey");
+                                            if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                                String partitionKeyInstance;
+                                                partitionKeyInstance = partitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                            }
+                                            
+                                            JsonNode replyToValue = brokeredMessagePropertiesValue.get("replyTo");
+                                            if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                                String replyToInstance;
+                                                replyToInstance = replyToValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue.get("replyToSessionId");
+                                            if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                                String replyToSessionIdInstance;
+                                                replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance;
+                                                scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                            }
+                                            
+                                            JsonNode sessionIdValue = brokeredMessagePropertiesValue.get("sessionId");
+                                            if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                                String sessionIdInstance;
+                                                sessionIdInstance = sessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue = brokeredMessagePropertiesValue.get("timeToLive");
+                                            if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance;
+                                                timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                            }
+                                            
+                                            JsonNode toValue = brokeredMessagePropertiesValue.get("to");
+                                            if (toValue != null && toValue instanceof NullNode == false) {
+                                                String toInstance;
+                                                toInstance = toValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setTo(toInstance);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance;
+                                                viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                            while (itr2.hasNext()) {
+                                                Map.Entry<String, JsonNode> property2 = itr2.next();
+                                                String customMessagePropertiesKey = property2.getKey();
+                                                String customMessagePropertiesValue = property2.getValue().getTextValue();
+                                                serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey, customMessagePropertiesValue);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode serviceBusQueueMessageValue = errorActionValue.get("serviceBusQueueMessage");
+                                    if (serviceBusQueueMessageValue != null && serviceBusQueueMessageValue instanceof NullNode == false) {
+                                        JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                        errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                        
+                                        JsonNode queueNameValue2 = serviceBusQueueMessageValue.get("queueName");
+                                        if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                            String queueNameInstance2;
+                                            queueNameInstance2 = queueNameValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                        }
+                                        
+                                        JsonNode namespaceValue2 = serviceBusQueueMessageValue.get("namespace");
+                                        if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                            String namespaceInstance2;
+                                            namespaceInstance2 = namespaceValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                        }
+                                        
+                                        JsonNode transportTypeValue2 = serviceBusQueueMessageValue.get("transportType");
+                                        if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance2;
+                                            transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                            serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                        }
+                                        
+                                        JsonNode authenticationValue3 = serviceBusQueueMessageValue.get("authentication");
+                                        if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                            serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                            
+                                            JsonNode sasKeyNameValue2 = authenticationValue3.get("sasKeyName");
+                                            if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                                String sasKeyNameInstance2;
+                                                sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                                authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                            }
+                                            
+                                            JsonNode sasKeyValue2 = authenticationValue3.get("sasKey");
+                                            if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                                String sasKeyInstance2;
+                                                sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                                authenticationInstance2.setSasKey(sasKeyInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue7 = authenticationValue3.get("type");
+                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance7;
+                                                typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                                authenticationInstance2.setType(typeInstance7);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue3 = serviceBusQueueMessageValue.get("message");
+                                        if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                            String messageInstance3;
+                                            messageInstance3 = messageValue3.getTextValue();
+                                            serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue2 = serviceBusQueueMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue2 != null && brokeredMessagePropertiesValue2 instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                            
+                                            JsonNode contentTypeValue2 = brokeredMessagePropertiesValue2.get("contentType");
+                                            if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                                String contentTypeInstance2;
+                                                contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                            }
+                                            
+                                            JsonNode correlationIdValue2 = brokeredMessagePropertiesValue2.get("correlationId");
+                                            if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                                String correlationIdInstance2;
+                                                correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue2.get("forcePersistence");
+                                            if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance2;
+                                                forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                                brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                            }
+                                            
+                                            JsonNode labelValue2 = brokeredMessagePropertiesValue2.get("label");
+                                            if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                                String labelInstance2;
+                                                labelInstance2 = labelValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                            }
+                                            
+                                            JsonNode messageIdValue2 = brokeredMessagePropertiesValue2.get("messageId");
+                                            if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                                String messageIdInstance2;
+                                                messageIdInstance2 = messageIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue2.get("partitionKey");
+                                            if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                                String partitionKeyInstance2;
+                                                partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                            }
+                                            
+                                            JsonNode replyToValue2 = brokeredMessagePropertiesValue2.get("replyTo");
+                                            if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                                String replyToInstance2;
+                                                replyToInstance2 = replyToValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue2.get("replyToSessionId");
+                                            if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                                String replyToSessionIdInstance2;
+                                                replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue2.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance2;
+                                                scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                            }
+                                            
+                                            JsonNode sessionIdValue2 = brokeredMessagePropertiesValue2.get("sessionId");
+                                            if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                                String sessionIdInstance2;
+                                                sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue2.get("timeToLive");
+                                            if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance2;
+                                                timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                            }
+                                            
+                                            JsonNode toValue2 = brokeredMessagePropertiesValue2.get("to");
+                                            if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                                String toInstance2;
+                                                toInstance2 = toValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue2.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance2;
+                                                viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                            while (itr3.hasNext()) {
+                                                Map.Entry<String, JsonNode> property3 = itr3.next();
+                                                String customMessagePropertiesKey2 = property3.getKey();
+                                                String customMessagePropertiesValue2 = property3.getValue().getTextValue();
+                                                serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                                            }
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode requestValue2 = actionValue.get("request");
@@ -4138,11 +7446,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     
                                     JsonNode headersSequenceElement2 = ((JsonNode) requestValue2.get("headers"));
                                     if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                        Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                        while (itr2.hasNext()) {
-                                            Map.Entry<String, JsonNode> property2 = itr2.next();
-                                            String headersKey2 = property2.getKey();
-                                            String headersValue2 = property2.getValue().getTextValue();
+                                        Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                        while (itr4.hasNext()) {
+                                            Map.Entry<String, JsonNode> property4 = itr4.next();
+                                            String headersKey2 = property4.getKey();
+                                            String headersValue2 = property4.getValue().getTextValue();
                                             requestInstance2.getHeaders().put(headersKey2, headersValue2);
                                         }
                                     }
@@ -4154,116 +7462,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         requestInstance2.setBody(bodyInstance2);
                                     }
                                     
-                                    JsonNode authenticationValue2 = requestValue2.get("authentication");
-                                    if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
-                                        String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    JsonNode authenticationValue4 = requestValue2.get("authentication");
+                                    if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
+                                        String typeName2 = authenticationValue4.get("type").getTextValue();
                                         if ("ClientCertificate".equals(typeName2)) {
                                             ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                             
-                                            JsonNode passwordValue3 = authenticationValue2.get("password");
+                                            JsonNode passwordValue3 = authenticationValue4.get("password");
                                             if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                                 String passwordInstance3;
                                                 passwordInstance3 = passwordValue3.getTextValue();
                                                 clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                             }
                                             
-                                            JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                            JsonNode pfxValue2 = authenticationValue4.get("pfx");
                                             if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                                 String pfxInstance2;
                                                 pfxInstance2 = pfxValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                             }
                                             
-                                            JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                            JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
                                             if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                                 String certificateThumbprintInstance2;
                                                 certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                             }
                                             
-                                            JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                            JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
                                             if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                                 Calendar certificateExpirationInstance2;
                                                 certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                                 clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                             }
                                             
-                                            JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                            JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
                                             if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                                 String certificateSubjectNameInstance2;
                                                 certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                             }
                                             
-                                            JsonNode typeValue6 = authenticationValue2.get("type");
-                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance6;
-                                                typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                                clientCertAuthenticationInstance2.setType(typeInstance6);
+                                            JsonNode typeValue8 = authenticationValue4.get("type");
+                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance8;
+                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                                clientCertAuthenticationInstance2.setType(typeInstance8);
                                             }
                                             requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                         }
                                         if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                             AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                             
-                                            JsonNode secretValue2 = authenticationValue2.get("secret");
+                                            JsonNode secretValue2 = authenticationValue4.get("secret");
                                             if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                                 String secretInstance2;
                                                 secretInstance2 = secretValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                             }
                                             
-                                            JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                            JsonNode tenantValue2 = authenticationValue4.get("tenant");
                                             if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                                 String tenantInstance2;
                                                 tenantInstance2 = tenantValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                             }
                                             
-                                            JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                            JsonNode audienceValue2 = authenticationValue4.get("audience");
                                             if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                                 String audienceInstance2;
                                                 audienceInstance2 = audienceValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                             }
                                             
-                                            JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                            JsonNode clientIdValue2 = authenticationValue4.get("clientId");
                                             if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                                 String clientIdInstance2;
                                                 clientIdInstance2 = clientIdValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                             }
                                             
-                                            JsonNode typeValue7 = authenticationValue2.get("type");
-                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance7;
-                                                typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                                aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                            JsonNode typeValue9 = authenticationValue4.get("type");
+                                            if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance9;
+                                                typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                                aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                             }
                                             requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                         }
                                         if ("Basic".equals(typeName2)) {
                                             BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                             
-                                            JsonNode usernameValue2 = authenticationValue2.get("username");
+                                            JsonNode usernameValue2 = authenticationValue4.get("username");
                                             if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                                 String usernameInstance2;
                                                 usernameInstance2 = usernameValue2.getTextValue();
                                                 basicAuthenticationInstance2.setUsername(usernameInstance2);
                                             }
                                             
-                                            JsonNode passwordValue4 = authenticationValue2.get("password");
+                                            JsonNode passwordValue4 = authenticationValue4.get("password");
                                             if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                                 String passwordInstance4;
                                                 passwordInstance4 = passwordValue4.getTextValue();
                                                 basicAuthenticationInstance2.setPassword(passwordInstance4);
                                             }
                                             
-                                            JsonNode typeValue8 = authenticationValue2.get("type");
-                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance8;
-                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                                basicAuthenticationInstance2.setType(typeInstance8);
+                                            JsonNode typeValue10 = authenticationValue4.get("type");
+                                            if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance10;
+                                                typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                                basicAuthenticationInstance2.setType(typeInstance10);
                                             }
                                             requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                         }
@@ -4282,11 +7590,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                                     }
                                     
-                                    JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                                    if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                        String queueNameInstance2;
-                                        queueNameInstance2 = queueNameValue2.getTextValue();
-                                        queueMessageInstance2.setQueueName(queueNameInstance2);
+                                    JsonNode queueNameValue3 = queueMessageValue2.get("queueName");
+                                    if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                        String queueNameInstance3;
+                                        queueNameInstance3 = queueNameValue3.getTextValue();
+                                        queueMessageInstance2.setQueueName(queueNameInstance3);
                                     }
                                     
                                     JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
@@ -4296,11 +7604,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setSasToken(sasTokenInstance2);
                                     }
                                     
-                                    JsonNode messageValue2 = queueMessageValue2.get("message");
-                                    if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                        String messageInstance2;
-                                        messageInstance2 = messageValue2.getTextValue();
-                                        queueMessageInstance2.setMessage(messageInstance2);
+                                    JsonNode messageValue4 = queueMessageValue2.get("message");
+                                    if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                        String messageInstance4;
+                                        messageInstance4 = messageValue4.getTextValue();
+                                        queueMessageInstance2.setMessage(messageInstance4);
+                                    }
+                                }
+                                
+                                JsonNode serviceBusTopicMessageValue2 = actionValue.get("serviceBusTopicMessage");
+                                if (serviceBusTopicMessageValue2 != null && serviceBusTopicMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                                    actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                                    
+                                    JsonNode topicPathValue2 = serviceBusTopicMessageValue2.get("topicPath");
+                                    if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                        String topicPathInstance2;
+                                        topicPathInstance2 = topicPathValue2.getTextValue();
+                                        serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                                    }
+                                    
+                                    JsonNode namespaceValue3 = serviceBusTopicMessageValue2.get("namespace");
+                                    if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                        String namespaceInstance3;
+                                        namespaceInstance3 = namespaceValue3.getTextValue();
+                                        serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                                    }
+                                    
+                                    JsonNode transportTypeValue3 = serviceBusTopicMessageValue2.get("transportType");
+                                    if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance3;
+                                        transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                        serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                                    }
+                                    
+                                    JsonNode authenticationValue5 = serviceBusTopicMessageValue2.get("authentication");
+                                    if (authenticationValue5 != null && authenticationValue5 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                        serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                        
+                                        JsonNode sasKeyNameValue3 = authenticationValue5.get("sasKeyName");
+                                        if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                            String sasKeyNameInstance3;
+                                            sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                            authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                        }
+                                        
+                                        JsonNode sasKeyValue3 = authenticationValue5.get("sasKey");
+                                        if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                            String sasKeyInstance3;
+                                            sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                            authenticationInstance3.setSasKey(sasKeyInstance3);
+                                        }
+                                        
+                                        JsonNode typeValue11 = authenticationValue5.get("type");
+                                        if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance11;
+                                            typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                            authenticationInstance3.setType(typeInstance11);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue5 = serviceBusTopicMessageValue2.get("message");
+                                    if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                        String messageInstance5;
+                                        messageInstance5 = messageValue5.getTextValue();
+                                        serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue3 = serviceBusTopicMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue3 != null && brokeredMessagePropertiesValue3 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                        
+                                        JsonNode contentTypeValue3 = brokeredMessagePropertiesValue3.get("contentType");
+                                        if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                            String contentTypeInstance3;
+                                            contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                        }
+                                        
+                                        JsonNode correlationIdValue3 = brokeredMessagePropertiesValue3.get("correlationId");
+                                        if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                            String correlationIdInstance3;
+                                            correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue3.get("forcePersistence");
+                                        if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance3;
+                                            forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                            brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                        }
+                                        
+                                        JsonNode labelValue3 = brokeredMessagePropertiesValue3.get("label");
+                                        if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                            String labelInstance3;
+                                            labelInstance3 = labelValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                        }
+                                        
+                                        JsonNode messageIdValue3 = brokeredMessagePropertiesValue3.get("messageId");
+                                        if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                            String messageIdInstance3;
+                                            messageIdInstance3 = messageIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue3.get("partitionKey");
+                                        if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                            String partitionKeyInstance3;
+                                            partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                        }
+                                        
+                                        JsonNode replyToValue3 = brokeredMessagePropertiesValue3.get("replyTo");
+                                        if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                            String replyToInstance3;
+                                            replyToInstance3 = replyToValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue3.get("replyToSessionId");
+                                        if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance3;
+                                            replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue3.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance3;
+                                            scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                        }
+                                        
+                                        JsonNode sessionIdValue3 = brokeredMessagePropertiesValue3.get("sessionId");
+                                        if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                            String sessionIdInstance3;
+                                            sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue3.get("timeToLive");
+                                        if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance3;
+                                            timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                        }
+                                        
+                                        JsonNode toValue3 = brokeredMessagePropertiesValue3.get("to");
+                                        if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                            String toInstance3;
+                                            toInstance3 = toValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue3.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance3;
+                                            viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                        while (itr5.hasNext()) {
+                                            Map.Entry<String, JsonNode> property5 = itr5.next();
+                                            String customMessagePropertiesKey3 = property5.getKey();
+                                            String customMessagePropertiesValue3 = property5.getValue().getTextValue();
+                                            serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode serviceBusQueueMessageValue2 = actionValue.get("serviceBusQueueMessage");
+                                if (serviceBusQueueMessageValue2 != null && serviceBusQueueMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                                    actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                                    
+                                    JsonNode queueNameValue4 = serviceBusQueueMessageValue2.get("queueName");
+                                    if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                        String queueNameInstance4;
+                                        queueNameInstance4 = queueNameValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                                    }
+                                    
+                                    JsonNode namespaceValue4 = serviceBusQueueMessageValue2.get("namespace");
+                                    if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                        String namespaceInstance4;
+                                        namespaceInstance4 = namespaceValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                                    }
+                                    
+                                    JsonNode transportTypeValue4 = serviceBusQueueMessageValue2.get("transportType");
+                                    if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance4;
+                                        transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                        serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                                    }
+                                    
+                                    JsonNode authenticationValue6 = serviceBusQueueMessageValue2.get("authentication");
+                                    if (authenticationValue6 != null && authenticationValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                        serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                        
+                                        JsonNode sasKeyNameValue4 = authenticationValue6.get("sasKeyName");
+                                        if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                            String sasKeyNameInstance4;
+                                            sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                            authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                        }
+                                        
+                                        JsonNode sasKeyValue4 = authenticationValue6.get("sasKey");
+                                        if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                            String sasKeyInstance4;
+                                            sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                            authenticationInstance4.setSasKey(sasKeyInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue12 = authenticationValue6.get("type");
+                                        if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance12;
+                                            typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                            authenticationInstance4.setType(typeInstance12);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue6 = serviceBusQueueMessageValue2.get("message");
+                                    if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                        String messageInstance6;
+                                        messageInstance6 = messageValue6.getTextValue();
+                                        serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue4 = serviceBusQueueMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue4 != null && brokeredMessagePropertiesValue4 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                        
+                                        JsonNode contentTypeValue4 = brokeredMessagePropertiesValue4.get("contentType");
+                                        if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                            String contentTypeInstance4;
+                                            contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                        }
+                                        
+                                        JsonNode correlationIdValue4 = brokeredMessagePropertiesValue4.get("correlationId");
+                                        if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                            String correlationIdInstance4;
+                                            correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue4.get("forcePersistence");
+                                        if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance4;
+                                            forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                            brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                        }
+                                        
+                                        JsonNode labelValue4 = brokeredMessagePropertiesValue4.get("label");
+                                        if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                            String labelInstance4;
+                                            labelInstance4 = labelValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                        }
+                                        
+                                        JsonNode messageIdValue4 = brokeredMessagePropertiesValue4.get("messageId");
+                                        if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                            String messageIdInstance4;
+                                            messageIdInstance4 = messageIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue4.get("partitionKey");
+                                        if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                            String partitionKeyInstance4;
+                                            partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                        }
+                                        
+                                        JsonNode replyToValue4 = brokeredMessagePropertiesValue4.get("replyTo");
+                                        if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                            String replyToInstance4;
+                                            replyToInstance4 = replyToValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue4.get("replyToSessionId");
+                                        if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance4;
+                                            replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue4.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance4;
+                                            scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                        }
+                                        
+                                        JsonNode sessionIdValue4 = brokeredMessagePropertiesValue4.get("sessionId");
+                                        if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                            String sessionIdInstance4;
+                                            sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue4.get("timeToLive");
+                                        if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance4;
+                                            timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                        }
+                                        
+                                        JsonNode toValue4 = brokeredMessagePropertiesValue4.get("to");
+                                        if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                            String toInstance4;
+                                            toInstance4 = toValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue4.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance4;
+                                            viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                        while (itr6.hasNext()) {
+                                            Map.Entry<String, JsonNode> property6 = itr6.next();
+                                            String customMessagePropertiesKey4 = property6.getKey();
+                                            String customMessagePropertiesValue4 = property6.getValue().getTextValue();
+                                            serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                                        }
                                     }
                                 }
                             }
@@ -4862,6 +8508,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             queueMessageInstance.setMessage(messageInstance);
                                         }
                                     }
+                                    
+                                    JsonNode serviceBusTopicMessageValue = errorActionValue.get("serviceBusTopicMessage");
+                                    if (serviceBusTopicMessageValue != null && serviceBusTopicMessageValue instanceof NullNode == false) {
+                                        JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                        errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                        
+                                        JsonNode topicPathValue = serviceBusTopicMessageValue.get("topicPath");
+                                        if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                            String topicPathInstance;
+                                            topicPathInstance = topicPathValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                        }
+                                        
+                                        JsonNode namespaceValue = serviceBusTopicMessageValue.get("namespace");
+                                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                            String namespaceInstance;
+                                            namespaceInstance = namespaceValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                        }
+                                        
+                                        JsonNode transportTypeValue = serviceBusTopicMessageValue.get("transportType");
+                                        if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance;
+                                            transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                            serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                        }
+                                        
+                                        JsonNode authenticationValue2 = serviceBusTopicMessageValue.get("authentication");
+                                        if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                            serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                            
+                                            JsonNode sasKeyNameValue = authenticationValue2.get("sasKeyName");
+                                            if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                                String sasKeyNameInstance;
+                                                sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                                authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                            }
+                                            
+                                            JsonNode sasKeyValue = authenticationValue2.get("sasKey");
+                                            if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                                String sasKeyInstance;
+                                                sasKeyInstance = sasKeyValue.getTextValue();
+                                                authenticationInstance.setSasKey(sasKeyInstance);
+                                            }
+                                            
+                                            JsonNode typeValue6 = authenticationValue2.get("type");
+                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance6;
+                                                typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                                authenticationInstance.setType(typeInstance6);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue2 = serviceBusTopicMessageValue.get("message");
+                                        if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                            String messageInstance2;
+                                            messageInstance2 = messageValue2.getTextValue();
+                                            serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue = serviceBusTopicMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue != null && brokeredMessagePropertiesValue instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                            
+                                            JsonNode contentTypeValue = brokeredMessagePropertiesValue.get("contentType");
+                                            if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                                String contentTypeInstance;
+                                                contentTypeInstance = contentTypeValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                            }
+                                            
+                                            JsonNode correlationIdValue = brokeredMessagePropertiesValue.get("correlationId");
+                                            if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                                String correlationIdInstance;
+                                                correlationIdInstance = correlationIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue = brokeredMessagePropertiesValue.get("forcePersistence");
+                                            if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance;
+                                                forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                                brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                            }
+                                            
+                                            JsonNode labelValue = brokeredMessagePropertiesValue.get("label");
+                                            if (labelValue != null && labelValue instanceof NullNode == false) {
+                                                String labelInstance;
+                                                labelInstance = labelValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                            }
+                                            
+                                            JsonNode messageIdValue = brokeredMessagePropertiesValue.get("messageId");
+                                            if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                                String messageIdInstance;
+                                                messageIdInstance = messageIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue = brokeredMessagePropertiesValue.get("partitionKey");
+                                            if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                                String partitionKeyInstance;
+                                                partitionKeyInstance = partitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                            }
+                                            
+                                            JsonNode replyToValue = brokeredMessagePropertiesValue.get("replyTo");
+                                            if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                                String replyToInstance;
+                                                replyToInstance = replyToValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue.get("replyToSessionId");
+                                            if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                                String replyToSessionIdInstance;
+                                                replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance;
+                                                scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                            }
+                                            
+                                            JsonNode sessionIdValue = brokeredMessagePropertiesValue.get("sessionId");
+                                            if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                                String sessionIdInstance;
+                                                sessionIdInstance = sessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue = brokeredMessagePropertiesValue.get("timeToLive");
+                                            if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance;
+                                                timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                            }
+                                            
+                                            JsonNode toValue = brokeredMessagePropertiesValue.get("to");
+                                            if (toValue != null && toValue instanceof NullNode == false) {
+                                                String toInstance;
+                                                toInstance = toValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setTo(toInstance);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance;
+                                                viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                            while (itr2.hasNext()) {
+                                                Map.Entry<String, JsonNode> property2 = itr2.next();
+                                                String customMessagePropertiesKey = property2.getKey();
+                                                String customMessagePropertiesValue = property2.getValue().getTextValue();
+                                                serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey, customMessagePropertiesValue);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode serviceBusQueueMessageValue = errorActionValue.get("serviceBusQueueMessage");
+                                    if (serviceBusQueueMessageValue != null && serviceBusQueueMessageValue instanceof NullNode == false) {
+                                        JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                        errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                        
+                                        JsonNode queueNameValue2 = serviceBusQueueMessageValue.get("queueName");
+                                        if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                            String queueNameInstance2;
+                                            queueNameInstance2 = queueNameValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                        }
+                                        
+                                        JsonNode namespaceValue2 = serviceBusQueueMessageValue.get("namespace");
+                                        if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                            String namespaceInstance2;
+                                            namespaceInstance2 = namespaceValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                        }
+                                        
+                                        JsonNode transportTypeValue2 = serviceBusQueueMessageValue.get("transportType");
+                                        if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance2;
+                                            transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                            serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                        }
+                                        
+                                        JsonNode authenticationValue3 = serviceBusQueueMessageValue.get("authentication");
+                                        if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                            serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                            
+                                            JsonNode sasKeyNameValue2 = authenticationValue3.get("sasKeyName");
+                                            if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                                String sasKeyNameInstance2;
+                                                sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                                authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                            }
+                                            
+                                            JsonNode sasKeyValue2 = authenticationValue3.get("sasKey");
+                                            if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                                String sasKeyInstance2;
+                                                sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                                authenticationInstance2.setSasKey(sasKeyInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue7 = authenticationValue3.get("type");
+                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance7;
+                                                typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                                authenticationInstance2.setType(typeInstance7);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue3 = serviceBusQueueMessageValue.get("message");
+                                        if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                            String messageInstance3;
+                                            messageInstance3 = messageValue3.getTextValue();
+                                            serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue2 = serviceBusQueueMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue2 != null && brokeredMessagePropertiesValue2 instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                            
+                                            JsonNode contentTypeValue2 = brokeredMessagePropertiesValue2.get("contentType");
+                                            if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                                String contentTypeInstance2;
+                                                contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                            }
+                                            
+                                            JsonNode correlationIdValue2 = brokeredMessagePropertiesValue2.get("correlationId");
+                                            if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                                String correlationIdInstance2;
+                                                correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue2.get("forcePersistence");
+                                            if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance2;
+                                                forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                                brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                            }
+                                            
+                                            JsonNode labelValue2 = brokeredMessagePropertiesValue2.get("label");
+                                            if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                                String labelInstance2;
+                                                labelInstance2 = labelValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                            }
+                                            
+                                            JsonNode messageIdValue2 = brokeredMessagePropertiesValue2.get("messageId");
+                                            if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                                String messageIdInstance2;
+                                                messageIdInstance2 = messageIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue2.get("partitionKey");
+                                            if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                                String partitionKeyInstance2;
+                                                partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                            }
+                                            
+                                            JsonNode replyToValue2 = brokeredMessagePropertiesValue2.get("replyTo");
+                                            if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                                String replyToInstance2;
+                                                replyToInstance2 = replyToValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue2.get("replyToSessionId");
+                                            if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                                String replyToSessionIdInstance2;
+                                                replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue2.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance2;
+                                                scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                            }
+                                            
+                                            JsonNode sessionIdValue2 = brokeredMessagePropertiesValue2.get("sessionId");
+                                            if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                                String sessionIdInstance2;
+                                                sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue2.get("timeToLive");
+                                            if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance2;
+                                                timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                            }
+                                            
+                                            JsonNode toValue2 = brokeredMessagePropertiesValue2.get("to");
+                                            if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                                String toInstance2;
+                                                toInstance2 = toValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue2.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance2;
+                                                viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                            while (itr3.hasNext()) {
+                                                Map.Entry<String, JsonNode> property3 = itr3.next();
+                                                String customMessagePropertiesKey2 = property3.getKey();
+                                                String customMessagePropertiesValue2 = property3.getValue().getTextValue();
+                                                serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                                            }
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode requestValue2 = actionValue.get("request");
@@ -4885,11 +8869,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     
                                     JsonNode headersSequenceElement2 = ((JsonNode) requestValue2.get("headers"));
                                     if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                        Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                        while (itr2.hasNext()) {
-                                            Map.Entry<String, JsonNode> property2 = itr2.next();
-                                            String headersKey2 = property2.getKey();
-                                            String headersValue2 = property2.getValue().getTextValue();
+                                        Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                        while (itr4.hasNext()) {
+                                            Map.Entry<String, JsonNode> property4 = itr4.next();
+                                            String headersKey2 = property4.getKey();
+                                            String headersValue2 = property4.getValue().getTextValue();
                                             requestInstance2.getHeaders().put(headersKey2, headersValue2);
                                         }
                                     }
@@ -4901,116 +8885,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         requestInstance2.setBody(bodyInstance2);
                                     }
                                     
-                                    JsonNode authenticationValue2 = requestValue2.get("authentication");
-                                    if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
-                                        String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    JsonNode authenticationValue4 = requestValue2.get("authentication");
+                                    if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
+                                        String typeName2 = authenticationValue4.get("type").getTextValue();
                                         if ("ClientCertificate".equals(typeName2)) {
                                             ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                             
-                                            JsonNode passwordValue3 = authenticationValue2.get("password");
+                                            JsonNode passwordValue3 = authenticationValue4.get("password");
                                             if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                                 String passwordInstance3;
                                                 passwordInstance3 = passwordValue3.getTextValue();
                                                 clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                             }
                                             
-                                            JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                            JsonNode pfxValue2 = authenticationValue4.get("pfx");
                                             if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                                 String pfxInstance2;
                                                 pfxInstance2 = pfxValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                             }
                                             
-                                            JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                            JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
                                             if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                                 String certificateThumbprintInstance2;
                                                 certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                             }
                                             
-                                            JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                            JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
                                             if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                                 Calendar certificateExpirationInstance2;
                                                 certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                                 clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                             }
                                             
-                                            JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                            JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
                                             if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                                 String certificateSubjectNameInstance2;
                                                 certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                             }
                                             
-                                            JsonNode typeValue6 = authenticationValue2.get("type");
-                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance6;
-                                                typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                                clientCertAuthenticationInstance2.setType(typeInstance6);
+                                            JsonNode typeValue8 = authenticationValue4.get("type");
+                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance8;
+                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                                clientCertAuthenticationInstance2.setType(typeInstance8);
                                             }
                                             requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                         }
                                         if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                             AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                             
-                                            JsonNode secretValue2 = authenticationValue2.get("secret");
+                                            JsonNode secretValue2 = authenticationValue4.get("secret");
                                             if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                                 String secretInstance2;
                                                 secretInstance2 = secretValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                             }
                                             
-                                            JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                            JsonNode tenantValue2 = authenticationValue4.get("tenant");
                                             if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                                 String tenantInstance2;
                                                 tenantInstance2 = tenantValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                             }
                                             
-                                            JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                            JsonNode audienceValue2 = authenticationValue4.get("audience");
                                             if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                                 String audienceInstance2;
                                                 audienceInstance2 = audienceValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                             }
                                             
-                                            JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                            JsonNode clientIdValue2 = authenticationValue4.get("clientId");
                                             if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                                 String clientIdInstance2;
                                                 clientIdInstance2 = clientIdValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                             }
                                             
-                                            JsonNode typeValue7 = authenticationValue2.get("type");
-                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance7;
-                                                typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                                aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                            JsonNode typeValue9 = authenticationValue4.get("type");
+                                            if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance9;
+                                                typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                                aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                             }
                                             requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                         }
                                         if ("Basic".equals(typeName2)) {
                                             BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                             
-                                            JsonNode usernameValue2 = authenticationValue2.get("username");
+                                            JsonNode usernameValue2 = authenticationValue4.get("username");
                                             if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                                 String usernameInstance2;
                                                 usernameInstance2 = usernameValue2.getTextValue();
                                                 basicAuthenticationInstance2.setUsername(usernameInstance2);
                                             }
                                             
-                                            JsonNode passwordValue4 = authenticationValue2.get("password");
+                                            JsonNode passwordValue4 = authenticationValue4.get("password");
                                             if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                                 String passwordInstance4;
                                                 passwordInstance4 = passwordValue4.getTextValue();
                                                 basicAuthenticationInstance2.setPassword(passwordInstance4);
                                             }
                                             
-                                            JsonNode typeValue8 = authenticationValue2.get("type");
-                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance8;
-                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                                basicAuthenticationInstance2.setType(typeInstance8);
+                                            JsonNode typeValue10 = authenticationValue4.get("type");
+                                            if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance10;
+                                                typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                                basicAuthenticationInstance2.setType(typeInstance10);
                                             }
                                             requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                         }
@@ -5029,11 +9013,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                                     }
                                     
-                                    JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                                    if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                        String queueNameInstance2;
-                                        queueNameInstance2 = queueNameValue2.getTextValue();
-                                        queueMessageInstance2.setQueueName(queueNameInstance2);
+                                    JsonNode queueNameValue3 = queueMessageValue2.get("queueName");
+                                    if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                        String queueNameInstance3;
+                                        queueNameInstance3 = queueNameValue3.getTextValue();
+                                        queueMessageInstance2.setQueueName(queueNameInstance3);
                                     }
                                     
                                     JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
@@ -5043,11 +9027,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setSasToken(sasTokenInstance2);
                                     }
                                     
-                                    JsonNode messageValue2 = queueMessageValue2.get("message");
-                                    if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                        String messageInstance2;
-                                        messageInstance2 = messageValue2.getTextValue();
-                                        queueMessageInstance2.setMessage(messageInstance2);
+                                    JsonNode messageValue4 = queueMessageValue2.get("message");
+                                    if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                        String messageInstance4;
+                                        messageInstance4 = messageValue4.getTextValue();
+                                        queueMessageInstance2.setMessage(messageInstance4);
+                                    }
+                                }
+                                
+                                JsonNode serviceBusTopicMessageValue2 = actionValue.get("serviceBusTopicMessage");
+                                if (serviceBusTopicMessageValue2 != null && serviceBusTopicMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                                    actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                                    
+                                    JsonNode topicPathValue2 = serviceBusTopicMessageValue2.get("topicPath");
+                                    if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                        String topicPathInstance2;
+                                        topicPathInstance2 = topicPathValue2.getTextValue();
+                                        serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                                    }
+                                    
+                                    JsonNode namespaceValue3 = serviceBusTopicMessageValue2.get("namespace");
+                                    if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                        String namespaceInstance3;
+                                        namespaceInstance3 = namespaceValue3.getTextValue();
+                                        serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                                    }
+                                    
+                                    JsonNode transportTypeValue3 = serviceBusTopicMessageValue2.get("transportType");
+                                    if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance3;
+                                        transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                        serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                                    }
+                                    
+                                    JsonNode authenticationValue5 = serviceBusTopicMessageValue2.get("authentication");
+                                    if (authenticationValue5 != null && authenticationValue5 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                        serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                        
+                                        JsonNode sasKeyNameValue3 = authenticationValue5.get("sasKeyName");
+                                        if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                            String sasKeyNameInstance3;
+                                            sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                            authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                        }
+                                        
+                                        JsonNode sasKeyValue3 = authenticationValue5.get("sasKey");
+                                        if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                            String sasKeyInstance3;
+                                            sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                            authenticationInstance3.setSasKey(sasKeyInstance3);
+                                        }
+                                        
+                                        JsonNode typeValue11 = authenticationValue5.get("type");
+                                        if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance11;
+                                            typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                            authenticationInstance3.setType(typeInstance11);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue5 = serviceBusTopicMessageValue2.get("message");
+                                    if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                        String messageInstance5;
+                                        messageInstance5 = messageValue5.getTextValue();
+                                        serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue3 = serviceBusTopicMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue3 != null && brokeredMessagePropertiesValue3 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                        
+                                        JsonNode contentTypeValue3 = brokeredMessagePropertiesValue3.get("contentType");
+                                        if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                            String contentTypeInstance3;
+                                            contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                        }
+                                        
+                                        JsonNode correlationIdValue3 = brokeredMessagePropertiesValue3.get("correlationId");
+                                        if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                            String correlationIdInstance3;
+                                            correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue3.get("forcePersistence");
+                                        if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance3;
+                                            forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                            brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                        }
+                                        
+                                        JsonNode labelValue3 = brokeredMessagePropertiesValue3.get("label");
+                                        if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                            String labelInstance3;
+                                            labelInstance3 = labelValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                        }
+                                        
+                                        JsonNode messageIdValue3 = brokeredMessagePropertiesValue3.get("messageId");
+                                        if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                            String messageIdInstance3;
+                                            messageIdInstance3 = messageIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue3.get("partitionKey");
+                                        if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                            String partitionKeyInstance3;
+                                            partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                        }
+                                        
+                                        JsonNode replyToValue3 = brokeredMessagePropertiesValue3.get("replyTo");
+                                        if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                            String replyToInstance3;
+                                            replyToInstance3 = replyToValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue3.get("replyToSessionId");
+                                        if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance3;
+                                            replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue3.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance3;
+                                            scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                        }
+                                        
+                                        JsonNode sessionIdValue3 = brokeredMessagePropertiesValue3.get("sessionId");
+                                        if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                            String sessionIdInstance3;
+                                            sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue3.get("timeToLive");
+                                        if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance3;
+                                            timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                        }
+                                        
+                                        JsonNode toValue3 = brokeredMessagePropertiesValue3.get("to");
+                                        if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                            String toInstance3;
+                                            toInstance3 = toValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue3.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance3;
+                                            viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                        while (itr5.hasNext()) {
+                                            Map.Entry<String, JsonNode> property5 = itr5.next();
+                                            String customMessagePropertiesKey3 = property5.getKey();
+                                            String customMessagePropertiesValue3 = property5.getValue().getTextValue();
+                                            serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode serviceBusQueueMessageValue2 = actionValue.get("serviceBusQueueMessage");
+                                if (serviceBusQueueMessageValue2 != null && serviceBusQueueMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                                    actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                                    
+                                    JsonNode queueNameValue4 = serviceBusQueueMessageValue2.get("queueName");
+                                    if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                        String queueNameInstance4;
+                                        queueNameInstance4 = queueNameValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                                    }
+                                    
+                                    JsonNode namespaceValue4 = serviceBusQueueMessageValue2.get("namespace");
+                                    if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                        String namespaceInstance4;
+                                        namespaceInstance4 = namespaceValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                                    }
+                                    
+                                    JsonNode transportTypeValue4 = serviceBusQueueMessageValue2.get("transportType");
+                                    if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance4;
+                                        transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                        serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                                    }
+                                    
+                                    JsonNode authenticationValue6 = serviceBusQueueMessageValue2.get("authentication");
+                                    if (authenticationValue6 != null && authenticationValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                        serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                        
+                                        JsonNode sasKeyNameValue4 = authenticationValue6.get("sasKeyName");
+                                        if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                            String sasKeyNameInstance4;
+                                            sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                            authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                        }
+                                        
+                                        JsonNode sasKeyValue4 = authenticationValue6.get("sasKey");
+                                        if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                            String sasKeyInstance4;
+                                            sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                            authenticationInstance4.setSasKey(sasKeyInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue12 = authenticationValue6.get("type");
+                                        if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance12;
+                                            typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                            authenticationInstance4.setType(typeInstance12);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue6 = serviceBusQueueMessageValue2.get("message");
+                                    if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                        String messageInstance6;
+                                        messageInstance6 = messageValue6.getTextValue();
+                                        serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue4 = serviceBusQueueMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue4 != null && brokeredMessagePropertiesValue4 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                        
+                                        JsonNode contentTypeValue4 = brokeredMessagePropertiesValue4.get("contentType");
+                                        if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                            String contentTypeInstance4;
+                                            contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                        }
+                                        
+                                        JsonNode correlationIdValue4 = brokeredMessagePropertiesValue4.get("correlationId");
+                                        if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                            String correlationIdInstance4;
+                                            correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue4.get("forcePersistence");
+                                        if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance4;
+                                            forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                            brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                        }
+                                        
+                                        JsonNode labelValue4 = brokeredMessagePropertiesValue4.get("label");
+                                        if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                            String labelInstance4;
+                                            labelInstance4 = labelValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                        }
+                                        
+                                        JsonNode messageIdValue4 = brokeredMessagePropertiesValue4.get("messageId");
+                                        if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                            String messageIdInstance4;
+                                            messageIdInstance4 = messageIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue4.get("partitionKey");
+                                        if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                            String partitionKeyInstance4;
+                                            partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                        }
+                                        
+                                        JsonNode replyToValue4 = brokeredMessagePropertiesValue4.get("replyTo");
+                                        if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                            String replyToInstance4;
+                                            replyToInstance4 = replyToValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue4.get("replyToSessionId");
+                                        if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance4;
+                                            replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue4.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance4;
+                                            scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                        }
+                                        
+                                        JsonNode sessionIdValue4 = brokeredMessagePropertiesValue4.get("sessionId");
+                                        if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                            String sessionIdInstance4;
+                                            sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue4.get("timeToLive");
+                                        if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance4;
+                                            timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                        }
+                                        
+                                        JsonNode toValue4 = brokeredMessagePropertiesValue4.get("to");
+                                        if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                            String toInstance4;
+                                            toInstance4 = toValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue4.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance4;
+                                            viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                        while (itr6.hasNext()) {
+                                            Map.Entry<String, JsonNode> property6 = itr6.next();
+                                            String customMessagePropertiesKey4 = property6.getKey();
+                                            String customMessagePropertiesValue4 = property6.getValue().getTextValue();
+                                            serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                                        }
                                     }
                                 }
                             }
@@ -5610,6 +9932,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                             queueMessageInstance.setMessage(messageInstance);
                                         }
                                     }
+                                    
+                                    JsonNode serviceBusTopicMessageValue = errorActionValue.get("serviceBusTopicMessage");
+                                    if (serviceBusTopicMessageValue != null && serviceBusTopicMessageValue instanceof NullNode == false) {
+                                        JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                        errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                        
+                                        JsonNode topicPathValue = serviceBusTopicMessageValue.get("topicPath");
+                                        if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                            String topicPathInstance;
+                                            topicPathInstance = topicPathValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                        }
+                                        
+                                        JsonNode namespaceValue = serviceBusTopicMessageValue.get("namespace");
+                                        if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                            String namespaceInstance;
+                                            namespaceInstance = namespaceValue.getTextValue();
+                                            serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                        }
+                                        
+                                        JsonNode transportTypeValue = serviceBusTopicMessageValue.get("transportType");
+                                        if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance;
+                                            transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                            serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                        }
+                                        
+                                        JsonNode authenticationValue2 = serviceBusTopicMessageValue.get("authentication");
+                                        if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                            serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                            
+                                            JsonNode sasKeyNameValue = authenticationValue2.get("sasKeyName");
+                                            if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                                String sasKeyNameInstance;
+                                                sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                                authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                            }
+                                            
+                                            JsonNode sasKeyValue = authenticationValue2.get("sasKey");
+                                            if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                                String sasKeyInstance;
+                                                sasKeyInstance = sasKeyValue.getTextValue();
+                                                authenticationInstance.setSasKey(sasKeyInstance);
+                                            }
+                                            
+                                            JsonNode typeValue6 = authenticationValue2.get("type");
+                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance6;
+                                                typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                                authenticationInstance.setType(typeInstance6);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue2 = serviceBusTopicMessageValue.get("message");
+                                        if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                            String messageInstance2;
+                                            messageInstance2 = messageValue2.getTextValue();
+                                            serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue = serviceBusTopicMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue != null && brokeredMessagePropertiesValue instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                            
+                                            JsonNode contentTypeValue = brokeredMessagePropertiesValue.get("contentType");
+                                            if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                                String contentTypeInstance;
+                                                contentTypeInstance = contentTypeValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                            }
+                                            
+                                            JsonNode correlationIdValue = brokeredMessagePropertiesValue.get("correlationId");
+                                            if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                                String correlationIdInstance;
+                                                correlationIdInstance = correlationIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue = brokeredMessagePropertiesValue.get("forcePersistence");
+                                            if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance;
+                                                forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                                brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                            }
+                                            
+                                            JsonNode labelValue = brokeredMessagePropertiesValue.get("label");
+                                            if (labelValue != null && labelValue instanceof NullNode == false) {
+                                                String labelInstance;
+                                                labelInstance = labelValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                            }
+                                            
+                                            JsonNode messageIdValue = brokeredMessagePropertiesValue.get("messageId");
+                                            if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                                String messageIdInstance;
+                                                messageIdInstance = messageIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue = brokeredMessagePropertiesValue.get("partitionKey");
+                                            if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                                String partitionKeyInstance;
+                                                partitionKeyInstance = partitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                            }
+                                            
+                                            JsonNode replyToValue = brokeredMessagePropertiesValue.get("replyTo");
+                                            if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                                String replyToInstance;
+                                                replyToInstance = replyToValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue.get("replyToSessionId");
+                                            if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                                String replyToSessionIdInstance;
+                                                replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance;
+                                                scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                            }
+                                            
+                                            JsonNode sessionIdValue = brokeredMessagePropertiesValue.get("sessionId");
+                                            if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                                String sessionIdInstance;
+                                                sessionIdInstance = sessionIdValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue = brokeredMessagePropertiesValue.get("timeToLive");
+                                            if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance;
+                                                timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                                brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                            }
+                                            
+                                            JsonNode toValue = brokeredMessagePropertiesValue.get("to");
+                                            if (toValue != null && toValue instanceof NullNode == false) {
+                                                String toInstance;
+                                                toInstance = toValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setTo(toInstance);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance;
+                                                viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                                brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                            while (itr2.hasNext()) {
+                                                Map.Entry<String, JsonNode> property2 = itr2.next();
+                                                String customMessagePropertiesKey = property2.getKey();
+                                                String customMessagePropertiesValue = property2.getValue().getTextValue();
+                                                serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey, customMessagePropertiesValue);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode serviceBusQueueMessageValue = errorActionValue.get("serviceBusQueueMessage");
+                                    if (serviceBusQueueMessageValue != null && serviceBusQueueMessageValue instanceof NullNode == false) {
+                                        JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                        errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                        
+                                        JsonNode queueNameValue2 = serviceBusQueueMessageValue.get("queueName");
+                                        if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                            String queueNameInstance2;
+                                            queueNameInstance2 = queueNameValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                        }
+                                        
+                                        JsonNode namespaceValue2 = serviceBusQueueMessageValue.get("namespace");
+                                        if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                            String namespaceInstance2;
+                                            namespaceInstance2 = namespaceValue2.getTextValue();
+                                            serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                        }
+                                        
+                                        JsonNode transportTypeValue2 = serviceBusQueueMessageValue.get("transportType");
+                                        if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                            JobServiceBusTransportType transportTypeInstance2;
+                                            transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                            serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                        }
+                                        
+                                        JsonNode authenticationValue3 = serviceBusQueueMessageValue.get("authentication");
+                                        if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
+                                            JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                            serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                            
+                                            JsonNode sasKeyNameValue2 = authenticationValue3.get("sasKeyName");
+                                            if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                                String sasKeyNameInstance2;
+                                                sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                                authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                            }
+                                            
+                                            JsonNode sasKeyValue2 = authenticationValue3.get("sasKey");
+                                            if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                                String sasKeyInstance2;
+                                                sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                                authenticationInstance2.setSasKey(sasKeyInstance2);
+                                            }
+                                            
+                                            JsonNode typeValue7 = authenticationValue3.get("type");
+                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                                JobServiceBusAuthenticationType typeInstance7;
+                                                typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                                authenticationInstance2.setType(typeInstance7);
+                                            }
+                                        }
+                                        
+                                        JsonNode messageValue3 = serviceBusQueueMessageValue.get("message");
+                                        if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                            String messageInstance3;
+                                            messageInstance3 = messageValue3.getTextValue();
+                                            serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                        }
+                                        
+                                        JsonNode brokeredMessagePropertiesValue2 = serviceBusQueueMessageValue.get("brokeredMessageProperties");
+                                        if (brokeredMessagePropertiesValue2 != null && brokeredMessagePropertiesValue2 instanceof NullNode == false) {
+                                            JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                            serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                            
+                                            JsonNode contentTypeValue2 = brokeredMessagePropertiesValue2.get("contentType");
+                                            if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                                String contentTypeInstance2;
+                                                contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                            }
+                                            
+                                            JsonNode correlationIdValue2 = brokeredMessagePropertiesValue2.get("correlationId");
+                                            if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                                String correlationIdInstance2;
+                                                correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                            }
+                                            
+                                            JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue2.get("forcePersistence");
+                                            if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                                boolean forcePersistenceInstance2;
+                                                forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                                brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                            }
+                                            
+                                            JsonNode labelValue2 = brokeredMessagePropertiesValue2.get("label");
+                                            if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                                String labelInstance2;
+                                                labelInstance2 = labelValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                            }
+                                            
+                                            JsonNode messageIdValue2 = brokeredMessagePropertiesValue2.get("messageId");
+                                            if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                                String messageIdInstance2;
+                                                messageIdInstance2 = messageIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                            }
+                                            
+                                            JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue2.get("partitionKey");
+                                            if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                                String partitionKeyInstance2;
+                                                partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                            }
+                                            
+                                            JsonNode replyToValue2 = brokeredMessagePropertiesValue2.get("replyTo");
+                                            if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                                String replyToInstance2;
+                                                replyToInstance2 = replyToValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                            }
+                                            
+                                            JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue2.get("replyToSessionId");
+                                            if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                                String replyToSessionIdInstance2;
+                                                replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue2.get("scheduledEnqueueTimeUtc");
+                                            if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                                Calendar scheduledEnqueueTimeUtcInstance2;
+                                                scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                            }
+                                            
+                                            JsonNode sessionIdValue2 = brokeredMessagePropertiesValue2.get("sessionId");
+                                            if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                                String sessionIdInstance2;
+                                                sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                            }
+                                            
+                                            JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue2.get("timeToLive");
+                                            if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                                Calendar timeToLiveInstance2;
+                                                timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                                brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                            }
+                                            
+                                            JsonNode toValue2 = brokeredMessagePropertiesValue2.get("to");
+                                            if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                                String toInstance2;
+                                                toInstance2 = toValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                            }
+                                            
+                                            JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue2.get("viaPartitionKey");
+                                            if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                                String viaPartitionKeyInstance2;
+                                                viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                                brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                            }
+                                        }
+                                        
+                                        JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue.get("customMessageProperties"));
+                                        if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                            Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                            while (itr3.hasNext()) {
+                                                Map.Entry<String, JsonNode> property3 = itr3.next();
+                                                String customMessagePropertiesKey2 = property3.getKey();
+                                                String customMessagePropertiesValue2 = property3.getValue().getTextValue();
+                                                serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                                            }
+                                        }
+                                    }
                                 }
                                 
                                 JsonNode requestValue2 = actionValue.get("request");
@@ -5633,11 +10293,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     
                                     JsonNode headersSequenceElement2 = ((JsonNode) requestValue2.get("headers"));
                                     if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                        Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                        while (itr2.hasNext()) {
-                                            Map.Entry<String, JsonNode> property2 = itr2.next();
-                                            String headersKey2 = property2.getKey();
-                                            String headersValue2 = property2.getValue().getTextValue();
+                                        Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                        while (itr4.hasNext()) {
+                                            Map.Entry<String, JsonNode> property4 = itr4.next();
+                                            String headersKey2 = property4.getKey();
+                                            String headersValue2 = property4.getValue().getTextValue();
                                             requestInstance2.getHeaders().put(headersKey2, headersValue2);
                                         }
                                     }
@@ -5649,116 +10309,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         requestInstance2.setBody(bodyInstance2);
                                     }
                                     
-                                    JsonNode authenticationValue2 = requestValue2.get("authentication");
-                                    if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
-                                        String typeName2 = authenticationValue2.get("type").getTextValue();
+                                    JsonNode authenticationValue4 = requestValue2.get("authentication");
+                                    if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
+                                        String typeName2 = authenticationValue4.get("type").getTextValue();
                                         if ("ClientCertificate".equals(typeName2)) {
                                             ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                             
-                                            JsonNode passwordValue3 = authenticationValue2.get("password");
+                                            JsonNode passwordValue3 = authenticationValue4.get("password");
                                             if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                                 String passwordInstance3;
                                                 passwordInstance3 = passwordValue3.getTextValue();
                                                 clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                             }
                                             
-                                            JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                            JsonNode pfxValue2 = authenticationValue4.get("pfx");
                                             if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                                 String pfxInstance2;
                                                 pfxInstance2 = pfxValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                             }
                                             
-                                            JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                            JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
                                             if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                                 String certificateThumbprintInstance2;
                                                 certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                             }
                                             
-                                            JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                            JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
                                             if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                                 Calendar certificateExpirationInstance2;
                                                 certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                                 clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                             }
                                             
-                                            JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                            JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
                                             if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                                 String certificateSubjectNameInstance2;
                                                 certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                                 clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                             }
                                             
-                                            JsonNode typeValue6 = authenticationValue2.get("type");
-                                            if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance6;
-                                                typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                                clientCertAuthenticationInstance2.setType(typeInstance6);
+                                            JsonNode typeValue8 = authenticationValue4.get("type");
+                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance8;
+                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                                clientCertAuthenticationInstance2.setType(typeInstance8);
                                             }
                                             requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                         }
                                         if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                             AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                             
-                                            JsonNode secretValue2 = authenticationValue2.get("secret");
+                                            JsonNode secretValue2 = authenticationValue4.get("secret");
                                             if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                                 String secretInstance2;
                                                 secretInstance2 = secretValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                             }
                                             
-                                            JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                            JsonNode tenantValue2 = authenticationValue4.get("tenant");
                                             if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                                 String tenantInstance2;
                                                 tenantInstance2 = tenantValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                             }
                                             
-                                            JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                            JsonNode audienceValue2 = authenticationValue4.get("audience");
                                             if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                                 String audienceInstance2;
                                                 audienceInstance2 = audienceValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                             }
                                             
-                                            JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                            JsonNode clientIdValue2 = authenticationValue4.get("clientId");
                                             if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                                 String clientIdInstance2;
                                                 clientIdInstance2 = clientIdValue2.getTextValue();
                                                 aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                             }
                                             
-                                            JsonNode typeValue7 = authenticationValue2.get("type");
-                                            if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance7;
-                                                typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                                aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                            JsonNode typeValue9 = authenticationValue4.get("type");
+                                            if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance9;
+                                                typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                                aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                             }
                                             requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                         }
                                         if ("Basic".equals(typeName2)) {
                                             BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                             
-                                            JsonNode usernameValue2 = authenticationValue2.get("username");
+                                            JsonNode usernameValue2 = authenticationValue4.get("username");
                                             if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                                 String usernameInstance2;
                                                 usernameInstance2 = usernameValue2.getTextValue();
                                                 basicAuthenticationInstance2.setUsername(usernameInstance2);
                                             }
                                             
-                                            JsonNode passwordValue4 = authenticationValue2.get("password");
+                                            JsonNode passwordValue4 = authenticationValue4.get("password");
                                             if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                                 String passwordInstance4;
                                                 passwordInstance4 = passwordValue4.getTextValue();
                                                 basicAuthenticationInstance2.setPassword(passwordInstance4);
                                             }
                                             
-                                            JsonNode typeValue8 = authenticationValue2.get("type");
-                                            if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                                HttpAuthenticationType typeInstance8;
-                                                typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                                basicAuthenticationInstance2.setType(typeInstance8);
+                                            JsonNode typeValue10 = authenticationValue4.get("type");
+                                            if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                                HttpAuthenticationType typeInstance10;
+                                                typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                                basicAuthenticationInstance2.setType(typeInstance10);
                                             }
                                             requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                         }
@@ -5777,11 +10437,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                                     }
                                     
-                                    JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                                    if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                        String queueNameInstance2;
-                                        queueNameInstance2 = queueNameValue2.getTextValue();
-                                        queueMessageInstance2.setQueueName(queueNameInstance2);
+                                    JsonNode queueNameValue3 = queueMessageValue2.get("queueName");
+                                    if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                        String queueNameInstance3;
+                                        queueNameInstance3 = queueNameValue3.getTextValue();
+                                        queueMessageInstance2.setQueueName(queueNameInstance3);
                                     }
                                     
                                     JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
@@ -5791,11 +10451,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                         queueMessageInstance2.setSasToken(sasTokenInstance2);
                                     }
                                     
-                                    JsonNode messageValue2 = queueMessageValue2.get("message");
-                                    if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                        String messageInstance2;
-                                        messageInstance2 = messageValue2.getTextValue();
-                                        queueMessageInstance2.setMessage(messageInstance2);
+                                    JsonNode messageValue4 = queueMessageValue2.get("message");
+                                    if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                        String messageInstance4;
+                                        messageInstance4 = messageValue4.getTextValue();
+                                        queueMessageInstance2.setMessage(messageInstance4);
+                                    }
+                                }
+                                
+                                JsonNode serviceBusTopicMessageValue2 = actionValue.get("serviceBusTopicMessage");
+                                if (serviceBusTopicMessageValue2 != null && serviceBusTopicMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                                    actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                                    
+                                    JsonNode topicPathValue2 = serviceBusTopicMessageValue2.get("topicPath");
+                                    if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                        String topicPathInstance2;
+                                        topicPathInstance2 = topicPathValue2.getTextValue();
+                                        serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                                    }
+                                    
+                                    JsonNode namespaceValue3 = serviceBusTopicMessageValue2.get("namespace");
+                                    if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                        String namespaceInstance3;
+                                        namespaceInstance3 = namespaceValue3.getTextValue();
+                                        serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                                    }
+                                    
+                                    JsonNode transportTypeValue3 = serviceBusTopicMessageValue2.get("transportType");
+                                    if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance3;
+                                        transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                        serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                                    }
+                                    
+                                    JsonNode authenticationValue5 = serviceBusTopicMessageValue2.get("authentication");
+                                    if (authenticationValue5 != null && authenticationValue5 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                        serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                        
+                                        JsonNode sasKeyNameValue3 = authenticationValue5.get("sasKeyName");
+                                        if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                            String sasKeyNameInstance3;
+                                            sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                            authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                        }
+                                        
+                                        JsonNode sasKeyValue3 = authenticationValue5.get("sasKey");
+                                        if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                            String sasKeyInstance3;
+                                            sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                            authenticationInstance3.setSasKey(sasKeyInstance3);
+                                        }
+                                        
+                                        JsonNode typeValue11 = authenticationValue5.get("type");
+                                        if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance11;
+                                            typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                            authenticationInstance3.setType(typeInstance11);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue5 = serviceBusTopicMessageValue2.get("message");
+                                    if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                        String messageInstance5;
+                                        messageInstance5 = messageValue5.getTextValue();
+                                        serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue3 = serviceBusTopicMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue3 != null && brokeredMessagePropertiesValue3 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                        
+                                        JsonNode contentTypeValue3 = brokeredMessagePropertiesValue3.get("contentType");
+                                        if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                            String contentTypeInstance3;
+                                            contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                        }
+                                        
+                                        JsonNode correlationIdValue3 = brokeredMessagePropertiesValue3.get("correlationId");
+                                        if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                            String correlationIdInstance3;
+                                            correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue3.get("forcePersistence");
+                                        if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance3;
+                                            forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                            brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                        }
+                                        
+                                        JsonNode labelValue3 = brokeredMessagePropertiesValue3.get("label");
+                                        if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                            String labelInstance3;
+                                            labelInstance3 = labelValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                        }
+                                        
+                                        JsonNode messageIdValue3 = brokeredMessagePropertiesValue3.get("messageId");
+                                        if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                            String messageIdInstance3;
+                                            messageIdInstance3 = messageIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue3.get("partitionKey");
+                                        if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                            String partitionKeyInstance3;
+                                            partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                        }
+                                        
+                                        JsonNode replyToValue3 = brokeredMessagePropertiesValue3.get("replyTo");
+                                        if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                            String replyToInstance3;
+                                            replyToInstance3 = replyToValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue3.get("replyToSessionId");
+                                        if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance3;
+                                            replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue3.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance3;
+                                            scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                        }
+                                        
+                                        JsonNode sessionIdValue3 = brokeredMessagePropertiesValue3.get("sessionId");
+                                        if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                            String sessionIdInstance3;
+                                            sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue3.get("timeToLive");
+                                        if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance3;
+                                            timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                            brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                        }
+                                        
+                                        JsonNode toValue3 = brokeredMessagePropertiesValue3.get("to");
+                                        if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                            String toInstance3;
+                                            toInstance3 = toValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue3.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance3;
+                                            viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                            brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                        while (itr5.hasNext()) {
+                                            Map.Entry<String, JsonNode> property5 = itr5.next();
+                                            String customMessagePropertiesKey3 = property5.getKey();
+                                            String customMessagePropertiesValue3 = property5.getValue().getTextValue();
+                                            serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode serviceBusQueueMessageValue2 = actionValue.get("serviceBusQueueMessage");
+                                if (serviceBusQueueMessageValue2 != null && serviceBusQueueMessageValue2 instanceof NullNode == false) {
+                                    JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                                    actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                                    
+                                    JsonNode queueNameValue4 = serviceBusQueueMessageValue2.get("queueName");
+                                    if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                        String queueNameInstance4;
+                                        queueNameInstance4 = queueNameValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                                    }
+                                    
+                                    JsonNode namespaceValue4 = serviceBusQueueMessageValue2.get("namespace");
+                                    if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                        String namespaceInstance4;
+                                        namespaceInstance4 = namespaceValue4.getTextValue();
+                                        serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                                    }
+                                    
+                                    JsonNode transportTypeValue4 = serviceBusQueueMessageValue2.get("transportType");
+                                    if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                        JobServiceBusTransportType transportTypeInstance4;
+                                        transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                        serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                                    }
+                                    
+                                    JsonNode authenticationValue6 = serviceBusQueueMessageValue2.get("authentication");
+                                    if (authenticationValue6 != null && authenticationValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                        serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                        
+                                        JsonNode sasKeyNameValue4 = authenticationValue6.get("sasKeyName");
+                                        if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                            String sasKeyNameInstance4;
+                                            sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                            authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                        }
+                                        
+                                        JsonNode sasKeyValue4 = authenticationValue6.get("sasKey");
+                                        if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                            String sasKeyInstance4;
+                                            sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                            authenticationInstance4.setSasKey(sasKeyInstance4);
+                                        }
+                                        
+                                        JsonNode typeValue12 = authenticationValue6.get("type");
+                                        if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                            JobServiceBusAuthenticationType typeInstance12;
+                                            typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                            authenticationInstance4.setType(typeInstance12);
+                                        }
+                                    }
+                                    
+                                    JsonNode messageValue6 = serviceBusQueueMessageValue2.get("message");
+                                    if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                        String messageInstance6;
+                                        messageInstance6 = messageValue6.getTextValue();
+                                        serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                                    }
+                                    
+                                    JsonNode brokeredMessagePropertiesValue4 = serviceBusQueueMessageValue2.get("brokeredMessageProperties");
+                                    if (brokeredMessagePropertiesValue4 != null && brokeredMessagePropertiesValue4 instanceof NullNode == false) {
+                                        JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                        serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                        
+                                        JsonNode contentTypeValue4 = brokeredMessagePropertiesValue4.get("contentType");
+                                        if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                            String contentTypeInstance4;
+                                            contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                        }
+                                        
+                                        JsonNode correlationIdValue4 = brokeredMessagePropertiesValue4.get("correlationId");
+                                        if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                            String correlationIdInstance4;
+                                            correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                        }
+                                        
+                                        JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue4.get("forcePersistence");
+                                        if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                            boolean forcePersistenceInstance4;
+                                            forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                            brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                        }
+                                        
+                                        JsonNode labelValue4 = brokeredMessagePropertiesValue4.get("label");
+                                        if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                            String labelInstance4;
+                                            labelInstance4 = labelValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                        }
+                                        
+                                        JsonNode messageIdValue4 = brokeredMessagePropertiesValue4.get("messageId");
+                                        if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                            String messageIdInstance4;
+                                            messageIdInstance4 = messageIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                        }
+                                        
+                                        JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue4.get("partitionKey");
+                                        if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                            String partitionKeyInstance4;
+                                            partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                        }
+                                        
+                                        JsonNode replyToValue4 = brokeredMessagePropertiesValue4.get("replyTo");
+                                        if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                            String replyToInstance4;
+                                            replyToInstance4 = replyToValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                        }
+                                        
+                                        JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue4.get("replyToSessionId");
+                                        if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                            String replyToSessionIdInstance4;
+                                            replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue4.get("scheduledEnqueueTimeUtc");
+                                        if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                            Calendar scheduledEnqueueTimeUtcInstance4;
+                                            scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                        }
+                                        
+                                        JsonNode sessionIdValue4 = brokeredMessagePropertiesValue4.get("sessionId");
+                                        if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                            String sessionIdInstance4;
+                                            sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                        }
+                                        
+                                        JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue4.get("timeToLive");
+                                        if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                            Calendar timeToLiveInstance4;
+                                            timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                            brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                        }
+                                        
+                                        JsonNode toValue4 = brokeredMessagePropertiesValue4.get("to");
+                                        if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                            String toInstance4;
+                                            toInstance4 = toValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                        }
+                                        
+                                        JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue4.get("viaPartitionKey");
+                                        if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                            String viaPartitionKeyInstance4;
+                                            viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                            brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                        }
+                                    }
+                                    
+                                    JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue2.get("customMessageProperties"));
+                                    if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                        Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                        while (itr6.hasNext()) {
+                                            Map.Entry<String, JsonNode> property6 = itr6.next();
+                                            String customMessagePropertiesKey4 = property6.getKey();
+                                            String customMessagePropertiesValue4 = property6.getValue().getTextValue();
+                                            serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                                        }
                                     }
                                 }
                             }
@@ -6371,6 +11369,344 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                     queueMessageInstance.setMessage(messageInstance);
                                 }
                             }
+                            
+                            JsonNode serviceBusTopicMessageValue = errorActionValue.get("serviceBusTopicMessage");
+                            if (serviceBusTopicMessageValue != null && serviceBusTopicMessageValue instanceof NullNode == false) {
+                                JobServiceBusTopicMessage serviceBusTopicMessageInstance = new JobServiceBusTopicMessage();
+                                errorActionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance);
+                                
+                                JsonNode topicPathValue = serviceBusTopicMessageValue.get("topicPath");
+                                if (topicPathValue != null && topicPathValue instanceof NullNode == false) {
+                                    String topicPathInstance;
+                                    topicPathInstance = topicPathValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setTopicPath(topicPathInstance);
+                                }
+                                
+                                JsonNode namespaceValue = serviceBusTopicMessageValue.get("namespace");
+                                if (namespaceValue != null && namespaceValue instanceof NullNode == false) {
+                                    String namespaceInstance;
+                                    namespaceInstance = namespaceValue.getTextValue();
+                                    serviceBusTopicMessageInstance.setNamespace(namespaceInstance);
+                                }
+                                
+                                JsonNode transportTypeValue = serviceBusTopicMessageValue.get("transportType");
+                                if (transportTypeValue != null && transportTypeValue instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance;
+                                    transportTypeInstance = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue.getTextValue());
+                                    serviceBusTopicMessageInstance.setTransportType(transportTypeInstance);
+                                }
+                                
+                                JsonNode authenticationValue2 = serviceBusTopicMessageValue.get("authentication");
+                                if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance = new JobServiceBusAuthentication();
+                                    serviceBusTopicMessageInstance.setAuthentication(authenticationInstance);
+                                    
+                                    JsonNode sasKeyNameValue = authenticationValue2.get("sasKeyName");
+                                    if (sasKeyNameValue != null && sasKeyNameValue instanceof NullNode == false) {
+                                        String sasKeyNameInstance;
+                                        sasKeyNameInstance = sasKeyNameValue.getTextValue();
+                                        authenticationInstance.setSasKeyName(sasKeyNameInstance);
+                                    }
+                                    
+                                    JsonNode sasKeyValue = authenticationValue2.get("sasKey");
+                                    if (sasKeyValue != null && sasKeyValue instanceof NullNode == false) {
+                                        String sasKeyInstance;
+                                        sasKeyInstance = sasKeyValue.getTextValue();
+                                        authenticationInstance.setSasKey(sasKeyInstance);
+                                    }
+                                    
+                                    JsonNode typeValue6 = authenticationValue2.get("type");
+                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance6;
+                                        typeInstance6 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue6.getTextValue());
+                                        authenticationInstance.setType(typeInstance6);
+                                    }
+                                }
+                                
+                                JsonNode messageValue2 = serviceBusTopicMessageValue.get("message");
+                                if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageValue2.getTextValue();
+                                    serviceBusTopicMessageInstance.setMessage(messageInstance2);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue = serviceBusTopicMessageValue.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue != null && brokeredMessagePropertiesValue instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusTopicMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance);
+                                    
+                                    JsonNode contentTypeValue = brokeredMessagePropertiesValue.get("contentType");
+                                    if (contentTypeValue != null && contentTypeValue instanceof NullNode == false) {
+                                        String contentTypeInstance;
+                                        contentTypeInstance = contentTypeValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setContentType(contentTypeInstance);
+                                    }
+                                    
+                                    JsonNode correlationIdValue = brokeredMessagePropertiesValue.get("correlationId");
+                                    if (correlationIdValue != null && correlationIdValue instanceof NullNode == false) {
+                                        String correlationIdInstance;
+                                        correlationIdInstance = correlationIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setCorrelationId(correlationIdInstance);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue = brokeredMessagePropertiesValue.get("forcePersistence");
+                                    if (forcePersistenceValue != null && forcePersistenceValue instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance;
+                                        forcePersistenceInstance = forcePersistenceValue.getBooleanValue();
+                                        brokeredMessagePropertiesInstance.setForcePersistence(forcePersistenceInstance);
+                                    }
+                                    
+                                    JsonNode labelValue = brokeredMessagePropertiesValue.get("label");
+                                    if (labelValue != null && labelValue instanceof NullNode == false) {
+                                        String labelInstance;
+                                        labelInstance = labelValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setLabel(labelInstance);
+                                    }
+                                    
+                                    JsonNode messageIdValue = brokeredMessagePropertiesValue.get("messageId");
+                                    if (messageIdValue != null && messageIdValue instanceof NullNode == false) {
+                                        String messageIdInstance;
+                                        messageIdInstance = messageIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setMessageId(messageIdInstance);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue = brokeredMessagePropertiesValue.get("partitionKey");
+                                    if (partitionKeyValue != null && partitionKeyValue instanceof NullNode == false) {
+                                        String partitionKeyInstance;
+                                        partitionKeyInstance = partitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setPartitionKey(partitionKeyInstance);
+                                    }
+                                    
+                                    JsonNode replyToValue = brokeredMessagePropertiesValue.get("replyTo");
+                                    if (replyToValue != null && replyToValue instanceof NullNode == false) {
+                                        String replyToInstance;
+                                        replyToInstance = replyToValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyTo(replyToInstance);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue = brokeredMessagePropertiesValue.get("replyToSessionId");
+                                    if (replyToSessionIdValue != null && replyToSessionIdValue instanceof NullNode == false) {
+                                        String replyToSessionIdInstance;
+                                        replyToSessionIdInstance = replyToSessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setReplyToSessionId(replyToSessionIdInstance);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue = brokeredMessagePropertiesValue.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue != null && scheduledEnqueueTimeUtcValue instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance;
+                                        scheduledEnqueueTimeUtcInstance = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance);
+                                    }
+                                    
+                                    JsonNode sessionIdValue = brokeredMessagePropertiesValue.get("sessionId");
+                                    if (sessionIdValue != null && sessionIdValue instanceof NullNode == false) {
+                                        String sessionIdInstance;
+                                        sessionIdInstance = sessionIdValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setSessionId(sessionIdInstance);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue = brokeredMessagePropertiesValue.get("timeToLive");
+                                    if (timeToLiveValue != null && timeToLiveValue instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance;
+                                        timeToLiveInstance = DatatypeConverter.parseDateTime(timeToLiveValue.getTextValue());
+                                        brokeredMessagePropertiesInstance.setTimeToLive(timeToLiveInstance);
+                                    }
+                                    
+                                    JsonNode toValue = brokeredMessagePropertiesValue.get("to");
+                                    if (toValue != null && toValue instanceof NullNode == false) {
+                                        String toInstance;
+                                        toInstance = toValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setTo(toInstance);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue = brokeredMessagePropertiesValue.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue != null && viaPartitionKeyValue instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance;
+                                        viaPartitionKeyInstance = viaPartitionKeyValue.getTextValue();
+                                        brokeredMessagePropertiesInstance.setViaPartitionKey(viaPartitionKeyInstance);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement = ((JsonNode) serviceBusTopicMessageValue.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement != null && customMessagePropertiesSequenceElement instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr2 = customMessagePropertiesSequenceElement.getFields();
+                                    while (itr2.hasNext()) {
+                                        Map.Entry<String, JsonNode> property2 = itr2.next();
+                                        String customMessagePropertiesKey = property2.getKey();
+                                        String customMessagePropertiesValue = property2.getValue().getTextValue();
+                                        serviceBusTopicMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey, customMessagePropertiesValue);
+                                    }
+                                }
+                            }
+                            
+                            JsonNode serviceBusQueueMessageValue = errorActionValue.get("serviceBusQueueMessage");
+                            if (serviceBusQueueMessageValue != null && serviceBusQueueMessageValue instanceof NullNode == false) {
+                                JobServiceBusQueueMessage serviceBusQueueMessageInstance = new JobServiceBusQueueMessage();
+                                errorActionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance);
+                                
+                                JsonNode queueNameValue2 = serviceBusQueueMessageValue.get("queueName");
+                                if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
+                                    String queueNameInstance2;
+                                    queueNameInstance2 = queueNameValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setQueueName(queueNameInstance2);
+                                }
+                                
+                                JsonNode namespaceValue2 = serviceBusQueueMessageValue.get("namespace");
+                                if (namespaceValue2 != null && namespaceValue2 instanceof NullNode == false) {
+                                    String namespaceInstance2;
+                                    namespaceInstance2 = namespaceValue2.getTextValue();
+                                    serviceBusQueueMessageInstance.setNamespace(namespaceInstance2);
+                                }
+                                
+                                JsonNode transportTypeValue2 = serviceBusQueueMessageValue.get("transportType");
+                                if (transportTypeValue2 != null && transportTypeValue2 instanceof NullNode == false) {
+                                    JobServiceBusTransportType transportTypeInstance2;
+                                    transportTypeInstance2 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue2.getTextValue());
+                                    serviceBusQueueMessageInstance.setTransportType(transportTypeInstance2);
+                                }
+                                
+                                JsonNode authenticationValue3 = serviceBusQueueMessageValue.get("authentication");
+                                if (authenticationValue3 != null && authenticationValue3 instanceof NullNode == false) {
+                                    JobServiceBusAuthentication authenticationInstance2 = new JobServiceBusAuthentication();
+                                    serviceBusQueueMessageInstance.setAuthentication(authenticationInstance2);
+                                    
+                                    JsonNode sasKeyNameValue2 = authenticationValue3.get("sasKeyName");
+                                    if (sasKeyNameValue2 != null && sasKeyNameValue2 instanceof NullNode == false) {
+                                        String sasKeyNameInstance2;
+                                        sasKeyNameInstance2 = sasKeyNameValue2.getTextValue();
+                                        authenticationInstance2.setSasKeyName(sasKeyNameInstance2);
+                                    }
+                                    
+                                    JsonNode sasKeyValue2 = authenticationValue3.get("sasKey");
+                                    if (sasKeyValue2 != null && sasKeyValue2 instanceof NullNode == false) {
+                                        String sasKeyInstance2;
+                                        sasKeyInstance2 = sasKeyValue2.getTextValue();
+                                        authenticationInstance2.setSasKey(sasKeyInstance2);
+                                    }
+                                    
+                                    JsonNode typeValue7 = authenticationValue3.get("type");
+                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
+                                        JobServiceBusAuthenticationType typeInstance7;
+                                        typeInstance7 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue7.getTextValue());
+                                        authenticationInstance2.setType(typeInstance7);
+                                    }
+                                }
+                                
+                                JsonNode messageValue3 = serviceBusQueueMessageValue.get("message");
+                                if (messageValue3 != null && messageValue3 instanceof NullNode == false) {
+                                    String messageInstance3;
+                                    messageInstance3 = messageValue3.getTextValue();
+                                    serviceBusQueueMessageInstance.setMessage(messageInstance3);
+                                }
+                                
+                                JsonNode brokeredMessagePropertiesValue2 = serviceBusQueueMessageValue.get("brokeredMessageProperties");
+                                if (brokeredMessagePropertiesValue2 != null && brokeredMessagePropertiesValue2 instanceof NullNode == false) {
+                                    JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance2 = new JobServiceBusBrokeredMessageProperties();
+                                    serviceBusQueueMessageInstance.setBrokeredMessageProperties(brokeredMessagePropertiesInstance2);
+                                    
+                                    JsonNode contentTypeValue2 = brokeredMessagePropertiesValue2.get("contentType");
+                                    if (contentTypeValue2 != null && contentTypeValue2 instanceof NullNode == false) {
+                                        String contentTypeInstance2;
+                                        contentTypeInstance2 = contentTypeValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setContentType(contentTypeInstance2);
+                                    }
+                                    
+                                    JsonNode correlationIdValue2 = brokeredMessagePropertiesValue2.get("correlationId");
+                                    if (correlationIdValue2 != null && correlationIdValue2 instanceof NullNode == false) {
+                                        String correlationIdInstance2;
+                                        correlationIdInstance2 = correlationIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setCorrelationId(correlationIdInstance2);
+                                    }
+                                    
+                                    JsonNode forcePersistenceValue2 = brokeredMessagePropertiesValue2.get("forcePersistence");
+                                    if (forcePersistenceValue2 != null && forcePersistenceValue2 instanceof NullNode == false) {
+                                        boolean forcePersistenceInstance2;
+                                        forcePersistenceInstance2 = forcePersistenceValue2.getBooleanValue();
+                                        brokeredMessagePropertiesInstance2.setForcePersistence(forcePersistenceInstance2);
+                                    }
+                                    
+                                    JsonNode labelValue2 = brokeredMessagePropertiesValue2.get("label");
+                                    if (labelValue2 != null && labelValue2 instanceof NullNode == false) {
+                                        String labelInstance2;
+                                        labelInstance2 = labelValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setLabel(labelInstance2);
+                                    }
+                                    
+                                    JsonNode messageIdValue2 = brokeredMessagePropertiesValue2.get("messageId");
+                                    if (messageIdValue2 != null && messageIdValue2 instanceof NullNode == false) {
+                                        String messageIdInstance2;
+                                        messageIdInstance2 = messageIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setMessageId(messageIdInstance2);
+                                    }
+                                    
+                                    JsonNode partitionKeyValue2 = brokeredMessagePropertiesValue2.get("partitionKey");
+                                    if (partitionKeyValue2 != null && partitionKeyValue2 instanceof NullNode == false) {
+                                        String partitionKeyInstance2;
+                                        partitionKeyInstance2 = partitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setPartitionKey(partitionKeyInstance2);
+                                    }
+                                    
+                                    JsonNode replyToValue2 = brokeredMessagePropertiesValue2.get("replyTo");
+                                    if (replyToValue2 != null && replyToValue2 instanceof NullNode == false) {
+                                        String replyToInstance2;
+                                        replyToInstance2 = replyToValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyTo(replyToInstance2);
+                                    }
+                                    
+                                    JsonNode replyToSessionIdValue2 = brokeredMessagePropertiesValue2.get("replyToSessionId");
+                                    if (replyToSessionIdValue2 != null && replyToSessionIdValue2 instanceof NullNode == false) {
+                                        String replyToSessionIdInstance2;
+                                        replyToSessionIdInstance2 = replyToSessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setReplyToSessionId(replyToSessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode scheduledEnqueueTimeUtcValue2 = brokeredMessagePropertiesValue2.get("scheduledEnqueueTimeUtc");
+                                    if (scheduledEnqueueTimeUtcValue2 != null && scheduledEnqueueTimeUtcValue2 instanceof NullNode == false) {
+                                        Calendar scheduledEnqueueTimeUtcInstance2;
+                                        scheduledEnqueueTimeUtcInstance2 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance2);
+                                    }
+                                    
+                                    JsonNode sessionIdValue2 = brokeredMessagePropertiesValue2.get("sessionId");
+                                    if (sessionIdValue2 != null && sessionIdValue2 instanceof NullNode == false) {
+                                        String sessionIdInstance2;
+                                        sessionIdInstance2 = sessionIdValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setSessionId(sessionIdInstance2);
+                                    }
+                                    
+                                    JsonNode timeToLiveValue2 = brokeredMessagePropertiesValue2.get("timeToLive");
+                                    if (timeToLiveValue2 != null && timeToLiveValue2 instanceof NullNode == false) {
+                                        Calendar timeToLiveInstance2;
+                                        timeToLiveInstance2 = DatatypeConverter.parseDateTime(timeToLiveValue2.getTextValue());
+                                        brokeredMessagePropertiesInstance2.setTimeToLive(timeToLiveInstance2);
+                                    }
+                                    
+                                    JsonNode toValue2 = brokeredMessagePropertiesValue2.get("to");
+                                    if (toValue2 != null && toValue2 instanceof NullNode == false) {
+                                        String toInstance2;
+                                        toInstance2 = toValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setTo(toInstance2);
+                                    }
+                                    
+                                    JsonNode viaPartitionKeyValue2 = brokeredMessagePropertiesValue2.get("viaPartitionKey");
+                                    if (viaPartitionKeyValue2 != null && viaPartitionKeyValue2 instanceof NullNode == false) {
+                                        String viaPartitionKeyInstance2;
+                                        viaPartitionKeyInstance2 = viaPartitionKeyValue2.getTextValue();
+                                        brokeredMessagePropertiesInstance2.setViaPartitionKey(viaPartitionKeyInstance2);
+                                    }
+                                }
+                                
+                                JsonNode customMessagePropertiesSequenceElement2 = ((JsonNode) serviceBusQueueMessageValue.get("customMessageProperties"));
+                                if (customMessagePropertiesSequenceElement2 != null && customMessagePropertiesSequenceElement2 instanceof NullNode == false) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr3 = customMessagePropertiesSequenceElement2.getFields();
+                                    while (itr3.hasNext()) {
+                                        Map.Entry<String, JsonNode> property3 = itr3.next();
+                                        String customMessagePropertiesKey2 = property3.getKey();
+                                        String customMessagePropertiesValue2 = property3.getValue().getTextValue();
+                                        serviceBusQueueMessageInstance.getCustomMessageProperties().put(customMessagePropertiesKey2, customMessagePropertiesValue2);
+                                    }
+                                }
+                            }
                         }
                         
                         JsonNode requestValue2 = actionValue.get("request");
@@ -6394,11 +11730,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                             
                             JsonNode headersSequenceElement2 = ((JsonNode) requestValue2.get("headers"));
                             if (headersSequenceElement2 != null && headersSequenceElement2 instanceof NullNode == false) {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext()) {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
-                                    String headersKey2 = property2.getKey();
-                                    String headersValue2 = property2.getValue().getTextValue();
+                                Iterator<Map.Entry<String, JsonNode>> itr4 = headersSequenceElement2.getFields();
+                                while (itr4.hasNext()) {
+                                    Map.Entry<String, JsonNode> property4 = itr4.next();
+                                    String headersKey2 = property4.getKey();
+                                    String headersValue2 = property4.getValue().getTextValue();
                                     requestInstance2.getHeaders().put(headersKey2, headersValue2);
                                 }
                             }
@@ -6410,116 +11746,116 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 requestInstance2.setBody(bodyInstance2);
                             }
                             
-                            JsonNode authenticationValue2 = requestValue2.get("authentication");
-                            if (authenticationValue2 != null && authenticationValue2 instanceof NullNode == false) {
-                                String typeName2 = authenticationValue2.get("type").getTextValue();
+                            JsonNode authenticationValue4 = requestValue2.get("authentication");
+                            if (authenticationValue4 != null && authenticationValue4 instanceof NullNode == false) {
+                                String typeName2 = authenticationValue4.get("type").getTextValue();
                                 if ("ClientCertificate".equals(typeName2)) {
                                     ClientCertAuthentication clientCertAuthenticationInstance2 = new ClientCertAuthentication();
                                     
-                                    JsonNode passwordValue3 = authenticationValue2.get("password");
+                                    JsonNode passwordValue3 = authenticationValue4.get("password");
                                     if (passwordValue3 != null && passwordValue3 instanceof NullNode == false) {
                                         String passwordInstance3;
                                         passwordInstance3 = passwordValue3.getTextValue();
                                         clientCertAuthenticationInstance2.setPassword(passwordInstance3);
                                     }
                                     
-                                    JsonNode pfxValue2 = authenticationValue2.get("pfx");
+                                    JsonNode pfxValue2 = authenticationValue4.get("pfx");
                                     if (pfxValue2 != null && pfxValue2 instanceof NullNode == false) {
                                         String pfxInstance2;
                                         pfxInstance2 = pfxValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setPfx(pfxInstance2);
                                     }
                                     
-                                    JsonNode certificateThumbprintValue2 = authenticationValue2.get("certificateThumbprint");
+                                    JsonNode certificateThumbprintValue2 = authenticationValue4.get("certificateThumbprint");
                                     if (certificateThumbprintValue2 != null && certificateThumbprintValue2 instanceof NullNode == false) {
                                         String certificateThumbprintInstance2;
                                         certificateThumbprintInstance2 = certificateThumbprintValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateThumbprint(certificateThumbprintInstance2);
                                     }
                                     
-                                    JsonNode certificateExpirationValue2 = authenticationValue2.get("certificateExpiration");
+                                    JsonNode certificateExpirationValue2 = authenticationValue4.get("certificateExpiration");
                                     if (certificateExpirationValue2 != null && certificateExpirationValue2 instanceof NullNode == false) {
                                         Calendar certificateExpirationInstance2;
                                         certificateExpirationInstance2 = DatatypeConverter.parseDateTime(certificateExpirationValue2.getTextValue());
                                         clientCertAuthenticationInstance2.setCertificateExpiration(certificateExpirationInstance2);
                                     }
                                     
-                                    JsonNode certificateSubjectNameValue2 = authenticationValue2.get("certificateSubjectName");
+                                    JsonNode certificateSubjectNameValue2 = authenticationValue4.get("certificateSubjectName");
                                     if (certificateSubjectNameValue2 != null && certificateSubjectNameValue2 instanceof NullNode == false) {
                                         String certificateSubjectNameInstance2;
                                         certificateSubjectNameInstance2 = certificateSubjectNameValue2.getTextValue();
                                         clientCertAuthenticationInstance2.setCertificateSubjectName(certificateSubjectNameInstance2);
                                     }
                                     
-                                    JsonNode typeValue6 = authenticationValue2.get("type");
-                                    if (typeValue6 != null && typeValue6 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance6;
-                                        typeInstance6 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue6.getTextValue());
-                                        clientCertAuthenticationInstance2.setType(typeInstance6);
+                                    JsonNode typeValue8 = authenticationValue4.get("type");
+                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance8;
+                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
+                                        clientCertAuthenticationInstance2.setType(typeInstance8);
                                     }
                                     requestInstance2.setAuthentication(clientCertAuthenticationInstance2);
                                 }
                                 if ("ActiveDirectoryOAuth".equals(typeName2)) {
                                     AADOAuthAuthentication aADOAuthAuthenticationInstance2 = new AADOAuthAuthentication();
                                     
-                                    JsonNode secretValue2 = authenticationValue2.get("secret");
+                                    JsonNode secretValue2 = authenticationValue4.get("secret");
                                     if (secretValue2 != null && secretValue2 instanceof NullNode == false) {
                                         String secretInstance2;
                                         secretInstance2 = secretValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setSecret(secretInstance2);
                                     }
                                     
-                                    JsonNode tenantValue2 = authenticationValue2.get("tenant");
+                                    JsonNode tenantValue2 = authenticationValue4.get("tenant");
                                     if (tenantValue2 != null && tenantValue2 instanceof NullNode == false) {
                                         String tenantInstance2;
                                         tenantInstance2 = tenantValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setTenant(tenantInstance2);
                                     }
                                     
-                                    JsonNode audienceValue2 = authenticationValue2.get("audience");
+                                    JsonNode audienceValue2 = authenticationValue4.get("audience");
                                     if (audienceValue2 != null && audienceValue2 instanceof NullNode == false) {
                                         String audienceInstance2;
                                         audienceInstance2 = audienceValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setAudience(audienceInstance2);
                                     }
                                     
-                                    JsonNode clientIdValue2 = authenticationValue2.get("clientId");
+                                    JsonNode clientIdValue2 = authenticationValue4.get("clientId");
                                     if (clientIdValue2 != null && clientIdValue2 instanceof NullNode == false) {
                                         String clientIdInstance2;
                                         clientIdInstance2 = clientIdValue2.getTextValue();
                                         aADOAuthAuthenticationInstance2.setClientId(clientIdInstance2);
                                     }
                                     
-                                    JsonNode typeValue7 = authenticationValue2.get("type");
-                                    if (typeValue7 != null && typeValue7 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance7;
-                                        typeInstance7 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue7.getTextValue());
-                                        aADOAuthAuthenticationInstance2.setType(typeInstance7);
+                                    JsonNode typeValue9 = authenticationValue4.get("type");
+                                    if (typeValue9 != null && typeValue9 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance9;
+                                        typeInstance9 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue9.getTextValue());
+                                        aADOAuthAuthenticationInstance2.setType(typeInstance9);
                                     }
                                     requestInstance2.setAuthentication(aADOAuthAuthenticationInstance2);
                                 }
                                 if ("Basic".equals(typeName2)) {
                                     BasicAuthentication basicAuthenticationInstance2 = new BasicAuthentication();
                                     
-                                    JsonNode usernameValue2 = authenticationValue2.get("username");
+                                    JsonNode usernameValue2 = authenticationValue4.get("username");
                                     if (usernameValue2 != null && usernameValue2 instanceof NullNode == false) {
                                         String usernameInstance2;
                                         usernameInstance2 = usernameValue2.getTextValue();
                                         basicAuthenticationInstance2.setUsername(usernameInstance2);
                                     }
                                     
-                                    JsonNode passwordValue4 = authenticationValue2.get("password");
+                                    JsonNode passwordValue4 = authenticationValue4.get("password");
                                     if (passwordValue4 != null && passwordValue4 instanceof NullNode == false) {
                                         String passwordInstance4;
                                         passwordInstance4 = passwordValue4.getTextValue();
                                         basicAuthenticationInstance2.setPassword(passwordInstance4);
                                     }
                                     
-                                    JsonNode typeValue8 = authenticationValue2.get("type");
-                                    if (typeValue8 != null && typeValue8 instanceof NullNode == false) {
-                                        HttpAuthenticationType typeInstance8;
-                                        typeInstance8 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue8.getTextValue());
-                                        basicAuthenticationInstance2.setType(typeInstance8);
+                                    JsonNode typeValue10 = authenticationValue4.get("type");
+                                    if (typeValue10 != null && typeValue10 instanceof NullNode == false) {
+                                        HttpAuthenticationType typeInstance10;
+                                        typeInstance10 = SchedulerClientImpl.parseHttpAuthenticationType(typeValue10.getTextValue());
+                                        basicAuthenticationInstance2.setType(typeInstance10);
                                     }
                                     requestInstance2.setAuthentication(basicAuthenticationInstance2);
                                 }
@@ -6538,11 +11874,11 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
                             }
                             
-                            JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                            if (queueNameValue2 != null && queueNameValue2 instanceof NullNode == false) {
-                                String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                            JsonNode queueNameValue3 = queueMessageValue2.get("queueName");
+                            if (queueNameValue3 != null && queueNameValue3 instanceof NullNode == false) {
+                                String queueNameInstance3;
+                                queueNameInstance3 = queueNameValue3.getTextValue();
+                                queueMessageInstance2.setQueueName(queueNameInstance3);
                             }
                             
                             JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
@@ -6552,11 +11888,349 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
                                 queueMessageInstance2.setSasToken(sasTokenInstance2);
                             }
                             
-                            JsonNode messageValue2 = queueMessageValue2.get("message");
-                            if (messageValue2 != null && messageValue2 instanceof NullNode == false) {
-                                String messageInstance2;
-                                messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                            JsonNode messageValue4 = queueMessageValue2.get("message");
+                            if (messageValue4 != null && messageValue4 instanceof NullNode == false) {
+                                String messageInstance4;
+                                messageInstance4 = messageValue4.getTextValue();
+                                queueMessageInstance2.setMessage(messageInstance4);
+                            }
+                        }
+                        
+                        JsonNode serviceBusTopicMessageValue2 = actionValue.get("serviceBusTopicMessage");
+                        if (serviceBusTopicMessageValue2 != null && serviceBusTopicMessageValue2 instanceof NullNode == false) {
+                            JobServiceBusTopicMessage serviceBusTopicMessageInstance2 = new JobServiceBusTopicMessage();
+                            actionInstance.setServiceBusTopicMessage(serviceBusTopicMessageInstance2);
+                            
+                            JsonNode topicPathValue2 = serviceBusTopicMessageValue2.get("topicPath");
+                            if (topicPathValue2 != null && topicPathValue2 instanceof NullNode == false) {
+                                String topicPathInstance2;
+                                topicPathInstance2 = topicPathValue2.getTextValue();
+                                serviceBusTopicMessageInstance2.setTopicPath(topicPathInstance2);
+                            }
+                            
+                            JsonNode namespaceValue3 = serviceBusTopicMessageValue2.get("namespace");
+                            if (namespaceValue3 != null && namespaceValue3 instanceof NullNode == false) {
+                                String namespaceInstance3;
+                                namespaceInstance3 = namespaceValue3.getTextValue();
+                                serviceBusTopicMessageInstance2.setNamespace(namespaceInstance3);
+                            }
+                            
+                            JsonNode transportTypeValue3 = serviceBusTopicMessageValue2.get("transportType");
+                            if (transportTypeValue3 != null && transportTypeValue3 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance3;
+                                transportTypeInstance3 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue3.getTextValue());
+                                serviceBusTopicMessageInstance2.setTransportType(transportTypeInstance3);
+                            }
+                            
+                            JsonNode authenticationValue5 = serviceBusTopicMessageValue2.get("authentication");
+                            if (authenticationValue5 != null && authenticationValue5 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance3 = new JobServiceBusAuthentication();
+                                serviceBusTopicMessageInstance2.setAuthentication(authenticationInstance3);
+                                
+                                JsonNode sasKeyNameValue3 = authenticationValue5.get("sasKeyName");
+                                if (sasKeyNameValue3 != null && sasKeyNameValue3 instanceof NullNode == false) {
+                                    String sasKeyNameInstance3;
+                                    sasKeyNameInstance3 = sasKeyNameValue3.getTextValue();
+                                    authenticationInstance3.setSasKeyName(sasKeyNameInstance3);
+                                }
+                                
+                                JsonNode sasKeyValue3 = authenticationValue5.get("sasKey");
+                                if (sasKeyValue3 != null && sasKeyValue3 instanceof NullNode == false) {
+                                    String sasKeyInstance3;
+                                    sasKeyInstance3 = sasKeyValue3.getTextValue();
+                                    authenticationInstance3.setSasKey(sasKeyInstance3);
+                                }
+                                
+                                JsonNode typeValue11 = authenticationValue5.get("type");
+                                if (typeValue11 != null && typeValue11 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance11;
+                                    typeInstance11 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue11.getTextValue());
+                                    authenticationInstance3.setType(typeInstance11);
+                                }
+                            }
+                            
+                            JsonNode messageValue5 = serviceBusTopicMessageValue2.get("message");
+                            if (messageValue5 != null && messageValue5 instanceof NullNode == false) {
+                                String messageInstance5;
+                                messageInstance5 = messageValue5.getTextValue();
+                                serviceBusTopicMessageInstance2.setMessage(messageInstance5);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue3 = serviceBusTopicMessageValue2.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue3 != null && brokeredMessagePropertiesValue3 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance3 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusTopicMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance3);
+                                
+                                JsonNode contentTypeValue3 = brokeredMessagePropertiesValue3.get("contentType");
+                                if (contentTypeValue3 != null && contentTypeValue3 instanceof NullNode == false) {
+                                    String contentTypeInstance3;
+                                    contentTypeInstance3 = contentTypeValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setContentType(contentTypeInstance3);
+                                }
+                                
+                                JsonNode correlationIdValue3 = brokeredMessagePropertiesValue3.get("correlationId");
+                                if (correlationIdValue3 != null && correlationIdValue3 instanceof NullNode == false) {
+                                    String correlationIdInstance3;
+                                    correlationIdInstance3 = correlationIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setCorrelationId(correlationIdInstance3);
+                                }
+                                
+                                JsonNode forcePersistenceValue3 = brokeredMessagePropertiesValue3.get("forcePersistence");
+                                if (forcePersistenceValue3 != null && forcePersistenceValue3 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance3;
+                                    forcePersistenceInstance3 = forcePersistenceValue3.getBooleanValue();
+                                    brokeredMessagePropertiesInstance3.setForcePersistence(forcePersistenceInstance3);
+                                }
+                                
+                                JsonNode labelValue3 = brokeredMessagePropertiesValue3.get("label");
+                                if (labelValue3 != null && labelValue3 instanceof NullNode == false) {
+                                    String labelInstance3;
+                                    labelInstance3 = labelValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setLabel(labelInstance3);
+                                }
+                                
+                                JsonNode messageIdValue3 = brokeredMessagePropertiesValue3.get("messageId");
+                                if (messageIdValue3 != null && messageIdValue3 instanceof NullNode == false) {
+                                    String messageIdInstance3;
+                                    messageIdInstance3 = messageIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setMessageId(messageIdInstance3);
+                                }
+                                
+                                JsonNode partitionKeyValue3 = brokeredMessagePropertiesValue3.get("partitionKey");
+                                if (partitionKeyValue3 != null && partitionKeyValue3 instanceof NullNode == false) {
+                                    String partitionKeyInstance3;
+                                    partitionKeyInstance3 = partitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setPartitionKey(partitionKeyInstance3);
+                                }
+                                
+                                JsonNode replyToValue3 = brokeredMessagePropertiesValue3.get("replyTo");
+                                if (replyToValue3 != null && replyToValue3 instanceof NullNode == false) {
+                                    String replyToInstance3;
+                                    replyToInstance3 = replyToValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyTo(replyToInstance3);
+                                }
+                                
+                                JsonNode replyToSessionIdValue3 = brokeredMessagePropertiesValue3.get("replyToSessionId");
+                                if (replyToSessionIdValue3 != null && replyToSessionIdValue3 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance3;
+                                    replyToSessionIdInstance3 = replyToSessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setReplyToSessionId(replyToSessionIdInstance3);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue3 = brokeredMessagePropertiesValue3.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue3 != null && scheduledEnqueueTimeUtcValue3 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance3;
+                                    scheduledEnqueueTimeUtcInstance3 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance3);
+                                }
+                                
+                                JsonNode sessionIdValue3 = brokeredMessagePropertiesValue3.get("sessionId");
+                                if (sessionIdValue3 != null && sessionIdValue3 instanceof NullNode == false) {
+                                    String sessionIdInstance3;
+                                    sessionIdInstance3 = sessionIdValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setSessionId(sessionIdInstance3);
+                                }
+                                
+                                JsonNode timeToLiveValue3 = brokeredMessagePropertiesValue3.get("timeToLive");
+                                if (timeToLiveValue3 != null && timeToLiveValue3 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance3;
+                                    timeToLiveInstance3 = DatatypeConverter.parseDateTime(timeToLiveValue3.getTextValue());
+                                    brokeredMessagePropertiesInstance3.setTimeToLive(timeToLiveInstance3);
+                                }
+                                
+                                JsonNode toValue3 = brokeredMessagePropertiesValue3.get("to");
+                                if (toValue3 != null && toValue3 instanceof NullNode == false) {
+                                    String toInstance3;
+                                    toInstance3 = toValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setTo(toInstance3);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue3 = brokeredMessagePropertiesValue3.get("viaPartitionKey");
+                                if (viaPartitionKeyValue3 != null && viaPartitionKeyValue3 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance3;
+                                    viaPartitionKeyInstance3 = viaPartitionKeyValue3.getTextValue();
+                                    brokeredMessagePropertiesInstance3.setViaPartitionKey(viaPartitionKeyInstance3);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement3 = ((JsonNode) serviceBusTopicMessageValue2.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement3 != null && customMessagePropertiesSequenceElement3 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr5 = customMessagePropertiesSequenceElement3.getFields();
+                                while (itr5.hasNext()) {
+                                    Map.Entry<String, JsonNode> property5 = itr5.next();
+                                    String customMessagePropertiesKey3 = property5.getKey();
+                                    String customMessagePropertiesValue3 = property5.getValue().getTextValue();
+                                    serviceBusTopicMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey3, customMessagePropertiesValue3);
+                                }
+                            }
+                        }
+                        
+                        JsonNode serviceBusQueueMessageValue2 = actionValue.get("serviceBusQueueMessage");
+                        if (serviceBusQueueMessageValue2 != null && serviceBusQueueMessageValue2 instanceof NullNode == false) {
+                            JobServiceBusQueueMessage serviceBusQueueMessageInstance2 = new JobServiceBusQueueMessage();
+                            actionInstance.setServiceBusQueueMessage(serviceBusQueueMessageInstance2);
+                            
+                            JsonNode queueNameValue4 = serviceBusQueueMessageValue2.get("queueName");
+                            if (queueNameValue4 != null && queueNameValue4 instanceof NullNode == false) {
+                                String queueNameInstance4;
+                                queueNameInstance4 = queueNameValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setQueueName(queueNameInstance4);
+                            }
+                            
+                            JsonNode namespaceValue4 = serviceBusQueueMessageValue2.get("namespace");
+                            if (namespaceValue4 != null && namespaceValue4 instanceof NullNode == false) {
+                                String namespaceInstance4;
+                                namespaceInstance4 = namespaceValue4.getTextValue();
+                                serviceBusQueueMessageInstance2.setNamespace(namespaceInstance4);
+                            }
+                            
+                            JsonNode transportTypeValue4 = serviceBusQueueMessageValue2.get("transportType");
+                            if (transportTypeValue4 != null && transportTypeValue4 instanceof NullNode == false) {
+                                JobServiceBusTransportType transportTypeInstance4;
+                                transportTypeInstance4 = SchedulerClientImpl.parseJobServiceBusTransportType(transportTypeValue4.getTextValue());
+                                serviceBusQueueMessageInstance2.setTransportType(transportTypeInstance4);
+                            }
+                            
+                            JsonNode authenticationValue6 = serviceBusQueueMessageValue2.get("authentication");
+                            if (authenticationValue6 != null && authenticationValue6 instanceof NullNode == false) {
+                                JobServiceBusAuthentication authenticationInstance4 = new JobServiceBusAuthentication();
+                                serviceBusQueueMessageInstance2.setAuthentication(authenticationInstance4);
+                                
+                                JsonNode sasKeyNameValue4 = authenticationValue6.get("sasKeyName");
+                                if (sasKeyNameValue4 != null && sasKeyNameValue4 instanceof NullNode == false) {
+                                    String sasKeyNameInstance4;
+                                    sasKeyNameInstance4 = sasKeyNameValue4.getTextValue();
+                                    authenticationInstance4.setSasKeyName(sasKeyNameInstance4);
+                                }
+                                
+                                JsonNode sasKeyValue4 = authenticationValue6.get("sasKey");
+                                if (sasKeyValue4 != null && sasKeyValue4 instanceof NullNode == false) {
+                                    String sasKeyInstance4;
+                                    sasKeyInstance4 = sasKeyValue4.getTextValue();
+                                    authenticationInstance4.setSasKey(sasKeyInstance4);
+                                }
+                                
+                                JsonNode typeValue12 = authenticationValue6.get("type");
+                                if (typeValue12 != null && typeValue12 instanceof NullNode == false) {
+                                    JobServiceBusAuthenticationType typeInstance12;
+                                    typeInstance12 = SchedulerClientImpl.parseJobServiceBusAuthenticationType(typeValue12.getTextValue());
+                                    authenticationInstance4.setType(typeInstance12);
+                                }
+                            }
+                            
+                            JsonNode messageValue6 = serviceBusQueueMessageValue2.get("message");
+                            if (messageValue6 != null && messageValue6 instanceof NullNode == false) {
+                                String messageInstance6;
+                                messageInstance6 = messageValue6.getTextValue();
+                                serviceBusQueueMessageInstance2.setMessage(messageInstance6);
+                            }
+                            
+                            JsonNode brokeredMessagePropertiesValue4 = serviceBusQueueMessageValue2.get("brokeredMessageProperties");
+                            if (brokeredMessagePropertiesValue4 != null && brokeredMessagePropertiesValue4 instanceof NullNode == false) {
+                                JobServiceBusBrokeredMessageProperties brokeredMessagePropertiesInstance4 = new JobServiceBusBrokeredMessageProperties();
+                                serviceBusQueueMessageInstance2.setBrokeredMessageProperties(brokeredMessagePropertiesInstance4);
+                                
+                                JsonNode contentTypeValue4 = brokeredMessagePropertiesValue4.get("contentType");
+                                if (contentTypeValue4 != null && contentTypeValue4 instanceof NullNode == false) {
+                                    String contentTypeInstance4;
+                                    contentTypeInstance4 = contentTypeValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setContentType(contentTypeInstance4);
+                                }
+                                
+                                JsonNode correlationIdValue4 = brokeredMessagePropertiesValue4.get("correlationId");
+                                if (correlationIdValue4 != null && correlationIdValue4 instanceof NullNode == false) {
+                                    String correlationIdInstance4;
+                                    correlationIdInstance4 = correlationIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setCorrelationId(correlationIdInstance4);
+                                }
+                                
+                                JsonNode forcePersistenceValue4 = brokeredMessagePropertiesValue4.get("forcePersistence");
+                                if (forcePersistenceValue4 != null && forcePersistenceValue4 instanceof NullNode == false) {
+                                    boolean forcePersistenceInstance4;
+                                    forcePersistenceInstance4 = forcePersistenceValue4.getBooleanValue();
+                                    brokeredMessagePropertiesInstance4.setForcePersistence(forcePersistenceInstance4);
+                                }
+                                
+                                JsonNode labelValue4 = brokeredMessagePropertiesValue4.get("label");
+                                if (labelValue4 != null && labelValue4 instanceof NullNode == false) {
+                                    String labelInstance4;
+                                    labelInstance4 = labelValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setLabel(labelInstance4);
+                                }
+                                
+                                JsonNode messageIdValue4 = brokeredMessagePropertiesValue4.get("messageId");
+                                if (messageIdValue4 != null && messageIdValue4 instanceof NullNode == false) {
+                                    String messageIdInstance4;
+                                    messageIdInstance4 = messageIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setMessageId(messageIdInstance4);
+                                }
+                                
+                                JsonNode partitionKeyValue4 = brokeredMessagePropertiesValue4.get("partitionKey");
+                                if (partitionKeyValue4 != null && partitionKeyValue4 instanceof NullNode == false) {
+                                    String partitionKeyInstance4;
+                                    partitionKeyInstance4 = partitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setPartitionKey(partitionKeyInstance4);
+                                }
+                                
+                                JsonNode replyToValue4 = brokeredMessagePropertiesValue4.get("replyTo");
+                                if (replyToValue4 != null && replyToValue4 instanceof NullNode == false) {
+                                    String replyToInstance4;
+                                    replyToInstance4 = replyToValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyTo(replyToInstance4);
+                                }
+                                
+                                JsonNode replyToSessionIdValue4 = brokeredMessagePropertiesValue4.get("replyToSessionId");
+                                if (replyToSessionIdValue4 != null && replyToSessionIdValue4 instanceof NullNode == false) {
+                                    String replyToSessionIdInstance4;
+                                    replyToSessionIdInstance4 = replyToSessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setReplyToSessionId(replyToSessionIdInstance4);
+                                }
+                                
+                                JsonNode scheduledEnqueueTimeUtcValue4 = brokeredMessagePropertiesValue4.get("scheduledEnqueueTimeUtc");
+                                if (scheduledEnqueueTimeUtcValue4 != null && scheduledEnqueueTimeUtcValue4 instanceof NullNode == false) {
+                                    Calendar scheduledEnqueueTimeUtcInstance4;
+                                    scheduledEnqueueTimeUtcInstance4 = DatatypeConverter.parseDateTime(scheduledEnqueueTimeUtcValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtcInstance4);
+                                }
+                                
+                                JsonNode sessionIdValue4 = brokeredMessagePropertiesValue4.get("sessionId");
+                                if (sessionIdValue4 != null && sessionIdValue4 instanceof NullNode == false) {
+                                    String sessionIdInstance4;
+                                    sessionIdInstance4 = sessionIdValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setSessionId(sessionIdInstance4);
+                                }
+                                
+                                JsonNode timeToLiveValue4 = brokeredMessagePropertiesValue4.get("timeToLive");
+                                if (timeToLiveValue4 != null && timeToLiveValue4 instanceof NullNode == false) {
+                                    Calendar timeToLiveInstance4;
+                                    timeToLiveInstance4 = DatatypeConverter.parseDateTime(timeToLiveValue4.getTextValue());
+                                    brokeredMessagePropertiesInstance4.setTimeToLive(timeToLiveInstance4);
+                                }
+                                
+                                JsonNode toValue4 = brokeredMessagePropertiesValue4.get("to");
+                                if (toValue4 != null && toValue4 instanceof NullNode == false) {
+                                    String toInstance4;
+                                    toInstance4 = toValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setTo(toInstance4);
+                                }
+                                
+                                JsonNode viaPartitionKeyValue4 = brokeredMessagePropertiesValue4.get("viaPartitionKey");
+                                if (viaPartitionKeyValue4 != null && viaPartitionKeyValue4 instanceof NullNode == false) {
+                                    String viaPartitionKeyInstance4;
+                                    viaPartitionKeyInstance4 = viaPartitionKeyValue4.getTextValue();
+                                    brokeredMessagePropertiesInstance4.setViaPartitionKey(viaPartitionKeyInstance4);
+                                }
+                            }
+                            
+                            JsonNode customMessagePropertiesSequenceElement4 = ((JsonNode) serviceBusQueueMessageValue2.get("customMessageProperties"));
+                            if (customMessagePropertiesSequenceElement4 != null && customMessagePropertiesSequenceElement4 instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr6 = customMessagePropertiesSequenceElement4.getFields();
+                                while (itr6.hasNext()) {
+                                    Map.Entry<String, JsonNode> property6 = itr6.next();
+                                    String customMessagePropertiesKey4 = property6.getKey();
+                                    String customMessagePropertiesValue4 = property6.getValue().getTextValue();
+                                    serviceBusQueueMessageInstance2.getCustomMessageProperties().put(customMessagePropertiesKey4, customMessagePropertiesValue4);
+                                }
                             }
                         }
                     }

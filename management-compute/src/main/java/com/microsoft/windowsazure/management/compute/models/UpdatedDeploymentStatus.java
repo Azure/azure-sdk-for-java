@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 public enum UpdatedDeploymentStatus {
-    Running,
+    RUNNING,
     
-    Suspended,
+    SUSPENDED,
 }

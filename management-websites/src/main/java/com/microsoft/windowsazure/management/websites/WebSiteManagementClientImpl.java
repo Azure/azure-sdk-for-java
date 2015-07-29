@@ -283,16 +283,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
      static ConnectionStringType parseConnectionStringType(String value) {
         if ("0".equalsIgnoreCase(value)) {
-            return ConnectionStringType.MySql;
+            return ConnectionStringType.MYSQL;
         }
         if ("1".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SqlServer;
+            return ConnectionStringType.SQLSERVER;
         }
         if ("2".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SqlAzure;
+            return ConnectionStringType.SQLAZURE;
         }
         if ("3".equalsIgnoreCase(value)) {
-            return ConnectionStringType.Custom;
+            return ConnectionStringType.CUSTOM;
         }
         throw new IllegalArgumentException("value");
     }
@@ -304,16 +304,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @return The enum value as a string.
     */
      static String connectionStringTypeToString(ConnectionStringType value) {
-        if (value == ConnectionStringType.MySql) {
+        if (value == ConnectionStringType.MYSQL) {
             return "0";
         }
-        if (value == ConnectionStringType.SqlServer) {
+        if (value == ConnectionStringType.SQLSERVER) {
             return "1";
         }
-        if (value == ConnectionStringType.SqlAzure) {
+        if (value == ConnectionStringType.SQLAZURE) {
             return "2";
         }
-        if (value == ConnectionStringType.Custom) {
+        if (value == ConnectionStringType.CUSTOM) {
             return "3";
         }
         throw new IllegalArgumentException("value");
@@ -327,10 +327,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
      static ManagedPipelineMode parseManagedPipelineMode(String value) {
         if ("0".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.Integrated;
+            return ManagedPipelineMode.INTEGRATED;
         }
         if ("1".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.Classic;
+            return ManagedPipelineMode.CLASSIC;
         }
         throw new IllegalArgumentException("value");
     }
@@ -342,10 +342,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @return The enum value as a string.
     */
      static String managedPipelineModeToString(ManagedPipelineMode value) {
-        if (value == ManagedPipelineMode.Integrated) {
+        if (value == ManagedPipelineMode.INTEGRATED) {
             return "0";
         }
-        if (value == ManagedPipelineMode.Classic) {
+        if (value == ManagedPipelineMode.CLASSIC) {
             return "1";
         }
         throw new IllegalArgumentException("value");
@@ -670,7 +670,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         WebSiteOperationStatus statusInstance;
-                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
                         result.setStatus(statusInstance);
                     }
                 }

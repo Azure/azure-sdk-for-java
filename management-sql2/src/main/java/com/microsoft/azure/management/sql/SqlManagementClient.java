@@ -88,6 +88,21 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     AuditingPolicyOperations getAuditingPolicyOperations();
     
     /**
+    * Represents all the operations for operating pertaining to activation on
+    * Azure SQL Data Warehouse databases. Contains operations to: Pause and
+    * Resume databases
+    * @return The DatabaseActivationOperations value.
+    */
+    DatabaseActivationOperations getDatabaseActivationOperations();
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database restore
+    * points. Contains operations to: List restore points.
+    * @return The DatabaseBackupOperations value.
+    */
+    DatabaseBackupOperations getDatabaseBackupOperations();
+    
+    /**
     * Represents all the operations for operating on Azure SQL Databases.
     * Contains operations to: Create, Retrieve, Update, and Delete databases,
     * and also includes the ability to get the event logs for a database.
@@ -120,6 +135,21 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     FirewallRuleOperations getFirewallRulesOperations();
     
     /**
+    * Represents all the operations for operating on Azure SQL Recommended
+    * Elastic Pools.  Contains operations to: Retrieve.
+    * @return The RecommendedElasticPoolsOperations value.
+    */
+    RecommendedElasticPoolOperations getRecommendedElasticPoolsOperations();
+    
+    /**
+    * Represents all the operations for managing recommended indexes on Azure
+    * SQL Databases. Contains operations to retrieve recommended index and
+    * update state.
+    * @return The RecommendedIndexesOperations value.
+    */
+    RecommendedIndexOperations getRecommendedIndexesOperations();
+    
+    /**
     * Represents all the operations for managing Azure SQL Database secure
     * connection.  Contains operations to: Create, Retrieve and Update secure
     * connection policy .
@@ -136,9 +166,30 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     ServerOperations getServersOperations();
     
     /**
+    * Represents all the operations for Azure SQL Database Server Upgrade
+    * @return The ServerUpgradesOperations value.
+    */
+    ServerUpgradeOperations getServerUpgradesOperations();
+    
+    /**
     * Represents all the operations for operating on Azure SQL Database Service
     * Objectives.   Contains operations to: Retrieve service objectives.
     * @return The ServiceObjectivesOperations value.
     */
     ServiceObjectiveOperations getServiceObjectivesOperations();
+    
+    /**
+    * Represents all the operations for operating on service tier advisors.
+    * Contains operations to: Retrieve.
+    * @return The ServiceTierAdvisorsOperations value.
+    */
+    ServiceTierAdvisorOperations getServiceTierAdvisorsOperations();
+    
+    /**
+    * Represents all the operations of Azure SQL Database Transparent Data
+    * Encryption.  Contains operations to: Retrieve, and Update Transparent
+    * Data Encryption.
+    * @return The TransparentDataEncryptionOperations value.
+    */
+    TransparentDataEncryptionOperations getTransparentDataEncryptionOperations();
 }

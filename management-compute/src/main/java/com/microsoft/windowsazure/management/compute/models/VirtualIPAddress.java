@@ -82,4 +82,22 @@ public class VirtualIPAddress {
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
+    
+    private String reservedIPName;
+    
+    /**
+    * Optional. The name of the Reserved IP associated with the virtual IP.
+    * @return The ReservedIPName value.
+    */
+    public String getReservedIPName() {
+        return this.reservedIPName;
+    }
+    
+    /**
+    * Optional. The name of the Reserved IP associated with the virtual IP.
+    * @param reservedIPNameValue The ReservedIPName value.
+    */
+    public void setReservedIPName(final String reservedIPNameValue) {
+        this.reservedIPName = reservedIPNameValue;
+    }
 }

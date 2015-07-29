@@ -24,7 +24,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
-import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionCreateOrUpdateResponse;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionGetResponse;
@@ -82,7 +82,7 @@ public interface VirtualMachineExtensionOperations {
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return The compute long running operation response.
     */
-    ComputeOperationResponse beginDeleting(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException;
+    DeleteOperationResponse beginDeleting(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException;
     
     /**
     * The operation to delete the extension.
@@ -94,7 +94,7 @@ public interface VirtualMachineExtensionOperations {
     * extension.
     * @return The compute long running operation response.
     */
-    Future<ComputeOperationResponse> beginDeletingAsync(String resourceGroupName, String vmName, String vmExtensionName);
+    Future<DeleteOperationResponse> beginDeletingAsync(String resourceGroupName, String vmName, String vmExtensionName);
     
     /**
     * The operation to create or update the extension.
@@ -151,9 +151,9 @@ public interface VirtualMachineExtensionOperations {
     * @throws ExecutionException Thrown when attempting to retrieve the result
     * of a task that aborted by throwing an exception. This exception can be
     * inspected using the Throwable.getCause() method.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
-    ComputeLongRunningOperationResponse delete(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException, InterruptedException, ExecutionException;
+    DeleteOperationResponse delete(String resourceGroupName, String vmName, String vmExtensionName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     *
@@ -162,9 +162,9 @@ public interface VirtualMachineExtensionOperations {
     * extension should be deleted.
     * @param vmExtensionName Required. The name of the virtual machine
     * extension.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
-    Future<ComputeLongRunningOperationResponse> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName);
+    Future<DeleteOperationResponse> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName);
     
     /**
     * The operation to get the extension.

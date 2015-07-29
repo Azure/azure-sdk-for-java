@@ -40,6 +40,8 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseUsageMetric;
+import com.microsoft.windowsazure.management.sql.models.DatabaseUsagesListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1079,6 +1081,187 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                             String stateInstance;
                             stateInstance = stateElement.getTextContent();
                             serviceResourceInstance.setState(stateInstance);
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Returns the usage information for an Azure SQL Database.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @return Contains the response to a Get Database Usages request.
+    */
+    @Override
+    public Future<DatabaseUsagesListResponse> getUsagesAsync(final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseUsagesListResponse>() { 
+            @Override
+            public DatabaseUsagesListResponse call() throws Exception {
+                return getUsages(serverName, databaseName);
+            }
+         });
+    }
+    
+    /**
+    * Returns the usage information for an Azure SQL Database.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Contains the response to a Get Database Usages request.
+    */
+    @Override
+    public DatabaseUsagesListResponse getUsages(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
+        }
+        if (databaseName == null) {
+            throw new NullPointerException("databaseName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("databaseName", databaseName);
+            CloudTracing.enter(invocationId, this, "getUsagesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/databases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
+        url = url + "/usages";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2012-03-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseUsagesListResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new DatabaseUsagesListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element usagesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Usages");
+                if (usagesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Usage").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element usagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Usage").get(i1));
+                        DatabaseUsageMetric usageInstance = new DatabaseUsageMetric();
+                        result.getUsages().add(usageInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            usageInstance.setName(nameInstance);
+                        }
+                        
+                        Element resourceNameElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "ResourceName");
+                        if (resourceNameElement != null) {
+                            String resourceNameInstance;
+                            resourceNameInstance = resourceNameElement.getTextContent();
+                            usageInstance.setResourceName(resourceNameInstance);
+                        }
+                        
+                        Element currentValueElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "CurrentValue");
+                        if (currentValueElement != null) {
+                            String currentValueInstance;
+                            currentValueInstance = currentValueElement.getTextContent();
+                            usageInstance.setCurrentValue(currentValueInstance);
+                        }
+                        
+                        Element limitElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "Limit");
+                        if (limitElement != null) {
+                            String limitInstance;
+                            limitInstance = limitElement.getTextContent();
+                            usageInstance.setLimit(limitInstance);
+                        }
+                        
+                        Element unitElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "Unit");
+                        if (unitElement != null) {
+                            String unitInstance;
+                            unitInstance = unitElement.getTextContent();
+                            usageInstance.setUnit(unitInstance);
+                        }
+                        
+                        Element nextResetTimeElement = XmlUtility.getElementByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "NextResetTime");
+                        if (nextResetTimeElement != null && nextResetTimeElement.getTextContent() != null && !nextResetTimeElement.getTextContent().isEmpty()) {
+                            Calendar nextResetTimeInstance;
+                            nextResetTimeInstance = DatatypeConverter.parseDateTime(nextResetTimeElement.getTextContent());
+                            usageInstance.setNextResetTime(nextResetTimeInstance);
                         }
                     }
                 }

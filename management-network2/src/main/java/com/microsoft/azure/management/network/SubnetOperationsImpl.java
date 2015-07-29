@@ -212,6 +212,15 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
             }
         }
         
+        if (subnetParameters.getRouteTable() != null) {
+            ObjectNode routeTableValue = objectMapper.createObjectNode();
+            ((ObjectNode) propertiesValue).put("routeTable", routeTableValue);
+            
+            if (subnetParameters.getRouteTable().getId() != null) {
+                ((ObjectNode) routeTableValue).put("id", subnetParameters.getRouteTable().getId());
+            }
+        }
+        
         if (subnetParameters.getIpConfigurations() != null) {
             if (subnetParameters.getIpConfigurations() instanceof LazyCollection == false || ((LazyCollection) subnetParameters.getIpConfigurations()).isInitialized()) {
                 ArrayNode ipConfigurationsArray = objectMapper.createArrayNode();
@@ -306,17 +315,30 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                             }
                         }
                         
+                        JsonNode routeTableValue2 = propertiesValue2.get("routeTable");
+                        if (routeTableValue2 != null && routeTableValue2 instanceof NullNode == false) {
+                            ResourceId routeTableInstance = new ResourceId();
+                            subnetInstance.setRouteTable(routeTableInstance);
+                            
+                            JsonNode idValue2 = routeTableValue2.get("id");
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                String idInstance2;
+                                idInstance2 = idValue2.getTextValue();
+                                routeTableInstance.setId(idInstance2);
+                            }
+                        }
+                        
                         JsonNode ipConfigurationsArray2 = propertiesValue2.get("ipConfigurations");
                         if (ipConfigurationsArray2 != null && ipConfigurationsArray2 instanceof NullNode == false) {
                             for (JsonNode ipConfigurationsValue : ((ArrayNode) ipConfigurationsArray2)) {
                                 ResourceId resourceIdInstance = new ResourceId();
                                 subnetInstance.getIpConfigurations().add(resourceIdInstance);
                                 
-                                JsonNode idValue2 = ipConfigurationsValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    resourceIdInstance.setId(idInstance2);
+                                JsonNode idValue3 = ipConfigurationsValue.get("id");
+                                if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                    String idInstance3;
+                                    idInstance3 = idValue3.getTextValue();
+                                    resourceIdInstance.setId(idInstance3);
                                 }
                             }
                         }
@@ -343,11 +365,11 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                         subnetInstance.setEtag(etagInstance);
                     }
                     
-                    JsonNode idValue3 = responseDoc.get("id");
-                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                        String idInstance3;
-                        idInstance3 = idValue3.getTextValue();
-                        subnetInstance.setId(idInstance3);
+                    JsonNode idValue4 = responseDoc.get("id");
+                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                        String idInstance4;
+                        idInstance4 = idValue4.getTextValue();
+                        subnetInstance.setId(idInstance4);
                     }
                     
                     JsonNode errorValue = responseDoc.get("error");
@@ -926,17 +948,30 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                             }
                         }
                         
+                        JsonNode routeTableValue = propertiesValue.get("routeTable");
+                        if (routeTableValue != null && routeTableValue instanceof NullNode == false) {
+                            ResourceId routeTableInstance = new ResourceId();
+                            subnetInstance.setRouteTable(routeTableInstance);
+                            
+                            JsonNode idValue2 = routeTableValue.get("id");
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                String idInstance2;
+                                idInstance2 = idValue2.getTextValue();
+                                routeTableInstance.setId(idInstance2);
+                            }
+                        }
+                        
                         JsonNode ipConfigurationsArray = propertiesValue.get("ipConfigurations");
                         if (ipConfigurationsArray != null && ipConfigurationsArray instanceof NullNode == false) {
                             for (JsonNode ipConfigurationsValue : ((ArrayNode) ipConfigurationsArray)) {
                                 ResourceId resourceIdInstance = new ResourceId();
                                 subnetInstance.getIpConfigurations().add(resourceIdInstance);
                                 
-                                JsonNode idValue2 = ipConfigurationsValue.get("id");
-                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                    String idInstance2;
-                                    idInstance2 = idValue2.getTextValue();
-                                    resourceIdInstance.setId(idInstance2);
+                                JsonNode idValue3 = ipConfigurationsValue.get("id");
+                                if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                    String idInstance3;
+                                    idInstance3 = idValue3.getTextValue();
+                                    resourceIdInstance.setId(idInstance3);
                                 }
                             }
                         }
@@ -963,11 +998,11 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                         subnetInstance.setEtag(etagInstance);
                     }
                     
-                    JsonNode idValue3 = responseDoc.get("id");
-                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                        String idInstance3;
-                        idInstance3 = idValue3.getTextValue();
-                        subnetInstance.setId(idInstance3);
+                    JsonNode idValue4 = responseDoc.get("id");
+                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                        String idInstance4;
+                        idInstance4 = idValue4.getTextValue();
+                        subnetInstance.setId(idInstance4);
                     }
                 }
                 
@@ -1134,17 +1169,30 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                                     }
                                 }
                                 
+                                JsonNode routeTableValue = propertiesValue.get("routeTable");
+                                if (routeTableValue != null && routeTableValue instanceof NullNode == false) {
+                                    ResourceId routeTableInstance = new ResourceId();
+                                    subnetJsonFormatInstance.setRouteTable(routeTableInstance);
+                                    
+                                    JsonNode idValue2 = routeTableValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        routeTableInstance.setId(idInstance2);
+                                    }
+                                }
+                                
                                 JsonNode ipConfigurationsArray = propertiesValue.get("ipConfigurations");
                                 if (ipConfigurationsArray != null && ipConfigurationsArray instanceof NullNode == false) {
                                     for (JsonNode ipConfigurationsValue : ((ArrayNode) ipConfigurationsArray)) {
                                         ResourceId resourceIdInstance = new ResourceId();
                                         subnetJsonFormatInstance.getIpConfigurations().add(resourceIdInstance);
                                         
-                                        JsonNode idValue2 = ipConfigurationsValue.get("id");
-                                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                            String idInstance2;
-                                            idInstance2 = idValue2.getTextValue();
-                                            resourceIdInstance.setId(idInstance2);
+                                        JsonNode idValue3 = ipConfigurationsValue.get("id");
+                                        if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                            String idInstance3;
+                                            idInstance3 = idValue3.getTextValue();
+                                            resourceIdInstance.setId(idInstance3);
                                         }
                                     }
                                 }
@@ -1171,11 +1219,11 @@ public class SubnetOperationsImpl implements ServiceOperations<NetworkResourcePr
                                 subnetJsonFormatInstance.setEtag(etagInstance);
                             }
                             
-                            JsonNode idValue3 = valueValue.get("id");
-                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                String idInstance3;
-                                idInstance3 = idValue3.getTextValue();
-                                subnetJsonFormatInstance.setId(idInstance3);
+                            JsonNode idValue4 = valueValue.get("id");
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                String idInstance4;
+                                idInstance4 = idValue4.getTextValue();
+                                subnetJsonFormatInstance.setId(idInstance4);
                             }
                         }
                     }

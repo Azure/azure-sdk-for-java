@@ -35,6 +35,10 @@ import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.AddRouteTableToSubnetParameters;
 import com.microsoft.windowsazure.management.network.models.CreateRouteTableParameters;
+import com.microsoft.windowsazure.management.network.models.EffectiveNextHop;
+import com.microsoft.windowsazure.management.network.models.EffectiveRoute;
+import com.microsoft.windowsazure.management.network.models.EffectiveRouteTable;
+import com.microsoft.windowsazure.management.network.models.GetEffectiveRouteTableResponse;
 import com.microsoft.windowsazure.management.network.models.GetRouteTableForSubnetResponse;
 import com.microsoft.windowsazure.management.network.models.GetRouteTableResponse;
 import com.microsoft.windowsazure.management.network.models.ListRouteTablesResponse;
@@ -185,7 +189,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -198,7 +202,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -323,7 +327,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -466,7 +470,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -626,7 +630,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -736,7 +740,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -861,7 +865,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -997,7 +1001,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1028,6 +1032,12 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
                 typeElement.appendChild(requestDoc.createTextNode(parameters.getNextHop().getType()));
                 nextHopTypeElement.appendChild(typeElement);
+            }
+            
+            if (parameters.getNextHop().getIpAddress() != null) {
+                Element ipAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IpAddress");
+                ipAddressElement.appendChild(requestDoc.createTextNode(parameters.getNextHop().getIpAddress()));
+                nextHopTypeElement.appendChild(ipAddressElement);
             }
         }
         
@@ -1155,7 +1165,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1168,7 +1178,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1274,7 +1284,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1287,7 +1297,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1386,7 +1396,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1399,7 +1409,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1422,6 +1432,416 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         } finally {
             if (client2 != null && shouldTrace) {
                 client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Get the effective route table for the provided network interface in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GetEffectiveRouteTableResponse> getEffectiveRouteTableForNetworkInterfaceAsync(final String serviceName, final String deploymentName, final String roleinstanceName, final String networkInterfaceName) {
+        return this.getClient().getExecutorService().submit(new Callable<GetEffectiveRouteTableResponse>() { 
+            @Override
+            public GetEffectiveRouteTableResponse call() throws Exception {
+                return getEffectiveRouteTableForNetworkInterface(serviceName, deploymentName, roleinstanceName, networkInterfaceName);
+            }
+         });
+    }
+    
+    /**
+    * Get the effective route table for the provided network interface in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GetEffectiveRouteTableResponse getEffectiveRouteTableForNetworkInterface(String serviceName, String deploymentName, String roleinstanceName, String networkInterfaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleinstanceName == null) {
+            throw new NullPointerException("roleinstanceName");
+        }
+        if (networkInterfaceName == null) {
+            throw new NullPointerException("networkInterfaceName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleinstanceName", roleinstanceName);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            CloudTracing.enter(invocationId, this, "getEffectiveRouteTableForNetworkInterfaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roleinstances/";
+        url = url + URLEncoder.encode(roleinstanceName, "UTF-8");
+        url = url + "/networkinterfaces/";
+        url = url + URLEncoder.encode(networkInterfaceName, "UTF-8");
+        url = url + "/effectiveroutetable";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode >= HttpStatus.SC_BAD_REQUEST) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GetEffectiveRouteTableResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new GetEffectiveRouteTableResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+            
+            Element effectiveRouteTableElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "EffectiveRouteTable");
+            if (effectiveRouteTableElement != null) {
+                EffectiveRouteTable effectiveRouteTableInstance = new EffectiveRouteTable();
+                result.setEffectiveRouteTable(effectiveRouteTableInstance);
+                
+                Element effectiveRouteListSequenceElement = XmlUtility.getElementByTagNameNS(effectiveRouteTableElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRouteList");
+                if (effectiveRouteListSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(effectiveRouteListSequenceElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRoute").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element effectiveRouteListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(effectiveRouteListSequenceElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRoute").get(i1));
+                        EffectiveRoute effectiveRouteInstance = new EffectiveRoute();
+                        effectiveRouteTableInstance.getEffectiveRoutes().add(effectiveRouteInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            effectiveRouteInstance.setName(nameInstance);
+                        }
+                        
+                        Element sourceElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Source");
+                        if (sourceElement != null) {
+                            String sourceInstance;
+                            sourceInstance = sourceElement.getTextContent();
+                            effectiveRouteInstance.setSource(sourceInstance);
+                        }
+                        
+                        Element statusElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                        if (statusElement != null) {
+                            String statusInstance;
+                            statusInstance = statusElement.getTextContent();
+                            effectiveRouteInstance.setStatus(statusInstance);
+                        }
+                        
+                        Element addressPrefixesSequenceElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
+                        if (addressPrefixesSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i2));
+                                effectiveRouteInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
+                            }
+                        }
+                        
+                        Element effectiveNextHopElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "EffectiveNextHop");
+                        if (effectiveNextHopElement != null) {
+                            EffectiveNextHop effectiveNextHopInstance = new EffectiveNextHop();
+                            effectiveRouteInstance.setEffectiveNextHop(effectiveNextHopInstance);
+                            
+                            Element typeElement = XmlUtility.getElementByTagNameNS(effectiveNextHopElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                            if (typeElement != null) {
+                                String typeInstance;
+                                typeInstance = typeElement.getTextContent();
+                                effectiveNextHopInstance.setType(typeInstance);
+                            }
+                            
+                            Element ipAddressesSequenceElement = XmlUtility.getElementByTagNameNS(effectiveNextHopElement, "http://schemas.microsoft.com/windowsazure", "IpAddresses");
+                            if (ipAddressesSequenceElement != null) {
+                                for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(ipAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "IpAddress").size(); i3 = i3 + 1) {
+                                    org.w3c.dom.Element ipAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(ipAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "IpAddress").get(i3));
+                                    effectiveNextHopInstance.getIpAddresses().add(ipAddressesElement.getTextContent());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Get the effective route table for the provided role instance in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GetEffectiveRouteTableResponse> getEffectiveRouteTableForRoleInstanceAsync(final String serviceName, final String deploymentName, final String roleinstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<GetEffectiveRouteTableResponse>() { 
+            @Override
+            public GetEffectiveRouteTableResponse call() throws Exception {
+                return getEffectiveRouteTableForRoleInstance(serviceName, deploymentName, roleinstanceName);
+            }
+         });
+    }
+    
+    /**
+    * Get the effective route table for the provided role instance in this
+    * subscription.
+    *
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleinstanceName Required. The name of the role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GetEffectiveRouteTableResponse getEffectiveRouteTableForRoleInstance(String serviceName, String deploymentName, String roleinstanceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (roleinstanceName == null) {
+            throw new NullPointerException("roleinstanceName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("roleinstanceName", roleinstanceName);
+            CloudTracing.enter(invocationId, this, "getEffectiveRouteTableForRoleInstanceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/roleinstances/";
+        url = url + URLEncoder.encode(roleinstanceName, "UTF-8");
+        url = url + "/effectiveroutetable";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode >= HttpStatus.SC_BAD_REQUEST) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GetEffectiveRouteTableResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new GetEffectiveRouteTableResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+            
+            Element effectiveRouteTableElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "EffectiveRouteTable");
+            if (effectiveRouteTableElement != null) {
+                EffectiveRouteTable effectiveRouteTableInstance = new EffectiveRouteTable();
+                result.setEffectiveRouteTable(effectiveRouteTableInstance);
+                
+                Element effectiveRouteListSequenceElement = XmlUtility.getElementByTagNameNS(effectiveRouteTableElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRouteList");
+                if (effectiveRouteListSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(effectiveRouteListSequenceElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRoute").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element effectiveRouteListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(effectiveRouteListSequenceElement, "http://schemas.microsoft.com/windowsazure", "EffectiveRoute").get(i1));
+                        EffectiveRoute effectiveRouteInstance = new EffectiveRoute();
+                        effectiveRouteTableInstance.getEffectiveRoutes().add(effectiveRouteInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            effectiveRouteInstance.setName(nameInstance);
+                        }
+                        
+                        Element sourceElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Source");
+                        if (sourceElement != null) {
+                            String sourceInstance;
+                            sourceInstance = sourceElement.getTextContent();
+                            effectiveRouteInstance.setSource(sourceInstance);
+                        }
+                        
+                        Element statusElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                        if (statusElement != null) {
+                            String statusInstance;
+                            statusInstance = statusElement.getTextContent();
+                            effectiveRouteInstance.setStatus(statusInstance);
+                        }
+                        
+                        Element addressPrefixesSequenceElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
+                        if (addressPrefixesSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i2));
+                                effectiveRouteInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
+                            }
+                        }
+                        
+                        Element effectiveNextHopElement = XmlUtility.getElementByTagNameNS(effectiveRouteListElement, "http://schemas.microsoft.com/windowsazure", "EffectiveNextHop");
+                        if (effectiveNextHopElement != null) {
+                            EffectiveNextHop effectiveNextHopInstance = new EffectiveNextHop();
+                            effectiveRouteInstance.setEffectiveNextHop(effectiveNextHopInstance);
+                            
+                            Element typeElement = XmlUtility.getElementByTagNameNS(effectiveNextHopElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                            if (typeElement != null) {
+                                String typeInstance;
+                                typeInstance = typeElement.getTextContent();
+                                effectiveNextHopInstance.setType(typeInstance);
+                            }
+                            
+                            Element ipAddressesSequenceElement = XmlUtility.getElementByTagNameNS(effectiveNextHopElement, "http://schemas.microsoft.com/windowsazure", "IpAddresses");
+                            if (ipAddressesSequenceElement != null) {
+                                for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(ipAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "IpAddress").size(); i3 = i3 + 1) {
+                                    org.w3c.dom.Element ipAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(ipAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "IpAddress").get(i3));
+                                    effectiveNextHopInstance.getIpAddresses().add(ipAddressesElement.getTextContent());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
             }
         }
     }
@@ -1501,7 +1921,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1562,7 +1982,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                     Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTableElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                     if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                         RouteTableState routeTableStateInstance;
-                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                         routeTableInstance.setRouteTableState(routeTableStateInstance);
                     }
                     
@@ -1598,6 +2018,13 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                                     typeInstance = typeElement.getTextContent();
                                     nextHopTypeInstance.setType(typeInstance);
                                 }
+                                
+                                Element ipAddressElement = XmlUtility.getElementByTagNameNS(nextHopTypeElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
+                                if (ipAddressElement != null) {
+                                    String ipAddressInstance;
+                                    ipAddressInstance = ipAddressElement.getTextContent();
+                                    nextHopTypeInstance.setIpAddress(ipAddressInstance);
+                                }
                             }
                             
                             Element metricElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "Metric");
@@ -1610,7 +2037,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                             Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                             if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                 RouteState routeStateInstance;
-                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                 routeInstance.setState(routeStateInstance);
                             }
                         }
@@ -1717,7 +2144,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1859,7 +2286,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1920,7 +2347,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                     Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTableElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                     if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                         RouteTableState routeTableStateInstance;
-                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                        routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                         routeTableInstance.setRouteTableState(routeTableStateInstance);
                     }
                     
@@ -1956,6 +2383,13 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                                     typeInstance = typeElement.getTextContent();
                                     nextHopTypeInstance.setType(typeInstance);
                                 }
+                                
+                                Element ipAddressElement = XmlUtility.getElementByTagNameNS(nextHopTypeElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
+                                if (ipAddressElement != null) {
+                                    String ipAddressInstance;
+                                    ipAddressInstance = ipAddressElement.getTextContent();
+                                    nextHopTypeInstance.setIpAddress(ipAddressInstance);
+                                }
                             }
                             
                             Element metricElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "Metric");
@@ -1968,7 +2402,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                             Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                             if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                 RouteState routeStateInstance;
-                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                 routeInstance.setState(routeStateInstance);
                             }
                         }
@@ -2055,7 +2489,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2118,7 +2552,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                         Element routeTableStateElement = XmlUtility.getElementByTagNameNS(routeTablesElement, "http://schemas.microsoft.com/windowsazure", "RouteTableState");
                         if (routeTableStateElement != null && routeTableStateElement.getTextContent() != null && !routeTableStateElement.getTextContent().isEmpty()) {
                             RouteTableState routeTableStateInstance;
-                            routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent());
+                            routeTableStateInstance = RouteTableState.valueOf(routeTableStateElement.getTextContent().toUpperCase());
                             routeTableInstance.setRouteTableState(routeTableStateInstance);
                         }
                         
@@ -2154,6 +2588,13 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                                         typeInstance = typeElement.getTextContent();
                                         nextHopTypeInstance.setType(typeInstance);
                                     }
+                                    
+                                    Element ipAddressElement = XmlUtility.getElementByTagNameNS(nextHopTypeElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
+                                    if (ipAddressElement != null) {
+                                        String ipAddressInstance;
+                                        ipAddressInstance = ipAddressElement.getTextContent();
+                                        nextHopTypeInstance.setIpAddress(ipAddressInstance);
+                                    }
                                 }
                                 
                                 Element metricElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "Metric");
@@ -2166,7 +2607,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                                 Element routeStateElement = XmlUtility.getElementByTagNameNS(routeListElement, "http://schemas.microsoft.com/windowsazure", "RouteState");
                                 if (routeStateElement != null && routeStateElement.getTextContent() != null && !routeStateElement.getTextContent().isEmpty()) {
                                     RouteState routeStateInstance;
-                                    routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent());
+                                    routeStateInstance = RouteState.valueOf(routeStateElement.getTextContent().toUpperCase());
                                     routeInstance.setState(routeStateInstance);
                                 }
                             }
@@ -2269,7 +2710,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2282,7 +2723,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2393,7 +2834,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -2406,7 +2847,7 @@ public class RouteOperationsImpl implements ServiceOperations<NetworkManagementC
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

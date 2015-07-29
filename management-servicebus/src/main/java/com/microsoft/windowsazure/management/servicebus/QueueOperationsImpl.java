@@ -544,7 +544,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (rightsSequenceElement2 != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
                                         }
                                     }
                                     
@@ -1063,7 +1063,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (rightsSequenceElement != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
                                         }
                                     }
                                     
@@ -1363,7 +1363,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (rightsSequenceElement != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
                                         }
                                     }
                                 }
@@ -1633,7 +1633,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                             if (rightsSequenceElement != null) {
                                                 for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i3 = i3 + 1) {
                                                     org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i3));
-                                                    authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                                                    authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
                                                 }
                                             }
                                             
@@ -2229,7 +2229,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (rightsSequenceElement2 != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                                            authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
                                         }
                                     }
                                     

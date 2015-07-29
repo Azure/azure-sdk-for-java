@@ -23,21 +23,24 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+/**
+* The runtime availability of a website.
+*/
 public enum WebSiteRuntimeAvailabilityState {
     /**
     * The web site is running correctly.
     */
-    Normal,
+    NORMAL,
     
     /**
     * The web site is running temporarily in a degraded mode (typically with
     * less memory and a shared instance).
     */
-    Degraded,
+    DEGRADED,
     
     /**
     * Due to an unexpected issue, the site has been excluded from provisioning.
     * This typically occurs only for free sites.
     */
-    NotAvailable,
+    NOTAVAILABLE,
 }

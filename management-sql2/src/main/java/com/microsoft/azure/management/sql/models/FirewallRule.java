@@ -32,7 +32,7 @@ public class FirewallRule extends ResourceBaseExtended {
     private FirewallRuleProperties properties;
     
     /**
-    * Optional. Represents the properties of the resource.
+    * Optional. Gets or sets the properties representing the resource.
     * @return The Properties value.
     */
     public FirewallRuleProperties getProperties() {
@@ -40,7 +40,7 @@ public class FirewallRule extends ResourceBaseExtended {
     }
     
     /**
-    * Optional. Represents the properties of the resource.
+    * Optional. Gets or sets the properties representing the resource.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final FirewallRuleProperties propertiesValue) {

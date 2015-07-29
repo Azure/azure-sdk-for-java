@@ -263,7 +263,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required        
         role.setRoleName(roleName);
         //required
-        role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
+        role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
         role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
         role.setConfigurationSets(configurationSetList);
@@ -278,7 +278,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         ArrayList<Role> rolelist = createRoleList(); 
         
         VirtualMachineCreateDeploymentParameters deploymentParameters = new VirtualMachineCreateDeploymentParameters();
-        deploymentParameters.setDeploymentSlot(DeploymentSlot.Staging);
+        deploymentParameters.setDeploymentSlot(DeploymentSlot.STAGING);
         deploymentParameters.setName(deploymentName); 
         deploymentParameters.setLabel(deploymentLabel);        
         deploymentParameters.setRoles(rolelist);
@@ -315,7 +315,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                     Assert.assertNotNull(rolelist);
 
                     for (Role role : rolelist) {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString()))) {
+                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString()))) {
                              Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
                              vmlist.add(role);
                         }
@@ -334,7 +334,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
         //vm always has VirtualMachineRoleType.PersistentVMRole property
-        Assert.assertEquals(VirtualMachineRoleType.PersistentVMRole, virtualMachinesGetResponse.getRoleType());
+        Assert.assertEquals(VirtualMachineRoleType.PERSISTENTVMROLE, virtualMachinesGetResponse.getRoleType());
 
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
@@ -355,7 +355,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String vmName = virtualMachinesGetResponse.getRoleName();
 
         VirtualMachineShutdownParameters stopParameters = new VirtualMachineShutdownParameters();
-        stopParameters.setPostShutdownAction(PostShutdownAction.Stopped);
+        stopParameters.setPostShutdownAction(PostShutdownAction.STOPPED);
         OperationStatusResponse shutdownresponse = computeManagementClient.getVirtualMachinesOperations().shutdown(hostedServiceName, deploymentName, vmName, stopParameters);
         Assert.assertEquals(200, shutdownresponse.getStatusCode());
         Assert.assertNotNull(shutdownresponse.getRequestId());
@@ -540,7 +540,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                 e.printStackTrace();
             }
             
-            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == OperationStatus.FAILED) || (operationStatus.getStatus() == OperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             }else{

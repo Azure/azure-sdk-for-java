@@ -26,13 +26,13 @@ package com.microsoft.azure.management.trafficmanager.models;
 import java.util.ArrayList;
 
 /**
-* Represents the properties of the zone.
+* Class containing the properties of a Traffic Manager profile.
 */
 public class ProfileProperties {
     private DnsConfig dnsConfig;
     
     /**
-    * Required. Gets or sets the dns config of the profile.
+    * Optional. Gets or sets the DNS settings of the Traffic Manager profile.
     * @return The DnsConfig value.
     */
     public DnsConfig getDnsConfig() {
@@ -40,7 +40,7 @@ public class ProfileProperties {
     }
     
     /**
-    * Required. Gets or sets the dns config of the profile.
+    * Optional. Gets or sets the DNS settings of the Traffic Manager profile.
     * @param dnsConfigValue The DnsConfig value.
     */
     public void setDnsConfig(final DnsConfig dnsConfigValue) {
@@ -50,7 +50,8 @@ public class ProfileProperties {
     private ArrayList<Endpoint> endpoints;
     
     /**
-    * Optional. Gets or sets the list of endpoints in a profile.
+    * Optional. Gets or sets the list of endpoints in the Traffic Manager
+    * profile.
     * @return The Endpoints value.
     */
     public ArrayList<Endpoint> getEndpoints() {
@@ -58,7 +59,8 @@ public class ProfileProperties {
     }
     
     /**
-    * Optional. Gets or sets the list of endpoints in a profile.
+    * Optional. Gets or sets the list of endpoints in the Traffic Manager
+    * profile.
     * @param endpointsValue The Endpoints value.
     */
     public void setEndpoints(final ArrayList<Endpoint> endpointsValue) {
@@ -68,7 +70,8 @@ public class ProfileProperties {
     private MonitorConfig monitorConfig;
     
     /**
-    * Required. Gets or sets the monitor config of the profile.
+    * Optional. Gets or sets the endpoint monitoring settings of the Traffic
+    * Manager profile.
     * @return The MonitorConfig value.
     */
     public MonitorConfig getMonitorConfig() {
@@ -76,7 +79,8 @@ public class ProfileProperties {
     }
     
     /**
-    * Required. Gets or sets the monitor config of the profile.
+    * Optional. Gets or sets the endpoint monitoring settings of the Traffic
+    * Manager profile.
     * @param monitorConfigValue The MonitorConfig value.
     */
     public void setMonitorConfig(final MonitorConfig monitorConfigValue) {
@@ -86,7 +90,8 @@ public class ProfileProperties {
     private String profileStatus;
     
     /**
-    * Optional. Gets or sets the status of the profile.
+    * Optional. Gets or sets the status of the Traffic Manager profile.
+    * Possible values are 'Enabled' and 'Disabled'.
     * @return The ProfileStatus value.
     */
     public String getProfileStatus() {
@@ -94,7 +99,8 @@ public class ProfileProperties {
     }
     
     /**
-    * Optional. Gets or sets the status of the profile.
+    * Optional. Gets or sets the status of the Traffic Manager profile.
+    * Possible values are 'Enabled' and 'Disabled'.
     * @param profileStatusValue The ProfileStatus value.
     */
     public void setProfileStatus(final String profileStatusValue) {
@@ -104,7 +110,8 @@ public class ProfileProperties {
     private String trafficRoutingMethod;
     
     /**
-    * Required. Gets or sets the load balancing method of the profile.
+    * Optional. Gets or sets the traffic routing method of the Traffic Manager
+    * profile.  Possible values are 'Performance', 'Weighted', or 'Priority'.
     * @return The TrafficRoutingMethod value.
     */
     public String getTrafficRoutingMethod() {
@@ -112,7 +119,8 @@ public class ProfileProperties {
     }
     
     /**
-    * Required. Gets or sets the load balancing method of the profile.
+    * Optional. Gets or sets the traffic routing method of the Traffic Manager
+    * profile.  Possible values are 'Performance', 'Weighted', or 'Priority'.
     * @param trafficRoutingMethodValue The TrafficRoutingMethod value.
     */
     public void setTrafficRoutingMethod(final String trafficRoutingMethodValue) {
@@ -124,30 +132,5 @@ public class ProfileProperties {
     *
     */
     public ProfileProperties() {
-    }
-    
-    /**
-    * Initializes a new instance of the ProfileProperties class with required
-    * arguments.
-    *
-    * @param trafficRoutingMethod Gets or sets the load balancing method of the
-    * profile.
-    * @param dnsConfig Gets or sets the dns config of the profile.
-    * @param monitorConfig Gets or sets the monitor config of the profile.
-    */
-    public ProfileProperties(String trafficRoutingMethod, DnsConfig dnsConfig, MonitorConfig monitorConfig) {
-        this();
-        if (trafficRoutingMethod == null) {
-            throw new NullPointerException("trafficRoutingMethod");
-        }
-        if (dnsConfig == null) {
-            throw new NullPointerException("dnsConfig");
-        }
-        if (monitorConfig == null) {
-            throw new NullPointerException("monitorConfig");
-        }
-        this.setTrafficRoutingMethod(trafficRoutingMethod);
-        this.setDnsConfig(dnsConfig);
-        this.setMonitorConfig(monitorConfig);
     }
 }

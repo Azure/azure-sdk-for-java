@@ -24,14 +24,14 @@
 package com.microsoft.azure.management.trafficmanager.models;
 
 /**
-* Parameters supplied to create or update a Profile.
+* Parameters supplied to create or update a Traffic Manager profile.
 */
 public class ProfileCreateOrUpdateParameters {
     private Profile profile;
     
     /**
-    * Required. Gets or sets information about the Profile being created or
-    * updated.
+    * Required. Gets or sets parameters for the Traffic Manager profile being
+    * created or updated.
     * @return The Profile value.
     */
     public Profile getProfile() {
@@ -39,8 +39,8 @@ public class ProfileCreateOrUpdateParameters {
     }
     
     /**
-    * Required. Gets or sets information about the Profile being created or
-    * updated.
+    * Required. Gets or sets parameters for the Traffic Manager profile being
+    * created or updated.
     * @param profileValue The Profile value.
     */
     public void setProfile(final Profile profileValue) {
@@ -58,8 +58,8 @@ public class ProfileCreateOrUpdateParameters {
     * Initializes a new instance of the ProfileCreateOrUpdateParameters class
     * with required arguments.
     *
-    * @param profile Gets or sets information about the Profile being created
-    * or updated.
+    * @param profile Gets or sets parameters for the Traffic Manager profile
+    * being created or updated.
     */
     public ProfileCreateOrUpdateParameters(Profile profile) {
         if (profile == null) {

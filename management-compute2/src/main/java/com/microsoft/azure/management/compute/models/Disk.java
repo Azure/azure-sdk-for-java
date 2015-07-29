@@ -63,6 +63,26 @@ public class Disk {
         this.createOption = createOptionValue;
     }
     
+    private Integer diskSizeGB;
+    
+    /**
+    * Optional. Gets or sets the initial disk size in GB for blank data disks,
+    * and the new desired size for existing OS and Data disks.
+    * @return The DiskSizeGB value.
+    */
+    public Integer getDiskSizeGB() {
+        return this.diskSizeGB;
+    }
+    
+    /**
+    * Optional. Gets or sets the initial disk size in GB for blank data disks,
+    * and the new desired size for existing OS and Data disks.
+    * @param diskSizeGBValue The DiskSizeGB value.
+    */
+    public void setDiskSizeGB(final Integer diskSizeGBValue) {
+        this.diskSizeGB = diskSizeGBValue;
+    }
+    
     private String name;
     
     /**

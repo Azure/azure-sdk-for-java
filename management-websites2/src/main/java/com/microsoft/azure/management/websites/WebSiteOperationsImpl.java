@@ -443,7 +443,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode statusValue = propertiesValue2.get("status");
                         if (statusValue != null && statusValue instanceof NullNode == false) {
                             BackupItemStatus statusInstance;
-                            statusInstance = BackupItemStatus.values()[statusValue.getIntValue()];
+                            statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue().toUpperCase());
                             propertiesInstance.setStatus(statusInstance);
                         }
                         
@@ -1073,7 +1073,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode availabilityStateValue = propertiesValue2.get("availabilityState");
                         if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = WebSpaceAvailabilityState.values()[availabilityStateValue.getIntValue()];
+                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
@@ -1107,7 +1107,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                 if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                     WebSiteSslState sslStateInstance;
-                                    sslStateInstance = WebSiteSslState.values()[sslStateValue.getIntValue()];
+                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
                                     webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                 }
                                 
@@ -1149,7 +1149,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                 if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                     HostType hostTypeInstance;
-                                    hostTypeInstance = HostType.values()[hostTypeValue.getIntValue()];
+                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
                                     webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                 }
                             }
@@ -1179,7 +1179,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode runtimeAvailabilityStateValue = propertiesValue2.get("runtimeAvailabilityState");
                         if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                             WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                            runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.values()[runtimeAvailabilityStateValue.getIntValue()];
+                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                         }
                         
@@ -1214,7 +1214,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode skuValue = propertiesValue2.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -1296,7 +1296,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode typeValue = connectionStringsValue.get("type");
                                     if (typeValue != null && typeValue instanceof NullNode == false) {
                                         DatabaseServerType typeInstance;
-                                        typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                         connStringInfoInstance.setType(typeInstance);
                                     }
                                 }
@@ -1369,7 +1369,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                             if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                 ManagedPipelineMode managedPipelineModeInstance;
-                                managedPipelineModeInstance = ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()];
+                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
                                 siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                             }
                             
@@ -1436,7 +1436,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                             if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                 RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
+                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
                                 siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                             }
                             
@@ -1513,14 +1513,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode stateValue = propertiesValue2.get("state");
                         if (stateValue != null && stateValue instanceof NullNode == false) {
                             WebSiteState stateInstance;
-                            stateInstance = WebSiteState.values()[stateValue.getIntValue()];
+                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
                             propertiesInstance.setState(stateInstance);
                         }
                         
                         JsonNode usageStateValue = propertiesValue2.get("usageState");
                         if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                             WebSiteUsageState usageStateInstance;
-                            usageStateInstance = WebSiteUsageState.values()[usageStateValue.getIntValue()];
+                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setUsageState(usageStateInstance);
                         }
                         
@@ -2845,7 +2845,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode availabilityStateValue = propertiesValue.get("availabilityState");
                         if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = WebSpaceAvailabilityState.values()[availabilityStateValue.getIntValue()];
+                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
@@ -2879,7 +2879,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                 if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                     WebSiteSslState sslStateInstance;
-                                    sslStateInstance = WebSiteSslState.values()[sslStateValue.getIntValue()];
+                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
                                     webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                 }
                                 
@@ -2921,7 +2921,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                 if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                     HostType hostTypeInstance;
-                                    hostTypeInstance = HostType.values()[hostTypeValue.getIntValue()];
+                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
                                     webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                 }
                             }
@@ -2951,7 +2951,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode runtimeAvailabilityStateValue = propertiesValue.get("runtimeAvailabilityState");
                         if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                             WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                            runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.values()[runtimeAvailabilityStateValue.getIntValue()];
+                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                         }
                         
@@ -2986,7 +2986,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode skuValue = propertiesValue.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -3068,7 +3068,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode typeValue = connectionStringsValue.get("type");
                                     if (typeValue != null && typeValue instanceof NullNode == false) {
                                         DatabaseServerType typeInstance;
-                                        typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                         connStringInfoInstance.setType(typeInstance);
                                     }
                                 }
@@ -3141,7 +3141,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                             if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                 ManagedPipelineMode managedPipelineModeInstance;
-                                managedPipelineModeInstance = ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()];
+                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
                                 siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                             }
                             
@@ -3208,7 +3208,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                             if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                 RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
+                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
                                 siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                             }
                             
@@ -3285,14 +3285,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode stateValue = propertiesValue.get("state");
                         if (stateValue != null && stateValue instanceof NullNode == false) {
                             WebSiteState stateInstance;
-                            stateInstance = WebSiteState.values()[stateValue.getIntValue()];
+                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
                             propertiesInstance.setState(stateInstance);
                         }
                         
                         JsonNode usageStateValue = propertiesValue.get("usageState");
                         if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                             WebSiteUsageState usageStateInstance;
-                            usageStateInstance = WebSiteUsageState.values()[usageStateValue.getIntValue()];
+                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
                             propertiesInstance.setUsageState(usageStateInstance);
                         }
                         
@@ -3741,7 +3741,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode frequencyUnitValue = backupScheduleValue.get("frequencyUnit");
                             if (frequencyUnitValue != null && frequencyUnitValue instanceof NullNode == false) {
                                 FrequencyUnit frequencyUnitInstance;
-                                frequencyUnitInstance = FrequencyUnit.values()[frequencyUnitValue.getIntValue()];
+                                frequencyUnitInstance = Enum.valueOf(FrequencyUnit.class, frequencyUnitValue.getTextValue().toUpperCase());
                                 backupScheduleInstance2.setFrequencyUnit(frequencyUnitInstance);
                             }
                             
@@ -4047,7 +4047,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode typeValue = connectionStringsValue.get("type");
                                 if (typeValue != null && typeValue instanceof NullNode == false) {
                                     DatabaseServerType typeInstance;
-                                    typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                    typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                     connStringInfoInstance.setType(typeInstance);
                                 }
                             }
@@ -4120,7 +4120,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode managedPipelineModeValue = propertiesValue.get("managedPipelineMode");
                         if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                             ManagedPipelineMode managedPipelineModeInstance;
-                            managedPipelineModeInstance = ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()];
+                            managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
                             propertiesInstance.setManagedPipelineMode(managedPipelineModeInstance);
                         }
                         
@@ -4187,7 +4187,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode remoteDebuggingVersionValue = propertiesValue.get("remoteDebuggingVersion");
                         if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                             RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                            remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
+                            remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
                             propertiesInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                         }
                         
@@ -4467,7 +4467,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode typeValue = propertiesValue.get("type");
                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                 DatabaseServerType typeInstance;
-                                typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                 connStringInfoInstance.setType(typeInstance);
                             }
                         }
@@ -6375,7 +6375,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode availabilityStateValue = propertiesValue.get("availabilityState");
                                 if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                                     WebSpaceAvailabilityState availabilityStateInstance;
-                                    availabilityStateInstance = WebSpaceAvailabilityState.values()[availabilityStateValue.getIntValue()];
+                                    availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
                                     propertiesInstance.setAvailabilityState(availabilityStateInstance);
                                 }
                                 
@@ -6409,7 +6409,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                         if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                             WebSiteSslState sslStateInstance;
-                                            sslStateInstance = WebSiteSslState.values()[sslStateValue.getIntValue()];
+                                            sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
                                             webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                         }
                                         
@@ -6451,7 +6451,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                         if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                             HostType hostTypeInstance;
-                                            hostTypeInstance = HostType.values()[hostTypeValue.getIntValue()];
+                                            hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
                                             webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                         }
                                     }
@@ -6481,7 +6481,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode runtimeAvailabilityStateValue = propertiesValue.get("runtimeAvailabilityState");
                                 if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                                     WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                                    runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.values()[runtimeAvailabilityStateValue.getIntValue()];
+                                    runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
                                     propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                                 }
                                 
@@ -6516,7 +6516,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode skuValue = propertiesValue.get("sku");
                                 if (skuValue != null && skuValue instanceof NullNode == false) {
                                     SkuOptions skuInstance;
-                                    skuInstance = SkuOptions.values()[skuValue.getIntValue()];
+                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
                                     propertiesInstance.setSku(skuInstance);
                                 }
                                 
@@ -6598,7 +6598,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                             JsonNode typeValue = connectionStringsValue.get("type");
                                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                                 DatabaseServerType typeInstance;
-                                                typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                                 connStringInfoInstance.setType(typeInstance);
                                             }
                                         }
@@ -6671,7 +6671,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                                     if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                         ManagedPipelineMode managedPipelineModeInstance;
-                                        managedPipelineModeInstance = ManagedPipelineMode.values()[managedPipelineModeValue.getIntValue()];
+                                        managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
                                         siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                                     }
                                     
@@ -6738,7 +6738,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                                     if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                         RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                        remoteDebuggingVersionInstance = RemoteDebuggingVersion.values()[remoteDebuggingVersionValue.getIntValue()];
+                                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
                                         siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                                     }
                                     
@@ -6815,14 +6815,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode stateValue = propertiesValue.get("state");
                                 if (stateValue != null && stateValue instanceof NullNode == false) {
                                     WebSiteState stateInstance;
-                                    stateInstance = WebSiteState.values()[stateValue.getIntValue()];
+                                    stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
                                     propertiesInstance.setState(stateInstance);
                                 }
                                 
                                 JsonNode usageStateValue = propertiesValue.get("usageState");
                                 if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                                     WebSiteUsageState usageStateInstance;
-                                    usageStateInstance = WebSiteUsageState.values()[usageStateValue.getIntValue()];
+                                    usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
                                     propertiesInstance.setUsageState(usageStateInstance);
                                 }
                                 
@@ -7057,7 +7057,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode statusValue = propertiesValue.get("status");
                             if (statusValue != null && statusValue instanceof NullNode == false) {
                                 BackupItemStatus statusInstance;
-                                statusInstance = BackupItemStatus.values()[statusValue.getIntValue()];
+                                statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue().toUpperCase());
                                 backupItemInstance.setStatus(statusInstance);
                             }
                             
@@ -8981,7 +8981,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode typeValue = propertiesValue.get("type");
                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                 DatabaseServerType typeInstance;
-                                typeInstance = DatabaseServerType.values()[typeValue.getIntValue()];
+                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
                                 connStringInfoInstance.setType(typeInstance);
                             }
                         }

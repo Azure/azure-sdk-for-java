@@ -710,7 +710,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             }
             
             OperationStatusResponse response = client2.getLoadBalancersOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -718,7 +718,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -731,7 +731,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -824,7 +824,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -837,7 +837,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -949,7 +949,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             }
             
             OperationStatusResponse response = client2.getLoadBalancersOperations().beginUpdatingAsync(serviceName, deploymentName, loadBalancerName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -957,7 +957,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -970,7 +970,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

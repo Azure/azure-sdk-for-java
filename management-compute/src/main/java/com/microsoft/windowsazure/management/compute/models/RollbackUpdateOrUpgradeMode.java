@@ -27,11 +27,11 @@ public enum RollbackUpdateOrUpgradeMode {
     /**
     * The rollback proceeds without further user input.
     */
-    Auto,
+    AUTO,
     
     /**
     * You must call the Walk Upgrade Domain operation to apply the rollback to
     * each upgrade domain.
     */
-    Manual,
+    MANUAL,
 }

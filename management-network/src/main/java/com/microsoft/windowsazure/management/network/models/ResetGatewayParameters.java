@@ -24,24 +24,6 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public class ResetGatewayParameters {
-    private String gatewaySKU;
-    
-    /**
-    * Optional.
-    * @return The GatewaySKU value.
-    */
-    public String getGatewaySKU() {
-        return this.gatewaySKU;
-    }
-    
-    /**
-    * Optional.
-    * @param gatewaySKUValue The GatewaySKU value.
-    */
-    public void setGatewaySKU(final String gatewaySKUValue) {
-        this.gatewaySKU = gatewaySKUValue;
-    }
-    
     private UpdateGatewayOperation operation;
     
     /**

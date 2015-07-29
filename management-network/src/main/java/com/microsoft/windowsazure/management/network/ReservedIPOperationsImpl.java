@@ -162,15 +162,15 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginAssociatingAsync(reservedIpName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
-            int delayInSeconds = 90;
+            int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -183,7 +183,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -308,7 +308,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -329,6 +329,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             Element deploymentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
             deploymentNameElement.appendChild(requestDoc.createTextNode(parameters.getDeploymentName()));
             reservedIPAssociationElement.appendChild(deploymentNameElement);
+        }
+        
+        if (parameters.getVirtualIPName() != null) {
+            Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+            virtualIPNameElement.appendChild(requestDoc.createTextNode(parameters.getVirtualIPName()));
+            reservedIPAssociationElement.appendChild(virtualIPNameElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -473,7 +479,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -512,6 +518,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
             locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
             reservedIPElement.appendChild(locationElement);
+        }
+        
+        if (parameters.getVirtualIPName() != null) {
+            Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+            virtualIPNameElement.appendChild(requestDoc.createTextNode(parameters.getVirtualIPName()));
+            reservedIPElement.appendChild(virtualIPNameElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -639,7 +651,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -778,7 +790,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -799,6 +811,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             Element deploymentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
             deploymentNameElement.appendChild(requestDoc.createTextNode(parameters.getDeploymentName()));
             reservedIPAssociationElement.appendChild(deploymentNameElement);
+        }
+        
+        if (parameters.getVirtualIPName() != null) {
+            Element virtualIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+            virtualIPNameElement.appendChild(requestDoc.createTextNode(parameters.getVirtualIPName()));
+            reservedIPAssociationElement.appendChild(virtualIPNameElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -927,7 +945,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginCreatingAsync(parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -935,7 +953,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -948,7 +966,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1054,7 +1072,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1067,7 +1085,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1168,15 +1186,15 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginDisassociatingAsync(reservedIpName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
-            int delayInSeconds = 90;
+            int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1189,7 +1207,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1288,7 +1306,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1384,6 +1402,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                         locationInstance = locationElement.getTextContent();
                         result.setLocation(locationInstance);
                     }
+                    
+                    Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(reservedIPElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                    if (virtualIPNameElement != null) {
+                        String virtualIPNameInstance;
+                        virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                        result.setVirtualIPName(virtualIPNameInstance);
+                    }
                 }
                 
             }
@@ -1468,7 +1493,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2015-02-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1568,6 +1593,13 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                             String locationInstance;
                             locationInstance = locationElement.getTextContent();
                             reservedIPInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element virtualIPNameElement = XmlUtility.getElementByTagNameNS(reservedIPsElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPName");
+                        if (virtualIPNameElement != null) {
+                            String virtualIPNameInstance;
+                            virtualIPNameInstance = virtualIPNameElement.getTextContent();
+                            reservedIPInstance.setVirtualIPName(virtualIPNameInstance);
                         }
                     }
                 }

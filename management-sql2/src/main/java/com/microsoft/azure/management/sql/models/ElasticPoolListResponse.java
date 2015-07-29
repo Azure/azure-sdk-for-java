@@ -29,14 +29,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Represents the response to a List Azure Sql Database Elastic Pool request.
+* Represents the response to a List Azure Sql Elastic Pool request.
 */
 public class ElasticPoolListResponse extends OperationResponse implements Iterable<ElasticPool> {
     private ArrayList<ElasticPool> elasticPools;
     
     /**
-    * Optional. Gets or sets the list of Azure Sql Databases Elastic Pools
-    * hosted in the server.
+    * Optional. Gets or sets the list of Azure Sql Elastic Pools hosted in the
+    * server.
     * @return The ElasticPools value.
     */
     public ArrayList<ElasticPool> getElasticPools() {
@@ -44,8 +44,8 @@ public class ElasticPoolListResponse extends OperationResponse implements Iterab
     }
     
     /**
-    * Optional. Gets or sets the list of Azure Sql Databases Elastic Pools
-    * hosted in the server.
+    * Optional. Gets or sets the list of Azure Sql Elastic Pools hosted in the
+    * server.
     * @param elasticPoolsValue The ElasticPools value.
     */
     public void setElasticPools(final ArrayList<ElasticPool> elasticPoolsValue) {

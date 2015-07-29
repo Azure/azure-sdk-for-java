@@ -28,6 +28,7 @@ import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
 import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
 import com.microsoft.azure.management.compute.models.DataDisk;
+import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.DiskInstanceView;
 import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
@@ -39,7 +40,6 @@ import com.microsoft.azure.management.compute.models.NetworkProfile;
 import com.microsoft.azure.management.compute.models.OSDisk;
 import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.Plan;
-import com.microsoft.azure.management.compute.models.SourceImageReference;
 import com.microsoft.azure.management.compute.models.SourceVaultReference;
 import com.microsoft.azure.management.compute.models.SshConfiguration;
 import com.microsoft.azure.management.compute.models.SshPublicKey;
@@ -64,6 +64,7 @@ import com.microsoft.azure.management.compute.models.WinRMListener;
 import com.microsoft.azure.management.compute.models.WindowsConfiguration;
 import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
@@ -204,7 +205,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/capture";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -394,7 +395,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url + URLEncoder.encode(parameters.getName(), "UTF-8");
         }
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -481,15 +482,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            if (parameters.getStorageProfile().getSourceImage() != null) {
-                ObjectNode sourceImageValue = objectMapper.createObjectNode();
-                ((ObjectNode) storageProfileValue).put("sourceImage", sourceImageValue);
-                
-                if (parameters.getStorageProfile().getSourceImage().getReferenceUri() != null) {
-                    ((ObjectNode) sourceImageValue).put("id", parameters.getStorageProfile().getSourceImage().getReferenceUri());
-                }
-            }
-            
             if (parameters.getStorageProfile().getOSDisk() != null) {
                 ObjectNode osDiskValue = objectMapper.createObjectNode();
                 ((ObjectNode) storageProfileValue).put("osDisk", osDiskValue);
@@ -521,6 +513,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 ((ObjectNode) osDiskValue).put("createOption", parameters.getStorageProfile().getOSDisk().getCreateOption());
+                
+                if (parameters.getStorageProfile().getOSDisk().getDiskSizeGB() != null) {
+                    ((ObjectNode) osDiskValue).put("diskSizeGB", parameters.getStorageProfile().getOSDisk().getDiskSizeGB());
+                }
             }
             
             if (parameters.getStorageProfile().getDataDisks() != null) {
@@ -531,10 +527,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         dataDisksArray.add(dataDiskValue);
                         
                         ((ObjectNode) dataDiskValue).put("lun", dataDisksItem.getLun());
-                        
-                        if (dataDisksItem.getDiskSizeGB() != null) {
-                            ((ObjectNode) dataDiskValue).put("diskSizeGB", dataDisksItem.getDiskSizeGB());
-                        }
                         
                         ((ObjectNode) dataDiskValue).put("name", dataDisksItem.getName());
                         
@@ -559,6 +551,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         ((ObjectNode) dataDiskValue).put("createOption", dataDisksItem.getCreateOption());
+                        
+                        if (dataDisksItem.getDiskSizeGB() != null) {
+                            ((ObjectNode) dataDiskValue).put("diskSizeGB", dataDisksItem.getDiskSizeGB());
+                        }
                     }
                     ((ObjectNode) storageProfileValue).put("dataDisks", dataDisksArray);
                 }
@@ -1057,11 +1053,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 ((ObjectNode) propertiesValue3).put("autoUpgradeMinorVersion", resourcesItem.isAutoUpgradeMinorVersion());
                 
                 if (resourcesItem.getSettings() != null) {
-                    ((ObjectNode) propertiesValue3).put("settings", resourcesItem.getSettings());
+                    ((ObjectNode) propertiesValue3).put("settings", objectMapper.readTree(resourcesItem.getSettings()));
                 }
                 
                 if (resourcesItem.getProtectedSettings() != null) {
-                    ((ObjectNode) propertiesValue3).put("protectedSettings", resourcesItem.getProtectedSettings());
+                    ((ObjectNode) propertiesValue3).put("protectedSettings", objectMapper.readTree(resourcesItem.getProtectedSettings()));
                 }
                 
                 if (resourcesItem.getProvisioningState() != null) {
@@ -1329,19 +1325,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode sourceImageValue2 = storageProfileValue2.get("sourceImage");
-                            if (sourceImageValue2 != null && sourceImageValue2 instanceof NullNode == false) {
-                                SourceImageReference sourceImageInstance = new SourceImageReference();
-                                storageProfileInstance.setSourceImage(sourceImageInstance);
-                                
-                                JsonNode idValue = sourceImageValue2.get("id");
-                                if (idValue != null && idValue instanceof NullNode == false) {
-                                    String idInstance;
-                                    idInstance = idValue.getTextValue();
-                                    sourceImageInstance.setReferenceUri(idInstance);
-                                }
-                            }
-                            
                             JsonNode osDiskValue2 = storageProfileValue2.get("osDisk");
                             if (osDiskValue2 != null && osDiskValue2 instanceof NullNode == false) {
                                 OSDisk osDiskInstance = new OSDisk();
@@ -1400,6 +1383,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     createOptionInstance = createOptionValue.getTextValue();
                                     osDiskInstance.setCreateOption(createOptionInstance);
                                 }
+                                
+                                JsonNode diskSizeGBValue = osDiskValue2.get("diskSizeGB");
+                                if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                    int diskSizeGBInstance;
+                                    diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                    osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                }
                             }
                             
                             JsonNode dataDisksArray2 = storageProfileValue2.get("dataDisks");
@@ -1413,13 +1403,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         int lunInstance;
                                         lunInstance = lunValue.getIntValue();
                                         dataDiskInstance.setLun(lunInstance);
-                                    }
-                                    
-                                    JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                    if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                        int diskSizeGBInstance;
-                                        diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                     }
                                     
                                     JsonNode nameValue3 = dataDisksValue.get("name");
@@ -1467,6 +1450,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         String createOptionInstance2;
                                         createOptionInstance2 = createOptionValue2.getTextValue();
                                         dataDiskInstance.setCreateOption(createOptionInstance2);
+                                    }
+                                    
+                                    JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                    if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                        int diskSizeGBInstance2;
+                                        diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                     }
                                 }
                             }
@@ -1648,11 +1638,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                         vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                         
-                                        JsonNode idValue2 = sourceVaultValue2.get("id");
-                                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                            String idInstance2;
-                                            idInstance2 = idValue2.getTextValue();
-                                            sourceVaultInstance.setReferenceUri(idInstance2);
+                                        JsonNode idValue = sourceVaultValue2.get("id");
+                                        if (idValue != null && idValue instanceof NullNode == false) {
+                                            String idInstance;
+                                            idInstance = idValue.getTextValue();
+                                            sourceVaultInstance.setReferenceUri(idInstance);
                                         }
                                     }
                                     
@@ -1702,11 +1692,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue3 = networkInterfacesValue.get("id");
-                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                        String idInstance3;
-                                        idInstance3 = idValue3.getTextValue();
-                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                    JsonNode idValue2 = networkInterfacesValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                     }
                                 }
                             }
@@ -1717,11 +1707,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                             virtualMachineInstance.setAvailabilitySetReference(availabilitySetInstance);
                             
-                            JsonNode idValue4 = availabilitySetValue2.get("id");
-                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                String idInstance4;
-                                idInstance4 = idValue4.getTextValue();
-                                availabilitySetInstance.setReferenceUri(idInstance4);
+                            JsonNode idValue3 = availabilitySetValue2.get("id");
+                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                String idInstance3;
+                                idInstance3 = idValue3.getTextValue();
+                                availabilitySetInstance.setReferenceUri(idInstance3);
                             }
                         }
                         
@@ -2267,11 +2257,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue5 = resourcesValue.get("id");
-                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                String idInstance5;
-                                idInstance5 = idValue5.getTextValue();
-                                virtualMachineExtensionJsonInstance.setId(idInstance5);
+                            JsonNode idValue4 = resourcesValue.get("id");
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                String idInstance4;
+                                idInstance4 = idValue4.getTextValue();
+                                virtualMachineExtensionJsonInstance.setId(idInstance4);
                             }
                             
                             JsonNode nameValue7 = resourcesValue.get("name");
@@ -2308,11 +2298,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode idValue6 = responseDoc.get("id");
-                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                        String idInstance6;
-                        idInstance6 = idValue6.getTextValue();
-                        virtualMachineInstance.setId(idInstance6);
+                    JsonNode idValue5 = responseDoc.get("id");
+                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                        String idInstance5;
+                        idInstance5 = idValue5.getTextValue();
+                        virtualMachineInstance.setId(idInstance5);
                     }
                     
                     JsonNode nameValue8 = responseDoc.get("name");
@@ -2435,7 +2425,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/deallocate";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2505,10 +2495,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The compute long running operation response.
     */
     @Override
-    public Future<ComputeOperationResponse> beginDeletingAsync(final String resourceGroupName, final String vmName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationResponse>() { 
+    public Future<DeleteOperationResponse> beginDeletingAsync(final String resourceGroupName, final String vmName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeleteOperationResponse>() { 
             @Override
-            public ComputeOperationResponse call() throws Exception {
+            public DeleteOperationResponse call() throws Exception {
                 return beginDeleting(resourceGroupName, vmName);
             }
          });
@@ -2526,7 +2516,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The compute long running operation response.
     */
     @Override
-    public ComputeOperationResponse beginDeleting(String resourceGroupName, String vmName) throws IOException, ServiceException {
+    public DeleteOperationResponse beginDeleting(String resourceGroupName, String vmName) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -2561,7 +2551,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + "/";
         url = url + URLEncoder.encode(vmName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2593,7 +2583,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED && statusCode != HttpStatus.SC_NO_CONTENT) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -2602,15 +2592,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             // Create Result
-            ComputeOperationResponse result = null;
+            DeleteOperationResponse result = null;
             // Deserialize Response
-            result = new ComputeOperationResponse();
+            result = new DeleteOperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("Azure-AsyncOperation").length > 0) {
                 result.setAzureAsyncOperation(httpResponse.getFirstHeader("Azure-AsyncOperation").getValue());
             }
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_CONFLICT) {
+                result.setStatus(OperationStatus.FAILED);
+            }
+            if (statusCode == HttpStatus.SC_OK) {
+                result.setStatus(OperationStatus.SUCCEEDED);
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setStatus(OperationStatus.SUCCEEDED);
             }
             
             if (shouldTrace) {
@@ -2689,7 +2688,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/powerOff";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2816,7 +2815,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/restart";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2943,7 +2942,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/start";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3257,13 +3256,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     *
     * @param resourceGroupName Required. The name of the resource group.
     * @param vmName Required. The name of the virtual machine.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
     @Override
-    public Future<ComputeLongRunningOperationResponse> deleteAsync(final String resourceGroupName, final String vmName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeLongRunningOperationResponse>() { 
+    public Future<DeleteOperationResponse> deleteAsync(final String resourceGroupName, final String vmName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeleteOperationResponse>() { 
             @Override
-            public ComputeLongRunningOperationResponse call() throws Exception {
+            public DeleteOperationResponse call() throws Exception {
                 return delete(resourceGroupName, vmName);
             }
          });
@@ -3286,10 +3285,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @throws ExecutionException Thrown when attempting to retrieve the result
     * of a task that aborted by throwing an exception. This exception can be
     * inspected using the Throwable.getCause() method.
-    * @return The Compute service response for long-running operations.
+    * @return The compute long running operation response.
     */
     @Override
-    public ComputeLongRunningOperationResponse delete(String resourceGroupName, String vmName) throws IOException, ServiceException, InterruptedException, ExecutionException {
+    public DeleteOperationResponse delete(String resourceGroupName, String vmName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3305,15 +3304,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            ComputeOperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(resourceGroupName, vmName).get();
-            ComputeLongRunningOperationResponse result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
+            DeleteOperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(resourceGroupName, vmName).get();
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+                return response;
+            }
+            DeleteOperationResponse result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
+                result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
                 if (client2.getLongRunningOperationRetryTimeout() >= 0) {
                     delayInSeconds = client2.getLongRunningOperationRetryTimeout();
@@ -3399,7 +3401,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/generalize";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3525,7 +3527,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + "/";
         url = url + URLEncoder.encode(vmName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -3669,19 +3671,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode sourceImageValue = storageProfileValue.get("sourceImage");
-                            if (sourceImageValue != null && sourceImageValue instanceof NullNode == false) {
-                                SourceImageReference sourceImageInstance = new SourceImageReference();
-                                storageProfileInstance.setSourceImage(sourceImageInstance);
-                                
-                                JsonNode idValue = sourceImageValue.get("id");
-                                if (idValue != null && idValue instanceof NullNode == false) {
-                                    String idInstance;
-                                    idInstance = idValue.getTextValue();
-                                    sourceImageInstance.setReferenceUri(idInstance);
-                                }
-                            }
-                            
                             JsonNode osDiskValue = storageProfileValue.get("osDisk");
                             if (osDiskValue != null && osDiskValue instanceof NullNode == false) {
                                 OSDisk osDiskInstance = new OSDisk();
@@ -3740,6 +3729,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     createOptionInstance = createOptionValue.getTextValue();
                                     osDiskInstance.setCreateOption(createOptionInstance);
                                 }
+                                
+                                JsonNode diskSizeGBValue = osDiskValue.get("diskSizeGB");
+                                if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                    int diskSizeGBInstance;
+                                    diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                    osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                }
                             }
                             
                             JsonNode dataDisksArray = storageProfileValue.get("dataDisks");
@@ -3753,13 +3749,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         int lunInstance;
                                         lunInstance = lunValue.getIntValue();
                                         dataDiskInstance.setLun(lunInstance);
-                                    }
-                                    
-                                    JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                    if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                        int diskSizeGBInstance;
-                                        diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                     }
                                     
                                     JsonNode nameValue3 = dataDisksValue.get("name");
@@ -3807,6 +3796,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         String createOptionInstance2;
                                         createOptionInstance2 = createOptionValue2.getTextValue();
                                         dataDiskInstance.setCreateOption(createOptionInstance2);
+                                    }
+                                    
+                                    JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                    if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                        int diskSizeGBInstance2;
+                                        diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                     }
                                 }
                             }
@@ -3988,11 +3984,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                         vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                         
-                                        JsonNode idValue2 = sourceVaultValue.get("id");
-                                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                            String idInstance2;
-                                            idInstance2 = idValue2.getTextValue();
-                                            sourceVaultInstance.setReferenceUri(idInstance2);
+                                        JsonNode idValue = sourceVaultValue.get("id");
+                                        if (idValue != null && idValue instanceof NullNode == false) {
+                                            String idInstance;
+                                            idInstance = idValue.getTextValue();
+                                            sourceVaultInstance.setReferenceUri(idInstance);
                                         }
                                     }
                                     
@@ -4042,11 +4038,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue3 = networkInterfacesValue.get("id");
-                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                        String idInstance3;
-                                        idInstance3 = idValue3.getTextValue();
-                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                    JsonNode idValue2 = networkInterfacesValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                     }
                                 }
                             }
@@ -4057,11 +4053,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                             virtualMachineInstance.setAvailabilitySetReference(availabilitySetInstance);
                             
-                            JsonNode idValue4 = availabilitySetValue.get("id");
-                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                String idInstance4;
-                                idInstance4 = idValue4.getTextValue();
-                                availabilitySetInstance.setReferenceUri(idInstance4);
+                            JsonNode idValue3 = availabilitySetValue.get("id");
+                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                String idInstance3;
+                                idInstance3 = idValue3.getTextValue();
+                                availabilitySetInstance.setReferenceUri(idInstance3);
                             }
                         }
                         
@@ -4607,11 +4603,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue5 = resourcesValue.get("id");
-                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                String idInstance5;
-                                idInstance5 = idValue5.getTextValue();
-                                virtualMachineExtensionJsonInstance.setId(idInstance5);
+                            JsonNode idValue4 = resourcesValue.get("id");
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                String idInstance4;
+                                idInstance4 = idValue4.getTextValue();
+                                virtualMachineExtensionJsonInstance.setId(idInstance4);
                             }
                             
                             JsonNode nameValue7 = resourcesValue.get("name");
@@ -4648,11 +4644,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode idValue6 = responseDoc.get("id");
-                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                        String idInstance6;
-                        idInstance6 = idValue6.getTextValue();
-                        virtualMachineInstance.setId(idInstance6);
+                    JsonNode idValue5 = responseDoc.get("id");
+                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                        String idInstance5;
+                        idInstance5 = idValue5.getTextValue();
+                        virtualMachineInstance.setId(idInstance5);
                     }
                     
                     JsonNode nameValue8 = responseDoc.get("name");
@@ -4772,7 +4768,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
         queryParameters.add("$expand=instanceView");
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -4915,19 +4911,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode sourceImageValue = storageProfileValue.get("sourceImage");
-                            if (sourceImageValue != null && sourceImageValue instanceof NullNode == false) {
-                                SourceImageReference sourceImageInstance = new SourceImageReference();
-                                storageProfileInstance.setSourceImage(sourceImageInstance);
-                                
-                                JsonNode idValue = sourceImageValue.get("id");
-                                if (idValue != null && idValue instanceof NullNode == false) {
-                                    String idInstance;
-                                    idInstance = idValue.getTextValue();
-                                    sourceImageInstance.setReferenceUri(idInstance);
-                                }
-                            }
-                            
                             JsonNode osDiskValue = storageProfileValue.get("osDisk");
                             if (osDiskValue != null && osDiskValue instanceof NullNode == false) {
                                 OSDisk osDiskInstance = new OSDisk();
@@ -4986,6 +4969,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     createOptionInstance = createOptionValue.getTextValue();
                                     osDiskInstance.setCreateOption(createOptionInstance);
                                 }
+                                
+                                JsonNode diskSizeGBValue = osDiskValue.get("diskSizeGB");
+                                if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                    int diskSizeGBInstance;
+                                    diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                    osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                }
                             }
                             
                             JsonNode dataDisksArray = storageProfileValue.get("dataDisks");
@@ -4999,13 +4989,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         int lunInstance;
                                         lunInstance = lunValue.getIntValue();
                                         dataDiskInstance.setLun(lunInstance);
-                                    }
-                                    
-                                    JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                    if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                        int diskSizeGBInstance;
-                                        diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                     }
                                     
                                     JsonNode nameValue3 = dataDisksValue.get("name");
@@ -5053,6 +5036,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         String createOptionInstance2;
                                         createOptionInstance2 = createOptionValue2.getTextValue();
                                         dataDiskInstance.setCreateOption(createOptionInstance2);
+                                    }
+                                    
+                                    JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                    if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                        int diskSizeGBInstance2;
+                                        diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                        dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                     }
                                 }
                             }
@@ -5234,11 +5224,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                         vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                         
-                                        JsonNode idValue2 = sourceVaultValue.get("id");
-                                        if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                            String idInstance2;
-                                            idInstance2 = idValue2.getTextValue();
-                                            sourceVaultInstance.setReferenceUri(idInstance2);
+                                        JsonNode idValue = sourceVaultValue.get("id");
+                                        if (idValue != null && idValue instanceof NullNode == false) {
+                                            String idInstance;
+                                            idInstance = idValue.getTextValue();
+                                            sourceVaultInstance.setReferenceUri(idInstance);
                                         }
                                     }
                                     
@@ -5288,11 +5278,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue3 = networkInterfacesValue.get("id");
-                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                        String idInstance3;
-                                        idInstance3 = idValue3.getTextValue();
-                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                    JsonNode idValue2 = networkInterfacesValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                     }
                                 }
                             }
@@ -5303,11 +5293,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                             virtualMachineInstance.setAvailabilitySetReference(availabilitySetInstance);
                             
-                            JsonNode idValue4 = availabilitySetValue.get("id");
-                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                String idInstance4;
-                                idInstance4 = idValue4.getTextValue();
-                                availabilitySetInstance.setReferenceUri(idInstance4);
+                            JsonNode idValue3 = availabilitySetValue.get("id");
+                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                String idInstance3;
+                                idInstance3 = idValue3.getTextValue();
+                                availabilitySetInstance.setReferenceUri(idInstance3);
                             }
                         }
                         
@@ -5853,11 +5843,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue5 = resourcesValue.get("id");
-                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                String idInstance5;
-                                idInstance5 = idValue5.getTextValue();
-                                virtualMachineExtensionJsonInstance.setId(idInstance5);
+                            JsonNode idValue4 = resourcesValue.get("id");
+                            if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                String idInstance4;
+                                idInstance4 = idValue4.getTextValue();
+                                virtualMachineExtensionJsonInstance.setId(idInstance4);
                             }
                             
                             JsonNode nameValue7 = resourcesValue.get("name");
@@ -5894,11 +5884,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode idValue6 = responseDoc.get("id");
-                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                        String idInstance6;
-                        idInstance6 = idValue6.getTextValue();
-                        virtualMachineInstance.setId(idInstance6);
+                    JsonNode idValue5 = responseDoc.get("id");
+                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                        String idInstance5;
+                        idInstance5 = idValue5.getTextValue();
+                        virtualMachineInstance.setId(idInstance5);
                     }
                     
                     JsonNode nameValue8 = responseDoc.get("name");
@@ -6009,7 +5999,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + "/";
         url = url + "virtualMachines";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -6156,19 +6146,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode sourceImageValue = storageProfileValue.get("sourceImage");
-                                    if (sourceImageValue != null && sourceImageValue instanceof NullNode == false) {
-                                        SourceImageReference sourceImageInstance = new SourceImageReference();
-                                        storageProfileInstance.setSourceImage(sourceImageInstance);
-                                        
-                                        JsonNode idValue = sourceImageValue.get("id");
-                                        if (idValue != null && idValue instanceof NullNode == false) {
-                                            String idInstance;
-                                            idInstance = idValue.getTextValue();
-                                            sourceImageInstance.setReferenceUri(idInstance);
-                                        }
-                                    }
-                                    
                                     JsonNode osDiskValue = storageProfileValue.get("osDisk");
                                     if (osDiskValue != null && osDiskValue instanceof NullNode == false) {
                                         OSDisk osDiskInstance = new OSDisk();
@@ -6227,6 +6204,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             createOptionInstance = createOptionValue.getTextValue();
                                             osDiskInstance.setCreateOption(createOptionInstance);
                                         }
+                                        
+                                        JsonNode diskSizeGBValue = osDiskValue.get("diskSizeGB");
+                                        if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                            int diskSizeGBInstance;
+                                            diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                            osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                        }
                                     }
                                     
                                     JsonNode dataDisksArray = storageProfileValue.get("dataDisks");
@@ -6240,13 +6224,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 int lunInstance;
                                                 lunInstance = lunValue.getIntValue();
                                                 dataDiskInstance.setLun(lunInstance);
-                                            }
-                                            
-                                            JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                            if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                                int diskSizeGBInstance;
-                                                diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                             }
                                             
                                             JsonNode nameValue3 = dataDisksValue.get("name");
@@ -6294,6 +6271,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 String createOptionInstance2;
                                                 createOptionInstance2 = createOptionValue2.getTextValue();
                                                 dataDiskInstance.setCreateOption(createOptionInstance2);
+                                            }
+                                            
+                                            JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                            if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                                int diskSizeGBInstance2;
+                                                diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                             }
                                         }
                                     }
@@ -6475,11 +6459,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                                 vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                                 
-                                                JsonNode idValue2 = sourceVaultValue.get("id");
-                                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                                    String idInstance2;
-                                                    idInstance2 = idValue2.getTextValue();
-                                                    sourceVaultInstance.setReferenceUri(idInstance2);
+                                                JsonNode idValue = sourceVaultValue.get("id");
+                                                if (idValue != null && idValue instanceof NullNode == false) {
+                                                    String idInstance;
+                                                    idInstance = idValue.getTextValue();
+                                                    sourceVaultInstance.setReferenceUri(idInstance);
                                                 }
                                             }
                                             
@@ -6529,11 +6513,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 }
                                             }
                                             
-                                            JsonNode idValue3 = networkInterfacesValue.get("id");
-                                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                                String idInstance3;
-                                                idInstance3 = idValue3.getTextValue();
-                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                            JsonNode idValue2 = networkInterfacesValue.get("id");
+                                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                                String idInstance2;
+                                                idInstance2 = idValue2.getTextValue();
+                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                             }
                                         }
                                     }
@@ -6544,11 +6528,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                                     virtualMachineJsonInstance.setAvailabilitySetReference(availabilitySetInstance);
                                     
-                                    JsonNode idValue4 = availabilitySetValue.get("id");
-                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                        String idInstance4;
-                                        idInstance4 = idValue4.getTextValue();
-                                        availabilitySetInstance.setReferenceUri(idInstance4);
+                                    JsonNode idValue3 = availabilitySetValue.get("id");
+                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                        String idInstance3;
+                                        idInstance3 = idValue3.getTextValue();
+                                        availabilitySetInstance.setReferenceUri(idInstance3);
                                     }
                                 }
                                 
@@ -7094,11 +7078,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue5 = resourcesValue.get("id");
-                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                        String idInstance5;
-                                        idInstance5 = idValue5.getTextValue();
-                                        virtualMachineExtensionJsonInstance.setId(idInstance5);
+                                    JsonNode idValue4 = resourcesValue.get("id");
+                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                        String idInstance4;
+                                        idInstance4 = idValue4.getTextValue();
+                                        virtualMachineExtensionJsonInstance.setId(idInstance4);
                                     }
                                     
                                     JsonNode nameValue7 = resourcesValue.get("name");
@@ -7135,11 +7119,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue6 = valueValue.get("id");
-                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                String idInstance6;
-                                idInstance6 = idValue6.getTextValue();
-                                virtualMachineJsonInstance.setId(idInstance6);
+                            JsonNode idValue5 = valueValue.get("id");
+                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                String idInstance5;
+                                idInstance5 = idValue5.getTextValue();
+                                virtualMachineJsonInstance.setId(idInstance5);
                             }
                             
                             JsonNode nameValue8 = valueValue.get("name");
@@ -7258,7 +7242,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + "/";
         url = url + "virtualMachines";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -7405,19 +7389,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode sourceImageValue = storageProfileValue.get("sourceImage");
-                                    if (sourceImageValue != null && sourceImageValue instanceof NullNode == false) {
-                                        SourceImageReference sourceImageInstance = new SourceImageReference();
-                                        storageProfileInstance.setSourceImage(sourceImageInstance);
-                                        
-                                        JsonNode idValue = sourceImageValue.get("id");
-                                        if (idValue != null && idValue instanceof NullNode == false) {
-                                            String idInstance;
-                                            idInstance = idValue.getTextValue();
-                                            sourceImageInstance.setReferenceUri(idInstance);
-                                        }
-                                    }
-                                    
                                     JsonNode osDiskValue = storageProfileValue.get("osDisk");
                                     if (osDiskValue != null && osDiskValue instanceof NullNode == false) {
                                         OSDisk osDiskInstance = new OSDisk();
@@ -7476,6 +7447,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             createOptionInstance = createOptionValue.getTextValue();
                                             osDiskInstance.setCreateOption(createOptionInstance);
                                         }
+                                        
+                                        JsonNode diskSizeGBValue = osDiskValue.get("diskSizeGB");
+                                        if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                            int diskSizeGBInstance;
+                                            diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                            osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                        }
                                     }
                                     
                                     JsonNode dataDisksArray = storageProfileValue.get("dataDisks");
@@ -7489,13 +7467,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 int lunInstance;
                                                 lunInstance = lunValue.getIntValue();
                                                 dataDiskInstance.setLun(lunInstance);
-                                            }
-                                            
-                                            JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                            if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                                int diskSizeGBInstance;
-                                                diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                             }
                                             
                                             JsonNode nameValue3 = dataDisksValue.get("name");
@@ -7543,6 +7514,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 String createOptionInstance2;
                                                 createOptionInstance2 = createOptionValue2.getTextValue();
                                                 dataDiskInstance.setCreateOption(createOptionInstance2);
+                                            }
+                                            
+                                            JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                            if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                                int diskSizeGBInstance2;
+                                                diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                             }
                                         }
                                     }
@@ -7724,11 +7702,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                                 vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                                 
-                                                JsonNode idValue2 = sourceVaultValue.get("id");
-                                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                                    String idInstance2;
-                                                    idInstance2 = idValue2.getTextValue();
-                                                    sourceVaultInstance.setReferenceUri(idInstance2);
+                                                JsonNode idValue = sourceVaultValue.get("id");
+                                                if (idValue != null && idValue instanceof NullNode == false) {
+                                                    String idInstance;
+                                                    idInstance = idValue.getTextValue();
+                                                    sourceVaultInstance.setReferenceUri(idInstance);
                                                 }
                                             }
                                             
@@ -7778,11 +7756,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 }
                                             }
                                             
-                                            JsonNode idValue3 = networkInterfacesValue.get("id");
-                                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                                String idInstance3;
-                                                idInstance3 = idValue3.getTextValue();
-                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                            JsonNode idValue2 = networkInterfacesValue.get("id");
+                                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                                String idInstance2;
+                                                idInstance2 = idValue2.getTextValue();
+                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                             }
                                         }
                                     }
@@ -7793,11 +7771,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                                     virtualMachineJsonInstance.setAvailabilitySetReference(availabilitySetInstance);
                                     
-                                    JsonNode idValue4 = availabilitySetValue.get("id");
-                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                        String idInstance4;
-                                        idInstance4 = idValue4.getTextValue();
-                                        availabilitySetInstance.setReferenceUri(idInstance4);
+                                    JsonNode idValue3 = availabilitySetValue.get("id");
+                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                        String idInstance3;
+                                        idInstance3 = idValue3.getTextValue();
+                                        availabilitySetInstance.setReferenceUri(idInstance3);
                                     }
                                 }
                                 
@@ -8343,11 +8321,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue5 = resourcesValue.get("id");
-                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                        String idInstance5;
-                                        idInstance5 = idValue5.getTextValue();
-                                        virtualMachineExtensionJsonInstance.setId(idInstance5);
+                                    JsonNode idValue4 = resourcesValue.get("id");
+                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                        String idInstance4;
+                                        idInstance4 = idValue4.getTextValue();
+                                        virtualMachineExtensionJsonInstance.setId(idInstance4);
                                     }
                                     
                                     JsonNode nameValue7 = resourcesValue.get("name");
@@ -8384,11 +8362,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue6 = valueValue.get("id");
-                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                String idInstance6;
-                                idInstance6 = idValue6.getTextValue();
-                                virtualMachineJsonInstance.setId(idInstance6);
+                            JsonNode idValue5 = valueValue.get("id");
+                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                String idInstance5;
+                                idInstance5 = idValue5.getTextValue();
+                                virtualMachineJsonInstance.setId(idInstance5);
                             }
                             
                             JsonNode nameValue8 = valueValue.get("name");
@@ -8515,7 +8493,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         url = url + URLEncoder.encode(vmName, "UTF-8");
         url = url + "/vmSizes";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -8824,19 +8802,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode sourceImageValue = storageProfileValue.get("sourceImage");
-                                    if (sourceImageValue != null && sourceImageValue instanceof NullNode == false) {
-                                        SourceImageReference sourceImageInstance = new SourceImageReference();
-                                        storageProfileInstance.setSourceImage(sourceImageInstance);
-                                        
-                                        JsonNode idValue = sourceImageValue.get("id");
-                                        if (idValue != null && idValue instanceof NullNode == false) {
-                                            String idInstance;
-                                            idInstance = idValue.getTextValue();
-                                            sourceImageInstance.setReferenceUri(idInstance);
-                                        }
-                                    }
-                                    
                                     JsonNode osDiskValue = storageProfileValue.get("osDisk");
                                     if (osDiskValue != null && osDiskValue instanceof NullNode == false) {
                                         OSDisk osDiskInstance = new OSDisk();
@@ -8895,6 +8860,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             createOptionInstance = createOptionValue.getTextValue();
                                             osDiskInstance.setCreateOption(createOptionInstance);
                                         }
+                                        
+                                        JsonNode diskSizeGBValue = osDiskValue.get("diskSizeGB");
+                                        if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
+                                            int diskSizeGBInstance;
+                                            diskSizeGBInstance = diskSizeGBValue.getIntValue();
+                                            osDiskInstance.setDiskSizeGB(diskSizeGBInstance);
+                                        }
                                     }
                                     
                                     JsonNode dataDisksArray = storageProfileValue.get("dataDisks");
@@ -8908,13 +8880,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 int lunInstance;
                                                 lunInstance = lunValue.getIntValue();
                                                 dataDiskInstance.setLun(lunInstance);
-                                            }
-                                            
-                                            JsonNode diskSizeGBValue = dataDisksValue.get("diskSizeGB");
-                                            if (diskSizeGBValue != null && diskSizeGBValue instanceof NullNode == false) {
-                                                int diskSizeGBInstance;
-                                                diskSizeGBInstance = diskSizeGBValue.getIntValue();
-                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance);
                                             }
                                             
                                             JsonNode nameValue3 = dataDisksValue.get("name");
@@ -8962,6 +8927,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 String createOptionInstance2;
                                                 createOptionInstance2 = createOptionValue2.getTextValue();
                                                 dataDiskInstance.setCreateOption(createOptionInstance2);
+                                            }
+                                            
+                                            JsonNode diskSizeGBValue2 = dataDisksValue.get("diskSizeGB");
+                                            if (diskSizeGBValue2 != null && diskSizeGBValue2 instanceof NullNode == false) {
+                                                int diskSizeGBInstance2;
+                                                diskSizeGBInstance2 = diskSizeGBValue2.getIntValue();
+                                                dataDiskInstance.setDiskSizeGB(diskSizeGBInstance2);
                                             }
                                         }
                                     }
@@ -9143,11 +9115,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 SourceVaultReference sourceVaultInstance = new SourceVaultReference();
                                                 vaultSecretGroupInstance.setSourceVault(sourceVaultInstance);
                                                 
-                                                JsonNode idValue2 = sourceVaultValue.get("id");
-                                                if (idValue2 != null && idValue2 instanceof NullNode == false) {
-                                                    String idInstance2;
-                                                    idInstance2 = idValue2.getTextValue();
-                                                    sourceVaultInstance.setReferenceUri(idInstance2);
+                                                JsonNode idValue = sourceVaultValue.get("id");
+                                                if (idValue != null && idValue instanceof NullNode == false) {
+                                                    String idInstance;
+                                                    idInstance = idValue.getTextValue();
+                                                    sourceVaultInstance.setReferenceUri(idInstance);
                                                 }
                                             }
                                             
@@ -9197,11 +9169,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 }
                                             }
                                             
-                                            JsonNode idValue3 = networkInterfacesValue.get("id");
-                                            if (idValue3 != null && idValue3 instanceof NullNode == false) {
-                                                String idInstance3;
-                                                idInstance3 = idValue3.getTextValue();
-                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance3);
+                                            JsonNode idValue2 = networkInterfacesValue.get("id");
+                                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                                String idInstance2;
+                                                idInstance2 = idValue2.getTextValue();
+                                                networkInterfaceReferenceJsonInstance.setReferenceUri(idInstance2);
                                             }
                                         }
                                     }
@@ -9212,11 +9184,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
                                     virtualMachineJsonInstance.setAvailabilitySetReference(availabilitySetInstance);
                                     
-                                    JsonNode idValue4 = availabilitySetValue.get("id");
-                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
-                                        String idInstance4;
-                                        idInstance4 = idValue4.getTextValue();
-                                        availabilitySetInstance.setReferenceUri(idInstance4);
+                                    JsonNode idValue3 = availabilitySetValue.get("id");
+                                    if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                        String idInstance3;
+                                        idInstance3 = idValue3.getTextValue();
+                                        availabilitySetInstance.setReferenceUri(idInstance3);
                                     }
                                 }
                                 
@@ -9762,11 +9734,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
-                                    JsonNode idValue5 = resourcesValue.get("id");
-                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                        String idInstance5;
-                                        idInstance5 = idValue5.getTextValue();
-                                        virtualMachineExtensionJsonInstance.setId(idInstance5);
+                                    JsonNode idValue4 = resourcesValue.get("id");
+                                    if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                        String idInstance4;
+                                        idInstance4 = idValue4.getTextValue();
+                                        virtualMachineExtensionJsonInstance.setId(idInstance4);
                                     }
                                     
                                     JsonNode nameValue7 = resourcesValue.get("name");
@@ -9803,11 +9775,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            JsonNode idValue6 = valueValue.get("id");
-                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                String idInstance6;
-                                idInstance6 = idValue6.getTextValue();
-                                virtualMachineJsonInstance.setId(idInstance6);
+                            JsonNode idValue5 = valueValue.get("id");
+                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                String idInstance5;
+                                idInstance5 = idValue5.getTextValue();
+                                virtualMachineJsonInstance.setId(idInstance5);
                             }
                             
                             JsonNode nameValue8 = valueValue.get("name");

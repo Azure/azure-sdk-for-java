@@ -24,13 +24,13 @@
 package com.microsoft.azure.management.trafficmanager.models;
 
 /**
-* An Endpoint.
+* Class respresenting a Traffic Manager endpoint.
 */
 public class Endpoint {
     private String id;
     
     /**
-    * Optional. Gets or sets the ID of the resource.
+    * Optional. Gets or sets the ID of the Traffic Manager endpoint.
     * @return The Id value.
     */
     public String getId() {
@@ -38,7 +38,7 @@ public class Endpoint {
     }
     
     /**
-    * Optional. Gets or sets the ID of the resource.
+    * Optional. Gets or sets the ID of the Traffic Manager endpoint.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -48,7 +48,7 @@ public class Endpoint {
     private String name;
     
     /**
-    * Optional. Gets or sets the name of the resource.
+    * Optional. Gets or sets the name of the Traffic Manager endpoint.
     * @return The Name value.
     */
     public String getName() {
@@ -56,7 +56,7 @@ public class Endpoint {
     }
     
     /**
-    * Optional. Gets or sets the name of the resource.
+    * Optional. Gets or sets the name of the Traffic Manager endpoint.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -66,7 +66,7 @@ public class Endpoint {
     private EndpointProperties properties;
     
     /**
-    * Required. Gets or sets the properties of the endpoint.
+    * Optional. Gets or sets the properties of the Traffic Manager endpoint.
     * @return The Properties value.
     */
     public EndpointProperties getProperties() {
@@ -74,7 +74,7 @@ public class Endpoint {
     }
     
     /**
-    * Required. Gets or sets the properties of the endpoint.
+    * Optional. Gets or sets the properties of the Traffic Manager endpoint.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final EndpointProperties propertiesValue) {
@@ -84,7 +84,7 @@ public class Endpoint {
     private String type;
     
     /**
-    * Optional. Gets or sets the type of the resource.
+    * Optional. Gets or sets the endpoint type of the Traffic Manager endpoint.
     * @return The Type value.
     */
     public String getType() {
@@ -92,29 +92,10 @@ public class Endpoint {
     }
     
     /**
-    * Optional. Gets or sets the type of the resource.
+    * Optional. Gets or sets the endpoint type of the Traffic Manager endpoint.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {
         this.type = typeValue;
-    }
-    
-    /**
-    * Initializes a new instance of the Endpoint class.
-    *
-    */
-    public Endpoint() {
-    }
-    
-    /**
-    * Initializes a new instance of the Endpoint class with required arguments.
-    *
-    * @param properties Gets or sets the properties of the endpoint.
-    */
-    public Endpoint(EndpointProperties properties) {
-        if (properties == null) {
-            throw new NullPointerException("properties");
-        }
-        this.setProperties(properties);
     }
 }

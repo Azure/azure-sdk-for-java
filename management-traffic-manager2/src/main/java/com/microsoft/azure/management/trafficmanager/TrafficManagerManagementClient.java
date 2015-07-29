@@ -29,12 +29,10 @@ import java.io.Closeable;
 import java.net.URI;
 
 /**
-* The Windows Azure Traffic Manager management API provides a RESTful set of
-* web services that interact with Windows Azure Traffic Manager service for
-* creating, updating, listing, and deleting Traffic Manager profiles and
-* definitions.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
-* information)
+* Client for creating, updating, listing and deleting Azure Traffic Manager
+* profiles  (see
+* http://azure.microsoft.com/en-gb/documentation/articles/traffic-manager-overview/
+* for more information)
 */
 public interface TrafficManagerManagementClient extends Closeable, FilterableService<TrafficManagerManagementClient> {
     /**
@@ -82,7 +80,13 @@ public interface TrafficManagerManagementClient extends Closeable, FilterableSer
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
-    * Operations for managing WATMv2 profiles.
+    * Operations for managing Traffic Manager endpoints.
+    * @return The EndpointsOperations value.
+    */
+    EndpointOperations getEndpointsOperations();
+    
+    /**
+    * Operations for managing Traffic Manager profiles.
     * @return The ProfilesOperations value.
     */
     ProfileOperations getProfilesOperations();

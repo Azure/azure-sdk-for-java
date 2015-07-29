@@ -23,29 +23,32 @@
 
 package com.microsoft.azure.management.storage.models;
 
+/**
+* The account type of the storage account.
+*/
 public enum AccountType {
     /**
     * Locally-redundant storage.
     */
-    StandardLRS,
+    STANDARDLRS,
     
     /**
     * Zone-redundant storage.
     */
-    StandardZRS,
+    STANDARDZRS,
     
     /**
     * Geo-redundant storage.
     */
-    StandardGRS,
+    STANDARDGRS,
     
     /**
     * Read access geo-redundant storage.
     */
-    StandardRAGRS,
+    STANDARDRAGRS,
     
     /**
     * Premium locally-redundant storage.
     */
-    PremiumLRS,
+    PREMIUMLRS,
 }
