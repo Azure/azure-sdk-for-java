@@ -143,6 +143,9 @@ public final class TokenRestrictionTemplateSerializer {
         for (TokenClaim claim : tokenTemplate.getRequiredClaims()) {
             String claimValue = claim.getClaimValue();
             if (claimValue == null && claim.getClaimType().equals(TokenClaim.getContentKeyIdentifierClaimType())) {
+                if (keyIdForContentKeyIdentifierClaim == null) {
+                    throw new IllegalArgumentException(String.format("The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.", TokenClaim.getContentKeyIdentifierClaimType()));
+                }
                 claimValue = keyIdForContentKeyIdentifierClaim.toString();
             }
             claims.put(claim.getClaimType(), claimValue);    
@@ -167,9 +170,11 @@ public final class TokenRestrictionTemplateSerializer {
         for (TokenClaim claim : tokenTemplate.getRequiredClaims()) {
             String claimValue = claim.getClaimValue();
             if (claim.getClaimType().equals(TokenClaim.getContentKeyIdentifierClaimType())) {
+                if (keyIdForContentKeyIdentifierClaim == null) {
+                    throw new IllegalArgumentException(String.format("The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.", TokenClaim.getContentKeyIdentifierClaimType()));
+                }
                 claimValue = keyIdForContentKeyIdentifierClaim.toString();
             }
-
             builder.append(String.format("%s=%s&", urlEncode(claim.getClaimType()), urlEncode(claimValue)));
         }
 

@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -50,7 +51,7 @@ public class TokenRestrictionTemplateSerializerTests {
 
         assertArrayEquals(fromTemplate.getKeyValue(), fromTemplate2.getKeyValue());
     }
-
+    
     @Test
     public void KnownGoodInputForSwtOnlyScheme() throws JAXBException {
         String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><PrimaryVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>2OvxltHKwILn5PCRD8H+63sK98LBs1yF+ZdZbwzmToWYm29pLyqIMuCvMRGpLOv5DYh3NmpzWMAciu4ncW8VTg==</KeyValue></PrimaryVerificationKey><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
@@ -181,5 +182,30 @@ public class TokenRestrictionTemplateSerializerTests {
 
         // Assert
         assertEquals(expectedToken, resultsToken);
+    }
+    
+    @Test
+    public void NullContentKeyIdentifierClaimShouldThrown() throws Exception {
+        byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date knownExpireOn = sdf.parse("2016-01-01");
+        String knownAudience = "http://audience.com";
+        String knownIssuer = "http://issuer.com";
+        TokenRestrictionTemplate template = new TokenRestrictionTemplate(TokenType.SWT);
+        template.setPrimaryVerificationKey(new SymmetricVerificationKey(knownSymetricKey));
+        template.setAudience(new URI(knownAudience));
+        template.setIssuer(new URI(knownIssuer));
+        template.getRequiredClaims().add(TokenClaim.getContentKeyIdentifierClaim());
+
+        // Act
+        try {
+            TokenRestrictionTemplateSerializer.generateTestToken(template,
+                    template.getPrimaryVerificationKey(), null, knownExpireOn, null);
+            fail("Null ContentKeyIdentifier Claim Should thrown.");
+        } catch(IllegalArgumentException e) {
+            // Assert
+            assertTrue(e.getMessage().contains("keyIdForContentKeyIdentifierClaim"));
+        }
     }
 }
