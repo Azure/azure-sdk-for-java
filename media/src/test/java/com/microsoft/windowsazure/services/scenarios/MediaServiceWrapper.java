@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.scenarios;
 
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,8 +40,6 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import junit.framework.Assert;
 
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -91,7 +91,7 @@ class MediaServiceWrapper {
             throws ServiceException {
         if (encryption == AssetOption.StorageEncrypted
                 && !EncryptionHelper.canUseStrongCrypto()) {
-            Assert.fail("JVM does not support the required encryption");
+            fail("JVM does not support the required encryption");
         }
 
         // Create asset. The SDK's top-level method is the simplest way to do

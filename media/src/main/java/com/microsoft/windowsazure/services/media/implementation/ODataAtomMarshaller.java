@@ -34,10 +34,14 @@ import com.microsoft.windowsazure.services.media.implementation.atom.ContentType
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetDeliveryPolicyRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyOptionType;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyRestrictionType;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
@@ -137,9 +141,13 @@ public class ODataAtomMarshaller {
     private static Class<?>[] getMarshalledClasses() {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(AccessPolicyType.class);
+        classes.add(AssetDeliveryPolicyRestType.class);
         classes.add(AssetType.class);
         classes.add(AssetFileType.class);
         classes.add(ChannelType.class);
+        classes.add(ContentKeyAuthorizationPolicyType.class);
+        classes.add(ContentKeyAuthorizationPolicyOptionType.class);
+        classes.add(ContentKeyAuthorizationPolicyRestrictionType.class);
         classes.add(ContentKeyRestType.class);
         classes.add(EntryType.class);
         classes.add(FeedType.class);

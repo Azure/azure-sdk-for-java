@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -23,8 +25,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
-
-import junit.framework.Assert;
 
 import org.junit.Test;
 
@@ -76,8 +76,8 @@ public class ODataSerializationTest {
         InputStream input = new ByteArrayInputStream(
                 sampleFeedOneAsset.getBytes("UTF-8"));
         List<AssetInfo> entries = um.unmarshalFeed(input, AssetInfo.class);
-        Assert.assertEquals(1, entries.size());
-        Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6",
+        assertEquals(1, entries.size());
+        assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6",
                 entries.get(0).getId());
     }
 

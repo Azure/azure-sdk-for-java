@@ -50,6 +50,12 @@ public class AssetType implements MediaServiceDTO {
     @XmlElement(name = "Options", namespace = Constants.ODATA_DATA_NS)
     private Integer options;
 
+    @XmlElement(name = "Uri", namespace = Constants.ODATA_DATA_NS)
+    private String uri;    
+    
+    @XmlElement(name = "StorageAccountName", namespace = Constants.ODATA_DATA_NS)
+    private String storageAccountName;
+
     /**
      * @return the id
      */
@@ -160,5 +166,34 @@ public class AssetType implements MediaServiceDTO {
     public AssetType setOptions(Integer options) {
         this.options = options;
         return this;
+    }
+
+    /**
+     * @return The Name of the storage account that contains the assetâ€™s blob container.
+     */
+    public String getStorageAccountName() {
+        return storageAccountName;
+    }
+
+    /**
+     * @param storageAccountName 
+     *              Name of the storage account that contains the assetâ€™s blob container.
+     */
+    public void setStorageAccountName(String storageAccountName) {
+        this.storageAccountName = storageAccountName;
+    }
+
+    /**
+     * @return The URI of the blob storage container of the specified Asset
+     */
+    public String getUri() {
+        return uri;
+    }
+
+    /**
+     * @param The URI of the blob storage container of the specified Asset
+     */
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

@@ -29,7 +29,9 @@ public enum ContentKeyType {
     /** The Storage encryption. */
     StorageEncryption(1),
     /** The Configuration encryption. */
-    ConfigurationEncryption(2);
+    ConfigurationEncryption(2),
+    /** The Envelope encryption. */
+    EnvelopeEncryption(4);
 
     /** The content key type code. */
     private int contentKeyTypeCode;
@@ -68,6 +70,8 @@ public enum ContentKeyType {
             return ContentKeyType.StorageEncryption;
         case 2:
             return ContentKeyType.ConfigurationEncryption;
+        case 4: 
+            return ContentKeyType.EnvelopeEncryption;
         default:
             throw new InvalidParameterException("code");
         }

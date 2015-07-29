@@ -64,6 +64,11 @@ public class ContentKeyRestType implements MediaServiceDTO {
     /** The checksum. */
     @XmlElement(name = "Checksum", namespace = Constants.ODATA_DATA_NS)
     private String checksum;
+    
+    /** The authorization policy id . */
+    @XmlElement(name = "AuthorizationPolicyId", namespace = Constants.ODATA_DATA_NS)
+    private String authorizationPolicyId;
+
 
     /**
      * Gets the id.
@@ -252,5 +257,27 @@ public class ContentKeyRestType implements MediaServiceDTO {
      */
     public String getEncryptedContentKey() {
         return this.encryptedContentKey;
+    }
+    
+
+    /**
+     * Sets the authorization policy id.
+     * 
+     * @param authorizationPolicyId
+     *            the authorization policy id
+     * @return the content key rest type
+     */
+    public ContentKeyRestType setAuthorizationPolicyId(String authorizationPolicyId) {
+        this.authorizationPolicyId = authorizationPolicyId;
+        return this;
+    }
+
+    /**
+     * Gets the the authorization policy id.
+     * 
+     * @return the authorization policy id
+     */
+    public String getAuthorizationPolicyId() {
+        return authorizationPolicyId;
     }
 }
