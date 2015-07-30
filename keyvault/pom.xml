@@ -72,11 +72,6 @@
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>adal4j</artifactId>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

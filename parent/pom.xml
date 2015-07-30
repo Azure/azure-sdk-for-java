@@ -149,12 +149,6 @@
         <artifactId>wiremock</artifactId>
         <version>1.47</version>
       </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>adal4j</artifactId>
-        <version>1.0.0</version>
-        <scope>test</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
