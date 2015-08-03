@@ -101,6 +101,24 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public AssetOption getOptions() {
         return AssetOption.fromCode(getContent().getOptions());
     }
+    
+    /**
+     * Get the URI of the blob storage container of the specified Asset.
+     * 
+     * @return the URI of the blob storage container of the specified Asset.
+     */
+    public String getUri() {
+        return getContent().getUri();
+    }
+    
+    /**
+     * Get the Name of the storage account that contains the assetâ€™s blob container.
+     * 
+     * @return the Name of the storage account that contains the assetâ€™s blob container.
+     */
+    public String getStorageAccountName() {
+        return getContent().getStorageAccountName();
+    }
 
     /**
      * Get a link to the asset's files
@@ -136,5 +154,14 @@ public class AssetInfo extends ODataEntity<AssetType> {
      */
     public LinkInfo<AssetInfo> getParentAssetsLink() {
         return this.<AssetInfo> getRelationLink("ParentAssets");
+    }
+    
+    /**
+     * Get a link to this asset's delivery policies
+     * 
+     * @return the link
+     */
+    public LinkInfo<AssetDeliveryPolicyInfo> getDeliveryPoliciesLink() {
+        return this.<AssetDeliveryPolicyInfo> getRelationLink("DeliveryPolicies");
     }
 }

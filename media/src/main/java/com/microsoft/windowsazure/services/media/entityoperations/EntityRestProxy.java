@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -137,7 +138,7 @@ public abstract class EntityRestProxy implements EntityContract {
         Object processedResponse = creator.processResponse(rawResponse);
         return (T) processedResponse;
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -186,13 +187,20 @@ public abstract class EntityRestProxy implements EntityContract {
      * EntityUpdateOperation)
      */
     @Override
-    public void update(EntityUpdateOperation updater) throws ServiceException {
+    public String update(EntityUpdateOperation updater) throws ServiceException {
         updater.setProxyData(createProxyData());
-        Object rawResponse = getResource(updater).header("X-HTTP-METHOD",
+        ClientResponse clientResponse = getResource(updater).header("X-HTTP-METHOD",
                 "MERGE").post(ClientResponse.class,
                 updater.getRequestContents());
-        PipelineHelpers.throwIfNotSuccess((ClientResponse) rawResponse);
-        updater.processResponse(rawResponse);
+        PipelineHelpers.throwIfNotSuccess(clientResponse);
+        updater.processResponse(clientResponse);
+        if (clientResponse.getHeaders().containsKey("operation-id")) {
+            List<String> operationIds = clientResponse.getHeaders().get("operation-id");
+            if (operationIds.size() >= 0) {
+                return operationIds.get(0);
+            }
+        }
+        return null;
     }
 
     /*
@@ -202,11 +210,20 @@ public abstract class EntityRestProxy implements EntityContract {
      * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
      * #delete(com.microsoft.windowsazure.services.media.entityoperations.
      * EntityDeleteOperation)
+     * @return operation-id if any otherwise null.
      */
     @Override
-    public void delete(EntityDeleteOperation deleter) throws ServiceException {
+    public String delete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
-        getResource(deleter.getUri()).delete();
+        ClientResponse clientResponse =  getResource(deleter.getUri()).delete(ClientResponse.class);
+        PipelineHelpers.throwIfNotSuccess(clientResponse);
+        if (clientResponse.getHeaders().containsKey("operation-id")) {
+            List<String> operationIds = clientResponse.getHeaders().get("operation-id");
+            if (operationIds.size() >= 0) {
+                return operationIds.get(0);
+            }
+        }
+        return null;
     }
 
     /*
@@ -243,10 +260,20 @@ public abstract class EntityRestProxy implements EntityContract {
      * EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation entityActionOperation)
+    public String action(EntityActionOperation entityActionOperation)
             throws ServiceException {
-        entityActionOperation
-                .processResponse(getActionClientResponse(entityActionOperation));
+        ClientResponse clientResponse = getActionClientResponse(entityActionOperation);
+        entityActionOperation.processResponse(clientResponse);
+        
+        //PipelineHelpers.throwIfNotSuccess(clientResponse);
+        
+        if (clientResponse.getHeaders().containsKey("operation-id")) {
+            List<String> operationIds = clientResponse.getHeaders().get("operation-id");
+            if (operationIds.size() >= 0) {
+                return operationIds.get(0);
+            }
+        }
+        return null;
     }
 
     /**
