@@ -13,15 +13,16 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.azure.utility.VMHelper;
-import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
 
@@ -56,8 +57,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
     @Test
     public void testVMWithMultipleNic() throws Exception {
         log.info("creating VM...");
-        ResourceContext context = new ResourceContext(
-                m_location, rgName, m_subId, false);
+        ResourceContext context = createTestResourceContext(false);
 
         createOrUpdateResourceGroup(rgName);
 
@@ -67,8 +67,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
                 networkResourceProviderClient, context, vnet.getSubnets().get(0));
 
         // create a new nic with same vnet
-        ResourceContext context2 = new ResourceContext(
-                m_location, rgName, m_subId, false);
+        ResourceContext context2 = createTestResourceContext("2", false);
         final NetworkInterface nic2 = VMHelper.createNIC(
                 networkResourceProviderClient, context2, vnet.getSubnets().get(0));
 
@@ -87,7 +86,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
 
         NetworkInterfaceGetResponse getNic1Response = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(rgName, context.getNetworkInterface().getName());
-        // TODO bug in NetworkInterfaceGetResponse Mac Address is not loaded, disable for now.
+        // TODO get MAC address only work in certain regions
         // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
         Assert.assertNotNull(getNic1Response.getNetworkInterface().isPrimary());
         Assert.assertFalse(getNic1Response.getNetworkInterface().isPrimary());

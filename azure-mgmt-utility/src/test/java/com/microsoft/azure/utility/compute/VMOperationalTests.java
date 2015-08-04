@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ResourceContext;
@@ -63,11 +63,11 @@ public class VMOperationalTests extends ComputeTestBase {
     /// Delete VM
     /// Delete RG
     /// </summary>
+    @Ignore
     @Test
     public void testVMOperations() throws Exception {
         log.info("creating VM...");
-        ResourceContext context = new ResourceContext(
-                m_location, rgName, m_subId, false);
+        ResourceContext context = createTestResourceContext(false);
 
         VirtualMachine vm = createVM(context, generateName("VM"));
 

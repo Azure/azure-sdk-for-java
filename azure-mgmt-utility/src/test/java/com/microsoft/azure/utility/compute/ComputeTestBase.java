@@ -13,24 +13,26 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.utility.compute;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 
+import com.microsoft.azure.management.compute.ComputeManagementClient;
+import com.microsoft.azure.management.compute.ComputeManagementService;
 import com.microsoft.azure.management.compute.models.*;
+
 import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.azure.utility.VMHelper;
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.apache.commons.logging.Log;
@@ -125,6 +127,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     public static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv("arm.url");
+        log.info("Running mode is mocked: " + IS_MOCKED);
         if (IS_MOCKED) {
             return  ManagementConfiguration.configure(
                     null,
@@ -151,12 +154,12 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         createStorageManagementClient();
         createNetworkManagementClient();
 
-        // m_subId = computeManagementClient.getCredentials().getSubscriptionId();
-        m_subId = System.getenv("management.subscription.id");
-        rgName = resourceGroupNamePrefix + randomString(5);
-
-        addRegexRule(resourceGroupNamePrefix + "[a-z]{5}");
+        m_subId = computeManagementClient.getCredentials().getSubscriptionId();
+        // m_subId = System.getenv("management.subscription.id");
+        rgName = generateName("rgn");
+        // register management url regex to replace link from server payload
         addRegexRule("https://management.azure.com", MOCK_URI);
+
         log.info("Region: " + m_location + " ; Using rgname: " + rgName);
     }
 
@@ -194,8 +197,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
                 vmName, rgName, imRefId));
 
         if (context == null) {
-            context = new ResourceContext(
-                    m_location, rgName, m_subId, createWithPublicIpAddr);
+            context = createTestResourceContext(createWithPublicIpAddr);
         }
 
         if (imRefId != null && !imRefId.isEmpty()) {
@@ -356,8 +358,34 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static String generateName(String prefix) {
         String name = resourceGroupNamePrefix + prefix + randomString(5);
-        addRegexRule(resourceGroupNamePrefix + prefix + "[a-z]{5}");
+        addRegexRule(resourceGroupNamePrefix + prefix + "[a-z]{5}", name);
         return name;
+    }
+
+    protected static ResourceContext createTestResourceContext(boolean createWithPublicIpAddr) {
+        return createTestResourceContext("1", createWithPublicIpAddr);
+    }
+
+    protected static ResourceContext createTestResourceContext(String index, boolean createWithPublicIpAddr) {
+        ResourceContext context = new ResourceContext(m_location, rgName, m_subId, createWithPublicIpAddr);
+
+        // register generated name with regex rules for playback tests
+        context.setStorageAccountName(generateName(index + "ston"));
+        context.setContainerName(generateName(index + "conn"));
+        context.setIpConfigName(generateName(index + "ipcn"));
+        context.setNetworkInterfaceName(generateName(index + "nicn"));
+        context.setPublicIpName(generateName(index + "pipn"));
+        context.setSubnetName(generateName(index + "subnn"));
+        context.setVirtualNetworkName(generateName(index + "vnetn"));
+
+        // AvailablitySet id needs to register both lower/upper case
+        String asnPrefix = "asn";
+        String asName = generateName(index + asnPrefix);
+        context.setAvailabilitySetName(asName);
+        String asnRegex = (resourceGroupNamePrefix + index + asnPrefix).toUpperCase() + "[A-Z]{5}";
+        addRegexRule(asnRegex, asName.toUpperCase());
+
+        return context;
     }
 
     private static boolean validateVMInstanceStatus(ArrayList<InstanceViewStatus> statusList) {

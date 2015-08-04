@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;

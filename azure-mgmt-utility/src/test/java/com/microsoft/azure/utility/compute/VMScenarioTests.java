@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ResourceContext;
@@ -53,8 +53,7 @@ public class VMScenarioTests extends ComputeTestBase {
     @Test
     public void testVMScenarioOperations() throws Exception {
         log.info("creating VM...");
-        ResourceContext context = new ResourceContext(
-                m_location, rgName, m_subId, false);
+        ResourceContext context = createTestResourceContext(false);
 
         VirtualMachine vm = createVM(context, generateName("VM"));
         VirtualMachine vmInput = context.getVMInput();
@@ -100,8 +99,7 @@ public class VMScenarioTests extends ComputeTestBase {
     public void testVMScenarioOperationsWithPlan() throws Exception {
         log.info("before test...");
         log.info("creating VM...");
-        ResourceContext context = new ResourceContext(
-                m_location, rgName, m_subId, false);
+        ResourceContext context = createTestResourceContext(false);
 
         //set plan
         final ImageReference imgRef = new ImageReference();

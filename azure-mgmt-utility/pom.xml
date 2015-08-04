@@ -25,7 +25,7 @@
     <artifactId>azure-mgmt-utility</artifactId>
     <packaging>jar</packaging>
 
-    <name>Microsoft Azure SDK Core Samples</name>
+    <name>Microsoft Azure SDK Utility</name>
     <description>This module contains ARM utility/helper functionality in Microsoft Azure SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -58,15 +58,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>azure-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
             <version>${project.version}</version>
@@ -91,10 +82,19 @@
             <artifactId>adal4j</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- Test dependencies -->
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>azure-core-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
