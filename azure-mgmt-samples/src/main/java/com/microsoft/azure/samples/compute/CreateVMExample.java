@@ -58,14 +58,18 @@ public class CreateVMExample {
         ComputeManagementClient computeManagementClient = ComputeManagementService.create(config);
         NetworkResourceProviderClient networkResourceProviderClient = NetworkResourceProviderService.create(config);
 
-        //set operation timeout for compute client to 500 seconds
-        computeManagementClient.setLongRunningOperationRetryTimeout(500);
-
         String resourceGroupName = "javasampleresourcegroup";
         String region = "EastAsia";
 
         ResourceContext context = new ResourceContext(
                 region, resourceGroupName, System.getenv(ManagementConfiguration.SUBSCRIPTION_ID), false);
+
+        // If you like to set the name of any auto-created resource:
+        // context.setNetworkInterfaceName("VnetName1");
+        // context.setStorageAccountName("storage1");
+
+        // If you like to use any existing resource:
+        // context.setNetworkInterface(NetworkInterface1);
 
         System.out.println("Start create vm...");
 
