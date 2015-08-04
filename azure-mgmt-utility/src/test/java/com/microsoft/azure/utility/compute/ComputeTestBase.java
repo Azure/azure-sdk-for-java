@@ -79,7 +79,12 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createComputeManagementClient() throws Exception {
         computeManagementClient = ComputeManagementService.create(config);
-        computeManagementClient.setLongRunningOperationRetryTimeout(500);
+        if (IS_MOCKED) {
+            computeManagementClient.setLongRunningOperationInitialTimeout(0);
+            computeManagementClient.setLongRunningOperationRetryTimeout(0);
+        } else {
+            computeManagementClient.setLongRunningOperationRetryTimeout(15);
+        }
 
         addClient((ServiceClient<?>) computeManagementClient, new Callable<Void>() {
             @Override
@@ -92,6 +97,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createStorageManagementClient() throws Exception {
         storageManagementClient = StorageManagementService.create(config);
+        if (IS_MOCKED) {
+            storageManagementClient.setLongRunningOperationInitialTimeout(0);
+            storageManagementClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -103,6 +112,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createNetworkManagementClient() throws Exception {
         networkResourceProviderClient = NetworkResourceProviderService.create(config);
+        if (IS_MOCKED) {
+            networkResourceProviderClient.setLongRunningOperationInitialTimeout(0);
+            networkResourceProviderClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) networkResourceProviderClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -116,6 +129,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         resourceManagementClient = ResourceManagementService.create(config);
+        if (IS_MOCKED) {
+            resourceManagementClient.setLongRunningOperationInitialTimeout(0);
+            resourceManagementClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) resourceManagementClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
