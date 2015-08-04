@@ -16,6 +16,7 @@
 
 package com.microsoft.azure.utility;
 
+import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.network.models.*;
 import com.microsoft.azure.management.storage.models.StorageAccount;
@@ -34,9 +35,8 @@ public class ResourceContext {
     private NetworkInterface NetworkInterface;
     private VirtualMachine VMInput;
     private String AvailabilitySetId;
-
-    private String SourceImageReferenceUri;
     private String VirtualMachineSizeType;
+    private ImageReference ImageReference;
     private HashMap<String, String> Tags;
 
     private boolean CreatePublicIpAddress;
@@ -127,20 +127,20 @@ public class ResourceContext {
         Tags = tags;
     }
 
-    public String getSourceImageReferenceUri() {
-        return SourceImageReferenceUri;
-    }
-
-    public void setSourceImageReferenceUri(String sourceImageReferenceUri) {
-        SourceImageReferenceUri = sourceImageReferenceUri;
-    }
-
     public String getVirtualMachineSizeType() {
         return VirtualMachineSizeType;
     }
 
     public void setVirtualMachineSizeType(String virtualMachineSizeType) {
         VirtualMachineSizeType = virtualMachineSizeType;
+    }
+
+    public ImageReference getImageReference() {
+        return ImageReference;
+    }
+
+    public void setImageReference(ImageReference imageReference) {
+        ImageReference = imageReference;
     }
 
     public VirtualMachine getVMInput() {

@@ -26,8 +26,8 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
@@ -79,7 +79,7 @@ public class CreateVMExample {
 //        3) Contains a numeric digit
 //        4) Contains a special character.
         try {
-            VirtualMachine vm = VMHelper.createVM(
+            VirtualMachine vm = ComputeHelper.createVM(
                     resourceManagementClient, computeManagementClient, networkResourceProviderClient, storageManagementClient,
                     context, "javaSampleVM", "Foo12", "BaR@123rgababaab")
                     .getVirtualMachine();

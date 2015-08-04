@@ -31,8 +31,8 @@ import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.apache.commons.logging.Log;
@@ -83,7 +83,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             computeManagementClient.setLongRunningOperationInitialTimeout(0);
             computeManagementClient.setLongRunningOperationRetryTimeout(0);
         } else {
-            computeManagementClient.setLongRunningOperationRetryTimeout(15);
+            computeManagementClient.setLongRunningOperationRetryTimeout(10);
         }
 
         addClient((ServiceClient<?>) computeManagementClient, new Callable<Void>() {
@@ -196,34 +196,30 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static VirtualMachine createVM(ResourceContext context, String vmName)
             throws Exception {
-        return createVM(context, vmName, "", false, null);
+        return createVM(context, vmName, false, null);
     }
 
     protected static VirtualMachine createVM(
             ResourceContext context, String vmName, Consumer<VirtualMachine> vmInputModifier)
             throws Exception {
-        return createVM(context, vmName, "", false, vmInputModifier);
+        return createVM(context, vmName, false, vmInputModifier);
     }
 
     protected static VirtualMachine createVM(
             ResourceContext context,
-            String vmName, String imRefId, boolean createWithPublicIpAddr, Consumer<VirtualMachine> vmInputModifier)
+            String vmName, boolean createWithPublicIpAddr, Consumer<VirtualMachine> vmInputModifier)
             throws Exception {
 
-        log.info(String.format("Create vm: %s, rg: %s, imRef: %s.",
-                vmName, rgName, imRefId));
+        log.info(String.format("Create vm: %s, rg: %s", vmName, rgName));
 
         if (context == null) {
             context = createTestResourceContext(createWithPublicIpAddr);
         }
 
-        if (imRefId != null && !imRefId.isEmpty()) {
-            context.setSourceImageReferenceUri(imRefId);
-        }
 
         VirtualMachineCreateOrUpdateResponse vmResponse;
         try {
-            vmResponse = VMHelper.createVM(
+            vmResponse = ComputeHelper.createVM(
                     resourceManagementClient, computeManagementClient, networkResourceProviderClient, storageManagementClient,
                     context, vmName, "Foo12", "BaR@123rgababaab", vmInputModifier);
 

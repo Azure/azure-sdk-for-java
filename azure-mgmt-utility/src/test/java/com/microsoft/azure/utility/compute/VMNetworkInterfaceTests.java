@@ -21,8 +21,8 @@ import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.utility.NetworkHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
 
@@ -61,14 +61,14 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
 
         createOrUpdateResourceGroup(rgName);
 
-        VirtualNetwork vnet = VMHelper.createVirtualNetwork(networkResourceProviderClient, context);
+        VirtualNetwork vnet = NetworkHelper.createVirtualNetwork(networkResourceProviderClient, context);
 
-        NetworkInterface nic1 = VMHelper.createNIC(
+        NetworkInterface nic1 = NetworkHelper.createNIC(
                 networkResourceProviderClient, context, vnet.getSubnets().get(0));
 
         // create a new nic with same vnet
         ResourceContext context2 = createTestResourceContext("2", false);
-        final NetworkInterface nic2 = VMHelper.createNIC(
+        final NetworkInterface nic2 = NetworkHelper.createNIC(
                 networkResourceProviderClient, context2, vnet.getSubnets().get(0));
 
         VirtualMachine vm = createVM(context, generateName("VM"), new Consumer<VirtualMachine>() {
