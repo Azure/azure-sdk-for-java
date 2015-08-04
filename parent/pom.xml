@@ -348,5 +348,6 @@
     <module>../serviceRuntime</module>
     <module>../tracing-util</module>
     <module>../azure-mgmt-samples</module>
+    <module>../azure-mgmt-utility</module>
   </modules>
 </project>
