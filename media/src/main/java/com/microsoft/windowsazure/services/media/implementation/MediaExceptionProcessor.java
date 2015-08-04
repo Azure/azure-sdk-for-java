@@ -193,9 +193,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * EntityUpdateOperation)
      */
     @Override
-    public void update(EntityUpdateOperation updater) throws ServiceException {
+    public String update(EntityUpdateOperation updater) throws ServiceException {
         try {
-            service.update(updater);
+            return service.update(updater);
         } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
         } catch (ClientHandlerException e) {
@@ -211,11 +211,13 @@ public class MediaExceptionProcessor implements MediaContract {
      * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
      * #delete(com.microsoft.windowsazure.services.media.entityoperations.
      * EntityDeleteOperation)
+     * 
+     * @return operation-id if any otherwise null.
      */
     @Override
-    public void delete(EntityDeleteOperation deleter) throws ServiceException {
+    public String delete(EntityDeleteOperation deleter) throws ServiceException {
         try {
-            service.delete(deleter);
+            return service.delete(deleter);
         } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
         } catch (ClientHandlerException e) {
@@ -232,10 +234,10 @@ public class MediaExceptionProcessor implements MediaContract {
      * EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation entityActionOperation)
+    public String action(EntityActionOperation entityActionOperation)
             throws ServiceException {
         try {
-            service.action(entityActionOperation);
+            return service.action(entityActionOperation);
         } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
         } catch (ClientHandlerException e) {

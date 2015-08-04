@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -35,6 +36,13 @@ import org.junit.Test;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicy;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyOption;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyOptionInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyRestriction;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyRestriction.ContentKeyRestrictionType;
+import com.microsoft.windowsazure.services.media.models.ContentKeyDeliveryType;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
@@ -370,5 +378,70 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
         service.action(ContentKey.rebind(contentKeyInfo.getId(),
                 "InvalidX509Certificate"));
+    }
+    
+    @Test
+    public void canSetContentKeyAuthorizationPolicySuccess() throws Exception {
+        // Arrange
+        String testCanCreateContentKeyId = createRandomContentKeyId();
+        String testCanCreateContentKeyName = testContentKeyPrefix
+                + "testSetContentKeyAuthorizationPolicy";
+        
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));        
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption,
+                        testEncryptedContentKey)
+                .setName(testCanCreateContentKeyName)
+                .setProtectionKeyId(protectionKeyId));
+        List<ContentKeyAuthorizationPolicyRestriction> restrictions = new ArrayList<ContentKeyAuthorizationPolicyRestriction>();
+        restrictions.add(new ContentKeyAuthorizationPolicyRestriction(testCanCreateContentKeyName, ContentKeyRestrictionType.Open.getValue(), null));
+        ContentKeyAuthorizationPolicyOptionInfo contentKeyAuthPoliceOptionInfo = service.create(
+                    ContentKeyAuthorizationPolicyOption.create(testCanCreateContentKeyName, 
+                            ContentKeyDeliveryType.BaselineHttp.getCode(), null, restrictions));
+        ContentKeyAuthorizationPolicyInfo contentKeyAuthorizationPolicyInfo = service.create(
+                ContentKeyAuthorizationPolicy.create(testCanCreateContentKeyName));
+        service.action(ContentKeyAuthorizationPolicy.linkOptions(contentKeyAuthorizationPolicyInfo.getId(), contentKeyAuthPoliceOptionInfo.getId()));
+        
+        // Act
+        service.update(ContentKey.update(contentKeyInfo.getId(), contentKeyAuthorizationPolicyInfo.getId()));  
+  
+        // Assert
+        ContentKeyInfo contentKeyInfo2 = service.get(ContentKey.get(contentKeyInfo.getId()));
+        assertNotNull(contentKeyInfo2);
+        assertEquals(contentKeyInfo2.getName(), contentKeyInfo.getName());
+        assertEquals(contentKeyInfo2.getAuthorizationPolicyId(), contentKeyAuthorizationPolicyInfo.getId());
+    }
+    
+    @Test
+    public void canGetDeliveryUrlSuccess() throws Exception {
+        // Arrange
+        String testCanCreateContentKeyId = createRandomContentKeyId();
+        String testCanCreateContentKeyName = testContentKeyPrefix
+                + "testGetDeliveryUrl";
+        
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));        
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption,
+                        testEncryptedContentKey)
+                .setName(testCanCreateContentKeyName)
+                .setProtectionKeyId(protectionKeyId));
+        List<ContentKeyAuthorizationPolicyRestriction> restrictions = new ArrayList<ContentKeyAuthorizationPolicyRestriction>();
+        restrictions.add(new ContentKeyAuthorizationPolicyRestriction(testCanCreateContentKeyName, ContentKeyRestrictionType.Open.getValue(), null));
+        ContentKeyAuthorizationPolicyOptionInfo contentKeyAuthPoliceOptionInfo = service.create(
+                    ContentKeyAuthorizationPolicyOption.create(testCanCreateContentKeyName, 
+                            ContentKeyDeliveryType.BaselineHttp.getCode(), null, restrictions));
+        ContentKeyAuthorizationPolicyInfo contentKeyAuthorizationPolicyInfo = service.create(
+                ContentKeyAuthorizationPolicy.create(testCanCreateContentKeyName));
+        service.action(ContentKeyAuthorizationPolicy.linkOptions(contentKeyAuthorizationPolicyInfo.getId(), contentKeyAuthPoliceOptionInfo.getId()));
+        
+        // Act
+        String acquisitionUrlString = service
+                .create(ContentKey.getKeyDeliveryUrl(contentKeyInfo.getId(), ContentKeyDeliveryType.BaselineHttp));
+  
+        // Assert
+        URI acquisitionUrl = URI.create(acquisitionUrlString);
+        assertNotNull(acquisitionUrl);
     }
 }

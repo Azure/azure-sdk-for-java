@@ -73,27 +73,29 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    void update(EntityUpdateOperation updater) throws ServiceException;
+    String update(EntityUpdateOperation updater) throws ServiceException;
 
     /**
      * Delete an entity.
      * 
      * @param deleter
      *            Object providing details of the delete
+     * @return 
      * @throws ServiceException
      *             the service exception
      */
-    void delete(EntityDeleteOperation deleter) throws ServiceException;
+    String delete(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
      * Perform an action on an entity.
      * 
      * @param action
      *            Object providing details of the action
+     * @return 
      * @throws ServiceException
      *             the service exception
      */
-    void action(EntityActionOperation action) throws ServiceException;
+    String action(EntityActionOperation action) throws ServiceException;
 
     /**
      * Action.

@@ -34,18 +34,23 @@ import com.microsoft.windowsazure.services.media.implementation.atom.ContentType
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetDeliveryPolicyRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyOptionType;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+import com.microsoft.windowsazure.services.media.implementation.content.EncodingReservedUnitRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 import com.microsoft.windowsazure.services.media.implementation.content.OperationType;
-import com.microsoft.windowsazure.services.media.implementation.content.OriginType;
 import com.microsoft.windowsazure.services.media.implementation.content.ProgramType;
+import com.microsoft.windowsazure.services.media.implementation.content.StorageAccountType;
+import com.microsoft.windowsazure.services.media.implementation.content.StreamingEndpointType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -137,10 +142,14 @@ public class ODataAtomMarshaller {
     private static Class<?>[] getMarshalledClasses() {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(AccessPolicyType.class);
+        classes.add(AssetDeliveryPolicyRestType.class);
         classes.add(AssetType.class);
         classes.add(AssetFileType.class);
         classes.add(ChannelType.class);
+        classes.add(ContentKeyAuthorizationPolicyType.class);
+        classes.add(ContentKeyAuthorizationPolicyOptionType.class);
         classes.add(ContentKeyRestType.class);
+        classes.add(EncodingReservedUnitRestType.class);
         classes.add(EntryType.class);
         classes.add(FeedType.class);
         classes.add(JobNotificationSubscriptionType.class);
@@ -148,8 +157,9 @@ public class ODataAtomMarshaller {
         classes.add(LocatorRestType.class);
         classes.add(NotificationEndPointType.class);
         classes.add(OperationType.class);
-        classes.add(OriginType.class);
         classes.add(ProgramType.class);
+        classes.add(StorageAccountType.class);
+        classes.add(StreamingEndpointType.class);
         classes.add(TaskType.class);
         return classes.toArray(new Class<?>[0]);
     }

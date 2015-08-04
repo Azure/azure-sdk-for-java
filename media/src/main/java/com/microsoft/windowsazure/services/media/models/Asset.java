@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityLinkOper
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUnlinkOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.sun.jersey.api.client.GenericType;
@@ -70,7 +71,10 @@ public final class Asset {
         private String name;
 
         /** The alternate id. */
-        private String alternateId;
+        private String alternateId;        
+        
+        /** The Name of the storage account that contains the asset blob container.. */
+        private String storageAccountName;
 
         /** The options. */
         private AssetOption options;
@@ -96,6 +100,7 @@ public final class Asset {
             AssetType assetType = new AssetType();
             assetType.setName(name);
             assetType.setAlternateId(alternateId);
+            assetType.setStorageAccountName(storageAccountName);
             if (options != null) {
                 assetType.setOptions(options.getCode());
             }
@@ -151,6 +156,15 @@ public final class Asset {
          */
         public Creator setState(AssetState state) {
             this.state = state;
+            return this;
+        }
+        
+        /**
+         * Sets Name of the storage account that contains the asset's blob container.
+         * @param storageAccountName Name of the storage account that contains the asset's blob container.
+         */
+        public Creator setStorageAccountName(String storageAccountName) {
+            this.storageAccountName = storageAccountName;
             return this;
         }
     }
@@ -319,7 +333,59 @@ public final class Asset {
         }
         URI contentKeyUri = URI.create(String.format("ContentKeys('%s')",
                 escapedContentKeyId));
-        return new EntityLinkOperation("Assets", assetId, "ContentKeys",
+        return new EntityLinkOperation(ENTITY_SET, assetId, "ContentKeys",
                 contentKeyUri);
     }
+    
+    /**
+     * unlink a content key.
+     * 
+     * @param assetId
+     *            the asset id
+     * @param contentKeyId
+     *            the content key id
+     * @return the entity action operation
+     */
+    public static EntityUnlinkOperation unlinkContentKey(String assetId,
+            String contentKeyId) {
+        return new EntityUnlinkOperation(ENTITY_SET, assetId, "ContentKeys", contentKeyId);
+    }
+    
+    /**
+     * Link delivery policy
+     * 
+     * @param assetId
+     *            the asset id
+     * @param deliveryPolicyId
+     *            the content key id
+     * @return the entity action operation
+     */
+    public static EntityLinkOperation linkDeliveryPolicy(String assetId,
+            String deliveryPolicyId) {
+        String escapedContentKeyId = null;
+        try {
+            escapedContentKeyId = URLEncoder.encode(deliveryPolicyId, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new InvalidParameterException("deliveryPolicyId");
+        }
+        URI contentKeyUri = URI.create(String.format("AssetDeliveryPolicies('%s')",
+                escapedContentKeyId));
+        return new EntityLinkOperation(ENTITY_SET, assetId, "DeliveryPolicies",
+                contentKeyUri);
+    }
+    
+    /**
+     * unlink an asset delivery policy
+     * 
+     * @param assetId
+     *            the asset id
+     * @param adpId
+     *            the asset delivery policy id
+     * @return the entity action operation
+     */
+    public static EntityUnlinkOperation unlinkDeliveryPolicy(String assetId,
+            String adpId) {
+        return new EntityUnlinkOperation(ENTITY_SET, assetId, "DeliveryPolicies", adpId);
+    }
+    
 }
