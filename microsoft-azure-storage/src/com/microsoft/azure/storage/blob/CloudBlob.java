@@ -40,6 +40,7 @@ import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SharedAccessPolicy;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
@@ -67,7 +68,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Holds the metadata for the blob.
      */
-    HashMap<String, String> metadata;
+    HashMap<String, String> metadata = new HashMap<String, String>();
 
     /**
      * Holds the properties of the blob.
@@ -121,7 +122,6 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A {@link BlobType} value which represents the type of the blob.
      */
     protected CloudBlob(final BlobType type) {
-        this.metadata = new HashMap<String, String>();
         this.properties = new BlobProperties(type);
     }
 
@@ -141,17 +141,12 @@ public abstract class CloudBlob implements ListBlobItem {
     protected CloudBlob(final BlobType type, final StorageUri uri, final CloudBlobClient client)
             throws StorageException {
         this(type);
+        this.parseQueryAndVerify(uri, client == null ? null : client.getCredentials());
 
-        Utility.assertNotNull("blobAbsoluteUri", uri);
-
-        this.blobServiceClient = client;
-        this.storageUri = uri;
-
-        this.parseURIQueryStringAndVerify(
-                this.storageUri,
-                client,
-                client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client
-                        .isUsePathStyleUris());
+        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
+        if (client != null) {
+            this.blobServiceClient = client;
+        }
     }
 
     /**
@@ -175,7 +170,7 @@ public abstract class CloudBlob implements ListBlobItem {
         this(type, uri, client);
         this.container = container;
     }
-
+    
     /**
      * Creates an instance of the <code>CloudBlob</code> class using the specified URI, snapshot ID, and cloud blob
      * client.
@@ -187,7 +182,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot version, if applicable.
      * @param client
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
+     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
      *
      * @throws StorageException
      *             If a storage service error occurred.
@@ -195,6 +190,54 @@ public abstract class CloudBlob implements ListBlobItem {
     protected CloudBlob(final BlobType type, final StorageUri uri, final String snapshotID, final CloudBlobClient client)
             throws StorageException {
         this(type, uri, client);
+        if (snapshotID != null) {
+            if (this.snapshotID != null) {
+                throw new IllegalArgumentException(SR.SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED);
+            }
+            else {
+                this.snapshotID = snapshotID;
+            }
+        }
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudBlob</code> class using the specified URI and cloud blob client.
+     *
+     * @param type
+     *            A {@link BlobType} value which represents the type of the blob.
+     * @param uri
+     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    protected CloudBlob(final BlobType type, final StorageUri uri, final StorageCredentials credentials)
+            throws StorageException {
+        this(type, uri, null /* snapshotID */, credentials);
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudBlob</code> class using the specified URI, snapshot ID, and cloud blob
+     * client.
+     *
+     * @param type
+     *            A {@link BlobType} value which represents the type of the blob.
+     * @param uri
+     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot version, if applicable.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    protected CloudBlob(final BlobType type, final StorageUri uri, final String snapshotID,
+            final StorageCredentials credentials) throws StorageException {
+        this(type);
+        this.parseQueryAndVerify(uri, credentials);
+
         if (snapshotID != null) {
             if (this.snapshotID != null) {
                 throw new IllegalArgumentException(SR.SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED);
@@ -212,7 +255,6 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A <code>CloudBlob</code> object that represents the blob to copy.
      */
     protected CloudBlob(final CloudBlob otherBlob) {
-        this.metadata = new HashMap<String, String>();
         this.properties = new BlobProperties(otherBlob.properties);
 
         if (otherBlob.metadata != null) {
@@ -274,7 +316,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.abortCopyImpl(copyId, accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -297,7 +339,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, context);
             }
 
             @Override
@@ -313,6 +355,19 @@ public abstract class CloudBlob implements ListBlobItem {
         };
 
         return putRequest;
+    }
+
+    /**
+     * Acquires a new infinite lease on the blob.
+     *
+     * @return A <code>String</code> that represents the lease ID.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final String acquireLease() throws StorageException {
+        return this.acquireLease(null /* leaseTimeInSeconds */, null /* proposedLeaseId */);
     }
 
     /**
@@ -379,7 +434,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.acquireLeaseImpl(leaseTimeInSeconds, proposedLeaseId, accessCondition, options),
@@ -402,7 +457,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -434,12 +489,16 @@ public abstract class CloudBlob implements ListBlobItem {
             throw new StorageException(StorageErrorCodeStrings.INCORRECT_BLOB_TYPE, String.format(SR.INVALID_BLOB_TYPE,
                     BlobType.BLOCK_BLOB, this.properties.getBlobType()), Constants.HeaderConstants.HTTP_UNUSED_306,
                     null, null);
-        }
-        if (this instanceof CloudPageBlob && this.properties.getBlobType() != BlobType.PAGE_BLOB) {
+        } 
+        else if (this instanceof CloudPageBlob && this.properties.getBlobType() != BlobType.PAGE_BLOB) {
             throw new StorageException(StorageErrorCodeStrings.INCORRECT_BLOB_TYPE, String.format(SR.INVALID_BLOB_TYPE,
                     BlobType.PAGE_BLOB, this.properties.getBlobType()), Constants.HeaderConstants.HTTP_UNUSED_306,
                     null, null);
-
+        } 
+        else if (this instanceof CloudAppendBlob && this.properties.getBlobType() != BlobType.APPEND_BLOB) {
+            throw new StorageException(StorageErrorCodeStrings.INCORRECT_BLOB_TYPE, String.format(SR.INVALID_BLOB_TYPE,
+                    BlobType.APPEND_BLOB, this.properties.getBlobType()), Constants.HeaderConstants.HTTP_UNUSED_306,
+                    null, null);
         }
     }
 
@@ -508,7 +567,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.breakLeaseImpl(breakPeriodInSeconds, accessCondition, options), options.getRetryPolicyFactory(),
@@ -531,7 +590,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -611,7 +670,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.changeLeaseImpl(proposedLeaseId, accessCondition, options), options.getRetryPolicyFactory(),
@@ -633,7 +692,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -664,7 +723,10 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
+     * 
+     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(URI)} instead.
      */
+    @Deprecated
     @DoesServiceRequest
     public final String startCopyFromBlob(final CloudBlob sourceBlob) throws StorageException, URISyntaxException {
         return this.startCopyFromBlob(sourceBlob, null /* sourceAccessCondition */,
@@ -695,63 +757,124 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
-     *
+     * 
+     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(
+     *             URI, AccessCondition, AccessCondition, BlobRequestOptions, OperationContext)} instead.
      */
+    @Deprecated
     @DoesServiceRequest
     public final String startCopyFromBlob(final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopyFromBlob(
+        return this.startCopy(
                 sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getQualifiedUri()),
                 sourceAccessCondition, destinationAccessCondition, options, opContext);
-
     }
 
     /**
-     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob.
+     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob.
      *
      * @param source
-     *            A <code>java.net.URI</code> The URI of a source blob.
+     *            A <code>java.net.URI</code> The source URI.  URIs for resources outside of Azure
+     *            may only be copied into block blobs.
      *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
+     *            If a storage service error occurred.
+     * 
+     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(URI)} instead.
      */
+    @Deprecated
     @DoesServiceRequest
     public final String startCopyFromBlob(final URI source) throws StorageException {
-        return this.startCopyFromBlob(source, null /* sourceAccessCondition */,
-                null /* destinationAccessCondition */, null /* options */, null /* opContext */);
+        return this.startCopy(source, null /* sourceAccessCondition */, null /* destinationAccessCondition */,
+                null /* options */, null /* opContext */);
     }
 
     /**
-     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
+     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob, using the
      * specified access conditions, lease ID, request options, and operation context.
      *
      * @param source
-     *            A <code>java.net.URI</code> The URI of a source blob.
+     *            A <code>java.net.URI</code> The source URI.  URIs for resources outside of Azure
+     *            may only be copied into block blobs.
      * @param sourceAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the source blob.
+     *            An {@link AccessCondition} object that represents the access conditions for the source.
      * @param destinationAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
+     *            An {@link AccessCondition} object that represents the access conditions for the destination.
      * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
+     *            Specifying <code>null</code> will use the default request options from the associated
+     *            service client ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation.
+     *            This object is used to track requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      *
      * @return A <code>String</code> which represents the copy ID associated with the copy operation.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
+     *            If a storage service error occurred.
+     * 
+     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(
+     *            URI, AccessCondition, AccessCondition, BlobRequestOptions, OperationContext)} instead.
+     */
+    @Deprecated
+    @DoesServiceRequest
+    public final String startCopyFromBlob(final URI source, final AccessCondition sourceAccessCondition,
+            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
+    }
+
+    /**
+     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob.
+     *
+     * @param source
+     *            A <code>java.net.URI</code> The source URI. URIs for resources outside of Azure
+     *            may only be copied into block blobs.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *            If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final String startCopy(final URI source) throws StorageException {
+        return this.startCopy(source, null /* sourceAccessCondition */, null /* destinationAccessCondition */,
+                null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob, using the
+     * specified access conditions, lease ID, request options, and operation context.
+     *
+     * @param source
+     *            A <code>java.net.URI</code> The source URI.  URIs for resources outside of Azure
+     *            may only be copied into block blobs.
+     * @param sourceAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the source.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
+     *            Specifying <code>null</code> will use the default request options from the associated
+     *            service client ({@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation.
+     *            This object is used to track requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *            If a storage service error occurred.
      *
      */
     @DoesServiceRequest
-    public final String startCopyFromBlob(final URI source, final AccessCondition sourceAccessCondition,
+    public final String startCopy(final URI source, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -759,19 +882,19 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.startCopyFromBlobImpl(source, sourceAccessCondition, destinationAccessCondition, options),
+                this.startCopyImpl(source, sourceAccessCondition, destinationAccessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, String> startCopyFromBlobImpl(final URI source,
-            final AccessCondition sourceAccessCondition, final AccessCondition destinationAccessCondition,
-            final BlobRequestOptions options) {
+    private StorageRequest<CloudBlobClient, CloudBlob, String> startCopyImpl(
+            final URI source, final AccessCondition sourceAccessCondition,
+            final AccessCondition destinationAccessCondition, final BlobRequestOptions options) {
 
-        final StorageRequest<CloudBlobClient, CloudBlob, String> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, String>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudBlobClient, CloudBlob, String> putRequest =
+                new StorageRequest<CloudBlobClient, CloudBlob, String>(options, this.getStorageUri()) {
 
             @Override
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
@@ -790,7 +913,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0, context);
             }
 
             @Override
@@ -882,7 +1005,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this,
@@ -913,9 +1036,10 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
+            @SuppressWarnings("deprecation")
             @Override
             public CloudBlob preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
                     throws Exception {
@@ -930,6 +1054,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
                 else if (blob instanceof CloudPageBlob) {
                     snapshot = new CloudPageBlob(blob.getStorageUri(), snapshotTime, client);
+                }
+                else if (blob instanceof CloudAppendBlob) {
+                    snapshot = new CloudAppendBlob(blob.getStorageUri(), snapshotTime, client);
                 }
                 snapshot.setProperties(blob.properties);
 
@@ -991,7 +1118,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.deleteImpl(deleteSnapshotsOption, accessCondition, options), options.getRetryPolicyFactory(),
@@ -1049,7 +1176,7 @@ public abstract class CloudBlob implements ListBlobItem {
     public final boolean deleteIfExists(final DeleteSnapshotsOption deleteSnapshotsOption,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         boolean exists = this.exists(true, accessCondition, options, opContext);
         if (exists) {
@@ -1089,7 +1216,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1146,7 +1273,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this, this.downloadToStreamImpl(
                 null /* blobOffset */, null /* length */, outStream, accessCondition, options, opContext), options
@@ -1206,7 +1333,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         if (options.getUseTransactionalContentMD5() && (length != null && length > 4 * Constants.MB)) {
             throw new IllegalArgumentException(SR.INVALID_RANGE_CONTENT_MD5_HEADER);
@@ -1260,7 +1387,7 @@ public abstract class CloudBlob implements ListBlobItem {
             opContext = new OperationContext();
         }
 
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.downloadAttributesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -1287,7 +1414,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1357,7 +1484,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1456,7 +1583,7 @@ public abstract class CloudBlob implements ListBlobItem {
             opContext = new OperationContext();
         }
 
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         if (options.getUseTransactionalContentMD5() && (length != null && length > 4 * Constants.MB)) {
             throw new IllegalArgumentException(SR.INVALID_RANGE_CONTENT_MD5_HEADER);
@@ -1559,7 +1686,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *
      * @param buffer
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
-     * @param bufferOffet
+     * @param bufferOffset
      *            A <code>long</code> which represents the byte offset to use as the starting point for the target.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
@@ -1594,7 +1721,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.downloadToByteArrayImpl(null, null, buffer, bufferOffset, accessCondition, options, opContext),
@@ -1636,7 +1763,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1745,7 +1872,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Uploads a blob from data in a byte array.
+     * Uploads a blob from data in a byte array. If the blob already exists on the service, it will be overwritten.
      *
      * @param buffer
      *            A <code>byte</code> array which represents the data to write to the blob.
@@ -1764,7 +1891,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Uploads a blob from data in a byte array.
+     * Uploads a blob from data in a byte array. If the blob already exists on the service, it will be overwritten.
      *
      * @param buffer
      *            A <code>byte</code> array which represents the data to write to the blob.
@@ -1796,7 +1923,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Uploads a blob from a file.
+     * Uploads a blob from a file. If the blob already exists on the service, it will be overwritten.
      *
      * @param path
      *            A <code>String</code> which represents the path to the file to be uploaded.
@@ -1810,7 +1937,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Uploads a blob from a file.
+     * Uploads a blob from a file. If the blob already exists on the service, it will be overwritten.
      *
      * @param path
      *            A <code>String</code> which represents the path to the file to be uploaded.
@@ -1955,7 +2082,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.existsImpl(primaryOnly, accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -1982,7 +2109,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -2061,7 +2188,7 @@ public abstract class CloudBlob implements ListBlobItem {
     public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy,
             final SharedAccessBlobHeaders headers, final String groupPolicyIdentifier) throws InvalidKeyException,
             StorageException {
-
+        
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.blobServiceClient.getCredentials())) {
             throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY);
         }
@@ -2072,10 +2199,10 @@ public abstract class CloudBlob implements ListBlobItem {
 
         final String resourceName = this.getCanonicalName(true);
 
-        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlob(policy, headers,
-                groupPolicyIdentifier, resourceName, this.blobServiceClient, null);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(policy, headers,
+                groupPolicyIdentifier, resourceName, this.blobServiceClient);
 
-        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlob(policy,
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(policy,
                 headers, groupPolicyIdentifier, "b", signature);
 
         return builder.toString();
@@ -2083,32 +2210,34 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Returns the canonical name of the blob in the format of
-     * <i>/&lt;account-name&gt;/&lt;container-name&gt;/&lt;blob-name&gt;</i>.
+     * <i>/&lt;service-name&gt;/&lt;account-name&gt;/&lt;container-name&gt;/&lt;blob-name&gt;</i>.
      * <p>
-     * This format is used by both Shared Access and Copy blob operations.
+     * This format is used for Shared Access operations.
      *
      * @param ignoreSnapshotTime
      *            <code>true</code> if the snapshot time is ignored; otherwise, <code>false</code>.
      *
-     * @return The canonical name in the format of <i>/&lt;account-name&gt;/&lt;container
-     *         -name&gt;/&lt;blob-name&gt;</i>.
+     * @return The canonical name in the format of <i>/&lt;service-name&gt;/&lt;account-name&gt;
+     *         /&lt;container-name&gt;/&lt;blob-name&gt;</i>.
      */
     String getCanonicalName(final boolean ignoreSnapshotTime) {
-        String canonicalName;
+        StringBuilder canonicalName = new StringBuilder("/");
+        canonicalName.append(SR.BLOB);
+        
         if (this.blobServiceClient.isUsePathStyleUris()) {
-            canonicalName = this.getUri().getRawPath();
+            canonicalName.append(this.getUri().getRawPath());
         }
         else {
-            canonicalName = PathUtility.getCanonicalPathFromCredentials(this.blobServiceClient.getCredentials(), this
-                    .getUri().getRawPath());
+            canonicalName.append(PathUtility.getCanonicalPathFromCredentials(
+                    this.blobServiceClient.getCredentials(), this.getUri().getRawPath()));
         }
 
         if (!ignoreSnapshotTime && this.snapshotID != null) {
-            canonicalName = canonicalName.concat("?snapshot=");
-            canonicalName = canonicalName.concat(this.snapshotID);
+            canonicalName.append("?snapshot=");
+            canonicalName.append(this.snapshotID);
         }
 
-        return canonicalName;
+        return canonicalName.toString();
     }
 
     /**
@@ -2120,6 +2249,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public final CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
@@ -2149,9 +2279,6 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If the resource URI is invalid.
      */
     public final String getName() throws URISyntaxException {
-        if (Utility.isNullOrEmpty(this.name)) {
-            this.name = PathUtility.getBlobNameFromURI(this.getUri(), this.blobServiceClient.isUsePathStyleUris());
-        }
         return this.name;
     }
 
@@ -2327,7 +2454,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Opens a blob input stream to download the blob.
      * <p>
-     * Use {@link CloudBlobClient#setStreamMinimumReadSizeInBytes} to configure the read size.
+     * Use {@link #setStreamMinimumReadSizeInBytes(int)} to configure the read size.
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      *
@@ -2342,7 +2469,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Opens a blob input stream to download the blob using the specified request options and operation context.
      * <p>
-     * Use {@link CloudBlobClient#setStreamMinimumReadSizeInBytes} to configure the read size.
+     * Use {@link #setStreamMinimumReadSizeInBytes(int)} to configure the read size.
      *
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
@@ -2369,70 +2496,54 @@ public abstract class CloudBlob implements ListBlobItem {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient, 
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient, 
                 false /* setStartTime */);
 
         return new BlobInputStream(this, accessCondition, options, opContext);
     }
-
+    
     /**
-     * Parse Uri for SAS (Shared access signature) information.
-     *
-     * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
-     * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
-     * a new client is created based on SAS information or as anonymous credentials.
-     *
+     * Verifies the passed in URI. Then parses it and uses its components to populate this resource's properties.
+     * 
      * @param completeUri
-     *            A {@link StorageUri} object which represents the complete Uri.
-     * @param existingClient
-     *            A {@link CloudBlobClient} object which represents the client to use.
-     * @param usePathStyleUris
-     *            <code>true</code> if path-style URIs are used; otherwise, <code>false</code>.
+     *            A {@link StorageUri} object which represents the complete URI.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
      * @throws StorageException
      *             If a storage service error occurred.
-     * */
-    protected void parseURIQueryStringAndVerify(final StorageUri completeUri, final CloudBlobClient existingClient,
-            final boolean usePathStyleUris) throws StorageException {
-        Utility.assertNotNull("resourceUri", completeUri);
+     */
+    private void parseQueryAndVerify(final StorageUri completeUri, final StorageCredentials credentials)
+            throws StorageException {
+       Utility.assertNotNull("completeUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
-            final String errorMessage = String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString());
-            throw new IllegalArgumentException(errorMessage);
+            throw new IllegalArgumentException(String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString()));
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
-
+        
         final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
-
-        final StorageCredentialsSharedAccessSignature sasCreds = SharedAccessSignatureHelper
-                .parseQuery(queryParameters);
 
         final String[] snapshotIDs = queryParameters.get(BlobConstants.SNAPSHOT);
         if (snapshotIDs != null && snapshotIDs.length > 0) {
             this.snapshotID = snapshotIDs[0];
         }
+        
+        final StorageCredentialsSharedAccessSignature parsedCredentials = 
+                SharedAccessSignatureHelper.parseQuery(queryParameters);
 
-        if (sasCreds == null && existingClient != null) {
-            return;
+        if (credentials != null && parsedCredentials != null) {
+            throw new IllegalArgumentException(SR.MULTIPLE_CREDENTIALS_PROVIDED);
         }
 
-        final Boolean sameCredentials = existingClient == null ? false : Utility.areCredentialsEqual(sasCreds,
-                existingClient.getCredentials());
-
-        if (existingClient == null || !sameCredentials) {
-            try {
-                this.blobServiceClient = new CloudBlobClient((PathUtility.getServiceClientBaseAddress(
-                        this.getStorageUri(), usePathStyleUris)), sasCreds);
-            }
-            catch (final URISyntaxException e) {
-                throw Utility.generateNewUnexpectedStorageException(e);
-            }
+        try {
+            final boolean usePathStyleUris = Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri());
+            this.blobServiceClient = new CloudBlobClient(PathUtility.getServiceClientBaseAddress(
+                    this.getStorageUri(), usePathStyleUris), credentials != null ? credentials : parsedCredentials);
+            this.name = PathUtility.getBlobNameFromURI(this.storageUri.getPrimaryUri(), usePathStyleUris);
         }
-
-        if (existingClient != null && !sameCredentials) {
-            this.blobServiceClient.setDefaultRequestOptions(new BlobRequestOptions(existingClient
-                    .getDefaultRequestOptions()));
-            this.blobServiceClient.setDirectoryDelimiter(existingClient.getDirectoryDelimiter());
+        catch (final URISyntaxException e) {
+            throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
 
@@ -2480,7 +2591,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this, this.releaseLeaseImpl(accessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -2502,7 +2613,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -2567,7 +2678,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this, this.renewLeaseImpl(accessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -2588,7 +2699,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -2704,7 +2815,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Uploads the source stream data to the blob.
+     * Uploads the source stream data to the blob. If the blob already exists on the service, it will be overwritten.
      *
      * @param sourceStream
      *            An <code>InputStream</code> object that represents the source stream to upload.
@@ -2726,7 +2837,8 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Uploads the source stream data to the blob using the specified lease ID, request options, and operation context.
-     *
+     * If the blob already exists on the service, it will be overwritten.
+     * 
      * @param sourceStream
      *            An <code>InputStream</code> object that represents the source stream to upload.
      * @param length
@@ -2798,7 +2910,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.uploadMetadataImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -2824,7 +2936,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -2887,7 +2999,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         opContext.initialize();
-        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.uploadPropertiesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -2909,7 +3021,7 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
 
             }
 

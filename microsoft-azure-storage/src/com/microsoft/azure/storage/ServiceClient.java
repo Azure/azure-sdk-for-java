@@ -49,12 +49,6 @@ public abstract class ServiceClient {
     private boolean usePathStyleUris;
 
     /**
-     * Holds the AuthenticationScheme associated with this Service Client.
-     */
-    @SuppressWarnings("deprecation")
-    protected AuthenticationScheme authenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
-
-    /**
      * Creates an instance of the <code>ServiceClient</code> class using the specified service endpoint and account
      * credentials.
      * 
@@ -89,10 +83,10 @@ public abstract class ServiceClient {
             public void signRequest(HttpURLConnection connection, ServiceClient client, OperationContext context)
                     throws Exception {
                 if (signAsTable) {
-                    StorageRequest.signTableRequest(connection, client, -1, null);
+                    StorageRequest.signTableRequest(connection, client, -1, context);
                 }
                 else {
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, -1, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, -1, context);
                 }
             }
 
@@ -138,10 +132,10 @@ public abstract class ServiceClient {
             public void signRequest(HttpURLConnection connection, ServiceClient client, OperationContext context)
                     throws Exception {
                 if (signAsTable) {
-                    StorageRequest.signTableRequest(connection, client, -1, null);
+                    StorageRequest.signTableRequest(connection, client, -1, context);
                 }
                 else {
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, -1, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, -1, context);
                 }
             }
 
@@ -173,18 +167,6 @@ public abstract class ServiceClient {
      */
     public final StorageCredentials getCredentials() {
         return this.credentials;
-    }
-
-    /**
-     * Returns the AuthenticationScheme associated with this service client.
-     * 
-     * @return An {@link AuthenticationScheme} object which represents the authentication scheme associated with this
-     *         client.
-     *
-     * @deprecated as of 2.0.0. In the future only SharedKeyFull will be used.
-     */
-    public final AuthenticationScheme getAuthenticationScheme() {
-        return this.authenticationScheme;
     }
 
     /**
@@ -234,19 +216,6 @@ public abstract class ServiceClient {
         this.storageUri = storageUri;
     }
 
-    /**
-     * Sets the Authentication Scheme to use with this service client.
-     * 
-     * @param scheme
-     *            An {@link AuthenticationScheme} object which represents the authentication scheme being assigned for
-     *            the service client.
-     *            
-     * @deprecated as of 2.0.0. In the future, only SharedKeyFull will be used.
-     */
-    public final void setAuthenticationScheme(final AuthenticationScheme scheme) {
-        this.authenticationScheme = scheme;
-    }
-
     protected StorageRequest<ServiceClient, Void, Void> uploadServicePropertiesImpl(final ServiceProperties properties,
             final RequestOptions options, final OperationContext opContext, final boolean signAsTable)
             throws StorageException {
@@ -277,10 +246,10 @@ public abstract class ServiceClient {
                 public void signRequest(HttpURLConnection connection, ServiceClient client, OperationContext context)
                         throws Exception {
                     if (signAsTable) {
-                        StorageRequest.signTableRequest(connection, client, descriptor.getLength(), null);
+                        StorageRequest.signTableRequest(connection, client, descriptor.getLength(), context);
                     }
                     else {
-                        StorageRequest.signBlobQueueAndFileRequest(connection, client, descriptor.getLength(), null);
+                        StorageRequest.signBlobQueueAndFileRequest(connection, client, descriptor.getLength(), context);
                     }
                 }
 
@@ -319,131 +288,6 @@ public abstract class ServiceClient {
             StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;
         }
-    }
-
-    /**
-     * Gets the default location mode for requests made via the service client.
-     * 
-     * @return A {@link LocationMode} object which represents the default location mode for the service client.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().getLocationMode()} instead.
-     */
-    @Deprecated
-    public final LocationMode getLocationMode() {
-        return this.getDefaultRequestOptions().getLocationMode();
-    }
-
-    /**
-     * Returns the retry policy currently in effect for this service client.
-     * 
-     * @return An {@link RetryPolicyFactory} object which represents the current retry policy.
-     * 
-     * @see RetryPolicy
-     * @see RetryExponentialRetry
-     * @see RetryLinearRetry
-     * @see RetryNoRetry
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().getRetryPolicyFactory()} instead.
-     */
-    @Deprecated
-    public final RetryPolicyFactory getRetryPolicyFactory() {
-        return this.getDefaultRequestOptions().getRetryPolicyFactory();
-    }
-
-    /**
-     * Returns the timeout value for requests made to the service. For more information about the timeout, see
-     * {@link #setTimeoutInMs}.
-     * 
-     * @return The current timeout value, in milliseconds, for requests made to the storage service.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().getTimeoutIntervalInMs()} instead.
-     */
-    @Deprecated
-    public final int getTimeoutInMs() {
-        return this.getDefaultRequestOptions().getTimeoutIntervalInMs();
-    }
-
-    /**
-     * Returns the maximum execution time, in milliseconds, across all potential retries. For more information about
-     * maximum execution time, see {@link #setMaximumExecutionTimeInMs(Integer)}.
-     * 
-     * @return The maximum execution time, in milliseconds, for requests made to the storage service.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().getMaximumExecutionTimeInMs()} instead.
-     */
-    @Deprecated
-    public Integer getMaximumExecutionTimeInMs() {
-        return this.getDefaultRequestOptions().getMaximumExecutionTimeInMs();
-    }
-
-    /**
-     * Sets the default {@link LocationMode} for requests made via the service client.
-     * 
-     * @param locationMode
-     *            the locationMode to set
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().setLocationMode()} instead.
-     */
-    @Deprecated
-    public void setLocationMode(LocationMode locationMode) {
-        this.getDefaultRequestOptions().setLocationMode(locationMode);
-    }
-
-    /**
-     * Sets the RetryPolicyFactory object to use when making service requests.
-     * 
-     * @param retryPolicyFactory
-     *            the RetryPolicyFactory object to use when making service requests.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().setRetryPolicyFactory()} instead.
-     */
-    @Deprecated
-    public void setRetryPolicyFactory(final RetryPolicyFactory retryPolicyFactory) {
-        this.getDefaultRequestOptions().setRetryPolicyFactory(retryPolicyFactory);
-    }
-
-    /**
-     * Sets the timeout to use when making requests to the storage service.
-     * <p>
-     * The server timeout interval begins at the time that the complete request has been received by the service, and
-     * the server begins processing the response. If the timeout interval elapses before the response is returned to the
-     * client, the operation times out. The timeout interval resets with each retry, if the request is retried.
-     * 
-     * You can change this value on the service client by setting this property, so that all subsequent requests made
-     * via the service client will use the new timeout interval. You can also change this value for an individual
-     * request, by setting the {@link RequestOptions#setTimeoutIntervalInMs(Integer)} property.
-     * 
-     * @param timeoutInMs
-     *            The timeout, in milliseconds, to use when making requests to the storage service.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().setTimeoutIntervalInMs()} instead.
-     */
-    @Deprecated
-    public final void setTimeoutInMs(final int timeoutInMs) {
-        this.getDefaultRequestOptions().setTimeoutIntervalInMs(timeoutInMs);
-    }
-
-    /**
-     * Sets the maximum execution time to use when making requests to the storage service.
-     * <p>
-     * The maximum execution time interval begins at the time that the client begins building the request. The maximum
-     * execution time is checked intermittently while uploading data, downloading data, and before executing retries.
-     * The service will continue to upload, download, and retry until the maximum execution time is reached. At that
-     * time, any partial uploads or downloads will be cancelled and an exception will be thrown.
-     * 
-     * The default maximum execution time is null, indicating no maximum time. You can change this value on the service
-     * client by setting this property, so that all subsequent requests made via the service client will use the new
-     * maximum execution time. You can also change this value for an individual request, by setting the
-     * {@link RequestOptions#setMaximumExecutionTimeInMs(Integer)} property.
-     * 
-     * @param maximumExecutionTimeInMs
-     *            The maximum execution time, in milliseconds, to use when making service requests.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().setMaximumExecutionTimeInMs()} instead.
-     */
-    @Deprecated
-    public void setMaximumExecutionTimeInMs(Integer maximumExecutionTimeInMs) {
-        this.getDefaultRequestOptions().setMaximumExecutionTimeInMs(maximumExecutionTimeInMs);
     }
 
     /**

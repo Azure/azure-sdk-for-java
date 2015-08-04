@@ -453,7 +453,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudTableClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signTableRequest(connection, client, -1L, opContext);
+                    StorageRequest.signTableRequest(connection, client, -1L, context);
                 }
 
                 @Override
@@ -493,29 +493,15 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
 
                         // Validate response
                         if (currOp.getOperationType() == TableOperationType.INSERT) {
-                            if (currOp.getEchoContent()) {
-                                if (currMimePart.httpStatusCode == HttpURLConnection.HTTP_CONFLICT) {
-                                    throw new TableServiceException(currMimePart.httpStatusCode,
-                                            currMimePart.httpStatusMessage, currOp, new StringReader(
-                                                    currMimePart.payload), options.getTablePayloadFormat());
-                                }
-
+                            if (currOp.getEchoContent()
+                                    && currMimePart.httpStatusCode != HttpURLConnection.HTTP_CREATED) {
                                 // Insert should receive created if echo content is on
-                                if (currMimePart.httpStatusCode != HttpURLConnection.HTTP_CREATED) {
-                                    failFlag = true;
-                                }
+                                failFlag = true;
                             }
-                            else {
-                                if (currMimePart.httpStatusCode == HttpURLConnection.HTTP_CONFLICT) {
-                                    throw new TableServiceException(currMimePart.httpStatusCode,
-                                            currMimePart.httpStatusMessage, currOp, new StringReader(
-                                                    currMimePart.payload), options.getTablePayloadFormat());
-                                }
-
+                            else if (!currOp.getEchoContent()
+                                    && currMimePart.httpStatusCode != HttpURLConnection.HTTP_NO_CONTENT) {
                                 // Insert should receive no content if echo content is off
-                                if (currMimePart.httpStatusCode != HttpURLConnection.HTTP_NO_CONTENT) {
-                                    failFlag = true;
-                                }
+                                failFlag = true;
                             }
                         }
                         else if (currOp.getOperationType() == TableOperationType.RETRIEVE) {
@@ -531,14 +517,6 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                             }
                         }
                         else {
-                            // Validate response code.
-                            if (currMimePart.httpStatusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                                // Throw so as to not retry.
-                                throw new TableServiceException(currMimePart.httpStatusCode,
-                                        currMimePart.httpStatusMessage, currOp, new StringReader(currMimePart.payload),
-                                        options.getTablePayloadFormat());
-                            }
-
                             if (currMimePart.httpStatusCode != HttpURLConnection.HTTP_NO_CONTENT) {
                                 // All others should receive no content. (delete, merge, upsert etc)
                                 failFlag = true;
@@ -546,11 +524,9 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                         }
 
                         if (failFlag) {
-                            TableServiceException potentiallyRetryableException = new TableServiceException(
-                                    currMimePart.httpStatusCode, currMimePart.httpStatusMessage, currOp,
-                                    new StringReader(currMimePart.payload), options.getTablePayloadFormat());
-                            potentiallyRetryableException.setRetryable(true);
-                            throw potentiallyRetryableException;
+                            throw new TableServiceException(currMimePart.httpStatusCode,
+                                    currMimePart.httpStatusMessage, currOp, new StringReader(currMimePart.payload),
+                                    options.getTablePayloadFormat());
                         }
 
                         ByteArrayInputStream byteStream = null;

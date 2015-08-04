@@ -82,7 +82,9 @@ public class DynamicTableEntity extends TableServiceEntity {
      * @param rowKey
      *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
      * @param etag
-     *            The ETag of the {@link DynamicTableEntity} to be initialized.
+     *            The ETag of the {@link DynamicTableEntity} to be initialized. This value is used to determine if the table 
+     *            entity has changed since it was last read from Microsoft Azure storage. The client cannot update this value 
+     *            on the service.
      * @param properties
      *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
@@ -106,7 +108,10 @@ public class DynamicTableEntity extends TableServiceEntity {
      * @param properties
      *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
+     * @deprecated as of 3.0.0. The timestamp property is read-only, set by the service only. Please use 
+     *            {@link DynamicTableEntity#DynamicTableEntity(String, String, String, HashMap)} instead.
      */
+    @Deprecated
     public DynamicTableEntity(String partitionKey, String rowKey, Date timestamp, String etag,
             final HashMap<String, EntityProperty> properties) {
         super(partitionKey, rowKey);

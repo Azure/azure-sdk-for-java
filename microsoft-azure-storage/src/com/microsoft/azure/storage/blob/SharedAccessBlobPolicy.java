@@ -18,6 +18,7 @@ import java.util.EnumSet;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.SharedAccessPolicy;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
@@ -28,7 +29,7 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
      * The permissions for a shared access signature associated with this shared access policy.
      */
     private EnumSet<SharedAccessBlobPermissions> permissions;
-
+    
     /**
      * Gets the permissions for a shared access signature associated with this shared access policy.
      * 
@@ -49,12 +50,12 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
     public void setPermissions(final EnumSet<SharedAccessBlobPermissions> permissions) {
         this.permissions = permissions;
     }
-
+    
     /**
      * Converts this policy's permissions to a string.
      * 
-     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
-     *         described at {@link SharedAccessBlobPolicy#permissionsFromString(String)}.
+     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format,
+     *         which is described at {@link #setPermissionsFromString(String)}.
      */
     @Override
     public String permissionsToString() {
@@ -98,30 +99,27 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
      *            <li><code>w</code>: Write access.</li>
      *            </ul>
      */
-    @Override
     public void setPermissionsFromString(final String value) {
-        final char[] chars = value.toCharArray();
-        final EnumSet<SharedAccessBlobPermissions> retSet = EnumSet.noneOf(SharedAccessBlobPermissions.class);
-
-        for (final char c : chars) {
+        EnumSet<SharedAccessBlobPermissions> initial = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+        for (final char c : value.toCharArray()) {
             switch (c) {
                 case 'r':
-                    retSet.add(SharedAccessBlobPermissions.READ);
+                    initial.add(SharedAccessBlobPermissions.READ);
                     break;
                 case 'w':
-                    retSet.add(SharedAccessBlobPermissions.WRITE);
+                    initial.add(SharedAccessBlobPermissions.WRITE);
                     break;
                 case 'd':
-                    retSet.add(SharedAccessBlobPermissions.DELETE);
+                    initial.add(SharedAccessBlobPermissions.DELETE);
                     break;
                 case 'l':
-                    retSet.add(SharedAccessBlobPermissions.LIST);
+                    initial.add(SharedAccessBlobPermissions.LIST);
                     break;
                 default:
                     throw new IllegalArgumentException("value");
             }
         }
-
-        this.permissions = retSet;
+        
+        this.permissions = initial;
     }
 }

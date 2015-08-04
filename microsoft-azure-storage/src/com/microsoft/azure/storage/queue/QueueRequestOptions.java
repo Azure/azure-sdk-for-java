@@ -42,8 +42,7 @@ public final class QueueRequestOptions extends RequestOptions {
     }
 
     /**
-     * Populates the default timeout and retry policy from client if they are
-     * not set.
+     * Populates the default timeout and retry policy from client if they are not set.
      * 
      * @param options
      *            The input options to copy from when applying defaults
@@ -51,16 +50,21 @@ public final class QueueRequestOptions extends RequestOptions {
      *            The {@link CloudQueueClient} service client to populate the
      *            default values from.
      */
-    protected static final QueueRequestOptions applyDefaults(QueueRequestOptions options, final CloudQueueClient client) {
+    protected static final QueueRequestOptions populateAndApplyDefaults(QueueRequestOptions options, final CloudQueueClient client) {
         QueueRequestOptions modifiedOptions = new QueueRequestOptions(options);
         RequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), true /* setStartTime */);
-        return QueueRequestOptions.applyDefaultsInternal(modifiedOptions, client);
+        QueueRequestOptions.applyDefaults(modifiedOptions);
+        return modifiedOptions;
     }
 
-    private static final QueueRequestOptions applyDefaultsInternal(QueueRequestOptions modifiedOptions,
-            CloudQueueClient client) {
+    /**
+     * Applies defaults to the options passed in.
+     * 
+     * @param modifiedOptions
+     *          The options to apply defaults to.
+     */
+    protected static void applyDefaults(QueueRequestOptions modifiedOptions) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         RequestOptions.applyBaseDefaultsInternal(modifiedOptions);
-        return modifiedOptions;
     }
 }

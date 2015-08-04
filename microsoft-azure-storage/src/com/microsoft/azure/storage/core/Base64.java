@@ -59,6 +59,10 @@ public final class Base64 {
      *             If the string is not a valid base64 encoded string
      */
     public static byte[] decode(final String data) {
+        if (data == null) {
+            throw new IllegalArgumentException(SR.STRING_NOT_VALID);
+        }
+        
         int byteArrayLength = 3 * data.length() / 4;
 
         if (data.endsWith("==")) {

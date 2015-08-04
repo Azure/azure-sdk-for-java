@@ -21,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @param <EVENT_TYPE>
  *            An object that represents the type of the event.
- * @param <EVENT_LISTENTER_TYPE>
+ * @param <EVENT_LISTENER_TYPE>
  *            An object that represents the type of the event listener.
  */
 public final class StorageEventMultiCaster<EVENT_TYPE extends BaseEvent, EVENT_LISTENER_TYPE extends StorageEvent<EVENT_TYPE>> {

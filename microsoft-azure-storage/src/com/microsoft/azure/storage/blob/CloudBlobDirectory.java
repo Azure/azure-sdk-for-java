@@ -111,6 +111,52 @@ public final class CloudBlobDirectory implements ListBlobItem {
     }
 
     /**
+     * Returns a reference to a {@link CloudAppendBlob} object that represents an append blob in the directory.
+     * 
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
+     * 
+     * @return A {@link CloudAppendBlob} object that represents a reference to the specified append blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public CloudAppendBlob getAppendBlobReference(final String blobName) throws URISyntaxException, StorageException {
+        return this.getAppendBlobReference(blobName, null);
+    }
+
+    /**
+     * Returns a reference to a {@link CloudAppendBlob} object that represents an append blob in the directory, using the
+     * specified snapshot ID.
+     * 
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot ID of the blob.
+     * 
+     * @return A {@link CloudAppendBlob} object that represents a reference to the specified append blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public CloudAppendBlob getAppendBlobReference(final String blobName, final String snapshotID)
+            throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("blobName", blobName);
+
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName,
+                this.blobServiceClient.getDirectoryDelimiter());
+
+        final CloudAppendBlob retBlob = new CloudAppendBlob(address, snapshotID, this.blobServiceClient);
+        retBlob.setContainer(this.container);
+
+        return retBlob;
+    }
+    
+    /**
      * Returns a reference to a {@link CloudBlockBlob} object that represents a block blob in this directory.
      * 
      * @param blobName
@@ -143,6 +189,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @SuppressWarnings("deprecation")
     public CloudBlockBlob getBlockBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobName", blobName);
@@ -176,7 +223,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @param blobName
      *            A <code>String</code> that represents the name of the blob.
      * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified page blob.
+     * @return A {@link CloudPageBlob} object that represents a reference to the specified page blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -196,13 +243,14 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot ID of the blob.
      * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified page blob.
+     * @return A {@link CloudPageBlob} object that represents a reference to the specified page blob.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @SuppressWarnings("deprecation")
     public CloudPageBlob getPageBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobName", blobName);
@@ -281,24 +329,6 @@ public final class CloudBlobDirectory implements ListBlobItem {
                 this.blobServiceClient.getDirectoryDelimiter());
 
         return new CloudBlobDirectory(address, subDirName, this.blobServiceClient, this.container, this);
-    }
-    
-    /**
-     * Returns a reference to a virtual blob directory beneath this directory.
-     * 
-     * @param directoryName
-     *            A <code>String</code> that represents the name of the virtual directory.
-     * 
-     * @return A <code>CloudBlobDirectory</code> object that represents a virtual blob directory beneath this directory.
-     * 
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     *             
-     * @deprecated as of 2.0.0. Use {@link #getDirectoryReference()} instead.
-     */
-    @Deprecated
-    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws URISyntaxException {
-        return this.getDirectoryReference(directoryName);
     }
 
     /**
@@ -471,7 +501,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      */
     @DoesServiceRequest
     public ResultSegment<ListBlobItem> listBlobsSegmented(String prefix, final boolean useFlatBlobListing,
-            final EnumSet<BlobListingDetails> listingDetails, final int maxResults,
+            final EnumSet<BlobListingDetails> listingDetails, final Integer maxResults,
             final ResultContinuation continuationToken, final BlobRequestOptions options,
             final OperationContext opContext) throws StorageException, URISyntaxException {
         prefix = prefix == null ? Constants.EMPTY_STRING : prefix;

@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
@@ -28,6 +29,8 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
 import com.microsoft.azure.storage.ResultSegment;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -39,17 +42,17 @@ import com.microsoft.azure.storage.core.PathUtility;
 import com.microsoft.azure.storage.core.RequestLocationMode;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.SegmentedStorageRequest;
+import com.microsoft.azure.storage.core.SharedAccessSignatureHelper;
 import com.microsoft.azure.storage.core.StorageRequest;
 import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Represents a virtual directory of files.
  * <p>
- * Directories, which are encapsulated as {@link CloudFileDirectories} objects, hold files and can also contain
+ * Directories, which are encapsulated as {@link CloudFileDirectory} objects, hold files and can also contain
  * sub-directories.
  */
 public final class CloudFileDirectory implements ListFileItem {
-
     /**
      * Holds the share reference.
      */
@@ -74,12 +77,69 @@ public final class CloudFileDirectory implements ListFileItem {
      * Holds the name of the directory.
      */
     private String name;
+    
+    /**
+     * Represents the directory metadata.
+     */
+    private HashMap<String, String> metadata = new HashMap<String, String>();
 
     /**
      * Holds a FileDirectoryProperties object that holds the directory's system properties.
      */
-    private FileDirectoryProperties properties;
+    private FileDirectoryProperties properties = new FileDirectoryProperties();
+    
+    /**
+     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory.
+     * 
+     * @param directoryAbsoluteUri
+     *            A {@link URI} that represents the file directory's address.
+     * @throws StorageException
+     */
+    public CloudFileDirectory(final URI directoryAbsoluteUri) throws StorageException {
+        this(new StorageUri(directoryAbsoluteUri));
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory.
+     * 
+     * @param directoryAbsoluteUri
+     *            A {@link StorageUri} that represents the file directory's address.
+     * @throws StorageException
+     */
+    public CloudFileDirectory(final StorageUri directoryAbsoluteUri) throws StorageException {
+        this(directoryAbsoluteUri, (StorageCredentials) null);
+    }
 
+    /**
+     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory 
+     * and credentials.
+     * 
+     * @param directoryAbsoluteUri
+     *            A {@link URI} that represents the file directory's address.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * @throws StorageException
+     */
+    public CloudFileDirectory(final URI directoryAbsoluteUri, final StorageCredentials credentials) 
+            throws StorageException {
+        this(new StorageUri(directoryAbsoluteUri), credentials);
+    }
+
+    /**
+     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory
+     * and credentials.
+     * 
+     * @param directoryAbsoluteUri
+     *            A {@link StorageUri} that represents the file directory's address.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * @throws StorageException
+     */
+    public CloudFileDirectory(final StorageUri directoryAbsoluteUri, final StorageCredentials credentials)
+            throws StorageException {
+        this.parseQueryAndVerify(directoryAbsoluteUri, credentials);
+    }
+    
     /**
      * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory.
      * 
@@ -89,7 +149,9 @@ public final class CloudFileDirectory implements ListFileItem {
      *            A {@link CloudFileClient} object that represents the associated service client.
      * @throws StorageException
      * @throws URISyntaxException
+     * @deprecated as of 3.0.0. Please use {@link CloudFileDirectory#CloudFileDirectory(URI, StorageCredentials)}
      */
+    @Deprecated
     public CloudFileDirectory(final URI directoryAbsoluteUri, final CloudFileClient client) throws StorageException,
             URISyntaxException {
         this(new StorageUri(directoryAbsoluteUri), client);
@@ -104,19 +166,17 @@ public final class CloudFileDirectory implements ListFileItem {
      *            A {@link CloudFileClient} object that represents the associated service client.
      * @throws StorageException
      * @throws URISyntaxException
+     * @deprecated as of 3.0.0. Please use {@link CloudFileDirectory#CloudFileDirectory(StorageUri, StorageCredentials)}
      */
+    @Deprecated
     public CloudFileDirectory(final StorageUri directoryAbsoluteUri, final CloudFileClient client)
             throws StorageException, URISyntaxException {
-        Utility.assertNotNull("directoryAbsoluteUri", directoryAbsoluteUri);
+        this.parseQueryAndVerify(directoryAbsoluteUri, client == null ? null : client.getCredentials());
 
-        this.fileServiceClient = client;
-        this.storageUri = directoryAbsoluteUri;
-        this.properties = new FileDirectoryProperties();
-        this.parseQueryAndVerify(
-                directoryAbsoluteUri,
-                client,
-                client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client
-                        .isUsePathStyleUris());
+        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
+        if (client != null) {
+            this.fileServiceClient = client;
+        }
     }
 
     /**
@@ -139,7 +199,6 @@ public final class CloudFileDirectory implements ListFileItem {
         this.fileServiceClient = share.getServiceClient();
         this.share = share;
         this.storageUri = uri;
-        this.properties = new FileDirectoryProperties();
     }
 
     /**
@@ -175,7 +234,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this, createDirectoryImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -183,8 +242,8 @@ public final class CloudFileDirectory implements ListFileItem {
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, Void> createDirectoryImpl(
             final FileRequestOptions options) {
-        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> putRequest = new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(options, this.getStorageUri()) {
             @Override
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileDirectory directory,
                     OperationContext context) throws Exception {
@@ -192,11 +251,16 @@ public final class CloudFileDirectory implements ListFileItem {
                         directory.getTransformedAddress().getUri(this.getCurrentLocation()), options, context);
                 return request;
             }
+            
+            @Override
+            public void setHeaders(HttpURLConnection connection, CloudFileDirectory directory, OperationContext context) {
+                FileRequest.addMetadata(connection, directory.getMetadata(), context);
+            }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -207,10 +271,10 @@ public final class CloudFileDirectory implements ListFileItem {
                     return null;
                 }
 
-                // Set properties
-                final FileDirectoryProperties properties = FileResponse
-                        .getFileDirectoryProperties(this.getConnection());
-                directory.properties = properties;
+                // Set attributes
+                final FileDirectoryAttributes attributes = FileResponse
+                        .getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
+                directory.setProperties(attributes.getProperties());
                 return null;
             }
         };
@@ -250,7 +314,7 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(FileRequestOptions options, OperationContext opContext) throws StorageException {
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
         if (exists) {
@@ -309,7 +373,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this, deleteDirectoryImpl(accessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -317,8 +381,8 @@ public final class CloudFileDirectory implements ListFileItem {
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, Void> deleteDirectoryImpl(
             final AccessCondition accessCondition, final FileRequestOptions options) {
-        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> putRequest = new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(options, this.getStorageUri()) {
             @Override
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileDirectory directory,
                     OperationContext context) throws Exception {
@@ -329,7 +393,7 @@ public final class CloudFileDirectory implements ListFileItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -381,7 +445,7 @@ public final class CloudFileDirectory implements ListFileItem {
     @DoesServiceRequest
     public boolean deleteIfExists(AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, accessCondition, options, opContext);
         if (exists) {
@@ -451,7 +515,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
                 this.existsImpl(primaryOnly, accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -459,8 +523,8 @@ public final class CloudFileDirectory implements ListFileItem {
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, Boolean> existsImpl(final boolean primaryOnly,
             final AccessCondition accessCondition, final FileRequestOptions options) {
-        final StorageRequest<CloudFileClient, CloudFileDirectory, Boolean> getRequest = new StorageRequest<CloudFileClient, CloudFileDirectory, Boolean>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudFileClient, CloudFileDirectory, Boolean> getRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, Boolean>(options, this.getStorageUri()) {
 
             @Override
             public void setRequestLocationMode() {
@@ -479,7 +543,7 @@ public final class CloudFileDirectory implements ListFileItem {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -514,6 +578,87 @@ public final class CloudFileDirectory implements ListFileItem {
             lastModifiedCalendar.setTime(new Date(request.getLastModified()));
             this.getProperties().setLastModified(lastModifiedCalendar.getTime());
         }
+    }
+
+    /**
+     * Uploads the directory's metadata.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadMetadata() throws StorageException {
+        this.uploadMetadata(null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Uploads the directory's metadata using the specified request options and operation context.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the directory.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadMetadata(AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
+                this.uploadMetadataImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
+    }
+    
+    private StorageRequest<CloudFileClient, CloudFileDirectory, Void> uploadMetadataImpl(
+            final AccessCondition accessCondition, final FileRequestOptions options) {
+        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(
+                    CloudFileClient client, CloudFileDirectory directory, OperationContext context) throws Exception {
+                return FileRequest.setDirectoryMetadata(directory.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition);
+            }
+
+            @Override
+            public void setHeaders(HttpURLConnection connection, CloudFileDirectory directory, OperationContext context) {
+                FileRequest.addMetadata(connection, directory.getMetadata(), context);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudFileDirectory directory, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                directory.updatePropertiesFromResponse(this.getConnection());
+                return null;
+            }
+        };
+
+        return putRequest;
     }
 
     /**
@@ -552,7 +697,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
                 this.downloadAttributesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -560,8 +705,8 @@ public final class CloudFileDirectory implements ListFileItem {
 
     private StorageRequest<CloudFileClient, CloudFileDirectory, Void> downloadAttributesImpl(
             final AccessCondition accessCondition, final FileRequestOptions options) {
-        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> getRequest = new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudFileClient, CloudFileDirectory, Void> getRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, Void>(options, this.getStorageUri()) {
 
             @Override
             public void setRequestLocationMode() {
@@ -575,11 +720,11 @@ public final class CloudFileDirectory implements ListFileItem {
                         directory.getTransformedAddress().getUri(this.getCurrentLocation()), options, context,
                         accessCondition);
             }
-
+            
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -591,9 +736,10 @@ public final class CloudFileDirectory implements ListFileItem {
                 }
 
                 // Set properties
-                final FileDirectoryProperties properties = FileResponse
-                        .getFileDirectoryProperties(this.getConnection());
-                directory.properties = properties;
+                final FileDirectoryAttributes attributes =
+                        FileResponse.getFileDirectoryAttributes(this.getConnection(), client.isUsePathStyleUris());
+                directory.setMetadata(attributes.getMetadata());
+                directory.setProperties(attributes.getProperties());
                 return null;
             }
         };
@@ -639,7 +785,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
@@ -695,7 +841,7 @@ public final class CloudFileDirectory implements ListFileItem {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         Utility.assertContinuationType(continuationToken, ResultContinuationType.FILE);
 
@@ -714,7 +860,8 @@ public final class CloudFileDirectory implements ListFileItem {
 
         final ListingContext listingContext = new ListingContext(null, maxResults);
 
-        final StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>> getRequest = new StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>>(
+        final StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>> getRequest =
+                new StorageRequest<CloudFileClient, CloudFileDirectory, ResultSegment<ListFileItem>>(
                 options, this.getStorageUri()) {
 
             @Override
@@ -727,13 +874,15 @@ public final class CloudFileDirectory implements ListFileItem {
                     OperationContext context) throws Exception {
                 listingContext.setMarker(segmentedRequest.getToken() != null ? segmentedRequest.getToken()
                         .getNextMarker() : null);
-                return FileRequest.listFilesAndDirectories(directory.getUri(), options, context, listingContext);
+                return FileRequest.listFilesAndDirectories(
+                        directory.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, listingContext);
             }
 
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -786,6 +935,7 @@ public final class CloudFileDirectory implements ListFileItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @SuppressWarnings("deprecation")
     public CloudFile getFileReference(final String fileName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("fileName", fileName);
 
@@ -812,26 +962,6 @@ public final class CloudFileDirectory implements ListFileItem {
 
         StorageUri subdirectoryUri = PathUtility.appendPathToUri(this.storageUri, itemName);
         return new CloudFileDirectory(subdirectoryUri, itemName, this.getShare());
-    }
-
-    /**
-     * Returns a reference to a {@link CloudFileDirectory} object that represents a subdirectory in this directory.
-     * 
-     * @param itemName
-     *            A <code>String</code> that represents the name of the subdirectory.
-     * 
-     * @return A {@link CloudFileDirectory} object that represents a reference to the specified directory.
-     * 
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @throws StorageException
-     * 
-     * @deprecated as of 2.0.0. Use {@link #getDirectoryReference()} instead.
-     */
-    @Deprecated
-    public CloudFileDirectory getSubDirectoryReference(final String itemName) throws URISyntaxException,
-            StorageException {
-        return this.getDirectoryReference(itemName);
     }
 
     /**
@@ -870,6 +1000,16 @@ public final class CloudFileDirectory implements ListFileItem {
      */
     public String getName() {
         return this.name;
+    }
+    
+    /**
+     * Returns the metadata for the directory. This value is initialized with the metadata from the directory
+     * by a call to {@link #downloadAttributes}, and is set on the directory with a call to {@link #uploadMetadata}.
+     * 
+     * @return A <code>java.util.HashMap</code> object that represents the metadata for the directory.
+     */
+    public HashMap<String, String> getMetadata() {
+        return this.metadata;
     }
 
     /**
@@ -922,6 +1062,18 @@ public final class CloudFileDirectory implements ListFileItem {
     }
 
     /**
+     * Sets the metadata collection of name-value pairs to be set on the directory with an {@link #uploadMetadata} call.
+     * This collection will overwrite any existing directory metadata. If this is set to an empty collection, the
+     * directory metadata will be cleared on an {@link #uploadMetadata} call.
+     * 
+     * @param metadata
+     *            A <code>java.util.HashMap</code> object that represents the metadata being assigned to the directory.
+     */
+    public void setMetadata(HashMap<String, String> metadata) {
+        this.metadata = metadata;
+    }
+
+    /**
      * Sets the share for the directory.
      * 
      * @param share
@@ -953,31 +1105,41 @@ public final class CloudFileDirectory implements ListFileItem {
     }
 
     /**
-     * Strips the query and verifies the URI is absolute.
+     * Verifies the passed in URI. Then parses it and uses its components to populate this resource's properties.
      * 
      * @param completeUri
      *            A {@link StorageUri} object which represents the complete URI.
-     * @param existingClient
-     *            A {@link CloudFileClient} object which represents the client to use.
-     * @param usePathStyleUris
-     *            <code>true</code> if path-style URIs are used; otherwise, <code>false</code>.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
      */
-    private void parseQueryAndVerify(final StorageUri completeUri, final CloudFileClient existingClient,
-            final boolean usePathStyleUri) throws StorageException, URISyntaxException {
-        Utility.assertNotNull("completeUri", completeUri);
+    private void parseQueryAndVerify(final StorageUri completeUri, final StorageCredentials credentials)
+            throws StorageException {
+       Utility.assertNotNull("completeUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
-            final String errorMessage = String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString());
-            throw new IllegalArgumentException(errorMessage);
+            throw new IllegalArgumentException(String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString()));
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
-        this.fileServiceClient = (existingClient == null) ? new CloudFileClient(
-                PathUtility.getServiceClientBaseAddress(this.storageUri, usePathStyleUri), null) : existingClient;
-        this.name = PathUtility.getFileNameFromURI(completeUri.getPrimaryUri(), usePathStyleUri);
+        
+        final StorageCredentialsSharedAccessSignature parsedCredentials = 
+                SharedAccessSignatureHelper.parseQuery(completeUri);
+
+        if (credentials != null && parsedCredentials != null) {
+            throw new IllegalArgumentException(SR.MULTIPLE_CREDENTIALS_PROVIDED);
+        }
+
+        try {
+            final boolean usePathStyleUris = Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri());
+            this.fileServiceClient = new CloudFileClient(PathUtility.getServiceClientBaseAddress(
+                    this.getStorageUri(), usePathStyleUris), credentials != null ? credentials : parsedCredentials);
+            this.name = PathUtility.getDirectoryNameFromURI(this.storageUri.getPrimaryUri(), usePathStyleUris);
+        }
+        catch (final URISyntaxException e) {
+            throw Utility.generateNewUnexpectedStorageException(e);
+        }
     }
 
     /**

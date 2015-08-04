@@ -77,10 +77,11 @@ public final class RetryLinearRetry extends RetryPolicy implements RetryPolicyFa
         boolean secondaryNotFound = this.evaluateLastAttemptAndSecondaryNotFound(retryContext);
 
         if (retryContext.getCurrentRetryCount() < this.maximumAttempts) {
-            if ((!secondaryNotFound && retryContext.getLastRequestResult().getStatusCode() >= 400 && retryContext
-                    .getLastRequestResult().getStatusCode() < 500)
-                    || retryContext.getLastRequestResult().getStatusCode() == HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                    || retryContext.getLastRequestResult().getStatusCode() == HttpURLConnection.HTTP_VERSION) {
+            int statusCode = retryContext.getLastRequestResult().getStatusCode();
+            if ((!secondaryNotFound && statusCode >= 400 && statusCode < 500)
+                    || statusCode == HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                    || statusCode == HttpURLConnection.HTTP_VERSION
+                    || statusCode == Constants.HeaderConstants.HTTP_UNUSED_306) {
                 return null;
             }
 

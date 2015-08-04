@@ -74,8 +74,8 @@ import com.microsoft.azure.storage.StorageException;
 public interface TableEntity {
 
     /**
-     * Gets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
-     * last read from Microsoft Azure storage.
+     * Gets the ETag value to verify for the entity. This value is used to determine if the table entity has changed 
+     * since it was last read from Microsoft Azure storage. The client cannot update this value on the service.
      * 
      * @return
      *         A <code>String</code> which represents the ETag for the entity.
@@ -99,7 +99,7 @@ public interface TableEntity {
     public String getRowKey();
 
     /**
-     * Gets the Timestamp for the entity.
+     * Gets the Timestamp for the entity. The server manages the value of Timestamp, which cannot be modified. 
      * 
      * @return
      *         A <code>java.util.Date</code> object which represents the Timestamp value for the entity.
@@ -123,7 +123,8 @@ public interface TableEntity {
             throws StorageException;
 
     /**
-     * Sets the ETag for the entity.
+     * Sets the ETag value to verify for the entity. This value is used to determine if the table entity has changed 
+     * since it was last read from Microsoft Azure storage. The client cannot update this value on the service.
      * 
      * @param etag
      *            A <code>String</code> which specifies the ETag to set for the entity.
@@ -151,7 +152,9 @@ public interface TableEntity {
      * 
      * @param timeStamp
      *            A <code>java.util.Date</code> which specifies the Timestamp value to set for the entity.
+     * @deprecated as of 3.0.0. The timestamp property is a read-only property, set by the service only.
      */
+    @Deprecated
     public void setTimestamp(Date timeStamp);
 
     /**

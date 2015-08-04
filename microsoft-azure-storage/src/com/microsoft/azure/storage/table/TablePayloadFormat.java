@@ -23,7 +23,7 @@ public enum TablePayloadFormat {
     /**
      * Use AtomPub.
      * 
-     * @Deprecated Deprecated as of 0.7.0 in favor of Json format.
+     * @deprecated Deprecated as of 0.7.0 in favor of Json format.
      */
     @Deprecated
     AtomPub,

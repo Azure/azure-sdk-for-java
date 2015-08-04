@@ -35,7 +35,12 @@ public enum BlobType {
     /**
      * Specifies the blob is a page blob.
      */
-    PAGE_BLOB;
+    PAGE_BLOB,
+    
+    /**
+     * Specifies the blob is an append blob.
+     */
+    APPEND_BLOB;
 
     /**
      * Returns the enum value representing the blob type for the specified string.
@@ -54,6 +59,9 @@ public enum BlobType {
         }
         else if ("pageblob".equals(typeString.toLowerCase(Locale.US))) {
             return PAGE_BLOB;
+        }
+        else if ("appendblob".equals(typeString.toLowerCase(Locale.US))) {
+            return APPEND_BLOB;
         }
         else {
             return UNSPECIFIED;

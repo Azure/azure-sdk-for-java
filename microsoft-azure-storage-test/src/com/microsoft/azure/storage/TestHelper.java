@@ -14,19 +14,21 @@
  */
 package com.microsoft.azure.storage;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import junit.framework.Assert;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -46,36 +48,26 @@ public class TestHelper {
     private static StorageCredentialsAccountAndKey credentials;
     private static CloudStorageAccount account;
 
-    @SuppressWarnings("deprecation")
-    private final static AuthenticationScheme defaultAuthenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
     private final static boolean enableFiddler = true;
     private final static boolean requireSecondaryEndpoint = false;
 
-    @SuppressWarnings("deprecation")
     public static CloudBlobClient createCloudBlobClient() throws StorageException {
         CloudBlobClient client = getAccount().createCloudBlobClient();
-        client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
-    @SuppressWarnings("deprecation")
     public static CloudFileClient createCloudFileClient() throws StorageException {
         CloudFileClient client = getAccount().createCloudFileClient();
-        client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
-    @SuppressWarnings("deprecation")
     public static CloudQueueClient createCloudQueueClient() throws StorageException {
         CloudQueueClient client = getAccount().createCloudQueueClient();
-        client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
-    @SuppressWarnings("deprecation")
     public static CloudTableClient createCloudTableClient() throws StorageException {
         CloudTableClient client = getAccount().createCloudTableClient();
-        client.setAuthenticationScheme(defaultAuthenticationScheme);
         return client;
     }
 
@@ -103,13 +95,13 @@ public class TestHelper {
     public static void assertStreamsAreEqual(ByteArrayInputStream src, ByteArrayInputStream dst) {
         dst.reset();
         src.reset();
-        Assert.assertEquals(src.available(), dst.available());
+        assertEquals(src.available(), dst.available());
 
         while (src.available() > 0) {
-            Assert.assertEquals(src.read(), dst.read());
+            assertEquals(src.read(), dst.read());
         }
 
-        Assert.assertFalse(dst.available() > 0);
+        assertFalse(dst.available() > 0);
     }
 
     public static void assertStreamsAreEqualAtIndex(ByteArrayInputStream src, ByteArrayInputStream dst, int srcIndex,
@@ -125,8 +117,29 @@ public class TestHelper {
         dst.read(destBuffer);
 
         for (int i = 0; i < length; i++) {
-            Assert.assertEquals(src.read(), dst.read());
+            assertEquals(src.read(), dst.read());
         }
+    }
+
+    public static void assertURIsEqual(URI expected, URI actual, boolean ignoreQueryOrder) {
+        if (expected == null) {
+            assertEquals(null, actual);
+        }
+
+        assertEquals(expected.getScheme(), actual.getScheme());
+        assertEquals(expected.getAuthority(), actual.getAuthority());
+        assertEquals(expected.getPath(), actual.getPath());
+        assertEquals(expected.getFragment(), actual.getFragment());
+
+        ArrayList<String> expectedQueries = new ArrayList<String>(Arrays.asList(expected.getQuery().split("&")));
+        ArrayList<String> actualQueries = new ArrayList<String>(Arrays.asList(actual.getQuery().split("&")));
+
+        assertEquals(expectedQueries.size(), actualQueries.size());
+        for (String expectedQuery : expectedQueries) {
+            assertTrue(expectedQuery, actualQueries.remove(expectedQuery));
+        }
+
+        assertTrue(actualQueries.isEmpty());
     }
 
     public static URI defiddler(URI uri) throws URISyntaxException {
@@ -143,12 +156,12 @@ public class TestHelper {
     }
 
     public static void verifyServiceStats(ServiceStats stats) {
-        Assert.assertNotNull(stats);
+        assertNotNull(stats);
         if (stats.getGeoReplication().getLastSyncTime() != null) {
-            Assert.assertEquals(GeoReplicationStatus.LIVE, stats.getGeoReplication().getStatus());
+            assertEquals(GeoReplicationStatus.LIVE, stats.getGeoReplication().getStatus());
         }
         else {
-            Assert.assertTrue(stats.getGeoReplication().getStatus() == GeoReplicationStatus.BOOTSTRAP
+            assertTrue(stats.getGeoReplication().getStatus() == GeoReplicationStatus.BOOTSTRAP
                     || stats.getGeoReplication().getStatus() == GeoReplicationStatus.UNAVAILABLE);
         }
     }

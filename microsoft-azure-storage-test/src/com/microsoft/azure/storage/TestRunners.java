@@ -8,6 +8,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClientTests;
+import com.microsoft.azure.storage.blob.BlobOutputStreamTests;
+import com.microsoft.azure.storage.blob.CloudAppendBlobTests;
 import com.microsoft.azure.storage.blob.CloudBlobClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobContainerTests;
 import com.microsoft.azure.storage.blob.CloudBlobDirectoryTests;
@@ -19,6 +21,7 @@ import com.microsoft.azure.storage.file.CloudFileClientTests;
 import com.microsoft.azure.storage.file.CloudFileDirectoryTests;
 import com.microsoft.azure.storage.file.CloudFileShareTests;
 import com.microsoft.azure.storage.file.CloudFileTests;
+import com.microsoft.azure.storage.file.FileSasTests;
 import com.microsoft.azure.storage.queue.CloudQueueClientGB18030Test;
 import com.microsoft.azure.storage.queue.CloudQueueClientTests;
 import com.microsoft.azure.storage.queue.CloudQueueTests;
@@ -92,8 +95,9 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ CloudBlobClientTests.class, CloudBlobContainerTests.class, CloudBlobDirectoryTests.class,
-            CloudBlockBlobTests.class, CloudPageBlobTests.class, LeaseTests.class, SasTests.class })
+    @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class, 
+        CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
+        LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
     }
 
@@ -111,7 +115,7 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileShareTests.class,
-            CloudFileTests.class })
+            CloudFileTests.class, FileSasTests.class })
     public static class FileTestSuite {
     }
 

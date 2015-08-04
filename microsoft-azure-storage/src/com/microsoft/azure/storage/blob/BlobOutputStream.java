@@ -19,23 +19,31 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.core.Base64;
+import com.microsoft.azure.storage.core.Logger;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 
@@ -43,55 +51,16 @@ import com.microsoft.azure.storage.core.Utility;
  * The class is an append-only stream for writing into storage.
  */
 public final class BlobOutputStream extends OutputStream {
-    /**
-     * Holds the random number generator used to create starting blockIDs.
-     */
-    private static Random blockSequenceGenerator = new Random();
 
     /**
-     * Holds the reference to the blob this stream is associated with.
+     * Holds the {@link AccessCondition} object that represents the access conditions for the blob.
      */
-    private final CloudBlob parentBlobRef;
+    private AccessCondition accessCondition;
 
     /**
-     * Determines if this stream is used against a page blob or block blob.
+     * Used for block blobs, holds the block id prefix.
      */
-    private BlobType streamType = BlobType.UNSPECIFIED;
-
-    /**
-     * A flag to determine if the stream is faulted, if so the lasterror will be thrown on next operation.
-     */
-    volatile boolean streamFaulted;
-
-    /**
-     * Holds the lock for synchronized access to the last error.
-     */
-    Object lastErrorLock = new Object();
-
-    /**
-     * Holds the last exception this stream encountered.
-     */
-    IOException lastError;
-
-    /**
-     * Holds the OperationContext for the current stream.
-     */
-    OperationContext opContext;
-
-    /**
-     * Holds the options for the current stream.
-     */
-    BlobRequestOptions options;
-
-    /**
-     * Holds the reference to the MD5 digest for the blob.
-     */
-    private MessageDigest md5Digest;
-
-    /**
-     * Used for block blobs, holds the current BlockID Sequence number.
-     */
-    private long blockIdSequenceNumber = -1;
+    private String blockIdPrefix;
 
     /**
      * Used for block blobs, holds the block list.
@@ -99,45 +68,64 @@ public final class BlobOutputStream extends OutputStream {
     private ArrayList<BlockEntry> blockList;
 
     /**
-     * Used for page blobs, holds the currentOffset the stream is writing to.
+     * The CompletionService used to await task completion for this stream.
      */
-    private long currentPageOffset;
-
+    private final ExecutorCompletionService<Void> completionService;
+    
     /**
-     * A private buffer to store data prior to committing to the cloud.
+     * Holds the futures of the executing tasks. The starting size of the set is a multiple of the concurrent request
+     * count to reduce the cost of resizing the set later.
      */
-    private ByteArrayOutputStream outBuffer;
-
-    /**
-     * Holds the number of currently buffered bytes.
-     */
-    private int currentBufferedBytes;
+    private final Set<Future<Void>> futureSet;
 
     /**
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
      * block size, for page blob this is the Page commit size.
      */
     private int internalWriteThreshold = -1;
+    
+    /**
+     * Holds the last exception this stream encountered.
+     */
+    private volatile IOException lastError = null;
 
     /**
-     * Holds the number of current outstanding requests.
+     * Holds the reference to the MD5 digest for the blob.
      */
-    private volatile int outstandingRequests;
+    private MessageDigest md5Digest;
+
+    /**
+     * Holds the OperationContext for the current stream.
+     */
+    private final OperationContext opContext;
+
+    /**
+     * Holds the options for the current stream.
+     */
+    private final BlobRequestOptions options;
+    
+
+    private long currentBlobOffset;
+
+    /**
+     * A private buffer to store data prior to committing to the cloud.
+     */
+    private volatile ByteArrayOutputStream outBuffer;
+
+    /**
+     * Holds the reference to the blob this stream is associated with.
+     */
+    private final CloudBlob parentBlobRef;
+     
+    /**
+     * Determines if this stream is used against a page blob or block blob.
+     */
+    private BlobType streamType = BlobType.UNSPECIFIED;
 
     /**
      * The ExecutorService used to schedule tasks for this stream.
      */
-    private final ExecutorService threadExecutor;
-
-    /**
-     * The CompletionService used to await task completion for this stream.
-     */
-    private final ExecutorCompletionService<Void> completionService;
-
-    /**
-     * Holds the {@link AccessCondition} object that represents the access conditions for the blob.
-     */
-    AccessCondition accessCondition = null;
+    private final ThreadPoolExecutor threadExecutor;
 
     /**
      * Initializes a new instance of the BlobOutputStream class.
@@ -154,7 +142,7 @@ public final class BlobOutputStream extends OutputStream {
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    protected BlobOutputStream(final CloudBlob parentBlob, final AccessCondition accessCondition,
+    private BlobOutputStream(final CloudBlob parentBlob, final AccessCondition accessCondition,
             final BlobRequestOptions options, final OperationContext opContext) throws StorageException {
         this.accessCondition = accessCondition;
         this.parentBlobRef = parentBlob;
@@ -162,11 +150,13 @@ public final class BlobOutputStream extends OutputStream {
         this.options = new BlobRequestOptions(options);
         this.outBuffer = new ByteArrayOutputStream();
         this.opContext = opContext;
-        this.streamFaulted = false;
 
         if (this.options.getConcurrentRequestCount() < 1) {
             throw new IllegalArgumentException("ConcurrentRequestCount");
         }
+        
+        this.futureSet = Collections.newSetFromMap(new ConcurrentHashMap<Future<Void>, Boolean>(
+                this.options.getConcurrentRequestCount() == null ? 1 : this.options.getConcurrentRequestCount() * 2));
 
         if (this.options.getStoreBlobContentMD5()) {
             try {
@@ -178,8 +168,13 @@ public final class BlobOutputStream extends OutputStream {
             }
         }
 
-        // V2 cachedThreadPool for perf.
-        this.threadExecutor = Executors.newFixedThreadPool(this.options.getConcurrentRequestCount());
+        // V2 cachedThreadPool for perf.        
+        this.threadExecutor = new ThreadPoolExecutor(
+                this.options.getConcurrentRequestCount(),
+                this.options.getConcurrentRequestCount(),
+                10, 
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>());
         this.completionService = new ExecutorCompletionService<Void>(this.threadExecutor);
     }
 
@@ -201,10 +196,10 @@ public final class BlobOutputStream extends OutputStream {
     protected BlobOutputStream(final CloudBlockBlob parentBlob, final AccessCondition accessCondition,
             final BlobRequestOptions options, final OperationContext opContext) throws StorageException {
         this((CloudBlob) parentBlob, accessCondition, options, opContext);
-        this.blockIdSequenceNumber = (long) (blockSequenceGenerator.nextInt(Integer.MAX_VALUE))
-                + blockSequenceGenerator.nextInt(Integer.MAX_VALUE - 100000);
-        this.blockList = new ArrayList<BlockEntry>();
 
+        this.blockList = new ArrayList<BlockEntry>();
+        this.blockIdPrefix = UUID.randomUUID().toString() + "-";
+        
         this.streamType = BlobType.BLOCK_BLOB;
         this.internalWriteThreshold = this.parentBlobRef.getStreamWriteSizeInBytes();
     }
@@ -213,7 +208,7 @@ public final class BlobOutputStream extends OutputStream {
      * Initializes a new instance of the BlobOutputStream class for a CloudPageBlob
      * 
      * @param parentBlob
-     *            A {@link CloudBlockBlob} object which represents the blob that this stream is associated with.
+     *            A {@link CloudPageBlob} object which represents the blob that this stream is associated with.
      * @param length
      *            A <code>long</code> which represents the length of the page blob in bytes, which must be a multiple of
      *            512.
@@ -233,7 +228,43 @@ public final class BlobOutputStream extends OutputStream {
             throws StorageException {
         this(parentBlob, accessCondition, options, opContext);
         this.streamType = BlobType.PAGE_BLOB;
+        
         this.internalWriteThreshold = (int) Math.min(this.parentBlobRef.getStreamWriteSizeInBytes(), length);
+    }
+    
+    /**
+     * Initializes a new instance of the BlobOutputStream class for a CloudAppendBlob
+     * 
+     * @param parentBlob
+     *            A {@link CloudAppendBlob} object which represents the blob that this stream is associated with.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object which specifies any additional options for the request
+     * @param opContext
+     *            An {@link OperationContext} object which is used to track the execution of the operation
+     * 
+     * @throws StorageException
+     *             An exception representing any error which occurred during the operation.
+     */
+    @DoesServiceRequest
+    protected BlobOutputStream(final CloudAppendBlob parentBlob, final AccessCondition accessCondition, 
+            final BlobRequestOptions options, final OperationContext opContext)
+            throws StorageException {
+        this((CloudBlob)parentBlob, accessCondition, options, opContext);
+        this.streamType = BlobType.APPEND_BLOB;
+        
+        this.accessCondition = accessCondition != null ? accessCondition : new AccessCondition();
+        if (this.accessCondition.getIfAppendPositionEqual() != null) {
+            this.currentBlobOffset = this.accessCondition.getIfAppendPositionEqual();
+        } 
+        else {
+            // If this is an existing blob, we've done a downloadProperties to get the length
+            // If this is a new blob, getLength will correctly return 0
+            this.currentBlobOffset = parentBlob.getProperties().getLength();
+        }
+        
+        this.internalWriteThreshold = this.parentBlobRef.getStreamWriteSizeInBytes();
     }
 
     /**
@@ -244,10 +275,8 @@ public final class BlobOutputStream extends OutputStream {
      *             closed.
      */
     private void checkStreamState() throws IOException {
-        synchronized (this.lastErrorLock) {
-            if (this.streamFaulted) {
-                throw this.lastError;
-            }
+        if (this.lastError != null) {
+            throw this.lastError;
         }
     }
 
@@ -260,7 +289,7 @@ public final class BlobOutputStream extends OutputStream {
      */
     @Override
     @DoesServiceRequest
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         try {
             // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
             // if an exception was thrown by any thread in the threadExecutor, realize it now
@@ -282,10 +311,7 @@ public final class BlobOutputStream extends OutputStream {
         }
         finally {
             // if close() is called again, an exception will be thrown
-            synchronized (this.lastErrorLock) {
-                this.streamFaulted = true;
-                this.lastError = new IOException(SR.STREAM_CLOSED);
-            }
+            this.lastError = new IOException(SR.STREAM_CLOSED);
 
             // if an exception was thrown and the executor was not yet closed, call shutDownNow() to cancel all tasks 
             // and shutdown the ExecutorService
@@ -302,7 +328,7 @@ public final class BlobOutputStream extends OutputStream {
      *             An exception representing any error which occurred during the operation.
      */
     @DoesServiceRequest
-    private void commit() throws StorageException {
+    private synchronized void commit() throws StorageException {
         if (this.options.getStoreBlobContentMD5()) {
             this.parentBlobRef.getProperties().setContentMD5(Base64.encode(this.md5Digest.digest()));
         }
@@ -312,11 +338,11 @@ public final class BlobOutputStream extends OutputStream {
             final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
             blobRef.commitBlockList(this.blockList, this.accessCondition, this.options, this.opContext);
         }
-        else if (this.streamType == BlobType.PAGE_BLOB) {
+        else if (this.options.getStoreBlobContentMD5()) {
             this.parentBlobRef.uploadProperties(this.accessCondition, this.options, this.opContext);
         }
     }
-
+    
     /**
      * Dispatches a write operation for a given length.
      * 
@@ -329,85 +355,139 @@ public final class BlobOutputStream extends OutputStream {
      *             closed.
      */
     @DoesServiceRequest
-    private synchronized void dispatchWrite(final int writeLength) throws IOException {
+    private synchronized void dispatchWrite() throws IOException {
+        final int writeLength = this.outBuffer.size();
         if (writeLength == 0) {
             return;
+        }
+        
+        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % Constants.PAGE_SIZE != 0)) {
+            throw new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength));
         }
 
         Callable<Void> worker = null;
 
-        if (this.outstandingRequests > this.options.getConcurrentRequestCount() * 2) {
+        if (this.threadExecutor.getQueue().size() >= this.options.getConcurrentRequestCount() * 2) {
             this.waitForTaskToComplete();
+        } 
+        
+        if (this.futureSet.size() >= this.options.getConcurrentRequestCount() * 2) {
+            this.clearCompletedFutures();
         }
 
         final ByteArrayInputStream bufferRef = new ByteArrayInputStream(this.outBuffer.toByteArray());
 
         if (this.streamType == BlobType.BLOCK_BLOB) {
-            final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
-            final String blockID = Base64.encode(Utility.getBytesFromLong(this.blockIdSequenceNumber++));
+            final String blockID = this.getCurrentBlockId();
+
             this.blockList.add(new BlockEntry(blockID, BlockSearchMode.LATEST));
 
             worker = new Callable<Void>() {
                 @Override
                 public Void call() {
-                    try {
-                        blobRef.uploadBlock(blockID, bufferRef, writeLength, BlobOutputStream.this.accessCondition,
-                                BlobOutputStream.this.options, BlobOutputStream.this.opContext);
-                    }
-                    catch (final IOException e) {
-                        synchronized (BlobOutputStream.this.lastErrorLock) {
-                            BlobOutputStream.this.streamFaulted = true;
-                            BlobOutputStream.this.lastError = e;
-                        }
-                    }
-                    catch (final StorageException e) {
-                        synchronized (BlobOutputStream.this.lastErrorLock) {
-                            BlobOutputStream.this.streamFaulted = true;
-                            BlobOutputStream.this.lastError = Utility.initIOException(e);
-                        }
-                    }
+                    BlobOutputStream.this.writeBlock(bufferRef, blockID, writeLength);
                     return null;
                 }
             };
         }
         else if (this.streamType == BlobType.PAGE_BLOB) {
-            final CloudPageBlob blobRef = (CloudPageBlob) this.parentBlobRef;
-            long tempOffset = this.currentPageOffset;
-            long tempLength = writeLength;
-
-            final long opWriteLength = tempLength;
-            final long opOffset = tempOffset;
-            this.currentPageOffset += writeLength;
+            final long opOffset = this.currentBlobOffset;
+            this.currentBlobOffset += writeLength;
 
             worker = new Callable<Void>() {
                 @Override
                 public Void call() {
-                    try {
-                        blobRef.uploadPages(bufferRef, opOffset, opWriteLength, BlobOutputStream.this.accessCondition,
-                                BlobOutputStream.this.options, BlobOutputStream.this.opContext);
-                    }
-                    catch (final IOException e) {
-                        synchronized (BlobOutputStream.this.lastErrorLock) {
-                            BlobOutputStream.this.streamFaulted = true;
-                            BlobOutputStream.this.lastError = e;
-                        }
-                    }
-                    catch (final StorageException e) {
-                        synchronized (BlobOutputStream.this.lastErrorLock) {
-                            BlobOutputStream.this.streamFaulted = true;
-                            BlobOutputStream.this.lastError = Utility.initIOException(e);
-                        }
-                    }
+                    BlobOutputStream.this.writePages(bufferRef, opOffset, writeLength);
+                    return null;
+                }
+            };
+        }
+        else if (this.streamType == BlobType.APPEND_BLOB) {
+            final long opOffset = this.currentBlobOffset;
+            this.currentBlobOffset += writeLength;
+
+            // We cannot differentiate between max size condition failing only in the retry versus failing in the 
+            // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle 
+            // the former in the append block method.
+            if (this.accessCondition.getIfMaxSizeLessThanOrEqual() != null
+                    && this.currentBlobOffset > this.accessCondition.getIfMaxSizeLessThanOrEqual()) {
+                this.lastError = new IOException(SR.INVALID_BLOCK_SIZE);
+                throw this.lastError;
+            }
+            
+            worker = new Callable<Void>() {
+                @Override
+                public Void call() {
+                    BlobOutputStream.this.appendBlock(bufferRef, opOffset, writeLength);
                     return null;
                 }
             };
         }
 
-        // Do work and reset buffer.
-        this.completionService.submit(worker);
-        this.outstandingRequests++;
-        this.currentBufferedBytes = 0;
+        // Add future to set
+        this.futureSet.add(this.completionService.submit(worker));
+        
+        // Reset buffer.
         this.outBuffer = new ByteArrayOutputStream();
+    }
+    
+    private void writeBlock(ByteArrayInputStream blockData, String blockId, long writeLength) {
+        final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
+
+        try {
+            blobRef.uploadBlock(blockId, blockData, writeLength, this.accessCondition, this.options, this.opContext);
+        }
+        catch (final IOException e) {
+            this.lastError = e;
+        }
+        catch (final StorageException e) {
+            this.lastError = Utility.initIOException(e);
+        }
+    }
+
+    private void writePages(ByteArrayInputStream pageData, long offset, long writeLength) {
+        final CloudPageBlob blobRef = (CloudPageBlob) this.parentBlobRef;
+
+        try {
+            blobRef.uploadPages(pageData, offset, writeLength, this.accessCondition, this.options, this.opContext);
+        }
+        catch (final IOException e) {
+            this.lastError = e;
+        }
+        catch (final StorageException e) {
+            this.lastError = Utility.initIOException(e);
+        }
+    }
+
+    private void appendBlock(ByteArrayInputStream blockData, long offset, long writeLength) {
+        final CloudAppendBlob blobRef = (CloudAppendBlob) this.parentBlobRef;
+        this.accessCondition.setIfAppendPositionEqual(offset);
+
+        int previousResultsCount = this.opContext.getRequestResults().size();
+        try {
+            blobRef.appendBlock(blockData, writeLength, this.accessCondition, this.options, this.opContext);
+        }
+        catch (final IOException e) {
+            this.lastError = e;
+        }
+        catch (final StorageException e) {
+            if (this.options.getAbsorbConditionalErrorsOnRetry()
+                    && e.getHttpStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED
+                    && e.getExtendedErrorInformation() != null
+                    && e.getExtendedErrorInformation().getErrorCode() != null
+                    && (e.getExtendedErrorInformation().getErrorCode()
+                            .equals(StorageErrorCodeStrings.INVALID_APPEND_POSITION) || e.getExtendedErrorInformation()
+                            .getErrorCode().equals(StorageErrorCodeStrings.INVALID_MAX_BLOB_SIZE_CONDITION))
+                    && (this.opContext.getRequestResults().size() - previousResultsCount > 1)) {
+
+                // Pre-condition failure on a retry should be ignored in a single writer scenario since 
+                // the request succeeded in the first attempt.
+                Logger.info(this.opContext, SR.PRECONDITION_FAILURE_IGNORED);
+            }
+            else {
+                this.lastError = Utility.initIOException(e);
+            }
+        }
     }
 
     /**
@@ -419,57 +499,89 @@ public final class BlobOutputStream extends OutputStream {
      */
     @Override
     @DoesServiceRequest
-    public synchronized void flush() throws IOException {
+    public void flush() throws IOException {
         this.checkStreamState();
 
-        if (this.streamType == BlobType.PAGE_BLOB && this.currentBufferedBytes > 0
-                && (this.currentBufferedBytes % Constants.PAGE_SIZE != 0)) {
-            throw new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, this.currentBufferedBytes));
-
-            // Non 512 byte remainder, uncomment to pad with bytes and commit.
-            /*
-             * byte[] nullBuff = new byte[BlobConstants.PageSize - this.currentBufferedBytes % BlobConstants.PageSize];
-             * this.write(nullBuff);
-             */
-        }
-
-        // Dispatch a write for the current bytes in the buffer
-        this.dispatchWrite(this.currentBufferedBytes);
+        this.dispatchWrite();
 
         // Waits for all submitted tasks to complete
-        while (this.outstandingRequests > 0) {
-            // Wait for a task to complete
-            this.waitForTaskToComplete();
+        Set<Future<Void>> requests = new HashSet<Future<Void>>(this.futureSet);
+        for (Future<Void> request : requests) {
+            // wait for the future to complete
+            try {
+                request.get();
+            }
+            catch (Exception e) {
+                throw Utility.initIOException(e);
+            }
 
             // If that task threw an error, fail fast
             this.checkStreamState();
         }
     }
+   
+    /**
+     * Generates a new block ID to be used for PutBlock.
+     * 
+     * @return Base64 encoded block ID
+     * @throws IOException
+     */
+    private String getCurrentBlockId() throws IOException
+    {
+        String blockIdSuffix = String.format("%06d", this.blockList.size());
+        
+        byte[] blockIdInBytes;
+        try {
+            blockIdInBytes = (this.blockIdPrefix + blockIdSuffix).getBytes(Constants.UTF8_CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            // this should never happen, UTF8 is a default charset
+            throw new IOException(e);
+        }
+        
+        return Base64.encode(blockIdInBytes);
+    }
 
     /**
-     * Waits for one task to complete
+     * Waits for at least one task to complete.
      * 
      * @throws IOException
      *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
      *             closed.
      */
     private void waitForTaskToComplete() throws IOException {
-        try {
-            final Future<Void> future = this.completionService.take();
-            future.get();
+        boolean completed = false;
+        while (this.completionService.poll() != null) {
+            completed = true;
         }
-        catch (final InterruptedException e) {
-            throw Utility.initIOException(e);
+        
+        if (!completed) {
+            try {
+                this.completionService.take();
+            }
+            catch (final InterruptedException e) {
+                throw Utility.initIOException(e);
+            }
         }
-        catch (final ExecutionException e) {
-            throw Utility.initIOException(e);
+    }
+    
+    
+    /**
+     * Removes futures which are done from the future set.
+     */
+    private void clearCompletedFutures() {
+        for (Future<Void> request : this.futureSet) {
+            if (request.isDone()) {
+                this.futureSet.remove(request);
+            }
         }
-
-        this.outstandingRequests--;
     }
 
     /**
      * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
+     * <p>
+     * If you are using {@link CloudAppendBlob} and are certain of a single writer scenario, please look at 
+     * {@link BlobRequestOptions#setAbsorbConditionalErrorsOnRetry(Boolean)} and see if setting this flag to 
+     * <code>true</code> is acceptable for you.
      * 
      * @param data
      *            A <code>byte</code> array which represents the data to write.
@@ -486,6 +598,10 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Writes length bytes from the specified byte array starting at offset to this output stream.
+     * <p>
+     * If you are using {@link CloudAppendBlob} and are certain of a single writer scenario, please look at 
+     * {@link BlobRequestOptions#setAbsorbConditionalErrorsOnRetry(Boolean)} and see if setting this flag to 
+     * <code>true</code> is acceptable for you.
      * 
      * @param data
      *            A <code>byte</code> array which represents the data to write.
@@ -510,6 +626,10 @@ public final class BlobOutputStream extends OutputStream {
 
     /**
      * Writes all data from the InputStream to the Blob.
+     * <p>
+     * If you are using {@link CloudAppendBlob} and are certain of a single writer scenario, please look at 
+     * {@link BlobRequestOptions#setAbsorbConditionalErrorsOnRetry(Boolean)} and see if setting this flag to 
+     * <code>true</code> is acceptable for you.
      * 
      * @param sourceStream
      *            An {@link InputStream} object which species the data to write to the Blob.
@@ -529,6 +649,10 @@ public final class BlobOutputStream extends OutputStream {
      * Writes the specified byte to this output stream. The general contract for write is that one byte is written to
      * the output stream. The byte to be written is the eight low-order bits of the argument b. The 24 high-order bits
      * of b are ignored.
+     * <p>
+     * If you are using {@link CloudAppendBlob} and are certain of a single writer scenario, please look at 
+     * {@link BlobRequestOptions#setAbsorbConditionalErrorsOnRetry(Boolean)} and see if setting this flag to 
+     * <code>true</code> is acceptable for you.
      * 
      * @param byteVal
      *            An <code>int</code> which represents the bye value to write.
@@ -542,7 +666,7 @@ public final class BlobOutputStream extends OutputStream {
     public void write(final int byteVal) throws IOException {
         this.write(new byte[] { (byte) (byteVal & 0xFF) });
     }
-
+    
     /**
      * Writes the data to the buffer and triggers writes to the service as needed.
      * 
@@ -562,8 +686,8 @@ public final class BlobOutputStream extends OutputStream {
     private synchronized void writeInternal(final byte[] data, int offset, int length) throws IOException {
         while (length > 0) {
             this.checkStreamState();
-
-            final int availableBufferBytes = this.internalWriteThreshold - this.currentBufferedBytes;
+            
+            final int availableBufferBytes = this.internalWriteThreshold - this.outBuffer.size();
             final int nextWrite = Math.min(availableBufferBytes, length);
 
             // If we need to set MD5 then update the digest accordingly
@@ -572,12 +696,11 @@ public final class BlobOutputStream extends OutputStream {
             }
 
             this.outBuffer.write(data, offset, nextWrite);
-            this.currentBufferedBytes += nextWrite;
             offset += nextWrite;
             length -= nextWrite;
 
-            if (this.currentBufferedBytes == this.internalWriteThreshold) {
-                this.dispatchWrite(this.internalWriteThreshold);
+            if (this.outBuffer.size() == this.internalWriteThreshold) {
+                this.dispatchWrite();
             }
         }
     }

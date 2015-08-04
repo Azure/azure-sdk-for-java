@@ -242,8 +242,8 @@ public class CloudBlobContainerTests {
      */
     @Test
     @Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class })
-    public void testCloudBlobContainerSetPermissions() throws StorageException, InterruptedException,
-            URISyntaxException {
+    public void testCloudBlobContainerSetPermissions()
+            throws StorageException, InterruptedException, URISyntaxException {
         CloudBlobClient client = BlobTestHelper.createCloudBlobClient();
         this.container.create();
 
@@ -251,12 +251,10 @@ public class CloudBlobContainerTests {
         assertTrue(BlobContainerPublicAccessType.OFF.equals(permissions.getPublicAccess()));
         assertEquals(0, permissions.getSharedAccessPolicies().size());
 
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        cal = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-                cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE));
-        Date start = cal.getTime();
+        final Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        final Date start = cal.getTime();
         cal.add(Calendar.MINUTE, 30);
-        Date expiry = cal.getTime();
+        final Date expiry = cal.getTime();
 
         permissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
@@ -288,14 +286,7 @@ public class CloudBlobContainerTests {
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testCloudBlobContainerPermissionsFromString() {
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        Date start = cal.getTime();
-        cal.add(Calendar.MINUTE, 30);
-        Date expiry = cal.getTime();
-
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
-        policy.setSharedAccessStartTime(start);
-        policy.setSharedAccessExpiryTime(expiry);
 
         policy.setPermissionsFromString("rwdl");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
@@ -319,14 +310,7 @@ public class CloudBlobContainerTests {
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testCloudBlobContainerPermissionsToString() {
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        Date start = cal.getTime();
-        cal.add(Calendar.MINUTE, 30);
-        Date expiry = cal.getTime();
-
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
-        policy.setSharedAccessStartTime(start);
-        policy.setSharedAccessExpiryTime(expiry);
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST));
@@ -545,12 +529,12 @@ public class CloudBlobContainerTests {
         // leased blob
         CloudBlockBlob leasedBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB,
                 "originalBlobLeased", length, null);
-        leasedBlob.acquireLease(null, null);
+        leasedBlob.acquireLease();
 
         // copy of regular blob
         CloudBlockBlob copyBlob = this.container.getBlockBlobReference(BlobTestHelper
                 .generateRandomBlobNameWithPrefix("originalBlobCopy"));
-        copyBlob.startCopyFromBlob(originalBlob);
+        copyBlob.startCopy(originalBlob);
         BlobTestHelper.waitForCopy(copyBlob);
 
         // snapshot of regular blob
@@ -559,7 +543,7 @@ public class CloudBlobContainerTests {
         // snapshot of the copy of the regular blob
         CloudBlockBlob copySnapshot = this.container.getBlockBlobReference(BlobTestHelper
                 .generateRandomBlobNameWithPrefix("originalBlobSnapshotCopy"));
-        copySnapshot.startCopyFromBlob(copyBlob);
+        copySnapshot.startCopy(copyBlob);
         BlobTestHelper.waitForCopy(copySnapshot);
 
         int count = 0;

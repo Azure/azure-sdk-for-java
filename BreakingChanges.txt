@@ -1,3 +1,32 @@
+Changes in 3.0.0
+
+BLOB
+ * Removed getSubDirectoryReference(). Use getDirectoryReference() instead.
+ * Changed maxResults argument of CloudBlobDirectory.ListBlobsSegmented() to type Integer instead of int.
+ * Deprecated startCopyFromBlob() on CloudBlob. Use startCopy() instead.
+ * Deprecated blob and container constructors which take service clients in favor of constructors which take credentials.
+ * Invalid lease duration and break period values will cause a client-side StorageException rather than failing on the service.
+
+QUEUE
+ * Deprecated queue constructors which take service clients in favor of constructors which take credentials.
+
+TABLE
+ * Removed getEntityClass() in TableQuery. Please use getClazzType() instead.
+ * Deprecated the setters for timestamp as this property is only modifiable by the service.
+ * Deprecated table constructors which take service clients in favor of constructors which take credentials.
+
+FILE
+ * Removed getSubDirectoryReference(). Use getDirectoryReference() instead.
+ * Changed exception thrown by requesting a file's name from a URI with no file name from StorageException to IllegalArgumentException.
+ * Deprecated file, directory and share constructors which take service clients in favor of constructors which take credentials.
+
+OTHER
+ * Removed deprecated AuthenticationScheme and its getter and setter. In the future only SharedKey will be used.
+ * Removed deprecated getter/setters for all request option properties on the service clients. Please use the default request options getter/setters instead.
+ * Deprecated the Credentials and StorageKey classes. Please use the appropriate methods on StorageCredentialsAccountAndKey instead.
+ * Changed library behavior to retry all exceptions thrown when parsing a response object.
+ * Changed behavior to stop removing query parameters passed in with the resource URI if that URI contains a SAS token. Some query parameters such as comp, restype, snapshot and api-version will still be removed.
+
 Changes in 2.0.0
 
 BLOB

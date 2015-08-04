@@ -156,7 +156,7 @@ abstract class Canonicalizer {
         appendCanonicalizedElement(canonicalizedString,
                 Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_LANGUAGE));
         appendCanonicalizedElement(canonicalizedString,
-                contentLength == -1 ? Constants.EMPTY_STRING : String.valueOf(contentLength));
+                contentLength <= 0 ? Constants.EMPTY_STRING : String.valueOf(contentLength));
         appendCanonicalizedElement(canonicalizedString,
                 Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_MD5));
         appendCanonicalizedElement(canonicalizedString, contentType != null ? contentType : Constants.EMPTY_STRING);
@@ -330,8 +330,8 @@ abstract class Canonicalizer {
             }
 
             // key turns out to be null for ?a&b&c&d
-            lowercasedKeyNameValue.put(entry.getKey() == null ? null : entry.getKey().toLowerCase(Utility.LOCALE_US),
-                    stringValue.toString());
+            lowercasedKeyNameValue.put((entry.getKey()) == null ? null :
+                entry.getKey().toLowerCase(Utility.LOCALE_US), stringValue.toString());
         }
 
         final ArrayList<String> sortedKeys = new ArrayList<String>(lowercasedKeyNameValue.keySet());
@@ -405,7 +405,7 @@ abstract class Canonicalizer {
      *            a one to many map of key / values representing the header values for the connection.
      * @param headerName
      *            the name of the header to lookup
-     * @return an ArrayList<String> of all trimmed values cooresponding to the requested headerName. This may be empty
+     * @return an ArrayList<String> of all trimmed values corresponding to the requested headerName. This may be empty
      *         if the header is not found.
      */
     private static ArrayList<String> getHeaderValues(final Map<String, List<String>> headers, final String headerName) {

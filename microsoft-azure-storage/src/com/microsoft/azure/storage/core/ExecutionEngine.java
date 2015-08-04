@@ -18,15 +18,9 @@ package com.microsoft.azure.storage.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
 import java.util.Date;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeoutException;
-
-import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.LocationMode;
@@ -44,7 +38,6 @@ import com.microsoft.azure.storage.SendingRequestEvent;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageLocation;
-import com.microsoft.azure.storage.table.TableServiceException;
 
 /**
  * RESERVED FOR INTERNAL USE. A class that handles execution of StorageOperations and enforces retry policies.
@@ -190,95 +183,21 @@ public final class ExecutionEngine {
                     }
                 }
             }
-            catch (final TimeoutException e) {
-                // Retryable
-                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                translatedException = StorageException.translateException(task, e, opContext);
-                task.getResult().setException(translatedException);
-            }
-            catch (final SocketTimeoutException e) {
-                // Retryable
-                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
-                        "The operation did not complete in the specified time.", -1, null, e);
-                task.getResult().setException(translatedException);
-            }
-            catch (final IOException e) {
-                // Non Retryable if the inner exception is actually an TimeoutException, otherwise Retryable
-                if (e.getCause() instanceof TimeoutException) {
-                    translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
-                            SR.MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION, Constants.HeaderConstants.HTTP_UNUSED_306, null,
-                            (Exception) e.getCause());
-                    task.getResult().setException(translatedException);
-                    Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getCause().getClass().getName(), e
-                            .getCause().getMessage());
-                    throw translatedException;
-                }
-                else {
-                    Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    translatedException = StorageException.translateException(task, e, opContext);
-                    task.getResult().setException(translatedException);
-                }
-            }
-            catch (final XMLStreamException e) {
-                // Non Retryable except when the inner exception is actually an IOException
-                if (e.getCause() instanceof SocketException) {
-                    translatedException = StorageException.translateException(task,
-                            (Exception) e.getCause(), opContext);
-                }
-                else {
-                    translatedException = StorageException.translateException(task, e, opContext);
-                }
-
-                task.getResult().setException(translatedException);
-
-                if (!(e.getCause() instanceof IOException)) {
-                    Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    throw translatedException;
-                }
-                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-            }
-            catch (final InvalidKeyException e) {
-                // Non Retryable, just throw
-                translatedException = StorageException.translateException(task, e, opContext);
-                task.getResult().setException(translatedException);
-                Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                throw translatedException;
-            }
-            catch (final URISyntaxException e) {
-                // Non Retryable, just throw
-                translatedException = StorageException.translateException(task, e, opContext);
-                task.getResult().setException(translatedException);
-                Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                throw translatedException;
-            }
-            catch (final TableServiceException e) {
+            catch (final StorageException e) {
+                // In case of table batch error or internal error, the exception will contain a different
+                // status code and message than the original HTTP response. Reset based on error values.
                 task.getResult().setStatusCode(e.getHttpStatusCode());
                 task.getResult().setStatusMessage(e.getMessage());
                 task.getResult().setException(e);
-
-                if (!e.isRetryable()) {
-                    Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    throw e;
-                }
-                else {
-                    Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                    translatedException = e;
-                }
-            }
-            catch (final StorageException e) {
-                // Non Retryable, just throw
-                // do not translate StorageException
-                task.getResult().setException(e);
-                Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                throw e;
+                
+                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
+                translatedException = e;
             }
             catch (final Exception e) {
-                // Non Retryable, just throw
+                // Retryable, wrap
+                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
                 translatedException = StorageException.translateException(task, e, opContext);
                 task.getResult().setException(translatedException);
-                Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                throw translatedException;
             }
             finally {
                 opContext.setClientTimeInMs(new Date().getTime() - startTime);

@@ -45,7 +45,7 @@ public class TableODataTests {
         this.table.createIfNotExists();
 
         final CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-        this.options = TableRequestOptions.applyDefaults(this.options, tClient);
+        this.options = TableRequestOptions.populateAndApplyDefaults(this.options, tClient);
         this.options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
 
         // Insert Entity

@@ -126,6 +126,7 @@ final class TableEntitySerializer {
      * @throws StorageException
      *             if a Storage service error occurs.
      */
+    @SuppressWarnings("deprecation")
     private static void writeAtomEntity(final TableEntity entity, final boolean isTableEntry,
             final XMLStreamWriter xmlw, final OperationContext opContext) throws XMLStreamException, StorageException {
         HashMap<String, EntityProperty> properties = entity.writeEntity(opContext);

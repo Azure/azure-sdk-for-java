@@ -54,8 +54,9 @@ public final class BlobContainerProperties {
      * The ETag value is a unique identifier that is updated when a write operation is performed against the container.
      * It may be used to perform operations conditionally, providing concurrency control and improved efficiency.
      * <p>
-     * The {@link AccessCondition#ifMatch} and {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
-     * an {@link AccessCondition} object that may be specified on the request.
+     * The {@link AccessCondition#generateIfMatchCondition(String)} and
+     * {@link AccessCondition#generateIfNoneMatchCondition(String)} methods take an ETag value and return an
+     * {@link AccessCondition} object that may be specified on the request.
      * 
      * @return A <code>String</code> which represents the ETag.
      */

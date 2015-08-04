@@ -12,22 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.azure.storage;
+package com.microsoft.azure.storage.file;
 
 /**
- * Specifies the authentication scheme that is used to sign HTTP requests.
- * 
- * @deprecated as of 2.0.0. In the future, only SHAREDKEYFULL will be used.
+ * Specifies the set of possible permissions for a shared access policy.
  */
-@Deprecated
-public enum AuthenticationScheme {
+public enum SharedAccessFilePermissions {
     /**
-     * Signs HTTP requests using the Shared Key Lite authentication scheme.
+     * Specifies Read access granted.
      */
-    SHAREDKEYLITE,
+    READ,
 
     /**
-     * Signs HTTP requests using the Shared Key authentication scheme.
+     * Specifies Write access granted.
      */
-    SHAREDKEYFULL;
+    WRITE,
+
+    /**
+     * Specifies Delete access granted for files.
+     */
+    DELETE,
+
+    /**
+     * Specifies List access granted.
+     */
+    LIST;
 }

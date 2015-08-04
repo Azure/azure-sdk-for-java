@@ -66,7 +66,7 @@ public class TableRequestOptions extends RequestOptions {
      * that may have been written using versions of this library prior to 2.0.0.
      * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
      */
-    private boolean dateBackwardCompatibility = false;
+    private Boolean dateBackwardCompatibility;
 
     /**
      * Creates an instance of the <code>TableRequestOptions</code>
@@ -87,38 +87,47 @@ public class TableRequestOptions extends RequestOptions {
         if (other != null) {
             this.setTablePayloadFormat(other.getTablePayloadFormat());
             this.setPropertyResolver(other.getPropertyResolver());
-            this.dateBackwardCompatibility = other.dateBackwardCompatibility;
+            this.setDateBackwardCompatibility(other.getDateBackwardCompatibility());
         }
     }
 
     /**
-     * Reserved for internal use. Initializes the values for this <code>TableRequestOptions</code> instance, if they are
-     * currently <code>null</code>, using the values specified in the {@link CloudTableClient} parameter.
+     * Initializes the values for this <code>TableRequestOptions</code> instance, if they are currently
+     * <code>null</code>, using the values specified in the {@link CloudTableClient} parameter.
      * 
      * @param options
-     *            A {@link TableRequestOptions} object which represents the input options to copy from when applying defaults.
+     *            A {@link TableRequestOptions} object which represents the input options to copy from when applying
+     *            defaults.
      * @param client
      *            A {@link CloudTableClient} object from which to copy the timeout and retry policy.
      *
      * @return A {@link TableRequestOptions} object.
      * 
      */
-    protected static final TableRequestOptions applyDefaults(final TableRequestOptions options,
+    protected static final TableRequestOptions populateAndApplyDefaults(final TableRequestOptions options,
             final CloudTableClient client) {
         TableRequestOptions modifiedOptions = new TableRequestOptions(options);
-        TableRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions());
-        return TableRequestOptions.applyDefaultsInternal(modifiedOptions, client);
+        TableRequestOptions.populate(modifiedOptions, client.getDefaultRequestOptions());
+        TableRequestOptions.applyDefaults(modifiedOptions);
+        return modifiedOptions;
     }
 
-    private static final TableRequestOptions applyDefaultsInternal(final TableRequestOptions modifiedOptions,
-            CloudTableClient client) {
+    /**
+     * Applies defaults to the options passed in.
+     * 
+     * @param modifiedOptions
+     *          The options to apply defaults to.
+     */
+    protected static void applyDefaults(final TableRequestOptions modifiedOptions) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         RequestOptions.applyBaseDefaultsInternal(modifiedOptions);
         if (modifiedOptions.getTablePayloadFormat() == null) {
             modifiedOptions.setTablePayloadFormat(TablePayloadFormat.Json);
         }
-
-        return modifiedOptions;
+        
+        if (modifiedOptions.getDateBackwardCompatibility() == null) {
+            modifiedOptions.setDateBackwardCompatibility(false);
+        }
     }
 
     /**
@@ -131,8 +140,7 @@ public class TableRequestOptions extends RequestOptions {
      *            
      * @return A {@link RequestOptions} object.
      */
-    private static final RequestOptions populateRequestOptions(TableRequestOptions modifiedOptions,
-            final TableRequestOptions clientOptions) {
+    private static void populate(TableRequestOptions modifiedOptions, final TableRequestOptions clientOptions) {
         RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, true /* setStartTime */);
         if (modifiedOptions.getTablePayloadFormat() == null) {
             modifiedOptions.setTablePayloadFormat(clientOptions.getTablePayloadFormat());
@@ -141,8 +149,10 @@ public class TableRequestOptions extends RequestOptions {
         if (modifiedOptions.getPropertyResolver() == null) {
             modifiedOptions.setPropertyResolver(clientOptions.getPropertyResolver());
         }
-
-        return modifiedOptions;
+        
+        if (modifiedOptions.getDateBackwardCompatibility() == null) {
+            modifiedOptions.setDateBackwardCompatibility(clientOptions.getDateBackwardCompatibility());
+        }
     }
 
     /**
@@ -171,14 +181,14 @@ public class TableRequestOptions extends RequestOptions {
     /**
      * Gets whether the client should look to correct Date values stored on a {@link TableEntity}
      * that may have been written using versions of this library prior to 2.0.0,
-     * see {@link #setDateBackwardCompatibility(boolean)}.
+     * see {@link #setDateBackwardCompatibility(Boolean)}.
      * <p>
      * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
      * 
      * @return
      *        <code>true</code> if <code>dateBackwardCompatibility</code> is enabled; otherwise, <code>false</code>
      */
-    public boolean getDateBackwardCompatibility() {
+    public Boolean getDateBackwardCompatibility() {
         return this.dateBackwardCompatibility;
     }
 
@@ -187,7 +197,7 @@ public class TableRequestOptions extends RequestOptions {
      * <p>
      * The default {@link TablePayloadFormat} is set in the client and is by default {@link TablePayloadFormat#Json}.
      * You can change the {@link TablePayloadFormat} on this request by setting this property. You can also change the
-     * value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made
+     * value on the {@link CloudTableClient#getDefaultRequestOptions()} object so that all subsequent requests made
      * via the service client will use that {@link TablePayloadFormat}.
      * 
      * @param payloadFormat
@@ -203,7 +213,7 @@ public class TableRequestOptions extends RequestOptions {
      * <p>
      * The default {@link PropertyResolver} is set in the client and is by default null, indicating not to use a
      * property resolver. You can change the {@link PropertyResolver} on this request by setting this property. You can
-     * also change the value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all subsequent
+     * also change the value on the {@link CloudTableClient#getDefaultRequestOptions()} object so that all subsequent
      * requests made via the service client will use that {@link PropertyResolver}.
      * 
      * @param propertyResolver
@@ -219,7 +229,7 @@ public class TableRequestOptions extends RequestOptions {
      * <p>
      * {@link #dateBackwardCompatibility} is by default <code>false</code>, indicating a post 2.0.0 version or mixed-
      * platform usage. You can change the {@link #dateBackwardCompatibility} on this request by setting this property.
-     * You can also change the value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all
+     * You can also change the value on the {@link CloudTableClient#getDefaultRequestOptions()} object so that all
      * subsequent requests made via the service client will use that {@link #dateBackwardCompatibility}.
      * <p>
      * See <a href="http://go.microsoft.com/fwlink/?LinkId=523753">here</a> for more details.
@@ -227,7 +237,7 @@ public class TableRequestOptions extends RequestOptions {
      * @param dateBackwardCompatibility
      *        <code>true</code> to enable <code>dateBackwardCompatibility</code>; otherwise, <code>false</code>
      */
-    public void setDateBackwardCompatibility(boolean dateBackwardCompatibility) {
+    public void setDateBackwardCompatibility(Boolean dateBackwardCompatibility) {
         this.dateBackwardCompatibility = dateBackwardCompatibility;
     }
 }

@@ -55,6 +55,11 @@ public final class FileProperties {
      * returns <code>null</code>.
      */
     private String contentType;
+    
+    /**
+     * Represents the state of the most recent or pending copy operation.
+     */
+    private CopyState copyState;
 
     /**
      * Represents the size, in bytes, of the file.
@@ -154,15 +159,25 @@ public final class FileProperties {
     public String getContentType() {
         return this.contentType;
     }
-
+    
+    /**
+     * Gets the file's copy state.
+     * 
+     * @return A {@link CopyState} object which represents the copy state of the file.
+     */
+    public CopyState getCopyState() {
+        return this.copyState;
+    }
+    
     /**
      * Gets the ETag value for the file.
      * <p>
      * The ETag value is a unique identifier that is updated when a write operation is performed against the file. It
      * may be used to perform operations conditionally, providing concurrency control and improved efficiency.
      * <p>
-     * The {@link AccessCondition#ifMatch} and {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
-     * an {@link AccessCondition} object that may be specified on the request.
+     * The {@link AccessCondition#generateIfMatchCondition(String)} and
+     * {@link AccessCondition#generateIfNoneMatchCondition(String)} methods take an ETag value and return an
+     * {@link AccessCondition} object that may be specified on the request.
      * 
      * @return A <code>String</code> which represents the ETag value.
      */
@@ -246,6 +261,16 @@ public final class FileProperties {
      */
     public void setContentType(final String contentType) {
         this.contentType = contentType;
+    }
+    
+    /**
+     * Sets the copy state value for the file.
+     * 
+     * @param copyState
+     *        A {@link CopyState} object which specifies the copy state value to set.
+     */
+    protected void setCopyState(final CopyState copyState) {
+        this.copyState = copyState;
     }
 
     /**

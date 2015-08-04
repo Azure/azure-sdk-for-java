@@ -15,18 +15,19 @@
 package com.microsoft.azure.storage.core;
 
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ServiceClient;
+import com.microsoft.azure.storage.SharedAccessHeaders;
 import com.microsoft.azure.storage.SharedAccessPolicy;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.SharedAccessBlobHeaders;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.queue.SharedAccessQueuePolicy;
 import com.microsoft.azure.storage.table.SharedAccessTablePolicy;
 
@@ -42,21 +43,22 @@ public class SharedAccessSignatureHelper {
      * @param groupPolicyIdentifier
      *            An optional identifier for the policy.
      * @param resourceType
-     *            Either "b" for blobs or "c" for containers.
+     *            Either "b" for blobs, "c" for containers, "f" for files, or "s" for shares.
      * @param signature
      *            The signature to use.
      * @return The finished query builder
      * @throws IllegalArgumentException
      * @throws StorageException
      */
-    public static UriQueryBuilder generateSharedAccessSignatureForBlob(final SharedAccessBlobPolicy policy,
-            final SharedAccessBlobHeaders headers, final String groupPolicyIdentifier, final String resourceType,
-            final String signature) throws StorageException {
+    public static UriQueryBuilder generateSharedAccessSignatureForBlobAndFile(
+            final SharedAccessPolicy policy, final SharedAccessHeaders headers,
+            final String groupPolicyIdentifier, final String resourceType, final String signature)
+            throws StorageException {
         Utility.assertNotNullOrEmpty("resourceType", resourceType);
 
         return generateSharedAccessSignatureHelper(policy, null /* startPartitionKey */, null /* startRowKey */,
                 null /* endPartitionKey */, null /* endRowKey */, groupPolicyIdentifier, resourceType,
-                null /* tableName */, signature, null /* accoutKetName */, headers);
+                null /* tableName */, signature, headers);
     }
 
     /**
@@ -76,7 +78,7 @@ public class SharedAccessSignatureHelper {
             final String groupPolicyIdentifier, final String signature) throws StorageException {
         return generateSharedAccessSignatureHelper(policy, null /* startPartitionKey */, null /* startRowKey */,
                 null /* endPartitionKey */, null /* endRowKey */, groupPolicyIdentifier, null /* resourceType */,
-                null /* tableName */, signature, null /* accountKeyName */, null /* headers */);
+                null /* tableName */, signature, null /* headers */);
     }
 
     /**
@@ -85,37 +87,35 @@ public class SharedAccessSignatureHelper {
     public static UriQueryBuilder generateSharedAccessSignatureForTable(final SharedAccessTablePolicy policy,
             final String startPartitionKey, final String startRowKey, final String endPartitionKey,
             final String endRowKey, final String accessPolicyIdentifier, final String tableName,
-            final String signature, final String accountKeyName) throws StorageException {
+            final String signature) throws StorageException {
         Utility.assertNotNull("tableName", tableName);
         return generateSharedAccessSignatureHelper(policy, startPartitionKey, startRowKey, endPartitionKey, endRowKey,
-                accessPolicyIdentifier, null /* resourceType */, tableName, signature, accountKeyName, null /* headers */);
+                accessPolicyIdentifier, null /* resourceType */, tableName, signature, null /* headers */);
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for blob service.
+     * Get the signature hash embedded inside the Shared Access Signature for the blob or file service.
      * 
      * @param policy
      *            The shared access policy to hash.
      * @param headers
-     *            The optional header values to set for a blob accessed with this shared access signature.
+     *            The optional header values to set for a blob or file accessed with this shared access signature.
      * @param accessPolicyIdentifier
      *            An optional identifier for the policy.
      * @param resourceName
      *            The resource name.
      * @param client
      *            The ServiceClient associated with the object.
-     * @param opContext
-     *            An object used to track the execution of the operation
+     * 
      * @return The signature hash embedded inside the Shared Access Signature.
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    public static String generateSharedAccessSignatureHashForBlob(final SharedAccessBlobPolicy policy,
-            final SharedAccessBlobHeaders headers, final String accessPolicyIdentifier, final String resourceName,
-            final ServiceClient client, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        return generateSharedAccessSignatureHashForBlob(policy, resourceName, accessPolicyIdentifier, client,
-                opContext, headers);
-
+    public static String generateSharedAccessSignatureHashForBlobAndFile(final SharedAccessPolicy policy,
+            final SharedAccessHeaders headers, final String accessPolicyIdentifier, final String resourceName,
+            final ServiceClient client) throws InvalidKeyException, StorageException {
+        return generateSharedAccessSignatureHashForBlobAndFile(
+                policy, resourceName, accessPolicyIdentifier, client, headers);
     }
 
     /**
@@ -129,22 +129,21 @@ public class SharedAccessSignatureHelper {
      *            The resource name.
      * @param client
      *            The ServiceClient associated with the object.
-     * @param opContext
-     *            An object used to track the execution of the operation
+     * 
      * @return The signature hash embedded inside the Shared Access Signature.
      * @throws InvalidKeyException
      * @throws StorageException
      */
 
     public static String generateSharedAccessSignatureHashForQueue(final SharedAccessQueuePolicy policy,
-            final String accessPolicyIdentifier, final String resourceName, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
-        return generateSharedAccessSignatureHashForQueueAndTable(policy, resourceName, accessPolicyIdentifier, false,
-                null, null, null, null, client, opContext);
+            final String accessPolicyIdentifier, final String resourceName, final ServiceClient client)
+            throws InvalidKeyException, StorageException {
+        return generateSharedAccessSignatureHashForQueueAndTable(
+                policy, resourceName, accessPolicyIdentifier, false, null, null, null, null, client);
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for blob service.
+     * Get the signature hash embedded inside the Shared Access Signature for the table service.
      * 
      * @param policy
      *            The shared access policy to hash.
@@ -162,11 +161,26 @@ public class SharedAccessSignatureHelper {
      */
     public static String generateSharedAccessSignatureHashForTable(final SharedAccessTablePolicy policy,
             final String accessPolicyIdentifier, final String resourceName, final String startPartitionKey,
-            final String startRowKey, final String endPartitionKey, final String endRowKey, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+            final String startRowKey, final String endPartitionKey, final String endRowKey, final ServiceClient client)
+            throws InvalidKeyException, StorageException {
         return generateSharedAccessSignatureHashForQueueAndTable(policy, resourceName, accessPolicyIdentifier, true,
-                startPartitionKey, startRowKey, endPartitionKey, endRowKey, client, opContext);
-
+                startPartitionKey, startRowKey, endPartitionKey, endRowKey, client);
+    }
+    
+    /**
+     * Parses the query parameters and populates a StorageCredentialsSharedAccessSignature object if one is present.
+     * 
+     * @param completeUri
+     *            A {@link StorageUri} object which represents the complete Uri.
+     * @return The StorageCredentialsSharedAccessSignature if one is present, otherwise null
+     * @throws IllegalArgumentException
+     * @throws StorageException
+     *             An exception representing any error which occurred during the operation.
+     */
+    public static StorageCredentialsSharedAccessSignature parseQuery(final StorageUri completeUri)
+            throws StorageException {
+        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+        return parseQuery(queryParameters);
     }
 
     /**
@@ -181,134 +195,47 @@ public class SharedAccessSignatureHelper {
      */
     public static StorageCredentialsSharedAccessSignature parseQuery(final HashMap<String, String[]> queryParams)
             throws StorageException {
-        String signature = null;
-        String signedStart = null;
-        String signedExpiry = null;
-        String signedResource = null;
-        String signedPermissions = null;
-        String signedIdentifier = null;
-        String signedVersion = null;
-        String cacheControl = null;
-        String contentType = null;
-        String contentEncoding = null;
-        String contentLanguage = null;
-        String contentDisposition = null;
-        String tableName = null;
-        String startPk = null;
-        String startRk = null;
-        String endPk = null;
-        String endRk = null;
-
         boolean sasParameterFound = false;
-
-        StorageCredentialsSharedAccessSignature credentials = null;
-
+        List<String> removeList = new ArrayList<String>();
         for (final Entry<String, String[]> entry : queryParams.entrySet()) {
             final String lowerKey = entry.getKey().toLowerCase(Utility.LOCALE_US);
 
-            if (lowerKey.equals(Constants.QueryConstants.SIGNED_START)) {
-                signedStart = entry.getValue()[0];
+            if (lowerKey.equals(Constants.QueryConstants.SIGNATURE)) {
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_EXPIRY)) {
-                signedExpiry = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_PERMISSIONS)) {
-                signedPermissions = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_RESOURCE)) {
-                signedResource = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_IDENTIFIER)) {
-                signedIdentifier = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNATURE)) {
-                signature = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_VERSION)) {
-                signedVersion = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.CACHE_CONTROL)) {
-                cacheControl = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.CONTENT_TYPE)) {
-                contentType = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.CONTENT_ENCODING)) {
-                contentEncoding = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.CONTENT_LANGUAGE)) {
-                contentLanguage = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.CONTENT_DISPOSITION)) {
-                contentDisposition = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SAS_TABLE_NAME)) {
-                tableName = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.START_PARTITION_KEY)) {
-                startPk = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.START_ROW_KEY)) {
-                startRk = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.END_PARTITION_KEY)) {
-                endPk = entry.getValue()[0];
-                sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.END_ROW_KEY)) {
-                endRk = entry.getValue()[0];
-                sasParameterFound = true;
-            }
+            } else if (lowerKey.equals(Constants.QueryConstants.COMPONENT)) {
+                removeList.add(entry.getKey());
+            } else if (lowerKey.equals(Constants.QueryConstants.RESOURCETYPE)) {
+                removeList.add(entry.getKey());
+            } else if (lowerKey.equals(Constants.QueryConstants.SNAPSHOT)) {
+                removeList.add(entry.getKey());
+            } else if (lowerKey.equals(Constants.QueryConstants.API_VERSION)) {
+                removeList.add(entry.getKey());
+            } 
+        }
+        
+        for (String removeParam : removeList) {
+            queryParams.remove(removeParam);
         }
 
         if (sasParameterFound) {
-            if (signature == null) {
-                final String errorMessage = SR.MISSING_MANDATORY_PARAMETER_FOR_SAS;
-                throw new IllegalArgumentException(errorMessage);
+            final UriQueryBuilder builder = new UriQueryBuilder();
+            
+            StringBuilder values = new StringBuilder();
+            for (final Entry<String, String[]> entry : queryParams.entrySet()) {
+                values.setLength(0);
+                for (int i = 0; i < entry.getValue().length; i++) {
+                    values.append(entry.getValue()[i]);
+                    values.append(',');
+                }
+                values.deleteCharAt(values.length() - 1);
+                
+                addIfNotNullOrEmpty(builder, entry.getKey().toLowerCase(), values.toString());
             }
 
-            final UriQueryBuilder builder = new UriQueryBuilder();
-
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_START, signedStart);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_EXPIRY, signedExpiry);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_PERMISSIONS, signedPermissions);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_RESOURCE, signedResource);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_IDENTIFIER, signedIdentifier);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_VERSION, signedVersion);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNATURE, signature);
-
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.CACHE_CONTROL, cacheControl);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.CONTENT_TYPE, contentType);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.CONTENT_ENCODING, contentEncoding);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.CONTENT_LANGUAGE, contentLanguage);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.CONTENT_DISPOSITION, contentDisposition);
-
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.SAS_TABLE_NAME, tableName);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.START_PARTITION_KEY, startPk);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.START_ROW_KEY, startRk);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.END_PARTITION_KEY, endPk);
-            addIfNotNullOrEmpty(builder, Constants.QueryConstants.END_ROW_KEY, endRk);
-
-            final String token = builder.toString();
-            credentials = new StorageCredentialsSharedAccessSignature(token);
+            return new StorageCredentialsSharedAccessSignature(builder.toString());
         }
 
-        return credentials;
+        return null;
     }
 
     /**
@@ -348,23 +275,20 @@ public class SharedAccessSignatureHelper {
      * @param accessPolicyIdentifier
      *            An optional identifier for the policy.
      * @param resourceType
-     *            Either "b" for blobs or "c" for containers.
+     *            Either "b" for blobs, "c" for containers, "f" for files, or "s" for shares.
      * @param tableName
      *            The table name.
      * @param signature
      *            The signature hash.
-     * @param accountKeyName
-     *            The account key name.
      * @param headers
-     *            Optional blob headers.
+     *            Optional blob or file headers.
      * @return The finished query builder
      * @throws StorageException
      */
     private static UriQueryBuilder generateSharedAccessSignatureHelper(final SharedAccessPolicy policy,
             final String startPartitionKey, final String startRowKey, final String endPartitionKey,
             final String endRowKey, final String accessPolicyIdentifier, final String resourceType,
-            final String tableName, final String signature, final String accountKeyName,
-            final SharedAccessBlobHeaders headers) throws StorageException {
+            final String tableName, final String signature, final SharedAccessHeaders headers) throws StorageException {
         Utility.assertNotNull("signature", signature);
 
         String permissions = null;
@@ -408,13 +332,12 @@ public class SharedAccessSignatureHelper {
         }
 
         addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNATURE, signature);
-        addIfNotNullOrEmpty(builder, Constants.QueryConstants.SIGNED_KEY, accountKeyName);
 
         return builder;
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for blob service.
+     * Get the signature hash embedded inside the Shared Access Signature for the blob or file service.
      * 
      * @param permissions
      *            The permissions for a shared access signature.
@@ -428,18 +351,16 @@ public class SharedAccessSignatureHelper {
      *            An optional identifier for the policy.
      * @param client
      *            Reference to the ServiceClient.
-     * @param opContext
-     *            An object used to track the execution of the operation.
      * @param headers
-     *            The optional header values to set for a blob returned with this SAS.
+     *            The optional header values to set for a blob or file returned with this SAS.
      * @return
      *         The signature hash embedded inside the Shared Access Signature.
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    private static String generateSharedAccessSignatureHashForBlob(final SharedAccessPolicy policy,
+    private static String generateSharedAccessSignatureHashForBlobAndFile(final SharedAccessPolicy policy,
             final String resourceName, final String accessPolicyIdentifier, final ServiceClient client,
-            final OperationContext opContext, final SharedAccessBlobHeaders headers) throws InvalidKeyException,
+            final SharedAccessHeaders headers) throws InvalidKeyException,
             StorageException {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
@@ -479,10 +400,10 @@ public class SharedAccessSignatureHelper {
                 contentType == null ? Constants.EMPTY_STRING : contentType);
 
         stringToSign = Utility.safeDecode(stringToSign);
-        final String signature = StorageCredentialsHelper.computeHmac256(client.getCredentials(), stringToSign,
-                opContext);
+        final String signature = StorageCredentialsHelper.computeHmac256(client.getCredentials(), stringToSign);
 
-        // add logging
+        Logger.trace(null, LogConstants.SIGNING, stringToSign);
+        
         return signature;
     }
 
@@ -501,8 +422,6 @@ public class SharedAccessSignatureHelper {
      *            An optional identifier for the policy.
      * @param client
      *            Reference to the ServiceClient.
-     * @param opContext
-     *            An object used to track the execution of the operation.
      * @return
      *         the signature hash embedded inside the Shared Access Signature.
      * @throws InvalidKeyException
@@ -511,7 +430,7 @@ public class SharedAccessSignatureHelper {
     private static String generateSharedAccessSignatureHashForQueueAndTable(final SharedAccessPolicy policy,
             final String resourceName, final String accessPolicyIdentifier, final boolean useTableSas,
             final String startPartitionKey, final String startRowKey, final String endPartitionKey,
-            final String endRowKey, final ServiceClient client, final OperationContext opContext)
+            final String endRowKey, final ServiceClient client)
             throws InvalidKeyException, StorageException {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
@@ -540,10 +459,10 @@ public class SharedAccessSignatureHelper {
         }
 
         stringToSign = Utility.safeDecode(stringToSign);
-        final String signature = StorageCredentialsHelper.computeHmac256(client.getCredentials(), stringToSign,
-                opContext);
+        final String signature = StorageCredentialsHelper.computeHmac256(client.getCredentials(), stringToSign);
 
-        // add logging
+        Logger.trace(null, LogConstants.SIGNING, stringToSign);
+        
         return signature;
     }
 

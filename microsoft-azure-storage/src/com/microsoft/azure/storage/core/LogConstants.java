@@ -35,6 +35,7 @@ public class LogConstants {
     public static final String RETRY_DELAY = "Operation will be retried after '%d'ms.";
     public static final String RETRY_INFO = "The retry policy set the next location to '%s' and updated the location mode to '%s'.";
     public static final String RETRYABLE_EXCEPTION = "Retryable exception thrown. Class = '%s', Message = '%s'.";
+    public static final String SIGNING = "Signing %s";
     public static final String START_REQUEST = "Starting request to '%s' at '%s'.";
     public static final String STARTING = "Starting operation.";
     public static final String UNEXPECTED_RESULT_OR_EXCEPTION = "Operation did not return the expected result or returned an exception.";

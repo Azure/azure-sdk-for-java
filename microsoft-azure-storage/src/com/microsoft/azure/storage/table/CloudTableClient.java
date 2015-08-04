@@ -23,16 +23,15 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.microsoft.azure.storage.DoesServiceRequest;
-import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
 import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.RetryExponentialRetry;
 import com.microsoft.azure.storage.ServiceClient;
 import com.microsoft.azure.storage.ServiceProperties;
 import com.microsoft.azure.storage.ServiceStats;
 import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.StorageUri;
@@ -68,7 +67,7 @@ public final class CloudTableClient extends ServiceClient {
     /**
      * Holds the default request option values associated with this Service Client.
      */
-    private TableRequestOptions defaultRequestOptions;
+    private TableRequestOptions defaultRequestOptions = new TableRequestOptions();
 
     /**
      * Reserved for internal use. An {@link EntityResolver} that projects table entity data as a <code>String</code>
@@ -108,14 +107,10 @@ public final class CloudTableClient extends ServiceClient {
      */
     public CloudTableClient(final StorageUri baseUri, StorageCredentials credentials) {
         super(baseUri, credentials);
-        if (credentials == null) {
-            throw new IllegalArgumentException(SR.STORAGE_TABLE_CREDENTIALS_NULL);
+        if (credentials == null || credentials.getClass().equals(StorageCredentialsAnonymous.class)) {
+            throw new IllegalArgumentException(SR.STORAGE_CREDENTIALS_NULL_OR_ANONYMOUS);
         }
-
-        this.defaultRequestOptions = new TableRequestOptions();
-        this.defaultRequestOptions.setLocationMode(LocationMode.PRIMARY_ONLY);
-        this.defaultRequestOptions.setRetryPolicyFactory(new RetryExponentialRetry());
-        this.defaultRequestOptions.setTablePayloadFormat(TablePayloadFormat.Json);
+        TableRequestOptions.applyDefaults(this.defaultRequestOptions);
     }
 
     /**
@@ -137,6 +132,7 @@ public final class CloudTableClient extends ServiceClient {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179338.aspx">Understanding the Table Service Data
      *      Model</a>
      */
+    @SuppressWarnings("deprecation")
     public CloudTable getTableReference(final String tableName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("tableName", tableName);
         return new CloudTable(tableName, this);
@@ -361,7 +357,7 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, this);
+        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         Utility.assertContinuationType(continuationToken, ResultContinuationType.TABLE);
 
@@ -407,8 +403,8 @@ public final class CloudTableClient extends ServiceClient {
             public ResultSegment<T> preProcessResponse(TableQuery<T> queryRef, CloudTableClient client,
                     OperationContext context) throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                    throw TableServiceException.generateTableServiceException(true, this.getResult(), null, this
-                            .getConnection().getErrorStream(), options.getTablePayloadFormat());
+                    throw TableServiceException.generateTableServiceException(this.getResult(), null, 
+                            this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                 }
 
                 return null;
@@ -482,8 +478,8 @@ public final class CloudTableClient extends ServiceClient {
             public ResultSegment<R> preProcessResponse(TableQuery<T> queryRef, CloudTableClient client,
                     OperationContext context) throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                    throw TableServiceException.generateTableServiceException(true, this.getResult(), null, this
-                            .getConnection().getErrorStream(), options.getTablePayloadFormat());
+                    throw TableServiceException.generateTableServiceException(this.getResult(), null, 
+                            this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                 }
 
                 return null;
@@ -557,7 +553,7 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, this);
+        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
@@ -608,7 +604,7 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, this);
+        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         return ExecutionEngine.executeWithRetry(this, null, this.getServiceStatsImpl(options, true),
                 options.getRetryPolicyFactory(), opContext);
@@ -652,7 +648,7 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, this);
+        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         return ExecutionEngine.executeWithRetry(this, null, this.downloadServicePropertiesImpl(options, true),
                 options.getRetryPolicyFactory(), opContext);
@@ -701,41 +697,13 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, this);
+        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         Utility.assertNotNull("properties", properties);
 
         ExecutionEngine.executeWithRetry(this, null,
                 this.uploadServicePropertiesImpl(properties, options, opContext, true),
                 options.getRetryPolicyFactory(), opContext);
-    }
-
-    /**
-     * Gets the {@link TablePayloadFormat} that is used for any table accessed with this <code>CloudTableClient</code>
-     * object. Default is {@link TablePayloadFormat#Json}
-     * 
-     * @return
-     *         The {@link TablePayloadFormat} used by this <code>CloudTableClient</code>
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().getTablePayloadFormat()} instead.
-     */
-    @Deprecated
-    public TablePayloadFormat getTablePayloadFormat() {
-        return this.defaultRequestOptions.getTablePayloadFormat();
-    }
-
-    /**
-     * Sets the {@link TablePayloadFormat} that is used for any table accessed with this <code>CloudTableClient</code>
-     * object.
-     * 
-     * @param payloadFormat
-     *            The TablePayloadFormat to use.
-     * 
-     * @deprecated use {@link #getDefaultRequestOptions().setTablePayloadFormat()} instead.
-     */
-    @Deprecated
-    public void setTablePayloadFormat(TablePayloadFormat payloadFormat) {
-        this.defaultRequestOptions.setTablePayloadFormat(payloadFormat);
     }
 
     /**

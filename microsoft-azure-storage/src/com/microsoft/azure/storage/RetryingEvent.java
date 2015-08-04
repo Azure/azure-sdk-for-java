@@ -37,8 +37,9 @@ public final class RetryingEvent extends BaseEvent {
      *            a connection object.
      * @param requestResult
      *            A {@link RequestResult} object that represents the current request result.
-     * @param retryCount
-     *            The number of retries done for this request (including the pending retry).
+     * @param retryContext
+     *            A {@link RetryContext} object which contains the number of retries done for this request (including 
+     *            the pending retry) and other retry information.
      */
     public RetryingEvent(OperationContext opContext, Object connectionObject, RequestResult requestResult,
             RetryContext retryContext) {

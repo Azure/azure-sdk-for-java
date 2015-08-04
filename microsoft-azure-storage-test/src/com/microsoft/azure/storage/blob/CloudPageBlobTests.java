@@ -30,8 +30,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Random;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,10 +73,10 @@ public class CloudPageBlobTests {
     @Test
     public void testCopyFromPageBlobAbortTest() throws StorageException, URISyntaxException, IOException {
         final int length = 512;
-        CloudBlob originalBlob = BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB, "originalBlob",
-                length, null);
-        CloudBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
-        copyBlob.startCopyFromBlob(originalBlob);
+        CloudPageBlob originalBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(
+                this.container, BlobType.PAGE_BLOB, "originalBlob", length, null);
+        CloudPageBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
+        copyBlob.startCopy(originalBlob);
 
         try {
             copyBlob.abortCopy(copyBlob.getProperties().getCopyState().getCopyId());
@@ -368,7 +366,7 @@ public class CloudPageBlobTests {
             blob1.upload(srcStream, length, accessCondition, null, null);
         }
         catch (StorageException ex) {
-            Assert.assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getHttpStatusCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getHttpStatusCode());
         }
 
         srcStream.reset();
@@ -383,7 +381,7 @@ public class CloudPageBlobTests {
             blob1.upload(srcStream, length, accessCondition, null, null);
         }
         catch (StorageException ex) {
-            Assert.assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getHttpStatusCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getHttpStatusCode());
         }
 
         srcStream.reset();
@@ -404,9 +402,9 @@ public class CloudPageBlobTests {
 
         final CloudPageBlob originalBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container,
                 BlobType.PAGE_BLOB, "a+b.txt", length, null);
-        final CloudBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
+        final CloudPageBlob copyBlob = this.container.getPageBlobReference(originalBlob.getName() + "copyed");
 
-        copyBlob.startCopyFromBlob(originalBlob);
+        copyBlob.startCopy(originalBlob);
         BlobTestHelper.waitForCopy(copyBlob);
         copyBlob.downloadAttributes();
     }
@@ -483,7 +481,7 @@ public class CloudPageBlobTests {
         source.uploadMetadata();
 
         CloudPageBlob copy = this.container.getPageBlobReference("copy");
-        String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(source));
+        String copyId = copy.startCopy(BlobTestHelper.defiddler(source));
         BlobTestHelper.waitForCopy(copy);
 
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
@@ -541,7 +539,7 @@ public class CloudPageBlobTests {
 
         CloudPageBlob copy = this.container.getPageBlobReference("copy");
         copy.getMetadata().put("Test2", "value2");
-        String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(source));
+        String copyId = copy.startCopy(BlobTestHelper.defiddler(source));
         BlobTestHelper.waitForCopy(copy);
 
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
@@ -609,7 +607,7 @@ public class CloudPageBlobTests {
         assertFalse(source.getMetadata().get("Test").equals(snapshot.getMetadata().get("Test")));
 
         CloudPageBlob copy = this.container.getPageBlobReference("copy");
-        String copyId = copy.startCopyFromBlob(BlobTestHelper.defiddler(snapshot));
+        String copyId = copy.startCopy(BlobTestHelper.defiddler(snapshot));
         BlobTestHelper.waitForCopy(copy);
 
         ByteArrayOutputStream copyStream = new ByteArrayOutputStream();

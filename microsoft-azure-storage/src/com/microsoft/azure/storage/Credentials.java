@@ -19,10 +19,14 @@ package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.core.Base64;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Represents the credentials used to sign a request against the storage services.
+ * 
+ * @deprecated as of 3.0.0. Please use the equivalent methods on {@link StorageCredentialsAccountAndKey}.
  */
+@Deprecated
 public final class Credentials {
     /**
      * Stores the Account name for the credentials.
@@ -32,7 +36,7 @@ public final class Credentials {
     /**
      * Stores the StorageKey for the credentials.
      */
-    private final StorageKey key;
+    private StorageKey key;
 
     /**
      * Stores the name of the access key to be used when signing the request.
@@ -51,12 +55,12 @@ public final class Credentials {
      * 
      */
     public Credentials(final String accountName, final byte[] key) {
-        if (accountName == null || accountName.length() == 0) {
+        if (Utility.isNullOrEmptyOrWhitespace(accountName)) {
             throw new IllegalArgumentException(SR.INVALID_ACCOUNT_NAME);
         }
 
-        if (key == null) {
-            throw new IllegalArgumentException(SR.KEY_NULL);
+        if (key == null || key.length == 0) {
+            throw new IllegalArgumentException(SR.INVALID_KEY);
         }
 
         this.accountName = accountName;
@@ -75,7 +79,16 @@ public final class Credentials {
      * 
      */
     public Credentials(final String accountName, final String key) {
-        this(accountName, Base64.decode(key));
+        if (Utility.isNullOrEmptyOrWhitespace(accountName)) {
+            throw new IllegalArgumentException(SR.INVALID_ACCOUNT_NAME);
+        }
+
+        if (Utility.isNullOrEmptyOrWhitespace(key) || !Base64.validateIsBase64String(key)) {
+            throw new IllegalArgumentException(SR.INVALID_KEY);
+        }
+
+        this.accountName = accountName;
+        this.key = new StorageKey(Base64.decode(key));
     }
 
     /**
@@ -133,12 +146,12 @@ public final class Credentials {
     }
 
     /**
-     * Sets the name of the access key to be used when signing the request.
+     * Sets the access key to be used when signing the request.
      * 
      * @param keyName
      *        A <code>String</code> that represents the name of the access key to be used when signing the request.
      */
-    protected void setKeyName(final String keyName) {
-        this.keyName = keyName;
+    protected void setKey(final StorageKey key) {
+        this.key = key;
     }
 }

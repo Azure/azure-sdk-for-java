@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
+import java.util.Map;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
@@ -39,6 +39,55 @@ final class FileRequest {
     private static final String RANGE_LIST_QUERY_ELEMENT_NAME = "rangelist";
 
     /**
+     * Generates a web request to abort a copy operation.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param fileOptions
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            The access condition to apply to the request. Only lease conditions are supported for this operation.
+     * @param copyId
+     *            A <code>String</code> object that identifying the copy operation.
+     * @return a <code>HttpURLConnection</code> configured for the operation.
+     * @throws StorageException
+     *             An exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static HttpURLConnection abortCopy(final URI uri, final FileRequestOptions fileOptions,
+            final OperationContext opContext, final AccessCondition accessCondition, final String copyId)
+            throws StorageException, IOException, URISyntaxException {
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.COPY);
+        builder.add(Constants.QueryConstants.COPY_ID, copyId);
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);
+
+        request.setFixedLengthStreamingMode(0);
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+
+        request.setRequestProperty(Constants.HeaderConstants.COPY_ACTION_HEADER,
+                Constants.HeaderConstants.COPY_ACTION_ABORT);
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request);
+        }
+
+        return request;
+    }
+    
+    /**
      * Adds the metadata.
      * 
      * @param request
@@ -46,7 +95,7 @@ final class FileRequest {
      * @param metadata
      *            The metadata.
      */
-    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
+    public static void addMetadata(final HttpURLConnection request, final Map<String, String> metadata,
             final OperationContext opContext) {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
@@ -55,9 +104,9 @@ final class FileRequest {
      * Adds the properties.
      * 
      * @param request
-     *            The request.
+     *            The request
      * @param properties
-     *            The properties.
+     *            The file properties
      */
     private static void addProperties(final HttpURLConnection request, FileProperties properties) {
         BaseRequest.addOptionalHeader(request, FileConstants.CACHE_CONTROL_HEADER, properties.getCacheControl());
@@ -67,6 +116,71 @@ final class FileRequest {
         BaseRequest.addOptionalHeader(request, FileConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
         BaseRequest.addOptionalHeader(request, FileConstants.FILE_CONTENT_MD5_HEADER, properties.getContentMD5());
         BaseRequest.addOptionalHeader(request, FileConstants.CONTENT_TYPE_HEADER, properties.getContentType());
+    }
+
+    /**
+     * Creates a request to copy a file, Sign with 0 length.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param fileOptions
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param source
+     *            The canonical path to the source file,
+     *            in the form /<account-name>/<share-name>/<directory-path>/<file-name>.
+     * @param sourceAccessConditionType
+     *            A type of condition to check on the source file.
+     * @param sourceAccessConditionValue
+     *            The value of the condition to check on the source file
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static HttpURLConnection copyFrom(final URI uri, final FileRequestOptions fileOptions,
+            final OperationContext opContext, final AccessCondition sourceAccessCondition,
+            final AccessCondition destinationAccessCondition, String source)
+            throws StorageException, IOException, URISyntaxException {
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, null, opContext);
+
+        request.setFixedLengthStreamingMode(0);
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+
+        request.setRequestProperty(Constants.HeaderConstants.COPY_SOURCE_HEADER, source);
+
+        if (sourceAccessCondition != null) {
+            sourceAccessCondition.applyConditionToRequest(request);
+        }
+
+        if (destinationAccessCondition != null) {
+            destinationAccessCondition.applyConditionToRequest(request);
+        }
+
+        return request;
+    }    
+
+    /**
+     * Adds the properties.
+     * 
+     * @param request
+     *            The request
+     * @param properties
+     *            The share properties
+     */
+    private static void addProperties(final HttpURLConnection request, FileShareProperties properties) {
+        final Integer shareQuota = properties.getShareQuota();
+        BaseRequest.addOptionalHeader(
+                request, FileConstants.SHARE_QUOTA_HEADER, shareQuota == null ? null : shareQuota.toString());
     }
 
     /**
@@ -82,14 +196,19 @@ final class FileRequest {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * @param properties
+     *            The properties to set for the share.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection createShare(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+            final OperationContext opContext, final FileShareProperties properties)
+            throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder shareBuilder = getShareUriQueryBuilder();
-        return BaseRequest.create(uri, fileOptions, shareBuilder, opContext);
+        final HttpURLConnection request = BaseRequest.create(uri, fileOptions, shareBuilder, opContext);
+        addProperties(request, properties);
+        return request;
     }
 
     /**
@@ -155,6 +274,41 @@ final class FileRequest {
         HttpURLConnection request = BaseRequest.delete(uri, fileOptions, shareBuilder, opContext);
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);
+        }
+
+        return request;
+    }
+
+    /**
+     * Constructs a web request to return the ACL for this share. Sign with no length specified.
+     * 
+     * @param uri
+     *            The absolute URI to the share.
+     * @param fileOptions
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     */
+    public static HttpURLConnection getAcl(final URI uri, final FileRequestOptions fileOptions,
+            final AccessCondition accessCondition, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
+        final UriQueryBuilder builder = getShareUriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.ACL);
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);
+
+        request.setRequestMethod(Constants.HTTP_GET);
+
+        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;
@@ -326,6 +480,35 @@ final class FileRequest {
     }
 
     /**
+     * Constructs a web request to return the stats, such as usage, for this share. Sign with no length specified.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     */
+    public static HttpURLConnection getShareStats(final URI uri, final FileRequestOptions options,
+            final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException {
+        UriQueryBuilder shareBuilder = getShareUriQueryBuilder();
+        shareBuilder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.STATS);
+
+        final HttpURLConnection retConnection = BaseRequest.createURLConnection(uri, options, shareBuilder, opContext);
+        retConnection.setRequestMethod(Constants.HTTP_GET);
+
+        return retConnection;
+    }
+
+    /**
      * Gets the share Uri query builder.
      * 
      * A <CODE>UriQueryBuilder</CODE> for the share.
@@ -431,7 +614,7 @@ final class FileRequest {
 
         return request;
     }
-
+    
     /**
      * Constructs a web request to set user-defined metadata for the share, Sign with 0 Length.
      * 
@@ -455,6 +638,36 @@ final class FileRequest {
             URISyntaxException, StorageException {
         final UriQueryBuilder shareBuilder = getShareUriQueryBuilder();
         return setMetadata(uri, fileOptions, opContext, accessCondition, shareBuilder);
+    }
+
+    /**
+     * Constructs a web request to set user-defined metadata for the directory, Sign with 0 Length.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param fileOptions
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the directory.
+     * @return a HttpURLConnection configured for the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * */
+    public static HttpURLConnection setDirectoryMetadata(final URI uri, final FileRequestOptions fileOptions,
+            final OperationContext opContext, final AccessCondition accessCondition) throws IOException,
+            URISyntaxException, StorageException {
+        final UriQueryBuilder directoryBuilder = getDirectoryUriQueryBuilder();
+        return setMetadata(uri, fileOptions, opContext, accessCondition, directoryBuilder);
     }
 
     /**
@@ -694,6 +907,55 @@ final class FileRequest {
     }
 
     /**
+     * Constructs a HttpURLConnection to set the share's properties, signed with zero length specified.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the file.
+     * @param properties
+     *            The properties to upload.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection setShareProperties(final URI uri, final FileRequestOptions options,
+            final OperationContext opContext, final AccessCondition accessCondition, final FileShareProperties properties)
+            throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = getShareUriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.PROPERTIES);
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, options, builder, opContext);
+
+        request.setFixedLengthStreamingMode(0);
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request);
+        }
+
+        if (properties != null) {
+            addProperties(request, properties);
+        }
+
+        return request;
+    }
+
+    /**
      * Constructs a HttpURLConnection to set the file's size, Sign with zero length specified.
      * 
      * @param uri
@@ -726,6 +988,42 @@ final class FileRequest {
 
         if (newFileSize != null) {
             request.setRequestProperty(FileConstants.CONTENT_LENGTH_HEADER, newFileSize.toString());
+        }
+
+        return request;
+    }
+
+    /**
+     * Sets the ACL for the share. Sign with length of aclBytes.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param fileOptions
+     *            A {@link FileRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudFileClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     * */
+    public static HttpURLConnection setAcl(final URI uri, final FileRequestOptions fileOptions,
+            final OperationContext opContext, final AccessCondition accessCondition)
+            throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = getShareUriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.ACL);
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);
+
+        request.setRequestMethod(Constants.HTTP_PUT);
+        request.setDoOutput(true);
+
+        if (accessCondition != null && !Utility.isNullOrEmpty(accessCondition.getLeaseID())) {
+            accessCondition.applyLeaseConditionToRequest(request);
         }
 
         return request;

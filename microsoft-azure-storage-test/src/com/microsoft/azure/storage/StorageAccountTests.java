@@ -64,30 +64,31 @@ public class StorageAccountTests {
         URI testUri = new URI("http://test/abc?querya=1");
         assertEquals(testUri, cred.transformUri(testUri));
 
-        assertEquals(ACCOUNT_KEY, cred.getCredentials().exportBase64EncodedKey());
+        assertEquals(ACCOUNT_KEY, cred.exportBase64EncodedKey());
         byte[] dummyKey = { 0, 1, 2 };
         String base64EncodedDummyKey = Base64.encode(dummyKey);
         cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
-        assertEquals(base64EncodedDummyKey, cred.getCredentials().exportBase64EncodedKey());
+        assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
 
         dummyKey[0] = 3;
         base64EncodedDummyKey = Base64.encode(dummyKey);
         cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
-        assertEquals(base64EncodedDummyKey, cred.getCredentials().exportBase64EncodedKey());
+        assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
     }
 
     @Test
     public void testStorageCredentialsSAS() throws URISyntaxException, StorageException {
-        String token = "?sig=1&api-version=2014-02-14&sp=abcde";  
+        String token = "?sig=1&sp=abcde&api-version=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         StorageCredentialsSharedAccessSignature cred = new StorageCredentialsSharedAccessSignature(token);
         assertNull(cred.getAccountName());
 
-        URI testUri = new URI("http://test/abc");
-        assertEquals(testUri + token, cred.transformUri(testUri).toString());
+        URI testUri = new URI("http://test/abc" + token);
+        TestHelper.assertURIsEqual(testUri, cred.transformUri(testUri), true);
 
         testUri = new URI("http://test/abc?query=a&query2=b");
-        String expectedUri = "http://test/abc?sig=1&api-version=2014-02-14&query=a&sp=abcde&query2=b";
-        assertEquals(expectedUri, cred.transformUri(testUri).toString());
+        URI expectedUri = new URI("http://test/abc?sig=1&query=a&sp=abcde&query2=b&api-version="
+                + Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+        TestHelper.assertURIsEqual(expectedUri, cred.transformUri(testUri), true);
     }
 
     @Test
@@ -96,36 +97,30 @@ public class StorageAccountTests {
         String emptyKeyConnectionString = String.format(Locale.US,
                 "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=", ACCOUNT_NAME);
 
-        StorageCredentialsAccountAndKey credentials1 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME,
-                emptyKeyValueAsString);
-        assertEquals(ACCOUNT_NAME, credentials1.getAccountName());
-        assertEquals(emptyKeyValueAsString, Base64.encode(credentials1.getCredentials().exportKey()));
+        try {
+            new StorageCredentialsAccountAndKey(ACCOUNT_NAME, emptyKeyValueAsString);
+            fail("Did not hit expected exception");
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.INVALID_KEY, ex.getMessage());
+        }
 
-        CloudStorageAccount account1 = new CloudStorageAccount(credentials1, true);
-        assertEquals(emptyKeyConnectionString, account1.toString(true));
-        assertNotNull(account1.getCredentials());
-        assertEquals(ACCOUNT_NAME, account1.getCredentials().getAccountName());
-        assertEquals(emptyKeyValueAsString,
-                Base64.encode(((StorageCredentialsAccountAndKey) (account1.getCredentials())).getCredentials()
-                        .exportKey()));
+        try {
+            CloudStorageAccount.parse(emptyKeyConnectionString);
+            fail("Did not hit expected exception");
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.INVALID_CONNECTION_STRING, ex.getMessage());
+        }
 
-        CloudStorageAccount account2 = CloudStorageAccount.parse(emptyKeyConnectionString);
-        assertEquals(emptyKeyConnectionString, account2.toString(true));
-        assertNotNull(account2.getCredentials());
-        assertEquals(ACCOUNT_NAME, account2.getCredentials().getAccountName());
-        assertEquals(emptyKeyValueAsString,
-                Base64.encode(((StorageCredentialsAccountAndKey) (account2.getCredentials())).getCredentials()
-                        .exportKey()));
-
-        StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
-        assertEquals(ACCOUNT_NAME, credentials2.getAccountName());
-        assertEquals(ACCOUNT_KEY, Base64.encode(credentials2.getCredentials().exportKey()));
-
-        byte[] emptyKeyValueAsByteArray = new byte[0];
-        StorageCredentialsAccountAndKey credentials3 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME,
-                emptyKeyValueAsByteArray);
-        assertEquals(ACCOUNT_NAME, credentials3.getAccountName());
-        assertEquals(Base64.encode(emptyKeyValueAsByteArray), Base64.encode(credentials3.getCredentials().exportKey()));
+        try {
+            byte[] emptyKeyValueAsByteArray = new byte[0];
+            new StorageCredentialsAccountAndKey(ACCOUNT_NAME, emptyKeyValueAsByteArray);
+            fail("Did not hit expected exception");
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.INVALID_KEY, ex.getMessage());
+        }
     }
 
     @Test
@@ -136,13 +131,13 @@ public class StorageAccountTests {
             new StorageCredentialsAccountAndKey(ACCOUNT_NAME, nullKeyValueAsString);
             fail("Did not hit expected exception");
         }
-        catch (NullPointerException ex) {
-            //            assertEquals(SR.KEY_NULL, ex.getMessage());
+        catch (IllegalArgumentException ex) {
+            assertEquals(SR.INVALID_KEY, ex.getMessage());
         }
 
         StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
         assertEquals(ACCOUNT_NAME, credentials2.getAccountName());
-        assertEquals(ACCOUNT_KEY, Base64.encode(credentials2.getCredentials().exportKey()));
+        assertEquals(ACCOUNT_KEY, Base64.encode(credentials2.exportKey()));
 
         byte[] nullKeyValueAsByteArray = null;
         try {
@@ -150,7 +145,7 @@ public class StorageAccountTests {
             fail("Did not hit expected exception");
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(SR.KEY_NULL, ex.getMessage());
+            assertEquals(SR.INVALID_KEY, ex.getMessage());
         }
     }
 
@@ -603,10 +598,10 @@ public class StorageAccountTests {
         String accountString = "BlobEndpoint=http://blobs/;AccountName=test;AccountKey=" + accountKeyString;
         CloudStorageAccount account = CloudStorageAccount.parse(accountString);
         StorageCredentialsAccountAndKey accountAndKey = (StorageCredentialsAccountAndKey) account.getCredentials();
-        String key = accountAndKey.getCredentials().getKey().getBase64EncodedKey();
+        String key = accountAndKey.exportBase64EncodedKey();
         assertEquals(accountKeyString, key);
 
-        byte[] keyBytes = accountAndKey.getCredentials().exportKey();
+        byte[] keyBytes = accountAndKey.exportKey();
         byte[] expectedKeyBytes = Base64.decode(accountKeyString);
         assertArrayEquals(expectedKeyBytes, keyBytes);
     }

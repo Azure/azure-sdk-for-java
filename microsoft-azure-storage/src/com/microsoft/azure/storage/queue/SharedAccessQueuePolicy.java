@@ -54,7 +54,7 @@ public final class SharedAccessQueuePolicy extends SharedAccessPolicy {
      * Converts this policy's permissions to a string.
      * 
      * @return A <code>String</code> that represents the shared access permissions in the "raup" format, which is
-     *         described at {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
+     *         described at {@link SharedAccessQueuePolicy#setPermissionsFromString(String)}.
      */
     @Override
     public String permissionsToString() {

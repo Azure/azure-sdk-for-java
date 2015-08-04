@@ -193,7 +193,7 @@ public class StorageUriTests {
         assertEquals(containerUri.getPrimaryUri(), container.getUri());
         assertEquals(endpoint, container.getServiceClient().getStorageUri());
 
-        container = new CloudBlobContainer(containerUri, client);
+        container = new CloudBlobContainer(containerUri, client.getCredentials());
         assertEquals(containerUri, container.getStorageUri());
         assertEquals(containerUri.getPrimaryUri(), container.getUri());
         assertEquals(endpoint, container.getServiceClient().getStorageUri());
@@ -228,7 +228,7 @@ public class StorageUriTests {
         assertEquals(containerUri, blockBlob.getContainer().getStorageUri());
         assertEquals(endpoint, blockBlob.getServiceClient().getStorageUri());
 
-        blockBlob = new CloudBlockBlob(blobUri, null, client);
+        blockBlob = new CloudBlockBlob(blobUri, client.getCredentials());
         assertEquals(blobUri, blockBlob.getStorageUri());
         assertEquals(blobUri.getPrimaryUri(), blockBlob.getUri());
         assertEquals(subdirectoryUri, blockBlob.getParent().getStorageUri());
@@ -242,7 +242,7 @@ public class StorageUriTests {
         assertEquals(containerUri, pageBlob.getContainer().getStorageUri());
         assertEquals(endpoint, pageBlob.getServiceClient().getStorageUri());
 
-        pageBlob = new CloudPageBlob(blobUri, null, client);
+        pageBlob = new CloudPageBlob(blobUri, client.getCredentials());
         assertEquals(blobUri, pageBlob.getStorageUri());
         assertEquals(blobUri.getPrimaryUri(), pageBlob.getUri());
         assertEquals(subdirectoryUri, pageBlob.getParent().getStorageUri());
@@ -268,7 +268,7 @@ public class StorageUriTests {
         assertEquals(queueUri.getPrimaryUri(), queue.getUri());
         assertEquals(endpoint, queue.getServiceClient().getStorageUri());
 
-        queue = new CloudQueue(queueUri, client);
+        queue = new CloudQueue(queueUri, client.getCredentials());
         assertEquals(queueUri, queue.getStorageUri());
         assertEquals(queueUri.getPrimaryUri(), queue.getUri());
         assertEquals(endpoint, queue.getServiceClient().getStorageUri());
@@ -292,7 +292,7 @@ public class StorageUriTests {
         assertEquals(tableUri.getPrimaryUri(), table.getUri());
         assertEquals(endpoint, table.getServiceClient().getStorageUri());
 
-        table = new CloudTable(tableUri, client);
+        table = new CloudTable(tableUri, client.getCredentials());
         assertEquals(tableUri, table.getStorageUri());
         assertEquals(tableUri.getPrimaryUri(), table.getUri());
         assertEquals(endpoint, table.getServiceClient().getStorageUri());

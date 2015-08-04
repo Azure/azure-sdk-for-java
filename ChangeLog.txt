@@ -1,3 +1,28 @@
+2015.08.04 Version 3.0.0
+ * Added support for SAS to the Azure File service.
+ * Added support for Append Blob.
+ * Added support for Access Control Lists (ACL) to File Shares.
+ * Added support for getting and setting of CORS rules to File service.
+ * Added support for ShareStats to File Shares.
+ * Added support for copying an Azure File to another Azure File or a Block Blob asynchronously, and aborting Azure File copy operations asynchronously.
+ * Added support for copying a Blob to an Azure File asynchronously.
+ * Added support for setting a maximum quota property on a File Share.
+ * Removed deprecated AuthenticationScheme and its getter and setter. In the future only SharedKey will be used.
+ * Removed deprecated getter/setters for all request option properties on the service clients. Please use the default request options getter/setters instead.
+ * Removed getSubDirectoryReference() for blob directories and file directories. Use getDirectoryReference() instead. 
+ * Removed getEntityClass() in TableQuery. Please use getClazzType() instead.
+ * Added client-side verification for lease duration and break periods.
+ * Deprecated the setters in table for timestamp as this property is only modifiable by the service.
+ * Deprecated startCopyFromBlob() on CloudBlob. Use startCopy() instead.
+ * Deprecated the Credentials and StorageKey classes. Please use the appropriate methods on StorageCredentialsAccountAndKey instead.
+ * Deprecated constructors which take service clients in favor of constructors which take credentials.
+ * Fixed a bug where the DateBackwardCompatibility flag was not applied if set on the CloudTableClient default request options.
+ * Changed library behavior to retry all exceptions thrown when parsing a response object.
+ * Changed behavior to stop removing query parameters passed in with the resource URI if that URI contains a SAS token. Some query parameters such as comp, restype, snapshot and api-version will still be removed.
+ * Added support for logging StringToSign to SharedKey and SAS.
+ * Added a connect timeout to prevent hangs when establishing the network connection.
+ * Made performance enhancements to the BlobOutputStream class.
+
 2015.05.26 Version 2.2.0
  * Fixed a bug where maximum execution time was ignored for file, queue, and table services.
  * Changed the socket timeout to be set to the service side timeout plus 5 minutes when maximum execution time is not set.

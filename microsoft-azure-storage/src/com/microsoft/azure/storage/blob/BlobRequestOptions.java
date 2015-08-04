@@ -26,9 +26,14 @@ import com.microsoft.azure.storage.core.Utility;
 public final class BlobRequestOptions extends RequestOptions {
 
     /**
-     * Represents the concurrent number of simultaneous requests per operation. If it's null, it will be set to the
-     * value specified by the cloud blob client's default request options
-     * {@link CloudBlobClient#getDefaultRequestOptions} during upload operations.
+     * Indicates whether a conditional failure should be absorbed on a retry attempt for the request. This option 
+     * is only used by {@link CloudAppendBlob} in upload and openWrite methods. By default, it is set to 
+     * <code>false</code>. Set this to <code>true</code> only for single writer scenario.
+     */
+    private Boolean absorbConditionalErrorsOnRetry = null;
+    
+    /**
+     * Represents the concurrent number of simultaneous requests per operation. The default value is 1.
      */
     private Integer concurrentRequestCount = null;
 
@@ -72,6 +77,7 @@ public final class BlobRequestOptions extends RequestOptions {
     public BlobRequestOptions(final BlobRequestOptions other) {
         super(other);
         if (other != null) {
+            this.setAbsorbConditionalErrorsOnRetry(other.getAbsorbConditionalErrorsOnRetry());
             this.setConcurrentRequestCount(other.getConcurrentRequestCount());
             this.setUseTransactionalContentMD5(other.getUseTransactionalContentMD5());
             this.setStoreBlobContentMD5(other.getStoreBlobContentMD5());
@@ -94,9 +100,9 @@ public final class BlobRequestOptions extends RequestOptions {
      *            {@link #concurrentRequestCount} field's value is null, it will be set to the value specified by the
      *            cloud blob client's {@link CloudBlobClient#getConcurrentRequestCount} method.
      */
-    protected static final BlobRequestOptions applyDefaults(final BlobRequestOptions options, final BlobType blobType,
-            final CloudBlobClient client) {
-        return BlobRequestOptions.applyDefaults(options, blobType, client, true);
+    protected static final BlobRequestOptions populateAndApplyDefaults(final BlobRequestOptions options,
+            final BlobType blobType, final CloudBlobClient client) {
+        return BlobRequestOptions.populateAndApplyDefaults(options, blobType, client, true);
     }
 
     /**
@@ -115,20 +121,34 @@ public final class BlobRequestOptions extends RequestOptions {
      * @param setStartTime
      *            whether to initialize the startTimeInMs field, or not
      */
-    protected static final BlobRequestOptions applyDefaults(final BlobRequestOptions options, final BlobType blobType,
-            final CloudBlobClient client, final boolean setStartTime) {
+    protected static final BlobRequestOptions populateAndApplyDefaults(final BlobRequestOptions options,
+            final BlobType blobType, final CloudBlobClient client, final boolean setStartTime) {
         BlobRequestOptions modifiedOptions = new BlobRequestOptions(options);
         BlobRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), setStartTime);
-        return BlobRequestOptions.applyDefaultsInternal(modifiedOptions, blobType, client);
+        BlobRequestOptions.applyDefaults(modifiedOptions, blobType);
+        return modifiedOptions;
     }
 
-    private static final BlobRequestOptions applyDefaultsInternal(final BlobRequestOptions modifiedOptions,
-            final BlobType blobtype, final CloudBlobClient client) {
+    /**
+     * Applies defaults to the options passed in.
+     * 
+     * @param modifiedOptions
+     *          The options to apply defaults to.
+     */
+    protected static void applyDefaults(final BlobRequestOptions modifiedOptions, final BlobType blobtype) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         RequestOptions.applyBaseDefaultsInternal(modifiedOptions);
-        if (modifiedOptions.getConcurrentRequestCount() == null) {
-            modifiedOptions.setConcurrentRequestCount(BlobConstants.DEFAULT_CONCURRENT_REQUEST_COUNT);
+        
+        if (modifiedOptions.getAbsorbConditionalErrorsOnRetry() == null) {
+            modifiedOptions.setAbsorbConditionalErrorsOnRetry(false);
         }
+        
+        if (blobtype == BlobType.APPEND_BLOB) {
+            // Append blobs must be done in serial.
+            modifiedOptions.setConcurrentRequestCount(1);
+        } else if (modifiedOptions.getConcurrentRequestCount() == null) {
+            modifiedOptions.setConcurrentRequestCount(BlobConstants.DEFAULT_CONCURRENT_REQUEST_COUNT);
+        } 
 
         if (modifiedOptions.getSingleBlobPutThresholdInBytes() == null) {
             modifiedOptions.setSingleBlobPutThresholdInBytes(BlobConstants.DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES);
@@ -139,22 +159,27 @@ public final class BlobRequestOptions extends RequestOptions {
         }
 
         if (modifiedOptions.getStoreBlobContentMD5() == null) {
-            modifiedOptions.setStoreBlobContentMD5(blobtype == BlobType.BLOCK_BLOB);
+            if (blobtype != BlobType.UNSPECIFIED) {
+                modifiedOptions.setStoreBlobContentMD5(blobtype == BlobType.BLOCK_BLOB);   
+            }
         }
 
         if (modifiedOptions.getDisableContentMD5Validation() == null) {
             modifiedOptions.setDisableContentMD5Validation(false);
         }
-
-        return modifiedOptions;
     }
 
     /**
      * Populates any null fields in the first requestOptions object with values from the second requestOptions object.
      */
-    private static final BlobRequestOptions populateRequestOptions(BlobRequestOptions modifiedOptions,
+    private static void populateRequestOptions(BlobRequestOptions modifiedOptions,
             final BlobRequestOptions clientOptions, final boolean setStartTime) {
         RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, setStartTime);
+        
+        if (modifiedOptions.getAbsorbConditionalErrorsOnRetry() == null) {
+            modifiedOptions.setAbsorbConditionalErrorsOnRetry(clientOptions.getAbsorbConditionalErrorsOnRetry());
+        }
+        
         if (modifiedOptions.getConcurrentRequestCount() == null) {
             modifiedOptions.setConcurrentRequestCount(clientOptions.getConcurrentRequestCount());
         }
@@ -174,10 +199,18 @@ public final class BlobRequestOptions extends RequestOptions {
         if (modifiedOptions.getDisableContentMD5Validation() == null) {
             modifiedOptions.setDisableContentMD5Validation(clientOptions.getDisableContentMD5Validation());
         }
-
-        return modifiedOptions;
     }
 
+    /**
+     * Indicates whether a conditional failure should be absorbed on a retry attempt for the request. For more 
+     * information about absorb conditinal errors on retry defaults, see {@link #setAbsorbConditionalErrorsOnRetry(Boolean)}.
+     * 
+     * @return the absorbConditionalErrorsOnRetry
+     */
+    public Boolean getAbsorbConditionalErrorsOnRetry() {
+        return this.absorbConditionalErrorsOnRetry;
+    }
+    
     /**
      * Gets the concurrent number of simultaneous requests per operation. For more information about concurrent request
      * count defaults, see {@link #setConcurrentRequestCount(Integer)}.
@@ -233,11 +266,27 @@ public final class BlobRequestOptions extends RequestOptions {
     }
 
     /**
+     * Sets whether a conditional failure should be absorbed on a retry attempt for the request. This option 
+     * is only used by {@link CloudAppendBlob} in upload and openWrite methods. By default, it is set to 
+     * <code>false</code>. Set this to <code>true</code> only for single writer scenario.
+     * <p>
+     * You can change the absorbConditionalErrorsOnRetry value on this request by setting this property. You can also 
+     * change the value on the {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests 
+     * made via the service client will use that absorbConditionalErrorsOnRetry value.
+     * 
+     * @param absorbConditionalErrorsOnRetry
+     *            the absorbConditionalErrorsOnRetry to set
+     */
+    public void setAbsorbConditionalErrorsOnRetry(final Boolean absorbConditionalErrorsOnRetry) {
+        this.absorbConditionalErrorsOnRetry = absorbConditionalErrorsOnRetry;
+    }
+    
+    /**
      * Sets the concurrent number of simultaneous requests per operation.
      * <p>
      * The default concurrent request count is set in the client and is by default 1, indicating no concurrency. You can
      * change the concurrent request count on this request by setting this property. You can also change the value on
-     * the {@link BlobServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the
+     * the {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests made via the
      * service client will use that concurrent request count.
      * 
      * @param concurrentRequestCount
@@ -253,7 +302,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <p>
      * The default useTransactionalContentMD5 value is set in the client and is by default <code>false</code>. You can
      * change the useTransactionalContentMD5 value on this request by setting this property. You can also change the
-     * value on the {@link BlobServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via
+     * value on the {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests made via
      * the service client will use that useTransactionalContentMD5 value.
      * 
      * @param useTransactionalContentMD5
@@ -269,7 +318,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <p>
      * The default storeBlobContentMD5 value is set in the client and is by default <code>true</code> for block blobs.
      * You can change the storeBlobContentMD5 value on this request by setting this property. You can also change the
-     * value on the {@link BlobServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via
+     * value on the {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests made via
      * the service client will use that storeBlobContentMD5 value.
      * 
      * @param storeBlobContentMD5
@@ -284,7 +333,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <p>
      * The default disableContentMD5Validation value is set in the client and is by default <code>false</code>. You can
      * change the disableContentMD5Validation value on this request by setting this property. You can also change the
-     * value on the {@link BlobServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via
+     * value on the {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests made via
      * the service client will use that disableContentMD5Validation value.
      * 
      * @param disableContentMD5Validation
@@ -299,7 +348,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * <p>
      * The default threshold size is set in the client and is by default 32MB. You can change the threshold size on this
      * request by setting this property. You can also change the value on the
-     * {@link BlobServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
+     * {@link CloudBlobClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
      * client will use that threshold size.
      * 
      * @param singleBlobPutThresholdInBytes

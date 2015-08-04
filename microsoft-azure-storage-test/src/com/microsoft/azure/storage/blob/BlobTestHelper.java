@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -25,8 +27,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import junit.framework.Assert;
-
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
@@ -36,7 +36,7 @@ import com.microsoft.azure.storage.TestHelper;
  */
 public class BlobTestHelper extends TestHelper {
 
-    protected static String generateRandomContainerName() {
+    public static String generateRandomContainerName() {
         String containerName = "container" + UUID.randomUUID().toString();
         return containerName.replace("-", "");
     }
@@ -49,7 +49,7 @@ public class BlobTestHelper extends TestHelper {
         return container;
     }
 
-    protected static String generateRandomBlobNameWithPrefix(String prefix) {
+    public static String generateRandomBlobNameWithPrefix(String prefix) {
         if (prefix == null) {
             prefix = "";
         }
@@ -73,6 +73,12 @@ public class BlobTestHelper extends TestHelper {
                     blob = uploadNewBlob(container, type, "pb", length, context);
                     blobs.add(blob.getName());
                     break;
+                    
+                case APPEND_BLOB:
+                    blob = uploadNewBlob(container, type, "ab", length, context);
+                    blobs.add(blob.getName());
+                    break;
+
 
                 default:
                     break;
@@ -99,6 +105,10 @@ public class BlobTestHelper extends TestHelper {
             blob = container.getPageBlobReference(name);
             blob.upload(getRandomDataStream(length), length, null, null, context);
         }
+        else if (type == BlobType.APPEND_BLOB) {
+            blob = container.getAppendBlobReference(name);
+            blob.upload(getRandomDataStream(length), length, null, null, context);
+        }
         return blob;
     }
 
@@ -117,12 +127,12 @@ public class BlobTestHelper extends TestHelper {
         blob.downloadToByteArray(resultBuffer, bufferOffset, null, options, null);
 
         for (int i = 0; i < blob.getProperties().getLength(); i++) {
-            Assert.assertEquals(buffer[i], resultBuffer[bufferOffset + i]);
+            assertEquals(buffer[i], resultBuffer[bufferOffset + i]);
         }
 
         if (bufferOffset + blobSize < bufferSize) {
             for (int k = bufferOffset + blobSize; k < bufferSize; k++) {
-                Assert.assertEquals(0, resultBuffer[k]);
+                assertEquals(0, resultBuffer[k]);
             }
         }
     }
@@ -146,19 +156,19 @@ public class BlobTestHelper extends TestHelper {
             downloadSize = length.intValue();
         }
 
-        Assert.assertEquals(downloadSize, downloadLength);
+        assertEquals(downloadSize, downloadLength);
 
         for (int i = 0; i < bufferOffset; i++) {
-            Assert.assertEquals(0, resultBuffer[i]);
+            assertEquals(0, resultBuffer[i]);
         }
 
         for (int j = 0; j < downloadLength; j++) {
-            Assert.assertEquals(buffer[(int) ((blobOffset != null ? blobOffset : 0) + j)], resultBuffer[bufferOffset
+            assertEquals(buffer[(int) ((blobOffset != null ? blobOffset : 0) + j)], resultBuffer[bufferOffset
                     + j]);
         }
 
         for (int k = bufferOffset + downloadLength; k < bufferSize; k++) {
-            Assert.assertEquals(0, resultBuffer[k]);
+            assertEquals(0, resultBuffer[k]);
         }
     }
 
@@ -174,22 +184,22 @@ public class BlobTestHelper extends TestHelper {
 
         try {
             blob.downloadRangeToByteArray(1024, (long) 1, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (StorageException ex) {
-            Assert.assertEquals(416, ex.getHttpStatusCode());
+            assertEquals(416, ex.getHttpStatusCode());
         }
 
         try {
             blob.downloadToByteArray(resultBuffer, 1024);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
         }
 
         try {
             blob.downloadRangeToByteArray(0, (long) 1023, resultBuffer, 2);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
@@ -198,7 +208,7 @@ public class BlobTestHelper extends TestHelper {
         // negative length
         try {
             blob.downloadRangeToByteArray(0, (long) -10, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
@@ -207,7 +217,7 @@ public class BlobTestHelper extends TestHelper {
         // negative blob offset
         try {
             blob.downloadRangeToByteArray(-10, (long) 20, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
@@ -216,10 +226,24 @@ public class BlobTestHelper extends TestHelper {
         // negative buffer offset
         try {
             blob.downloadRangeToByteArray(0, (long) 20, resultBuffer, -10);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
+        }
+    }
+    
+    public static CloudAppendBlob defiddler(CloudAppendBlob blob) throws URISyntaxException, StorageException {
+        URI oldUri = blob.getUri();
+        URI newUri = defiddler(oldUri);
+
+        if (newUri != oldUri) {
+            CloudAppendBlob newBlob = new CloudAppendBlob(newUri, blob.getServiceClient().getCredentials());
+            newBlob.setSnapshotID(blob.snapshotID);
+            return newBlob;
+        }
+        else {
+            return blob;
         }
     }
 
@@ -228,7 +252,7 @@ public class BlobTestHelper extends TestHelper {
         URI newUri = defiddler(oldUri);
 
         if (newUri != oldUri) {
-            CloudBlockBlob newBlob = new CloudBlockBlob(newUri, blob.getServiceClient());
+            CloudBlockBlob newBlob = new CloudBlockBlob(newUri, blob.getServiceClient().getCredentials());
             newBlob.setSnapshotID(blob.snapshotID);
             return newBlob;
         }
@@ -242,7 +266,7 @@ public class BlobTestHelper extends TestHelper {
         URI newUri = defiddler(oldUri);
 
         if (newUri != oldUri) {
-            CloudPageBlob newBlob = new CloudPageBlob(newUri, blob.getServiceClient());
+            CloudPageBlob newBlob = new CloudPageBlob(newUri, blob.getServiceClient().getCredentials());
             newBlob.setSnapshotID(blob.snapshotID);
             return newBlob;
         }
@@ -254,9 +278,13 @@ public class BlobTestHelper extends TestHelper {
     public static void waitForCopy(CloudBlob blob) throws StorageException, InterruptedException {
         boolean copyInProgress = true;
         while (copyInProgress) {
-            Thread.sleep(1000);
             blob.downloadAttributes();
-            copyInProgress = (blob.getCopyState().getStatus() == CopyStatus.PENDING);
+            copyInProgress = (blob.getCopyState().getStatus() == CopyStatus.PENDING)
+                    || (blob.getCopyState().getStatus() == CopyStatus.ABORTED);
+            // One second sleep if retry is needed
+            if (copyInProgress) {
+                Thread.sleep(1000);
+            }
         }
     }
 
@@ -287,14 +315,14 @@ public class BlobTestHelper extends TestHelper {
 
     public static void assertAreEqual(CloudBlob blob1, CloudBlob blob2) throws URISyntaxException, StorageException {
         if (blob1 == null) {
-            Assert.assertNull(blob2);
+            assertNull(blob2);
         }
         else {
-            Assert.assertNotNull(blob2);
-            Assert.assertEquals(blob1.getUri(), blob2.getUri());
-            Assert.assertEquals(blob1.getSnapshotID(), blob2.getSnapshotID());
-            Assert.assertEquals(blob1.isSnapshot(), blob2.isSnapshot());
-            Assert.assertEquals(blob1.getQualifiedStorageUri(), blob2.getQualifiedStorageUri());
+            assertNotNull(blob2);
+            assertEquals(blob1.getUri(), blob2.getUri());
+            assertEquals(blob1.getSnapshotID(), blob2.getSnapshotID());
+            assertEquals(blob1.isSnapshot(), blob2.isSnapshot());
+            assertEquals(blob1.getQualifiedStorageUri(), blob2.getQualifiedStorageUri());
             assertAreEqual(blob1.getProperties(), blob2.getProperties());
             assertAreEqual(blob1.getCopyState(), blob2.getCopyState());
         }
@@ -302,35 +330,35 @@ public class BlobTestHelper extends TestHelper {
 
     public static void assertAreEqual(BlobProperties prop1, BlobProperties prop2) {
         if (prop1 == null) {
-            Assert.assertNull(prop2);
+            assertNull(prop2);
         }
         else {
-            Assert.assertNotNull(prop2);
-            Assert.assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
-            Assert.assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
-            Assert.assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
-            Assert.assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
-            Assert.assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
-            Assert.assertEquals(prop1.getContentType(), prop2.getContentType());
-            Assert.assertEquals(prop1.getEtag(), prop2.getEtag());
-            Assert.assertEquals(prop1.getLastModified(), prop2.getLastModified());
-            Assert.assertEquals(prop1.getLength(), prop2.getLength());
-            Assert.assertEquals(prop1.getPageBlobSequenceNumber(), prop2.getPageBlobSequenceNumber());
+            assertNotNull(prop2);
+            assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+            assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
+            assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+            assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+            assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+            assertEquals(prop1.getContentType(), prop2.getContentType());
+            assertEquals(prop1.getEtag(), prop2.getEtag());
+            assertEquals(prop1.getLastModified(), prop2.getLastModified());
+            assertEquals(prop1.getLength(), prop2.getLength());
+            assertEquals(prop1.getPageBlobSequenceNumber(), prop2.getPageBlobSequenceNumber());
         }
     }
 
     public static void assertAreEqual(CopyState copy1, CopyState copy2) {
         if (copy1 == null) {
-            Assert.assertNull(copy2);
+            assertNull(copy2);
         }
         else {
-            Assert.assertNotNull(copy2);
-            Assert.assertEquals(copy1.getBytesCopied(), copy2.getBytesCopied());
-            Assert.assertEquals(copy1.getCompletionTime(), copy2.getCompletionTime());
-            Assert.assertEquals(copy1.getCopyId(), copy2.getCopyId());
-            Assert.assertEquals(copy1.getSource(), copy2.getSource());
-            Assert.assertEquals(copy1.getStatus(), copy2.getStatus());
-            Assert.assertEquals(copy1.getTotalBytes(), copy2.getTotalBytes());
+            assertNotNull(copy2);
+            assertEquals(copy1.getBytesCopied(), copy2.getBytesCopied());
+            assertEquals(copy1.getCompletionTime(), copy2.getCompletionTime());
+            assertEquals(copy1.getCopyId(), copy2.getCopyId());
+            assertEquals(copy1.getSource(), copy2.getSource());
+            assertEquals(copy1.getStatus(), copy2.getStatus());
+            assertEquals(copy1.getTotalBytes(), copy2.getTotalBytes());
         }
     }
 }
