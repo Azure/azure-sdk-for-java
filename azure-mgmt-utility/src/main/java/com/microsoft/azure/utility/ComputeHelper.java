@@ -25,11 +25,9 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.http.HttpStatus;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class ComputeHelper {
     public final static String Subscriptions = "subscriptions";
@@ -107,8 +105,7 @@ public class ComputeHelper {
     public static VirtualMachine createDefaultVMInput(
             ResourceContext context, String vmName, String adminName, String adminPassword) {
 
-        String vhdContainer = "https://" + context.getStorageAccount().getName() + ".blob.core.windows.net/"
-                + context.getContainerName();
+        String vhdContainer = getVhdContainerUrl(context);
         // String vhdUri = vhdContainer + String.format("/%s.vhd", "datavhd");
         String osVhduri = vhdContainer + String.format("/os%s.vhd", "osvhd");
 
@@ -226,7 +223,7 @@ public class ComputeHelper {
             NetworkResourceProviderClient networkResourceProviderClient,
             StorageManagementClient storageManagementClient,
             ResourceContext context, String vmName, String adminName, String adminPassword,
-            Consumer<VirtualMachine> vmInputModifier)
+            ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
         //ensure resource group exists
         createOrUpdateResourceGroup(resourceManagementClient, context);
@@ -336,6 +333,11 @@ public class ComputeHelper {
         param.setVersion(imageRef.getVersion());
 
         return computeManagementClient.getVirtualMachineImagesOperations().get(param).getVirtualMachineImage();
+    }
+
+    public static String getVhdContainerUrl(ResourceContext context) {
+        return String.format("https://%s.blob.core.windows.net/%s",
+                context.getStorageAccount().getName(), context.getContainerName());
     }
 
     public static ComputeLongRunningOperationResponse waitForVMCreation(

@@ -17,12 +17,11 @@ package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ComputeHelper;
+import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
-
-import java.util.function.Consumer;
 
 public class VMMarketplaceTests extends ComputeTestBase {
     static {
@@ -64,7 +63,7 @@ public class VMMarketplaceTests extends ComputeTestBase {
 
         try
         {
-        VirtualMachine vm = createVM(context, generateName("VM"), new Consumer<VirtualMachine>() {
+        VirtualMachine vm = createVM(context, generateName("VM"), new ConsumerWrapper<VirtualMachine>() {
             @Override
             public void accept(VirtualMachine vm) {
                 vm.getStorageProfile().setDataDisks(null);

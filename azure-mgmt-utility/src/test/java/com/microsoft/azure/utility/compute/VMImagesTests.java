@@ -17,11 +17,8 @@ package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ComputeHelper;
-import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
-
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class VMImagesTests extends ComputeTestBase {

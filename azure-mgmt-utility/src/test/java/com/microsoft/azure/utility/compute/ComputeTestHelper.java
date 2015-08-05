@@ -15,12 +15,10 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResponse;
 import org.junit.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComputeTestHelper {

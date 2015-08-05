@@ -17,12 +17,9 @@ package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.junit.*;
-
-import java.util.function.Consumer;
 
 public class VMScenarioTests extends ComputeTestBase {
     static {

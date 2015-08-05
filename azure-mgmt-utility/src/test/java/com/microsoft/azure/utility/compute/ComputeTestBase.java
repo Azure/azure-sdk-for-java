@@ -21,7 +21,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 
 import com.microsoft.azure.management.compute.ComputeManagementClient;
@@ -32,6 +31,7 @@ import com.microsoft.azure.management.resources.models.LongRunningOperationRespo
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.azure.utility.ComputeHelper;
+import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -200,14 +200,14 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     }
 
     protected static VirtualMachine createVM(
-            ResourceContext context, String vmName, Consumer<VirtualMachine> vmInputModifier)
+            ResourceContext context, String vmName, ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
         return createVM(context, vmName, false, vmInputModifier);
     }
 
     protected static VirtualMachine createVM(
             ResourceContext context,
-            String vmName, boolean createWithPublicIpAddr, Consumer<VirtualMachine> vmInputModifier)
+            String vmName, boolean createWithPublicIpAddr, ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
 
         log.info(String.format("Create vm in %s: %s, rg: %s", context.getLocation(), vmName, rgName));

@@ -21,12 +21,11 @@ import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.NetworkHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
-
-import java.util.function.Consumer;
 
 public class VMNetworkInterfaceTests extends ComputeTestBase {
     static {
@@ -71,7 +70,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
         final NetworkInterface nic2 = NetworkHelper.createNIC(
                 networkResourceProviderClient, context2, vnet.getSubnets().get(0));
 
-        VirtualMachine vm = createVM(context, generateName("VM"), new Consumer<VirtualMachine>() {
+        VirtualMachine vm = createVM(context, generateName("VM"), new ConsumerWrapper<VirtualMachine>() {
             @Override
             public void accept(VirtualMachine virtualMachine) {
                 virtualMachine.getHardwareProfile().setVirtualMachineSize(VirtualMachineSizeTypes.STANDARD_A4);
