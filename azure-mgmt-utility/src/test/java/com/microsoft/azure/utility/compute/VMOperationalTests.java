@@ -64,7 +64,6 @@ public class VMOperationalTests extends ComputeTestBase {
     /// Delete VM
     /// Delete RG
     /// </summary>
-    // @Ignore
     @Test
     public void testVMOperations() throws Exception {
         log.info("creating VM, in mock: " + IS_MOCKED);
