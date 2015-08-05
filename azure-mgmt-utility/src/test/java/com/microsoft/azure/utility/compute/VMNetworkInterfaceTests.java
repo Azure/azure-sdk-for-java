@@ -21,12 +21,11 @@ import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.utility.ConsumerWrapper;
+import com.microsoft.azure.utility.NetworkHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
-
-import java.util.function.Consumer;
 
 public class VMNetworkInterfaceTests extends ComputeTestBase {
     static {
@@ -56,22 +55,22 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
 
     @Test
     public void testVMWithMultipleNic() throws Exception {
-        log.info("creating VM...");
+        log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
         createOrUpdateResourceGroup(rgName);
 
-        VirtualNetwork vnet = VMHelper.createVirtualNetwork(networkResourceProviderClient, context);
+        VirtualNetwork vnet = NetworkHelper.createVirtualNetwork(networkResourceProviderClient, context);
 
-        NetworkInterface nic1 = VMHelper.createNIC(
+        NetworkInterface nic1 = NetworkHelper.createNIC(
                 networkResourceProviderClient, context, vnet.getSubnets().get(0));
 
         // create a new nic with same vnet
         ResourceContext context2 = createTestResourceContext("2", false);
-        final NetworkInterface nic2 = VMHelper.createNIC(
+        final NetworkInterface nic2 = NetworkHelper.createNIC(
                 networkResourceProviderClient, context2, vnet.getSubnets().get(0));
 
-        VirtualMachine vm = createVM(context, generateName("VM"), new Consumer<VirtualMachine>() {
+        VirtualMachine vm = createVM(context, generateName("VM"), new ConsumerWrapper<VirtualMachine>() {
             @Override
             public void accept(VirtualMachine virtualMachine) {
                 virtualMachine.getHardwareProfile().setVirtualMachineSize(VirtualMachineSizeTypes.STANDARD_A4);
@@ -88,13 +87,13 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
                 .get(rgName, context.getNetworkInterface().getName());
         // TODO get MAC address only work in certain regions
         // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
-        Assert.assertNotNull(getNic1Response.getNetworkInterface().isPrimary());
-        Assert.assertFalse(getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull("nic1response isPrimary is null", getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertFalse("nic1response isPrimary is true", getNic1Response.getNetworkInterface().isPrimary());
 
         NetworkInterfaceGetResponse getNic2Response = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(rgName, context2.getNetworkInterface().getName());
         // Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
-        Assert.assertNotNull(getNic2Response.getNetworkInterface().isPrimary());
-        Assert.assertTrue(getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull("nic1response isPrimary is null", getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertTrue("nic1response isPrimary is false", getNic2Response.getNetworkInterface().isPrimary());
     }
 }

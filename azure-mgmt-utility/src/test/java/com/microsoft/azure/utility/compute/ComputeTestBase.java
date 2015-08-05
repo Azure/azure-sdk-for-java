@@ -21,7 +21,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 
 import com.microsoft.azure.management.compute.ComputeManagementClient;
@@ -31,8 +30,9 @@ import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.azure.utility.ComputeHelper;
+import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.apache.commons.logging.Log;
@@ -79,7 +79,12 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createComputeManagementClient() throws Exception {
         computeManagementClient = ComputeManagementService.create(config);
-        computeManagementClient.setLongRunningOperationRetryTimeout(500);
+        if (IS_MOCKED) {
+            computeManagementClient.setLongRunningOperationInitialTimeout(0);
+            computeManagementClient.setLongRunningOperationRetryTimeout(0);
+        } else {
+            computeManagementClient.setLongRunningOperationRetryTimeout(10);
+        }
 
         addClient((ServiceClient<?>) computeManagementClient, new Callable<Void>() {
             @Override
@@ -92,6 +97,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createStorageManagementClient() throws Exception {
         storageManagementClient = StorageManagementService.create(config);
+        if (IS_MOCKED) {
+            storageManagementClient.setLongRunningOperationInitialTimeout(0);
+            storageManagementClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -103,6 +112,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void createNetworkManagementClient() throws Exception {
         networkResourceProviderClient = NetworkResourceProviderService.create(config);
+        if (IS_MOCKED) {
+            networkResourceProviderClient.setLongRunningOperationInitialTimeout(0);
+            networkResourceProviderClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) networkResourceProviderClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -116,6 +129,10 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         resourceManagementClient = ResourceManagementService.create(config);
+        if (IS_MOCKED) {
+            resourceManagementClient.setLongRunningOperationInitialTimeout(0);
+            resourceManagementClient.setLongRunningOperationRetryTimeout(0);
+        }
         addClient((ServiceClient<?>) resourceManagementClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -179,34 +196,30 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static VirtualMachine createVM(ResourceContext context, String vmName)
             throws Exception {
-        return createVM(context, vmName, "", false, null);
+        return createVM(context, vmName, false, null);
     }
 
     protected static VirtualMachine createVM(
-            ResourceContext context, String vmName, Consumer<VirtualMachine> vmInputModifier)
+            ResourceContext context, String vmName, ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
-        return createVM(context, vmName, "", false, vmInputModifier);
+        return createVM(context, vmName, false, vmInputModifier);
     }
 
     protected static VirtualMachine createVM(
             ResourceContext context,
-            String vmName, String imRefId, boolean createWithPublicIpAddr, Consumer<VirtualMachine> vmInputModifier)
+            String vmName, boolean createWithPublicIpAddr, ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
 
-        log.info(String.format("Create vm: %s, rg: %s, imRef: %s.",
-                vmName, rgName, imRefId));
+        log.info(String.format("Create vm in %s: %s, rg: %s", context.getLocation(), vmName, rgName));
 
         if (context == null) {
             context = createTestResourceContext(createWithPublicIpAddr);
         }
 
-        if (imRefId != null && !imRefId.isEmpty()) {
-            context.setSourceImageReferenceUri(imRefId);
-        }
 
         VirtualMachineCreateOrUpdateResponse vmResponse;
         try {
-            vmResponse = VMHelper.createVM(
+            vmResponse = ComputeHelper.createVM(
                     resourceManagementClient, computeManagementClient, networkResourceProviderClient, storageManagementClient,
                     context, vmName, "Foo12", "BaR@123rgababaab", vmInputModifier);
 

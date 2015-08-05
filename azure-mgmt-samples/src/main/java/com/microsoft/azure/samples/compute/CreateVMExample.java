@@ -26,8 +26,8 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.VMHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
@@ -58,14 +58,22 @@ public class CreateVMExample {
         ComputeManagementClient computeManagementClient = ComputeManagementService.create(config);
         NetworkResourceProviderClient networkResourceProviderClient = NetworkResourceProviderService.create(config);
 
-        //set operation timeout for compute client to 500 seconds
-        computeManagementClient.setLongRunningOperationRetryTimeout(500);
-
         String resourceGroupName = "javasampleresourcegroup";
         String region = "EastAsia";
 
         ResourceContext context = new ResourceContext(
                 region, resourceGroupName, System.getenv(ManagementConfiguration.SUBSCRIPTION_ID), false);
+
+        // If you like to set the name of any auto-created resource:
+        // context.setNetworkInterfaceName("VnetName1");
+        // context.setStorageAccountName("storage1");
+
+        // If you like to use any existing resource:
+        // context.setNetworkInterface(NetworkInterface1);
+
+        // To use a differnt VM image
+        // context.setImageReference(
+        //        ComputeHelper.getWindowsServerDefaultImage(computeManagementClient, context.getLocation()));
 
         System.out.println("Start create vm...");
 
@@ -75,7 +83,7 @@ public class CreateVMExample {
 //        3) Contains a numeric digit
 //        4) Contains a special character.
         try {
-            VirtualMachine vm = VMHelper.createVM(
+            VirtualMachine vm = ComputeHelper.createVM(
                     resourceManagementClient, computeManagementClient, networkResourceProviderClient, storageManagementClient,
                     context, "javaSampleVM", "Foo12", "BaR@123rgababaab")
                     .getVirtualMachine();

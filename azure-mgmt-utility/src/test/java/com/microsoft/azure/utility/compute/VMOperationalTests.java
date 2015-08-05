@@ -16,6 +16,7 @@
 package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.windowsazure.core.OperationResponse;
 import org.apache.commons.logging.LogFactory;
@@ -63,11 +64,12 @@ public class VMOperationalTests extends ComputeTestBase {
     /// Delete VM
     /// Delete RG
     /// </summary>
-    @Ignore
     @Test
     public void testVMOperations() throws Exception {
-        log.info("creating VM...");
+        log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
+        context.setImageReference(
+                ComputeHelper.getUbuntuServerDefaultImage(computeManagementClient, context.getLocation()));
 
         VirtualMachine vm = createVM(context, generateName("VM"));
 
