@@ -157,6 +157,7 @@ public class TableResult {
      *            An instance of an object implementing {@link TableEntity} to associate with the table operation.
      * @throws UnsupportedEncodingException
      */
+    @SuppressWarnings("deprecation")
     protected void updateResultObject(final TableEntity ent) throws UnsupportedEncodingException {
         this.result = ent;
         ent.setEtag(this.etag);

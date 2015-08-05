@@ -376,8 +376,7 @@ public class CloudBlobDirectoryTests {
                 null), get22.getUri());
     }
 
-    // @Test
-    // Re-enable after fix in 3.0 with int->Integer
+    @Test
     public void testFlatListingWithDirectorySegmented() throws URISyntaxException, StorageException {
         for (int i = 0; i < delimiters.length; i++) {
             CloudBlobContainer container = null;
@@ -399,7 +398,7 @@ public class CloudBlobDirectoryTests {
         ArrayList<ListBlobItem> list1 = new ArrayList<ListBlobItem>();
         do {
             ResultSegment<ListBlobItem> result1 = directory.listBlobsSegmented(null, false,
-                    EnumSet.noneOf(BlobListingDetails.class), -1, token, null, null);
+                    EnumSet.noneOf(BlobListingDetails.class), null, token, null, null);
             token = result1.getContinuationToken();
             list1.addAll(result1.getResults());
         } while (token != null);
@@ -424,7 +423,7 @@ public class CloudBlobDirectoryTests {
         ArrayList<ListBlobItem> list2 = new ArrayList<ListBlobItem>();
         do {
             ResultSegment<ListBlobItem> result1 = midDir2.listBlobsSegmented(null, true,
-                    EnumSet.noneOf(BlobListingDetails.class), -1, token, null, null);
+                    EnumSet.noneOf(BlobListingDetails.class), null, token, null, null);
             token = result1.getContinuationToken();
             list2.addAll(result1.getResults());
         } while (token != null);

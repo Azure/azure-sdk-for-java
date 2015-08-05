@@ -78,10 +78,10 @@ public abstract class RequestOptions {
     /**
      * Populates the default timeout, retry policy, and location mode from client if they are null.
      * 
-     * @param options
+     * @param modifiedOptions
      *            The input options to copy from when applying defaults
      */
-    protected static final RequestOptions applyBaseDefaultsInternal(final RequestOptions modifiedOptions) {
+    protected static void applyBaseDefaultsInternal(final RequestOptions modifiedOptions) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         if (modifiedOptions.getRetryPolicyFactory() == null) {
             modifiedOptions.setRetryPolicyFactory(new RetryExponentialRetry());
@@ -90,14 +90,12 @@ public abstract class RequestOptions {
         if (modifiedOptions.getLocationMode() == null) {
             modifiedOptions.setLocationMode(LocationMode.PRIMARY_ONLY);
         }
-
-        return modifiedOptions;
     }
 
     /**
      * Populates any null fields in the first requestOptions object with values from the second requestOptions object.
      */
-    protected static final RequestOptions populateRequestOptions(RequestOptions modifiedOptions,
+    protected static void populateRequestOptions(RequestOptions modifiedOptions,
             final RequestOptions clientOptions, final boolean setStartTime) {
         if (modifiedOptions.getRetryPolicyFactory() == null) {
             modifiedOptions.setRetryPolicyFactory(clientOptions.getRetryPolicyFactory());
@@ -120,8 +118,6 @@ public abstract class RequestOptions {
             modifiedOptions.setOperationExpiryTimeInMs(new Date().getTime()
                     + modifiedOptions.getMaximumExecutionTimeInMs());
         }
-
-        return modifiedOptions;
     }
 
     /**
@@ -214,7 +210,7 @@ public abstract class RequestOptions {
      * {@link ServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
      * client will use that server timeout.
      * 
-     * @param timeoutInMs
+     * @param timeoutIntervalInMs
      *            The timeout, in milliseconds, to use for this request.
      */
     public final void setTimeoutIntervalInMs(final Integer timeoutIntervalInMs) {

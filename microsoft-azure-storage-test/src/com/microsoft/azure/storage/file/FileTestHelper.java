@@ -14,15 +14,18 @@
  */
 package com.microsoft.azure.storage.file;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.UUID;
 
-import junit.framework.Assert;
-
+import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.TestHelper;
 
 /**
@@ -39,6 +42,17 @@ public class FileTestHelper extends TestHelper {
         String shareName = "file" + UUID.randomUUID().toString();
         return shareName.replace("-", "");
     }
+    
+    public static CloudFile uploadNewFile(CloudFileShare share, int length, OperationContext context)
+            throws StorageException, IOException, URISyntaxException {
+        String name = generateRandomFileName();
+
+        CloudFile file = null;
+
+        file = share.getRootDirectoryReference().getFileReference(name);
+        file.upload(getRandomDataStream(length), length, null, null, context);
+        return file;
+    }
 
     public static CloudFileShare getRandomShareReference() throws URISyntaxException, StorageException {
         String shareName = generateRandomShareName();
@@ -46,6 +60,31 @@ public class FileTestHelper extends TestHelper {
         CloudFileShare share = fileClient.getShareReference(shareName);
 
         return share;
+    }
+    
+    static StorageUri ensureTrailingSlash(StorageUri uri) throws URISyntaxException {
+        URI primary = uri.getPrimaryUri();
+        URI secondary = uri.getSecondaryUri();
+        
+        // Add a trailing slash to primary if it did not previously have one
+        if (primary != null) {
+            String primaryUri = primary.toString();
+            if (!primaryUri.isEmpty() && !primaryUri.substring(primaryUri.length() - 1).equals("/")) {
+                primaryUri += "/";
+                primary = new URI(primaryUri);
+            }
+        }
+
+        // Add a trailing slash to secondary if it did not previously have one
+        if (secondary != null) {
+            String secondaryUri = secondary.toString();
+            if (!secondaryUri.isEmpty() &&  !secondaryUri.substring(secondaryUri.length() - 1).equals("/")) {
+                secondaryUri += "/";
+                secondary = new URI(secondaryUri);
+            }
+        }
+        
+        return new StorageUri(primary, secondary);
     }
 
     protected static void doDownloadTest(CloudFile file, int fileSize, int bufferSize, int bufferOffset)
@@ -60,12 +99,12 @@ public class FileTestHelper extends TestHelper {
         file.downloadToByteArray(resultBuffer, bufferOffset, null, options, null);
 
         for (int i = 0; i < file.getProperties().getLength(); i++) {
-            Assert.assertEquals(buffer[i], resultBuffer[bufferOffset + i]);
+            assertEquals(buffer[i], resultBuffer[bufferOffset + i]);
         }
 
         if (bufferOffset + fileSize < bufferSize) {
             for (int k = bufferOffset + fileSize; k < bufferSize; k++) {
-                Assert.assertEquals(0, resultBuffer[k]);
+                assertEquals(0, resultBuffer[k]);
             }
         }
     }
@@ -89,19 +128,19 @@ public class FileTestHelper extends TestHelper {
             downloadSize = length.intValue();
         }
 
-        Assert.assertEquals(downloadSize, downloadLength);
+        assertEquals(downloadSize, downloadLength);
 
         for (int i = 0; i < bufferOffset; i++) {
-            Assert.assertEquals(0, resultBuffer[i]);
+            assertEquals(0, resultBuffer[i]);
         }
 
         for (int j = 0; j < downloadLength; j++) {
-            Assert.assertEquals(buffer[(int) ((fileOffset != null ? fileOffset : 0) + j)], resultBuffer[bufferOffset
+            assertEquals(buffer[(int) ((fileOffset != null ? fileOffset : 0) + j)], resultBuffer[bufferOffset
                     + j]);
         }
 
         for (int k = bufferOffset + downloadLength; k < bufferSize; k++) {
-            Assert.assertEquals(0, resultBuffer[k]);
+            assertEquals(0, resultBuffer[k]);
         }
     }
 
@@ -117,22 +156,22 @@ public class FileTestHelper extends TestHelper {
 
         try {
             file.downloadRangeToByteArray(1024, (long) 1, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (StorageException ex) {
-            Assert.assertEquals(416, ex.getHttpStatusCode());
+            assertEquals(416, ex.getHttpStatusCode());
         }
 
         try {
             file.downloadToByteArray(resultBuffer, 1024);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
         }
 
         try {
             file.downloadRangeToByteArray(0, (long) 1023, resultBuffer, 2);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
@@ -141,16 +180,16 @@ public class FileTestHelper extends TestHelper {
         // negative length
         try {
             file.downloadRangeToByteArray(0, (long) -10, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
-        // negative blob offset
+        // negative file offset
         try {
             file.downloadRangeToByteArray(-10, (long) 20, resultBuffer, 0);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
@@ -159,39 +198,65 @@ public class FileTestHelper extends TestHelper {
         // negative buffer offset
         try {
             file.downloadRangeToByteArray(0, (long) 20, resultBuffer, -10);
-            Assert.fail();
+            fail();
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
     }
+    
+    public static CloudFile defiddler(CloudFile file) throws URISyntaxException, StorageException {
+        URI oldUri = file.getUri();
+        URI newUri = defiddler(oldUri);
+
+        if (newUri != oldUri) {
+            CloudFile newFile = new CloudFile(newUri, file.getServiceClient().getCredentials());
+            return newFile;
+        }
+        else {
+            return file;
+        }
+    }
+    
+    public static void waitForCopy(CloudFile file) throws StorageException, InterruptedException {
+        boolean copyInProgress = true;
+        while (copyInProgress) {
+            file.downloadAttributes();
+            copyInProgress = (file.getCopyState().getStatus() == CopyStatus.PENDING)
+                    || (file.getCopyState().getStatus() == CopyStatus.ABORTED);
+            // One second sleep if retry is needed
+            if (copyInProgress) {
+                Thread.sleep(1000);
+            }
+        }
+    }
 
     public static void assertAreEqual(CloudFile file1, CloudFile file2) {
         if (file1 == null) {
-            Assert.assertNull(file2);
+            assertNull(file2);
         }
         else {
-            Assert.assertNotNull(file2);
-            Assert.assertEquals(file1.getUri(), file2.getUri());
+            assertNotNull(file2);
+            assertEquals(file1.getUri(), file2.getUri());
             assertAreEqual(file1.getProperties(), file2.getProperties());
         }
     }
 
     public static void assertAreEqual(FileProperties prop1, FileProperties prop2) {
         if (prop1 == null) {
-            Assert.assertNull(prop2);
+            assertNull(prop2);
         }
         else {
-            Assert.assertNotNull(prop2);
-            Assert.assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
-            Assert.assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
-            Assert.assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
-            Assert.assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
-            Assert.assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
-            Assert.assertEquals(prop1.getContentType(), prop2.getContentType());
-            Assert.assertEquals(prop1.getEtag(), prop2.getEtag());
-            Assert.assertEquals(prop1.getLastModified(), prop2.getLastModified());
-            Assert.assertEquals(prop1.getLength(), prop2.getLength());
+            assertNotNull(prop2);
+            assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+            assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
+            assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+            assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+            assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+            assertEquals(prop1.getContentType(), prop2.getContentType());
+            assertEquals(prop1.getEtag(), prop2.getEtag());
+            assertEquals(prop1.getLastModified(), prop2.getLastModified());
+            assertEquals(prop1.getLength(), prop2.getLength());
         }
     }
 

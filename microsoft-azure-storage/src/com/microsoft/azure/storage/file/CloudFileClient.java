@@ -19,20 +19,20 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.microsoft.azure.storage.DoesServiceRequest;
-import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
 import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.RetryExponentialRetry;
 import com.microsoft.azure.storage.ServiceClient;
 import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.LazySegmentedIterable;
 import com.microsoft.azure.storage.core.ListResponse;
 import com.microsoft.azure.storage.core.ListingContext;
+import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.SegmentedStorageRequest;
 import com.microsoft.azure.storage.core.StorageRequest;
 import com.microsoft.azure.storage.core.Utility;
@@ -48,7 +48,7 @@ public final class CloudFileClient extends ServiceClient {
     /**
      * Holds the default request option values associated with this Service Client.
      */
-    private FileRequestOptions defaultRequestOptions;
+    private FileRequestOptions defaultRequestOptions = new FileRequestOptions();
 
     /**
      * Creates an instance of the <code>CloudFileClient</code> class using the specified File service endpoint and
@@ -76,10 +76,10 @@ public final class CloudFileClient extends ServiceClient {
      */
     public CloudFileClient(StorageUri storageUri, StorageCredentials credentials) {
         super(storageUri, credentials);
-        this.defaultRequestOptions = new FileRequestOptions();
-        this.defaultRequestOptions.setLocationMode(LocationMode.PRIMARY_ONLY);
-        this.defaultRequestOptions.setRetryPolicyFactory(new RetryExponentialRetry());
-        this.defaultRequestOptions.setConcurrentRequestCount(FileConstants.DEFAULT_CONCURRENT_REQUEST_COUNT);
+        if (credentials == null || credentials.getClass().equals(StorageCredentialsAnonymous.class)) {
+            throw new IllegalArgumentException(SR.STORAGE_CREDENTIALS_NULL_OR_ANONYMOUS);
+        }
+        FileRequestOptions.applyDefaults(this.defaultRequestOptions);
     }
 
     /**
@@ -98,6 +98,7 @@ public final class CloudFileClient extends ServiceClient {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
      *      Directories, Files, and Metadata</a>
      */
+    @SuppressWarnings("deprecation")
     public CloudFileShare getShareReference(final String shareName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("shareName", shareName);
         return new CloudFileShare(shareName, this);
@@ -255,7 +256,7 @@ public final class CloudFileClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 
@@ -302,7 +303,7 @@ public final class CloudFileClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this);
 
         Utility.assertContinuationType(continuationToken, ResultContinuationType.SHARE);
 
@@ -343,7 +344,7 @@ public final class CloudFileClient extends ServiceClient {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -383,6 +384,103 @@ public final class CloudFileClient extends ServiceClient {
     }
 
     /**
+     * Retrieves the current {@link FileServiceProperties} for the given storage service. This encapsulates
+     * the CORS configurations.
+     * 
+     * @return A {@link FileServiceProperties} object representing the current configuration of the service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final FileServiceProperties downloadServiceProperties() throws StorageException {
+        return this.downloadServiceProperties(null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Retrieves the current {@link FileServiceProperties} for the given storage service. This encapsulates
+     * the CORS configurations.
+     * 
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client
+     *            ({@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link FileServiceProperties} object representing the current configuration of the service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final FileServiceProperties downloadServiceProperties(FileRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this);
+
+        return new FileServiceProperties(ExecutionEngine.executeWithRetry(
+                this, null, this.downloadServicePropertiesImpl(options, false),
+                options.getRetryPolicyFactory(), opContext));
+    }
+
+    /**
+     * Uploads a new {@link FileServiceProperties} configuration to the given storage service. This encapsulates
+     * the CORS configurations.
+     * 
+     * @param properties
+     *            A {@link FileServiceProperties} object which specifies the service properties to upload.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadServiceProperties(final FileServiceProperties properties) throws StorageException {
+        this.uploadServiceProperties(properties, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Uploads a new {@link FileServiceProperties} configuration to the given storage service. This encapsulates
+     * the CORS configurations.
+     * 
+     * @param properties
+     *            A {@link FileServiceProperties} object which specifies the service properties to upload.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client
+     *            ({@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadServiceProperties(final FileServiceProperties properties, FileRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this);
+
+        Utility.assertNotNull("properties", properties);
+
+        ExecutionEngine.executeWithRetry(this, null,
+                this.uploadServicePropertiesImpl(properties.getServiceProperties(), options, opContext, false),
+                options.getRetryPolicyFactory(), opContext);
+    }
+    
+    /**
      * Gets the {@link FileRequestOptions} that is used for requests associated with this <code>CloudFileClient</code>
      * 
      * @return The {@link FileRequestOptions} object containing the values used by this <code>CloudFileClient</code>
@@ -403,7 +501,7 @@ public final class CloudFileClient extends ServiceClient {
         Utility.assertNotNull("defaultRequestOptions", defaultRequestOptions);
         this.defaultRequestOptions = defaultRequestOptions;
     }
-
+    
     /**
      * Indicates whether path-style URIs are being used.
      * 

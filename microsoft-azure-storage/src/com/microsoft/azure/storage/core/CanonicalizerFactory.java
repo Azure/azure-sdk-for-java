@@ -90,7 +90,7 @@ final class CanonicalizerFactory {
     }
 
     /**
-     * Private Default Ctor
+     * A private default constructor. All methods of this class are static so no instances of it should ever be created.
      */
     private CanonicalizerFactory() {
         // No op

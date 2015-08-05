@@ -15,17 +15,27 @@
 
 package com.microsoft.azure.storage.file;
 
+import java.io.ByteArrayInputStream;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
+import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.SharedAccessPolicyHandler;
+import com.microsoft.azure.storage.SharedAccessPolicySerializer;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
@@ -33,7 +43,10 @@ import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.PathUtility;
 import com.microsoft.azure.storage.core.RequestLocationMode;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.SharedAccessSignatureHelper;
+import com.microsoft.azure.storage.core.StorageCredentialsHelper;
 import com.microsoft.azure.storage.core.StorageRequest;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.core.Utility;
 
 /**
@@ -46,17 +59,17 @@ public final class CloudFileShare {
     /**
      * Represents the share metadata.
      */
-    protected HashMap<String, String> metadata;
+    private HashMap<String, String> metadata = new HashMap<String, String>();
 
     /**
      * Holds the share properties.
      */
-    FileShareProperties properties;
+    FileShareProperties properties = new FileShareProperties();
 
     /**
      * Holds the name of the share.
      */
-    String name;
+    String name = null;
 
     /**
      * Holds the list of URIs for all locations.
@@ -67,18 +80,6 @@ public final class CloudFileShare {
      * Holds a reference to the associated service client.
      */
     private CloudFileClient fileServiceClient;
-
-    /**
-     * Initializes a new instance of the CloudFileShare class.
-     * 
-     * @param client
-     *            A {@link CloudFileClient} which represents a reference to the associated service client.
-     */
-    private CloudFileShare(final CloudFileClient client) {
-        this.metadata = new HashMap<String, String>();
-        this.properties = new FileShareProperties();
-        this.fileServiceClient = client;
-    }
 
     /**
      * Creates an instance of the <code>CloudFileShare</code> class using the specified name and client.
@@ -100,17 +101,73 @@ public final class CloudFileShare {
      * 
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
      *      Directories, Files, and Metadata</a>
+     * @deprecated as of 3.0.0. Please use {@link CloudFileClient#getShareReference(String)}
      */
+    @Deprecated
     public CloudFileShare(final String shareName, final CloudFileClient client) throws URISyntaxException,
             StorageException {
-        this(client);
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("shareName", shareName);
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), shareName);
-
         this.name = shareName;
-        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
+        this.fileServiceClient = client;
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudFileShare</code> class using the specified URI.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the absolute URI of the share.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudFileShare(final URI uri) throws StorageException {
+        this(new StorageUri(uri));
+    }
+
+    /**
+     * Creates an instance of the <code>CloudFileShare</code> class using the specified URI.
+     * 
+     * @param storageUri
+     *            A {@link StorageUri} object which represents the absolute URI of the share.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudFileShare(final StorageUri storageUri) throws StorageException {
+        this(storageUri, (StorageCredentials) null);
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudFileShare</code> class using the specified URI and credentials.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the absolute URI of the share.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudFileShare(final URI uri, final StorageCredentials credentials) throws StorageException {
+        this(new StorageUri(uri), credentials);
+    }
+
+    /**
+     * Creates an instance of the <code>CloudFileShare</code> class using the specified StorageUri and credentials.
+     * 
+     * @param storageUri
+     *            A {@link StorageUri} object which represents the absolute StorageUri of the share.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudFileShare(final StorageUri storageUri, final StorageCredentials credentials) throws StorageException {
+        this.parseQueryAndVerify(storageUri, credentials);
     }
 
     /**
@@ -125,7 +182,9 @@ public final class CloudFileShare {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
+     * @deprecated as of 3.0.0. Please use {@link CloudFileShare#CloudFileShare(URI, StorageCredentials)}
      */
+    @Deprecated
     public CloudFileShare(final URI uri, final CloudFileClient client) throws StorageException, URISyntaxException {
         this(new StorageUri(uri), client);
     }
@@ -142,20 +201,17 @@ public final class CloudFileShare {
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
+     * @deprecated as of 3.0.0. Please use {@link CloudFileShare#CloudFileShare(StorageUri, StorageCredentials)}
      */
+    @Deprecated
     public CloudFileShare(final StorageUri storageUri, final CloudFileClient client) throws StorageException,
             URISyntaxException {
-        this(client);
+        this.parseQueryAndVerify(storageUri, client == null ? null : client.getCredentials());
 
-        Utility.assertNotNull("storageUri", storageUri);
-
-        this.storageUri = storageUri;
-
-        this.parseQueryAndVerify(
-                this.storageUri,
-                client,
-                client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri()) : client
-                        .isUsePathStyleUris());
+        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
+        if (client != null) {
+            this.fileServiceClient = client;
+        }
     }
 
     /**
@@ -191,20 +247,21 @@ public final class CloudFileShare {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this, createImpl(options),
                 options.getRetryPolicyFactory(), opContext);
     }
 
     private StorageRequest<CloudFileClient, CloudFileShare, Void> createImpl(final FileRequestOptions options) {
-        final StorageRequest<CloudFileClient, CloudFileShare, Void> putRequest = new StorageRequest<CloudFileClient, CloudFileShare, Void>(
-                options, this.getStorageUri()) {
+        final StorageRequest<CloudFileClient, CloudFileShare, Void> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileShare, Void>(options, this.getStorageUri()) {
             @Override
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
                     throws Exception {
                 final HttpURLConnection request = FileRequest.createShare(
-                        share.getTransformedAddress().getUri(this.getCurrentLocation()), options, context);
+                        share.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, share.getProperties());
                 return request;
             }
 
@@ -216,7 +273,7 @@ public final class CloudFileShare {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -271,7 +328,7 @@ public final class CloudFileShare {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(FileRequestOptions options, OperationContext opContext) throws StorageException {
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
         if (exists) {
@@ -330,7 +387,7 @@ public final class CloudFileShare {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this, deleteImpl(accessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -350,7 +407,7 @@ public final class CloudFileShare {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -402,7 +459,7 @@ public final class CloudFileShare {
     @DoesServiceRequest
     public boolean deleteIfExists(AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, accessCondition, options, opContext);
         if (exists) {
@@ -462,7 +519,7 @@ public final class CloudFileShare {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
                 this.downloadAttributesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -488,7 +545,7 @@ public final class CloudFileShare {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -506,6 +563,191 @@ public final class CloudFileShare {
                 share.properties = attributes.getProperties();
                 share.name = attributes.getName();
                 return null;
+            }
+        };
+
+        return getRequest;
+    }
+
+    /**
+     * Downloads the permission settings for the share.
+     * 
+     * @return A {@link FileSharePermissions} object that represents the share's permissions.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public FileSharePermissions downloadPermissions() throws StorageException {
+        return this.downloadPermissions(null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Downloads the permissions settings for the share using the specified request options and operation context.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link FileSharePermissions} object that represents the share's permissions.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public FileSharePermissions downloadPermissions(AccessCondition accessCondition, FileRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        return ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
+                downloadPermissionsImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudFileClient, CloudFileShare, FileSharePermissions> downloadPermissionsImpl(
+            final AccessCondition accessCondition, final FileRequestOptions options) {
+        final StorageRequest<CloudFileClient, CloudFileShare, FileSharePermissions> getRequest =
+                new StorageRequest<CloudFileClient, CloudFileShare, FileSharePermissions>(options, this.getStorageUri()) {
+
+            @Override
+            public void setRequestLocationMode() {
+                this.setRequestLocationMode(RequestLocationMode.PRIMARY_OR_SECONDARY);
+            }
+
+            @Override
+            public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share,
+                    OperationContext context) throws Exception {
+                return FileRequest.getAcl(share.getTransformedAddress().getUri(this.getCurrentLocation()), options,
+                        accessCondition, context);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
+            }
+
+            @Override
+            public FileSharePermissions preProcessResponse(CloudFileShare share, CloudFileClient client,
+                    OperationContext context) throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                share.updatePropertiesFromResponse(this.getConnection());
+                return new FileSharePermissions();
+            }
+
+            @Override
+            public FileSharePermissions postProcessResponse(HttpURLConnection connection,
+                    CloudFileShare share, CloudFileClient client, OperationContext context,
+                    FileSharePermissions shareAcl) throws Exception {
+                HashMap<String, SharedAccessFilePolicy> accessIds = SharedAccessPolicyHandler.getAccessIdentifiers(
+                        this.getConnection().getInputStream(), SharedAccessFilePolicy.class);
+
+                for (final String key : accessIds.keySet()) {
+                    shareAcl.getSharedAccessPolicies().put(key, accessIds.get(key));
+                }
+
+                return shareAcl;
+            }
+        };
+
+        return getRequest;
+    }
+
+    /**
+     * Queries the service for this share's {@link ShareStats}.
+     * 
+     * @return A {@link ShareStats} object for the given storage service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public ShareStats getStats() throws StorageException {
+        return getStats(null /* options */, null /* context */);
+    }
+
+    /**
+     * Queries the service for this share's {@link ShareStats}.
+     * 
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client
+     *            ({@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link ShareStats} object for the given storage service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public ShareStats getStats(FileRequestOptions options, OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        return ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
+                getStatsImpl(options), options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudFileClient, CloudFileShare, ShareStats> getStatsImpl(final FileRequestOptions options) {
+        final StorageRequest<CloudFileClient, CloudFileShare, ShareStats> getRequest =
+                new StorageRequest<CloudFileClient, CloudFileShare, ShareStats>(options, this.getStorageUri()) {
+
+            @Override
+            public void setRequestLocationMode() {
+                this.setRequestLocationMode(RequestLocationMode.PRIMARY_OR_SECONDARY);
+            }
+
+            @Override
+            public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
+                    throws Exception {
+                return FileRequest.getShareStats(share.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
+            }
+
+            @Override
+            public ShareStats preProcessResponse(CloudFileShare share, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                share.updatePropertiesFromResponse(this.getConnection());
+                return null;
+            }
+
+            @Override
+            public ShareStats postProcessResponse(HttpURLConnection connection, CloudFileShare share,
+                    CloudFileClient client, OperationContext context, ShareStats shareStats) throws Exception {
+                return ShareStatsHandler.readShareStatsFromStream(connection.getInputStream());
             }
         };
 
@@ -559,7 +801,7 @@ public final class CloudFileShare {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
                 this.existsImpl(primaryOnly, accessCondition, options), options.getRetryPolicyFactory(), opContext);
@@ -572,8 +814,8 @@ public final class CloudFileShare {
 
             @Override
             public void setRequestLocationMode() {
-                this.setRequestLocationMode(primaryOnly ? RequestLocationMode.PRIMARY_ONLY
-                        : RequestLocationMode.PRIMARY_OR_SECONDARY);
+                this.setRequestLocationMode(
+                        primaryOnly ? RequestLocationMode.PRIMARY_ONLY : RequestLocationMode.PRIMARY_OR_SECONDARY);
             }
 
             @Override
@@ -586,7 +828,7 @@ public final class CloudFileShare {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -621,6 +863,52 @@ public final class CloudFileShare {
             lastModifiedCalendar.setTime(new Date(request.getLastModified()));
             this.getProperties().setLastModified(lastModifiedCalendar.getTime());
         }
+    }
+
+    /**
+     * Returns a shared access signature for the share. Note this does not contain the leading "?".
+     * 
+     * @param policy
+     *            An {@link SharedAccessFilePolicy} object that represents the access policy for the
+     *            shared access signature.
+     * @param groupPolicyIdentifier
+     *            A <code>String</code> which represents the share-level access policy.
+     * 
+     * @return A <code>String</code> which represents a shared access signature for the share.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws InvalidKeyException
+     *             If the key is invalid.
+     */
+    public String generateSharedAccessSignature(final SharedAccessFilePolicy policy, final String groupPolicyIdentifier)
+            throws InvalidKeyException, StorageException {
+        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.fileServiceClient.getCredentials())) {
+            final String errorMessage = SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY;
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        final String resourceName = this.getSharedAccessCanonicalName();
+
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(policy,
+                null /* SharedAccessHeaders */, groupPolicyIdentifier, resourceName, this.fileServiceClient);
+
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(policy,
+                null /* SharedAccessHeaders */, groupPolicyIdentifier, "s", signature);
+
+        return builder.toString();
+    }
+
+    /**
+     * Returns the canonical name for shared access.
+     * 
+     * @return the canonical name for shared access.
+     */
+    private String getSharedAccessCanonicalName() {
+        String accountName = this.getServiceClient().getCredentials().getAccountName();
+        String shareName = this.getName();
+
+        return String.format("/%s/%s/%s", SR.FILE, accountName, shareName);
     }
 
     /**
@@ -659,13 +947,12 @@ public final class CloudFileShare {
         }
 
         opContext.initialize();
-        options = FileRequestOptions.applyDefaults(options, this.fileServiceClient);
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
         ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
                 this.uploadMetadataImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
     }
 
-    @DoesServiceRequest
     private StorageRequest<CloudFileClient, CloudFileShare, Void> uploadMetadataImpl(
             final AccessCondition accessCondition, final FileRequestOptions options) {
         final StorageRequest<CloudFileClient, CloudFileShare, Void> putRequest = new StorageRequest<CloudFileClient, CloudFileShare, Void>(
@@ -686,7 +973,7 @@ public final class CloudFileShare {
             @Override
             public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -694,6 +981,7 @@ public final class CloudFileShare {
                     throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
+                    return null;
                 }
 
                 share.updatePropertiesFromResponse(this.getConnection());
@@ -705,6 +993,193 @@ public final class CloudFileShare {
     }
 
     /**
+     * Updates the share's properties on the storage service.
+     * <p>
+     * Use {@link CloudFileShare#downloadAttributes} to retrieve the latest values for
+     * the share's properties and metadata from the Microsoft Azure storage service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void uploadProperties() throws StorageException {
+        this.uploadProperties(null /* accessCondition */, null /* options */, null /*opContext */);
+    }
+
+    /**
+     * Updates the share's properties using the request options, and operation context.
+     * <p>
+     * Use {@link CloudFileShare#downloadAttributes} to retrieve the latest values for
+     * the share's properties and metadata from the Microsoft Azure storage service.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void uploadProperties(
+            AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
+                this.uploadPropertiesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudFileClient, CloudFileShare, Void> uploadPropertiesImpl(
+            final AccessCondition accessCondition, final FileRequestOptions options) {
+        final StorageRequest<CloudFileClient, CloudFileShare, Void> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileShare, Void>(options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
+                    throws Exception {
+                return FileRequest.setShareProperties(share.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition, share.properties);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudFileShare share, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                share.updatePropertiesFromResponse(this.getConnection());
+                return null;
+            }
+        };
+
+        return putRequest;
+    }
+    
+    /**
+     * Uploads the share's permissions.
+     * 
+     * @param permissions
+     *            A {@link FileSharePermissions} object that represents the permissions to upload.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPermissions(final FileSharePermissions permissions) throws StorageException {
+        this.uploadPermissions(permissions, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Uploads the share's permissions using the specified request options and operation context.
+     * 
+     * @param permissions
+     *            A {@link FileSharePermissions} object that represents the permissions to upload.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPermissions(final FileSharePermissions permissions, final AccessCondition accessCondition,
+            FileRequestOptions options, OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.fileServiceClient, this,
+                uploadPermissionsImpl(permissions, accessCondition, options), options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    private StorageRequest<CloudFileClient, CloudFileShare, Void> uploadPermissionsImpl(
+            final FileSharePermissions permissions, final AccessCondition accessCondition,
+            final FileRequestOptions options) throws StorageException {
+        try {
+            final StringWriter outBuffer = new StringWriter();
+            SharedAccessPolicySerializer.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(),
+                    outBuffer);
+            final byte[] aclBytes = outBuffer.toString().getBytes(Constants.UTF8_CHARSET);
+            final StorageRequest<CloudFileClient, CloudFileShare, Void> putRequest =
+                    new StorageRequest<CloudFileClient, CloudFileShare, Void>(options, this.getStorageUri()) {
+                @Override
+                public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share,
+                        OperationContext context) throws Exception {
+                    this.setSendStream(new ByteArrayInputStream(aclBytes));
+                    this.setLength((long) aclBytes.length);
+                    return FileRequest.setAcl(share.getTransformedAddress().getUri(this.getCurrentLocation()),
+                            options, context, accessCondition);
+                }
+
+                @Override
+                public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                        throws Exception {
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, aclBytes.length, context);
+                }
+
+                @Override
+                public Void preProcessResponse(CloudFileShare share, CloudFileClient client,
+                        OperationContext context) throws Exception {
+                    if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                        this.setNonExceptionedRetryableFailure(true);
+                        return null;
+                    }
+
+                    share.updatePropertiesFromResponse(this.getConnection());
+                    return null;
+                }
+            };
+
+            return putRequest;
+        }
+        catch (final IllegalArgumentException e) {
+            StorageException translatedException = StorageException.translateException(null, e, null);
+            throw translatedException;
+        }
+        catch (final XMLStreamException e) {
+            // The request was not even made. There was an error while trying to read the permissions. Just throw.
+            StorageException translatedException = StorageException.translateException(null, e, null);
+            throw translatedException;
+        }
+        catch (UnsupportedEncodingException e) {
+            // The request was not even made. There was an error while trying to read the permissions. Just throw.
+            StorageException translatedException = StorageException.translateException(null, e, null);
+            throw translatedException;
+        }
+    }
+
+    /**
      * Returns a reference to a {@link CloudFileDirectory} object that represents the root file directory within this
      * share.
      * 
@@ -712,36 +1187,47 @@ public final class CloudFileShare {
      * @throws StorageException
      * @throws URISyntaxException
      */
+    @SuppressWarnings("deprecation")
     public CloudFileDirectory getRootDirectoryReference() throws StorageException, URISyntaxException {
         return new CloudFileDirectory(this.storageUri, this.fileServiceClient);
     }
 
     /**
-     * Strips the query and verifies the URI is absolute.
+     * Verifies the passed in URI. Then parses it and uses its components to populate this resource's properties.
      * 
      * @param completeUri
      *            A {@link StorageUri} object which represents the complete URI.
-     * @param existingClient
-     *            A {@link CloudFileClient} object which represents the client to use.
-     * @param usePathStyleUris
-     *            <code>true</code> if path-style URIs are used; otherwise, <code>false</code>.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
      */
-    private void parseQueryAndVerify(final StorageUri completeUri, final CloudFileClient existingClient,
-            final boolean usePathStyleUri) throws StorageException, URISyntaxException {
-        Utility.assertNotNull("completeUri", completeUri);
+    private void parseQueryAndVerify(final StorageUri completeUri, final StorageCredentials credentials)
+            throws StorageException {
+       Utility.assertNotNull("completeUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
-            final String errorMessage = String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString());
-            throw new IllegalArgumentException(errorMessage);
+            throw new IllegalArgumentException(String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString()));
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
-        this.fileServiceClient = (existingClient == null) ? new CloudFileClient(
-                PathUtility.getServiceClientBaseAddress(this.storageUri, usePathStyleUri), null) : existingClient;
-        this.name = PathUtility.getShareNameFromUri(completeUri.getPrimaryUri(), usePathStyleUri);
+        
+        final StorageCredentialsSharedAccessSignature parsedCredentials = 
+                SharedAccessSignatureHelper.parseQuery(completeUri);
+
+        if (credentials != null && parsedCredentials != null) {
+            throw new IllegalArgumentException(SR.MULTIPLE_CREDENTIALS_PROVIDED);
+        }
+
+        try {
+            final boolean usePathStyleUris = Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri());
+            this.fileServiceClient = new CloudFileClient(PathUtility.getServiceClientBaseAddress(
+                    this.getStorageUri(), usePathStyleUris), credentials != null ? credentials : parsedCredentials);
+            this.name = PathUtility.getShareNameFromUri(this.storageUri.getPrimaryUri(), usePathStyleUris);
+        }
+        catch (final URISyntaxException e) {
+            throw Utility.generateNewUnexpectedStorageException(e);
+        }
     }
 
     /**
@@ -781,8 +1267,8 @@ public final class CloudFileShare {
     }
 
     /**
-     * Returns the metadata for the share. This value is initialized with the metadata from the queue by a call to
-     * {@link #downloadAttributes}, and is set on the queue with a call to {@link #uploadMetadata}.
+     * Returns the metadata for the share. This value is initialized with the metadata from the share by a call to
+     * {@link #downloadAttributes}, and is set on the share with a call to {@link #uploadMetadata}.
      * 
      * @return A <code>java.util.HashMap</code> object that represents the metadata for the share.
      */

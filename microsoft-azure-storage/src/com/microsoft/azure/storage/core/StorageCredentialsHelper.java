@@ -25,41 +25,18 @@ import com.microsoft.azure.storage.StorageKey;
 /**
  * RESERVED FOR INTERNAL USE. A helper method for StorageCredentials.
  */
-public class StorageCredentialsHelper {
+@SuppressWarnings("deprecation")
+public final class StorageCredentialsHelper {
 
-    //
-    // RESERVED, for internal use only. Gets a value indicating whether a
-    // request can be signed under the Shared Key authentication scheme using
-    // the specified credentials.
-    //
-    // @return <Code>True</Code> if a request can be signed with these
-    // credentials; otherwise, <Code>false</Code>
-    //
-    /** Reserved. */
-    public static boolean canCredentialsSignRequest(final StorageCredentials creds) {
-        if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    //
-    // RESERVED, for internal use only. Gets a value indicating whether a
-    // request can be signed under the Shared Key Lite authentication scheme
-    // using the specified credentials.
-    //
-    // @return <code>true</code> if a request can be signed with these
-    // credentials; otherwise, <code>false</code>
-    //
-    /** 
-     * Reserved. 
-     * 
-     * @deprecated as of 2.0.0. Use {@link #canCredentialsSignRequest} instead.
+    /**
+     *  RESERVED, for internal use only. Gets a value indicating whether a
+     *  request can be signed under the Shared Key authentication scheme using
+     *  the specified credentials.
+    
+     *  @return <Code>true</Code> if a request can be signed with these
+     *  credentials; otherwise, <Code>false</Code>
      */
-    @Deprecated
-    public static boolean canCredentialsSignRequestLite(final StorageCredentials creds) {
+    public static boolean canCredentialsSignRequest(final StorageCredentials creds) {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             return true;
         }
@@ -80,27 +57,6 @@ public class StorageCredentialsHelper {
      *             If the key is not a valid Base64-encoded string.
      */
     public static String computeHmac256(final StorageCredentials creds, final String value) throws InvalidKeyException {
-        return computeHmac256(creds, value, null);
-    }
-
-    /**
-     * Computes a signature for the specified string using the HMAC-SHA256 algorithm with the specified operation
-     * context.
-     * 
-     * @param value
-     *            The UTF-8-encoded string to sign.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @return A <code>String</code> that contains the HMAC-SHA256-encoded signature.
-     * 
-     * @throws InvalidKeyException
-     *             If the key is not a valid Base64-encoded string.
-     */
-    public static String computeHmac256(final StorageCredentials creds, final String value,
-            final OperationContext opContext) throws InvalidKeyException {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             return StorageKey.computeMacSha256(((StorageCredentialsAccountAndKey) creds).getCredentials().getKey(),
                     value);
@@ -126,7 +82,7 @@ public class StorageCredentialsHelper {
     public static void signBlobAndQueueRequest(final StorageCredentials creds,
             final java.net.HttpURLConnection request, final long contentLength) throws InvalidKeyException,
             StorageException {
-        signBlobAndQueueRequest(creds, request, contentLength, null);
+        signBlobQueueAndFileRequest(creds, request, contentLength, null);
     }
 
     /**
@@ -146,65 +102,14 @@ public class StorageCredentialsHelper {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static void signBlobAndQueueRequest(final StorageCredentials creds,
+    public static void signBlobQueueAndFileRequest(final StorageCredentials creds,
             final java.net.HttpURLConnection request, final long contentLength, OperationContext opContext)
             throws InvalidKeyException, StorageException {
+        
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             opContext = opContext == null ? new OperationContext() : opContext;
-            BaseRequest.signRequestForBlobAndQueue(request, ((StorageCredentialsAccountAndKey) creds).getCredentials(),
-                    contentLength, opContext);
-        }
-    }
-
-    /**
-     * Signs a request using the Shared Key Lite authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If an unspecified storage exception occurs.
-     *             
-     * @deprecated as of 2.0.0. Use {@link #signBlobAndQueueRequest} instead.
-     */
-    @Deprecated
-    public static void signBlobAndQueueRequestLite(final StorageCredentials creds,
-            final java.net.HttpURLConnection request, final long contentLength) throws InvalidKeyException,
-            StorageException {
-        signBlobAndQueueRequestLite(creds, request, contentLength, null);
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     *             
-     * @deprecated as of 2.0.0. Use {@link #signBlobAndQueueRequest} instead.
-     */
-    @Deprecated
-    public static void signBlobAndQueueRequestLite(final StorageCredentials creds,
-            final java.net.HttpURLConnection request, final long contentLength, OperationContext opContext)
-            throws StorageException, InvalidKeyException {
-        if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
-            opContext = opContext == null ? new OperationContext() : opContext;
-            BaseRequest.signRequestForBlobAndQueueSharedKeyLite(request,
-                    ((StorageCredentialsAccountAndKey) creds).getCredentials(), contentLength, opContext);
+            BaseRequest.signRequestForBlobAndQueue(
+                    request, (StorageCredentialsAccountAndKey) creds, contentLength, opContext);
         }
     }
 
@@ -248,57 +153,14 @@ public class StorageCredentialsHelper {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             opContext = opContext == null ? new OperationContext() : opContext;
             BaseRequest.signRequestForTableSharedKey(request,
-                    ((StorageCredentialsAccountAndKey) creds).getCredentials(), contentLength, opContext);
+                    (StorageCredentialsAccountAndKey) creds, contentLength, opContext);
         }
     }
-
+    
     /**
-     * Signs a request using the Shared Key Lite authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If an unspecified storage exception occurs.
-     *             
-     * @deprecated as of 2.0.0. Use {@link #signTableRequest} instead.
+     * A private default constructor. All methods of this class are static so no instances of it should ever be created.
      */
-    @Deprecated
-    public static void signTableRequestLite(final StorageCredentials creds, final java.net.HttpURLConnection request,
-            final long contentLength) throws InvalidKeyException, StorageException {
-        signTableRequestLite(creds, request, contentLength, null);
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     *             
-     * @deprecated as of 2.0.0. Use {@link #signTableRequest} instead.
-     */
-    @Deprecated
-    public static void signTableRequestLite(final StorageCredentials creds, final java.net.HttpURLConnection request,
-            final long contentLength, OperationContext opContext) throws StorageException, InvalidKeyException {
-        if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
-            opContext = opContext == null ? new OperationContext() : opContext;
-            BaseRequest.signRequestForTableSharedKeyLite(request,
-                    ((StorageCredentialsAccountAndKey) creds).getCredentials(), contentLength, opContext);
-        }
+    private StorageCredentialsHelper() {
+        //No op
     }
 }

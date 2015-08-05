@@ -117,6 +117,9 @@ final class BlobListHandler extends DefaultHandler {
                 else if (this.properties.getBlobType() == BlobType.PAGE_BLOB) {
                     retBlob = this.container.getPageBlobReference(this.blobName);
                 }
+                else if (this.properties.getBlobType() == BlobType.APPEND_BLOB) {
+                    retBlob = this.container.getAppendBlobReference(this.blobName);
+                }
                 else {
                     throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);
                 }
@@ -229,11 +232,14 @@ final class BlobListHandler extends DefaultHandler {
         }
         else if (BlobConstants.BLOB_TYPE_ELEMENT.equals(currentNode)) {
             final String tempString = value;
-            if (tempString.equals(BlobConstants.BLOCK_BLOB_VALUE)) {
+            if (tempString.equals(BlobConstants.BLOCK_BLOB)) {
                 this.properties.setBlobType(BlobType.BLOCK_BLOB);
             }
-            else if (tempString.equals(BlobConstants.PAGE_BLOB_VALUE.toString())) {
+            else if (tempString.equals(BlobConstants.PAGE_BLOB.toString())) {
                 this.properties.setBlobType(BlobType.PAGE_BLOB);
+            }
+            else if (tempString.equals(BlobConstants.APPEND_BLOB.toString())) {
+                this.properties.setBlobType(BlobType.APPEND_BLOB);
             }
             else {
                 throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);

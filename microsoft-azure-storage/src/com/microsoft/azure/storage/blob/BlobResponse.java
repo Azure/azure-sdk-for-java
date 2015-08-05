@@ -106,6 +106,13 @@ final class BlobResponse extends BaseResponse {
             properties.setPageBlobSequenceNumber(Long.parseLong(sequenceNumber));
         }
         
+        // Get committed block count
+        final String comittedBlockCount = request.getHeaderField(Constants.HeaderConstants.BLOB_COMMITTED_BLOCK_COUNT);
+        if (!Utility.isNullOrEmpty(comittedBlockCount))
+        {
+            properties.setAppendBlobCommittedBlockCount(Integer.parseInt(comittedBlockCount));
+        }
+
         attributes.setStorageUri(resourceURI);
         attributes.setSnapshotID(snapshotID);
 
@@ -163,7 +170,8 @@ final class BlobResponse extends BaseResponse {
     public static CopyState getCopyState(final HttpURLConnection request) throws URISyntaxException, ParseException {
         String copyStatusString = request.getHeaderField(Constants.HeaderConstants.COPY_STATUS);
         if (!Utility.isNullOrEmpty(copyStatusString)) {
-            CopyState copyState = new CopyState();
+            final CopyState copyState = new CopyState();
+            
             copyState.setStatus(CopyStatus.parse(copyStatusString));
             copyState.setCopyId(request.getHeaderField(Constants.HeaderConstants.COPY_ID));
             copyState.setStatusDescription(request.getHeaderField(Constants.HeaderConstants.COPY_STATUS_DESCRIPTION));
@@ -180,12 +188,12 @@ final class BlobResponse extends BaseResponse {
                 copyState.setSource(new URI(copySourceString));
             }
 
-            final String copyCompletionTimeString = request
-                    .getHeaderField(Constants.HeaderConstants.COPY_COMPLETION_TIME);
+            final String copyCompletionTimeString =
+                    request.getHeaderField(Constants.HeaderConstants.COPY_COMPLETION_TIME);
             if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
                 copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
             }
-
+            
             return copyState;
         }
         else {

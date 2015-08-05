@@ -20,33 +20,51 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.TimeZone;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+import com.microsoft.azure.storage.blob.BlobProperties;
+import com.microsoft.azure.storage.blob.BlobTestHelper;
+import com.microsoft.azure.storage.blob.CloudBlob;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.CloudPageBlob;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
 import com.microsoft.azure.storage.core.Base64;
+import com.microsoft.azure.storage.core.Utility;
 
 /**
  * File Tests
@@ -70,7 +88,7 @@ public class CloudFileTests {
      * Test file name validation.
      */
     @Test
-    public void CloudFileNameValidation()
+    public void testCloudFileNameValidation()
     {
         NameValidator.validateFileName("alpha");
         NameValidator.validateFileName("4lphanum3r1c");
@@ -115,6 +133,21 @@ public class CloudFileTests {
         assertTrue(file.exists());
         file.delete();
     }
+    
+    @Test
+    public void testCloudFileCreate() throws StorageException, URISyntaxException {
+        CloudFile file = this.share.getRootDirectoryReference().getFileReference("file1");
+
+        assertFalse(file.exists());
+
+        // Create
+        file.create(512);
+        assertTrue(file.exists());
+
+        // Create again (should succeed)
+        file.create(128);
+        assertTrue(file.exists());
+    }
 
     /**
      * Test file constructor.
@@ -125,18 +158,19 @@ public class CloudFileTests {
     @Test
     public void testCloudFileConstructor() throws URISyntaxException, StorageException {
         CloudFile file = this.share.getRootDirectoryReference().getFileReference("file1");
-        CloudFile file2 = new CloudFile(file.getStorageUri(), null);
+        CloudFile file2 = new CloudFile(file.getStorageUri(), file.getServiceClient().getCredentials());
         assertEquals(file.getName(), file2.getName());
         assertEquals(file.getStorageUri(), file2.getStorageUri());
         assertEquals(file.getShare().getStorageUri(), file2.getShare().getStorageUri());
-        assertEquals(file.getServiceClient().getStorageUri(), file2.getServiceClient().getStorageUri());
+        assertEquals(FileTestHelper.ensureTrailingSlash(file.getServiceClient().getStorageUri()),
+                FileTestHelper.ensureTrailingSlash(file2.getServiceClient().getStorageUri()));
 
         CloudFile file3 = new CloudFile(file2);
         assertEquals(file3.getName(), file2.getName());
         assertEquals(file3.getStorageUri(), file2.getStorageUri());
         assertEquals(file3.getShare().getStorageUri(), file2.getShare().getStorageUri());
-        assertEquals(file3.getServiceClient().getStorageUri(), file2.getServiceClient().getStorageUri());
-
+        assertEquals(FileTestHelper.ensureTrailingSlash(file3.getServiceClient().getStorageUri()),
+                FileTestHelper.ensureTrailingSlash(file2.getServiceClient().getStorageUri()));
     }
 
     /**
@@ -352,6 +386,203 @@ public class CloudFileTests {
 
         file.downloadAttributes();
         assertEquals(0, file.getMetadata().size());
+    }
+    
+    @Test
+    @Category(SlowTests.class)
+    public void testCopyBlockBlobSas() throws Exception {
+        // Create source on server.
+        final CloudBlobContainer container = BlobTestHelper.getRandomContainerReference();
+        try {
+            container.create();
+            final CloudBlockBlob source = container.getBlockBlobReference("source");
+
+            source.getMetadata().put("Test", "value");
+            final String data = "String data";
+            source.uploadText(data, Constants.UTF8_CHARSET, null, null, null);
+
+            final CloudFile destination = doCloudBlobCopy(source, data.length());
+
+            final String copyData = destination.downloadText(Constants.UTF8_CHARSET, null, null, null);
+            assertEquals(data, copyData);
+        }
+        finally {
+            container.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void testCopyPageBlobSas() throws Exception {
+        // Create source on server.
+        final CloudBlobContainer container = BlobTestHelper.getRandomContainerReference();
+        try {
+            container.create();
+            final CloudPageBlob source = container.getPageBlobReference("source");
+
+            source.getMetadata().put("Test", "value");
+            final int length = 512;
+            final ByteArrayInputStream data = BlobTestHelper.getRandomDataStream(length);
+            source.upload(data, length);
+
+            final CloudFile destination = doCloudBlobCopy(source, length);
+
+            final ByteArrayOutputStream copyData = new ByteArrayOutputStream();
+            destination.download(copyData);
+            BlobTestHelper.assertStreamsAreEqual(data, new ByteArrayInputStream(copyData.toByteArray()));
+        }
+        finally {
+            container.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void testCopyFileSasToSas() throws InvalidKeyException, URISyntaxException, StorageException,
+            IOException, InterruptedException {
+        this.doCloudFileCopy(true, true);
+    }
+
+    // There is no testCopyFileToSas() because there is no way for the SAS destination to access a shared key source.
+    // This means it would require the source to have public access, which files do not support.
+
+    @Test
+    @Category(SlowTests.class)
+    public void testCopyFileSas() throws InvalidKeyException, URISyntaxException, StorageException,
+            IOException, InterruptedException {
+        this.doCloudFileCopy(true, false);
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void testCopyFile() throws InvalidKeyException, URISyntaxException, StorageException, IOException,
+            InterruptedException {
+        // This works because we use Shared Key for source and destination.
+        // The request is then signed with the key so the service knows we are authorized to access both.
+        this.doCloudFileCopy(false, false);
+    }
+    
+    @Test
+    public void testCopyWithChineseChars() throws StorageException, IOException, URISyntaxException
+    {
+        String data = "sample data chinese chars 阿䶵";
+        CloudFileDirectory rootDirectory = this.share.getRootDirectoryReference();
+        CloudFile copySource = rootDirectory.getFileReference("sourcechinescharsblob阿䶵.txt");
+        copySource.uploadText(data);
+
+        assertEquals(rootDirectory.getUri() + "/sourcechinescharsblob阿䶵.txt", copySource.getUri().toString());
+        assertEquals(rootDirectory.getUri() + "/sourcechinescharsblob%E9%98%BF%E4%B6%B5.txt", copySource
+                .getUri().toASCIIString());
+
+        CloudFile copyDestination = rootDirectory.getFileReference("destchinesecharsblob阿䶵.txt");
+
+        assertEquals(rootDirectory.getUri() + "/destchinesecharsblob阿䶵.txt", copyDestination.getUri().toString());
+        assertEquals(rootDirectory.getUri() + "/destchinesecharsblob%E9%98%BF%E4%B6%B5.txt",
+                copyDestination.getUri().toASCIIString());
+
+        OperationContext ctx = new OperationContext();
+        ctx.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                HttpURLConnection con = (HttpURLConnection) eventArg.getConnectionObject();
+                
+                try {
+                    CloudFileDirectory rootDirectory = CloudFileTests.this.share.getRootDirectoryReference();
+                    
+                    // Test the copy destination request url
+                    assertEquals(rootDirectory.getUri() + "/destchinesecharsblob%E9%98%BF%E4%B6%B5.txt",
+                            con.getURL().toString());
+                    
+                    // Test the copy source request property
+                    assertEquals(rootDirectory.getUri() + "/sourcechinescharsblob%E9%98%BF%E4%B6%B5.txt",
+                            con.getRequestProperty("x-ms-copy-source"));
+                } catch (Exception e) {
+                    fail("This code should not generate any exceptions.");
+                } 
+            }
+        });
+        
+        copyDestination.startCopy(copySource.getUri(), null, null, null, ctx);
+        copyDestination.startCopy(copySource, null, null, null, ctx);
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, SlowTests.class })
+    public void testCopyFileWithMetadataOverride() throws URISyntaxException, StorageException, IOException,
+            InterruptedException {
+        Calendar calendar = Calendar.getInstance(Utility.UTC_ZONE);
+        String data = "String data";
+        CloudFile source = this.share.getRootDirectoryReference().getFileReference("source");
+        FileTestHelper.setFileProperties(source);
+        
+        // do this to make sure the set MD5 can be compared, otherwise when the dummy value
+        // doesn't match the actual MD5 an exception would be thrown
+        FileRequestOptions options = new FileRequestOptions();
+        options.setDisableContentMD5Validation(true);
+
+        source.getMetadata().put("Test", "value");
+        source.uploadText(data);
+
+        CloudFile copy = this.share.getRootDirectoryReference().getFileReference("copy");
+        copy.getMetadata().put("Test2", "value2");
+        String copyId = copy.startCopy(FileTestHelper.defiddler(source));
+        FileTestHelper.waitForCopy(copy);
+
+        assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
+        assertEquals(source.getServiceClient().getCredentials().transformUri(source.getUri()).getPath(),
+                copy.getCopyState().getSource().getPath());
+        assertEquals(data.length(), copy.getCopyState().getTotalBytes().intValue());
+        assertEquals(data.length(), copy.getCopyState().getBytesCopied().intValue());
+        assertEquals(copyId, copy.getCopyState().getCopyId());
+        assertTrue(copy.getCopyState().getCompletionTime().compareTo(new Date(calendar.get(Calendar.MINUTE) - 1)) > 0);
+
+        String copyData = copy.downloadText(Constants.UTF8_CHARSET, null, options, null);
+        assertEquals(data, copyData);
+
+        copy.downloadAttributes();
+        source.downloadAttributes();
+        FileProperties prop1 = copy.getProperties();
+        FileProperties prop2 = source.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value2", copy.getMetadata().get("Test2"));
+        assertFalse(copy.getMetadata().containsKey("Test"));
+
+        copy.delete();
+    }
+
+
+    /**
+     * Start copying a file and then abort
+     * 
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCopyFileAbort() throws StorageException, URISyntaxException, IOException {
+        final int length = 128;
+        CloudFile originalFile = FileTestHelper.uploadNewFile(this.share, length, null);
+        CloudFile copyFile = this.share.getRootDirectoryReference().getFileReference(originalFile.getName() + "copyed");
+        copyFile.startCopy(originalFile);
+
+        try {
+            copyFile.abortCopy(copyFile.getProperties().getCopyState().getCopyId());
+            fail();
+        }
+        catch (StorageException e) {
+            if (!e.getErrorCode().contains("NoPendingCopyOperation")) {
+                throw e;
+            }
+        }
     }
 
     /**
@@ -1082,7 +1313,7 @@ public class CloudFileTests {
      */
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
-    public void CloudFileDeleteIfExistsErrorCode() throws URISyntaxException, StorageException, IOException {
+    public void testCloudFileDeleteIfExistsErrorCode() throws URISyntaxException, StorageException, IOException {
         CloudFileClient client = FileTestHelper.createCloudFileClient();
         CloudFileShare share = client.getShareReference(FileTestHelper.generateRandomShareName());
         share.create();
@@ -1128,5 +1359,179 @@ public class CloudFileTests {
         // The second delete of a file will return a 404
         file.create(2);
         assertFalse(file.deleteIfExists(null, null, ctx));
+    }
+    
+    /**
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, SlowTests.class })
+    public void testFileNamePlusEncoding() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        CloudFile originalFile = FileTestHelper.uploadNewFile(this.share, 1024 /* length */, null);
+        CloudFile copyFile = this.share.getRootDirectoryReference().getFileReference(originalFile.getName() + "copyed");
+
+        copyFile.startCopy(originalFile);
+        FileTestHelper.waitForCopy(copyFile);
+        
+        copyFile.downloadAttributes();
+        originalFile.downloadAttributes();
+        FileProperties prop1 = copyFile.getProperties();
+        FileProperties prop2 = originalFile.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+    }
+    
+    private CloudFile doCloudBlobCopy(CloudBlob source, int length) throws Exception {
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, 5);
+        
+        // Source SAS must have read permissions
+        SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+        policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ));
+        policy.setSharedAccessExpiryTime(cal.getTime());
+
+        String sasToken = source.generateSharedAccessSignature(policy, null, null);
+
+        // Get destination reference
+        final CloudFile destination = this.share.getRootDirectoryReference().getFileReference("destination");
+        
+        // Start copy and wait for completion
+        StorageCredentialsSharedAccessSignature credentials = new StorageCredentialsSharedAccessSignature(sasToken);
+        Constructor<? extends CloudBlob> blobType = source.getClass().getConstructor(URI.class);
+        String copyId = destination.startCopy(blobType.newInstance(credentials.transformUri(source.getUri())));
+        FileTestHelper.waitForCopy(destination);
+        destination.downloadAttributes();
+        
+        // Check original file references for equality
+        assertEquals(CopyStatus.SUCCESS, destination.getCopyState().getStatus());
+        assertEquals(source.getServiceClient().getCredentials().transformUri(source.getUri()).getPath(),
+                destination.getCopyState().getSource().getPath());
+        assertEquals(length, destination.getCopyState().getTotalBytes().intValue());
+        assertEquals(length, destination.getCopyState().getBytesCopied().intValue());
+        assertEquals(copyId, destination.getProperties().getCopyState().getCopyId());
+
+        // Attempt to abort the completed copy operation.
+        try {
+            destination.abortCopy(destination.getCopyState().getCopyId());
+            FileTestHelper.waitForCopy(destination);
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(HttpURLConnection.HTTP_CONFLICT, ex.getHttpStatusCode());
+        }
+
+        assertNotNull(destination.getProperties().getEtag());
+        assertFalse(source.getProperties().getEtag().equals(destination.getProperties().getEtag()));
+
+        source.downloadAttributes();
+        FileProperties prop1 = destination.getProperties();
+        BlobProperties prop2 = source.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value", destination.getMetadata().get("Test"));
+        return destination;
+    }
+
+    private void doCloudFileCopy(boolean sourceIsSas, boolean destinationIsSas)
+            throws URISyntaxException, StorageException, IOException, InvalidKeyException, InterruptedException {
+        // Create source on server.
+        final CloudFile source = this.share.getRootDirectoryReference().getFileReference("source");
+
+        final String data = "String data";
+        source.getMetadata().put("Test", "value");
+        source.uploadText(data, Constants.UTF8_CHARSET, null, null, null);
+
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, 5);
+
+        CloudFile copySource = source;
+        if (sourceIsSas) {
+            // Source SAS must have read permissions
+            SharedAccessFilePolicy policy = new SharedAccessFilePolicy();
+            policy.setPermissions(EnumSet.of(SharedAccessFilePermissions.READ));
+            policy.setSharedAccessExpiryTime(cal.getTime());
+
+            String sasToken = source.generateSharedAccessSignature(policy, null, null);
+
+            // Get source file reference
+            StorageCredentialsSharedAccessSignature credentials = new StorageCredentialsSharedAccessSignature(sasToken);
+            copySource = new CloudFile(credentials.transformUri(source.getUri()));
+        }
+
+        // Get destination reference
+        final CloudFile destination = this.share.getRootDirectoryReference().getFileReference("destination");
+
+        CloudFile copyDestination = destination;
+        if (destinationIsSas) {
+            // Destination SAS must have write permissions
+            SharedAccessFilePolicy policy = new SharedAccessFilePolicy();
+            policy.setPermissions(EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.WRITE));
+            policy.setSharedAccessExpiryTime(cal.getTime());
+
+            String sasToken = destination.generateSharedAccessSignature(policy, null, null);
+
+            // Get destination file reference
+            StorageCredentialsSharedAccessSignature credentials = new StorageCredentialsSharedAccessSignature(sasToken);
+            copyDestination = new CloudFile(destination.getUri(),
+                    destination.getServiceClient().getCredentials());
+        }
+
+        // Start copy and wait for completion
+        String copyId = copyDestination.startCopy(copySource);
+        FileTestHelper.waitForCopy(copyDestination);
+        destination.downloadAttributes();
+
+        // Check original file references for equality
+        assertEquals(CopyStatus.SUCCESS, destination.getCopyState().getStatus());
+        assertEquals(source.getServiceClient().getCredentials().transformUri(source.getUri()).getPath(),
+                destination.getCopyState().getSource().getPath());
+        assertEquals(data.length(), destination.getCopyState().getTotalBytes().intValue());
+        assertEquals(data.length(), destination.getCopyState().getBytesCopied().intValue());
+        assertEquals(copyId, destination.getProperties().getCopyState().getCopyId());
+
+        if (!destinationIsSas) {
+            try {
+                copyDestination.abortCopy(destination.getCopyState().getCopyId());
+            }
+            catch (StorageException ex) {
+                assertEquals(HttpURLConnection.HTTP_CONFLICT, ex.getHttpStatusCode());
+            }
+        }
+
+        assertNotNull(destination.getProperties().getEtag());
+        assertFalse(source.getProperties().getEtag().equals(destination.getProperties().getEtag()));
+
+        String copyData = destination.downloadText(Constants.UTF8_CHARSET, null, null, null);
+        assertEquals(data, copyData);
+
+        FileProperties prop1 = destination.getProperties();
+        FileProperties prop2 = source.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value", destination.getMetadata().get("Test"));
+        
+        destination.delete();
+        source.delete();
     }
 }

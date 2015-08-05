@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.file;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,12 +33,55 @@ import com.microsoft.azure.storage.core.Utility;
  */
 final class FileResponse extends BaseResponse {
     /**
+     * Gets the copyState
+     * 
+     * @param request
+     *            The response from server.
+     * @return The CopyState.
+     * @throws URISyntaxException
+     * @throws ParseException
+     */
+    public static CopyState getCopyState(final HttpURLConnection request) throws URISyntaxException, ParseException {
+        String copyStatusString = request.getHeaderField(Constants.HeaderConstants.COPY_STATUS);
+        if (!Utility.isNullOrEmpty(copyStatusString)) {
+            final CopyState copyState = new CopyState();
+            
+            copyState.setStatus(CopyStatus.parse(copyStatusString));
+            copyState.setCopyId(request.getHeaderField(Constants.HeaderConstants.COPY_ID));
+            copyState.setStatusDescription(request.getHeaderField(Constants.HeaderConstants.COPY_STATUS_DESCRIPTION));
+
+            final String copyProgressString = request.getHeaderField(Constants.HeaderConstants.COPY_PROGRESS);
+            if (!Utility.isNullOrEmpty(copyProgressString)) {
+                String[] progressSequence = copyProgressString.split("/");
+                copyState.setBytesCopied(Long.parseLong(progressSequence[0]));
+                copyState.setTotalBytes(Long.parseLong(progressSequence[1]));
+            }
+
+            final String copySourceString = request.getHeaderField(Constants.HeaderConstants.COPY_SOURCE);
+            if (!Utility.isNullOrEmpty(copySourceString)) {
+                copyState.setSource(new URI(copySourceString));
+            }
+
+            final String copyCompletionTimeString =
+                    request.getHeaderField(Constants.HeaderConstants.COPY_COMPLETION_TIME);
+            if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
+                copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
+            }
+            
+            return copyState;
+        }
+        else {
+            return null;
+        }
+    }
+    
+    /**
      * Gets the FileShareAttributes from the given request.
      * 
      * @param request
-     *            the request to get attributes from.
+     *            the request to get attributes from
      * @param usePathStyleUris
-     *            a value indicating if the account is using pathSytleUris.
+     *            a value indicating if the account is using pathSytleUris
      * @return the FileShareAttributes from the given request.
      * @throws StorageException
      */
@@ -57,6 +101,7 @@ final class FileResponse extends BaseResponse {
 
         final FileShareProperties shareProperties = shareAttributes.getProperties();
         shareProperties.setEtag(BaseResponse.getEtag(request));
+        shareProperties.setShareQuota(parseShareQuota(request));
         shareProperties.setLastModified(new Date(request.getLastModified()));
         shareAttributes.setMetadata(getMetadata(request));
 
@@ -64,18 +109,35 @@ final class FileResponse extends BaseResponse {
     }
 
     /**
-     * Gets the FileDirectoryProperties from the given request.
+     * Gets the FileDirectoryAttributes from the given request.
      * 
      * @param request
-     *            the request to get properties from.
-     * @return the FileDirectoryProperties from the given request.
+     *            the request to get attributes from.
+     * @param usePathStyleUris
+     *            a value indicating if the account is using pathSytleUris.
+     * @return the FileDirectoryAttributes from the given request.
+     * @throws StorageException
      */
-    public static FileDirectoryProperties getFileDirectoryProperties(final HttpURLConnection request) {
-        final FileDirectoryProperties directoryProperties = new FileDirectoryProperties();
+    public static FileDirectoryAttributes getFileDirectoryAttributes(final HttpURLConnection request,
+            final boolean usePathStyleUris) throws StorageException {
+        final FileDirectoryAttributes directoryAttributes = new FileDirectoryAttributes();
+        URI tempURI;
+        try {
+            tempURI = PathUtility.stripSingleURIQueryAndFragment(request.getURL().toURI());
+        }
+        catch (final URISyntaxException e) {
+            final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
+            throw wrappedUnexpectedException;
+        }
+
+        directoryAttributes.setName(PathUtility.getDirectoryNameFromURI(tempURI, usePathStyleUris));
+
+        final FileDirectoryProperties directoryProperties = directoryAttributes.getProperties();
         directoryProperties.setEtag(BaseResponse.getEtag(request));
         directoryProperties.setLastModified(new Date(request.getLastModified()));
+        directoryAttributes.setMetadata(getMetadata(request));
 
-        return directoryProperties;
+        return directoryAttributes;
     }
 
     /**
@@ -87,8 +149,11 @@ final class FileResponse extends BaseResponse {
      *            The file uri to set.
      * 
      * @return the CloudFileAttributes from the given request
+     * @throws ParseException 
+     * @throws URISyntaxException 
      */
-    public static FileAttributes getFileAttributes(final HttpURLConnection request, final StorageUri resourceURI) {
+    public static FileAttributes getFileAttributes(final HttpURLConnection request, final StorageUri resourceURI)
+            throws URISyntaxException, ParseException {
         final FileAttributes fileAttributes = new FileAttributes();
         final FileProperties properties = fileAttributes.getProperties();
 
@@ -99,6 +164,7 @@ final class FileResponse extends BaseResponse {
         properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
         properties.setContentType(request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE));
         properties.setEtag(BaseResponse.getEtag(request));
+        properties.setCopyState(FileResponse.getCopyState(request));
 
         final Calendar lastModifiedCalendar = Calendar.getInstance(Utility.LOCALE_US);
         lastModifiedCalendar.setTimeZone(Utility.UTC_ZONE);
@@ -128,5 +194,24 @@ final class FileResponse extends BaseResponse {
         fileAttributes.setMetadata(BaseResponse.getMetadata(request));
 
         return fileAttributes;
+    }
+
+    /**
+     * Parses out the share quota value from a <code>java.net.HttpURLConnection</code>.
+     * 
+     * @param request
+     *            the request to get attributes from
+     * @return the share quota (in GB) or <code>null</code> if none is specified
+     */
+    static Integer parseShareQuota(final HttpURLConnection request) {
+        Integer shareQuota = request.getHeaderFieldInt(FileConstants.SHARE_QUOTA_HEADER, -1);
+        return (shareQuota == -1) ? null : shareQuota;
+    }
+
+    /**
+     * Private Default Ctor
+     */
+    private FileResponse() {
+        super();
     }
 }

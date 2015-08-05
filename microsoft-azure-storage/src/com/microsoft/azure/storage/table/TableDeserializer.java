@@ -186,6 +186,7 @@ final class TableDeserializer {
      * @throws JsonParseException
      *             if an error occurs while parsing the stream.
      */
+    @SuppressWarnings("deprecation")
     private static <T extends TableEntity, R> TableResult parseJsonEntity(final JsonParser parser,
             final Class<T> clazzType, HashMap<String, PropertyPair> classProperties, final EntityResolver<R> resolver,
             final TableRequestOptions options, final OperationContext opContext) throws JsonParseException,
@@ -545,6 +546,7 @@ final class TableDeserializer {
      * @throws StorageException
      *             if a storage service error occurs.
      */
+    @SuppressWarnings("deprecation")
     private static <T extends TableEntity, R> TableResult parseAtomEntity(final XMLStreamReader xmlr,
             final Class<T> clazzType, final EntityResolver<R> resolver, final TableRequestOptions options,
             final OperationContext opContext) throws XMLStreamException, InstantiationException,

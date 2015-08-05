@@ -279,8 +279,8 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Gets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
-     * last read from Microsoft Azure storage.
+     * Gets the ETag value to verify for the entity. This value is used to determine if the table entity has changed 
+     * since it was last read from Microsoft Azure storage. The client cannot update this value on the service.
      * 
      * @return
      *         A <code>String</code> containing the ETag for the entity.
@@ -313,10 +313,10 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Gets the <code>timeStamp</code> value for the entity.
+     * Gets the Timestamp for the entity. The server manages the value of Timestamp, which cannot be modified. 
      * 
      * @return
-     *         A <code>java.util.Date</code> containing the <code>timeStamp</code> value for the entity.
+     *         A <code>java.util.Date</code> object which represents the Timestamp value for the entity.
      */
     @Override
     public Date getTimestamp() {
@@ -394,8 +394,8 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Sets the ETag value for the entity. This value is used to determine if the table entity has changed since it was
-     * last read from Microsoft Azure storage.
+     * Sets the ETag value to verify for the entity. This value is used to determine if the table entity has changed 
+     * since it was last read from Microsoft Azure storage. The client cannot update this value on the service.
      * 
      * @param etag
      *            A <code>String</code> containing the ETag for the entity.
@@ -432,7 +432,9 @@ public class TableServiceEntity implements TableEntity {
      * 
      * @param timeStamp
      *            A <code>java.util.Date</code> containing the <code>timeStamp</code> value for the entity.
+     * @deprecated as of 3.0.0. The timestamp property is a read-only property, set by the service only.
      */
+    @Deprecated
     @Override
     public void setTimestamp(final Date timeStamp) {
         this.timeStamp = timeStamp;

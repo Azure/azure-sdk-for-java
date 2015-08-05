@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * documentation for {@link TableServiceEntity} for more information on using reflection-based serialization and
  * deserialization.
  * 
- * @see {@link Ignore}
+ * @see Ignore
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

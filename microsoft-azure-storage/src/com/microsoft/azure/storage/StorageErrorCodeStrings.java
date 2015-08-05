@@ -175,6 +175,11 @@ public final class StorageErrorCodeStrings {
     public static final String INVALID_AUTHENTICATION_INFO = "InvalidAuthenticationInfo";
 
     /**
+     * Error code that may be returned when the specified append offset is invalid.
+     */
+    public static final String INVALID_APPEND_POSITION = "AppendPositionConditionNotMet";
+    
+    /**
      * An incorrect blob type was specified.
      */
     public static final String INVALID_BLOB_TYPE = "InvalidBlobType";
@@ -213,6 +218,11 @@ public final class StorageErrorCodeStrings {
      * The specified marker is invalid.
      */
     public static final String INVALID_MARKER = "InvalidMarker";
+
+    /**
+     * Error code that may be returned when the specified max blob size is exceeded.
+     */
+    public static final String INVALID_MAX_BLOB_SIZE_CONDITION = "MaxBlobSizeConditionNotMet"; 
 
     /**
      * The specified MD5 hash is invalid.

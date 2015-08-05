@@ -20,16 +20,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.microsoft.azure.storage.DoesServiceRequest;
-import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
 import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.RetryExponentialRetry;
 import com.microsoft.azure.storage.ServiceClient;
 import com.microsoft.azure.storage.ServiceProperties;
 import com.microsoft.azure.storage.ServiceStats;
 import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
@@ -51,7 +50,7 @@ public final class CloudQueueClient extends ServiceClient {
     /**
      * Holds the default request option values associated with this Service Client.
      */
-    private QueueRequestOptions defaultRequestOptions;
+    private QueueRequestOptions defaultRequestOptions = new QueueRequestOptions();
 
     /**
      * Initializes a new instance of the <code>CloudQueueClient</code> class using the specified Queue service endpoint
@@ -79,13 +78,10 @@ public final class CloudQueueClient extends ServiceClient {
      */
     public CloudQueueClient(final StorageUri baseUri, final StorageCredentials credentials) {
         super(baseUri, credentials);
-        if (credentials == null) {
-            throw new IllegalArgumentException(SR.STORAGE_QUEUE_CREDENTIALS_NULL);
+        if (credentials == null || credentials.getClass().equals(StorageCredentialsAnonymous.class)) {
+            throw new IllegalArgumentException(SR.STORAGE_CREDENTIALS_NULL_OR_ANONYMOUS);
         }
-
-        this.defaultRequestOptions = new QueueRequestOptions();
-        this.defaultRequestOptions.setLocationMode(LocationMode.PRIMARY_ONLY);
-        this.defaultRequestOptions.setRetryPolicyFactory(new RetryExponentialRetry());
+        QueueRequestOptions.applyDefaults(this.defaultRequestOptions);
     }
 
     /**
@@ -103,6 +99,7 @@ public final class CloudQueueClient extends ServiceClient {
      *             If a storage service error occurred.
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179349.aspx">Naming Queues and Metadata</a>
      */
+    @SuppressWarnings("deprecation")
     public CloudQueue getQueueReference(final String queueName) throws URISyntaxException, StorageException {
         return new CloudQueue(queueName, this);
     }
@@ -166,7 +163,7 @@ public final class CloudQueueClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
         return new LazySegmentedIterable<CloudQueueClient, Void, CloudQueue>(this.listQueuesSegmentedImpl(prefix,
@@ -252,7 +249,7 @@ public final class CloudQueueClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
         segmentedRequest.setToken(continuationToken);
@@ -287,7 +284,7 @@ public final class CloudQueueClient extends ServiceClient {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -363,7 +360,7 @@ public final class CloudQueueClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this);
 
         return ExecutionEngine.executeWithRetry(this, null, this.getServiceStatsImpl(options, false),
                 options.getRetryPolicyFactory(), opContext);
@@ -406,7 +403,7 @@ public final class CloudQueueClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this);
 
         return ExecutionEngine.executeWithRetry(this, null, this.downloadServicePropertiesImpl(options, false),
                 options.getRetryPolicyFactory(), opContext);
@@ -455,7 +452,7 @@ public final class CloudQueueClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this);
 
         Utility.assertNotNull("properties", properties);
 

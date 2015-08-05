@@ -26,7 +26,9 @@ import com.microsoft.azure.storage.core.Base64;
 
 /**
  * Represents a container for a storage key.
+ * @deprecated as of 3.0.0. Please use the methods on {@link StorageCredentialsAccountAndKey}.
  */
+@Deprecated
 public final class StorageKey {
     /**
      * Computes a signature for the specified string using the HMAC-SHA256 algorithm.

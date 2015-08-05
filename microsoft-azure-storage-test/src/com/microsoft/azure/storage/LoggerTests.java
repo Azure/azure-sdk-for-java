@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,6 +34,11 @@ import org.slf4j.LoggerFactory;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.blob.BlobTestHelper;
+import com.microsoft.azure.storage.blob.BlobType;
+import com.microsoft.azure.storage.blob.CloudBlob;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.core.LogConstants;
 import com.microsoft.azure.storage.core.Logger;
 
 /*
@@ -266,6 +273,62 @@ public class LoggerTests {
         ctx.setLoggingEnabled(true);
         writeErrorLogs(ctx);
         readAndCompareOutput(ERROR, OperationContext.defaultLoggerName, ctx.getClientRequestID());
+    }
+
+    @Test
+    public synchronized void testStringToSign()
+            throws IOException, InvalidKeyException, StorageException, URISyntaxException {
+        
+        OperationContext.setLoggingEnabledByDefault(true);
+        final CloudBlobContainer cont = BlobTestHelper.getRandomContainerReference();
+        
+        try {
+            cont.create();
+            final CloudBlob blob = BlobTestHelper.uploadNewBlob(cont, BlobType.BLOCK_BLOB, "", 0, null);
+            
+            // Test logging for SAS access
+            baos.reset();
+            blob.generateSharedAccessSignature(null, null);
+            baos.flush();
+    
+            String log = baos.toString();
+            String[] logEntries = log.split("[\\r\\n]+");
+    
+            assertEquals(1, logEntries.length);
+            
+            // example log entry: TRACE ROOT - {0b902691-1a8e-41da-ab60-5b912df186a6}: {Test string}
+            String[] segment = logEntries[0].split("\\{");
+            assertEquals(3, segment.length);
+            assertTrue(segment[1].startsWith("*"));
+            assertTrue(segment[2].startsWith(String.format(LogConstants.SIGNING, Constants.EMPTY_STRING)));
+            baos.reset();
+    
+            // Test logging for Shared Key access
+            OperationContext ctx = new OperationContext();
+            blob.downloadAttributes(null, null, ctx);
+            
+            baos.flush();
+            log = baos.toString();
+            logEntries = log.split("[\\r\\n]+");
+            assertNotEquals(0, logEntries.length);
+            
+            // Select correct log entry
+            for (int n = 0; n < logEntries.length; n++) {
+                if (logEntries[n].startsWith(LoggerTests.TRACE)) {
+                    segment = logEntries[n].split("\\{");
+                    assertEquals(3, segment.length);
+                    assertTrue(segment[1].startsWith(ctx.getClientRequestID()));
+                    assertTrue(segment[2].startsWith(String.format(LogConstants.SIGNING, Constants.EMPTY_STRING)));
+                    return;
+                }
+            }
+            
+            // If this line is reached then the log entry was not found
+            fail();
+        }
+        finally {
+            cont.deleteIfExists();
+        }
     }
 
     private void writeTraceLogs(OperationContext ctx) {

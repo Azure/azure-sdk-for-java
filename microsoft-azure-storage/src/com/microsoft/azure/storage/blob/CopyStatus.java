@@ -60,7 +60,7 @@ public enum CopyStatus {
      * 
      * @return A <code>CopyStatus</code> value that represents the copy status.
      */
-    protected static CopyStatus parse(final String typeString) {
+    static CopyStatus parse(final String typeString) {
         if (Utility.isNullOrEmpty(typeString)) {
             return UNSPECIFIED;
         }

@@ -35,7 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.microsoft.azure.storage.AuthenticationScheme;
 import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
@@ -55,7 +54,6 @@ import com.microsoft.azure.storage.core.PathUtility;
 /**
  * Queue Tests
  */
-@SuppressWarnings("deprecation")
 @Category({ CloudTests.class })
 public class CloudQueueTests {
 
@@ -232,16 +230,9 @@ public class CloudQueueTests {
         queueClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
 
         queueFromUri = new CloudQueue(PathUtility.addToQuery(this.queue.getStorageUri(),
-                this.queue.generateSharedAccessSignature(null, "readperm")), queueClient);
+                this.queue.generateSharedAccessSignature(null, "readperm")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), queueFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
-
-        assertEquals(queueClient.getDefaultRequestOptions().getLocationMode(), queueFromUri.getServiceClient()
-                .getDefaultRequestOptions().getLocationMode());
-        assertEquals(queueClient.getDefaultRequestOptions().getTimeoutIntervalInMs(), queueFromUri.getServiceClient()
-                .getDefaultRequestOptions().getTimeoutIntervalInMs());
-        assertEquals(queueClient.getDefaultRequestOptions().getRetryPolicyFactory().getClass(), queueFromUri
-                .getServiceClient().getDefaultRequestOptions().getRetryPolicyFactory().getClass());
     }
 
     static void assertQueuePermissionsEqual(QueuePermissions expected, QueuePermissions actual) {
@@ -268,20 +259,16 @@ public class CloudQueueTests {
         final CloudQueueClient qClient = TestHelper.createCloudQueueClient();
         final String queueName = QueueTestHelper.generateRandomQueueName();
 
-        CloudQueue queue1 = new CloudQueue(queueName, qClient);
+        CloudQueue queue1 = qClient.getQueueReference(queueName);
         assertEquals(queueName, queue1.getName());
         assertTrue(queue1.getUri().toString().endsWith(queueName));
         assertEquals(qClient, queue1.getServiceClient());
 
         CloudQueue queue2 = new CloudQueue(new URI(QueueTestHelper.appendQueueName(qClient.getEndpoint(), queueName)),
-                qClient);
+                qClient.getCredentials());
 
         assertEquals(queueName, queue2.getName());
-        assertEquals(qClient, queue2.getServiceClient());
-
-        CloudQueue queue3 = new CloudQueue(queueName, qClient);
-        assertEquals(queueName, queue3.getName());
-        assertEquals(qClient, queue3.getServiceClient());
+        assertEquals(qClient.getCredentials(), queue2.getServiceClient().getCredentials());
     }
 
     @Test
@@ -305,8 +292,8 @@ public class CloudQueueTests {
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testUploadMetadata() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(this.queue.getUri(), this.queue.getServiceClient());
-
+        CloudQueue queueForGet =  this.queue.getServiceClient().getQueueReference(this.queue.getName());
+        
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
         this.queue.setMetadata(metadata1);
@@ -322,7 +309,7 @@ public class CloudQueueTests {
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testUploadMetadataNullInput() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(this.queue.getUri(), this.queue.getServiceClient());
+        CloudQueue queueForGet =  this.queue.getServiceClient().getQueueReference(this.queue.getName());
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         String key = "ExistingMetadata1" + UUID.randomUUID().toString().replace("-", "");
@@ -345,7 +332,7 @@ public class CloudQueueTests {
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testUploadMetadataClearExisting() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(this.queue.getUri(), this.queue.getServiceClient());
+        CloudQueue queueForGet =  this.queue.getServiceClient().getQueueReference(this.queue.getName());
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         String key = "ExistingMetadata1" + UUID.randomUUID().toString().replace("-", "");
@@ -1437,43 +1424,12 @@ public class CloudQueueTests {
         CloudQueueClient queueClient1 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
                 new StorageCredentialsSharedAccessSignature(sasString));
 
-        CloudQueue queue1 = new CloudQueue(queueUri, queueClient1);
+        CloudQueue queue1 = new CloudQueue(queueUri, queueClient1.getCredentials());
         queue1.getName();
 
         CloudQueueClient queueClient2 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
                 new StorageCredentialsSharedAccessSignature(sasString));
-        CloudQueue queue2 = new CloudQueue(queueUri, queueClient2);
+        CloudQueue queue2 = new CloudQueue(queueUri, queueClient2.getCredentials());
         queue2.getName();
-    }
-
-    @Test
-    @Category({ DevFabricTests.class, DevStoreTests.class })
-    public void testQueueSharedKeyLite() throws StorageException, URISyntaxException {
-        CloudQueueClient qClient = TestHelper.createCloudQueueClient();
-        qClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
-        CloudQueue queue = qClient.getQueueReference(QueueTestHelper.generateRandomQueueName());
-
-        OperationContext createQueueContext = new OperationContext();
-        queue.create(null, createQueueContext);
-        assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
-
-        try {
-            HashMap<String, String> metadata1 = new HashMap<String, String>();
-            metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
-            queue.setMetadata(metadata1);
-            queue.create();
-            fail();
-        }
-        catch (StorageException e) {
-            assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_CONFLICT);
-
-        }
-
-        queue.downloadAttributes();
-        OperationContext createQueueContext2 = new OperationContext();
-        queue.create(null, createQueueContext2);
-        assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
-
-        queue.delete();
     }
 }

@@ -30,18 +30,14 @@ import java.util.GregorianCalendar;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResponseReceivedEvent;
-import com.microsoft.azure.storage.RetryNoRetry;
 import com.microsoft.azure.storage.SecondaryTests;
 import com.microsoft.azure.storage.SendingRequestEvent;
 import com.microsoft.azure.storage.StorageCredentials;
@@ -61,7 +57,7 @@ public class SasTests {
     protected CloudBlockBlob blob;
 
     @Before
-    public void leaseTestMethodSetup() throws URISyntaxException, StorageException, IOException {
+    public void blobSasTestMethodSetup() throws URISyntaxException, StorageException, IOException {
         this.container = BlobTestHelper.getRandomContainerReference();
         this.container.create();
 
@@ -70,7 +66,7 @@ public class SasTests {
     }
 
     @After
-    public void leaseTestMethodTearDown() throws StorageException {
+    public void blobSasTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
     }
     
@@ -130,35 +126,16 @@ public class SasTests {
                 readListContainer.getStorageUri(), this.container.generateSharedAccessSignature(null, "readlist")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), containerFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
+        
+        // create credentials from sas
+        StorageCredentials creds = new StorageCredentialsSharedAccessSignature(
+                this.container.generateSharedAccessSignature(null, "readlist"));
+        CloudBlobClient bClient = new CloudBlobClient(this.container.getServiceClient().getStorageUri(), creds);
 
-        // pass in a client which will have different permissions and check the sas permissions are used
-        // and that the properties set in the old service client are passed to the new client
-        CloudBlobClient bClient = this.container.getServiceClient();
-
-        // set some arbitrary settings to make sure they are passed on
-        bClient.getDefaultRequestOptions().setConcurrentRequestCount(5);
-        bClient.setDirectoryDelimiter("%");
-        bClient.getDefaultRequestOptions().setLocationMode(LocationMode.PRIMARY_THEN_SECONDARY);
-        bClient.getDefaultRequestOptions().setSingleBlobPutThresholdInBytes(5 * Constants.MB);
-        bClient.getDefaultRequestOptions().setTimeoutIntervalInMs(1000);
-        bClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
-
-        containerFromUri = new CloudBlobContainer(PathUtility.addToQuery(readListContainer.getStorageUri(),
-                this.container.generateSharedAccessSignature(null, "readlist")), this.container.getServiceClient());
-        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), containerFromUri.getServiceClient()
+        CloudBlobContainer containerFromClient = bClient.getContainerReference(this.container.getName());
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), containerFromClient.getServiceClient()
                 .getCredentials().getClass().toString());
-
-        assertEquals(bClient.getDefaultRequestOptions().getConcurrentRequestCount(), containerFromUri
-                .getServiceClient().getDefaultRequestOptions().getConcurrentRequestCount());
-        assertEquals(bClient.getDirectoryDelimiter(), containerFromUri.getServiceClient().getDirectoryDelimiter());
-        assertEquals(bClient.getDefaultRequestOptions().getLocationMode(), containerFromUri.getServiceClient()
-                .getDefaultRequestOptions().getLocationMode());
-        assertEquals(bClient.getDefaultRequestOptions().getSingleBlobPutThresholdInBytes(), containerFromUri
-                .getServiceClient().getDefaultRequestOptions().getSingleBlobPutThresholdInBytes());
-        assertEquals(bClient.getDefaultRequestOptions().getTimeoutIntervalInMs(), containerFromUri.getServiceClient()
-                .getDefaultRequestOptions().getTimeoutIntervalInMs());
-        assertEquals(bClient.getDefaultRequestOptions().getRetryPolicyFactory().getClass(), containerFromUri
-                .getServiceClient().getDefaultRequestOptions().getRetryPolicyFactory().getClass());
+        assertEquals(bClient, containerFromClient.getServiceClient());
     }
 
     @Test
@@ -196,10 +173,10 @@ public class SasTests {
 
         try {
             BlobTestHelper.uploadNewBlob(sasContainer, BlobType.BLOCK_BLOB, "blockblob", 64, null);
-            Assert.fail();
+            fail();
         }
         catch (StorageException ex) {
-            Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
         }
     }
 
@@ -312,38 +289,20 @@ public class SasTests {
 
         // do not give the client and check that the new blob's client has the correct perms
         CloudBlob blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(this.blob.getStorageUri(),
-                this.blob.generateSharedAccessSignature(null, "readperm")), null);
+                this.blob.generateSharedAccessSignature(null, "readperm")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), blobFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 
-        // pass in a client which will have different permissions and check the sas permissions are used
-        // and that the properties set in the old service client are passed to the new client
-        CloudBlobClient bClient = sasBlob.getServiceClient();
+        // create credentials from sas
+        StorageCredentials creds = new StorageCredentialsSharedAccessSignature(
+                this.blob.generateSharedAccessSignature(null, "readperm"));
+        CloudBlobClient bClient = new CloudBlobClient(sasBlob.getServiceClient().getStorageUri(), creds);
 
-        // set some arbitrary settings to make sure they are passed on
-        bClient.getDefaultRequestOptions().setConcurrentRequestCount(5);
-        bClient.setDirectoryDelimiter("%");
-        bClient.getDefaultRequestOptions().setLocationMode(LocationMode.PRIMARY_THEN_SECONDARY);
-        bClient.getDefaultRequestOptions().setSingleBlobPutThresholdInBytes(5 * Constants.MB);
-        bClient.getDefaultRequestOptions().setTimeoutIntervalInMs(1000);
-        bClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
-
-        blobFromUri = new CloudBlockBlob(PathUtility.addToQuery(this.blob.getStorageUri(),
-                this.blob.generateSharedAccessSignature(null, "readperm")), bClient);
-        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), blobFromUri.getServiceClient()
+        CloudBlockBlob blobFromClient = bClient.getContainerReference(this.blob.getContainer().getName())
+                .getBlockBlobReference(this.blob.getName());
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), blobFromClient.getServiceClient()
                 .getCredentials().getClass().toString());
-
-        assertEquals(bClient.getDefaultRequestOptions().getConcurrentRequestCount(), blobFromUri.getServiceClient()
-                .getDefaultRequestOptions().getConcurrentRequestCount());
-        assertEquals(bClient.getDirectoryDelimiter(), blobFromUri.getServiceClient().getDirectoryDelimiter());
-        assertEquals(bClient.getDefaultRequestOptions().getLocationMode(), blobFromUri.getServiceClient()
-                .getDefaultRequestOptions().getLocationMode());
-        assertEquals(bClient.getDefaultRequestOptions().getSingleBlobPutThresholdInBytes(), blobFromUri
-                .getServiceClient().getDefaultRequestOptions().getSingleBlobPutThresholdInBytes());
-        assertEquals(bClient.getDefaultRequestOptions().getTimeoutIntervalInMs(), blobFromUri.getServiceClient()
-                .getDefaultRequestOptions().getTimeoutIntervalInMs());
-        assertEquals(bClient.getDefaultRequestOptions().getRetryPolicyFactory().getClass(), blobFromUri
-                .getServiceClient().getDefaultRequestOptions().getRetryPolicyFactory().getClass());
+        assertEquals(bClient, blobFromClient.getServiceClient());
     }
 
     @Test
@@ -431,10 +390,10 @@ public class SasTests {
             else {
                 try {
                     for (ListBlobItem listedBlob : container.listBlobs());
-                    Assert.fail();
+                    fail();
                 }
                 catch (NoSuchElementException ex) {
-                    Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND,
+                    assertEquals(HttpURLConnection.HTTP_NOT_FOUND,
                             ((StorageException) ex.getCause()).getHttpStatusCode());
                 }
             }
@@ -446,33 +405,33 @@ public class SasTests {
             // Test headers
             if (headers != null) {
                 if (headers.getCacheControl() != null) {
-                    Assert.assertEquals(headers.getCacheControl(), blob.getProperties().getCacheControl());
+                    assertEquals(headers.getCacheControl(), blob.getProperties().getCacheControl());
                 }
 
                 if (headers.getContentDisposition() != null) {
-                    Assert.assertEquals(headers.getContentDisposition(), blob.getProperties().getContentDisposition());
+                    assertEquals(headers.getContentDisposition(), blob.getProperties().getContentDisposition());
                 }
 
                 if (headers.getContentEncoding() != null) {
-                    Assert.assertEquals(headers.getContentEncoding(), blob.getProperties().getContentEncoding());
+                    assertEquals(headers.getContentEncoding(), blob.getProperties().getContentEncoding());
                 }
 
                 if (headers.getContentLanguage() != null) {
-                    Assert.assertEquals(headers.getContentLanguage(), blob.getProperties().getContentLanguage());
+                    assertEquals(headers.getContentLanguage(), blob.getProperties().getContentLanguage());
                 }
 
                 if (headers.getContentType() != null) {
-                    Assert.assertEquals(headers.getContentType(), blob.getProperties().getContentType());
+                    assertEquals(headers.getContentType(), blob.getProperties().getContentType());
                 }
             }
         }
         else {
             try {
                 blob.downloadAttributes();
-                Assert.fail();
+                fail();
             }
             catch (StorageException ex) {
-                Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
             }
         }
 
@@ -482,10 +441,10 @@ public class SasTests {
         else {
             try {
                 blob.uploadMetadata();
-                Assert.fail();
+                fail();
             }
             catch (StorageException ex) {
-                Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
             }
         }
 
@@ -495,10 +454,10 @@ public class SasTests {
         else {
             try {
                 blob.delete();
-                Assert.fail();
+                fail();
             }
             catch (StorageException ex) {
-                Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
             }
         }
     }

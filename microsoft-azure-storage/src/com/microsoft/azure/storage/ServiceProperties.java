@@ -124,7 +124,7 @@ public final class ServiceProperties {
     /**
      * Sets the Cross-Origin Resource Sharing (CORS) properties.
      * 
-     * @param CORS
+     * @param cors
      *        A {@link CorsProperties} object which represents the CORS properties.
      */
     public void setCors(final CorsProperties cors) {

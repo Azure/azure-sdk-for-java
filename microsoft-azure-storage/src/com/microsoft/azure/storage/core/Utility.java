@@ -239,7 +239,7 @@ public final class Utility {
             return true;
         }
 
-        if (thatCred == null || thisCred.getClass() != thatCred.getClass()) {
+        if (thisCred == null || thatCred == null || thisCred.getClass() != thatCred.getClass()) {
             return false;
         }
 

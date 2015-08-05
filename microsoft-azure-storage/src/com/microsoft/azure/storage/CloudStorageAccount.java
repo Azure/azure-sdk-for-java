@@ -29,6 +29,7 @@ import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.StorageCredentialsHelper;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.file.CloudFileClient;
+import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
@@ -212,8 +213,8 @@ public final class CloudStorageAccount {
      * connection string</a> format.
      * <p>
      * Note that while a connection string may include a SAS token, it is often easier to use the
-     * {@link CloudBlobContainer#CloudBlobContainer(URI)}, {@link CloudBlobContainer#CloudQueue(URI)},
-     * {@link CloudTable#CloudBlobContainer(URI)} constructors directly. To do this, create a
+     * {@link CloudBlobContainer#CloudBlobContainer(URI)}, {@link CloudQueue#CloudQueue(URI)},
+     * {@link CloudTable#CloudTable(URI)} constructors directly. To do this, create a
      * {@link StorageCredentialsSharedAccessSignature#StorageCredentialsSharedAccessSignature(String)} object with your
      * SAS token, use the {@link StorageCredentialsSharedAccessSignature#transformUri(URI)} method on the container,
      * queue, or table URI, and then use that URI to construct the object.
@@ -241,12 +242,9 @@ public final class CloudStorageAccount {
         // 2 Validate General Settings rules,
         // - only setting value per key
         // - setting must have value.
-        //   - One special case to this rule - the account key can be empty.
         for (final Entry<String, String> entry : settings.entrySet()) {
             if (entry.getValue() == null || entry.getValue().equals(Constants.EMPTY_STRING)) {
-                if (!entry.getKey().equals(CloudStorageAccount.ACCOUNT_KEY_NAME)) {
-                    throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING);
-                }
+                throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING);
             }
         }
 

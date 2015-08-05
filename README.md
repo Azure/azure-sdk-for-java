@@ -1,6 +1,8 @@
 #Microsoft Azure Storage SDK for Java
 
-This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the Microsoft Azure [Java Developer Center](http://azure.microsoft.com/en-us/develop/java/) and the [JavaDocs](http://dl.windowsazure.com/storage/javadoc).
+This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the Microsoft Azure [Java Developer Center](http://azure.microsoft.com/en-us/develop/java/) and the [JavaDocs](http://azure.github.io/azure-storage-java/).
+
+> If you are looking for the Azure Storage Android SDK, please visit [https://github.com/Azure/azure-storage-android](https://github.com/Azure/azure-storage-android).
 
 #Features
   * Blob
@@ -28,7 +30,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage</artifactId>
-	<version>2.2.0</version>
+	<version>3.0.0</version>
 </dependency>
 ```
 
@@ -130,4 +132,4 @@ If you encounter any bugs with the library please file an issue in the [Issues](
 * [Azure Developer Center](http://azure.microsoft.com/en-us/develop/java/)
 * [Azure Storage Service](http://azure.microsoft.com/en-us/documentation/services/storage/)
 * [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)
-* [JavaDocs](http://dl.windowsazure.com/storage/javadoc)
+* [JavaDocs](http://azure.github.io/azure-storage-java/)

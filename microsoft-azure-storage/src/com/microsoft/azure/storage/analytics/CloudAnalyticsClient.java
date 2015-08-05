@@ -361,7 +361,7 @@ public class CloudAnalyticsClient {
      * Returns an enumerable collection of log records, retrieved lazily.
      * 
      * @param logBlobs
-     *            A {@link Iterable<ListBlobItem>} of blobs to parse LogRecords from.
+     *            A {@link Iterable} of blobs to parse LogRecords from.
      * @return
      *         An enumerable collection of objects that implement {@link ListBlobItem} and are retrieved lazily.
      * @throws StorageException

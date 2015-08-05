@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.file;
 import java.util.Date;
 
 import com.microsoft.azure.storage.AccessCondition;
+import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Represents the system properties for a share.
@@ -34,13 +35,19 @@ public final class FileShareProperties {
     private Date lastModified;
 
     /**
+     * Represents the limit on the size of files (in GB) stored on the share.
+     */
+    private Integer shareQuota;
+
+    /**
      * Gets the ETag value of the share.
      * <p>
      * The ETag value is a unique identifier that is updated when a write operation is performed against the share. It
      * may be used to perform operations conditionally, providing concurrency control and improved efficiency.
      * <p>
-     * The {@link AccessCondition#ifMatch} and {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
-     * an {@link AccessCondition} object that may be specified on the request.
+     * The {@link AccessCondition#generateIfMatchCondition(String)} and
+     * {@link AccessCondition#generateIfNoneMatchCondition(String)} methods take an ETag value and return an
+     * {@link AccessCondition} object that may be specified on the request.
      * 
      * @return A <code>String</code> which represents the ETag.
      */
@@ -55,6 +62,16 @@ public final class FileShareProperties {
      */
     public Date getLastModified() {
         return this.lastModified;
+    }
+
+    /**
+     * Gets the limit on the size of files (in GB) stored on the share.
+     * 
+     * @return A <code>java.lang.Integer</code> object which represents the limit on
+     *            the size of files stored on the share.
+     */
+    public Integer getShareQuota() {
+        return shareQuota;
     }
 
     /**
@@ -75,5 +92,19 @@ public final class FileShareProperties {
      */
     protected void setLastModified(final Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    /**
+     * Sets the limit on the size of files (in GB) stored on the share.
+     * 
+     * @param shareQuota
+     *            A <code>java.lang.Integer</code> object which represents the limit on
+     *            the size of files stored on the share.
+     */
+    public void setShareQuota(Integer shareQuota) {
+        if (shareQuota != null) {
+            Utility.assertInBounds("Share Quota", shareQuota, 1, FileConstants.MAX_SHARE_QUOTA);
+        }
+        this.shareQuota = shareQuota;
     }
 }

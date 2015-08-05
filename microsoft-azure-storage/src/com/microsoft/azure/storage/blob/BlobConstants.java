@@ -20,6 +20,12 @@ import com.microsoft.azure.storage.Constants;
  * Holds the Constants used for the Blob Service.
  */
 final class BlobConstants {
+    
+    /**
+     * Specifies the append blob type.
+     */
+    public static final String APPEND_BLOB = "AppendBlob";
+    
     /**
      * XML element for authentication error details.
      */
@@ -63,12 +69,7 @@ final class BlobConstants {
      * Specifies the block blob type.
      */
     public static final String BLOCK_BLOB = "BlockBlob";
-
-    /**
-     * Constant signaling a block blob.
-     */
-    public static final String BLOCK_BLOB_VALUE = "BlockBlob";
-
+    
     /**
      * XML element for blocks.
      */
@@ -170,11 +171,6 @@ final class BlobConstants {
      * Specifies the page blob type.
      */
     public static final String PAGE_BLOB = "PageBlob";
-
-    /**
-     * Constant signaling a page blob.
-     */
-    public static final String PAGE_BLOB_VALUE = "PageBlob";
 
     /**
      * XML element for page list elements.

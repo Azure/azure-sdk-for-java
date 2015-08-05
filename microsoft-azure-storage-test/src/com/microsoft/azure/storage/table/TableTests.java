@@ -137,7 +137,7 @@ public class TableTests {
                 new StorageCredentialsSharedAccessSignature(sasToken));
         assertEquals(usePathStyleUris, tableClient.isUsePathStyleUris());
 
-        table = new CloudTable(table.getUri(), tableClient);
+        table = new CloudTable(table.getUri(), tableClient.getCredentials());
         assertEquals(tableEndpoint + "/mytable", table.getUri().toString());
     }
 
@@ -515,10 +515,12 @@ public class TableTests {
                         "javatables_batch_9", "9")));
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), tableFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
-
-        // pass in a client which will have different permissions and check the sas permissions are used
-        // and that the properties set in the old service client are passed to the new client
-        CloudTableClient tableClient = policySasTable.getServiceClient();
+        
+        // create credentials from sas
+        StorageCredentials creds = new StorageCredentialsSharedAccessSignature(
+                table.generateSharedAccessSignature((SharedAccessTablePolicy) null, identifier, "javatables_batch_0", "0",
+                        "javatables_batch_9", "9"));
+        CloudTableClient tableClient = new CloudTableClient(policySasTable.getServiceClient().getStorageUri(), creds);
 
         // set some arbitrary settings to make sure they are passed on
         tableClient.getDefaultRequestOptions().setLocationMode(LocationMode.PRIMARY_THEN_SECONDARY);
@@ -526,9 +528,7 @@ public class TableTests {
         tableClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
         tableClient.getDefaultRequestOptions().setRetryPolicyFactory(new RetryNoRetry());
 
-        tableFromUri = new CloudTable(PathUtility.addToQuery(table.getStorageUri(), table
-                .generateSharedAccessSignature((SharedAccessTablePolicy) null, identifier, "javatables_batch_0", "0",
-                        "javatables_batch_9", "9")), tableClient);
+        tableFromUri = tableClient.getTableReference(table.getName());
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), tableFromUri.getServiceClient()
                 .getCredentials().getClass().toString());
 

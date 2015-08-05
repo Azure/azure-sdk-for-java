@@ -111,9 +111,6 @@ public class StorageException extends Exception {
      *            The HTTP status code returned by the operation.
      * @param statusDescription
      *            A <code>String</code> that represents the status description.
-     * @param details
-     *            A {@link StorageExtendedErrorInformation} object that represents the error details returned by the
-     *            operation.
      * @param inner
      *            An <code>Exception</code> object that represents a reference to the initial exception, if one exists.
      * 

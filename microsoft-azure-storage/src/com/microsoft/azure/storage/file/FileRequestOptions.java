@@ -89,9 +89,9 @@ public final class FileRequestOptions extends RequestOptions {
      *            {@link #concurrentRequestCount} field's value is null, it will be set to the value specified by the
      *            cloud file client's {@link CloudFileClient#getConcurrentRequestCount} method.
      */
-    protected static final FileRequestOptions applyDefaults(final FileRequestOptions options,
+    protected static final FileRequestOptions populateAndApplyDefaults(final FileRequestOptions options,
             final CloudFileClient client) {
-        return FileRequestOptions.applyDefaults(options, client, true);
+        return FileRequestOptions.populateAndApplyDefaults(options, client, true);
     }
     
     /**
@@ -108,15 +108,21 @@ public final class FileRequestOptions extends RequestOptions {
      * @param setStartTime
      *            whether to initialize the startTimeInMs field, or not
      */
-    protected static final FileRequestOptions applyDefaults(final FileRequestOptions options, 
+    protected static final FileRequestOptions populateAndApplyDefaults(final FileRequestOptions options, 
             final CloudFileClient client, final boolean setStartTime) {
         FileRequestOptions modifiedOptions = new FileRequestOptions(options);
         FileRequestOptions.populateRequestOptions(modifiedOptions, client.getDefaultRequestOptions(), setStartTime);
-        return FileRequestOptions.applyDefaultsInternal(modifiedOptions, client);
+        FileRequestOptions.applyDefaults(modifiedOptions);
+        return modifiedOptions;
     }
 
-    private static final FileRequestOptions applyDefaultsInternal(final FileRequestOptions modifiedOptions,
-            final CloudFileClient client) {
+    /**
+     * Applies defaults to the options passed in.
+     * 
+     * @param modifiedOptions
+     *          The options to apply defaults to.
+     */
+    protected static void applyDefaults(final FileRequestOptions modifiedOptions) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
         RequestOptions.applyBaseDefaultsInternal(modifiedOptions);
         if (modifiedOptions.getConcurrentRequestCount() == null) {
@@ -134,21 +140,17 @@ public final class FileRequestOptions extends RequestOptions {
         if (modifiedOptions.getDisableContentMD5Validation() == null) {
             modifiedOptions.setDisableContentMD5Validation(false);
         }
-
-        return modifiedOptions;
     }
 
     /**
      * Populates any null fields in the first requestOptions object with values from the second requestOptions object.
      */
-    private static final FileRequestOptions populateRequestOptions(FileRequestOptions modifiedOptions,
+    private static void populateRequestOptions(FileRequestOptions modifiedOptions,
             final FileRequestOptions clientOptions, boolean setStartTime) {
         RequestOptions.populateRequestOptions(modifiedOptions, clientOptions, setStartTime);
         if (modifiedOptions.getConcurrentRequestCount() == null) {
             modifiedOptions.setConcurrentRequestCount(clientOptions.getConcurrentRequestCount());
         }
-
-        return modifiedOptions;
     }
 
     /**
@@ -198,7 +200,7 @@ public final class FileRequestOptions extends RequestOptions {
      * <p>
      * The default concurrent request count is set in the client and is by default 1, indicating no concurrency. You can
      * change the concurrent request count on this request by setting this property. You can also change the value on
-     * the {@link FileServiceConstants#getDefaultRequestOptions()} object so that all subsequent requests made via the
+     * the {@link CloudFileClient#getDefaultRequestOptions()} object so that all subsequent requests made via the
      * service client will use that concurrent request count.
      * 
      * @param concurrentRequestCount
@@ -213,7 +215,7 @@ public final class FileRequestOptions extends RequestOptions {
      * <p>
      * The default useTransactionalContentMD5 value is set in the client and is by default <code>false</code>. You can
      * change the useTransactionalContentMD5 value on this request by setting this property. You can also change the
-     * value on the {@link FileServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via
+     * value on the {@link CloudFileClient#getDefaultRequestOptions()} object so that all subsequent requests made via
      * the service client will use that useTransactionalContentMD5 value.
      * 
      * @param useTransactionalContentMD5
@@ -228,7 +230,7 @@ public final class FileRequestOptions extends RequestOptions {
      * <p>
      * The default storeFileContentMD5 value is set in the client and is by default <code>true</code>. You can change
      * the storeFileContentMD5 value on this request by setting this property. You can also change the value on the
-     * {@link FileServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
+     * {@link CloudFileClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
      * client will use that storeFileContentMD5 value.
      * 
      * @param storeFileContentMD5
@@ -243,7 +245,7 @@ public final class FileRequestOptions extends RequestOptions {
      * <p>
      * The default disableContentMD5Validation value is set in the client and is by default <code>false</code>. You can
      * change the disableContentMD5Validation value on this request by setting this property. You can also change the
-     * value on the {@link FileServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via
+     * value on the {@link CloudFileClient#getDefaultRequestOptions()} object so that all subsequent requests made via
      * the service client will use that disableContentMD5Validation value.
      * 
      * @param disableContentMD5Validation

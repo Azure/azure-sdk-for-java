@@ -47,8 +47,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to delete the specified entity from Microsoft
      * Azure storage. To execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with the
      * 
      * @param entity
      *            The object instance implementing {@link TableEntity} to associate with the operation.
@@ -64,8 +63,8 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to insert the specified entity into
      * Microsoft Azure storage. To execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with the
+
      * 
      * @param entity
      *            The object instance implementing {@link TableEntity} to associate with the operation.
@@ -79,8 +78,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to insert the specified entity into
      * Microsoft Azure storage. To execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with the
      * 
      * @param entity
      *            The object instance implementing {@link TableEntity} to associate with the operation.
@@ -98,7 +96,7 @@ public class TableOperation {
      * A static factory method returning a {@link TableOperation} instance to merge the specified entity into
      * Microsoft Azure storage, or insert it if it does not exist. To execute this {@link TableOperation} on a given
      * table, call
-     * the {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with
+     * the {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with
      * the table name and the {@link TableOperation} as arguments.
      * 
      * @param entity
@@ -115,7 +113,7 @@ public class TableOperation {
      * A static factory method returning a {@link TableOperation} instance to replace the specified entity in
      * Microsoft Azure storage, or insert it if it does not exist. To execute this {@link TableOperation} on a given
      * table, call
-     * the {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with
+     * the {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with
      * the table name and the {@link TableOperation} as arguments.
      * 
      * @param entity
@@ -131,8 +129,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to merge the specified table entity into
      * Microsoft Azure storage. To execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with the
      * 
      * @param entity
      *            The object instance implementing {@link TableEntity} to associate with the operation.
@@ -148,8 +145,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to retrieve the specified table entity and
      * return it as the specified type. To execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance with the
      * 
      * @param partitionKey
      *            A <code>String</code> which specifies the PartitionKey value for the entity to retrieve.
@@ -170,7 +166,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to retrieve the specified table entity and
      * return a projection of it using the specified resolver. To execute this {@link TableOperation} on a given table,
-     * call the {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance
+     * call the {@link CloudTable#execute(TableOperation)} method on a {@link CloudTableClient} instance
      * with the table name and the {@link TableOperation} as arguments.
      * 
      * @param partitionKey
@@ -192,8 +188,7 @@ public class TableOperation {
     /**
      * A static factory method returning a {@link TableOperation} instance to replace the specified table entity. To
      * execute this {@link TableOperation} on a given table, call the
-     * {@link CloudTableClient#execute(String, TableOperation)} method on a {@link CloudTableClient} instance with the
-     * table name and the {@link TableOperation} as arguments.
+     * {@link CloudTable#execute(TableOperation)} method.
      * 
      * @param entity
      *            The object instance implementing {@link TableEntity} to associate with the operation.
@@ -322,15 +317,9 @@ public class TableOperation {
             @Override
             public TableResult preProcessResponse(TableOperation operation, CloudTableClient client,
                     OperationContext context) throws Exception {
-                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                    throw TableServiceException.generateTableServiceException(false, this.getResult(), operation, this
-                            .getConnection().getErrorStream(), options.getTablePayloadFormat());
-                }
-
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                    throw TableServiceException.generateTableServiceException(true, this.getResult(), operation, this
-                            .getConnection().getErrorStream(), options.getTablePayloadFormat());
+                    throw TableServiceException.generateTableServiceException(this.getResult(), operation, 
+                            this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                 }
 
                 return operation.parseResponse(null, this.getResult().getStatusCode(), null, opContext, options);
@@ -415,58 +404,33 @@ public class TableOperation {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudTableClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signTableRequest(connection, client, -1L, opContext);
+                    StorageRequest.signTableRequest(connection, client, -1L, context);
                 }
 
                 @Override
                 public TableResult preProcessResponse(TableOperation operation, CloudTableClient client,
                         OperationContext context) throws Exception {
                     if (operation.opType == TableOperationType.INSERT) {
-                        if (operation.getEchoContent()) {
+                        if (operation.getEchoContent()
+                                && this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
                             // Insert should receive created if echo content is on
-                            if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
-                                return new TableResult();
-                            }
-                            else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                                throw TableServiceException.generateTableServiceException(false, this.getResult(),
-                                        operation, this.getConnection().getErrorStream(),
-                                        options.getTablePayloadFormat());
-                            }
-                            else {
-                                throw TableServiceException.generateTableServiceException(true, this.getResult(),
-                                        operation, this.getConnection().getErrorStream(),
-                                        options.getTablePayloadFormat());
-                            }
+                            return new TableResult();
                         }
-                        else {
+                        else if (!operation.getEchoContent()
+                                && this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
                             // Insert should receive no content if echo content is off
-                            if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-                                return operation.parseResponse(null, this.getResult().getStatusCode(), this
-                                        .getConnection().getHeaderField(TableConstants.HeaderConstants.ETAG),
-                                        opContext, options);
-                            }
-                            else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                                throw TableServiceException.generateTableServiceException(false, this.getResult(),
-                                        operation, this.getConnection().getErrorStream(),
-                                        options.getTablePayloadFormat());
-                            }
-                            else {
-                                throw TableServiceException.generateTableServiceException(true, this.getResult(),
-                                        operation, this.getConnection().getErrorStream(),
-                                        options.getTablePayloadFormat());
-                            }
-                        }
-                    }
-                    else {
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
                             return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
                                     .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
                         }
-                        else {
-                            throw TableServiceException.generateTableServiceException(true, this.getResult(),
-                                    operation, this.getConnection().getErrorStream(), options.getTablePayloadFormat());
-                        }
                     }
+                    else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+                        // InsertOrMerge and InsertOrReplace should always receive no content
+                        return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
+                                .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
+                    }
+
+                    throw TableServiceException.generateTableServiceException(this.getResult(), operation, 
+                            this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                 }
 
                 @Override
@@ -565,26 +529,19 @@ public class TableOperation {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudTableClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signTableRequest(connection, client, -1L, opContext);
+                    StorageRequest.signTableRequest(connection, client, -1L, context);
                 }
 
                 @Override
                 public TableResult preProcessResponse(TableOperation operation, CloudTableClient client,
                         OperationContext context) throws Exception {
-                    if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                            || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                        throw TableServiceException.generateTableServiceException(false, this.getResult(), operation,
+                    if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                        throw TableServiceException.generateTableServiceException(this.getResult(), operation, 
                                 this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                     }
 
-                    if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-                        return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
-                                .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
-                    }
-                    else {
-                        throw TableServiceException.generateTableServiceException(true, this.getResult(), operation,
-                                this.getConnection().getErrorStream(), options.getTablePayloadFormat());
-                    }
+                    return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
+                            .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
                 }
 
                 @Override
@@ -670,26 +627,19 @@ public class TableOperation {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudTableClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signTableRequest(connection, client, -1L, opContext);
+                    StorageRequest.signTableRequest(connection, client, -1L, context);
                 }
 
                 @Override
                 public TableResult preProcessResponse(TableOperation operation, CloudTableClient client,
                         OperationContext context) throws Exception {
-                    if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                            || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                        throw TableServiceException.generateTableServiceException(false, this.getResult(), operation,
+                    if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                        throw TableServiceException.generateTableServiceException(this.getResult(), operation, 
                                 this.getConnection().getErrorStream(), options.getTablePayloadFormat());
                     }
 
-                    if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-                        return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
-                                .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
-                    }
-                    else {
-                        throw TableServiceException.generateTableServiceException(true, this.getResult(), operation,
-                                this.getConnection().getErrorStream(), options.getTablePayloadFormat());
-                    }
+                    return operation.parseResponse(null, this.getResult().getStatusCode(), this.getConnection()
+                            .getHeaderField(TableConstants.HeaderConstants.ETAG), opContext, options);
                 }
 
                 @Override
@@ -743,7 +693,7 @@ public class TableOperation {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.applyDefaults(options, client);
+        options = TableRequestOptions.populateAndApplyDefaults(options, client);
         Utility.assertNotNullOrEmpty(TableConstants.TABLE_NAME, tableName);
 
         if (this.getOperationType() == TableOperationType.INSERT

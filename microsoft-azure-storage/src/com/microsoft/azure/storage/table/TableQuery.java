@@ -33,7 +33,7 @@ import com.microsoft.azure.storage.core.Utility;
  * <p>
  * To create a table query with fluent syntax, the {@link #from} static factory method and the {@link #where},
  * {@link #select}, and {@link #take} mutator methods each return a reference to the object which can be chained into a
- * single expression. Use the {@link TableQuery#from(String, Class)} static class factory method to create a
+ * single expression. Use the {@link TableQuery#from(Class)} static class factory method to create a
  * <code>TableQuery</code> instance that executes on the named table with entities of the specified {@link TableEntity}
  * implementing type. Use the {@link #where} method to specify a filter expression for the entities returned. Use the
  * {@link #select} method to specify the table entity properties to return. Use the {@link #take} method to limit the
@@ -494,20 +494,6 @@ public class TableQuery<T extends TableEntity> {
      */
     public String[] getColumns() {
         return this.columns;
-    }
-
-    /**
-     * Gets the class type of the table entities returned by the query.
-     * 
-     * @return
-     *         The <code>java.lang.Class</code> of the class <code>T</code> implementing the {@link TableEntity}
-     *         interface that
-     *         represents the table entity type for the query.
-     * @deprecated Deprecated as of 0.7.0. Please use getClazzType() instead.
-     */
-    @Deprecated
-    public Class<T> getEntityClass() {
-        return this.clazzType;
     }
 
     /**

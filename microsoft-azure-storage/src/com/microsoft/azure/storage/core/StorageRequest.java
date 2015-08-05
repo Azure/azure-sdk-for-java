@@ -21,7 +21,6 @@ import java.net.HttpURLConnection;
 import java.security.InvalidKeyException;
 
 import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.AuthenticationScheme;
 import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RequestOptions;
@@ -42,7 +41,6 @@ import com.microsoft.azure.storage.StorageUri;
  * @param <R>
  *            The type of the expected result
  */
-@SuppressWarnings("deprecation")
 public abstract class StorageRequest<C, P, R> {
     /**
      * Holds a reference to a realized exception which occurred during execution.
@@ -309,23 +307,12 @@ public abstract class StorageRequest<C, P, R> {
 
     public static final void signBlobQueueAndFileRequest(HttpURLConnection request, ServiceClient client,
             long contentLength, OperationContext context) throws InvalidKeyException, StorageException {
-        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
-            StorageCredentialsHelper.signBlobAndQueueRequest(client.getCredentials(), request, contentLength, context);
-        }
-        else {
-            StorageCredentialsHelper.signBlobAndQueueRequestLite(client.getCredentials(), request, contentLength,
-                    context);
-        }
+        StorageCredentialsHelper.signBlobQueueAndFileRequest(client.getCredentials(), request, contentLength, context);
     }
 
     public static final void signTableRequest(HttpURLConnection request, ServiceClient client, long contentLength,
             OperationContext context) throws InvalidKeyException, StorageException {
-        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
-            StorageCredentialsHelper.signTableRequest(client.getCredentials(), request, contentLength, context);
-        }
-        else {
-            StorageCredentialsHelper.signTableRequestLite(client.getCredentials(), request, contentLength, context);
-        }
+        StorageCredentialsHelper.signTableRequest(client.getCredentials(), request, contentLength, context);
     }
 
     public void applyLocationModeToRequest() {

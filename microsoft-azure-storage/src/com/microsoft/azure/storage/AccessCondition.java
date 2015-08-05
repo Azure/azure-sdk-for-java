@@ -186,6 +186,39 @@ public final class AccessCondition {
         retCondition.leaseID = leaseID;
         return retCondition;
     }
+    
+    /**
+     * Returns an access condition such that an operation will be performed only if the resource exists on the service.
+     * <p>
+     * Setting this access condition modifies the request to include the HTTP <i>If-Match</i> conditional header.
+     * <p>
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
+     * 
+     * @return An <code>AccessCondition</code> object that represents the if exists condition.
+     */
+    public static AccessCondition generateIfExistsCondition() {
+        AccessCondition retCondition = new AccessCondition();
+        retCondition.setIfMatch("*");
+        return retCondition;
+    }
+    
+    /**
+     * Returns an access condition such that an operation will be performed only if the resource does not exist on the 
+     * service.
+     * <p>
+     * Setting this access condition modifies the request to include the HTTP <i>If-None-Match</i> conditional header.
+     * <p>
+     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642'>Specifying Conditional Headers
+     * for Blob Service Operations</a>.
+     * 
+     * @return An <code>AccessCondition</code> object that represents the if not exists condition.
+     */
+    public static AccessCondition generateIfNotExistsCondition() {
+        AccessCondition retCondition = new AccessCondition();
+        retCondition.setIfNoneMatch("*");
+        return retCondition;
+    }
 
     private String leaseID = null;
 
@@ -223,7 +256,17 @@ public final class AccessCondition {
      * Represents the ifSequenceNumberEqual type. Used only for page blob operations.
      */
     private Long ifSequenceNumberEqual = null;
-
+    
+    /**
+     * Represents the ifMaxSizeLessThanOrEqual type. Used only for append blob operations.
+     */
+    private Long ifMaxSizeLessThanOrEqual = null;
+    
+    /**
+     * Represents the ifAppendPositionEqual type. Used only for append blob operations.
+     */
+    private Long ifAppendPositionEqual = null;
+    
     /**
      * Creates an instance of the <code>AccessCondition</code> class.
      */
@@ -298,6 +341,28 @@ public final class AccessCondition {
     }
     
     /**
+     * RESERVED FOR INTERNAL USE. Applies the access condition to the request.
+     * 
+     * @param request
+     *            A <code>java.net.HttpURLConnection</code> object that represents the request to which the condition is
+     *            being applied.
+     * 
+     * @throws StorageException
+     *             If there is an error parsing the date value of the access condition.
+     */
+    public void applyAppendConditionToRequest(final HttpURLConnection request) {
+        if (this.ifMaxSizeLessThanOrEqual != null) {
+            request.setRequestProperty(Constants.HeaderConstants.IF_MAX_SIZE_LESS_THAN_OR_EQUAL,
+                    this.ifMaxSizeLessThanOrEqual.toString());
+        }
+
+        if (this.ifAppendPositionEqual != null) {
+            request.setRequestProperty(Constants.HeaderConstants.IF_APPEND_POSITION_EQUAL_HEADER,
+                    this.ifAppendPositionEqual.toString());
+        }
+    }
+    
+    /**
      * RESERVED FOR INTERNAL USE. Applies the lease access condition to the request.
      * 
      * @param request
@@ -338,6 +403,17 @@ public final class AccessCondition {
     }
     
     /**
+     * Gets the value for a conditional header used only for append operations. A number indicating the byte offset to check for.
+     * The append will succeed only if the end position is equal to this number. 
+     * 
+     * @return The append position number, or <code>null</code> if no condition exists.
+     */
+    public Long getIfAppendPositionEqual()
+    {
+        return ifAppendPositionEqual;
+    } 
+    
+    /**
      * Gets the ETag when the <i>If-Match</i> condition is set.
      * 
      * @return The ETag when the <i>If-Match</i> condition is set; otherwise, null.
@@ -345,6 +421,17 @@ public final class AccessCondition {
     public String getIfMatch() {
         return this.ifMatchETag;
     }
+    
+    /**
+     * Gets the value for a conditional header used only for append operations. A number that indicates the maximum length in 
+     * bytes to restrict the blob to when committing the block. 
+     * 
+     * @return The maximum size, or <code>null</code> if no condition exists.
+     */
+    public Long getIfMaxSizeLessThanOrEqual()
+    {
+        return ifMaxSizeLessThanOrEqual;
+    } 
     
     /**
      * Gets the <i>If-Modified-Since</i> date.
@@ -413,6 +500,18 @@ public final class AccessCondition {
     }
 
     /**
+     * Sets the value for a conditional header used only for append operations. A number indicating the byte offset to check for.
+     * The append will succeed only if the end position is equal to this number. 
+     * 
+     * @param ifAppendPositionEqual
+     *            The append position number, or <code>null</code> if no condition exists.
+     */
+    public void setIfAppendPositionEqual(Long ifAppendPositionEqual)
+    {
+        this.ifAppendPositionEqual = ifAppendPositionEqual;
+    }  
+
+    /**
      * Sets the ETag for the <i>If-Match</i> condition.
      * 
      * @param etag
@@ -420,6 +519,18 @@ public final class AccessCondition {
      */
     public void setIfMatch(String etag) {
         this.ifMatchETag = normalizeEtag(etag);
+    }
+    
+    /**
+     * Sets the value for a conditional header used only for append operations. A number that indicates the maximum length in 
+     * bytes to restrict the blob to when committing the block. 
+     * 
+     * @param ifMaxSizeLessThanOrEqual
+     *            The maximum size, or <code>null</code> if no condition exists.
+     */
+    public void setIfMaxSizeLessThanOrEqual(Long ifMaxSizeLessThanOrEqual)
+    {
+        this.ifMaxSizeLessThanOrEqual = ifMaxSizeLessThanOrEqual;
     }
 
     /**

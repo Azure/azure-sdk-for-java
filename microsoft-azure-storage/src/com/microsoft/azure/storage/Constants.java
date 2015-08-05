@@ -228,7 +228,17 @@ public final class Constants {
          * The format string for specifying ranges with only begin offset.
          */
         public static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
-
+        
+        /**
+         * The format string for specifying the blob append offset.
+         */
+        public static final String BLOB_APPEND_OFFSET = PREFIX_FOR_STORAGE_HEADER + "blob-append-offset";
+        
+        /**
+         * The header that specifies committed block count.
+         */
+        public static final String BLOB_COMMITTED_BLOCK_COUNT = PREFIX_FOR_STORAGE_HEADER + "blob-committed-block-count";
+        
         /**
          * The header that specifies blob sequence number.
          */
@@ -351,9 +361,19 @@ public final class Constants {
         public static final int HTTP_UNUSED_306 = 306;
 
         /**
+         * The blob append position equal header.
+         */
+        public static final String IF_APPEND_POSITION_EQUAL_HEADER = PREFIX_FOR_STORAGE_HEADER + "blob-condition-appendpos";
+        
+        /**
          * The IfMatch header.
          */
         public static final String IF_MATCH = "If-Match";
+        
+        /**
+         * The blob maxsize condition header.
+         */
+        public static final String IF_MAX_SIZE_LESS_THAN_OR_EQUAL = PREFIX_FOR_STORAGE_HEADER + "blob-condition-maxsize";
 
         /**
          * The IfModifiedSince header.
@@ -510,7 +530,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2014-02-14";
+        public static final String TARGET_STORAGE_VERSION = "2015-02-21";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -530,7 +550,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "2.2.0";
+        public static final String USER_AGENT_VERSION = "3.0.0";
 
         /**
          * The default type for content-type and accept
@@ -674,6 +694,11 @@ public final class Constants {
         public static final String START_ROW_KEY = "srk";
 
         /**
+         * The query component for stats.
+         */
+        public static final String STATS = "stats";
+
+        /**
          * The query component for delimiter.
          */
         public static final String DELIMITER = "delimiter";
@@ -733,7 +758,7 @@ public final class Constants {
      * XML element for an access policy.
      */
     public static final String ACCESS_POLICY = "AccessPolicy";
-
+    
     /**
      * Buffer width used to copy data to output streams.
      */
@@ -900,10 +925,30 @@ public final class Constants {
     public static final String LAST_MODIFIED_ELEMENT = "Last-Modified";
 
     /**
+     * Lease break period max in seconds.
+     */
+    public static final int LEASE_BREAK_PERIOD_MAX = 60;
+
+    /**
+     * Lease break period min in seconds.
+     */
+    public static final int LEASE_BREAK_PERIOD_MIN = 0;
+
+    /**
      * XML element for the lease duration.
      */
     public static final String LEASE_DURATION_ELEMENT = "LeaseDuration";
 
+    /**
+     * Lease duration max in seconds.
+     */
+    public static final int LEASE_DURATION_MAX = 60;
+
+    /**
+     * Lease duration min in seconds.
+     */
+    public static final int LEASE_DURATION_MIN = 15;
+    
     /**
      * XML element for the lease state.
      */

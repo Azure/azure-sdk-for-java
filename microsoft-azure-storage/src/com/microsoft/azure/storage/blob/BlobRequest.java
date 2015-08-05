@@ -36,6 +36,8 @@ import com.microsoft.azure.storage.core.Utility;
  */
 final class BlobRequest {
 
+    private static final String APPEND_BLOCK_QUERY_ELEMENT_NAME = "appendblock";
+
     private static final String BLOCK_QUERY_ELEMENT_NAME = "block";
 
     private static final String BLOCK_ID_QUERY_ELEMENT_NAME = "blockid";
@@ -149,6 +151,49 @@ final class BlobRequest {
         if (snapshotVersion != null) {
             builder.add(Constants.QueryConstants.SNAPSHOT, snapshotVersion);
         }
+    }
+    
+    /**
+     * Constructs a web request to commit a block to an append blob.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     */
+    public static HttpURLConnection appendBlock(final URI uri, final BlobRequestOptions blobOptions,
+            final OperationContext opContext, final AccessCondition accessCondition) 
+                    throws StorageException, IOException, URISyntaxException
+    {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, APPEND_BLOCK_QUERY_ELEMENT_NAME);
+
+        final HttpURLConnection request = createURLConnection(uri, builder, blobOptions, opContext);
+
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request);
+            accessCondition.applyAppendConditionToRequest(request);
+        }
+
+        return request;
     }
 
     /**
@@ -701,14 +746,26 @@ final class BlobRequest {
         request.setFixedLengthStreamingMode(0);
         request.setRequestProperty(HeaderConstants.LEASE_ACTION_HEADER, action.toString());
 
-        request.setRequestProperty(HeaderConstants.LEASE_DURATION, leaseTimeInSeconds == null ? "-1"
-                : leaseTimeInSeconds.toString());
+        // Lease duration should only be sent for acquire.
+        if (action == LeaseAction.ACQUIRE) {
+            // Assert lease duration is in bounds
+            if (leaseTimeInSeconds != null && leaseTimeInSeconds != -1) {
+                Utility.assertInBounds("leaseTimeInSeconds", leaseTimeInSeconds, Constants.LEASE_DURATION_MIN,
+                        Constants.LEASE_DURATION_MAX);
+            }
+
+            request.setRequestProperty(HeaderConstants.LEASE_DURATION, leaseTimeInSeconds == null ? "-1"
+                    : leaseTimeInSeconds.toString());
+        }
 
         if (proposedLeaseId != null) {
             request.setRequestProperty(HeaderConstants.PROPOSED_LEASE_ID_HEADER, proposedLeaseId);
         }
 
         if (breakPeriodInSeconds != null) {
+            // Assert lease break period is in bounds
+            Utility.assertInBounds("breakPeriodInSeconds", breakPeriodInSeconds, Constants.LEASE_BREAK_PERIOD_MIN,
+                    Constants.LEASE_BREAK_PERIOD_MAX);
             request.setRequestProperty(HeaderConstants.LEASE_BREAK_PERIOD_HEADER, breakPeriodInSeconds.toString());
         }
 
@@ -1013,8 +1070,13 @@ final class BlobRequest {
 
             properties.setLength(pageBlobSize);
         }
-        else {
+        else if (blobType == BlobType.BLOCK_BLOB){
             request.setRequestProperty(BlobConstants.BLOB_TYPE_HEADER, BlobConstants.BLOCK_BLOB);
+        }
+        else if (blobType == BlobType.APPEND_BLOB){
+            request.setFixedLengthStreamingMode(0);
+            request.setRequestProperty(BlobConstants.BLOB_TYPE_HEADER, BlobConstants.APPEND_BLOB);
+            request.setRequestProperty(Constants.HeaderConstants.CONTENT_LENGTH, "0");
         }
 
         if (accessCondition != null) {

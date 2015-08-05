@@ -47,7 +47,8 @@ class TableLiteCanonicalizer extends Canonicalizer {
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength) throws StorageException {
+    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength)
+            throws StorageException {
         if (contentLength < -1) {
             throw new InvalidParameterException(SR.INVALID_CONTENT_LENGTH);
         }

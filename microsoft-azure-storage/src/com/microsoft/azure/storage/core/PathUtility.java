@@ -234,28 +234,59 @@ public final class PathUtility {
     /**
      * Gets the file name from the URI.
      * 
-     * @param inURI
-     *            the resource address
+     * @param resourceAddress
+     *            the file URI
      * @param usePathStyleUris
-     *            a value indicating if the address is a path style uri.
+     *            a value indicating if the address is a path style URI
      * @return the file's name
      */
-    public static String getFileNameFromURI(final URI inURI, final boolean usePathStyleUris) {
-        final String[] pathSegments = inURI.getRawPath().split("/");
+    public static String getFileNameFromURI(final URI resourceAddress, final boolean usePathStyleUris) {
+        // generate an array of the different levels of the path
+        final String[] pathSegments = resourceAddress.getRawPath().split("/");
 
+        // usePathStyleUris ? baseuri/accountname/sharename/objectname : accountname.baseuri/sharename/objectname
         final int shareIndex = usePathStyleUris ? 2 : 1;
 
-        if (pathSegments.length - 1 < shareIndex) {
-            throw new IllegalArgumentException(String.format("Invalid file address '%s'.", inURI));
-        }
-        else if (pathSegments.length - 1 == shareIndex) {
-            return "";
+        if (pathSegments.length - 1 <= shareIndex) {
+            // legal file addresses cannot end with or before the sharename
+            throw new IllegalArgumentException(String.format("Invalid file address '%s'.", resourceAddress));
         }
         else {
+            // in a legal file address the lowest level is the filename
             return pathSegments[pathSegments.length - 1];
         }
     }
 
+    /**
+     * Get the name of the lowest level directory from the given directory address.
+     * 
+     * @param resourceAddress
+     *            the directory URI
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style URI
+     * @return directory name from address from the URI
+     */
+    public static String getDirectoryNameFromURI(final URI resourceAddress, final boolean usePathStyleUris) {
+        // generate an array of the different levels of the path
+        final String[] pathSegments = resourceAddress.getRawPath().split("/");
+
+        // usePathStyleUris ? baseuri/accountname/sharename/objectname : accountname.baseuri/sharename/objectname
+        final int shareIndex = usePathStyleUris ? 2 : 1;
+
+        if (pathSegments.length - 1 < shareIndex) {
+            // if the sharename is missing or too close to the end 
+            throw new IllegalArgumentException(String.format("Invalid directory address '%s'.", resourceAddress));
+        }
+        else if (pathSegments.length - 1 == shareIndex) {
+            // this is the root directory; it has no name
+            return "";
+        }
+        else {
+            // in a legal directory address the lowest level is the directory
+            return pathSegments[pathSegments.length - 1];
+        }
+    }
+    
     /**
      * Get the share name from address from the URI.
      * 
@@ -410,13 +441,32 @@ public final class PathUtility {
      * @param usePathStyleUris
      *            a value indicating if the address is a path style uri.
      * @return the service client address from a complete Uri.
+     * @throws StorageException
+     */
+    public static StorageUri getServiceClientBaseAddress(final StorageUri addressUri) throws StorageException {
+        boolean usePathStyleUris = Utility.determinePathStyleFromUri(addressUri.getPrimaryUri());
+        try {
+            return getServiceClientBaseAddress(addressUri, usePathStyleUris);
+        } catch (final URISyntaxException e) {
+            throw Utility.generateNewUnexpectedStorageException(e);
+        }
+    }
+    
+    /**
+     * Get the service client address from a complete Uri.
+     * 
+     * @param address
+     *            Complete address of the resource.
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return the service client address from a complete Uri.
      * @throws URISyntaxException
      */
     public static StorageUri getServiceClientBaseAddress(final StorageUri addressUri, final boolean usePathStyleUris)
             throws URISyntaxException {
         return new StorageUri(new URI(getServiceClientBaseAddress(addressUri.getPrimaryUri(), usePathStyleUris)),
-                addressUri.getSecondaryUri() != null ? new URI(getServiceClientBaseAddress(
-                        addressUri.getSecondaryUri(), usePathStyleUris)) : null);
+                addressUri.getSecondaryUri() != null ?
+                new URI(getServiceClientBaseAddress(addressUri.getSecondaryUri(), usePathStyleUris)) : null);
     }
 
     /**

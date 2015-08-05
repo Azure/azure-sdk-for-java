@@ -21,8 +21,8 @@ import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.StorageException;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Blob and Queue
- * Service under the Shared Key authentication scheme.
+ * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Blob, Queue,
+ * and File Service under the Shared Key authentication scheme.
  */
 final class BlobQueueFullCanonicalizer extends Canonicalizer {
 
@@ -39,7 +39,8 @@ final class BlobQueueFullCanonicalizer extends Canonicalizer {
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength) throws StorageException {
+    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength)
+            throws StorageException {
 
         if (contentLength < -1) {
             throw new InvalidParameterException(SR.INVALID_CONTENT_LENGTH);

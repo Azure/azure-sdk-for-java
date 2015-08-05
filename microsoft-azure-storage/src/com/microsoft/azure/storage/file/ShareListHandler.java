@@ -159,12 +159,14 @@ final class ShareListHandler extends DefaultHandler {
     }
 
     private void getProperties(String currentNode, String value) throws ParseException {
-
         if (currentNode.equals(Constants.LAST_MODIFIED_ELEMENT)) {
             this.attributes.getProperties().setLastModified(Utility.parseRFC1123DateFromStringInGMT(value));
         }
         else if (currentNode.equals(Constants.ETAG_ELEMENT)) {
             this.attributes.getProperties().setEtag(Utility.formatETag(value));
+        }
+        else if (currentNode.equals(FileConstants.SHARE_QUOTA_ELEMENT)) {
+            this.attributes.getProperties().setShareQuota(Utility.isNullOrEmpty(value) ? null : Integer.parseInt(value));
         }
     }
 }

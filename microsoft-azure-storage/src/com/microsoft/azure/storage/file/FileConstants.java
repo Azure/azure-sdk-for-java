@@ -47,6 +47,11 @@ final class FileConstants {
     public static final String SHARES_ELEMENT = "Shares";
 
     /**
+     * XML element for share quota.
+     */
+    public static final String SHARE_QUOTA_ELEMENT = "Quota";
+
+    /**
      * XML element for file range start elements.
      */
     public static final String START_ELEMENT = "Start";
@@ -55,6 +60,11 @@ final class FileConstants {
      * The number of default concurrent requests for parallel operation.
      */
     public static final int DEFAULT_CONCURRENT_REQUEST_COUNT = 1;
+
+    /**
+     * The largest possible share quota in GB.
+     */
+    public static final int MAX_SHARE_QUOTA = 5120;
 
     /**
      * The header that specifies file cache control.
@@ -105,6 +115,11 @@ final class FileConstants {
      * The header that specifies range write mode.
      */
     public static final String FILE_RANGE_WRITE = Constants.PREFIX_FOR_STORAGE_HEADER + "write";
+
+    /**
+     * The header for the share quota.
+     */
+    public static final String SHARE_QUOTA_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "share-quota";
 
     /**
      * Private Default Constructor.

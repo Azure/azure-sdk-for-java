@@ -237,7 +237,7 @@ public final class OperationContext {
      * manner.
      * 
      * @param requestResult
-     *        A {@Link RequestResult} to append.
+     *        A {@link RequestResult} to append.
      */
     public synchronized void appendRequestResult(RequestResult requestResult) {
         this.requestResults.add(requestResult);
@@ -485,7 +485,7 @@ public final class OperationContext {
 
     /**
      * Indicates whether the client library should produce log entries by default. The default can be overridden
-     * to enable logging for an individual operation context instance by using {@link setLoggingEnabled}.
+     * to enable logging for an individual operation context instance by using {@link #setLoggingEnabled}.
      * 
      * @return
      *         <code>true</code> if logging is enabled by default; otherwise <code>false</code>.
@@ -496,10 +496,11 @@ public final class OperationContext {
 
     /**
      * Specifies whether the client library should produce log entries by default. The default can be overridden
-     * to turn on logging for an individual operation context instance by using {@link setLoggingEnabled}.
+     * to turn on logging for an individual operation context instance by using {@link #setLoggingEnabled}.
      * 
      * @param enableLoggingByDefault
-     *        <code>true</code> if logging should be enabled by default; otherwise <code>false</code> if logging should be disabled by default.
+     *        <code>true</code> if logging should be enabled by default; otherwise <code>false</code> if logging should
+     *        be disabled by default.
      */
     public static void setLoggingEnabledByDefault(boolean enableLoggingByDefault) {
         OperationContext.enableLoggingByDefault = enableLoggingByDefault;

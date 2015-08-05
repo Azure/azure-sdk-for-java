@@ -33,6 +33,7 @@ import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
@@ -107,37 +108,66 @@ public final class CloudQueue {
     private boolean shouldEncodeMessage;
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI. The queue URI must
-     * include a SAS token.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI. The queue
+     * <code>URI</code> must include a SAS token.
      * 
      * @param uri
      *            A <code>java.net.URI</code> object that represents the absolute URI of the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
-    public CloudQueue(final URI uri) throws URISyntaxException, StorageException {
+    public CloudQueue(final URI uri) throws StorageException {
         this(new StorageUri(uri, null));
     }
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI. The queue URI must
-     * include a SAS token.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue <code>StorageUri</code>. The 
+     * queue <code>StorageUri</code> must include a SAS token.
      * 
      * @param uri
      *            A <code>StorageUri</code> object that represents the absolute URI of the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
-    public CloudQueue(final StorageUri uri) throws URISyntaxException, StorageException {
-        this(uri, null /* client */);
+    public CloudQueue(final StorageUri uri) throws StorageException {
+        this(uri, (StorageCredentials)null);
     }
 
+    /**
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue <code>URI</code> and
+     * credentials. If the <code>URI</code> contains a SAS token, the credentials must be <code>null</code>.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the absolute URI of the queue.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudQueue(final URI uri, final StorageCredentials credentials) throws StorageException {
+        this(new StorageUri(uri), credentials);
+    }
+
+    /**
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue <code>StorageUri</code> and
+     * credentials. If the <code>StorageUri</code> contains a SAS token, the credentials must be <code>null</code>.
+     * 
+     * @param uri
+     *            A <code>StorageUri</code> object that represents the absolute URI of the queue.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudQueue(final StorageUri uri, final StorageCredentials credentials) throws StorageException {
+        this.shouldEncodeMessage = true;
+        this.parseQueryAndVerify(uri, credentials);
+    }
+    
     /**
      * Creates an instance of the <code>CloudQueue</code> class using the specified name and client.
      * 
@@ -154,23 +184,23 @@ public final class CloudQueue {
      * @throws StorageException
      *             If a storage service error occurred.
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179349.aspx">Naming Queues and Metadata</a>
+     * @deprecated as of 3.0.0. Please use {@link CloudQueueClient#getQueueReference(String)}
      */
+    @Deprecated
     public CloudQueue(final String queueName, final CloudQueueClient client) throws URISyntaxException,
             StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("queueName", queueName);
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), queueName);
-
         this.name = queueName;
         this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
-
-        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
     }
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI and client.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI and client. If the 
+     * <code>URI</code> contains a SAS token, the service client must be <code>null</code>.
      * 
      * @param uri
      *            A <code>java.net.URI</code> object that represents the absolute URI of the queue.
@@ -182,7 +212,9 @@ public final class CloudQueue {
      *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI is invalid.
+     * @deprecated as of 3.0.0. Please use {@link CloudQueue#CloudQueue(URI, StorageCredentials)}
      */
+    @Deprecated
     public CloudQueue(final URI uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
         this(new StorageUri(uri, null), client);
     }
@@ -200,20 +232,17 @@ public final class CloudQueue {
      *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI is invalid.
+     * @deprecated as of 3.0.0. Please use {@link CloudQueue#CloudQueue(StorageUri, StorageCredentials)}
      */
+    @Deprecated
     public CloudQueue(final StorageUri uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
-        Utility.assertNotNull("storageUri", uri);
-
-        this.storageUri = uri;
-
-        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri())
-                : client.isUsePathStyleUris();
-
-        this.name = PathUtility.getQueueNameFromUri(uri.getPrimaryUri(), usePathStyleUris);
-        this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
-
-        this.parseQueryAndVerify(this.storageUri, client, usePathStyleUris);
+        this.parseQueryAndVerify(uri, client == null ? null : client.getCredentials());
+        
+        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
+        if (client != null) {
+            this.queueServiceClient = client;
+        }
     }
 
     /**
@@ -277,7 +306,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.addMessageImpl(message, realTimeToLiveInSeconds, initialVisibilityDelayInSeconds, options),
@@ -308,7 +337,7 @@ public final class CloudQueue {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, messageBytes.length, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, messageBytes.length, context);
                 }
 
                 @Override
@@ -365,7 +394,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.clearImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -385,7 +414,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -435,7 +464,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.createImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -460,7 +489,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -513,7 +542,7 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         boolean exists = this.exists(true, options, opContext);
         if (exists) {
@@ -569,7 +598,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.deleteImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -589,7 +618,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -640,7 +669,7 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public boolean deleteIfExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         boolean exists = this.exists(true, options, opContext);
         if (exists) {
@@ -709,7 +738,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.deleteMessageImpl(message, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -734,7 +763,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -785,7 +814,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.downloadAttributesImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -810,7 +839,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -874,7 +903,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.existsImpl(primaryOnly, options),
                 options.getRetryPolicyFactory(), opContext);
@@ -901,7 +930,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1111,7 +1140,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.peekMessagesImpl(numberOfMessages, options), options.getRetryPolicyFactory(), opContext);
@@ -1138,7 +1167,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1259,7 +1288,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.retrieveMessagesImpl(numberOfMessages, visibilityTimeoutInSeconds, options),
@@ -1282,7 +1311,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1322,16 +1351,6 @@ public final class CloudQueue {
      */
     public void setShouldEncodeMessage(final boolean shouldEncodeMessage) {
         this.shouldEncodeMessage = shouldEncodeMessage;
-    }
-
-    /**
-     * Sets the name of the queue.
-     * 
-     * @param name
-     *            A <code>String</code> that represents the name being assigned to the queue.
-     */
-    protected void setName(final String name) {
-        this.name = name;
     }
 
     /**
@@ -1394,7 +1413,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.updateMessageImpl(message, visibilityTimeoutInSeconds, messageUpdateFields, options),
@@ -1427,11 +1446,11 @@ public final class CloudQueue {
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, this.getLength(), null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, this.getLength(), context);
                 }
                 else {
                     connection.setFixedLengthStreamingMode(0);
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
                 }
             }
 
@@ -1489,7 +1508,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.uploadMetadataImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -1516,7 +1535,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
             @Override
@@ -1573,7 +1592,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.uploadPermissionsImpl(permissions, options), options.getRetryPolicyFactory(), opContext);
@@ -1605,7 +1624,7 @@ public final class CloudQueue {
                 @Override
                 public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                         throws Exception {
-                    StorageRequest.signBlobQueueAndFileRequest(connection, client, aclBytes.length, null);
+                    StorageRequest.signBlobQueueAndFileRequest(connection, client, aclBytes.length, context);
                 }
 
                 @Override
@@ -1677,7 +1696,7 @@ public final class CloudQueue {
         }
 
         opContext.initialize();
-        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+        options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, this.downloadPermissionsImpl(options),
                 options.getRetryPolicyFactory(), opContext);
@@ -1704,7 +1723,7 @@ public final class CloudQueue {
             @Override
             public void signRequest(HttpURLConnection connection, CloudQueueClient client, OperationContext context)
                     throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, null);
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
             }
 
             @Override
@@ -1762,7 +1781,7 @@ public final class CloudQueue {
         final String resourceName = this.getSharedAccessCanonicalName();
 
         final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForQueue(policy,
-                groupPolicyIdentifier, resourceName, this.queueServiceClient, null);
+                groupPolicyIdentifier, resourceName, this.queueServiceClient);
 
         final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForQueue(policy,
                 groupPolicyIdentifier, signature);
@@ -1779,7 +1798,7 @@ public final class CloudQueue {
         String accountName = this.getServiceClient().getCredentials().getAccountName();
         String queueName = this.getName();
 
-        return String.format("/%s/%s", accountName, queueName);
+        return String.format("/%s/%s/%s", SR.QUEUE, accountName, queueName);
     }
 
     /**
@@ -1803,56 +1822,42 @@ public final class CloudQueue {
             StorageException {
         return this.queueServiceClient.getCredentials().transformUri(this.getStorageUri(), opContext);
     }
-
+    
     /**
-     * Parse Uri for SAS (Shared access signature) information.
-     * 
-     * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
-     * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
-     * a new client is created based on SAS information or as anonymous credentials.
+     * Verifies the passed in URI. Then parses it and uses its components to populate this resource's properties.
      * 
      * @param completeUri
-     *            The complete Uri.
-     * @param existingClient
-     *            The client to use.
-     * @param usePathStyleUris
-     *            If true, path style Uris are used.
-     * @throws URISyntaxException
+     *            A {@link StorageUri} object which represents the complete URI.
+     * @param credentials
+     *            A {@link StorageCredentials} object used to authenticate access.
      * @throws StorageException
+     *             If a storage service error occurred.
      */
-    private void parseQueryAndVerify(final StorageUri completeUri, final CloudQueueClient existingClient,
-            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
+    private void parseQueryAndVerify(final StorageUri completeUri, final StorageCredentials credentials) 
+            throws StorageException {
         Utility.assertNotNull("completeUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
-            final String errorMessage = String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString());
-            throw new IllegalArgumentException(errorMessage);
+            throw new IllegalArgumentException(String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString()));
         }
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
+        
+        final StorageCredentialsSharedAccessSignature parsedCredentials = 
+                SharedAccessSignatureHelper.parseQuery(completeUri);
 
-        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
-        final StorageCredentialsSharedAccessSignature sasCreds = SharedAccessSignatureHelper
-                .parseQuery(queryParameters);
-
-        if (sasCreds == null) {
-            if (existingClient == null) {
-                throw new IllegalArgumentException(SR.STORAGE_CLIENT_OR_SAS_REQUIRED);
-            }
-            return;
+        if (credentials != null && parsedCredentials != null) {
+            throw new IllegalArgumentException(SR.MULTIPLE_CREDENTIALS_PROVIDED);
         }
 
-        final Boolean sameCredentials = existingClient == null ? false : Utility.areCredentialsEqual(sasCreds,
-                existingClient.getCredentials());
-
-        if (existingClient == null || !sameCredentials) {
+        try {
+            final boolean usePathStyleUris = Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri());
             this.queueServiceClient = new CloudQueueClient(PathUtility.getServiceClientBaseAddress(
-                    this.getStorageUri(), usePathStyleUris), sasCreds);
+                    this.getStorageUri(), usePathStyleUris), credentials != null ? credentials : parsedCredentials);
+            this.name = PathUtility.getContainerNameFromUri(storageUri.getPrimaryUri(), usePathStyleUris);
         }
-
-        if (existingClient != null && !sameCredentials) {
-            this.queueServiceClient.setDefaultRequestOptions(new QueueRequestOptions(existingClient
-                    .getDefaultRequestOptions()));
+        catch (final URISyntaxException e) {
+            throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
 }

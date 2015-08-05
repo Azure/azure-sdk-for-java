@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public final class CopyState {
     /**
-     * Holds the name of the container.
+     * Holds the ID for the copy operation.
      */
     private String copyId;
 
@@ -58,15 +58,9 @@ public final class CopyState {
     private String statusDescription;
 
     /**
-     * Initializes a new instance of the CopyState class.
-     */
-    public CopyState() {
-    }
-
-    /**
-     * Gets the copy ID of the container.
+     * Gets the ID of the copy operation.
      * 
-     * @return A <code>String</code> which represents the copy ID of the container.
+     * @return A <code>String</code> which represents the ID of the copy operation.
      */
     public String getCopyId() {
         return this.copyId;
@@ -93,7 +87,7 @@ public final class CopyState {
     /**
      * Gets the source URI of the copy operation.
      * 
-     * @return A {@link java.net.URI} objeect which represents the source URI of the copy operation in a string.
+     * @return A {@link java.net.URI} object which represents the source URI of the copy operation in a string.
      */
     public URI getSource() {
         return this.source;
@@ -111,7 +105,7 @@ public final class CopyState {
     /**
      * Gets the number of bytes total number of bytes to copy.
      * 
-     * @returnA <code>long</code> which represents the total number of bytes to copy/ 
+     * @return A <code>long</code> which represents the total number of bytes to copy/ 
      */
     public Long getTotalBytes() {
         return this.totalBytes;
@@ -127,13 +121,13 @@ public final class CopyState {
     }
 
     /**
-     * Sets the copy ID of the container.
+     * Sets the ID of the copy operation.
      * 
      * @param copyId
-     *        A <code>String</code> which specifies the copy ID of the container to set.
+     *        A <code>String</code> which specifies the ID of the copy operation to set.
      * 
      */
-    protected void setCopyId(final String copyId) {
+    void setCopyId(final String copyId) {
         this.copyId = copyId;
     }
 
@@ -143,7 +137,7 @@ public final class CopyState {
      * @param completionTime
      *        A {@link java.util.Date} object which specifies the time when the copy operation completed.
      */
-    protected void setCompletionTime(final Date completionTime) {
+    void setCompletionTime(final Date completionTime) {
         this.completionTime = completionTime;
     }
 
@@ -153,7 +147,7 @@ public final class CopyState {
      * @param status
      *        A <code>{@link CopyStatus}</code> object specifies the status of the copy operation.
      */
-    protected void setStatus(final CopyStatus status) {
+    void setStatus(final CopyStatus status) {
         this.status = status;
     }
 
@@ -163,7 +157,7 @@ public final class CopyState {
      * @param source
      *        A {@link java.net.URI} object which specifies the source URI.
      */
-    protected void setSource(final URI source) {
+    void setSource(final URI source) {
         this.source = source;
     }
 
@@ -173,7 +167,7 @@ public final class CopyState {
      * @param bytesCopied
      *        A <code>long</code> which specifies the number of bytes copied.
      */
-    protected void setBytesCopied(final Long bytesCopied) {
+    void setBytesCopied(final Long bytesCopied) {
         this.bytesCopied = bytesCopied;
     }
 
@@ -183,7 +177,7 @@ public final class CopyState {
      * @param totalBytes
      *        A <code>long</code> which specifies the number of bytes to copy.
      */
-    protected void setTotalBytes(final Long totalBytes) {
+    void setTotalBytes(final Long totalBytes) {
         this.totalBytes = totalBytes;
     }
 
@@ -193,7 +187,6 @@ public final class CopyState {
      * @param statusDescription
      *        A <code>String</code> which specifies the status description.
      */
-    protected void setStatusDescription(final String statusDescription) {
+    void setStatusDescription(final String statusDescription) {
         this.statusDescription = statusDescription;
-    }
-}
+    }}
