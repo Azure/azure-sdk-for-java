@@ -52,7 +52,7 @@ public class VMScenarioTests extends ComputeTestBase {
 
     @Test
     public void testVMScenarioOperations() throws Exception {
-        log.info("creating VM...");
+        log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
         VirtualMachine vm = createVM(context, generateName("VM"));

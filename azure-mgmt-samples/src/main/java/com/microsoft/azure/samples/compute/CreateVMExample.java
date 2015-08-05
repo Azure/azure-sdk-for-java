@@ -71,6 +71,10 @@ public class CreateVMExample {
         // If you like to use any existing resource:
         // context.setNetworkInterface(NetworkInterface1);
 
+        // To use a differnt VM image
+        // context.setImageReference(
+        //        ComputeHelper.getWindowsServerDefaultImage(computeManagementClient, context.getLocation()));
+
         System.out.println("Start create vm...");
 
 //        Password requirements:

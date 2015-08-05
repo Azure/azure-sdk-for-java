@@ -42,6 +42,7 @@ public class VMSizesTests extends ComputeTestBase {
 
     @Test
     public void testListVMSizes() throws Exception {
+        log.info("start test, in mock: " + IS_MOCKED);
         VirtualMachineSizeListResponse sizeListResponse = computeManagementClient.getVirtualMachineSizesOperations()
                 .list(m_location.replace(" ", ""));
         Assert.assertEquals(HttpStatus.SC_OK, sizeListResponse.getStatusCode());

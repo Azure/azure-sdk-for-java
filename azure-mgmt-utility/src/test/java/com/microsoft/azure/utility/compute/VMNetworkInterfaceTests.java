@@ -56,7 +56,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
 
     @Test
     public void testVMWithMultipleNic() throws Exception {
-        log.info("creating VM...");
+        log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
         createOrUpdateResourceGroup(rgName);
@@ -88,13 +88,13 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
                 .get(rgName, context.getNetworkInterface().getName());
         // TODO get MAC address only work in certain regions
         // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
-        Assert.assertNotNull(getNic1Response.getNetworkInterface().isPrimary());
-        Assert.assertFalse(getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull("nic1response isPrimary is null", getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertFalse("nic1response isPrimary is true", getNic1Response.getNetworkInterface().isPrimary());
 
         NetworkInterfaceGetResponse getNic2Response = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(rgName, context2.getNetworkInterface().getName());
         // Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
-        Assert.assertNotNull(getNic2Response.getNetworkInterface().isPrimary());
-        Assert.assertTrue(getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull("nic1response isPrimary is null", getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertTrue("nic1response isPrimary is false", getNic2Response.getNetworkInterface().isPrimary());
     }
 }

@@ -210,7 +210,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             String vmName, boolean createWithPublicIpAddr, Consumer<VirtualMachine> vmInputModifier)
             throws Exception {
 
-        log.info(String.format("Create vm: %s, rg: %s", vmName, rgName));
+        log.info(String.format("Create vm in %s: %s, rg: %s", context.getLocation(), vmName, rgName));
 
         if (context == null) {
             context = createTestResourceContext(createWithPublicIpAddr);

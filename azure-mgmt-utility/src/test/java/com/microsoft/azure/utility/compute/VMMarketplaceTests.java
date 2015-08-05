@@ -56,7 +56,7 @@ public class VMMarketplaceTests extends ComputeTestBase {
 
     @Test
     public void testVMMarketplace() throws Exception {
-        log.info("creating VM...");
+        log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
         final VirtualMachineImage image = ComputeHelper.getMarketplaceVMImage(
