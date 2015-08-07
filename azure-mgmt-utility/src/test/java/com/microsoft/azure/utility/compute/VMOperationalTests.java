@@ -35,7 +35,7 @@ public class VMOperationalTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + rgName);
+        log.debug("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 
@@ -134,7 +134,7 @@ public class VMOperationalTests extends ComputeTestBase {
 
         log.info("Delete VM: " + vm.getName());
         DeleteOperationResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations()
-                .delete(rgName, vm.getName());
+                .delete(m_rgName, vm.getName());
         Assert.assertNotEquals(ComputeOperationStatus.FAILED, deleteResponse.getStatus());
     }
 }

@@ -33,7 +33,7 @@ public class VMDiskSizeTests extends ComputeTestBase{
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + rgName);
+        log.debug("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 
@@ -62,7 +62,7 @@ public class VMDiskSizeTests extends ComputeTestBase{
 
         log.info("created VM: " + vm.getName());
         VirtualMachineGetResponse vmResponse = computeManagementClient.getVirtualMachinesOperations()
-                .get(rgName, vmInput.getName());
+                .get(m_rgName, vmInput.getName());
         validateVM(vmInput, vmResponse.getVirtualMachine());
     }
 }

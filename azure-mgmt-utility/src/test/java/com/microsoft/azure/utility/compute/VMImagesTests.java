@@ -36,7 +36,7 @@ public class VMImagesTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-//        log.debug("after class, clean resource group: " + rgName);
+//        log.debug("after class, clean resource group: " + m_rgName);
 //        cleanupResourceGroup();
     }
 

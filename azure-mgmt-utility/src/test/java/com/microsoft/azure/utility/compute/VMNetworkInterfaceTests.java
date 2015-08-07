@@ -39,7 +39,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + rgName);
+        log.debug("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 
@@ -58,7 +58,7 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
         log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
-        createOrUpdateResourceGroup(rgName);
+        createOrUpdateResourceGroup(m_rgName);
 
         VirtualNetwork vnet = NetworkHelper.createVirtualNetwork(networkResourceProviderClient, context);
 
@@ -84,14 +84,14 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
         });
 
         NetworkInterfaceGetResponse getNic1Response = networkResourceProviderClient.getNetworkInterfacesOperations()
-                .get(rgName, context.getNetworkInterface().getName());
+                .get(m_rgName, context.getNetworkInterface().getName());
         // TODO get MAC address only work in certain regions
         // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
         Assert.assertNotNull("nic1response isPrimary is null", getNic1Response.getNetworkInterface().isPrimary());
         Assert.assertFalse("nic1response isPrimary is true", getNic1Response.getNetworkInterface().isPrimary());
 
         NetworkInterfaceGetResponse getNic2Response = networkResourceProviderClient.getNetworkInterfacesOperations()
-                .get(rgName, context2.getNetworkInterface().getName());
+                .get(m_rgName, context2.getNetworkInterface().getName());
         // Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
         Assert.assertNotNull("nic1response isPrimary is null", getNic2Response.getNetworkInterface().isPrimary());
         Assert.assertTrue("nic1response isPrimary is false", getNic2Response.getNetworkInterface().isPrimary());
