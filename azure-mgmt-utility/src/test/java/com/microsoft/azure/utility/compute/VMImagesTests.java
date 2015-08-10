@@ -26,10 +26,6 @@ public class VMImagesTests extends ComputeTestBase {
         log = LogFactory.getLog(VMImagesTests.class);
     }
 
-    private static final String[] AvailableWindowsServerImageVersions = new String[] {
-        "4.0.201506", "4.0.201505", "4.0.201504"
-    };
-
     private VirtualMachineImageGetParameters parameters;
     private VirtualMachineImageListParameters listParameters;
 
@@ -40,7 +36,7 @@ public class VMImagesTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-//        log.debug("after class, clean resource group: " + rgName);
+//        log.debug("after class, clean resource group: " + m_rgName);
 //        cleanupResourceGroup();
     }
 

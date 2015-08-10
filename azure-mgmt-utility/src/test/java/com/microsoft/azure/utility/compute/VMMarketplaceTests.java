@@ -39,7 +39,7 @@ public class VMMarketplaceTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.info("after class, clean resource group: " + rgName);
+        log.info("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 

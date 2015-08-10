@@ -63,6 +63,7 @@ public class AuthHelper {
                     "authentication result was null");
         }
         return result;
+        //TODO utilize KeyVaultCredentials to achieve more robust auth mechanism
     }
 
 /*    public static AuthenticationResult getAccessTokenFromUserCredentials(

@@ -16,14 +16,14 @@
 package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
-import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpStatus;
 import org.junit.*;
 
-public class VMDiskSizeTests extends ComputeTestBase{
+public class VMUsageTests extends ComputeTestBase {
     static {
-        log = LogFactory.getLog(VMDiskSizeTests.class);
+        log = LogFactory.getLog(VMUsageTests.class);
     }
 
     @BeforeClass
@@ -48,21 +48,25 @@ public class VMDiskSizeTests extends ComputeTestBase{
     }
 
     @Test
-    public void testVMDiskSizeScenario() throws Exception {
+    public void testVMUsage() throws Exception {
         log.info("creating VM, in mock: " + IS_MOCKED);
         ResourceContext context = createTestResourceContext(false);
 
-        VirtualMachine vm = createVM(context, generateName("VM"), new ConsumerWrapper<VirtualMachine>() {
-            @Override
-            public void accept(VirtualMachine virtualMachine) {
-                virtualMachine.getStorageProfile().getOSDisk().setDiskSizeGB(100);
-            }
-        });
-        VirtualMachine vmInput = context.getVMInput();
+        VirtualMachine vm = createVM(context, generateName("VM"));
 
-        log.info("created VM: " + vm.getName());
-        VirtualMachineGetResponse vmResponse = computeManagementClient.getVirtualMachinesOperations()
-                .get(m_rgName, vmInput.getName());
-        validateVM(vmInput, vmResponse.getVirtualMachine());
+        log.info("get usage for VM: " + vm.getName());
+        ListUsagesResponse luResponse = computeManagementClient.getUsageOperations().list(context.getLocation());
+        validateListUsageResponse(luResponse);
+    }
+
+    private void validateListUsageResponse(ListUsagesResponse luResponse) {
+        Assert.assertEquals("status code should be ok", HttpStatus.SC_OK, luResponse.getStatusCode());
+        Assert.assertNotNull("usage not null", luResponse.getUsages());
+        Assert.assertTrue("usage size > 0", luResponse.getUsages().size() > 0);
+
+        for (Usage usage : luResponse.getUsages()) {
+            Assert.assertNotNull("usage name localizedValue not null", usage.getName().getLocalizedValue());
+            Assert.assertNotNull("usage name Value not null", usage.getName().getValue());
+        }
     }
 }

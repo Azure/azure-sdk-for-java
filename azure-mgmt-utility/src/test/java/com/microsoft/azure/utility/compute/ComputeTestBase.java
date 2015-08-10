@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
@@ -59,8 +60,9 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     //protected static final String m_location = "SouthEastAsia";
     protected static final String resourceGroupNamePrefix = "javatest";
     protected static String m_subId;
-    protected static String rgName;
+    protected static String m_rgName;
     protected static String m_location = "SouthEastAsia";
+    protected static List<String> m_resourceGroups;
 
     protected static Configuration config;
     protected static ComputeManagementClient computeManagementClient;
@@ -173,11 +175,13 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
         m_subId = computeManagementClient.getCredentials().getSubscriptionId();
         // m_subId = System.getenv("management.subscription.id");
-        rgName = generateName("rgn");
+        m_rgName = generateName("rgn");
         // register management url regex to replace link from server payload
         addRegexRule("https://management.azure.com", MOCK_URI);
 
-        log.info("Region: " + m_location + " ; Using rgname: " + rgName);
+        m_resourceGroups = new ArrayList<String>();
+        m_resourceGroups.add(m_rgName);
+        log.info("Region: " + m_location + " ; Using rgname: " + m_rgName);
     }
 
     protected static String randomString(int length) {
@@ -210,7 +214,8 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             String vmName, boolean createWithPublicIpAddr, ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
 
-        log.info(String.format("Create vm in %s: %s, rg: %s", context.getLocation(), vmName, rgName));
+        log.info(String.format("Create vm in %s: %s, rg: %s",
+                context.getLocation(), vmName, context.getResourceGroupName()));
 
         if (context == null) {
             context = createTestResourceContext(createWithPublicIpAddr);
@@ -229,7 +234,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         }
 
         log.info(vmResponse.getVirtualMachine().getName() + " creation is requested.");
-        // String expectedVMRefId = ComputeTestHelper.getVMReferenceId(m_subId, rgName, vmName);
+        // String expectedVMRefId = ComputeTestHelper.getVMReferenceId(m_subId, m_rgName, vmName);
 
         Assert.assertEquals(HttpStatus.SC_CREATED, vmResponse.getStatusCode());
         Assert.assertEquals(vmName, vmResponse.getVirtualMachine().getName());
@@ -249,7 +254,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         //validate get vm
         log.info("get vm");
         VirtualMachineGetResponse getVMResponse = computeManagementClient.getVirtualMachinesOperations()
-                .get(rgName, vmName);
+                .get(context.getResourceGroupName(), vmName);
         Assert.assertEquals(HttpStatus.SC_OK, getVMResponse.getStatusCode());
         validateVM(context.getVMInput(), getVMResponse.getVirtualMachine());
         return getVMResponse.getVirtualMachine();
@@ -360,18 +365,22 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void cleanupResourceGroup() throws Exception {
         if (!IS_MOCKED) {
-            log.info("Start Remove rg: " + rgName);
-            LongRunningOperationResponse deleteResponse = resourceManagementClient.getResourceGroupsOperations()
-                    .beginDeleting(rgName);
-            Assert.assertEquals(
-                    "BeginDeleting status was not Accepted.", HttpStatus.SC_ACCEPTED, deleteResponse.getStatusCode());
-            log.info("Remove rg request submitted.");
+            for (String rgName : m_resourceGroups) {
+                log.info("Start Remove rg: " + rgName);
+                LongRunningOperationResponse deleteResponse = resourceManagementClient.getResourceGroupsOperations()
+                        .beginDeleting(rgName);
+                Assert.assertEquals(
+                        "BeginDeleting status was not Accepted.",
+                        HttpStatus.SC_ACCEPTED, deleteResponse.getStatusCode());
+                log.info("Remove rg request submitted.");
+            }
         }
     }
 
     protected static String generateName(String prefix) {
         String name = resourceGroupNamePrefix + prefix + randomString(5);
-        addRegexRule(resourceGroupNamePrefix + prefix + "[a-z]{5}", name);
+        //addRegexRule(resourceGroupNamePrefix + prefix + "[a-z]{5}", name);
+        addRegexRuleIgnoreCase(resourceGroupNamePrefix + prefix + "[a-z]{5}", name);
         return name;
     }
 
@@ -379,9 +388,20 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         return createTestResourceContext("1", createWithPublicIpAddr);
     }
 
-    protected static ResourceContext createTestResourceContext(String index, boolean createWithPublicIpAddr) {
+    protected static ResourceContext createTestResourceContext(String index, String rgName, boolean createWithPublicIpAddr) {
         ResourceContext context = new ResourceContext(m_location, rgName, m_subId, createWithPublicIpAddr);
+        setTestContextResourceNames(context, index);
+        m_resourceGroups.add(rgName);
+        return context;
+    }
 
+    protected static ResourceContext createTestResourceContext(String index, boolean createWithPublicIpAddr) {
+        ResourceContext context = new ResourceContext(m_location, m_rgName, m_subId, createWithPublicIpAddr);
+        setTestContextResourceNames(context, index);
+        return context;
+    }
+
+    protected static void setTestContextResourceNames(ResourceContext context, String index) {
         // register generated name with regex rules for playback tests
         context.setStorageAccountName(generateName(index + "ston"));
         context.setContainerName(generateName(index + "conn"));
@@ -390,15 +410,11 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         context.setPublicIpName(generateName(index + "pipn"));
         context.setSubnetName(generateName(index + "subnn"));
         context.setVirtualNetworkName(generateName(index + "vnetn"));
+        context.setAvailabilitySetName(generateName(index + "asn"));
+    }
 
-        // AvailablitySet id needs to register both lower/upper case
-        String asnPrefix = "asn";
-        String asName = generateName(index + asnPrefix);
-        context.setAvailabilitySetName(asName);
-        String asnRegex = (resourceGroupNamePrefix + index + asnPrefix).toUpperCase() + "[A-Z]{5}";
-        addRegexRule(asnRegex, asName.toUpperCase());
-
-        return context;
+    protected static void addRegexRuleIgnoreCase(String regex, String name) {
+        addRegexRule(String.format("%s%s", "(?i)", regex), name);
     }
 
     private static boolean validateVMInstanceStatus(ArrayList<InstanceViewStatus> statusList) {

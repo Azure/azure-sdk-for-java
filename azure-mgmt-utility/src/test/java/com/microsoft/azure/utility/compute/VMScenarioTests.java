@@ -33,7 +33,7 @@ public class VMScenarioTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + rgName);
+        log.debug("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 
@@ -57,11 +57,11 @@ public class VMScenarioTests extends ComputeTestBase {
 
         log.info("created VM: " + vm.getName());
         VirtualMachineGetResponse vmInstanceResponse = computeManagementClient.getVirtualMachinesOperations()
-                .getWithInstanceView(rgName, vmInput.getName());
+                .getWithInstanceView(m_rgName, vmInput.getName());
         validateVMInstanceView(vmInput, vmInstanceResponse.getVirtualMachine());
 
         log.info("test list VM: ");
-        VirtualMachineListResponse listResponse = computeManagementClient.getVirtualMachinesOperations().list(rgName);
+        VirtualMachineListResponse listResponse = computeManagementClient.getVirtualMachinesOperations().list(m_rgName);
         Assert.assertEquals(HttpStatus.SC_OK, listResponse.getStatusCode());
         VirtualMachine vmFromList = null;
         for (VirtualMachine v : listResponse.getVirtualMachines()) {
@@ -75,20 +75,20 @@ public class VMScenarioTests extends ComputeTestBase {
 
         log.info("test vm listAvailableSizes");
         VirtualMachineSizeListResponse listVMSizesResponse = computeManagementClient.getVirtualMachinesOperations()
-                .listAvailableSizes(rgName, vmInput.getName());
+                .listAvailableSizes(m_rgName, vmInput.getName());
         Assert.assertEquals(HttpStatus.SC_OK, listVMSizesResponse.getStatusCode());
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVMSizesResponse);
 
         log.info("test as listAvailableSizes");
         VirtualMachineSizeListResponse listVMSizesResponse2 = computeManagementClient.getAvailabilitySetsOperations()
-                .listAvailableSizes(rgName, context.getAvailabilitySetName());
+                .listAvailableSizes(m_rgName, context.getAvailabilitySetName());
         Assert.assertEquals(HttpStatus.SC_OK, listVMSizesResponse2.getStatusCode());
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVMSizesResponse2);
 
         log.info("test delete VM");
         //only test the delete request. Leave the LongRunningOperation check to VMOperational tests
         ComputeOperationResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations()
-                .beginDeleting(rgName, vm.getName());
+                .beginDeleting(m_rgName, vm.getName());
         Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResponse.getStatusCode());
     }
 }
