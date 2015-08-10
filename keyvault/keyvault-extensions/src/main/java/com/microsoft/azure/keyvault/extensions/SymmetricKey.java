@@ -27,7 +27,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.microsoft.azure.keyvault.core.IKey;
+import com.microsoft.azure.keyvault.extensions.cryptography.Algorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.AlgorithmResolver;
+import com.microsoft.azure.keyvault.extensions.cryptography.AsymmetricEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.IAuthenticatedCryptoTransform;
 import com.microsoft.azure.keyvault.extensions.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.extensions.cryptography.KeyWrapAlgorithm;
@@ -154,11 +156,13 @@ public class SymmetricKey implements IKey {
         }
 
         // Interpret the algorithm
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithm);
-
-        if (algo == null) {
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
+        
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -204,13 +208,14 @@ public class SymmetricKey implements IKey {
         }
 
         // Interpret the algorithm
-        String algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultEncryptionAlgorithm() : algorithm;
-
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithmName);
-
-        if (algo == null) {
-            throw new NoSuchAlgorithmException(algorithmName);
+        String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultEncryptionAlgorithm() : algorithm;
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
+            throw new NoSuchAlgorithmException(algorithm);
         }
+        
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -248,13 +253,14 @@ public class SymmetricKey implements IKey {
         }
 
         // Interpret the algorithm
-        String algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultEncryptionAlgorithm() : algorithm;
-
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) AlgorithmResolver.Default.get(algorithmName);
-
-        if (algo == null) {
+        String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultKeyWrapAlgorithm() : algorithm;
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
+        
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -272,7 +278,7 @@ public class SymmetricKey implements IKey {
             return new FutureExecutionException<Pair<byte[], String>>(e);
         }
 
-        return new FutureImmediate<Pair<byte[], String>>(Pair.of(encrypted, algorithm));
+        return new FutureImmediate<Pair<byte[], String>>(Pair.of(encrypted, algorithmName));
     }
 
     @Override
@@ -285,12 +291,14 @@ public class SymmetricKey implements IKey {
         if (encryptedKey == null || encryptedKey.length == 0) {
             throw new IllegalArgumentException("wrappedKey");
         }
-
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) AlgorithmResolver.Default.get(algorithm);
-
-        if (algo == null) {
+        
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
+        
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform = null;
 

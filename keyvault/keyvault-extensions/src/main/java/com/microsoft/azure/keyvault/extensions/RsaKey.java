@@ -32,6 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.microsoft.azure.keyvault.core.IKey;
+import com.microsoft.azure.keyvault.extensions.cryptography.Algorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.AlgorithmResolver;
 import com.microsoft.azure.keyvault.extensions.cryptography.AsymmetricEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.ICryptoTransform;
@@ -215,11 +216,13 @@ public class RsaKey implements IKey {
             throw new IllegalArgumentException("algorithm");
         }
 
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithm);
-
-        if (algo == null) {
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
+        
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform;
         Future<byte[]> result;
@@ -242,13 +245,14 @@ public class RsaKey implements IKey {
         }
 
         // Interpret the requested algorithm
-        String algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultEncryptionAlgorithm() : algorithm);
-
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithmName);
-
-        if (algo == null) {
+        String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultEncryptionAlgorithm() : algorithm);
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
+        
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform;
         Future<Triple<byte[], byte[], String>> result;
@@ -271,13 +275,14 @@ public class RsaKey implements IKey {
         }
 
         // Interpret the requested algorithm
-        String algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultKeyWrapAlgorithm() : algorithm);
-
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithmName);
-
-        if (algo == null) {
+        String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultKeyWrapAlgorithm() : algorithm);
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
+        
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform;
         Future<Pair<byte[], String>> result;
@@ -305,11 +310,13 @@ public class RsaKey implements IKey {
         }
 
         // Interpret the requested algorithm
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) AlgorithmResolver.Default.get(algorithm);
-
-        if (algo == null) {
+        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
+        
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
+        
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
         ICryptoTransform transform;
         Future<byte[]> result;
