@@ -107,6 +107,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             storageManagementClient.setLongRunningOperationInitialTimeout(0);
             storageManagementClient.setLongRunningOperationRetryTimeout(0);
         }
+
         addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -122,6 +123,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             networkResourceProviderClient.setLongRunningOperationInitialTimeout(0);
             networkResourceProviderClient.setLongRunningOperationRetryTimeout(0);
         }
+
         addClient((ServiceClient<?>) networkResourceProviderClient, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -232,7 +234,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         if (context == null) {
             context = createTestResourceContext(createWithPublicIpAddr);
         }
-
 
         VirtualMachineCreateOrUpdateResponse vmResponse;
         try {
