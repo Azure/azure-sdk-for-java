@@ -66,18 +66,18 @@ public class AvailabilitySetTests extends ComputeTestBase {
 
     @Test
     public void verifyDefaultFDUDValuesSucceed() throws Exception {
-        AvailabilitySet avSet = createAvailabilitySetWithUDFD("defaultUDFD", defaultUd, defaultFd);
+        AvailabilitySet availabilitySet = createAvailabilitySetWithUDFD("defaultUDFD", defaultUd, defaultFd);
 
         ResourceContext context = ComputeTestBase.createTestResourceContext(true);
         AvailabilitySetCreateOrUpdateResponse response = computeManagementClient.getAvailabilitySetsOperations()
-                .createOrUpdate(context.getResourceGroupName(), avSet);
+                .createOrUpdate(context.getResourceGroupName(), availabilitySet);
 
-        ValidateCreateOrUpdateAvSetResponse(response, avSet);
-        VerifyAvSetInResourceGroup(avSet, rgName);
-        VerifyGetAvSet(avSet, rgName);
-        VerifyGetVmSizeInAvSet(avSet);
+        validateCreateOrUpdateAvailabilitySetResponse(response, availabilitySet);
+        verifyAvailabilitySetInResourceGroup(availabilitySet, rgName);
+        verifyGetAvailabilitySet(availabilitySet, rgName);
+        verifyGetVmSizeInAvailabilitySet(availabilitySet);
 
-        DeleteAvSet(avSet.getName());
+        deleteAvailabilitySet(availabilitySet.getName());
     }
 
     @Test
@@ -88,35 +88,35 @@ public class AvailabilitySetTests extends ComputeTestBase {
         testStatus.setDisplayStatus("test");
         testStatus.setMessage("test");
 
-        AvailabilitySet avSet = createAvailabilitySetWithUDFD("nondefaultUDFD", nonDefaultUd, nonDefaultFd);
-        avSet.setStatuses(new ArrayList<InstanceViewStatus>(Arrays.asList(testStatus)));
+        AvailabilitySet availabilitySet = createAvailabilitySetWithUDFD("nondefaultUDFD", nonDefaultUd, nonDefaultFd);
+        availabilitySet.setStatuses(new ArrayList<InstanceViewStatus>(Arrays.asList(testStatus)));
 
         ResourceContext context = ComputeTestBase.createTestResourceContext(true);
         AvailabilitySetCreateOrUpdateResponse response = computeManagementClient.getAvailabilitySetsOperations()
-                .createOrUpdate(context.getResourceGroupName(), avSet);
+                .createOrUpdate(context.getResourceGroupName(), availabilitySet);
 
-        ValidateCreateOrUpdateAvSetResponse(response, avSet);
-        VerifyAvSetInResourceGroup(avSet, rgName);
-        VerifyGetAvSet(avSet, rgName);
-        VerifyGetVmSizeInAvSet(avSet);
+        validateCreateOrUpdateAvailabilitySetResponse(response, availabilitySet);
+        verifyAvailabilitySetInResourceGroup(availabilitySet, rgName);
+        verifyGetAvailabilitySet(availabilitySet, rgName);
+        verifyGetVmSizeInAvailabilitySet(availabilitySet);
 
-        DeleteAvSet(avSet.getName());
+        deleteAvailabilitySet(availabilitySet.getName());
     }
 
     @Test
-    public void testGetAVSetId() {
+    public void testGetAvailabilitySetId() {
         String uuid = UUID.randomUUID().toString();
         Assert.assertEquals(ComputeTestHelper.getAvailabilitySetRef(uuid, "rg", "avset"),
                 String.format("/subscriptions/%s/resourceGroups/rg/providers/Microsoft.Compute/availabilitySets/avset", uuid));
     }
 
     public void verifyInvalidUDValuesFail(String asName, int ud) throws Exception {
-        AvailabilitySet avSet = createAvailabilitySetWithUDFD(asName, ud, defaultFd);
-        avSet.setPlatformUpdateDomainCount(ud);
+        AvailabilitySet availabilitySet = createAvailabilitySetWithUDFD(asName, ud, defaultFd);
+        availabilitySet.setPlatformUpdateDomainCount(ud);
 
         ResourceContext context = ComputeTestBase.createTestResourceContext(true);
         try {
-            ComputeHelper.createAvailabilitySet(computeManagementClient, avSet, context);
+            ComputeHelper.createAvailabilitySet(computeManagementClient, availabilitySet, context);
         } catch (ServiceException exception) {
             Assert.assertEquals(HttpStatus.SC_BAD_REQUEST, exception.getHttpStatusCode());
             Assert.assertEquals(exception.getError().getCode(), "InvalidParameter");
@@ -124,89 +124,89 @@ public class AvailabilitySetTests extends ComputeTestBase {
     }
 
     public void verifyInvalidFDValuesFail(String asName, int fd) throws Exception {
-        AvailabilitySet avSet = createAvailabilitySetWithUDFD(asName, defaultUd, fd);
-        avSet.setPlatformFaultDomainCount(fd);
+        AvailabilitySet availabilitySet = createAvailabilitySetWithUDFD(asName, defaultUd, fd);
+        availabilitySet.setPlatformFaultDomainCount(fd);
 
         ResourceContext context = ComputeTestBase.createTestResourceContext(true);
         try {
-            ComputeHelper.createAvailabilitySet(computeManagementClient, avSet, context);
+            ComputeHelper.createAvailabilitySet(computeManagementClient, availabilitySet, context);
         } catch (ServiceException exception) {
             Assert.assertEquals(HttpStatus.SC_BAD_REQUEST, exception.getHttpStatusCode());
             Assert.assertEquals(exception.getError().getCode(), "InvalidParameter");
         }
     }
 
-    private AvailabilitySet createAvailabilitySetWithUDFD(String asName, int ud, int fd) {
+    private AvailabilitySet createAvailabilitySetWithUDFD(String availabilitySetName, int ud, int fd) {
         HashMap<String, String> avTag = new HashMap<String, String>() {
             { put("RG", "rg"); }
             { put("testTag", "1"); }
         };
 
-        AvailabilitySet avSet = new AvailabilitySet(m_location);
-        avSet.setName(generateName(asName));
-        avSet.setTags(avTag);
-        avSet.setPlatformUpdateDomainCount(ud);
-        avSet.setPlatformFaultDomainCount(fd);
+        AvailabilitySet availabilitySet = new AvailabilitySet(m_location);
+        availabilitySet.setName(generateName(availabilitySetName));
+        availabilitySet.setTags(avTag);
+        availabilitySet.setPlatformUpdateDomainCount(ud);
+        availabilitySet.setPlatformFaultDomainCount(fd);
 
-        return avSet;
+        return availabilitySet;
     }
 
-    private void VerifyAvSetInResourceGroup(AvailabilitySet expectedAvSet, String rgName) throws Exception {
+    private void verifyAvailabilitySetInResourceGroup(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
         AvailabilitySetListResponse response = computeManagementClient.getAvailabilitySetsOperations().list(rgName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
 
         ArrayList<AvailabilitySet> avSetList = response.getAvailabilitySets();
         for(AvailabilitySet avSet : avSetList) {
-            if (avSet.getName().equals(expectedAvSet.getName())) {
-                ValidateAvSetModel(avSet, expectedAvSet);
+            if (avSet.getName().equals(expectedAvailabilitySet.getName())) {
+                validateAvailabilitySetModel(avSet, expectedAvailabilitySet);
                 break;
             }
         }
     }
 
-    private void ValidateAvSetModel(AvailabilitySet thisAvSet, AvailabilitySet thatAvSet) {
-        Assert.assertEquals(thatAvSet.getName(), thisAvSet.getName());
-        Assert.assertEquals(thatAvSet.getLocation().toLowerCase(), thisAvSet.getLocation().toLowerCase());
-        Assert.assertTrue(thatAvSet.getPlatformFaultDomainCount() == thisAvSet.getPlatformFaultDomainCount());
-        Assert.assertTrue(thatAvSet.getPlatformUpdateDomainCount() == thisAvSet.getPlatformUpdateDomainCount());
+    private void validateAvailabilitySetModel(AvailabilitySet availabilitySet, AvailabilitySet expectedAvailabilitySet) {
+        Assert.assertEquals(expectedAvailabilitySet.getName(), availabilitySet.getName());
+        Assert.assertEquals(expectedAvailabilitySet.getLocation().toLowerCase(), availabilitySet.getLocation().toLowerCase());
+        Assert.assertTrue(expectedAvailabilitySet.getPlatformFaultDomainCount() == availabilitySet.getPlatformFaultDomainCount());
+        Assert.assertTrue(expectedAvailabilitySet.getPlatformUpdateDomainCount() == availabilitySet.getPlatformUpdateDomainCount());
 
-        Assert.assertNotNull(thatAvSet.getTags());
-        Assert.assertNotNull(thisAvSet.getTags());
+        Assert.assertNotNull(expectedAvailabilitySet.getTags());
+        Assert.assertNotNull(availabilitySet.getTags());
 
-        for(String tag : thatAvSet.getTags().keySet()) {
-            Assert.assertEquals(thatAvSet.getTags().get(tag), thisAvSet.getTags().get(tag));
+        for(String tag : expectedAvailabilitySet.getTags().keySet()) {
+            Assert.assertEquals(expectedAvailabilitySet.getTags().get(tag), availabilitySet.getTags().get(tag));
         }
     }
 
-    private void ValidateGetAvSetResponse(AvailabilitySetGetResponse response,
-                                          AvailabilitySet expectedAvSet) {
+    private void validateGetAvailabilitySetResponse(AvailabilitySetGetResponse response,
+                                                    AvailabilitySet expectedAvailabilitySet) {
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
 
-        AvailabilitySet outputAvSet = response.getAvailabilitySet();
-        ValidateAvSetModel(outputAvSet, expectedAvSet);
+        AvailabilitySet outputAvailabilitySet = response.getAvailabilitySet();
+        validateAvailabilitySetModel(outputAvailabilitySet, expectedAvailabilitySet);
     }
 
-    private void ValidateCreateOrUpdateAvSetResponse(AvailabilitySetCreateOrUpdateResponse response,
-                                                     AvailabilitySet expectedAvSet) {
+    private void validateCreateOrUpdateAvailabilitySetResponse(AvailabilitySetCreateOrUpdateResponse response,
+                                                               AvailabilitySet expectedAvailabilitySet) {
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
 
-        AvailabilitySet outputAvSet = response.getAvailabilitySet();
-        ValidateAvSetModel(outputAvSet, expectedAvSet);
+        AvailabilitySet outputAvailabilitySet = response.getAvailabilitySet();
+        validateAvailabilitySetModel(outputAvailabilitySet, expectedAvailabilitySet);
     }
 
-    private void VerifyGetAvSet(AvailabilitySet expectedAvSet, String rgName) throws Exception {
-        AvailabilitySetGetResponse response = computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvSet.getName());
+    private void verifyGetAvailabilitySet(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
+        AvailabilitySetGetResponse response = computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvailabilitySet.getName());
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
-        ValidateGetAvSetResponse(response, expectedAvSet);
+        validateGetAvailabilitySetResponse(response, expectedAvailabilitySet);
     }
 
-    private void DeleteAvSet(String avSetName) throws Exception {
-        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(rgName, avSetName);
+    private void deleteAvailabilitySet(String availabilitySetName) throws Exception {
+        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(rgName, availabilitySetName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
     }
 
-    private void VerifyGetVmSizeInAvSet(AvailabilitySet avSet) throws Exception {
-        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(rgName, avSet.getName());
+    private void verifyGetVmSizeInAvailabilitySet(AvailabilitySet availabilitySet) throws Exception {
+        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(rgName, availabilitySet.getName());
         Assert.assertEquals(listVmSizesResponse.getStatusCode(), HttpStatus.SC_OK);
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVmSizesResponse);
     }

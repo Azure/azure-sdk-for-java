@@ -98,11 +98,11 @@ public class ComputeHelper {
         computeManagementClient.getAvailabilitySetsOperations()
                 .createOrUpdate(context.getResourceGroupName(), avSet);
 
-        String assetId = getAvailabilitySetRef(
+        String availabilitySetId = getAvailabilitySetRef(
                 context.getSubscriptionId(), context.getResourceGroupName(), avSet.getName());
 
-        context.setAvailabilitySetId(assetId);
-        return assetId;
+        context.setAvailabilitySetId(availabilitySetId);
+        return availabilitySetId;
     }
 
     /***
