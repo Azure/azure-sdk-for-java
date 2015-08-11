@@ -46,10 +46,8 @@ public class Exports implements Builder.Exports {
                                                    Class<S> service, Builder builder,
                                                    Map<String, Object> properties) {
 
-                String testMode = System.getenv("test.mode");
-                boolean isPlayback = testMode != null && testMode.equals("playback");
-
-                if (!isPlayback && properties.containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS)) {
+                if (!ManagementConfiguration.isPlayback() &&
+                        properties.containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS)) {
                     CloudCredentials cloudCredentials = (CloudCredentials) properties
                             .get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
                     cloudCredentials.applyConfig(profile, properties);
