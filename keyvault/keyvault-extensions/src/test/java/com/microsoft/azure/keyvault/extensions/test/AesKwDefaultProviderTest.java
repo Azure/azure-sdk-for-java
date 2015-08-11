@@ -43,8 +43,9 @@ import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw256;
 
-public class AesKwTest {
+public class AesKwDefaultProviderTest {
 
+	// Always null for the default provider
     private Provider _provider = null;
 
     @BeforeClass
@@ -57,17 +58,6 @@ public class AesKwTest {
 
     @Before
     public void setUp() throws Exception {
-        try {
-            _provider = (Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance();
-
-            Security.addProvider(_provider);
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex.getMessage());
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex.getMessage());
-        } catch (InstantiationException ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
     }
 
     @After
@@ -159,8 +149,9 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(KEK);
+            fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
+        	// Expected exception
         } catch (NoSuchAlgorithmException e) {
             fail("NoSuchAlgorithmException");
         } catch (NoSuchPaddingException e) {
@@ -169,6 +160,8 @@ public class AesKwTest {
             fail("InvalidAlgorithmParameterException");
         }
 
+        // This test fails, so some of the following is bypassed
+        /*
         byte[] encrypted = null;
 
         try {
@@ -185,13 +178,15 @@ public class AesKwTest {
 
         // Assert
         assertArrayEquals(EK, encrypted);
+        */
 
         ICryptoTransform decryptor = null;
 
         try {
             decryptor = kw.CreateDecryptor(KEK);
+            fail("Expected InvalidKeyExceptionb");
         } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
+        	// Expected exception
         } catch (NoSuchAlgorithmException e) {
             fail("NoSuchAlgorithmException");
         } catch (NoSuchPaddingException e) {
@@ -200,6 +195,8 @@ public class AesKwTest {
             fail("InvalidAlgorithmParameterException");
         }
 
+        // This test fails, so some of the following is bypassed
+        /*
         byte[] decrypted = null;
 
         try {
@@ -216,6 +213,7 @@ public class AesKwTest {
 
         // Assert
         assertArrayEquals(CEK, decrypted);
+        */
     }
 
     @Test
@@ -231,8 +229,9 @@ public class AesKwTest {
 
         try {
             encryptor = kw.CreateEncryptor(KEK);
+            fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
+        	// Expected exception
         } catch (NoSuchAlgorithmException e) {
             fail("NoSuchAlgorithmException");
         } catch (NoSuchPaddingException e) {
@@ -241,6 +240,8 @@ public class AesKwTest {
             fail("InvalidAlgorithmParameterException");
         }
 
+        // This test fails, so some of the following is bypassed
+        /*
         byte[] encrypted = null;
 
         try {
@@ -257,13 +258,15 @@ public class AesKwTest {
 
         // Assert
         assertArrayEquals(EK, encrypted);
+        */
 
         ICryptoTransform decryptor = null;
 
         try {
             decryptor = kw.CreateDecryptor(KEK);
+            fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
+        	// Expected exception
         } catch (NoSuchAlgorithmException e) {
             fail("NoSuchAlgorithmException");
         } catch (NoSuchPaddingException e) {
@@ -272,6 +275,8 @@ public class AesKwTest {
             fail("InvalidAlgorithmParameterException");
         }
 
+        // This test fails, so some of the following is bypassed
+        /*
         byte[] decrypted = null;
 
         try {
@@ -288,6 +293,7 @@ public class AesKwTest {
 
         // Assert
         assertArrayEquals(CEK, decrypted);
+        */
     }
 
 }

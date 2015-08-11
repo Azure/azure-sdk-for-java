@@ -20,7 +20,7 @@ import org.junit.Test;
 import com.microsoft.azure.keyvault.extensions.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.Aes128Cbc;
 
-public class AesCbcTest {
+public class AesCbcDefaultProviderTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
