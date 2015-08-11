@@ -19,12 +19,18 @@ import com.microsoft.azure.management.compute.models.*;
 import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.LogFactory;
 import org.junit.*;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class VMOSProfileTests extends ComputeTestBase {
 
@@ -52,6 +58,11 @@ public class VMOSProfileTests extends ComputeTestBase {
                     "oe6IQTw7zJF7xuBIzTYwjOCM197GKW7xc4GU4JZIN+faZ7njl/fxfUNdlqvgZUUn" +
                     "kfdrzU3PZPl0w9NuncgEje/PZ+YtZvIsnH7MLSPeIGNQwW6V2kc8";
 
+    // pre-defined key vault secret
+    // TODO consider use key vault client to create the secret dynamically when KeyVaultManagement available
+    private static final String KeyVaultSecret =
+            "https://javakeyvault.vault.azure.net:443/secrets/javapassword/86b7a82d026544e8aae9dc84bb91027a";
+    private static final String PacificStandardTime = "Pacific Standard Time";
     private static String CustomData = null;
 
     static {
@@ -122,10 +133,129 @@ public class VMOSProfileTests extends ComputeTestBase {
         validateVMInstanceView(vmInput, vmInstanceResponse.getVirtualMachine());
 
         log.info("validate vm output");
-        validateWinRMCustomDataAndUnattendContent(vm);
+        validateLinuxCustomDataAndUnattendContent(vm);
     }
 
-    private void validateWinRMCustomDataAndUnattendContent(VirtualMachine vm) {
+    @Test
+    public void testVMWithWindowsProfile() throws Exception {
+        log.info("creating windows VM, in mock: " + IS_MOCKED);
+        ResourceContext context = createTestResourceContext(false);
+
+        //set ImageRef to Windows Server
+        context.setImageReference(
+                ComputeHelper.getWindowsServerDefaultImage(computeManagementClient, context.getLocation()));
+        final URI certificateUrl = new URI(KeyVaultSecret);
+
+        VirtualMachine vm = createVM(context, generateName("VM"), DefaultUserName, DefaultPassword, false,
+                new ConsumerWrapper<VirtualMachine>() {
+            @Override
+            public void accept(VirtualMachine vm) {
+                OSProfile osProfile = vm.getOSProfile();
+                osProfile.setCustomData(CustomData);
+                WindowsConfiguration winConfig = new WindowsConfiguration();
+                osProfile.setWindowsConfiguration(winConfig);
+                winConfig.setProvisionVMAgent(true);
+                winConfig.setEnableAutomaticUpdates(false);
+                winConfig.setTimeZone(PacificStandardTime);
+
+                // set AdditionalUnattendContents
+                ArrayList<AdditionalUnattendContent> unattendContents = new ArrayList<AdditionalUnattendContent>();
+                winConfig.setAdditionalUnattendContents(unattendContents);
+                AdditionalUnattendContent content = new AdditionalUnattendContent();
+                content.setPassName(PassNames.OOBESYSTEM);
+                content.setComponentName(ComponentNames.MICROSOFTWINDOWSSHELLSETUP);
+                content.setSettingName(SettingNames.AUTOLOGON);
+                content.setContent(getAutoLogonContent(5, osProfile.getAdminUsername(), osProfile.getAdminPassword()));
+                unattendContents.add(content);
+
+                // set win RM config
+                WinRMConfiguration rmConfig = new WinRMConfiguration();
+                winConfig.setWinRMConfiguration(rmConfig);
+                ArrayList<WinRMListener> listeners = new ArrayList<WinRMListener>();
+                rmConfig.setListeners(listeners);
+                WinRMListener l1 = new WinRMListener();
+                l1.setCertificateUrl(null);
+                l1.setProtocol(ProtocolTypes.HTTP);
+                listeners.add(l1);
+                WinRMListener l2 = new WinRMListener();
+                l2.setCertificateUrl(certificateUrl);
+                l2.setProtocol(ProtocolTypes.HTTPS);
+                listeners.add(l2);
+
+                // set osProfile secrets
+                ArrayList<VaultSecretGroup> secretGroups = new ArrayList<VaultSecretGroup>();
+                osProfile.setSecrets(secretGroups);
+                VaultSecretGroup secretGroup = new VaultSecretGroup();
+                secretGroups.add(secretGroup);
+
+                SourceVaultReference vaultReference = new SourceVaultReference();
+                vaultReference.setReferenceUri(getKeyVaultId());
+                secretGroup.setSourceVault(vaultReference);
+
+                ArrayList<VaultCertificate> vaultCertificates = new ArrayList<VaultCertificate>();
+                VaultCertificate cert = new VaultCertificate();
+                cert.setCertificateStore("My");
+                cert.setCertificateUrl(certificateUrl.toString());
+                vaultCertificates.add(cert);
+                secretGroup.setVaultCertificates(vaultCertificates);
+            }
+        });
+        VirtualMachine vmInput = context.getVMInput();
+
+        log.info("get created VM instance: " + vm.getName());
+        VirtualMachineGetResponse vmInstanceResponse = computeManagementClient.getVirtualMachinesOperations()
+                .getWithInstanceView(context.getResourceGroupName(), vmInput.getName());
+        validateVMInstanceView(vmInput, vmInstanceResponse.getVirtualMachine());
+
+        log.info("validate vm output");
+        validateWindowsCustomDataAndUnattendContent(vm);
+    }
+
+    private void validateWindowsCustomDataAndUnattendContent(VirtualMachine vm) throws URISyntaxException {
+        OSProfile osProfile = vm.getOSProfile();
+        Assert.assertEquals("os profile customData", CustomData, osProfile.getCustomData());
+        Assert.assertNotNull("has windows configuration", osProfile.getWindowsConfiguration());
+        Assert.assertNull("no Linux configuration", osProfile.getLinuxConfiguration());
+
+        WindowsConfiguration winConfig = osProfile.getWindowsConfiguration();
+        Assert.assertTrue("provisionVMAgent true",
+                winConfig.isProvisionVMAgent() != null && winConfig.isProvisionVMAgent());
+        Assert.assertTrue("EnableAutomaticUpdates false",
+                winConfig.isEnableAutomaticUpdates() != null && !winConfig.isEnableAutomaticUpdates());
+        Assert.assertEquals("timezone", PacificStandardTime, winConfig.getTimeZone());
+        Assert.assertNotNull("winRM config not null", winConfig.getWinRMConfiguration());
+        ArrayList<WinRMListener> listeners = winConfig.getWinRMConfiguration().getListeners();
+        Assert.assertNotNull("winRM config listeners not null", listeners);
+        Assert.assertEquals("listeners size is 2", 2, listeners.size());
+        boolean hasHttpListener = false, hasHttpsListener = false;
+        for (WinRMListener listener : listeners) {
+            if (listener.getProtocol().equalsIgnoreCase(ProtocolTypes.HTTP)) {
+                hasHttpListener = true;
+                Assert.assertNull("cert is null", listener.getCertificateUrl());
+            } else if (listener.getProtocol().equalsIgnoreCase(ProtocolTypes.HTTPS)) {
+                hasHttpsListener = true;
+                Assert.assertEquals("cert url matches given cert",
+                        new URI(KeyVaultSecret), listener.getCertificateUrl());
+            } else {
+                Assert.assertFalse("unexpected protocol" + listener.getProtocol(), true);
+            }
+        }
+        Assert.assertTrue("both listeners present", hasHttpListener && hasHttpsListener);
+
+        // additionalUnattendContents
+        Assert.assertNotNull("additionalUnattendContents not null", winConfig.getAdditionalUnattendContents());
+        Assert.assertEquals("additionalUnattendContents size == 1",
+                1, winConfig.getAdditionalUnattendContents().size());
+        AdditionalUnattendContent content = winConfig.getAdditionalUnattendContents().get(0);
+        Assert.assertEquals("PassName", PassNames.OOBESYSTEM, content.getPassName());
+        Assert.assertEquals("componentName", ComponentNames.MICROSOFTWINDOWSSHELLSETUP, content.getComponentName());
+        Assert.assertEquals("Autologon", SettingNames.AUTOLOGON, content.getSettingName());
+        Assert.assertEquals("AutologonContent",
+                getAutoLogonContent(5, osProfile.getAdminUsername(), DefaultPassword),
+                content.getContent());
+    }
+
+    private void validateLinuxCustomDataAndUnattendContent(VirtualMachine vm) {
         OSProfile osProfile = vm.getOSProfile();
         Assert.assertEquals("os profile customData", CustomData, osProfile.getCustomData());
         Assert.assertNull("no windows configuration", osProfile.getWindowsConfiguration());
@@ -146,5 +276,20 @@ public class VMOSProfileTests extends ComputeTestBase {
     private static String getSshPath(String adminUsername) {
         return String.format("%s%s%s",
                 "/home/", adminUsername, "/.ssh/authorized_keys");
+    }
+
+    private static String getAutoLogonContent(int logonCount, String userName, String password) {
+        return String.format("<AutoLogon>" +
+                "<Enabled>true</Enabled>" +
+                "<LogonCount>%s</LogonCount>" +
+                "<Username>%s</Username>" +
+                "<Password><Value>%s</Value><PlainText>true</PlainText></Password>" +
+                "</AutoLogon>", logonCount, userName, password);
+    }
+
+    private static String getKeyVaultId() {
+        return String.format(
+                "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.KeyVault/vaults/%s",
+                m_subId, "javakeyvaultrg", "javakeyvault");
     }
 }
