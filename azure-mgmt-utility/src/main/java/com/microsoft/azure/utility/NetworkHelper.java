@@ -24,7 +24,7 @@ public class NetworkHelper {
     public static PublicIpAddress createPublicIpAddress(
             NetworkResourceProviderClient networkResourceProviderClient, ResourceContext context)
             throws Exception {
-        PublicIpAddress publicIpParams = new PublicIpAddress(context.getLocation(), IpAllocationMethod.DYNAMIC);
+        PublicIpAddress publicIpParams = new PublicIpAddress(IpAllocationMethod.DYNAMIC, context.getLocation());
         String publicIpName = context.getPublicIpName();
 
         AzureAsyncOperationResponse response = networkResourceProviderClient.getPublicIpAddressesOperations()

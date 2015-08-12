@@ -63,6 +63,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     protected static final String resourceGroupNamePrefix = "javatest";
     protected static final String DefaultUserName = "Foo12";
     protected static final String DefaultPassword = "BaR@123rgababaab";
+    protected static final String storageNamePrefix = "pslibtest";
     protected static String m_subId;
     protected static String m_rgName;
     protected static String m_location = "SouthEastAsia";
@@ -73,6 +74,9 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     protected static StorageManagementClient storageManagementClient;
     protected static ResourceManagementClient resourceManagementClient;
     protected static NetworkResourceProviderClient networkResourceProviderClient;
+
+    private ImageReference windowsImageReference;
+    private ImageReference linuxImageReference;
 
     protected static Log log = LogFactory.getLog(ComputeTestBase.class);
 
@@ -254,6 +258,8 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         Assert.assertEquals(
                 context.getVMInput().getLocation().toLowerCase(),
                 vmResponse.getVirtualMachine().getLocation().toLowerCase());
+        System.out.println(context.getAvailabilitySetId().toLowerCase());
+        System.out.println(vmResponse.getVirtualMachine().getAvailabilitySetReference().getReferenceUri().toLowerCase());
         Assert.assertEquals(
                 context.getAvailabilitySetId().toLowerCase(),
                 vmResponse.getVirtualMachine().getAvailabilitySetReference().getReferenceUri().toLowerCase());
@@ -456,6 +462,43 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void addRegexRuleIgnoreCase(String regex, String name) {
         addRegexRule(String.format("%s%s", "(?i)", regex), name);
+    }
+
+    protected ImageReference getPlatformVmImage(boolean useWindowsImage) throws Exception {
+        if (useWindowsImage) {
+            if (windowsImageReference == null) {
+                log.info("Querying available Windows Server image from PIR...");
+                windowsImageReference = findVmImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter");
+            }
+
+            return windowsImageReference;
+        } else if (linuxImageReference == null) {
+            log.info("Querying available Ubuntu images from PIR...");
+            linuxImageReference = findVmImage("Canonical", "UbuntuServer", "15.04");
+            return linuxImageReference;
+        }
+
+        return linuxImageReference;
+    }
+
+    protected ImageReference findVmImage(String publisher, String offer, String sku) throws Exception {
+        VirtualMachineImageListParameters params = new VirtualMachineImageListParameters();
+        params.setLocation(m_location);
+        params.setPublisherName(publisher);
+        params.setOffer(offer);
+        params.setSkus(sku);
+        params.setFilterExpression("$top=1");
+
+        VirtualMachineImageResourceList images = computeManagementClient.getVirtualMachineImagesOperations().list(params);
+        VirtualMachineImageResource image = images.getResources().get(0);
+
+        ImageReference imageRef = new ImageReference();
+        imageRef.setPublisher(publisher);
+        imageRef.setOffer(offer);
+        imageRef.setVersion(image.getName());
+        imageRef.setSku(sku);
+
+        return imageRef;
     }
 
     private static boolean validateVMInstanceStatus(ArrayList<InstanceViewStatus> statusList) {
