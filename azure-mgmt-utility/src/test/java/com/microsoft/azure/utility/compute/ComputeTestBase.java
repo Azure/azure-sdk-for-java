@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.function.Predicate;
 
 
 import com.microsoft.azure.management.compute.ComputeManagementClient;
@@ -59,6 +61,8 @@ import org.junit.*;
 public abstract class ComputeTestBase extends MockIntegrationTestBase{
     //protected static final String m_location = "SouthEastAsia";
     protected static final String resourceGroupNamePrefix = "javatest";
+    protected static final String DefaultUserName = "Foo12";
+    protected static final String DefaultPassword = "BaR@123rgababaab";
     protected static String m_subId;
     protected static String m_rgName;
     protected static String m_location = "SouthEastAsia";
@@ -210,8 +214,16 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     }
 
     protected static VirtualMachine createVM(
+            ResourceContext context, String vmName, boolean createWithPublicIpAddr,
+            ConsumerWrapper<VirtualMachine> vmInputModifier)
+            throws Exception {
+        return createVM(context, vmName, DefaultUserName, DefaultPassword, false, vmInputModifier);
+    }
+
+    protected static VirtualMachine createVM(
             ResourceContext context,
-            String vmName, boolean createWithPublicIpAddr, ConsumerWrapper<VirtualMachine> vmInputModifier)
+            String vmName, String userName, String password, boolean createWithPublicIpAddr,
+            ConsumerWrapper<VirtualMachine> vmInputModifier)
             throws Exception {
 
         log.info(String.format("Create vm in %s: %s, rg: %s",
@@ -226,7 +238,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         try {
             vmResponse = ComputeHelper.createVM(
                     resourceManagementClient, computeManagementClient, networkResourceProviderClient, storageManagementClient,
-                    context, vmName, "Foo12", "BaR@123rgababaab", vmInputModifier);
+                    context, vmName, userName, password, vmInputModifier);
 
         } catch (Exception ex) {
             log.info(ex.toString());
@@ -302,19 +314,47 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
             }
         }
 
-//        if (vmInput.getOSProfile() != null
-//                && vmInput.getOSProfile().getSecrets() != null
-//                && !vmInput.getOSProfile().getSecrets().isEmpty()) {
-//            for (VaultSecretGroup secret : vmInput.getOSProfile().getSecrets()) {
-//                VaultSecretGroup secretOut = null;
-//                for (VaultSecretGroup tmpSecret : vmOut.getOSProfile().getSecrets()) {
-//                    if (tmpSecret.getSourceVault().getReferenceUri() == secret.getSourceVault().getReferenceUri()) {
-//                        secretOut = tmpSecret;
-//                    }
-//                }
-//                //TODO cert validator
-//            }
-//        }
+        // validate secret vault certificates
+        if (vmInput.getOSProfile() != null
+                && vmInput.getOSProfile().getSecrets() != null
+                && !vmInput.getOSProfile().getSecrets().isEmpty()) {
+            for (final VaultSecretGroup secret : vmInput.getOSProfile().getSecrets()) {
+                VaultSecretGroup secretOut = vmOut.getOSProfile().getSecrets().stream()
+                        .filter(new Predicate<VaultSecretGroup>() {
+                            @Override
+                            public boolean test(VaultSecretGroup vaultSecretGroup) {
+                                return vaultSecretGroup.getSourceVault().getReferenceUri().equals(
+                                        secret.getSourceVault().getReferenceUri());
+                            }
+                        }).findAny().get();
+                Assert.assertNotNull("secretOut not null", secretOut);
+                Assert.assertNotNull("secretOut vaultCertificate not null", secretOut.getVaultCertificates());
+                secretOut.getVaultCertificates().sort(new Comparator<VaultCertificate>() {
+                    @Override
+                    public int compare(VaultCertificate o1, VaultCertificate o2) {
+                        return o1.getCertificateUrl().compareTo(o2.getCertificateUrl());
+                    }
+                });
+
+                secret.getVaultCertificates().sort(new Comparator<VaultCertificate>() {
+                    @Override
+                    public int compare(VaultCertificate o1, VaultCertificate o2) {
+                        return o1.getCertificateUrl().compareTo(o2.getCertificateUrl());
+                    }
+                });
+
+                Assert.assertEquals("vault cert sizes",
+                        secret.getVaultCertificates().size(), secretOut.getVaultCertificates().size());
+                for (int i = 0; i < secret.getVaultCertificates().size(); i++) {
+                    Assert.assertTrue("cert store",
+                            secret.getVaultCertificates().get(i).getCertificateStore().equalsIgnoreCase(
+                                    secretOut.getVaultCertificates().get(i).getCertificateStore()));
+                    Assert.assertTrue("cert url",
+                            secret.getVaultCertificates().get(i).getCertificateUrl().equalsIgnoreCase(
+                                    secretOut.getVaultCertificates().get(i).getCertificateUrl()));
+                }
+            }
+        }
 
         validatePlan(vmInput.getPlan(), vmOut.getPlan());
     }
