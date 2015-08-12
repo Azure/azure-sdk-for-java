@@ -37,14 +37,14 @@ public class AvailabilitySetTests extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + rgName);
+        log.debug("after class, clean resource group: " + m_rgName);
         cleanupResourceGroup();
     }
 
     @Before
     public void beforeTest() throws Exception {
         setupTest();
-        createOrUpdateResourceGroup(ComputeTestBase.rgName);
+        createOrUpdateResourceGroup(ComputeTestBase.m_rgName);
     }
 
     @After
@@ -73,8 +73,8 @@ public class AvailabilitySetTests extends ComputeTestBase {
                 .createOrUpdate(context.getResourceGroupName(), availabilitySet);
 
         validateCreateOrUpdateAvailabilitySetResponse(response, availabilitySet);
-        verifyAvailabilitySetInResourceGroup(availabilitySet, rgName);
-        verifyGetAvailabilitySet(availabilitySet, rgName);
+        verifyAvailabilitySetInResourceGroup(availabilitySet, m_rgName);
+        verifyGetAvailabilitySet(availabilitySet, m_rgName);
         verifyGetVmSizeInAvailabilitySet(availabilitySet);
 
         deleteAvailabilitySet(availabilitySet.getName());
@@ -96,8 +96,8 @@ public class AvailabilitySetTests extends ComputeTestBase {
                 .createOrUpdate(context.getResourceGroupName(), availabilitySet);
 
         validateCreateOrUpdateAvailabilitySetResponse(response, availabilitySet);
-        verifyAvailabilitySetInResourceGroup(availabilitySet, rgName);
-        verifyGetAvailabilitySet(availabilitySet, rgName);
+        verifyAvailabilitySetInResourceGroup(availabilitySet, m_rgName);
+        verifyGetAvailabilitySet(availabilitySet, m_rgName);
         verifyGetVmSizeInAvailabilitySet(availabilitySet);
 
         deleteAvailabilitySet(availabilitySet.getName());
@@ -201,12 +201,12 @@ public class AvailabilitySetTests extends ComputeTestBase {
     }
 
     private void deleteAvailabilitySet(String availabilitySetName) throws Exception {
-        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(rgName, availabilitySetName);
+        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(m_rgName, availabilitySetName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
     }
 
     private void verifyGetVmSizeInAvailabilitySet(AvailabilitySet availabilitySet) throws Exception {
-        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(rgName, availabilitySet.getName());
+        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(m_rgName, availabilitySet.getName());
         Assert.assertEquals(listVmSizesResponse.getStatusCode(), HttpStatus.SC_OK);
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVmSizesResponse);
     }
