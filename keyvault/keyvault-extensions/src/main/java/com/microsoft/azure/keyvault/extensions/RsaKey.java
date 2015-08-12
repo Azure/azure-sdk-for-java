@@ -259,7 +259,7 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
-            result = new FutureEncrypt(algorithm, plaintext, transform);
+            result = new FutureEncrypt(algorithmName, plaintext, transform);
         } catch (Exception e) {
             result = new FutureExecutionException<Triple<byte[], byte[], String>>(e);
         }
@@ -289,7 +289,7 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
-            result = new FutureWrap(algorithm, key, transform);
+            result = new FutureWrap(algorithmName, key, transform);
         } catch (Exception e) {
             result = new FutureExecutionException<Pair<byte[], String>>(e);
         }

@@ -50,7 +50,14 @@ public abstract class AesKw extends KeyWrapAlgorithm {
                 _cipher = Cipher.getInstance(_cipherName, provider);
             }
 
-            _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            // The default provider does not support the specification of IV. This
+            // is guarded by the CreateEncrypter wrapper method and the iv parameter
+            // can be ignored when using the default provider 
+            if (provider == null ) {
+                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
+            } else {
+                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            }
         }
 
         @Override
@@ -73,7 +80,14 @@ public abstract class AesKw extends KeyWrapAlgorithm {
                 _cipher = Cipher.getInstance(_cipherName, provider);
             }
 
-            _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            // The default provider does not support the specification of IV. This
+            // is guarded by the CreateEncrypter wrapper method and the iv parameter
+            // can be ignored when using the default provider 
+            if (provider == null ) {
+                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
+            } else {
+                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            }
         }
 
         @Override
@@ -91,13 +105,13 @@ public abstract class AesKw extends KeyWrapAlgorithm {
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateEncryptor(key, _defaultIv);
+        return CreateEncryptor(key, null, null);
     }
 
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateEncryptor(key, _defaultIv, provider);
+        return CreateEncryptor(key, null, provider);
     }
 
     @Override
@@ -117,8 +131,15 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
-        if (iv != null && iv.length != 8) {
-            throw new IllegalArgumentException("iv length must be 64 bits");
+        if (iv != null ) {
+        	// iv length must be 64 bits
+        	if ( iv.length != 8) {
+	            throw new IllegalArgumentException("iv length must be 64 bits");
+        	}
+        	// iv cannot be specified with the default provider
+        	if (provider == null) {
+        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+        	}
         }
 
         return new AesKwEncryptor(key, iv == null ? _defaultIv : iv, provider);
@@ -128,13 +149,13 @@ public abstract class AesKw extends KeyWrapAlgorithm {
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateDecryptor(key, _defaultIv, null);
+        return CreateDecryptor(key, null, null);
     }
 
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        return CreateDecryptor(key, _defaultIv, provider);
+        return CreateDecryptor(key, null, provider);
     }
 
     @Override
@@ -153,8 +174,16 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
-        if (iv != null && iv.length != 8) {
-            throw new IllegalArgumentException("iv length must be 64 bits");
+
+        if (iv != null ) {
+        	// iv length must be 64 bits
+        	if ( iv.length != 8) {
+	            throw new IllegalArgumentException("iv length must be 64 bits");
+        	}
+        	// iv cannot be specified with the default provider
+        	if (provider == null) {
+        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+        	}
         }
 
         return new AesKwDecryptor(key, iv == null ? _defaultIv : iv, provider);

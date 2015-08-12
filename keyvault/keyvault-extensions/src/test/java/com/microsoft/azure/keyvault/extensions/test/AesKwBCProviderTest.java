@@ -25,8 +25,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
-import java.security.Security;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -43,7 +41,7 @@ import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.extensions.cryptography.algorithms.AesKw256;
 
-public class AesKwTest {
+public class AesKwBCProviderTest {
 
     private Provider _provider = null;
 
@@ -59,8 +57,6 @@ public class AesKwTest {
     public void setUp() throws Exception {
         try {
             _provider = (Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance();
-
-            Security.addProvider(_provider);
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException(ex.getMessage());
         } catch (IllegalAccessException ex) {
@@ -158,7 +154,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK);
+            encryptor = kw.CreateEncryptor(KEK, _provider);
         } catch (InvalidKeyException e) {
             fail("InvalidKeyException");
         } catch (NoSuchAlgorithmException e) {
@@ -189,7 +185,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK);
+            decryptor = kw.CreateDecryptor(KEK, _provider);
         } catch (InvalidKeyException e) {
             fail("InvalidKeyException");
         } catch (NoSuchAlgorithmException e) {
@@ -230,7 +226,7 @@ public class AesKwTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK);
+            encryptor = kw.CreateEncryptor(KEK, _provider);
         } catch (InvalidKeyException e) {
             fail("InvalidKeyException");
         } catch (NoSuchAlgorithmException e) {
@@ -261,7 +257,7 @@ public class AesKwTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK);
+            decryptor = kw.CreateDecryptor(KEK, _provider);
         } catch (InvalidKeyException e) {
             fail("InvalidKeyException");
         } catch (NoSuchAlgorithmException e) {
