@@ -1,6 +1,6 @@
 package com.microsoft.azure.keyvault.extensions.test;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -48,11 +48,14 @@ public class RsaKeyTest {
         byte[] plaintext = "plaintext".getBytes();
 
         // Encrypt the plaintext
-        Future<Triple<byte[], byte[], String>> encryptResult = key.encryptAsync(plaintext, null, null, JsonWebKeyEncryptionAlgorithm.RSA15);
-        byte[] ciphertext = encryptResult.get().getLeft();
+        Triple<byte[], byte[], String> result = key.encryptAsync(plaintext, null, null, JsonWebKeyEncryptionAlgorithm.RSA15).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSA15, result.getRight());
 
         // Decrypt the ciphertext
-        Future<byte[]> decryptResult = key.decryptAsync(ciphertext, null, null, null, encryptResult.get().getRight());
+        Future<byte[]> decryptResult = key.decryptAsync(ciphertext, null, null, null, result.getRight());
         byte[] decrypted = decryptResult.get();
 
         key.close();
@@ -68,11 +71,14 @@ public class RsaKeyTest {
         byte[] plaintext = "plaintext".getBytes();
 
         // Encrypt the plaintext
-        Future<Triple<byte[], byte[], String>> encryptResult = key.encryptAsync(plaintext, null, null, JsonWebKeyEncryptionAlgorithm.RSAOAEP);
-        byte[] ciphertext = encryptResult.get().getLeft();
+        Triple<byte[], byte[], String> result = key.encryptAsync(plaintext, null, null, JsonWebKeyEncryptionAlgorithm.RSAOAEP).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSAOAEP, result.getRight());
 
         // Decrypt the ciphertext
-        Future<byte[]> decryptResult = key.decryptAsync(ciphertext, null, null, null, encryptResult.get().getRight());
+        Future<byte[]> decryptResult = key.decryptAsync(ciphertext, null, null, null, result.getRight());
         byte[] decrypted = decryptResult.get();
 
         key.close();
@@ -88,11 +94,14 @@ public class RsaKeyTest {
         byte[] plaintext = "plaintext".getBytes();
 
         // Encrypt the plaintext
-        Future<Pair<byte[], String>> encryptResult = key.wrapKeyAsync(plaintext, JsonWebKeyEncryptionAlgorithm.RSA15);
-        byte[] ciphertext = encryptResult.get().getLeft();
+        Pair<byte[], String> result = key.wrapKeyAsync(plaintext, JsonWebKeyEncryptionAlgorithm.RSA15).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSA15, result.getRight());
 
         // Decrypt the ciphertext
-        Future<byte[]> decryptResult = key.unwrapKeyAsync(ciphertext, encryptResult.get().getRight());
+        Future<byte[]> decryptResult = key.unwrapKeyAsync(ciphertext, result.getRight());
         byte[] decrypted = decryptResult.get();
 
         key.close();
@@ -108,11 +117,60 @@ public class RsaKeyTest {
         byte[] plaintext = "plaintext".getBytes();
 
         // Encrypt the plaintext
-        Future<Pair<byte[], String>> encryptResult = key.wrapKeyAsync(plaintext, JsonWebKeyEncryptionAlgorithm.RSAOAEP);
-        byte[] ciphertext = encryptResult.get().getLeft();
+        Pair<byte[], String> result = key.wrapKeyAsync(plaintext, JsonWebKeyEncryptionAlgorithm.RSAOAEP).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSAOAEP, result.getRight());
 
         // Decrypt the ciphertext
-        Future<byte[]> decryptResult = key.unwrapKeyAsync(ciphertext, encryptResult.get().getRight());
+        Future<byte[]> decryptResult = key.unwrapKeyAsync(ciphertext, result.getRight());
+        byte[] decrypted = decryptResult.get();
+
+        key.close();
+
+        assertArrayEquals(plaintext, decrypted);
+    }
+
+    @Test
+    public void testEncryptDecryptDefaultAlgorithm() throws Exception {
+
+        KeyPair keyPair = getTestKeyMaterial();
+        RsaKey key = new RsaKey("foo", keyPair);
+        byte[] plaintext = "plaintext".getBytes();
+
+        // Encrypt the plaintext
+        Triple<byte[], byte[], String> result = key.encryptAsync(plaintext, null, null, null).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSAOAEP, result.getRight());
+
+        // Decrypt the ciphertext
+        Future<byte[]> decryptResult = key.decryptAsync(ciphertext, null, null, null, result.getRight());
+        byte[] decrypted = decryptResult.get();
+
+        key.close();
+
+        assertArrayEquals(plaintext, decrypted);
+    }
+
+    @Test
+    public void testWrapUnwrapDefaultAlgorithm() throws Exception {
+
+        KeyPair keyPair = getTestKeyMaterial();
+        RsaKey key = new RsaKey("foo", keyPair);
+        byte[] plaintext = "plaintext".getBytes();
+
+        // Encrypt the plaintext
+        Pair<byte[], String> result = key.wrapKeyAsync(plaintext, null).get();
+        
+        byte[] ciphertext = result.getLeft();
+        
+        assertEquals(JsonWebKeyEncryptionAlgorithm.RSAOAEP, result.getRight());
+
+        // Decrypt the ciphertext
+        Future<byte[]> decryptResult = key.unwrapKeyAsync(ciphertext, result.getRight());
         byte[] decrypted = decryptResult.get();
 
         key.close();

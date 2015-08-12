@@ -29,7 +29,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.extensions.cryptography.Algorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.AlgorithmResolver;
-import com.microsoft.azure.keyvault.extensions.cryptography.AsymmetricEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.extensions.cryptography.IAuthenticatedCryptoTransform;
 import com.microsoft.azure.keyvault.extensions.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.extensions.cryptography.KeyWrapAlgorithm;

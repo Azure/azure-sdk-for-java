@@ -18,7 +18,6 @@
 
 package com.microsoft.azure.keyvault.extensions.cryptography.algorithms;
 
-import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;

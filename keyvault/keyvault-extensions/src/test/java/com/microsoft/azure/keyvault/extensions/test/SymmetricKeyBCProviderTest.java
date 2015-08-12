@@ -23,7 +23,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
-import java.security.Security;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.tuple.Pair;
