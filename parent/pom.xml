@@ -44,6 +44,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <testMode>playback</testMode>
   </properties>
 
   <developers>
@@ -266,17 +267,17 @@
                   </action>
                 </pluginExecution>
                 <pluginExecution>
-                	<pluginExecutionFilter>
-                		<groupId>org.apache.maven.plugins</groupId>
-                		<artifactId>maven-checkstyle-plugin</artifactId>
-                		<versionRange>[2.11,)</versionRange>
-                		<goals>
-                			<goal>check</goal>
-                		</goals>
-                	</pluginExecutionFilter>
-                	<action>
-                		<ignore></ignore>
-                	</action>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <versionRange>[2.11,)</versionRange>
+                    <goals>
+                      <goal>check</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
@@ -299,6 +300,7 @@
               <include>**/*TestCase.java</include>
             </includes>
             <environmentVariables>
+              <test.mode>${testMode}</test.mode>
             </environmentVariables>
           </configuration>
         </plugin>

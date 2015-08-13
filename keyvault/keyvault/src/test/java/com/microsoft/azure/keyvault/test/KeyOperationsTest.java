@@ -39,6 +39,7 @@ import java.util.concurrent.Future;
 
 import javax.crypto.Cipher;
 
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -671,7 +672,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         KeyPair result;
 
-        if ("live".equals(System.getenv("test.mode"))) {
+        if ("live".equals(System.getenv(ManagementConfiguration.AZURE_TEST_MODE))) {
             // Create a 2048 bit RSA private key
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
             kpg.initialize(2048);

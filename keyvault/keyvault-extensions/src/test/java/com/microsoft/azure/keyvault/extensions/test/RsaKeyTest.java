@@ -11,6 +11,7 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.concurrent.Future;
 
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.After;
@@ -124,7 +125,7 @@ public class RsaKeyTest {
 
         KeyPair result;
 
-        if ("live".equals(System.getenv("test.mode"))) {
+        if ("live".equals(System.getenv(ManagementConfiguration.AZURE_TEST_MODE))) {
             // Create a 2048 bit RSA private key
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
             kpg.initialize(2048);
