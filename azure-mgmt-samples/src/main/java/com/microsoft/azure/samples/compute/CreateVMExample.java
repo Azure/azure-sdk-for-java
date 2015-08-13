@@ -118,6 +118,5 @@ public class CreateVMExample {
                         System.getenv("arm.tenant"), System.getenv("arm.clientid"),
                         System.getenv("arm.clientkey"))
                         .getAccessToken());
-
     }
 }

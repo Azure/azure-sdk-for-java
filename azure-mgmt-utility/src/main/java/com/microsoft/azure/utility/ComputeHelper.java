@@ -81,14 +81,28 @@ public class ComputeHelper {
             as.setTags(context.getTags());
 
         // create availability set
-        AvailabilitySetCreateOrUpdateResponse response = computeManagementClient.getAvailabilitySetsOperations()
-                .createOrUpdate(context.getResourceGroupName(), as);
-        assertTrue(response.getStatusCode() == HttpStatus.SC_OK);
-        String asetId = getAvailabilitySetRef(
-                context.getSubscriptionId(), context.getResourceGroupName(), asName);
+        return createAvailabilitySet(computeManagementClient, as, context);
+    }
 
-        context.setAvailabilitySetId(asetId);
-        return asetId;
+    /***
+     * Create a new availability set from given resource context and availability Set.
+     *
+     * @param computeManagementClient
+     * @param context
+     * @return created availabilitySet Id
+     * @throws Exception
+     */
+    public static String createAvailabilitySet(
+            ComputeManagementClient computeManagementClient, AvailabilitySet avSet, ResourceContext context)
+            throws Exception {
+        computeManagementClient.getAvailabilitySetsOperations()
+                .createOrUpdate(context.getResourceGroupName(), avSet);
+
+        String availabilitySetId = getAvailabilitySetRef(
+                context.getSubscriptionId(), context.getResourceGroupName(), avSet.getName());
+
+        context.setAvailabilitySetId(availabilitySetId);
+        return availabilitySetId;
     }
 
     /***
