@@ -20,6 +20,7 @@ import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientConfigSettings;
 import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.sun.jersey.api.client.config.ClientConfig;
 
 public class Exports implements Builder.Exports {
@@ -35,9 +36,7 @@ public class Exports implements Builder.Exports {
                                                     Class<S> service, Builder builder,
                                                     Map<String, Object> properties) {
                 SubscriptionCloudCredentials credential = (SubscriptionCloudCredentials)properties.get(profile);
-                String testMode = System.getenv("test.mode");
-                boolean isPlayback = testMode != null && testMode.equals("playback");
-                if (!isPlayback) {
+                if (!ManagementConfiguration.isPlayback()) {
                     credential.applyConfig(profile, properties);
                 }
                 return credential;

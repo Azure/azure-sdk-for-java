@@ -345,4 +345,13 @@ public final class ManagementConfiguration {
 
         return configuration;
     }
+
+    /**
+     * Check current test mode (record/playback)
+     * @return Current test mode is playback
+     */
+    public static boolean isPlayback() {
+        return System.getenv(ManagementConfiguration.AZURE_TEST_MODE) != null &&
+                System.getenv(ManagementConfiguration.AZURE_TEST_MODE).equals("playback");
+    }
 }

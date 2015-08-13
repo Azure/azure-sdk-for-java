@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.credentials.CloudCredentials;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 /**
  * The Class Exports.
@@ -35,7 +36,7 @@ public class Exports implements Builder.Exports {
             @Override
             public <S> CloudCredentials create(String profile, Class<S> service, Builder builder, Map<String, Object> properties) {
                 CloudCredentials credential = (CloudCredentials) properties.get(profile);
-                if (System.getenv("test.mode") != null && !System.getenv("test.mode").equals("playback")) {
+                if (!ManagementConfiguration.isPlayback()) {
                     credential.applyConfig(profile, properties);
                 }
                 return credential;
