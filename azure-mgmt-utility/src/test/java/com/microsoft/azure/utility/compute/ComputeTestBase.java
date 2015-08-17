@@ -444,7 +444,7 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
 
     protected static void setTestContextResourceNames(ResourceContext context, String index) {
         // register generated name with regex rules for playback tests
-        context.setStorageAccountName(generateName(index + "ston"));
+        context.setStorageAccountName(generateName(index + "san"));
         context.setContainerName(generateName(index + "conn"));
         context.setIpConfigName(generateName(index + "ipcn"));
         context.setNetworkInterfaceName(generateName(index + "nicn"));

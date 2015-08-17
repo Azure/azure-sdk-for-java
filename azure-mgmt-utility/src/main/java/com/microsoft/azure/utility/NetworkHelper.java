@@ -114,4 +114,23 @@ public class NetworkHelper {
         context.setNetworkInterface(createdNic);
         return createdNic;
     }
+
+    public static PublicIpAddress updatePublicIpAddressDomainName(
+            NetworkResourceProviderClient networkResourceProviderClient, String resourceGroupName,
+            String publicIpAddressName, String domainPrefix)
+            throws Exception {
+        PublicIpAddress publicIp = networkResourceProviderClient.getPublicIpAddressesOperations()
+                .get(resourceGroupName, publicIpAddressName).getPublicIpAddress();
+        if (publicIp.getDnsSettings() == null) {
+            publicIp.setDnsSettings(new PublicIpAddressDnsSettings());
+        }
+
+        publicIp.getDnsSettings().setDomainNameLabel(domainPrefix);
+        AzureAsyncOperationResponse response = networkResourceProviderClient.getPublicIpAddressesOperations()
+                .createOrUpdate(resourceGroupName, publicIpAddressName, publicIp);
+
+        PublicIpAddress ip = networkResourceProviderClient.getPublicIpAddressesOperations()
+                .get(resourceGroupName, publicIpAddressName).getPublicIpAddress();
+        return ip;
+    }
 }
