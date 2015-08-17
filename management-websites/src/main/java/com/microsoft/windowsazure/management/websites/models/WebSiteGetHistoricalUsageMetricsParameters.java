@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -51,28 +50,6 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
         this.endTime = endTimeValue;
     }
     
-    private boolean includeInstanceBreakdown;
-    
-    /**
-    * Optional. Flag which specifies if the metrics for each machine instance
-    * should be included. For sites that run on more than one machine this
-    * could be useful to identify a bad machine.
-    * @return The IncludeInstanceBreakdown value.
-    */
-    public boolean isIncludeInstanceBreakdown() {
-        return this.includeInstanceBreakdown;
-    }
-    
-    /**
-    * Optional. Flag which specifies if the metrics for each machine instance
-    * should be included. For sites that run on more than one machine this
-    * could be useful to identify a bad machine.
-    * @param includeInstanceBreakdownValue The IncludeInstanceBreakdown value.
-    */
-    public void setIncludeInstanceBreakdown(final boolean includeInstanceBreakdownValue) {
-        this.includeInstanceBreakdown = includeInstanceBreakdownValue;
-    }
-    
     private ArrayList<String> metricNames;
     
     /**
@@ -95,38 +72,6 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
         this.metricNames = metricNamesValue;
     }
     
-    private boolean slotView;
-    
-    /**
-    * Optional. Flag which specifies if the metrics returned should reflect
-    * slot swaps. Let's take for example following case: if production slot
-    * has hostname www.contos.com and take traffic for 12 hours and later is
-    * swapped with staging slot. Getting metrics with SlotView=false will
-    * reflect the swap - e.g. there will be a increase on the staging slot
-    * metrics after it goes to production.If SlotView=true is used it will
-    * show the metrics for the www.contoso.com regardless which slot was
-    * serving at the moment.
-    * @return The SlotView value.
-    */
-    public boolean isSlotView() {
-        return this.slotView;
-    }
-    
-    /**
-    * Optional. Flag which specifies if the metrics returned should reflect
-    * slot swaps. Let's take for example following case: if production slot
-    * has hostname www.contos.com and take traffic for 12 hours and later is
-    * swapped with staging slot. Getting metrics with SlotView=false will
-    * reflect the swap - e.g. there will be a increase on the staging slot
-    * metrics after it goes to production.If SlotView=true is used it will
-    * show the metrics for the www.contoso.com regardless which slot was
-    * serving at the moment.
-    * @param slotViewValue The SlotView value.
-    */
-    public void setSlotView(final boolean slotViewValue) {
-        this.slotView = slotViewValue;
-    }
-    
     private Calendar startTime;
     
     /**
@@ -147,32 +92,12 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
         this.startTime = startTimeValue;
     }
     
-    private String timeGrain;
-    
-    /**
-    * Optional. The grain at which the metrics are returned. Supported values
-    * are PT1M (minute), PT1H (hour), P1D (day).
-    * @return The TimeGrain value.
-    */
-    public String getTimeGrain() {
-        return this.timeGrain;
-    }
-    
-    /**
-    * Optional. The grain at which the metrics are returned. Supported values
-    * are PT1M (minute), PT1H (hour), P1D (day).
-    * @param timeGrainValue The TimeGrain value.
-    */
-    public void setTimeGrain(final String timeGrainValue) {
-        this.timeGrain = timeGrainValue;
-    }
-    
     /**
     * Initializes a new instance of the
     * WebSiteGetHistoricalUsageMetricsParameters class.
     *
     */
     public WebSiteGetHistoricalUsageMetricsParameters() {
-        this.setMetricNames(new LazyArrayList<String>());
+        this.setMetricNames(new ArrayList<String>());
     }
 }

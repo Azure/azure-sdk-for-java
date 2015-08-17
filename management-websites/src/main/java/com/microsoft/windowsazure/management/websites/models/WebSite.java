@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.InetAddress;
 import java.net.URI;
 import java.util.ArrayList;
@@ -35,13 +33,13 @@ import java.util.HashMap;
 * Describes a web site.
 */
 public class WebSite {
-    private Boolean adminEnabled;
+    private boolean adminEnabled;
     
     /**
     * Optional. Read-only. This value is always true.
     * @return The AdminEnabled value.
     */
-    public Boolean isAdminEnabled() {
+    public boolean isAdminEnabled() {
         return this.adminEnabled;
     }
     
@@ -49,7 +47,7 @@ public class WebSite {
     * Optional. Read-only. This value is always true.
     * @param adminEnabledValue The AdminEnabled value.
     */
-    public void setAdminEnabled(final Boolean adminEnabledValue) {
+    public void setAdminEnabled(final boolean adminEnabledValue) {
         this.adminEnabled = adminEnabledValue;
     }
     
@@ -81,7 +79,27 @@ public class WebSite {
         this.availabilityState = availabilityStateValue;
     }
     
-    private Boolean enabled;
+    private WebSiteComputeMode computeMode;
+    
+    /**
+    * Optional. The Compute Mode for the web site. Possible values are Shared
+    * or Dedicated.
+    * @return The ComputeMode value.
+    */
+    public WebSiteComputeMode getComputeMode() {
+        return this.computeMode;
+    }
+    
+    /**
+    * Optional. The Compute Mode for the web site. Possible values are Shared
+    * or Dedicated.
+    * @param computeModeValue The ComputeMode value.
+    */
+    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
+        this.computeMode = computeModeValue;
+    }
+    
+    private boolean enabled;
     
     /**
     * Optional. The current state of the web site. This is true if the site is
@@ -89,7 +107,7 @@ public class WebSite {
     * site (takes the site offline).
     * @return The Enabled value.
     */
-    public Boolean isEnabled() {
+    public boolean isEnabled() {
         return this.enabled;
     }
     
@@ -99,7 +117,7 @@ public class WebSite {
     * site (takes the site offline).
     * @param enabledValue The Enabled value.
     */
-    public void setEnabled(final Boolean enabledValue) {
+    public void setEnabled(final boolean enabledValue) {
         this.enabled = enabledValue;
     }
     
@@ -209,6 +227,24 @@ public class WebSite {
         this.name = nameValue;
     }
     
+    private String owner;
+    
+    /**
+    * Optional. The owner of the web site.
+    * @return The Owner value.
+    */
+    public String getOwner() {
+        return this.owner;
+    }
+    
+    /**
+    * Optional. The owner of the web site.
+    * @param ownerValue The Owner value.
+    */
+    public void setOwner(final String ownerValue) {
+        this.owner = ownerValue;
+    }
+    
     private String repositorySiteName;
     
     /**
@@ -258,8 +294,8 @@ public class WebSite {
     private String serverFarm;
     
     /**
-    * Optional. Name of a Server Farm (Web Hosting Plan) that this site belongs
-    * to.
+    * Optional. A string defining the web site server farm. If a server farm
+    * exists, this value is DefaultServerFarm.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -267,12 +303,36 @@ public class WebSite {
     }
     
     /**
-    * Optional. Name of a Server Farm (Web Hosting Plan) that this site belongs
-    * to.
+    * Optional. A string defining the web site server farm. If a server farm
+    * exists, this value is DefaultServerFarm.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
         this.serverFarm = serverFarmValue;
+    }
+    
+    private WebSiteMode siteMode;
+    
+    /**
+    * Optional. A string representing the web site mode. If the web site mode
+    * is Free, this value is Limited. If the web site mode is Shared, this
+    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
+    * Reserved mode uses the ComputeMode setting.
+    * @return The SiteMode value.
+    */
+    public WebSiteMode getSiteMode() {
+        return this.siteMode;
+    }
+    
+    /**
+    * Optional. A string representing the web site mode. If the web site mode
+    * is Free, this value is Limited. If the web site mode is Shared, this
+    * value is Basic. Note: The SiteMode value is not used for Reserved mode.
+    * Reserved mode uses the ComputeMode setting.
+    * @param siteModeValue The SiteMode value.
+    */
+    public void setSiteMode(final WebSiteMode siteModeValue) {
+        this.siteMode = siteModeValue;
     }
     
     private WebSite.WebSiteProperties siteProperties;
@@ -295,24 +355,22 @@ public class WebSite {
         this.siteProperties = sitePropertiesValue;
     }
     
-    private SkuOptions sku;
+    private ArrayList<WebSite.WebSiteSslCertificate> sslCertificates;
     
     /**
-    * Optional. The SKU of a Server Farm (Web Hosting Plan) where site belongs
-    * to.
-    * @return The Sku value.
+    * Optional. SSL certificates bound to the web site.
+    * @return The SslCertificates value.
     */
-    public SkuOptions getSku() {
-        return this.sku;
+    public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates() {
+        return this.sslCertificates;
     }
     
     /**
-    * Optional. The SKU of a Server Farm (Web Hosting Plan) where site belongs
-    * to.
-    * @param skuValue The Sku value.
+    * Optional. SSL certificates bound to the web site.
+    * @param sslCertificatesValue The SslCertificates value.
     */
-    public void setSku(final SkuOptions skuValue) {
-        this.sku = skuValue;
+    public void setSslCertificates(final ArrayList<WebSite.WebSiteSslCertificate> sslCertificatesValue) {
+        this.sslCertificates = sslCertificatesValue;
     }
     
     private String state;
@@ -402,9 +460,10 @@ public class WebSite {
     *
     */
     public WebSite() {
-        this.setEnabledHostNames(new LazyArrayList<String>());
-        this.setHostNames(new LazyArrayList<String>());
-        this.setHostNameSslStates(new LazyArrayList<WebSite.WebSiteHostNameSslState>());
+        this.setEnabledHostNames(new ArrayList<String>());
+        this.setHostNames(new ArrayList<String>());
+        this.setHostNameSslStates(new ArrayList<WebSite.WebSiteHostNameSslState>());
+        this.setSslCertificates(new ArrayList<WebSite.WebSiteSslCertificate>());
     }
     
     /**
@@ -554,9 +613,270 @@ public class WebSite {
         *
         */
         public WebSiteProperties() {
-            this.setAppSettings(new LazyHashMap<String, String>());
-            this.setMetadata(new LazyHashMap<String, String>());
-            this.setProperties(new LazyHashMap<String, String>());
+            this.setAppSettings(new HashMap<String, String>());
+            this.setMetadata(new HashMap<String, String>());
+            this.setProperties(new HashMap<String, String>());
+        }
+    }
+    
+    /**
+    * The SSL certificate properties.
+    */
+    public static class WebSiteSslCertificate {
+        private Calendar expirationDate;
+        
+        /**
+        * Optional. A dateTime value that contains the expiration date of the
+        * certificate.
+        * @return The ExpirationDate value.
+        */
+        public Calendar getExpirationDate() {
+            return this.expirationDate;
+        }
+        
+        /**
+        * Optional. A dateTime value that contains the expiration date of the
+        * certificate.
+        * @param expirationDateValue The ExpirationDate value.
+        */
+        public void setExpirationDate(final Calendar expirationDateValue) {
+            this.expirationDate = expirationDateValue;
+        }
+        
+        private String friendlyName;
+        
+        /**
+        * Optional. A string that contains the friendly name of the certificate.
+        * @return The FriendlyName value.
+        */
+        public String getFriendlyName() {
+            return this.friendlyName;
+        }
+        
+        /**
+        * Optional. A string that contains the friendly name of the certificate.
+        * @param friendlyNameValue The FriendlyName value.
+        */
+        public void setFriendlyName(final String friendlyNameValue) {
+            this.friendlyName = friendlyNameValue;
+        }
+        
+        private ArrayList<String> hostNames;
+        
+        /**
+        * Optional. An array of strings that contain the host names to which
+        * the certificate is bound.
+        * @return The HostNames value.
+        */
+        public ArrayList<String> getHostNames() {
+            return this.hostNames;
+        }
+        
+        /**
+        * Optional. An array of strings that contain the host names to which
+        * the certificate is bound.
+        * @param hostNamesValue The HostNames value.
+        */
+        public void setHostNames(final ArrayList<String> hostNamesValue) {
+            this.hostNames = hostNamesValue;
+        }
+        
+        private Calendar issueDate;
+        
+        /**
+        * Optional. A dateTime value that contains the date that the
+        * certificate was issued.
+        * @return The IssueDate value.
+        */
+        public Calendar getIssueDate() {
+            return this.issueDate;
+        }
+        
+        /**
+        * Optional. A dateTime value that contains the date that the
+        * certificate was issued.
+        * @param issueDateValue The IssueDate value.
+        */
+        public void setIssueDate(final Calendar issueDateValue) {
+            this.issueDate = issueDateValue;
+        }
+        
+        private String issuer;
+        
+        /**
+        * Optional. A string that identifies the issuer of the certificate.
+        * @return The Issuer value.
+        */
+        public String getIssuer() {
+            return this.issuer;
+        }
+        
+        /**
+        * Optional. A string that identifies the issuer of the certificate.
+        * @param issuerValue The Issuer value.
+        */
+        public void setIssuer(final String issuerValue) {
+            this.issuer = issuerValue;
+        }
+        
+        private Boolean isToBeDeleted;
+        
+        /**
+        * Optional. Indicates if the certificate is to be deleted.
+        * @return The IsToBeDeleted value.
+        */
+        public Boolean isToBeDeleted() {
+            return this.isToBeDeleted;
+        }
+        
+        /**
+        * Optional. Indicates if the certificate is to be deleted.
+        * @param isToBeDeletedValue The IsToBeDeleted value.
+        */
+        public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
+            this.isToBeDeleted = isToBeDeletedValue;
+        }
+        
+        private Boolean isValid;
+        
+        /**
+        * Optional. Indicates if the certificate is valid.
+        * @return The IsValid value.
+        */
+        public Boolean isValid() {
+            return this.isValid;
+        }
+        
+        /**
+        * Optional. Indicates if the certificate is valid.
+        * @param isValidValue The IsValid value.
+        */
+        public void setIsValid(final Boolean isValidValue) {
+            this.isValid = isValidValue;
+        }
+        
+        private String password;
+        
+        /**
+        * Optional. A string that contains the password for the certificate.
+        * @return The Password value.
+        */
+        public String getPassword() {
+            return this.password;
+        }
+        
+        /**
+        * Optional. A string that contains the password for the certificate.
+        * @param passwordValue The Password value.
+        */
+        public void setPassword(final String passwordValue) {
+            this.password = passwordValue;
+        }
+        
+        private byte[] pfxBlob;
+        
+        /**
+        * Optional. A base64Binary value that contains the PfxBlob of the
+        * certificate.
+        * @return The PfxBlob value.
+        */
+        public byte[] getPfxBlob() {
+            return this.pfxBlob;
+        }
+        
+        /**
+        * Optional. A base64Binary value that contains the PfxBlob of the
+        * certificate.
+        * @param pfxBlobValue The PfxBlob value.
+        */
+        public void setPfxBlob(final byte[] pfxBlobValue) {
+            this.pfxBlob = pfxBlobValue;
+        }
+        
+        private URI selfLinkUri;
+        
+        /**
+        * Optional. An anyURI value that contains the endpoint of the site to
+        * which the certificate is bound.
+        * @return The SelfLinkUri value.
+        */
+        public URI getSelfLinkUri() {
+            return this.selfLinkUri;
+        }
+        
+        /**
+        * Optional. An anyURI value that contains the endpoint of the site to
+        * which the certificate is bound.
+        * @param selfLinkUriValue The SelfLinkUri value.
+        */
+        public void setSelfLinkUri(final URI selfLinkUriValue) {
+            this.selfLinkUri = selfLinkUriValue;
+        }
+        
+        private String siteName;
+        
+        /**
+        * Optional. A string that contains the name of the site to which the
+        * certificate is bound.
+        * @return The SiteName value.
+        */
+        public String getSiteName() {
+            return this.siteName;
+        }
+        
+        /**
+        * Optional. A string that contains the name of the site to which the
+        * certificate is bound.
+        * @param siteNameValue The SiteName value.
+        */
+        public void setSiteName(final String siteNameValue) {
+            this.siteName = siteNameValue;
+        }
+        
+        private String subjectName;
+        
+        /**
+        * Optional. A string that contains the name of the entity to whom the
+        * certificate was issued.
+        * @return The SubjectName value.
+        */
+        public String getSubjectName() {
+            return this.subjectName;
+        }
+        
+        /**
+        * Optional. A string that contains the name of the entity to whom the
+        * certificate was issued.
+        * @param subjectNameValue The SubjectName value.
+        */
+        public void setSubjectName(final String subjectNameValue) {
+            this.subjectName = subjectNameValue;
+        }
+        
+        private String thumbprint;
+        
+        /**
+        * Optional. A string that contains the certificate thumbprint.
+        * @return The Thumbprint value.
+        */
+        public String getThumbprint() {
+            return this.thumbprint;
+        }
+        
+        /**
+        * Optional. A string that contains the certificate thumbprint.
+        * @param thumbprintValue The Thumbprint value.
+        */
+        public void setThumbprint(final String thumbprintValue) {
+            this.thumbprint = thumbprintValue;
+        }
+        
+        /**
+        * Initializes a new instance of the WebSiteSslCertificate class.
+        *
+        */
+        public WebSiteSslCertificate() {
+            this.setHostNames(new ArrayList<String>());
         }
     }
 }

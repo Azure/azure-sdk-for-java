@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,7 +38,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -48,7 +46,7 @@ import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurat
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.*;
 
-public abstract class NetworkManagementIntegrationTestBase extends MockIntegrationTestBase {
+public abstract class NetworkManagementIntegrationTestBase {
 
     protected static NetworkManagementClient networkManagementClient;    
     protected static NetworkOperations networkOperations;
@@ -67,13 +65,6 @@ public abstract class NetworkManagementIntegrationTestBase extends MockIntegrati
         // reinitialize configuration from known state
         Configuration config = createConfiguration();      
         networkManagementClient = NetworkManagementService.create(config);
-        addClient((ServiceClient<?>) networkManagementClient, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                createService();
-                return null;
-            }
-        });
     }
 
     protected static Configuration createConfiguration() throws Exception {

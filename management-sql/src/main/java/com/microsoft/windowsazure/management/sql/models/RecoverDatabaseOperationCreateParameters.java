@@ -46,6 +46,24 @@ public class RecoverDatabaseOperationCreateParameters {
         this.sourceDatabaseName = sourceDatabaseNameValue;
     }
     
+    private String sourceServerName;
+    
+    /**
+    * Optional. Gets or sets the name of the source Azure SQL Database Server.
+    * @return The SourceServerName value.
+    */
+    public String getSourceServerName() {
+        return this.sourceServerName;
+    }
+    
+    /**
+    * Optional. Gets or sets the name of the source Azure SQL Database Server.
+    * @param sourceServerNameValue The SourceServerName value.
+    */
+    public void setSourceServerName(final String sourceServerNameValue) {
+        this.sourceServerName = sourceServerNameValue;
+    }
+    
     private String targetDatabaseName;
     
     /**
@@ -64,24 +82,6 @@ public class RecoverDatabaseOperationCreateParameters {
         this.targetDatabaseName = targetDatabaseNameValue;
     }
     
-    private String targetServerName;
-    
-    /**
-    * Optional. Gets or sets the name of the target Azure SQL Database Server.
-    * @return The TargetServerName value.
-    */
-    public String getTargetServerName() {
-        return this.targetServerName;
-    }
-    
-    /**
-    * Optional. Gets or sets the name of the target Azure SQL Database Server.
-    * @param targetServerNameValue The TargetServerName value.
-    */
-    public void setTargetServerName(final String targetServerNameValue) {
-        this.targetServerName = targetServerNameValue;
-    }
-    
     /**
     * Initializes a new instance of the
     * RecoverDatabaseOperationCreateParameters class.
@@ -94,7 +94,6 @@ public class RecoverDatabaseOperationCreateParameters {
     * Initializes a new instance of the
     * RecoverDatabaseOperationCreateParameters class with required arguments.
     *
-    * @param sourceDatabaseName The source database name.
     */
     public RecoverDatabaseOperationCreateParameters(String sourceDatabaseName) {
         if (sourceDatabaseName == null) {

@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -75,8 +74,8 @@ public class ExtensionConfiguration {
     *
     */
     public ExtensionConfiguration() {
-        this.setAllRoles(new LazyArrayList<ExtensionConfiguration.Extension>());
-        this.setNamedRoles(new LazyArrayList<ExtensionConfiguration.NamedRole>());
+        this.setAllRoles(new ArrayList<ExtensionConfiguration.Extension>());
+        this.setNamedRoles(new ArrayList<ExtensionConfiguration.NamedRole>());
     }
     
     /**
@@ -176,15 +175,13 @@ public class ExtensionConfiguration {
         *
         */
         public NamedRole() {
-            this.setExtensions(new LazyArrayList<ExtensionConfiguration.Extension>());
+            this.setExtensions(new ArrayList<ExtensionConfiguration.Extension>());
         }
         
         /**
         * Initializes a new instance of the NamedRole class with required
         * arguments.
         *
-        * @param roleName The role name.
-        * @param extensions The extensions.
         */
         public NamedRole(String roleName, ArrayList<ExtensionConfiguration.Extension> extensions) {
             this();

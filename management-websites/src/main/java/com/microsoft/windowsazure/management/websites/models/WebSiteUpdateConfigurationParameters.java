@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,24 +31,6 @@ import java.util.HashMap;
 * The parameters supplied Update Configuration Web Site operation.
 */
 public class WebSiteUpdateConfigurationParameters {
-    private Boolean alwaysOn;
-    
-    /**
-    * Optional. Indicates if site's Always On feature enabled.
-    * @return The AlwaysOn value.
-    */
-    public Boolean isAlwaysOn() {
-        return this.alwaysOn;
-    }
-    
-    /**
-    * Optional. Indicates if site's Always On feature enabled.
-    * @param alwaysOnValue The AlwaysOn value.
-    */
-    public void setAlwaysOn(final Boolean alwaysOnValue) {
-        this.alwaysOn = alwaysOnValue;
-    }
-    
     private HashMap<String, String> appSettings;
     
     /**
@@ -71,29 +51,10 @@ public class WebSiteUpdateConfigurationParameters {
         this.appSettings = appSettingsValue;
     }
     
-    private String autoSwapSlotName;
-    
-    /**
-    * Optional. Sets the slot name to swap with after successful deployment.
-    * @return The AutoSwapSlotName value.
-    */
-    public String getAutoSwapSlotName() {
-        return this.autoSwapSlotName;
-    }
-    
-    /**
-    * Optional. Sets the slot name to swap with after successful deployment.
-    * @param autoSwapSlotNameValue The AutoSwapSlotName value.
-    */
-    public void setAutoSwapSlotName(final String autoSwapSlotNameValue) {
-        this.autoSwapSlotName = autoSwapSlotNameValue;
-    }
-    
     private ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStrings;
     
     /**
-    * Optional. The connection strings for database and other external
-    * resources.
+    * Optional. Connection strings for database and other external resources.
     * @return The ConnectionStrings value.
     */
     public ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> getConnectionStrings() {
@@ -101,8 +62,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Optional. The connection strings for database and other external
-    * resources.
+    * Optional. Connection strings for database and other external resources.
     * @param connectionStringsValue The ConnectionStrings value.
     */
     public void setConnectionStrings(final ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStringsValue) {
@@ -112,9 +72,9 @@ public class WebSiteUpdateConfigurationParameters {
     private ArrayList<String> defaultDocuments;
     
     /**
-    * Optional. One or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
+    * Optional. Elements that list, in order of preference, the name of the
+    * file that a web site returns when the web site's domain name is
+    * requested by itself. For example, if the default document for
     * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
@@ -125,9 +85,9 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Optional. One or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
+    * Optional. Elements that list, in order of preference, the name of the
+    * file that a web site returns when the web site's domain name is
+    * requested by itself. For example, if the default document for
     * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
@@ -140,7 +100,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean detailedErrorLoggingEnabled;
     
     /**
-    * Optional. Indicates if detailed error logging is enabled.
+    * Optional. Indicated if detailed error logging is enabled.
     * @return The DetailedErrorLoggingEnabled value.
     */
     public Boolean isDetailedErrorLoggingEnabled() {
@@ -148,7 +108,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Optional. Indicates if detailed error logging is enabled.
+    * Optional. Indicated if detailed error logging is enabled.
     * @param detailedErrorLoggingEnabledValue The DetailedErrorLoggingEnabled
     * value.
     */
@@ -210,66 +170,6 @@ public class WebSiteUpdateConfigurationParameters {
     */
     public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
         this.httpLoggingEnabled = httpLoggingEnabledValue;
-    }
-    
-    private String javaContainer;
-    
-    /**
-    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
-    * @return The JavaContainer value.
-    */
-    public String getJavaContainer() {
-        return this.javaContainer;
-    }
-    
-    /**
-    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
-    * @param javaContainerValue The JavaContainer value.
-    */
-    public void setJavaContainer(final String javaContainerValue) {
-        this.javaContainer = javaContainerValue;
-    }
-    
-    private String javaContainerVersion;
-    
-    /**
-    * Optional. The web site Java Container Version. Supported values are
-    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
-    * is JETTY
-    * @return The JavaContainerVersion value.
-    */
-    public String getJavaContainerVersion() {
-        return this.javaContainerVersion;
-    }
-    
-    /**
-    * Optional. The web site Java Container Version. Supported values are
-    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
-    * is JETTY
-    * @param javaContainerVersionValue The JavaContainerVersion value.
-    */
-    public void setJavaContainerVersion(final String javaContainerVersionValue) {
-        this.javaContainerVersion = javaContainerVersionValue;
-    }
-    
-    private String javaVersion;
-    
-    /**
-    * Optional. The web site JDK version. Supported values are an empty string
-    * (an empty string disables Java), 1.7.0_51
-    * @return The JavaVersion value.
-    */
-    public String getJavaVersion() {
-        return this.javaVersion;
-    }
-    
-    /**
-    * Optional. The web site JDK version. Supported values are an empty string
-    * (an empty string disables Java), 1.7.0_51
-    * @param javaVersionValue The JavaVersion value.
-    */
-    public void setJavaVersion(final String javaVersionValue) {
-        this.javaVersion = javaVersionValue;
     }
     
     private Integer logsDirectorySizeLimit;
@@ -347,10 +247,10 @@ public class WebSiteUpdateConfigurationParameters {
     private Integer numberOfWorkers;
     
     /**
-    * Optional. The number of web workers allotted to the web site. If the web
-    * site mode is Free, this value is 1. If the web site mode is Shared, this
-    * value can range from 1 through 6. If the web site mode is Standard, this
-    * value can range from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the site
+    * mode is Free, this value is 1. If the site mode is Shared, this value
+    * can range from 1 through 6. If the site mode is Standard, this value can
+    * range from 1 through 10.
     * @return The NumberOfWorkers value.
     */
     public Integer getNumberOfWorkers() {
@@ -358,10 +258,10 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Optional. The number of web workers allotted to the web site. If the web
-    * site mode is Free, this value is 1. If the web site mode is Shared, this
-    * value can range from 1 through 6. If the web site mode is Standard, this
-    * value can range from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the site
+    * mode is Free, this value is 1. If the site mode is Shared, this value
+    * can range from 1 through 6. If the site mode is Standard, this value can
+    * range from 1 through 10.
     * @param numberOfWorkersValue The NumberOfWorkers value.
     */
     public void setNumberOfWorkers(final Integer numberOfWorkersValue) {
@@ -371,8 +271,8 @@ public class WebSiteUpdateConfigurationParameters {
     private String phpVersion;
     
     /**
-    * Optional. The web site PHP version. Supported values are an empty string
-    * (an empty string disables PHP), 5.3, and 5.4.
+    * Optional. The web site's PHP version. Supported values are an empty
+    * string (an empty string disables PHP), 5.3, and 5.4.
     * @return The PhpVersion value.
     */
     public String getPhpVersion() {
@@ -380,12 +280,52 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Optional. The web site PHP version. Supported values are an empty string
-    * (an empty string disables PHP), 5.3, and 5.4.
+    * Optional. The web site's PHP version. Supported values are an empty
+    * string (an empty string disables PHP), 5.3, and 5.4.
     * @param phpVersionValue The PhpVersion value.
     */
     public void setPhpVersion(final String phpVersionValue) {
         this.phpVersion = phpVersionValue;
+    }
+    
+    private String publishingPassword;
+    
+    /**
+    * Optional. Hash value of the password used for publishing the web site.
+    * @return The PublishingPassword value.
+    */
+    public String getPublishingPassword() {
+        return this.publishingPassword;
+    }
+    
+    /**
+    * Optional. Hash value of the password used for publishing the web site.
+    * @param publishingPasswordValue The PublishingPassword value.
+    */
+    public void setPublishingPassword(final String publishingPasswordValue) {
+        this.publishingPassword = publishingPasswordValue;
+    }
+    
+    private String publishingUserName;
+    
+    /**
+    * Optional. The user name used for publishing the web site. This is
+    * normally a dollar sign prepended to the web site name (for example,
+    * "$contoso").
+    * @return The PublishingUserName value.
+    */
+    public String getPublishingUserName() {
+        return this.publishingUserName;
+    }
+    
+    /**
+    * Optional. The user name used for publishing the web site. This is
+    * normally a dollar sign prepended to the web site name (for example,
+    * "$contoso").
+    * @param publishingUserNameValue The PublishingUserName value.
+    */
+    public void setPublishingUserName(final String publishingUserNameValue) {
+        this.publishingUserName = publishingUserNameValue;
     }
     
     private Boolean remoteDebuggingEnabled;
@@ -461,24 +401,6 @@ public class WebSiteUpdateConfigurationParameters {
         this.requestTracingExpirationTime = requestTracingExpirationTimeValue;
     }
     
-    private ArrayList<RoutingRule> routingRules;
-    
-    /**
-    * Optional. List of routing rules for the website.
-    * @return The RoutingRules value.
-    */
-    public ArrayList<RoutingRule> getRoutingRules() {
-        return this.routingRules;
-    }
-    
-    /**
-    * Optional. List of routing rules for the website.
-    * @param routingRulesValue The RoutingRules value.
-    */
-    public void setRoutingRules(final ArrayList<RoutingRule> routingRulesValue) {
-        this.routingRules = routingRulesValue;
-    }
-    
     private String scmType;
     
     /**
@@ -543,16 +465,15 @@ public class WebSiteUpdateConfigurationParameters {
     *
     */
     public WebSiteUpdateConfigurationParameters() {
-        this.setAppSettings(new LazyHashMap<String, String>());
-        this.setConnectionStrings(new LazyArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>());
-        this.setDefaultDocuments(new LazyArrayList<String>());
-        this.setHandlerMappings(new LazyArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>());
-        this.setMetadata(new LazyHashMap<String, String>());
-        this.setRoutingRules(new LazyArrayList<RoutingRule>());
+        this.setAppSettings(new HashMap<String, String>());
+        this.setConnectionStrings(new ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>());
+        this.setDefaultDocuments(new ArrayList<String>());
+        this.setHandlerMappings(new ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>());
+        this.setMetadata(new HashMap<String, String>());
     }
     
     /**
-    * Connection string for database and other external resources.
+    * Connection string information for database and other external resources.
     */
     public static class ConnectionStringInfo {
         private String connectionString;
@@ -591,13 +512,13 @@ public class WebSiteUpdateConfigurationParameters {
             this.name = nameValue;
         }
         
-        private ConnectionStringType type;
+        private String type;
         
         /**
         * Optional. The type of the connection string (for example, "MySQL").
         * @return The Type value.
         */
-        public ConnectionStringType getType() {
+        public String getType() {
             return this.type;
         }
         
@@ -605,7 +526,7 @@ public class WebSiteUpdateConfigurationParameters {
         * Optional. The type of the connection string (for example, "MySQL").
         * @param typeValue The Type value.
         */
-        public void setType(final ConnectionStringType typeValue) {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
     }

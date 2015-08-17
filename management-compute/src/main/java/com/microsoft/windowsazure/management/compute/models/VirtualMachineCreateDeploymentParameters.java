@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -202,7 +201,7 @@ public class VirtualMachineCreateDeploymentParameters {
     *
     */
     public VirtualMachineCreateDeploymentParameters() {
-        this.setLoadBalancers(new LazyArrayList<LoadBalancer>());
-        this.setRoles(new LazyArrayList<Role>());
+        this.setLoadBalancers(new ArrayList<LoadBalancer>());
+        this.setRoles(new ArrayList<Role>());
     }
 }

@@ -26,7 +26,6 @@ package com.microsoft.windowsazure.scheduler;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.scheduler.models.HttpAuthenticationType;
 import com.microsoft.windowsazure.scheduler.models.JobActionType;
 import com.microsoft.windowsazure.scheduler.models.JobHistoryActionName;
 import com.microsoft.windowsazure.scheduler.models.JobHistoryStatus;
@@ -207,6 +206,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         } else {
             this.baseUri = baseUri;
         }
+        this.cloudServiceName = cloudServiceName;
+        this.jobCollectionName = jobCollectionName;
+        this.credentials = credentials;
+        this.baseUri = baseUri;
     }
     
     /**
@@ -276,44 +279,6 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
     protected SchedulerClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new SchedulerClientImpl(httpBuilder, executorService, this.getCloudServiceName(), this.getJobCollectionName(), this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
-    }
-    
-    /**
-    * Parse enum values for type HttpAuthenticationType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static HttpAuthenticationType parseHttpAuthenticationType(String value) {
-        if ("notspecified".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.NotSpecified;
-        }
-        if ("basic".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.Basic;
-        }
-        if ("clientcertificate".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.ClientCertificate;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type HttpAuthenticationType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String httpAuthenticationTypeToString(HttpAuthenticationType value) {
-        if (value == HttpAuthenticationType.NotSpecified) {
-            return "notspecified";
-        }
-        if (value == HttpAuthenticationType.Basic) {
-            return "basic";
-        }
-        if (value == HttpAuthenticationType.ClientCertificate) {
-            return "clientcertificate";
-        }
-        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -399,9 +364,6 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         if ("failed".equalsIgnoreCase(value)) {
             return JobHistoryStatus.Failed;
         }
-        if ("postponed".equalsIgnoreCase(value)) {
-            return JobHistoryStatus.Postponed;
-        }
         throw new IllegalArgumentException("value");
     }
     
@@ -417,9 +379,6 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         if (value == JobHistoryStatus.Failed) {
             return "failed";
-        }
-        if (value == JobHistoryStatus.Postponed) {
-            return "postponed";
         }
         throw new IllegalArgumentException("value");
     }

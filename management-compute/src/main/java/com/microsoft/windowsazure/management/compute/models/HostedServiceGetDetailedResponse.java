@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +56,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     */
     public HostedServiceGetDetailedResponse() {
         super();
-        this.setDeployments(new LazyArrayList<HostedServiceGetDetailedResponse.Deployment>());
+        this.setDeployments(new ArrayList<HostedServiceGetDetailedResponse.Deployment>());
     }
     
     /**
@@ -454,8 +452,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private ArrayList<VirtualIPAddress> virtualIPAddresses;
         
         /**
-        * Optional. The virtual IP addresses that are specified for the
-        * deployment.
+        * Optional. The virtual IP addresses that are specified for
+        * thedeployment.
         * @return The VirtualIPAddresses value.
         */
         public ArrayList<VirtualIPAddress> getVirtualIPAddresses() {
@@ -463,8 +461,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Optional. The virtual IP addresses that are specified for the
-        * deployment.
+        * Optional. The virtual IP addresses that are specified for
+        * thedeployment.
         * @param virtualIPAddressesValue The VirtualIPAddresses value.
         */
         public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue) {
@@ -496,10 +494,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         *
         */
         public Deployment() {
-            this.setExtendedProperties(new LazyHashMap<String, String>());
-            this.setRoleInstances(new LazyArrayList<RoleInstance>());
-            this.setRoles(new LazyArrayList<Role>());
-            this.setVirtualIPAddresses(new LazyArrayList<VirtualIPAddress>());
+            this.setExtendedProperties(new HashMap<String, String>());
+            this.setRoleInstances(new ArrayList<RoleInstance>());
+            this.setRoles(new ArrayList<Role>());
+            this.setVirtualIPAddresses(new ArrayList<VirtualIPAddress>());
         }
     }
 }

@@ -132,9 +132,4 @@ public abstract class RoleInstanceStatus {
     * responding to requests.
     */
     public static final String UNRESPONSIVEROLE = "UnresponsiveRole";
-    
-    /**
-    * Azure is provisioning the role.
-    */
-    public static final String PROVISIONING = "Provisioning";
 }

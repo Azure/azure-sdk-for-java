@@ -75,18 +75,20 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database was hosted.
-    * @param databaseName Required. The name of the recoverable Azure SQL
+    * @param targetServerName Required. The name of the Azure SQL Database
+    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
+    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @return Contains the response to the Get Recoverable Database request.
     */
     @Override
-    public Future<RecoverableDatabaseGetResponse> getAsync(final String serverName, final String databaseName) {
+    public Future<RecoverableDatabaseGetResponse> getAsync(final String targetServerName, final String sourceServerName, final String sourceDatabaseName) {
         return this.getClient().getExecutorService().submit(new Callable<RecoverableDatabaseGetResponse>() { 
             @Override
             public RecoverableDatabaseGetResponse call() throws Exception {
-                return get(serverName, databaseName);
+                return get(targetServerName, sourceServerName, sourceDatabaseName);
             }
          });
     }
@@ -94,9 +96,11 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the database was hosted.
-    * @param databaseName Required. The name of the recoverable Azure SQL
+    * @param targetServerName Required. The name of the Azure SQL Database
+    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the database was hosted.
+    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -109,13 +113,16 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * @return Contains the response to the Get Recoverable Database request.
     */
     @Override
-    public RecoverableDatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public RecoverableDatabaseGetResponse get(String targetServerName, String sourceServerName, String sourceDatabaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serverName == null) {
-            throw new NullPointerException("serverName");
+        if (targetServerName == null) {
+            throw new NullPointerException("targetServerName");
         }
-        if (databaseName == null) {
-            throw new NullPointerException("databaseName");
+        if (sourceServerName == null) {
+            throw new NullPointerException("sourceServerName");
+        }
+        if (sourceDatabaseName == null) {
+            throw new NullPointerException("sourceDatabaseName");
         }
         
         // Tracing
@@ -124,13 +131,14 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serverName", serverName);
-            tracingParameters.put("databaseName", databaseName);
+            tracingParameters.put("targetServerName", targetServerName);
+            tracingParameters.put("sourceServerName", sourceServerName);
+            tracingParameters.put("sourceDatabaseName", sourceDatabaseName);
             CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/recoverabledatabases/" + databaseName.trim();
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + targetServerName.trim() + "/recoverabledatabases/" + sourceServerName.trim() + "/" + sourceDatabaseName.trim();
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -252,16 +260,18 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the databases were hosted.
+    * @param targetServerName Required. The name of the Azure SQL Database
+    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the databases were hosted.
     * @return Contains the response to the List Recoverable Databases request.
     */
     @Override
-    public Future<RecoverableDatabaseListResponse> listAsync(final String serverName) {
+    public Future<RecoverableDatabaseListResponse> listAsync(final String targetServerName, final String sourceServerName) {
         return this.getClient().getExecutorService().submit(new Callable<RecoverableDatabaseListResponse>() { 
             @Override
             public RecoverableDatabaseListResponse call() throws Exception {
-                return list(serverName);
+                return list(targetServerName, sourceServerName);
             }
          });
     }
@@ -270,8 +280,10 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param serverName Required. The name of the Azure SQL Database Server on
-    * which the databases were hosted.
+    * @param targetServerName Required. The name of the Azure SQL Database
+    * Server on which to recover the source database.
+    * @param sourceServerName Required. The name of the Azure SQL Database
+    * Server on which the databases were hosted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -283,10 +295,13 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * @return Contains the response to the List Recoverable Databases request.
     */
     @Override
-    public RecoverableDatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public RecoverableDatabaseListResponse list(String targetServerName, String sourceServerName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serverName == null) {
-            throw new NullPointerException("serverName");
+        if (targetServerName == null) {
+            throw new NullPointerException("targetServerName");
+        }
+        if (sourceServerName == null) {
+            throw new NullPointerException("sourceServerName");
         }
         
         // Tracing
@@ -295,12 +310,13 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("targetServerName", targetServerName);
+            tracingParameters.put("sourceServerName", sourceServerName);
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/recoverabledatabases" + "?" + "contentview=generic";
+        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + targetServerName.trim() + "/recoverabledatabases/" + sourceServerName.trim() + "?" + "contentview=generic";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {

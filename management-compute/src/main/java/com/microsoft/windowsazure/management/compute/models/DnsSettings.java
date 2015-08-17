@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -55,6 +54,6 @@ public class DnsSettings {
     *
     */
     public DnsSettings() {
-        this.setDnsServers(new LazyArrayList<DnsServer>());
+        this.setDnsServers(new ArrayList<DnsServer>());
     }
 }

@@ -137,7 +137,6 @@ public class DatabaseUpdateParameters {
     * Initializes a new instance of the DatabaseUpdateParameters class with
     * required arguments.
     *
-    * @param edition The edition.
     */
     public DatabaseUpdateParameters(String edition) {
         if (edition == null) {

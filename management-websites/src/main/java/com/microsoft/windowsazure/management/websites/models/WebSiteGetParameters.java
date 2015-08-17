@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -55,6 +54,6 @@ public class WebSiteGetParameters {
     *
     */
     public WebSiteGetParameters() {
-        this.setPropertiesToInclude(new LazyArrayList<String>());
+        this.setPropertiesToInclude(new ArrayList<String>());
     }
 }

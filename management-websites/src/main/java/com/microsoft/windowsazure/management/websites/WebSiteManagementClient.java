@@ -89,10 +89,12 @@ public interface WebSiteManagementClient extends Closeable, FilterableService<We
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
-    * Operations for managing web hosting plans beneath your subscription.
-    * @return The WebHostingPlansOperations value.
+    * Operations for managing the server farm in a web space.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+    * more information)
+    * @return The ServerFarmsOperations value.
     */
-    WebHostingPlanOperations getWebHostingPlansOperations();
+    ServerFarmOperations getServerFarmsOperations();
     
     /**
     * Operations for managing the web sites in a web space.  (see

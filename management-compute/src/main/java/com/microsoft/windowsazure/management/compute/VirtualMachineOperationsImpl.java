@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -42,12 +41,10 @@ import com.microsoft.windowsazure.management.compute.models.DomainJoinCredential
 import com.microsoft.windowsazure.management.compute.models.DomainJoinProvisioning;
 import com.microsoft.windowsazure.management.compute.models.DomainJoinSettings;
 import com.microsoft.windowsazure.management.compute.models.EndpointAcl;
-import com.microsoft.windowsazure.management.compute.models.IPConfiguration;
 import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancer;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
-import com.microsoft.windowsazure.management.compute.models.NetworkInterface;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
@@ -307,14 +304,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -344,157 +340,139 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             if (parameters.getProvisioningConfiguration().getInputEndpoints() != null) {
-                if (parameters.getProvisioningConfiguration().getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getInputEndpoints()).isInitialized()) {
-                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                    for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints()) {
-                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
+                Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints()) {
+                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                    inputEndpointsSequenceElement.appendChild(inputEndpointElement);
+                    
+                    if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
+                        Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                        loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
+                        inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                    }
+                    
+                    if (inputEndpointsItem.getLocalPort() != null) {
+                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                        inputEndpointElement.appendChild(localPortElement);
+                    }
+                    
+                    if (inputEndpointsItem.getName() != null) {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                        inputEndpointElement.appendChild(nameElement);
+                    }
+                    
+                    if (inputEndpointsItem.getPort() != null) {
+                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                        inputEndpointElement.appendChild(portElement);
+                    }
+                    
+                    if (inputEndpointsItem.getLoadBalancerProbe() != null) {
+                        Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                        inputEndpointElement.appendChild(loadBalancerProbeElement);
                         
-                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
-                            Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                            loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
-                            inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                        if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
+                            Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
+                            loadBalancerProbeElement.appendChild(pathElement);
                         }
                         
-                        if (inputEndpointsItem.getLocalPort() != null) {
-                            Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                            inputEndpointElement.appendChild(localPortElement);
+                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
+                        loadBalancerProbeElement.appendChild(portElement2);
+                        
+                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                        loadBalancerProbeElement.appendChild(protocolElement);
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
+                            Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                            loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                         }
                         
-                        if (inputEndpointsItem.getName() != null) {
-                            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                            inputEndpointElement.appendChild(nameElement);
-                        }
-                        
-                        if (inputEndpointsItem.getPort() != null) {
-                            Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                            inputEndpointElement.appendChild(portElement);
-                        }
-                        
-                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
-                            Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                            inputEndpointElement.appendChild(loadBalancerProbeElement);
-                            
-                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
-                                Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
-                                loadBalancerProbeElement.appendChild(pathElement);
-                            }
-                            
-                            Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
-                            loadBalancerProbeElement.appendChild(portElement2);
-                            
-                            Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                            protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                            loadBalancerProbeElement.appendChild(protocolElement);
-                            
-                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
-                                Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                                loadBalancerProbeElement.appendChild(intervalInSecondsElement);
-                            }
-                            
-                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
-                                Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                                loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
-                            }
-                        }
-                        
-                        if (inputEndpointsItem.getProtocol() != null) {
-                            Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                            protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                            inputEndpointElement.appendChild(protocolElement2);
-                        }
-                        
-                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
-                            Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
-                            inputEndpointElement.appendChild(vipElement);
-                        }
-                        
-                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
-                            Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
-                            inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                        }
-                        
-                        if (inputEndpointsItem.getLoadBalancerName() != null) {
-                            Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
-                            loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
-                            inputEndpointElement.appendChild(loadBalancerNameElement);
-                        }
-                        
-                        if (inputEndpointsItem.getEndpointAcl() != null) {
-                            Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                            inputEndpointElement.appendChild(endpointAclElement);
-                            
-                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
-                                if (inputEndpointsItem.getEndpointAcl().getRules() instanceof LazyCollection == false || ((LazyCollection) inputEndpointsItem.getEndpointAcl().getRules()).isInitialized()) {
-                                    Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                    for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
-                                        Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                        rulesSequenceElement.appendChild(ruleElement);
-                                        
-                                        if (rulesItem.getOrder() != null) {
-                                            Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                            ruleElement.appendChild(orderElement);
-                                        }
-                                        
-                                        if (rulesItem.getAction() != null) {
-                                            Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                            actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                            ruleElement.appendChild(actionElement);
-                                        }
-                                        
-                                        if (rulesItem.getRemoteSubnet() != null) {
-                                            Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                            remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                            ruleElement.appendChild(remoteSubnetElement);
-                                        }
-                                        
-                                        if (rulesItem.getDescription() != null) {
-                                            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                            descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                            ruleElement.appendChild(descriptionElement);
-                                        }
-                                    }
-                                    endpointAclElement.appendChild(rulesSequenceElement);
-                                }
-                            }
-                        }
-                        
-                        if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
-                            Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                            idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
-                            inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
-                        }
-                        
-                        if (inputEndpointsItem.getLoadBalancerDistribution() != null) {
-                            Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                            loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
-                            inputEndpointElement.appendChild(loadBalancerDistributionElement);
+                        if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
+                            Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                            loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                         }
                     }
-                    provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
+                    
+                    if (inputEndpointsItem.getProtocol() != null) {
+                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                        inputEndpointElement.appendChild(protocolElement2);
+                    }
+                    
+                    if (inputEndpointsItem.getVirtualIPAddress() != null) {
+                        Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
+                        inputEndpointElement.appendChild(vipElement);
+                    }
+                    
+                    if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
+                        Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                        inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                    }
+                    
+                    if (inputEndpointsItem.getLoadBalancerName() != null) {
+                        Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
+                        loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
+                        inputEndpointElement.appendChild(loadBalancerNameElement);
+                    }
+                    
+                    if (inputEndpointsItem.getEndpointAcl() != null) {
+                        Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                        inputEndpointElement.appendChild(endpointAclElement);
+                        
+                        if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
+                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
+                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                                rulesSequenceElement.appendChild(ruleElement);
+                                
+                                if (rulesItem.getOrder() != null) {
+                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                                    ruleElement.appendChild(orderElement);
+                                }
+                                
+                                if (rulesItem.getAction() != null) {
+                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                                    ruleElement.appendChild(actionElement);
+                                }
+                                
+                                if (rulesItem.getRemoteSubnet() != null) {
+                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                                    ruleElement.appendChild(remoteSubnetElement);
+                                }
+                                
+                                if (rulesItem.getDescription() != null) {
+                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                                    ruleElement.appendChild(descriptionElement);
+                                }
+                            }
+                            endpointAclElement.appendChild(rulesSequenceElement);
+                        }
+                    }
                 }
+                provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
             }
             
             if (parameters.getProvisioningConfiguration().getSubnetNames() != null) {
-                if (parameters.getProvisioningConfiguration().getSubnetNames() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getSubnetNames()).isInitialized()) {
-                    Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                    for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames()) {
-                        Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                        subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
-                        subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
-                    }
-                    provisioningConfigurationElement.appendChild(subnetNamesSequenceElement);
+                Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
+                for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames()) {
+                    Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                    subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
+                    subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
                 }
+                provisioningConfigurationElement.appendChild(subnetNamesSequenceElement);
             }
             
             if (parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress() != null) {
@@ -504,72 +482,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             if (parameters.getProvisioningConfiguration().getPublicIPs() != null) {
-                if (parameters.getProvisioningConfiguration().getPublicIPs() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getPublicIPs()).isInitialized()) {
-                    Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
-                    for (ConfigurationSet.PublicIP publicIPsItem : parameters.getProvisioningConfiguration().getPublicIPs()) {
-                        Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
-                        publicIPsSequenceElement.appendChild(publicIPElement);
-                        
-                        if (publicIPsItem.getName() != null) {
-                            Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
-                            publicIPElement.appendChild(nameElement2);
-                        }
-                        
-                        if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
-                            Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                            idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
-                            publicIPElement.appendChild(idleTimeoutInMinutesElement2);
-                        }
+                Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
+                for (ConfigurationSet.PublicIP publicIPsItem : parameters.getProvisioningConfiguration().getPublicIPs()) {
+                    Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
+                    publicIPsSequenceElement.appendChild(publicIPElement);
+                    
+                    if (publicIPsItem.getName() != null) {
+                        Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
+                        publicIPElement.appendChild(nameElement2);
                     }
-                    provisioningConfigurationElement.appendChild(publicIPsSequenceElement);
                 }
-            }
-            
-            if (parameters.getProvisioningConfiguration().getNetworkInterfaces() != null) {
-                if (parameters.getProvisioningConfiguration().getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getNetworkInterfaces()).isInitialized()) {
-                    Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
-                    for (NetworkInterface networkInterfacesItem : parameters.getProvisioningConfiguration().getNetworkInterfaces()) {
-                        Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
-                        networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
-                        
-                        if (networkInterfacesItem.getName() != null) {
-                            Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
-                            networkInterfaceElement.appendChild(nameElement3);
-                        }
-                        
-                        if (networkInterfacesItem.getIPConfigurations() != null) {
-                            if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
-                                Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
-                                for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
-                                    Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
-                                    iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
-                                    
-                                    if (iPConfigurationsItem.getSubnetName() != null) {
-                                        Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                        subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
-                                        iPConfigurationElement.appendChild(subnetNameElement);
-                                    }
-                                    
-                                    if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
-                                        Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                        staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
-                                        iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
-                                    }
-                                }
-                                networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
-                            }
-                        }
-                    }
-                    provisioningConfigurationElement.appendChild(networkInterfacesSequenceElement);
-                }
-            }
-            
-            if (parameters.getProvisioningConfiguration().getNetworkSecurityGroup() != null) {
-                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getNetworkSecurityGroup()));
-                provisioningConfigurationElement.appendChild(networkSecurityGroupElement);
+                provisioningConfigurationElement.appendChild(publicIPsSequenceElement);
             }
             
             if (parameters.getProvisioningConfiguration().getComputerName() != null) {
@@ -650,26 +574,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null) {
-                if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getStoredCertificateSettings()).isInitialized()) {
-                    Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                    for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings()) {
-                        Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
-                        storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
-                        
-                        Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                        storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
-                        certificateSettingElement.appendChild(storeLocationElement);
-                        
-                        Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                        storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
-                        certificateSettingElement.appendChild(storeNameElement);
-                        
-                        Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                        thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
-                        certificateSettingElement.appendChild(thumbprintElement);
-                    }
-                    provisioningConfigurationElement.appendChild(storedCertificateSettingsSequenceElement);
+                Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
+                for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings()) {
+                    Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
+                    storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
+                    
+                    Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
+                    storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
+                    certificateSettingElement.appendChild(storeLocationElement);
+                    
+                    Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
+                    storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
+                    certificateSettingElement.appendChild(storeNameElement);
+                    
+                    Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                    thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
+                    certificateSettingElement.appendChild(thumbprintElement);
                 }
+                provisioningConfigurationElement.appendChild(storedCertificateSettingsSequenceElement);
             }
             
             if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement() != null) {
@@ -677,24 +599,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(winRMElement);
                 
                 if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() != null) {
-                    if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners()).isInitialized()) {
-                        Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                        for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners()) {
-                            Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
-                            listenersSequenceElement.appendChild(listenerElement);
-                            
-                            if (listenersItem.getCertificateThumbprint() != null) {
-                                Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
-                                listenerElement.appendChild(certificateThumbprintElement);
-                            }
-                            
-                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                            listenerElement.appendChild(protocolElement3);
+                    Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
+                    for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners()) {
+                        Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
+                        listenersSequenceElement.appendChild(listenerElement);
+                        
+                        if (listenersItem.getCertificateThumbprint() != null) {
+                            Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
+                            certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
+                            listenerElement.appendChild(certificateThumbprintElement);
                         }
-                        winRMElement.appendChild(listenersSequenceElement);
+                        
+                        Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                        listenerElement.appendChild(protocolElement3);
                     }
+                    winRMElement.appendChild(listenersSequenceElement);
                 }
             }
             
@@ -733,41 +653,37 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(sSHElement);
                 
                 if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null) {
-                    if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys()).isInitialized()) {
-                        Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                        for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys()) {
-                            Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
-                            publicKeysSequenceElement.appendChild(publicKeyElement);
-                            
-                            Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                            fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
-                            publicKeyElement.appendChild(fingerprintElement);
-                            
-                            Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                            pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
-                            publicKeyElement.appendChild(pathElement2);
-                        }
-                        sSHElement.appendChild(publicKeysSequenceElement);
+                    Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
+                    for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys()) {
+                        Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
+                        publicKeysSequenceElement.appendChild(publicKeyElement);
+                        
+                        Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                        fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
+                        publicKeyElement.appendChild(fingerprintElement);
+                        
+                        Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                        pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
+                        publicKeyElement.appendChild(pathElement2);
                     }
+                    sSHElement.appendChild(publicKeysSequenceElement);
                 }
                 
                 if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null) {
-                    if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs()).isInitialized()) {
-                        Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                        for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs()) {
-                            Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
-                            keyPairsSequenceElement.appendChild(keyPairElement);
-                            
-                            Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                            fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
-                            keyPairElement.appendChild(fingerprintElement2);
-                            
-                            Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                            pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
-                            keyPairElement.appendChild(pathElement3);
-                        }
-                        sSHElement.appendChild(keyPairsSequenceElement);
+                    Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
+                    for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs()) {
+                        Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
+                        keyPairsSequenceElement.appendChild(keyPairElement);
+                        
+                        Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                        fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
+                        keyPairElement.appendChild(fingerprintElement2);
+                        
+                        Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                        pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
+                        keyPairElement.appendChild(pathElement3);
                     }
+                    sSHElement.appendChild(keyPairsSequenceElement);
                 }
             }
             
@@ -919,14 +835,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1175,14 +1090,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1202,524 +1116,438 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         persistentVMRoleElement.appendChild(roleTypeElement);
         
         if (parameters.getConfigurationSets() != null) {
-            if (parameters.getConfigurationSets() instanceof LazyCollection == false || ((LazyCollection) parameters.getConfigurationSets()).isInitialized()) {
-                Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
-                    Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
-                    configurationSetsSequenceElement.appendChild(configurationSetElement);
-                    
-                    if (configurationSetsItem.getConfigurationSetType() != null) {
-                        Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                        configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
-                        configurationSetElement.appendChild(configurationSetTypeElement);
-                    }
-                    
-                    if (configurationSetsItem.getInputEndpoints() != null) {
-                        if (configurationSetsItem.getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getInputEndpoints()).isInitialized()) {
-                            Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                            for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
-                                Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                                inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                                
-                                if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
-                                    Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                                    loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
-                                    inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLocalPort() != null) {
-                                    Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                                    inputEndpointElement.appendChild(localPortElement);
-                                }
-                                
-                                if (inputEndpointsItem.getName() != null) {
-                                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                                    inputEndpointElement.appendChild(nameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getPort() != null) {
-                                    Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                                    inputEndpointElement.appendChild(portElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerProbe() != null) {
-                                    Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                                    inputEndpointElement.appendChild(loadBalancerProbeElement);
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
-                                        Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                        pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
-                                        loadBalancerProbeElement.appendChild(pathElement);
-                                    }
-                                    
-                                    Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
-                                    loadBalancerProbeElement.appendChild(portElement2);
-                                    
-                                    Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                                    loadBalancerProbeElement.appendChild(protocolElement);
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
-                                        Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                        intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                                        loadBalancerProbeElement.appendChild(intervalInSecondsElement);
-                                    }
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
-                                        Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                        timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                                        loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
-                                    }
-                                }
-                                
-                                if (inputEndpointsItem.getProtocol() != null) {
-                                    Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                                    inputEndpointElement.appendChild(protocolElement2);
-                                }
-                                
-                                if (inputEndpointsItem.getVirtualIPAddress() != null) {
-                                    Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                    vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
-                                    inputEndpointElement.appendChild(vipElement);
-                                }
-                                
-                                if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
-                                    Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
-                                    inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerName() != null) {
-                                    Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
-                                    loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
-                                    inputEndpointElement.appendChild(loadBalancerNameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getEndpointAcl() != null) {
-                                    Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                                    inputEndpointElement.appendChild(endpointAclElement);
-                                    
-                                    if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
-                                        if (inputEndpointsItem.getEndpointAcl().getRules() instanceof LazyCollection == false || ((LazyCollection) inputEndpointsItem.getEndpointAcl().getRules()).isInitialized()) {
-                                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
-                                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                                rulesSequenceElement.appendChild(ruleElement);
-                                                
-                                                if (rulesItem.getOrder() != null) {
-                                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                                    ruleElement.appendChild(orderElement);
-                                                }
-                                                
-                                                if (rulesItem.getAction() != null) {
-                                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                                    ruleElement.appendChild(actionElement);
-                                                }
-                                                
-                                                if (rulesItem.getRemoteSubnet() != null) {
-                                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                                    ruleElement.appendChild(remoteSubnetElement);
-                                                }
-                                                
-                                                if (rulesItem.getDescription() != null) {
-                                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                                    ruleElement.appendChild(descriptionElement);
-                                                }
-                                            }
-                                            endpointAclElement.appendChild(rulesSequenceElement);
-                                        }
-                                    }
-                                }
-                                
-                                if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
-                                    Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                    idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
-                                    inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerDistribution() != null) {
-                                    Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                                    loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
-                                    inputEndpointElement.appendChild(loadBalancerDistributionElement);
-                                }
-                            }
-                            configurationSetElement.appendChild(inputEndpointsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getSubnetNames() != null) {
-                        if (configurationSetsItem.getSubnetNames() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSubnetNames()).isInitialized()) {
-                            Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                            for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
-                                Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
-                                subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
-                            }
-                            configurationSetElement.appendChild(subnetNamesSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
-                        Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                        staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
-                        configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
-                    }
-                    
-                    if (configurationSetsItem.getPublicIPs() != null) {
-                        if (configurationSetsItem.getPublicIPs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getPublicIPs()).isInitialized()) {
-                            Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
-                            for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
-                                Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
-                                publicIPsSequenceElement.appendChild(publicIPElement);
-                                
-                                if (publicIPsItem.getName() != null) {
-                                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
-                                    publicIPElement.appendChild(nameElement2);
-                                }
-                                
-                                if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
-                                    Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                    idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
-                                    publicIPElement.appendChild(idleTimeoutInMinutesElement2);
-                                }
-                            }
-                            configurationSetElement.appendChild(publicIPsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getNetworkInterfaces() != null) {
-                        if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
-                            Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
-                            for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
-                                Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
-                                networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
-                                
-                                if (networkInterfacesItem.getName() != null) {
-                                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
-                                    networkInterfaceElement.appendChild(nameElement3);
-                                }
-                                
-                                if (networkInterfacesItem.getIPConfigurations() != null) {
-                                    if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
-                                        Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
-                                        for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
-                                            Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
-                                            iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
-                                            
-                                            if (iPConfigurationsItem.getSubnetName() != null) {
-                                                Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                                subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
-                                                iPConfigurationElement.appendChild(subnetNameElement);
-                                            }
-                                            
-                                            if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
-                                                Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                                staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
-                                                iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
-                                            }
-                                        }
-                                        networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
-                                    }
-                                }
-                            }
-                            configurationSetElement.appendChild(networkInterfacesSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                        configurationSetElement.appendChild(networkSecurityGroupElement);
-                    }
-                    
-                    if (configurationSetsItem.getComputerName() != null) {
-                        Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                        computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
-                        configurationSetElement.appendChild(computerNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getAdminPassword() != null) {
-                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                        configurationSetElement.appendChild(adminPasswordElement);
-                    }
-                    
-                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
-                        Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
-                        configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
-                    }
-                    
-                    if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
-                        Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
-                        configurationSetElement.appendChild(enableAutomaticUpdatesElement);
-                    }
-                    
-                    if (configurationSetsItem.getTimeZone() != null) {
-                        Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                        timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
-                        configurationSetElement.appendChild(timeZoneElement);
-                    }
-                    
-                    if (configurationSetsItem.getDomainJoin() != null) {
-                        Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                        configurationSetElement.appendChild(domainJoinElement);
+            Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
+            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
+                Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
+                configurationSetsSequenceElement.appendChild(configurationSetElement);
+                
+                if (configurationSetsItem.getConfigurationSetType() != null) {
+                    Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
+                    configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
+                    configurationSetElement.appendChild(configurationSetTypeElement);
+                }
+                
+                if (configurationSetsItem.getInputEndpoints() != null) {
+                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
+                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
-                            Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                            domainJoinElement.appendChild(credentialsElement);
+                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
+                            Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                            loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
+                            inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLocalPort() != null) {
+                            Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                            inputEndpointElement.appendChild(localPortElement);
+                        }
+                        
+                        if (inputEndpointsItem.getName() != null) {
+                            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                            inputEndpointElement.appendChild(nameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getPort() != null) {
+                            Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                            inputEndpointElement.appendChild(portElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
+                            Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                            inputEndpointElement.appendChild(loadBalancerProbeElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
-                                Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                                domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
-                                credentialsElement.appendChild(domainElement);
+                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
+                                Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                                pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
+                                loadBalancerProbeElement.appendChild(pathElement);
                             }
                             
-                            Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
-                            usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
-                            credentialsElement.appendChild(usernameElement);
+                            Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
+                            loadBalancerProbeElement.appendChild(portElement2);
                             
-                            Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
-                            passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
-                            credentialsElement.appendChild(passwordElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
-                            Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                            joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
-                            domainJoinElement.appendChild(joinDomainElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
-                            Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                            machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
-                            domainJoinElement.appendChild(machineObjectOUElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
-                            Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                            domainJoinElement.appendChild(provisioningElement);
+                            Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                            loadBalancerProbeElement.appendChild(protocolElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
-                                Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                                accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
-                                provisioningElement.appendChild(accountDataElement);
+                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
+                                Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                                loadBalancerProbeElement.appendChild(intervalInSecondsElement);
+                            }
+                            
+                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
+                                Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                                loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
-                    }
-                    
-                    if (configurationSetsItem.getStoredCertificateSettings() != null) {
-                        if (configurationSetsItem.getStoredCertificateSettings() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getStoredCertificateSettings()).isInitialized()) {
-                            Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                            for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
-                                Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
-                                storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
-                                
-                                Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                                storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
-                                certificateSettingElement.appendChild(storeLocationElement);
-                                
-                                Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                                storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
-                                certificateSettingElement.appendChild(storeNameElement);
-                                
-                                Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                                thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
-                                certificateSettingElement.appendChild(thumbprintElement);
-                            }
-                            configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getWindowsRemoteManagement() != null) {
-                        Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                        configurationSetElement.appendChild(winRMElement);
                         
-                        if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
-                            if (configurationSetsItem.getWindowsRemoteManagement().getListeners() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getWindowsRemoteManagement().getListeners()).isInitialized()) {
-                                Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                                for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
-                                    Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
-                                    listenersSequenceElement.appendChild(listenerElement);
+                        if (inputEndpointsItem.getProtocol() != null) {
+                            Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                            inputEndpointElement.appendChild(protocolElement2);
+                        }
+                        
+                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
+                            Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
+                            inputEndpointElement.appendChild(vipElement);
+                        }
+                        
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
+                            Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                            inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLoadBalancerName() != null) {
+                            Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
+                            loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
+                            inputEndpointElement.appendChild(loadBalancerNameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getEndpointAcl() != null) {
+                            Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                            inputEndpointElement.appendChild(endpointAclElement);
+                            
+                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
+                                Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
+                                    Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                                    rulesSequenceElement.appendChild(ruleElement);
                                     
-                                    if (listenersItem.getCertificateThumbprint() != null) {
-                                        Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                        certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
-                                        listenerElement.appendChild(certificateThumbprintElement);
+                                    if (rulesItem.getOrder() != null) {
+                                        Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                                        orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                                        ruleElement.appendChild(orderElement);
                                     }
                                     
-                                    Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                                    listenerElement.appendChild(protocolElement3);
+                                    if (rulesItem.getAction() != null) {
+                                        Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                                        actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                                        ruleElement.appendChild(actionElement);
+                                    }
+                                    
+                                    if (rulesItem.getRemoteSubnet() != null) {
+                                        Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                                        remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                                        ruleElement.appendChild(remoteSubnetElement);
+                                    }
+                                    
+                                    if (rulesItem.getDescription() != null) {
+                                        Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                                        descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                                        ruleElement.appendChild(descriptionElement);
+                                    }
                                 }
-                                winRMElement.appendChild(listenersSequenceElement);
+                                endpointAclElement.appendChild(rulesSequenceElement);
                             }
                         }
                     }
-                    
-                    if (configurationSetsItem.getAdminUserName() != null) {
-                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                        configurationSetElement.appendChild(adminUsernameElement);
+                    configurationSetElement.appendChild(inputEndpointsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getSubnetNames() != null) {
+                    Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
+                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
+                        Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                        subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
+                        subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
                     }
-                    
-                    if (configurationSetsItem.getHostName() != null) {
-                        Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                        hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
-                        configurationSetElement.appendChild(hostNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getUserName() != null) {
-                        Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                        userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
-                        configurationSetElement.appendChild(userNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getUserPassword() != null) {
-                        Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                        userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
-                        configurationSetElement.appendChild(userPasswordElement);
-                    }
-                    
-                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
-                        Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
-                        configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
-                    }
-                    
-                    if (configurationSetsItem.getSshSettings() != null) {
-                        Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                        configurationSetElement.appendChild(sSHElement);
+                    configurationSetElement.appendChild(subnetNamesSequenceElement);
+                }
+                
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
+                    Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                    staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                    configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                }
+                
+                if (configurationSetsItem.getPublicIPs() != null) {
+                    Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
+                    for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
+                        Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
+                        publicIPsSequenceElement.appendChild(publicIPElement);
                         
-                        if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
-                            if (configurationSetsItem.getSshSettings().getPublicKeys() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getPublicKeys()).isInitialized()) {
-                                Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                                for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
-                                    Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
-                                    publicKeysSequenceElement.appendChild(publicKeyElement);
-                                    
-                                    Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                    fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
-                                    publicKeyElement.appendChild(fingerprintElement);
-                                    
-                                    Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                    pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
-                                    publicKeyElement.appendChild(pathElement2);
-                                }
-                                sSHElement.appendChild(publicKeysSequenceElement);
-                            }
-                        }
-                        
-                        if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
-                            if (configurationSetsItem.getSshSettings().getKeyPairs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getKeyPairs()).isInitialized()) {
-                                Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                                for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
-                                    Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
-                                    keyPairsSequenceElement.appendChild(keyPairElement);
-                                    
-                                    Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                    fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
-                                    keyPairElement.appendChild(fingerprintElement2);
-                                    
-                                    Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                    pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
-                                    keyPairElement.appendChild(pathElement3);
-                                }
-                                sSHElement.appendChild(keyPairsSequenceElement);
-                            }
+                        if (publicIPsItem.getName() != null) {
+                            Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
+                            publicIPElement.appendChild(nameElement2);
                         }
                     }
+                    configurationSetElement.appendChild(publicIPsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getComputerName() != null) {
+                    Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
+                    computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
+                    configurationSetElement.appendChild(computerNameElement);
+                }
+                
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
+                
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
+                    Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
+                    configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
+                }
+                
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
+                    Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
+                    configurationSetElement.appendChild(enableAutomaticUpdatesElement);
+                }
+                
+                if (configurationSetsItem.getTimeZone() != null) {
+                    Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
+                    timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
+                    configurationSetElement.appendChild(timeZoneElement);
+                }
+                
+                if (configurationSetsItem.getDomainJoin() != null) {
+                    Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
+                    configurationSetElement.appendChild(domainJoinElement);
                     
-                    if (configurationSetsItem.getCustomData() != null) {
-                        Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
-                        customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
-                        configurationSetElement.appendChild(customDataElement);
+                    if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
+                        Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
+                        domainJoinElement.appendChild(credentialsElement);
+                        
+                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
+                            Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
+                            domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
+                            credentialsElement.appendChild(domainElement);
+                        }
+                        
+                        Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
+                        usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
+                        credentialsElement.appendChild(usernameElement);
+                        
+                        Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
+                        passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
+                        credentialsElement.appendChild(passwordElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
+                        Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
+                        joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
+                        domainJoinElement.appendChild(joinDomainElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
+                        Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
+                        machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
+                        domainJoinElement.appendChild(machineObjectOUElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
+                        Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
+                        domainJoinElement.appendChild(provisioningElement);
+                        
+                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
+                            Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
+                            accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
+                            provisioningElement.appendChild(accountDataElement);
+                        }
                     }
                 }
-                persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
+                
+                if (configurationSetsItem.getStoredCertificateSettings() != null) {
+                    Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
+                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
+                        Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
+                        storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
+                        
+                        Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
+                        storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
+                        certificateSettingElement.appendChild(storeLocationElement);
+                        
+                        Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
+                        storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
+                        certificateSettingElement.appendChild(storeNameElement);
+                        
+                        Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
+                        certificateSettingElement.appendChild(thumbprintElement);
+                    }
+                    configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getWindowsRemoteManagement() != null) {
+                    Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
+                    configurationSetElement.appendChild(winRMElement);
+                    
+                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
+                        Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
+                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
+                            Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
+                            listenersSequenceElement.appendChild(listenerElement);
+                            
+                            if (listenersItem.getCertificateThumbprint() != null) {
+                                Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
+                                certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
+                                listenerElement.appendChild(certificateThumbprintElement);
+                            }
+                            
+                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                            listenerElement.appendChild(protocolElement3);
+                        }
+                        winRMElement.appendChild(listenersSequenceElement);
+                    }
+                }
+                
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
+                
+                if (configurationSetsItem.getHostName() != null) {
+                    Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
+                    hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
+                    configurationSetElement.appendChild(hostNameElement);
+                }
+                
+                if (configurationSetsItem.getUserName() != null) {
+                    Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
+                    userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
+                    configurationSetElement.appendChild(userNameElement);
+                }
+                
+                if (configurationSetsItem.getUserPassword() != null) {
+                    Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
+                    userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
+                    configurationSetElement.appendChild(userPasswordElement);
+                }
+                
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
+                    Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
+                    configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
+                }
+                
+                if (configurationSetsItem.getSshSettings() != null) {
+                    Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
+                    configurationSetElement.appendChild(sSHElement);
+                    
+                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
+                        Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
+                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
+                            Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
+                            publicKeysSequenceElement.appendChild(publicKeyElement);
+                            
+                            Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                            fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
+                            publicKeyElement.appendChild(fingerprintElement);
+                            
+                            Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
+                            publicKeyElement.appendChild(pathElement2);
+                        }
+                        sSHElement.appendChild(publicKeysSequenceElement);
+                    }
+                    
+                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
+                        Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
+                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
+                            Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
+                            keyPairsSequenceElement.appendChild(keyPairElement);
+                            
+                            Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                            fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
+                            keyPairElement.appendChild(fingerprintElement2);
+                            
+                            Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
+                            keyPairElement.appendChild(pathElement3);
+                        }
+                        sSHElement.appendChild(keyPairsSequenceElement);
+                    }
+                }
+                
+                if (configurationSetsItem.getCustomData() != null) {
+                    Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
+                    customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
+                    configurationSetElement.appendChild(customDataElement);
+                }
             }
+            persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
         }
         
         if (parameters.getResourceExtensionReferences() != null) {
-            if (parameters.getResourceExtensionReferences() instanceof LazyCollection == false || ((LazyCollection) parameters.getResourceExtensionReferences()).isInitialized()) {
-                Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
-                    Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
-                    resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
-                    
-                    if (resourceExtensionReferencesItem.getReferenceName() != null) {
-                        Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
-                        referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
-                        resourceExtensionReferenceElement.appendChild(referenceNameElement);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getPublisher() != null) {
-                        Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
-                        publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
-                        resourceExtensionReferenceElement.appendChild(publisherElement);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getName() != null) {
-                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                        resourceExtensionReferenceElement.appendChild(nameElement4);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getVersion() != null) {
-                        Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
-                        versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
-                        resourceExtensionReferenceElement.appendChild(versionElement);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
-                        if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() instanceof LazyCollection == false || ((LazyCollection) resourceExtensionReferencesItem.getResourceExtensionParameterValues()).isInitialized()) {
-                            Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                            for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
-                                Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
-                                resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
-                                
-                                if (resourceExtensionParameterValuesItem.getKey() != null) {
-                                    Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
-                                    keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
-                                    resourceExtensionParameterValueElement.appendChild(keyElement);
-                                }
-                                
-                                if (resourceExtensionParameterValuesItem.getValue() != null) {
-                                    Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                    valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
-                                    resourceExtensionParameterValueElement.appendChild(valueElement);
-                                }
-                                
-                                if (resourceExtensionParameterValuesItem.getType() != null) {
-                                    Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                    typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
-                                    resourceExtensionParameterValueElement.appendChild(typeElement);
-                                }
-                            }
-                            resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+            Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
+                Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                
+                if (resourceExtensionReferencesItem.getReferenceName() != null) {
+                    Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                    referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                    resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getPublisher() != null) {
+                    Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                    resourceExtensionReferenceElement.appendChild(publisherElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getName() != null) {
+                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                    resourceExtensionReferenceElement.appendChild(nameElement3);
+                }
+                
+                if (resourceExtensionReferencesItem.getVersion() != null) {
+                    Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                    resourceExtensionReferenceElement.appendChild(versionElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
+                    Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
+                        Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                        resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                        
+                        if (resourceExtensionParameterValuesItem.getKey() != null) {
+                            Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                            keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                            resourceExtensionParameterValueElement.appendChild(keyElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getValue() != null) {
+                            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
+                            resourceExtensionParameterValueElement.appendChild(valueElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getType() != null) {
+                            Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
+                            resourceExtensionParameterValueElement.appendChild(typeElement);
                         }
                     }
-                    
-                    if (resourceExtensionReferencesItem.getState() != null) {
-                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
-                        resourceExtensionReferenceElement.appendChild(stateElement);
-                    }
+                    resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
                 }
-                persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+                
+                if (resourceExtensionReferencesItem.getState() != null) {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
+                }
             }
+            persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
         }
         
         if (parameters.getVMImageName() != null) {
@@ -1741,62 +1569,54 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         if (parameters.getDataVirtualHardDisks() != null) {
-            if (parameters.getDataVirtualHardDisks() instanceof LazyCollection == false || ((LazyCollection) parameters.getDataVirtualHardDisks()).isInitialized()) {
-                Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
-                    Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
-                    dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
-                    
-                    if (dataVirtualHardDisksItem.getHostCaching() != null) {
-                        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                        hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
-                        dataVirtualHardDiskElement.appendChild(hostCachingElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLabel() != null) {
-                        Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                        diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
-                        dataVirtualHardDiskElement.appendChild(diskLabelElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getName() != null) {
-                        Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                        diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
-                        dataVirtualHardDiskElement.appendChild(diskNameElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
-                        Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                        lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
-                        dataVirtualHardDiskElement.appendChild(lunElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
-                        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getMediaLink() != null) {
-                        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                        mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
-                        dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
-                        Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
-                        sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
-                        dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getIOType() != null) {
-                        Element iOTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-                        iOTypeElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getIOType()));
-                        dataVirtualHardDiskElement.appendChild(iOTypeElement);
-                    }
+            Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
+            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
+                Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+                dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
+                
+                if (dataVirtualHardDisksItem.getHostCaching() != null) {
+                    Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+                    hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
+                    dataVirtualHardDiskElement.appendChild(hostCachingElement);
                 }
-                persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
+                
+                if (dataVirtualHardDisksItem.getLabel() != null) {
+                    Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
+                    diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
+                    dataVirtualHardDiskElement.appendChild(diskLabelElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getName() != null) {
+                    Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
+                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
+                    dataVirtualHardDiskElement.appendChild(diskNameElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
+                    Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
+                    lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
+                    dataVirtualHardDiskElement.appendChild(lunElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                    Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                    dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getMediaLink() != null) {
+                    Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                    Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                    sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
+                }
             }
+            persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
         }
         
         if (parameters.getOSVirtualHardDisk() != null) {
@@ -1837,12 +1657,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
                 osElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getOperatingSystem()));
                 oSVirtualHardDiskElement.appendChild(osElement);
-            }
-            
-            if (parameters.getOSVirtualHardDisk().getIOType() != null) {
-                Element iOTypeElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-                iOTypeElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getIOType()));
-                oSVirtualHardDiskElement.appendChild(iOTypeElement2);
             }
         }
         
@@ -2073,14 +1887,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2100,704 +1913,602 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         deploymentElement.appendChild(deploymentSlotElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         deploymentElement.appendChild(labelElement);
         
-        if (parameters.getRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getRoles()).isInitialized()) {
-            Element roleListSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleList");
-            for (Role roleListItem : parameters.getRoles()) {
-                Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
-                roleListSequenceElement.appendChild(roleElement);
-                
-                if (roleListItem.getRoleName() != null) {
-                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                    roleNameElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleName()));
-                    roleElement.appendChild(roleNameElement);
-                }
-                
-                if (roleListItem.getOSVersion() != null) {
-                    Element osVersionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
-                    osVersionElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVersion()));
-                    roleElement.appendChild(osVersionElement);
-                }
-                
-                if (roleListItem.getRoleType() != null) {
-                    Element roleTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleType");
-                    roleTypeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleType()));
-                    roleElement.appendChild(roleTypeElement);
-                }
-                
-                if (roleListItem.getConfigurationSets() != null) {
-                    if (roleListItem.getConfigurationSets() instanceof LazyCollection == false || ((LazyCollection) roleListItem.getConfigurationSets()).isInitialized()) {
-                        Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                        for (ConfigurationSet configurationSetsItem : roleListItem.getConfigurationSets()) {
-                            Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
-                            configurationSetsSequenceElement.appendChild(configurationSetElement);
+        Element roleListSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleList");
+        for (Role roleListItem : parameters.getRoles()) {
+            Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
+            roleListSequenceElement.appendChild(roleElement);
+            
+            if (roleListItem.getRoleName() != null) {
+                Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                roleNameElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleName()));
+                roleElement.appendChild(roleNameElement);
+            }
+            
+            if (roleListItem.getOSVersion() != null) {
+                Element osVersionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
+                osVersionElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVersion()));
+                roleElement.appendChild(osVersionElement);
+            }
+            
+            if (roleListItem.getRoleType() != null) {
+                Element roleTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleType");
+                roleTypeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleType()));
+                roleElement.appendChild(roleTypeElement);
+            }
+            
+            if (roleListItem.getConfigurationSets() != null) {
+                Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
+                for (ConfigurationSet configurationSetsItem : roleListItem.getConfigurationSets()) {
+                    Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
+                    configurationSetsSequenceElement.appendChild(configurationSetElement);
+                    
+                    if (configurationSetsItem.getConfigurationSetType() != null) {
+                        Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
+                        configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
+                        configurationSetElement.appendChild(configurationSetTypeElement);
+                    }
+                    
+                    if (configurationSetsItem.getInputEndpoints() != null) {
+                        Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                        for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
+                            Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                            inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                             
-                            if (configurationSetsItem.getConfigurationSetType() != null) {
-                                Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                                configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
-                                configurationSetElement.appendChild(configurationSetTypeElement);
+                            if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
+                                Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                                loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
+                                inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                             }
                             
-                            if (configurationSetsItem.getInputEndpoints() != null) {
-                                if (configurationSetsItem.getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getInputEndpoints()).isInitialized()) {
-                                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
-                                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                                        
-                                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
-                                            Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                                            loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
-                                            inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getLocalPort() != null) {
-                                            Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                                            inputEndpointElement.appendChild(localPortElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getName() != null) {
-                                            Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                            nameElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                                            inputEndpointElement.appendChild(nameElement2);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getPort() != null) {
-                                            Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                                            inputEndpointElement.appendChild(portElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
-                                            Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                                            inputEndpointElement.appendChild(loadBalancerProbeElement);
-                                            
-                                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
-                                                Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                                pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
-                                                loadBalancerProbeElement.appendChild(pathElement);
-                                            }
-                                            
-                                            Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
-                                            loadBalancerProbeElement.appendChild(portElement2);
-                                            
-                                            Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                                            loadBalancerProbeElement.appendChild(protocolElement);
-                                            
-                                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
-                                                Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                                                loadBalancerProbeElement.appendChild(intervalInSecondsElement);
-                                            }
-                                            
-                                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
-                                                Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                                                loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
-                                            }
-                                        }
-                                        
-                                        if (inputEndpointsItem.getProtocol() != null) {
-                                            Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                                            inputEndpointElement.appendChild(protocolElement2);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
-                                            Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
-                                            inputEndpointElement.appendChild(vipElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
-                                            Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
-                                            inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getLoadBalancerName() != null) {
-                                            Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
-                                            loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
-                                            inputEndpointElement.appendChild(loadBalancerNameElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getEndpointAcl() != null) {
-                                            Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                                            inputEndpointElement.appendChild(endpointAclElement);
-                                            
-                                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
-                                                if (inputEndpointsItem.getEndpointAcl().getRules() instanceof LazyCollection == false || ((LazyCollection) inputEndpointsItem.getEndpointAcl().getRules()).isInitialized()) {
-                                                    Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                                    for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
-                                                        Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                                        rulesSequenceElement.appendChild(ruleElement);
-                                                        
-                                                        if (rulesItem.getOrder() != null) {
-                                                            Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                                            ruleElement.appendChild(orderElement);
-                                                        }
-                                                        
-                                                        if (rulesItem.getAction() != null) {
-                                                            Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                                            actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                                            ruleElement.appendChild(actionElement);
-                                                        }
-                                                        
-                                                        if (rulesItem.getRemoteSubnet() != null) {
-                                                            Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                                            remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                                            ruleElement.appendChild(remoteSubnetElement);
-                                                        }
-                                                        
-                                                        if (rulesItem.getDescription() != null) {
-                                                            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                                            descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                                            ruleElement.appendChild(descriptionElement);
-                                                        }
-                                                    }
-                                                    endpointAclElement.appendChild(rulesSequenceElement);
-                                                }
-                                            }
-                                        }
-                                        
-                                        if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
-                                            Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                            idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
-                                            inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
-                                        }
-                                        
-                                        if (inputEndpointsItem.getLoadBalancerDistribution() != null) {
-                                            Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                                            loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
-                                            inputEndpointElement.appendChild(loadBalancerDistributionElement);
-                                        }
-                                    }
-                                    configurationSetElement.appendChild(inputEndpointsSequenceElement);
-                                }
+                            if (inputEndpointsItem.getLocalPort() != null) {
+                                Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                                localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                                inputEndpointElement.appendChild(localPortElement);
                             }
                             
-                            if (configurationSetsItem.getSubnetNames() != null) {
-                                if (configurationSetsItem.getSubnetNames() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSubnetNames()).isInitialized()) {
-                                    Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
-                                        Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                        subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
-                                        subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
-                                    }
-                                    configurationSetElement.appendChild(subnetNamesSequenceElement);
-                                }
+                            if (inputEndpointsItem.getName() != null) {
+                                Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                nameElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                                inputEndpointElement.appendChild(nameElement2);
                             }
                             
-                            if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
-                                Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
-                                configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                            if (inputEndpointsItem.getPort() != null) {
+                                Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                                portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                                inputEndpointElement.appendChild(portElement);
                             }
                             
-                            if (configurationSetsItem.getPublicIPs() != null) {
-                                if (configurationSetsItem.getPublicIPs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getPublicIPs()).isInitialized()) {
-                                    Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
-                                    for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
-                                        Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
-                                        publicIPsSequenceElement.appendChild(publicIPElement);
-                                        
-                                        if (publicIPsItem.getName() != null) {
-                                            Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                            nameElement3.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
-                                            publicIPElement.appendChild(nameElement3);
-                                        }
-                                        
-                                        if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
-                                            Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                            idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
-                                            publicIPElement.appendChild(idleTimeoutInMinutesElement2);
-                                        }
-                                    }
-                                    configurationSetElement.appendChild(publicIPsSequenceElement);
-                                }
-                            }
-                            
-                            if (configurationSetsItem.getNetworkInterfaces() != null) {
-                                if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
-                                    Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
-                                    for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
-                                        Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
-                                        networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
-                                        
-                                        if (networkInterfacesItem.getName() != null) {
-                                            Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                            nameElement4.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
-                                            networkInterfaceElement.appendChild(nameElement4);
-                                        }
-                                        
-                                        if (networkInterfacesItem.getIPConfigurations() != null) {
-                                            if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
-                                                Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
-                                                for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
-                                                    Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
-                                                    iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
-                                                    
-                                                    if (iPConfigurationsItem.getSubnetName() != null) {
-                                                        Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                                        subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
-                                                        iPConfigurationElement.appendChild(subnetNameElement);
-                                                    }
-                                                    
-                                                    if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
-                                                        Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                                        staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
-                                                        iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
-                                                    }
-                                                }
-                                                networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
-                                            }
-                                        }
-                                    }
-                                    configurationSetElement.appendChild(networkInterfacesSequenceElement);
-                                }
-                            }
-                            
-                            if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                                Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                                networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                                configurationSetElement.appendChild(networkSecurityGroupElement);
-                            }
-                            
-                            if (configurationSetsItem.getComputerName() != null) {
-                                Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                                computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
-                                configurationSetElement.appendChild(computerNameElement);
-                            }
-                            
-                            if (configurationSetsItem.getAdminPassword() != null) {
-                                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                                configurationSetElement.appendChild(adminPasswordElement);
-                            }
-                            
-                            if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
-                                Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                                resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
-                                configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
-                            }
-                            
-                            if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
-                                Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                                enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
-                                configurationSetElement.appendChild(enableAutomaticUpdatesElement);
-                            }
-                            
-                            if (configurationSetsItem.getTimeZone() != null) {
-                                Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                                timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
-                                configurationSetElement.appendChild(timeZoneElement);
-                            }
-                            
-                            if (configurationSetsItem.getDomainJoin() != null) {
-                                Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                                configurationSetElement.appendChild(domainJoinElement);
+                            if (inputEndpointsItem.getLoadBalancerProbe() != null) {
+                                Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                                inputEndpointElement.appendChild(loadBalancerProbeElement);
                                 
-                                if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
-                                    Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                                    domainJoinElement.appendChild(credentialsElement);
-                                    
-                                    if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
-                                        Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                                        domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
-                                        credentialsElement.appendChild(domainElement);
-                                    }
-                                    
-                                    Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
-                                    usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
-                                    credentialsElement.appendChild(usernameElement);
-                                    
-                                    Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
-                                    passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
-                                    credentialsElement.appendChild(passwordElement);
+                                if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
+                                    Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                                    pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
+                                    loadBalancerProbeElement.appendChild(pathElement);
                                 }
                                 
-                                if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
-                                    Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                                    joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
-                                    domainJoinElement.appendChild(joinDomainElement);
+                                Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                                portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
+                                loadBalancerProbeElement.appendChild(portElement2);
+                                
+                                Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                                protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                                loadBalancerProbeElement.appendChild(protocolElement);
+                                
+                                if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
+                                    Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                                    intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                                    loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                                 }
                                 
-                                if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
-                                    Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                                    machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
-                                    domainJoinElement.appendChild(machineObjectOUElement);
-                                }
-                                
-                                if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
-                                    Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                                    domainJoinElement.appendChild(provisioningElement);
-                                    
-                                    if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
-                                        Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                                        accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
-                                        provisioningElement.appendChild(accountDataElement);
-                                    }
+                                if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
+                                    Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                                    timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                                    loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                                 }
                             }
                             
-                            if (configurationSetsItem.getStoredCertificateSettings() != null) {
-                                if (configurationSetsItem.getStoredCertificateSettings() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getStoredCertificateSettings()).isInitialized()) {
-                                    Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
-                                        Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
-                                        storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
+                            if (inputEndpointsItem.getProtocol() != null) {
+                                Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                                protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                                inputEndpointElement.appendChild(protocolElement2);
+                            }
+                            
+                            if (inputEndpointsItem.getVirtualIPAddress() != null) {
+                                Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                                vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
+                                inputEndpointElement.appendChild(vipElement);
+                            }
+                            
+                            if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
+                                Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                                enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                                inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                            }
+                            
+                            if (inputEndpointsItem.getLoadBalancerName() != null) {
+                                Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
+                                loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
+                                inputEndpointElement.appendChild(loadBalancerNameElement);
+                            }
+                            
+                            if (inputEndpointsItem.getEndpointAcl() != null) {
+                                Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                                inputEndpointElement.appendChild(endpointAclElement);
+                                
+                                if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
+                                    Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                                    for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
+                                        Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                                        rulesSequenceElement.appendChild(ruleElement);
                                         
-                                        Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                                        storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
-                                        certificateSettingElement.appendChild(storeLocationElement);
+                                        if (rulesItem.getOrder() != null) {
+                                            Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                                            ruleElement.appendChild(orderElement);
+                                        }
                                         
-                                        Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                                        storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
-                                        certificateSettingElement.appendChild(storeNameElement);
+                                        if (rulesItem.getAction() != null) {
+                                            Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                                            actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                                            ruleElement.appendChild(actionElement);
+                                        }
                                         
-                                        Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                                        thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
-                                        certificateSettingElement.appendChild(thumbprintElement);
-                                    }
-                                    configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
-                                }
-                            }
-                            
-                            if (configurationSetsItem.getWindowsRemoteManagement() != null) {
-                                Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                                configurationSetElement.appendChild(winRMElement);
-                                
-                                if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
-                                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getWindowsRemoteManagement().getListeners()).isInitialized()) {
-                                        Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
-                                            Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
-                                            listenersSequenceElement.appendChild(listenerElement);
-                                            
-                                            if (listenersItem.getCertificateThumbprint() != null) {
-                                                Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                                certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
-                                                listenerElement.appendChild(certificateThumbprintElement);
-                                            }
-                                            
-                                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                                            listenerElement.appendChild(protocolElement3);
+                                        if (rulesItem.getRemoteSubnet() != null) {
+                                            Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                                            remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                                            ruleElement.appendChild(remoteSubnetElement);
                                         }
-                                        winRMElement.appendChild(listenersSequenceElement);
-                                    }
-                                }
-                            }
-                            
-                            if (configurationSetsItem.getAdminUserName() != null) {
-                                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                                configurationSetElement.appendChild(adminUsernameElement);
-                            }
-                            
-                            if (configurationSetsItem.getHostName() != null) {
-                                Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                                hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
-                                configurationSetElement.appendChild(hostNameElement);
-                            }
-                            
-                            if (configurationSetsItem.getUserName() != null) {
-                                Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                                userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
-                                configurationSetElement.appendChild(userNameElement);
-                            }
-                            
-                            if (configurationSetsItem.getUserPassword() != null) {
-                                Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                                userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
-                                configurationSetElement.appendChild(userPasswordElement);
-                            }
-                            
-                            if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
-                                Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                                disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
-                                configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
-                            }
-                            
-                            if (configurationSetsItem.getSshSettings() != null) {
-                                Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                                configurationSetElement.appendChild(sSHElement);
-                                
-                                if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
-                                    if (configurationSetsItem.getSshSettings().getPublicKeys() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getPublicKeys()).isInitialized()) {
-                                        Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
-                                            Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
-                                            publicKeysSequenceElement.appendChild(publicKeyElement);
-                                            
-                                            Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
-                                            publicKeyElement.appendChild(fingerprintElement);
-                                            
-                                            Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
-                                            publicKeyElement.appendChild(pathElement2);
+                                        
+                                        if (rulesItem.getDescription() != null) {
+                                            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                                            descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                                            ruleElement.appendChild(descriptionElement);
                                         }
-                                        sSHElement.appendChild(publicKeysSequenceElement);
                                     }
+                                    endpointAclElement.appendChild(rulesSequenceElement);
                                 }
-                                
-                                if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
-                                    if (configurationSetsItem.getSshSettings().getKeyPairs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getKeyPairs()).isInitialized()) {
-                                        Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
-                                            Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
-                                            keyPairsSequenceElement.appendChild(keyPairElement);
-                                            
-                                            Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
-                                            keyPairElement.appendChild(fingerprintElement2);
-                                            
-                                            Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
-                                            keyPairElement.appendChild(pathElement3);
-                                        }
-                                        sSHElement.appendChild(keyPairsSequenceElement);
-                                    }
-                                }
-                            }
-                            
-                            if (configurationSetsItem.getCustomData() != null) {
-                                Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
-                                customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
-                                configurationSetElement.appendChild(customDataElement);
                             }
                         }
-                        roleElement.appendChild(configurationSetsSequenceElement);
+                        configurationSetElement.appendChild(inputEndpointsSequenceElement);
                     }
-                }
-                
-                if (roleListItem.getResourceExtensionReferences() != null) {
-                    if (roleListItem.getResourceExtensionReferences() instanceof LazyCollection == false || ((LazyCollection) roleListItem.getResourceExtensionReferences()).isInitialized()) {
-                        Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                        for (ResourceExtensionReference resourceExtensionReferencesItem : roleListItem.getResourceExtensionReferences()) {
-                            Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
-                            resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                    
+                    if (configurationSetsItem.getSubnetNames() != null) {
+                        Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
+                        for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
+                            Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                            subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
+                            subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
+                        }
+                        configurationSetElement.appendChild(subnetNamesSequenceElement);
+                    }
+                    
+                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
+                        Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                        staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                        configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                    }
+                    
+                    if (configurationSetsItem.getPublicIPs() != null) {
+                        Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
+                        for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
+                            Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
+                            publicIPsSequenceElement.appendChild(publicIPElement);
                             
-                            if (resourceExtensionReferencesItem.getReferenceName() != null) {
-                                Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
-                                referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
-                                resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                            if (publicIPsItem.getName() != null) {
+                                Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                                nameElement3.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
+                                publicIPElement.appendChild(nameElement3);
+                            }
+                        }
+                        configurationSetElement.appendChild(publicIPsSequenceElement);
+                    }
+                    
+                    if (configurationSetsItem.getComputerName() != null) {
+                        Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
+                        computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
+                        configurationSetElement.appendChild(computerNameElement);
+                    }
+                    
+                    if (configurationSetsItem.getAdminPassword() != null) {
+                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                        configurationSetElement.appendChild(adminPasswordElement);
+                    }
+                    
+                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
+                        Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
+                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
+                        configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
+                    }
+                    
+                    if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
+                        Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
+                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
+                        configurationSetElement.appendChild(enableAutomaticUpdatesElement);
+                    }
+                    
+                    if (configurationSetsItem.getTimeZone() != null) {
+                        Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
+                        timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
+                        configurationSetElement.appendChild(timeZoneElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin() != null) {
+                        Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
+                        configurationSetElement.appendChild(domainJoinElement);
+                        
+                        if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
+                            Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
+                            domainJoinElement.appendChild(credentialsElement);
+                            
+                            if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
+                                Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
+                                domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
+                                credentialsElement.appendChild(domainElement);
                             }
                             
-                            if (resourceExtensionReferencesItem.getPublisher() != null) {
-                                Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
-                                publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
-                                resourceExtensionReferenceElement.appendChild(publisherElement);
-                            }
+                            Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
+                            usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
+                            credentialsElement.appendChild(usernameElement);
                             
-                            if (resourceExtensionReferencesItem.getName() != null) {
-                                Element nameElement5 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                nameElement5.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                                resourceExtensionReferenceElement.appendChild(nameElement5);
-                            }
+                            Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
+                            passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
+                            credentialsElement.appendChild(passwordElement);
+                        }
+                        
+                        if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
+                            Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
+                            joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
+                            domainJoinElement.appendChild(joinDomainElement);
+                        }
+                        
+                        if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
+                            Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
+                            machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
+                            domainJoinElement.appendChild(machineObjectOUElement);
+                        }
+                        
+                        if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
+                            Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
+                            domainJoinElement.appendChild(provisioningElement);
                             
-                            if (resourceExtensionReferencesItem.getVersion() != null) {
-                                Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
-                                versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
-                                resourceExtensionReferenceElement.appendChild(versionElement);
+                            if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
+                                Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
+                                accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
+                                provisioningElement.appendChild(accountDataElement);
                             }
+                        }
+                    }
+                    
+                    if (configurationSetsItem.getStoredCertificateSettings() != null) {
+                        Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
+                        for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
+                            Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
+                            storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
                             
-                            if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
-                                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() instanceof LazyCollection == false || ((LazyCollection) resourceExtensionReferencesItem.getResourceExtensionParameterValues()).isInitialized()) {
-                                    Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
-                                        Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
-                                        resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
-                                        
-                                        if (resourceExtensionParameterValuesItem.getKey() != null) {
-                                            Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
-                                            keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
-                                            resourceExtensionParameterValueElement.appendChild(keyElement);
-                                        }
-                                        
-                                        if (resourceExtensionParameterValuesItem.getValue() != null) {
-                                            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                            valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
-                                            resourceExtensionParameterValueElement.appendChild(valueElement);
-                                        }
-                                        
-                                        if (resourceExtensionParameterValuesItem.getType() != null) {
-                                            Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
-                                            resourceExtensionParameterValueElement.appendChild(typeElement);
-                                        }
-                                    }
-                                    resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                            Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
+                            storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
+                            certificateSettingElement.appendChild(storeLocationElement);
+                            
+                            Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
+                            storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
+                            certificateSettingElement.appendChild(storeNameElement);
+                            
+                            Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                            thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
+                            certificateSettingElement.appendChild(thumbprintElement);
+                        }
+                        configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
+                    }
+                    
+                    if (configurationSetsItem.getWindowsRemoteManagement() != null) {
+                        Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
+                        configurationSetElement.appendChild(winRMElement);
+                        
+                        if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
+                            Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
+                            for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
+                                Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
+                                listenersSequenceElement.appendChild(listenerElement);
+                                
+                                if (listenersItem.getCertificateThumbprint() != null) {
+                                    Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
+                                    certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
+                                    listenerElement.appendChild(certificateThumbprintElement);
                                 }
+                                
+                                Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                                protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                                listenerElement.appendChild(protocolElement3);
+                            }
+                            winRMElement.appendChild(listenersSequenceElement);
+                        }
+                    }
+                    
+                    if (configurationSetsItem.getAdminUserName() != null) {
+                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                        configurationSetElement.appendChild(adminUsernameElement);
+                    }
+                    
+                    if (configurationSetsItem.getHostName() != null) {
+                        Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
+                        hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
+                        configurationSetElement.appendChild(hostNameElement);
+                    }
+                    
+                    if (configurationSetsItem.getUserName() != null) {
+                        Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
+                        userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
+                        configurationSetElement.appendChild(userNameElement);
+                    }
+                    
+                    if (configurationSetsItem.getUserPassword() != null) {
+                        Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
+                        userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
+                        configurationSetElement.appendChild(userPasswordElement);
+                    }
+                    
+                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
+                        Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
+                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
+                        configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
+                    }
+                    
+                    if (configurationSetsItem.getSshSettings() != null) {
+                        Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
+                        configurationSetElement.appendChild(sSHElement);
+                        
+                        if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
+                            Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
+                            for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
+                                Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
+                                publicKeysSequenceElement.appendChild(publicKeyElement);
+                                
+                                Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                                fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
+                                publicKeyElement.appendChild(fingerprintElement);
+                                
+                                Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                                pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
+                                publicKeyElement.appendChild(pathElement2);
+                            }
+                            sSHElement.appendChild(publicKeysSequenceElement);
+                        }
+                        
+                        if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
+                            Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
+                            for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
+                                Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
+                                keyPairsSequenceElement.appendChild(keyPairElement);
+                                
+                                Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                                fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
+                                keyPairElement.appendChild(fingerprintElement2);
+                                
+                                Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                                pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
+                                keyPairElement.appendChild(pathElement3);
+                            }
+                            sSHElement.appendChild(keyPairsSequenceElement);
+                        }
+                    }
+                    
+                    if (configurationSetsItem.getCustomData() != null) {
+                        Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
+                        customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
+                        configurationSetElement.appendChild(customDataElement);
+                    }
+                }
+                roleElement.appendChild(configurationSetsSequenceElement);
+            }
+            
+            if (roleListItem.getResourceExtensionReferences() != null) {
+                Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+                for (ResourceExtensionReference resourceExtensionReferencesItem : roleListItem.getResourceExtensionReferences()) {
+                    Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                    resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                    
+                    if (resourceExtensionReferencesItem.getReferenceName() != null) {
+                        Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                        referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                        resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getPublisher() != null) {
+                        Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                        publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                        resourceExtensionReferenceElement.appendChild(publisherElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getName() != null) {
+                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                        resourceExtensionReferenceElement.appendChild(nameElement4);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getVersion() != null) {
+                        Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                        versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                        resourceExtensionReferenceElement.appendChild(versionElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
+                        Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                        for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
+                            Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                            resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                            
+                            if (resourceExtensionParameterValuesItem.getKey() != null) {
+                                Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                                keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                                resourceExtensionParameterValueElement.appendChild(keyElement);
                             }
                             
-                            if (resourceExtensionReferencesItem.getState() != null) {
-                                Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                                stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
-                                resourceExtensionReferenceElement.appendChild(stateElement);
+                            if (resourceExtensionParameterValuesItem.getValue() != null) {
+                                Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                                valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
+                                resourceExtensionParameterValueElement.appendChild(valueElement);
+                            }
+                            
+                            if (resourceExtensionParameterValuesItem.getType() != null) {
+                                Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                                typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
+                                resourceExtensionParameterValueElement.appendChild(typeElement);
                             }
                         }
-                        roleElement.appendChild(resourceExtensionReferencesSequenceElement);
-                    }
-                }
-                
-                if (roleListItem.getVMImageName() != null) {
-                    Element vMImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageName");
-                    vMImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getVMImageName()));
-                    roleElement.appendChild(vMImageNameElement);
-                }
-                
-                if (roleListItem.getMediaLocation() != null) {
-                    Element mediaLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLocation");
-                    mediaLocationElement.appendChild(requestDoc.createTextNode(roleListItem.getMediaLocation().toString()));
-                    roleElement.appendChild(mediaLocationElement);
-                }
-                
-                if (roleListItem.getAvailabilitySetName() != null) {
-                    Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
-                    availabilitySetNameElement.appendChild(requestDoc.createTextNode(roleListItem.getAvailabilitySetName()));
-                    roleElement.appendChild(availabilitySetNameElement);
-                }
-                
-                if (roleListItem.getDataVirtualHardDisks() != null) {
-                    if (roleListItem.getDataVirtualHardDisks() instanceof LazyCollection == false || ((LazyCollection) roleListItem.getDataVirtualHardDisks()).isInitialized()) {
-                        Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                        for (DataVirtualHardDisk dataVirtualHardDisksItem : roleListItem.getDataVirtualHardDisks()) {
-                            Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
-                            dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
-                            
-                            if (dataVirtualHardDisksItem.getHostCaching() != null) {
-                                Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                                hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
-                                dataVirtualHardDiskElement.appendChild(hostCachingElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getLabel() != null) {
-                                Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                                diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
-                                dataVirtualHardDiskElement.appendChild(diskLabelElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getName() != null) {
-                                Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                                diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
-                                dataVirtualHardDiskElement.appendChild(diskNameElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
-                                Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                                lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
-                                dataVirtualHardDiskElement.appendChild(lunElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
-                                Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                                dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getMediaLink() != null) {
-                                Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                                mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
-                                dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
-                                Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
-                                sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
-                                dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
-                            }
-                            
-                            if (dataVirtualHardDisksItem.getIOType() != null) {
-                                Element iOTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-                                iOTypeElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getIOType()));
-                                dataVirtualHardDiskElement.appendChild(iOTypeElement);
-                            }
-                        }
-                        roleElement.appendChild(dataVirtualHardDisksSequenceElement);
-                    }
-                }
-                
-                if (roleListItem.getLabel() != null) {
-                    Element labelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-                    labelElement2.appendChild(requestDoc.createTextNode(roleListItem.getLabel()));
-                    roleElement.appendChild(labelElement2);
-                }
-                
-                if (roleListItem.getOSVirtualHardDisk() != null) {
-                    Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
-                    roleElement.appendChild(oSVirtualHardDiskElement);
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getHostCaching() != null) {
-                        Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                        hostCachingElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getHostCaching()));
-                        oSVirtualHardDiskElement.appendChild(hostCachingElement2);
+                        resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
                     }
                     
-                    if (roleListItem.getOSVirtualHardDisk().getLabel() != null) {
-                        Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                        diskLabelElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getLabel()));
-                        oSVirtualHardDiskElement.appendChild(diskLabelElement2);
-                    }
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getName() != null) {
-                        Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                        diskNameElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getName()));
-                        oSVirtualHardDiskElement.appendChild(diskNameElement2);
-                    }
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getMediaLink() != null) {
-                        Element mediaLinkElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                        mediaLinkElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getMediaLink().toString()));
-                        oSVirtualHardDiskElement.appendChild(mediaLinkElement2);
-                    }
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getSourceImageName() != null) {
-                        Element sourceImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
-                        sourceImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getSourceImageName()));
-                        oSVirtualHardDiskElement.appendChild(sourceImageNameElement);
-                    }
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getOperatingSystem() != null) {
-                        Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
-                        osElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getOperatingSystem()));
-                        oSVirtualHardDiskElement.appendChild(osElement);
-                    }
-                    
-                    if (roleListItem.getOSVirtualHardDisk().getIOType() != null) {
-                        Element iOTypeElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-                        iOTypeElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getIOType()));
-                        oSVirtualHardDiskElement.appendChild(iOTypeElement2);
+                    if (resourceExtensionReferencesItem.getState() != null) {
+                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
+                        resourceExtensionReferenceElement.appendChild(stateElement);
                     }
                 }
+                roleElement.appendChild(resourceExtensionReferencesSequenceElement);
+            }
+            
+            if (roleListItem.getVMImageName() != null) {
+                Element vMImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageName");
+                vMImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getVMImageName()));
+                roleElement.appendChild(vMImageNameElement);
+            }
+            
+            if (roleListItem.getMediaLocation() != null) {
+                Element mediaLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLocation");
+                mediaLocationElement.appendChild(requestDoc.createTextNode(roleListItem.getMediaLocation().toString()));
+                roleElement.appendChild(mediaLocationElement);
+            }
+            
+            if (roleListItem.getAvailabilitySetName() != null) {
+                Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
+                availabilitySetNameElement.appendChild(requestDoc.createTextNode(roleListItem.getAvailabilitySetName()));
+                roleElement.appendChild(availabilitySetNameElement);
+            }
+            
+            if (roleListItem.getDataVirtualHardDisks() != null) {
+                Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
+                for (DataVirtualHardDisk dataVirtualHardDisksItem : roleListItem.getDataVirtualHardDisks()) {
+                    Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+                    dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
+                    
+                    if (dataVirtualHardDisksItem.getHostCaching() != null) {
+                        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+                        hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
+                        dataVirtualHardDiskElement.appendChild(hostCachingElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getLabel() != null) {
+                        Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
+                        diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
+                        dataVirtualHardDiskElement.appendChild(diskLabelElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getName() != null) {
+                        Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
+                        diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
+                        dataVirtualHardDiskElement.appendChild(diskNameElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
+                        Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
+                        lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
+                        dataVirtualHardDiskElement.appendChild(lunElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getMediaLink() != null) {
+                        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                        mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
+                        dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                        Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                        sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                        dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
+                    }
+                }
+                roleElement.appendChild(dataVirtualHardDisksSequenceElement);
+            }
+            
+            if (roleListItem.getLabel() != null) {
+                Element labelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+                labelElement2.appendChild(requestDoc.createTextNode(roleListItem.getLabel()));
+                roleElement.appendChild(labelElement2);
+            }
+            
+            if (roleListItem.getOSVirtualHardDisk() != null) {
+                Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
+                roleElement.appendChild(oSVirtualHardDiskElement);
                 
-                if (roleListItem.getRoleSize() != null) {
-                    Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-                    roleSizeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleSize()));
-                    roleElement.appendChild(roleSizeElement);
+                if (roleListItem.getOSVirtualHardDisk().getHostCaching() != null) {
+                    Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+                    hostCachingElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getHostCaching()));
+                    oSVirtualHardDiskElement.appendChild(hostCachingElement2);
                 }
                 
-                if (roleListItem.getDefaultWinRmCertificateThumbprint() != null) {
-                    Element defaultWinRmCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
-                    defaultWinRmCertificateThumbprintElement.appendChild(requestDoc.createTextNode(roleListItem.getDefaultWinRmCertificateThumbprint()));
-                    roleElement.appendChild(defaultWinRmCertificateThumbprintElement);
+                if (roleListItem.getOSVirtualHardDisk().getLabel() != null) {
+                    Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
+                    diskLabelElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getLabel()));
+                    oSVirtualHardDiskElement.appendChild(diskLabelElement2);
                 }
                 
-                if (roleListItem.isProvisionGuestAgent() != null) {
-                    Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
-                    provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(roleListItem.isProvisionGuestAgent()).toLowerCase()));
-                    roleElement.appendChild(provisionGuestAgentElement);
+                if (roleListItem.getOSVirtualHardDisk().getName() != null) {
+                    Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
+                    diskNameElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getName()));
+                    oSVirtualHardDiskElement.appendChild(diskNameElement2);
+                }
+                
+                if (roleListItem.getOSVirtualHardDisk().getMediaLink() != null) {
+                    Element mediaLinkElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    mediaLinkElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getMediaLink().toString()));
+                    oSVirtualHardDiskElement.appendChild(mediaLinkElement2);
+                }
+                
+                if (roleListItem.getOSVirtualHardDisk().getSourceImageName() != null) {
+                    Element sourceImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
+                    sourceImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getSourceImageName()));
+                    oSVirtualHardDiskElement.appendChild(sourceImageNameElement);
+                }
+                
+                if (roleListItem.getOSVirtualHardDisk().getOperatingSystem() != null) {
+                    Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
+                    osElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getOperatingSystem()));
+                    oSVirtualHardDiskElement.appendChild(osElement);
                 }
             }
-            deploymentElement.appendChild(roleListSequenceElement);
+            
+            if (roleListItem.getRoleSize() != null) {
+                Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
+                roleSizeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleSize()));
+                roleElement.appendChild(roleSizeElement);
+            }
+            
+            if (roleListItem.getDefaultWinRmCertificateThumbprint() != null) {
+                Element defaultWinRmCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
+                defaultWinRmCertificateThumbprintElement.appendChild(requestDoc.createTextNode(roleListItem.getDefaultWinRmCertificateThumbprint()));
+                roleElement.appendChild(defaultWinRmCertificateThumbprintElement);
+            }
+            
+            if (roleListItem.isProvisionGuestAgent() != null) {
+                Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
+                provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(roleListItem.isProvisionGuestAgent()).toLowerCase()));
+                roleElement.appendChild(provisionGuestAgentElement);
+            }
         }
+        deploymentElement.appendChild(roleListSequenceElement);
         
         if (parameters.getVirtualNetworkName() != null) {
             Element virtualNetworkNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
@@ -2810,26 +2521,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             deploymentElement.appendChild(dnsElement);
             
             if (parameters.getDnsSettings().getDnsServers() != null) {
-                if (parameters.getDnsSettings().getDnsServers() instanceof LazyCollection == false || ((LazyCollection) parameters.getDnsSettings().getDnsServers()).isInitialized()) {
-                    Element dnsServersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServers");
-                    for (DnsServer dnsServersItem : parameters.getDnsSettings().getDnsServers()) {
-                        Element dnsServerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServer");
-                        dnsServersSequenceElement.appendChild(dnsServerElement);
-                        
-                        if (dnsServersItem.getName() != null) {
-                            Element nameElement6 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            nameElement6.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
-                            dnsServerElement.appendChild(nameElement6);
-                        }
-                        
-                        if (dnsServersItem.getAddress() != null) {
-                            Element addressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Address");
-                            addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress().getHostAddress()));
-                            dnsServerElement.appendChild(addressElement);
-                        }
+                Element dnsServersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServers");
+                for (DnsServer dnsServersItem : parameters.getDnsSettings().getDnsServers()) {
+                    Element dnsServerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServer");
+                    dnsServersSequenceElement.appendChild(dnsServerElement);
+                    
+                    if (dnsServersItem.getName() != null) {
+                        Element nameElement5 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement5.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
+                        dnsServerElement.appendChild(nameElement5);
                     }
-                    dnsElement.appendChild(dnsServersSequenceElement);
+                    
+                    if (dnsServersItem.getAddress() != null) {
+                        Element addressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Address");
+                        addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress().getHostAddress()));
+                        dnsServerElement.appendChild(addressElement);
+                    }
                 }
+                dnsElement.appendChild(dnsServersSequenceElement);
             }
         }
         
@@ -2840,43 +2549,41 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         if (parameters.getLoadBalancers() != null) {
-            if (parameters.getLoadBalancers() instanceof LazyCollection == false || ((LazyCollection) parameters.getLoadBalancers()).isInitialized()) {
-                Element loadBalancersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancers");
-                for (LoadBalancer loadBalancersItem : parameters.getLoadBalancers()) {
-                    Element loadBalancerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancer");
-                    loadBalancersSequenceElement.appendChild(loadBalancerElement);
+            Element loadBalancersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancers");
+            for (LoadBalancer loadBalancersItem : parameters.getLoadBalancers()) {
+                Element loadBalancerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancer");
+                loadBalancersSequenceElement.appendChild(loadBalancerElement);
+                
+                if (loadBalancersItem.getName() != null) {
+                    Element nameElement6 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement6.appendChild(requestDoc.createTextNode(loadBalancersItem.getName()));
+                    loadBalancerElement.appendChild(nameElement6);
+                }
+                
+                if (loadBalancersItem.getFrontendIPConfiguration() != null) {
+                    Element frontendIpConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FrontendIpConfiguration");
+                    loadBalancerElement.appendChild(frontendIpConfigurationElement);
                     
-                    if (loadBalancersItem.getName() != null) {
-                        Element nameElement7 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement7.appendChild(requestDoc.createTextNode(loadBalancersItem.getName()));
-                        loadBalancerElement.appendChild(nameElement7);
+                    if (loadBalancersItem.getFrontendIPConfiguration().getType() != null) {
+                        Element typeElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                        typeElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getType()));
+                        frontendIpConfigurationElement.appendChild(typeElement2);
                     }
                     
-                    if (loadBalancersItem.getFrontendIPConfiguration() != null) {
-                        Element frontendIpConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FrontendIpConfiguration");
-                        loadBalancerElement.appendChild(frontendIpConfigurationElement);
-                        
-                        if (loadBalancersItem.getFrontendIPConfiguration().getType() != null) {
-                            Element typeElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                            typeElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getType()));
-                            frontendIpConfigurationElement.appendChild(typeElement2);
-                        }
-                        
-                        if (loadBalancersItem.getFrontendIPConfiguration().getSubnetName() != null) {
-                            Element subnetNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                            subnetNameElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getSubnetName()));
-                            frontendIpConfigurationElement.appendChild(subnetNameElement2);
-                        }
-                        
-                        if (loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress() != null) {
-                            Element staticVirtualNetworkIPAddressElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                            staticVirtualNetworkIPAddressElement3.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress().getHostAddress()));
-                            frontendIpConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement3);
-                        }
+                    if (loadBalancersItem.getFrontendIPConfiguration().getSubnetName() != null) {
+                        Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                        subnetNameElement.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getSubnetName()));
+                        frontendIpConfigurationElement.appendChild(subnetNameElement);
+                    }
+                    
+                    if (loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress() != null) {
+                        Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                        staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(loadBalancersItem.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress().getHostAddress()));
+                        frontendIpConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
                     }
                 }
-                deploymentElement.appendChild(loadBalancersSequenceElement);
             }
+            deploymentElement.appendChild(loadBalancersSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -3010,13 +2717,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3132,14 +2838,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
@@ -3271,14 +2976,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3428,14 +3132,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3451,15 +3154,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         shutdownRolesOperationElement.appendChild(operationTypeElement);
         
         if (parameters.getRoles() != null) {
-            if (parameters.getRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getRoles()).isInitialized()) {
-                Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
-                for (String rolesItem : parameters.getRoles()) {
-                    Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
-                    rolesSequenceElement.appendChild(rolesItemElement);
-                }
-                shutdownRolesOperationElement.appendChild(rolesSequenceElement);
+            Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
+            for (String rolesItem : parameters.getRoles()) {
+                Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
+                rolesSequenceElement.appendChild(rolesItemElement);
             }
+            shutdownRolesOperationElement.appendChild(rolesSequenceElement);
         }
         
         if (parameters.getPostShutdownAction() != null) {
@@ -3591,14 +3292,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
@@ -3726,14 +3426,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3749,15 +3448,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         startRolesOperationElement.appendChild(operationTypeElement);
         
         if (parameters.getRoles() != null) {
-            if (parameters.getRoles() instanceof LazyCollection == false || ((LazyCollection) parameters.getRoles()).isInitialized()) {
-                Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
-                for (String rolesItem : parameters.getRoles()) {
-                    Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
-                    rolesSequenceElement.appendChild(rolesItemElement);
-                }
-                startRolesOperationElement.appendChild(rolesSequenceElement);
+            Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
+            for (String rolesItem : parameters.getRoles()) {
+                Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
+                rolesSequenceElement.appendChild(rolesItemElement);
             }
+            startRolesOperationElement.appendChild(rolesSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -3967,14 +3664,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3994,524 +3690,372 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         persistentVMRoleElement.appendChild(roleTypeElement);
         
         if (parameters.getConfigurationSets() != null) {
-            if (parameters.getConfigurationSets() instanceof LazyCollection == false || ((LazyCollection) parameters.getConfigurationSets()).isInitialized()) {
-                Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
-                    Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
-                    configurationSetsSequenceElement.appendChild(configurationSetElement);
-                    
-                    if (configurationSetsItem.getConfigurationSetType() != null) {
-                        Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                        configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
-                        configurationSetElement.appendChild(configurationSetTypeElement);
-                    }
-                    
-                    if (configurationSetsItem.getInputEndpoints() != null) {
-                        if (configurationSetsItem.getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getInputEndpoints()).isInitialized()) {
-                            Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                            for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
-                                Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                                inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                                
-                                if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
-                                    Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                                    loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
-                                    inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLocalPort() != null) {
-                                    Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                                    inputEndpointElement.appendChild(localPortElement);
-                                }
-                                
-                                if (inputEndpointsItem.getName() != null) {
-                                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                                    inputEndpointElement.appendChild(nameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getPort() != null) {
-                                    Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                                    inputEndpointElement.appendChild(portElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerProbe() != null) {
-                                    Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                                    inputEndpointElement.appendChild(loadBalancerProbeElement);
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
-                                        Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                        pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
-                                        loadBalancerProbeElement.appendChild(pathElement);
-                                    }
-                                    
-                                    Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
-                                    loadBalancerProbeElement.appendChild(portElement2);
-                                    
-                                    Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                                    loadBalancerProbeElement.appendChild(protocolElement);
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
-                                        Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                        intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                                        loadBalancerProbeElement.appendChild(intervalInSecondsElement);
-                                    }
-                                    
-                                    if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
-                                        Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                        timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                                        loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
-                                    }
-                                }
-                                
-                                if (inputEndpointsItem.getProtocol() != null) {
-                                    Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                                    inputEndpointElement.appendChild(protocolElement2);
-                                }
-                                
-                                if (inputEndpointsItem.getVirtualIPAddress() != null) {
-                                    Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                    vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
-                                    inputEndpointElement.appendChild(vipElement);
-                                }
-                                
-                                if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
-                                    Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
-                                    inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerName() != null) {
-                                    Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
-                                    loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
-                                    inputEndpointElement.appendChild(loadBalancerNameElement);
-                                }
-                                
-                                if (inputEndpointsItem.getEndpointAcl() != null) {
-                                    Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                                    inputEndpointElement.appendChild(endpointAclElement);
-                                    
-                                    if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
-                                        if (inputEndpointsItem.getEndpointAcl().getRules() instanceof LazyCollection == false || ((LazyCollection) inputEndpointsItem.getEndpointAcl().getRules()).isInitialized()) {
-                                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
-                                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                                rulesSequenceElement.appendChild(ruleElement);
-                                                
-                                                if (rulesItem.getOrder() != null) {
-                                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                                    ruleElement.appendChild(orderElement);
-                                                }
-                                                
-                                                if (rulesItem.getAction() != null) {
-                                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                                    ruleElement.appendChild(actionElement);
-                                                }
-                                                
-                                                if (rulesItem.getRemoteSubnet() != null) {
-                                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                                    ruleElement.appendChild(remoteSubnetElement);
-                                                }
-                                                
-                                                if (rulesItem.getDescription() != null) {
-                                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                                    ruleElement.appendChild(descriptionElement);
-                                                }
-                                            }
-                                            endpointAclElement.appendChild(rulesSequenceElement);
-                                        }
-                                    }
-                                }
-                                
-                                if (inputEndpointsItem.getIdleTimeoutInMinutes() != null) {
-                                    Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                    idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getIdleTimeoutInMinutes())));
-                                    inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
-                                }
-                                
-                                if (inputEndpointsItem.getLoadBalancerDistribution() != null) {
-                                    Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                                    loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerDistribution()));
-                                    inputEndpointElement.appendChild(loadBalancerDistributionElement);
-                                }
-                            }
-                            configurationSetElement.appendChild(inputEndpointsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getSubnetNames() != null) {
-                        if (configurationSetsItem.getSubnetNames() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSubnetNames()).isInitialized()) {
-                            Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                            for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
-                                Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
-                                subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
-                            }
-                            configurationSetElement.appendChild(subnetNamesSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
-                        Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                        staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
-                        configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
-                    }
-                    
-                    if (configurationSetsItem.getPublicIPs() != null) {
-                        if (configurationSetsItem.getPublicIPs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getPublicIPs()).isInitialized()) {
-                            Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
-                            for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
-                                Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
-                                publicIPsSequenceElement.appendChild(publicIPElement);
-                                
-                                if (publicIPsItem.getName() != null) {
-                                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
-                                    publicIPElement.appendChild(nameElement2);
-                                }
-                                
-                                if (publicIPsItem.getIdleTimeoutInMinutes() != null) {
-                                    Element idleTimeoutInMinutesElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                    idleTimeoutInMinutesElement2.appendChild(requestDoc.createTextNode(Integer.toString(publicIPsItem.getIdleTimeoutInMinutes())));
-                                    publicIPElement.appendChild(idleTimeoutInMinutesElement2);
-                                }
-                            }
-                            configurationSetElement.appendChild(publicIPsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getNetworkInterfaces() != null) {
-                        if (configurationSetsItem.getNetworkInterfaces() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getNetworkInterfaces()).isInitialized()) {
-                            Element networkInterfacesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
-                            for (NetworkInterface networkInterfacesItem : configurationSetsItem.getNetworkInterfaces()) {
-                                Element networkInterfaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkInterface");
-                                networkInterfacesSequenceElement.appendChild(networkInterfaceElement);
-                                
-                                if (networkInterfacesItem.getName() != null) {
-                                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                    nameElement3.appendChild(requestDoc.createTextNode(networkInterfacesItem.getName()));
-                                    networkInterfaceElement.appendChild(nameElement3);
-                                }
-                                
-                                if (networkInterfacesItem.getIPConfigurations() != null) {
-                                    if (networkInterfacesItem.getIPConfigurations() instanceof LazyCollection == false || ((LazyCollection) networkInterfacesItem.getIPConfigurations()).isInitialized()) {
-                                        Element iPConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfigurations");
-                                        for (IPConfiguration iPConfigurationsItem : networkInterfacesItem.getIPConfigurations()) {
-                                            Element iPConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPConfiguration");
-                                            iPConfigurationsSequenceElement.appendChild(iPConfigurationElement);
-                                            
-                                            if (iPConfigurationsItem.getSubnetName() != null) {
-                                                Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                                subnetNameElement.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getSubnetName()));
-                                                iPConfigurationElement.appendChild(subnetNameElement);
-                                            }
-                                            
-                                            if (iPConfigurationsItem.getStaticVirtualNetworkIPAddress() != null) {
-                                                Element staticVirtualNetworkIPAddressElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                                staticVirtualNetworkIPAddressElement2.appendChild(requestDoc.createTextNode(iPConfigurationsItem.getStaticVirtualNetworkIPAddress()));
-                                                iPConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement2);
-                                            }
-                                        }
-                                        networkInterfaceElement.appendChild(iPConfigurationsSequenceElement);
-                                    }
-                                }
-                            }
-                            configurationSetElement.appendChild(networkInterfacesSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getNetworkSecurityGroup() != null) {
-                        Element networkSecurityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                        networkSecurityGroupElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getNetworkSecurityGroup()));
-                        configurationSetElement.appendChild(networkSecurityGroupElement);
-                    }
-                    
-                    if (configurationSetsItem.getComputerName() != null) {
-                        Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                        computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
-                        configurationSetElement.appendChild(computerNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getAdminPassword() != null) {
-                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                        configurationSetElement.appendChild(adminPasswordElement);
-                    }
-                    
-                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
-                        Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
-                        configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
-                    }
-                    
-                    if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
-                        Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
-                        configurationSetElement.appendChild(enableAutomaticUpdatesElement);
-                    }
-                    
-                    if (configurationSetsItem.getTimeZone() != null) {
-                        Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                        timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
-                        configurationSetElement.appendChild(timeZoneElement);
-                    }
-                    
-                    if (configurationSetsItem.getDomainJoin() != null) {
-                        Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                        configurationSetElement.appendChild(domainJoinElement);
+            Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
+            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
+                Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
+                configurationSetsSequenceElement.appendChild(configurationSetElement);
+                
+                if (configurationSetsItem.getConfigurationSetType() != null) {
+                    Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
+                    configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
+                    configurationSetElement.appendChild(configurationSetTypeElement);
+                }
+                
+                if (configurationSetsItem.getInputEndpoints() != null) {
+                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
+                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
-                            Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                            domainJoinElement.appendChild(credentialsElement);
+                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
+                            Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                            loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
+                            inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLocalPort() != null) {
+                            Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                            inputEndpointElement.appendChild(localPortElement);
+                        }
+                        
+                        if (inputEndpointsItem.getName() != null) {
+                            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                            inputEndpointElement.appendChild(nameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getPort() != null) {
+                            Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                            inputEndpointElement.appendChild(portElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
+                            Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                            inputEndpointElement.appendChild(loadBalancerProbeElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
-                                Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                                domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
-                                credentialsElement.appendChild(domainElement);
+                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
+                                Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                                pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
+                                loadBalancerProbeElement.appendChild(pathElement);
                             }
                             
-                            Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
-                            usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
-                            credentialsElement.appendChild(usernameElement);
+                            Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
+                            loadBalancerProbeElement.appendChild(portElement2);
                             
-                            Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
-                            passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
-                            credentialsElement.appendChild(passwordElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
-                            Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                            joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
-                            domainJoinElement.appendChild(joinDomainElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
-                            Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                            machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
-                            domainJoinElement.appendChild(machineObjectOUElement);
-                        }
-                        
-                        if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
-                            Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                            domainJoinElement.appendChild(provisioningElement);
+                            Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                            loadBalancerProbeElement.appendChild(protocolElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
-                                Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                                accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
-                                provisioningElement.appendChild(accountDataElement);
+                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
+                                Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                                loadBalancerProbeElement.appendChild(intervalInSecondsElement);
+                            }
+                            
+                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
+                                Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                                loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
-                    }
-                    
-                    if (configurationSetsItem.getStoredCertificateSettings() != null) {
-                        if (configurationSetsItem.getStoredCertificateSettings() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getStoredCertificateSettings()).isInitialized()) {
-                            Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                            for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
-                                Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
-                                storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
-                                
-                                Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                                storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
-                                certificateSettingElement.appendChild(storeLocationElement);
-                                
-                                Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                                storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
-                                certificateSettingElement.appendChild(storeNameElement);
-                                
-                                Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                                thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
-                                certificateSettingElement.appendChild(thumbprintElement);
-                            }
-                            configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
-                        }
-                    }
-                    
-                    if (configurationSetsItem.getWindowsRemoteManagement() != null) {
-                        Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                        configurationSetElement.appendChild(winRMElement);
                         
-                        if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
-                            if (configurationSetsItem.getWindowsRemoteManagement().getListeners() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getWindowsRemoteManagement().getListeners()).isInitialized()) {
-                                Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                                for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
-                                    Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
-                                    listenersSequenceElement.appendChild(listenerElement);
+                        if (inputEndpointsItem.getProtocol() != null) {
+                            Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                            inputEndpointElement.appendChild(protocolElement2);
+                        }
+                        
+                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
+                            Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
+                            inputEndpointElement.appendChild(vipElement);
+                        }
+                        
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
+                            Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                            inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLoadBalancerName() != null) {
+                            Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
+                            loadBalancerNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerName()));
+                            inputEndpointElement.appendChild(loadBalancerNameElement);
+                        }
+                        
+                        if (inputEndpointsItem.getEndpointAcl() != null) {
+                            Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                            inputEndpointElement.appendChild(endpointAclElement);
+                            
+                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
+                                Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
+                                    Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                                    rulesSequenceElement.appendChild(ruleElement);
                                     
-                                    if (listenersItem.getCertificateThumbprint() != null) {
-                                        Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                        certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
-                                        listenerElement.appendChild(certificateThumbprintElement);
+                                    if (rulesItem.getOrder() != null) {
+                                        Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                                        orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                                        ruleElement.appendChild(orderElement);
                                     }
                                     
-                                    Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                    protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                                    listenerElement.appendChild(protocolElement3);
+                                    if (rulesItem.getAction() != null) {
+                                        Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                                        actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                                        ruleElement.appendChild(actionElement);
+                                    }
+                                    
+                                    if (rulesItem.getRemoteSubnet() != null) {
+                                        Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                                        remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                                        ruleElement.appendChild(remoteSubnetElement);
+                                    }
+                                    
+                                    if (rulesItem.getDescription() != null) {
+                                        Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                                        descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                                        ruleElement.appendChild(descriptionElement);
+                                    }
                                 }
-                                winRMElement.appendChild(listenersSequenceElement);
+                                endpointAclElement.appendChild(rulesSequenceElement);
                             }
                         }
                     }
-                    
-                    if (configurationSetsItem.getAdminUserName() != null) {
-                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                        configurationSetElement.appendChild(adminUsernameElement);
+                    configurationSetElement.appendChild(inputEndpointsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getSubnetNames() != null) {
+                    Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
+                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
+                        Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                        subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
+                        subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
                     }
-                    
-                    if (configurationSetsItem.getHostName() != null) {
-                        Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                        hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
-                        configurationSetElement.appendChild(hostNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getUserName() != null) {
-                        Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                        userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
-                        configurationSetElement.appendChild(userNameElement);
-                    }
-                    
-                    if (configurationSetsItem.getUserPassword() != null) {
-                        Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                        userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
-                        configurationSetElement.appendChild(userPasswordElement);
-                    }
-                    
-                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
-                        Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
-                        configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
-                    }
-                    
-                    if (configurationSetsItem.getSshSettings() != null) {
-                        Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                        configurationSetElement.appendChild(sSHElement);
+                    configurationSetElement.appendChild(subnetNamesSequenceElement);
+                }
+                
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
+                    Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                    staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                    configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                }
+                
+                if (configurationSetsItem.getPublicIPs() != null) {
+                    Element publicIPsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIPs");
+                    for (ConfigurationSet.PublicIP publicIPsItem : configurationSetsItem.getPublicIPs()) {
+                        Element publicIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicIP");
+                        publicIPsSequenceElement.appendChild(publicIPElement);
                         
-                        if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
-                            if (configurationSetsItem.getSshSettings().getPublicKeys() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getPublicKeys()).isInitialized()) {
-                                Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                                for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
-                                    Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
-                                    publicKeysSequenceElement.appendChild(publicKeyElement);
-                                    
-                                    Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                    fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
-                                    publicKeyElement.appendChild(fingerprintElement);
-                                    
-                                    Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                    pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
-                                    publicKeyElement.appendChild(pathElement2);
-                                }
-                                sSHElement.appendChild(publicKeysSequenceElement);
-                            }
-                        }
-                        
-                        if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
-                            if (configurationSetsItem.getSshSettings().getKeyPairs() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getSshSettings().getKeyPairs()).isInitialized()) {
-                                Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                                for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
-                                    Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
-                                    keyPairsSequenceElement.appendChild(keyPairElement);
-                                    
-                                    Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                    fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
-                                    keyPairElement.appendChild(fingerprintElement2);
-                                    
-                                    Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                    pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
-                                    keyPairElement.appendChild(pathElement3);
-                                }
-                                sSHElement.appendChild(keyPairsSequenceElement);
-                            }
+                        if (publicIPsItem.getName() != null) {
+                            Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            nameElement2.appendChild(requestDoc.createTextNode(publicIPsItem.getName()));
+                            publicIPElement.appendChild(nameElement2);
                         }
                     }
+                    configurationSetElement.appendChild(publicIPsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getComputerName() != null) {
+                    Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
+                    computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
+                    configurationSetElement.appendChild(computerNameElement);
+                }
+                
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
+                
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
+                    Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
+                    configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
+                }
+                
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
+                    Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
+                    configurationSetElement.appendChild(enableAutomaticUpdatesElement);
+                }
+                
+                if (configurationSetsItem.getTimeZone() != null) {
+                    Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
+                    timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
+                    configurationSetElement.appendChild(timeZoneElement);
+                }
+                
+                if (configurationSetsItem.getDomainJoin() != null) {
+                    Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
+                    configurationSetElement.appendChild(domainJoinElement);
                     
-                    if (configurationSetsItem.getCustomData() != null) {
-                        Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
-                        customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
-                        configurationSetElement.appendChild(customDataElement);
+                    if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
+                        Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
+                        domainJoinElement.appendChild(credentialsElement);
+                        
+                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
+                            Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
+                            domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
+                            credentialsElement.appendChild(domainElement);
+                        }
+                        
+                        Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
+                        usernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getUserName()));
+                        credentialsElement.appendChild(usernameElement);
+                        
+                        Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
+                        passwordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getPassword()));
+                        credentialsElement.appendChild(passwordElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
+                        Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
+                        joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
+                        domainJoinElement.appendChild(joinDomainElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
+                        Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
+                        machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
+                        domainJoinElement.appendChild(machineObjectOUElement);
+                    }
+                    
+                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
+                        Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
+                        domainJoinElement.appendChild(provisioningElement);
+                        
+                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
+                            Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
+                            accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
+                            provisioningElement.appendChild(accountDataElement);
+                        }
                     }
                 }
-                persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
-            }
-        }
-        
-        if (parameters.getResourceExtensionReferences() != null) {
-            if (parameters.getResourceExtensionReferences() instanceof LazyCollection == false || ((LazyCollection) parameters.getResourceExtensionReferences()).isInitialized()) {
-                Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
-                    Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
-                    resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
-                    
-                    if (resourceExtensionReferencesItem.getReferenceName() != null) {
-                        Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
-                        referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
-                        resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                
+                if (configurationSetsItem.getStoredCertificateSettings() != null) {
+                    Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
+                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
+                        Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
+                        storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
+                        
+                        Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
+                        storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
+                        certificateSettingElement.appendChild(storeLocationElement);
+                        
+                        Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
+                        storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
+                        certificateSettingElement.appendChild(storeNameElement);
+                        
+                        Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
+                        certificateSettingElement.appendChild(thumbprintElement);
                     }
+                    configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
+                }
+                
+                if (configurationSetsItem.getWindowsRemoteManagement() != null) {
+                    Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
+                    configurationSetElement.appendChild(winRMElement);
                     
-                    if (resourceExtensionReferencesItem.getPublisher() != null) {
-                        Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
-                        publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
-                        resourceExtensionReferenceElement.appendChild(publisherElement);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getName() != null) {
-                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement4.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
-                        resourceExtensionReferenceElement.appendChild(nameElement4);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getVersion() != null) {
-                        Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
-                        versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
-                        resourceExtensionReferenceElement.appendChild(versionElement);
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
-                        if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() instanceof LazyCollection == false || ((LazyCollection) resourceExtensionReferencesItem.getResourceExtensionParameterValues()).isInitialized()) {
-                            Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                            for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
-                                Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
-                                resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
-                                
-                                if (resourceExtensionParameterValuesItem.getKey() != null) {
-                                    Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
-                                    keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
-                                    resourceExtensionParameterValueElement.appendChild(keyElement);
-                                }
-                                
-                                if (resourceExtensionParameterValuesItem.getValue() != null) {
-                                    Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                    valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
-                                    resourceExtensionParameterValueElement.appendChild(valueElement);
-                                }
-                                
-                                if (resourceExtensionParameterValuesItem.getType() != null) {
-                                    Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                    typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
-                                    resourceExtensionParameterValueElement.appendChild(typeElement);
-                                }
+                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
+                        Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
+                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
+                            Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
+                            listenersSequenceElement.appendChild(listenerElement);
+                            
+                            if (listenersItem.getCertificateThumbprint() != null) {
+                                Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
+                                certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
+                                listenerElement.appendChild(certificateThumbprintElement);
                             }
-                            resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                            
+                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                            listenerElement.appendChild(protocolElement3);
                         }
-                    }
-                    
-                    if (resourceExtensionReferencesItem.getState() != null) {
-                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
-                        resourceExtensionReferenceElement.appendChild(stateElement);
+                        winRMElement.appendChild(listenersSequenceElement);
                     }
                 }
-                persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+                
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
+                
+                if (configurationSetsItem.getHostName() != null) {
+                    Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
+                    hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
+                    configurationSetElement.appendChild(hostNameElement);
+                }
+                
+                if (configurationSetsItem.getUserName() != null) {
+                    Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
+                    userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
+                    configurationSetElement.appendChild(userNameElement);
+                }
+                
+                if (configurationSetsItem.getUserPassword() != null) {
+                    Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
+                    userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
+                    configurationSetElement.appendChild(userPasswordElement);
+                }
+                
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
+                    Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
+                    configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
+                }
+                
+                if (configurationSetsItem.getSshSettings() != null) {
+                    Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
+                    configurationSetElement.appendChild(sSHElement);
+                    
+                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
+                        Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
+                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
+                            Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
+                            publicKeysSequenceElement.appendChild(publicKeyElement);
+                            
+                            Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                            fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
+                            publicKeyElement.appendChild(fingerprintElement);
+                            
+                            Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
+                            publicKeyElement.appendChild(pathElement2);
+                        }
+                        sSHElement.appendChild(publicKeysSequenceElement);
+                    }
+                    
+                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
+                        Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
+                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
+                            Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
+                            keyPairsSequenceElement.appendChild(keyPairElement);
+                            
+                            Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                            fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
+                            keyPairElement.appendChild(fingerprintElement2);
+                            
+                            Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
+                            keyPairElement.appendChild(pathElement3);
+                        }
+                        sSHElement.appendChild(keyPairsSequenceElement);
+                    }
+                }
+                
+                if (configurationSetsItem.getCustomData() != null) {
+                    Element customDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomData");
+                    customDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getCustomData()));
+                    configurationSetElement.appendChild(customDataElement);
+                }
             }
+            persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
         }
         
         if (parameters.getAvailabilitySetName() != null) {
@@ -4520,63 +4064,121 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
-        if (parameters.getDataVirtualHardDisks() != null) {
-            if (parameters.getDataVirtualHardDisks() instanceof LazyCollection == false || ((LazyCollection) parameters.getDataVirtualHardDisks()).isInitialized()) {
-                Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
-                    Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
-                    dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
-                    
-                    if (dataVirtualHardDisksItem.getHostCaching() != null) {
-                        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                        hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
-                        dataVirtualHardDiskElement.appendChild(hostCachingElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLabel() != null) {
-                        Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                        diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
-                        dataVirtualHardDiskElement.appendChild(diskLabelElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getName() != null) {
-                        Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                        diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
-                        dataVirtualHardDiskElement.appendChild(diskNameElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
-                        Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                        lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
-                        dataVirtualHardDiskElement.appendChild(lunElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
-                        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getMediaLink() != null) {
-                        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                        mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
-                        dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
-                        Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
-                        sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
-                        dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
-                    }
-                    
-                    if (dataVirtualHardDisksItem.getIOType() != null) {
-                        Element iOTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-                        iOTypeElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getIOType()));
-                        dataVirtualHardDiskElement.appendChild(iOTypeElement);
-                    }
+        if (parameters.getResourceExtensionReferences() != null) {
+            Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
+                Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                
+                if (resourceExtensionReferencesItem.getReferenceName() != null) {
+                    Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                    referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                    resourceExtensionReferenceElement.appendChild(referenceNameElement);
                 }
-                persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
+                
+                if (resourceExtensionReferencesItem.getPublisher() != null) {
+                    Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                    resourceExtensionReferenceElement.appendChild(publisherElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getName() != null) {
+                    Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                    resourceExtensionReferenceElement.appendChild(nameElement3);
+                }
+                
+                if (resourceExtensionReferencesItem.getVersion() != null) {
+                    Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                    resourceExtensionReferenceElement.appendChild(versionElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
+                    Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
+                        Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                        resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                        
+                        if (resourceExtensionParameterValuesItem.getKey() != null) {
+                            Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                            keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                            resourceExtensionParameterValueElement.appendChild(keyElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getValue() != null) {
+                            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            valueElement.appendChild(requestDoc.createTextNode(Base64.encode(resourceExtensionParameterValuesItem.getValue().getBytes())));
+                            resourceExtensionParameterValueElement.appendChild(valueElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getType() != null) {
+                            Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
+                            resourceExtensionParameterValueElement.appendChild(typeElement);
+                        }
+                    }
+                    resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getState() != null) {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
+                }
             }
+            persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+        }
+        
+        if (parameters.getDataVirtualHardDisks() != null) {
+            Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
+            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
+                Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+                dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
+                
+                if (dataVirtualHardDisksItem.getHostCaching() != null) {
+                    Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+                    hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching()));
+                    dataVirtualHardDiskElement.appendChild(hostCachingElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getLabel() != null) {
+                    Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
+                    diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLabel()));
+                    dataVirtualHardDiskElement.appendChild(diskLabelElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getName() != null) {
+                    Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
+                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
+                    dataVirtualHardDiskElement.appendChild(diskNameElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
+                    Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
+                    lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
+                    dataVirtualHardDiskElement.appendChild(lunElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                    Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                    dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getMediaLink() != null) {
+                    Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                    Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                    sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
+                }
+            }
+            persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
         }
         
         Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
@@ -4616,12 +4218,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
             osElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getOperatingSystem()));
             oSVirtualHardDiskElement.appendChild(osElement);
-        }
-        
-        if (parameters.getOSVirtualHardDisk().getIOType() != null) {
-            Element iOTypeElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IOType");
-            iOTypeElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getIOType()));
-            oSVirtualHardDiskElement.appendChild(iOTypeElement2);
         }
         
         if (parameters.getRoleSize() != null) {
@@ -4778,14 +4374,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4797,137 +4392,121 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         requestDoc.appendChild(loadBalancedEndpointListElement);
         
         if (parameters.getLoadBalancedEndpoints() != null) {
-            if (parameters.getLoadBalancedEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getLoadBalancedEndpoints()).isInitialized()) {
-                for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsItem : parameters.getLoadBalancedEndpoints()) {
-                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                    loadBalancedEndpointListElement.appendChild(inputEndpointElement);
+            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsItem : parameters.getLoadBalancedEndpoints()) {
+                Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                loadBalancedEndpointListElement.appendChild(inputEndpointElement);
+                
+                Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancedEndpointSetName()));
+                inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                
+                if (loadBalancedEndpointsItem.getLocalPort() != null) {
+                    Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLocalPort())));
+                    inputEndpointElement.appendChild(localPortElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getName() != null) {
+                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getName()));
+                    inputEndpointElement.appendChild(nameElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getPort() != null) {
+                    Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getPort())));
+                    inputEndpointElement.appendChild(portElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getLoadBalancerProbe() != null) {
+                    Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                    inputEndpointElement.appendChild(loadBalancerProbeElement);
                     
-                    Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                    loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancedEndpointSetName()));
-                    inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
-                    
-                    if (loadBalancedEndpointsItem.getLocalPort() != null) {
-                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLocalPort())));
-                        inputEndpointElement.appendChild(localPortElement);
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getPath() != null) {
+                        Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                        pathElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getPath()));
+                        loadBalancerProbeElement.appendChild(pathElement);
                     }
                     
-                    if (loadBalancedEndpointsItem.getName() != null) {
-                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getName()));
-                        inputEndpointElement.appendChild(nameElement);
+                    Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getPort())));
+                    loadBalancerProbeElement.appendChild(portElement2);
+                    
+                    Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(loadBalancedEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                    loadBalancerProbeElement.appendChild(protocolElement);
+                    
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
+                        Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                        intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                        loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                     }
                     
-                    if (loadBalancedEndpointsItem.getPort() != null) {
-                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getPort())));
-                        inputEndpointElement.appendChild(portElement);
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
+                        Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                        timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                        loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                     }
-                    
-                    if (loadBalancedEndpointsItem.getLoadBalancerProbe() != null) {
-                        Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                        inputEndpointElement.appendChild(loadBalancerProbeElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getProtocol() != null) {
+                    Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement2.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getProtocol()));
+                    inputEndpointElement.appendChild(protocolElement2);
+                }
+                
+                if (loadBalancedEndpointsItem.getVirtualIPAddress() != null) {
+                    Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                    vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress().getHostAddress()));
+                    inputEndpointElement.appendChild(vipElement);
+                }
+                
+                if (loadBalancedEndpointsItem.isEnableDirectServerReturn() != null) {
+                    Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                    inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                }
+                
+                Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                inputEndpointElement.appendChild(endpointAclElement);
+                
+                if (loadBalancedEndpointsItem.getRules() != null) {
+                    Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                    for (AccessControlListRule rulesItem : loadBalancedEndpointsItem.getRules()) {
+                        Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                        rulesSequenceElement.appendChild(ruleElement);
                         
-                        if (loadBalancedEndpointsItem.getLoadBalancerProbe().getPath() != null) {
-                            Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                            pathElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getPath()));
-                            loadBalancerProbeElement.appendChild(pathElement);
+                        if (rulesItem.getOrder() != null) {
+                            Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                            ruleElement.appendChild(orderElement);
                         }
                         
-                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getPort())));
-                        loadBalancerProbeElement.appendChild(portElement2);
-                        
-                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(loadBalancedEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                        loadBalancerProbeElement.appendChild(protocolElement);
-                        
-                        if (loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
-                            Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                            loadBalancerProbeElement.appendChild(intervalInSecondsElement);
+                        if (rulesItem.getAction() != null) {
+                            Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                            actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                            ruleElement.appendChild(actionElement);
                         }
                         
-                        if (loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
-                            Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                            loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
+                        if (rulesItem.getRemoteSubnet() != null) {
+                            Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                            remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                            ruleElement.appendChild(remoteSubnetElement);
+                        }
+                        
+                        if (rulesItem.getDescription() != null) {
+                            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                            descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                            ruleElement.appendChild(descriptionElement);
                         }
                     }
-                    
-                    if (loadBalancedEndpointsItem.getProtocol() != null) {
-                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement2.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getProtocol()));
-                        inputEndpointElement.appendChild(protocolElement2);
-                    }
-                    
-                    if (loadBalancedEndpointsItem.getVirtualIPAddress() != null) {
-                        Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                        vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress().getHostAddress()));
-                        inputEndpointElement.appendChild(vipElement);
-                    }
-                    
-                    if (loadBalancedEndpointsItem.isEnableDirectServerReturn() != null) {
-                        Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
-                        inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                    }
-                    
-                    Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                    inputEndpointElement.appendChild(endpointAclElement);
-                    
-                    if (loadBalancedEndpointsItem.getRules() != null) {
-                        if (loadBalancedEndpointsItem.getRules() instanceof LazyCollection == false || ((LazyCollection) loadBalancedEndpointsItem.getRules()).isInitialized()) {
-                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                            for (AccessControlListRule rulesItem : loadBalancedEndpointsItem.getRules()) {
-                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                rulesSequenceElement.appendChild(ruleElement);
-                                
-                                if (rulesItem.getOrder() != null) {
-                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                    ruleElement.appendChild(orderElement);
-                                }
-                                
-                                if (rulesItem.getAction() != null) {
-                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                    ruleElement.appendChild(actionElement);
-                                }
-                                
-                                if (rulesItem.getRemoteSubnet() != null) {
-                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                    ruleElement.appendChild(remoteSubnetElement);
-                                }
-                                
-                                if (rulesItem.getDescription() != null) {
-                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                    ruleElement.appendChild(descriptionElement);
-                                }
-                            }
-                            endpointAclElement.appendChild(rulesSequenceElement);
-                        }
-                    }
-                    
-                    if (loadBalancedEndpointsItem.getLoadBalancerName() != null) {
-                        Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
-                        loadBalancerNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerName()));
-                        inputEndpointElement.appendChild(loadBalancerNameElement);
-                    }
-                    
-                    if (loadBalancedEndpointsItem.getIdleTimeoutInMinutes() != null) {
-                        Element idleTimeoutInMinutesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                        idleTimeoutInMinutesElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getIdleTimeoutInMinutes())));
-                        inputEndpointElement.appendChild(idleTimeoutInMinutesElement);
-                    }
-                    
-                    if (loadBalancedEndpointsItem.getLoadBalancerDistribution() != null) {
-                        Element loadBalancerDistributionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                        loadBalancerDistributionElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerDistribution()));
-                        inputEndpointElement.appendChild(loadBalancerDistributionElement);
-                    }
+                    endpointAclElement.appendChild(rulesSequenceElement);
+                }
+                
+                if (loadBalancedEndpointsItem.getLoadBalancerName() != null) {
+                    Element loadBalancerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerName");
+                    loadBalancerNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerName()));
+                    inputEndpointElement.appendChild(loadBalancerNameElement);
                 }
             }
         }
@@ -5737,13 +5316,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5978,20 +5556,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                 }
-                                
-                                Element idleTimeoutInMinutesElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                if (idleTimeoutInMinutesElement != null && (idleTimeoutInMinutesElement.getTextContent() == null || idleTimeoutInMinutesElement.getTextContent().isEmpty() == true) == false) {
-                                    int idleTimeoutInMinutesInstance;
-                                    idleTimeoutInMinutesInstance = DatatypeConverter.parseInt(idleTimeoutInMinutesElement.getTextContent());
-                                    inputEndpointInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
-                                }
-                                
-                                Element loadBalancerDistributionElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerDistribution");
-                                if (loadBalancerDistributionElement != null) {
-                                    String loadBalancerDistributionInstance;
-                                    loadBalancerDistributionInstance = loadBalancerDistributionElement.getTextContent();
-                                    inputEndpointInstance.setLoadBalancerDistribution(loadBalancerDistributionInstance);
-                                }
                             }
                         }
                         
@@ -6023,60 +5587,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     nameInstance2 = nameElement2.getTextContent();
                                     publicIPInstance.setName(nameInstance2);
                                 }
-                                
-                                Element idleTimeoutInMinutesElement2 = XmlUtility.getElementByTagNameNS(publicIPsElement, "http://schemas.microsoft.com/windowsazure", "IdleTimeoutInMinutes");
-                                if (idleTimeoutInMinutesElement2 != null && (idleTimeoutInMinutesElement2.getTextContent() == null || idleTimeoutInMinutesElement2.getTextContent().isEmpty() == true) == false) {
-                                    int idleTimeoutInMinutesInstance2;
-                                    idleTimeoutInMinutesInstance2 = DatatypeConverter.parseInt(idleTimeoutInMinutesElement2.getTextContent());
-                                    publicIPInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
-                                }
                             }
-                        }
-                        
-                        Element networkInterfacesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterfaces");
-                        if (networkInterfacesSequenceElement != null) {
-                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkInterfacesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterface").size(); i6 = i6 + 1) {
-                                org.w3c.dom.Element networkInterfacesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(networkInterfacesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NetworkInterface").get(i6));
-                                NetworkInterface networkInterfaceInstance = new NetworkInterface();
-                                configurationSetInstance.getNetworkInterfaces().add(networkInterfaceInstance);
-                                
-                                Element nameElement3 = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                if (nameElement3 != null) {
-                                    String nameInstance3;
-                                    nameInstance3 = nameElement3.getTextContent();
-                                    networkInterfaceInstance.setName(nameInstance3);
-                                }
-                                
-                                Element iPConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(networkInterfacesElement, "http://schemas.microsoft.com/windowsazure", "IPConfigurations");
-                                if (iPConfigurationsSequenceElement != null) {
-                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(iPConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "IPConfiguration").size(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element iPConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(iPConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "IPConfiguration").get(i7));
-                                        IPConfiguration iPConfigurationInstance = new IPConfiguration();
-                                        networkInterfaceInstance.getIPConfigurations().add(iPConfigurationInstance);
-                                        
-                                        Element subnetNameElement = XmlUtility.getElementByTagNameNS(iPConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "SubnetName");
-                                        if (subnetNameElement != null) {
-                                            String subnetNameInstance;
-                                            subnetNameInstance = subnetNameElement.getTextContent();
-                                            iPConfigurationInstance.setSubnetName(subnetNameInstance);
-                                        }
-                                        
-                                        Element staticVirtualNetworkIPAddressElement2 = XmlUtility.getElementByTagNameNS(iPConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                        if (staticVirtualNetworkIPAddressElement2 != null) {
-                                            String staticVirtualNetworkIPAddressInstance2;
-                                            staticVirtualNetworkIPAddressInstance2 = staticVirtualNetworkIPAddressElement2.getTextContent();
-                                            iPConfigurationInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance2);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
-                        if (networkSecurityGroupElement != null) {
-                            String networkSecurityGroupInstance;
-                            networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
-                            configurationSetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
                         }
                         
                         Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -6176,8 +5687,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                         if (storedCertificateSettingsSequenceElement != null) {
-                            for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
-                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
+                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i6 = i6 + 1) {
+                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i6));
                                 StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                 configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                 
@@ -6208,8 +5719,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                             if (listenersSequenceElement != null) {
-                                for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
-                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
+                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i7 = i7 + 1) {
+                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i7));
                                     WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                     winRMInstance.getListeners().add(listenerInstance);
                                     
@@ -6272,8 +5783,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                             if (publicKeysSequenceElement != null) {
-                                for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
-                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
+                                for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i8 = i8 + 1) {
+                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i8));
                                     SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                     sSHInstance.getPublicKeys().add(publicKeyInstance);
                                     
@@ -6295,8 +5806,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                             if (keyPairsSequenceElement != null) {
-                                for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
-                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
+                                for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i9 = i9 + 1) {
+                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i9));
                                     SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                     sSHInstance.getKeyPairs().add(keyPairInstance);
                                     
@@ -6328,8 +5839,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(persistentVMRoleElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                 if (dataVirtualHardDisksSequenceElement != null) {
-                    for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i12 = i12 + 1) {
-                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i12));
+                    for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i10 = i10 + 1) {
+                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i10));
                         DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                         result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                         
@@ -6381,13 +5892,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
                             dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                         }
-                        
-                        Element iOTypeElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                        if (iOTypeElement != null) {
-                            String iOTypeInstance;
-                            iOTypeInstance = iOTypeElement.getTextContent();
-                            dataVirtualHardDiskInstance.setIOType(iOTypeInstance);
-                        }
                     }
                 }
                 
@@ -6436,13 +5940,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         String osInstance;
                         osInstance = osElement.getTextContent();
                         oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
-                    }
-                    
-                    Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                    if (iOTypeElement2 != null) {
-                        String iOTypeInstance2;
-                        iOTypeInstance2 = iOTypeElement2.getTextContent();
-                        oSVirtualHardDiskInstance.setIOType(iOTypeInstance2);
                     }
                 }
             }
@@ -6535,13 +6032,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;

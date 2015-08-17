@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
     */
     public NetworkReservedIPListResponse() {
         super();
-        this.setReservedIPs(new LazyArrayList<NetworkReservedIPListResponse.ReservedIP>());
+        this.setReservedIPs(new ArrayList<NetworkReservedIPListResponse.ReservedIP>());
     }
     
     /**

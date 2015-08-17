@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -84,8 +83,8 @@ public class ExtensionEndpointConfiguration {
     *
     */
     public ExtensionEndpointConfiguration() {
-        this.setInputEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InputEndpoint>());
-        this.setInternalEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InternalEndpoint>());
+        this.setInputEndpoints(new ArrayList<ExtensionEndpointConfiguration.InputEndpoint>());
+        this.setInternalEndpoints(new ArrayList<ExtensionEndpointConfiguration.InternalEndpoint>());
     }
     
     /**
@@ -268,9 +267,6 @@ public class ExtensionEndpointConfiguration {
         * Initializes a new instance of the InternalEndpoint class with
         * required arguments.
         *
-        * @param name The name.
-        * @param protocol The protocol.
-        * @param port The port.
         */
         public InternalEndpoint(String name, String protocol, int port) {
             if (name == null) {

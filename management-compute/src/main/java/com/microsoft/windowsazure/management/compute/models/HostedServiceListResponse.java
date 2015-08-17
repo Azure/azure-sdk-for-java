@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     */
     public HostedServiceListResponse() {
         super();
-        this.setHostedServices(new LazyArrayList<HostedServiceListResponse.HostedService>());
+        this.setHostedServices(new ArrayList<HostedServiceListResponse.HostedService>());
     }
     
     /**

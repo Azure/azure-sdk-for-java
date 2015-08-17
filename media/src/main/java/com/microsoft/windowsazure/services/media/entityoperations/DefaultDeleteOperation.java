@@ -24,8 +24,7 @@ public class DefaultDeleteOperation implements EntityDeleteOperation {
     private EntityProxyData proxyData;
 
     /**
-     * @param entityUri The entity uri.
-     * @param entityId The entity id.
+     * 
      */
     public DefaultDeleteOperation(String entityUri, String entityId) {
         uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityUri,

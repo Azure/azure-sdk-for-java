@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -211,9 +210,9 @@ public class AffinityGroupGetResponse extends OperationResponse {
     */
     public AffinityGroupGetResponse() {
         super();
-        this.setCapabilities(new LazyArrayList<String>());
-        this.setHostedServices(new LazyArrayList<AffinityGroupGetResponse.HostedServiceReference>());
-        this.setStorageServices(new LazyArrayList<AffinityGroupGetResponse.StorageServiceReference>());
+        this.setCapabilities(new ArrayList<String>());
+        this.setHostedServices(new ArrayList<AffinityGroupGetResponse.HostedServiceReference>());
+        this.setStorageServices(new ArrayList<AffinityGroupGetResponse.StorageServiceReference>());
     }
     
     /**

@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +56,7 @@ public class JobCollectionJobsUpdateStateResponse extends OperationResponse impl
     */
     public JobCollectionJobsUpdateStateResponse() {
         super();
-        this.setJobs(new LazyArrayList<Job>());
+        this.setJobs(new ArrayList<Job>());
     }
     
     /**

@@ -16,12 +16,9 @@
 package com.microsoft.windowsazure.management.network;
 
 import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.net.InetAddress;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,33 +27,17 @@ public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBas
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        testNetworkName = testNetworkPrefix + "sio" + randomString(10);
-        addRegexRule(testNetworkPrefix + "sio[a-z]{10}");
-        
-        setupTest(StaticIPOperationsTests.class.getSimpleName());
         networkOperations = networkManagementClient.getNetworksOperations();
+        testNetworkName = testNetworkPrefix + "sio" + randomString(10);
         createNetwork(testNetworkName);
         staticIPOperations = networkManagementClient.getStaticIPsOperations();
-        resetTest(StaticIPOperationsTests.class.getSimpleName());
     }
     
     @AfterClass
-    public static void cleanup() throws Exception {
-        setupTest(StaticIPOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+    public static void cleanup() {
         deleteNetwork(testNetworkName);
-        resetTest(StaticIPOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-    
     @Test(expected = ServiceException.class)
     public void checkIllegalIPAddressFailed() throws Exception {
         InetAddress ipAddress = InetAddress.getLocalHost();

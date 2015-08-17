@@ -33,7 +33,7 @@ public class ServiceBusConnectionSettingsTest {
         String connectionString = getConnectionString(ns, issuer, secret);
 
         ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
-                connectionString, null, null, null, null, null, null);
+                connectionString, null, null, null, null);
 
         assertEquals(String.format("https://%1$s.servicebus.windows.net/", ns),
                 settings.getUri());
@@ -125,7 +125,7 @@ public class ServiceBusConnectionSettingsTest {
     public void canSetStSEndPointInConnectionString() throws Exception {
         ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
                 getConnectionString("myNs", "-some.accesscontrol.net", "owner",
-                        "secret"), null, null, null, null, null, null);
+                        "secret"), null, null, null, null);
 
         assertEquals("https://myNs.servicebus.windows.net/", settings.getUri());
         assertEquals("https://myNs-some.accesscontrol.net/WRAPv0.9",

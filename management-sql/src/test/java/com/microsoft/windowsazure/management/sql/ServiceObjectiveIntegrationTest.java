@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -40,17 +39,14 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        setupTest(ServiceObjectiveIntegrationTest.class.getSimpleName());
         getLocation();  
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
-        resetTest(ServiceObjectiveIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest(ServiceObjectiveIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             try {
@@ -68,19 +64,8 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
             } catch (ServiceException e) {
             }
         }
-        resetTest(ServiceObjectiveIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-    
     @Test
     public void listServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // arrange 

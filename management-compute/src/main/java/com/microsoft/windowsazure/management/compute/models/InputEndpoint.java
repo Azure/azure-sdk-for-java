@@ -67,24 +67,6 @@ public class InputEndpoint {
         this.endpointAcl = endpointAclValue;
     }
     
-    private Integer idleTimeoutInMinutes;
-    
-    /**
-    * Optional. The idle timeout in minutes for this endpoint.
-    * @return The IdleTimeoutInMinutes value.
-    */
-    public Integer getIdleTimeoutInMinutes() {
-        return this.idleTimeoutInMinutes;
-    }
-    
-    /**
-    * Optional. The idle timeout in minutes for this endpoint.
-    * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
-    */
-    public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
-        this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
-    }
-    
     private String loadBalancedEndpointSetName;
     
     /**
@@ -106,24 +88,6 @@ public class InputEndpoint {
     */
     public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue) {
         this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
-    }
-    
-    private String loadBalancerDistribution;
-    
-    /**
-    * Optional. Load Balancer Distribution for this endpoint.
-    * @return The LoadBalancerDistribution value.
-    */
-    public String getLoadBalancerDistribution() {
-        return this.loadBalancerDistribution;
-    }
-    
-    /**
-    * Optional. Load Balancer Distribution for this endpoint.
-    * @param loadBalancerDistributionValue The LoadBalancerDistribution value.
-    */
-    public void setLoadBalancerDistribution(final String loadBalancerDistributionValue) {
-        this.loadBalancerDistribution = loadBalancerDistributionValue;
     }
     
     private String loadBalancerName;

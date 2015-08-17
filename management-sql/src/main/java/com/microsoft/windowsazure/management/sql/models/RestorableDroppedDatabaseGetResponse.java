@@ -32,8 +32,8 @@ public class RestorableDroppedDatabaseGetResponse extends OperationResponse {
     private RestorableDroppedDatabase database;
     
     /**
-    * Optional. Gets or sets the restorable dropped database that has been
-    * returned from a Get Restorable Dropped Database request.
+    * Optional. Gets the restorable dropped database that has been returned
+    * from a Get Restorable Dropped Database request.
     * @return The Database value.
     */
     public RestorableDroppedDatabase getDatabase() {
@@ -41,8 +41,8 @@ public class RestorableDroppedDatabaseGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets the restorable dropped database that has been
-    * returned from a Get Restorable Dropped Database request.
+    * Optional. Gets the restorable dropped database that has been returned
+    * from a Get Restorable Dropped Database request.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final RestorableDroppedDatabase databaseValue) {

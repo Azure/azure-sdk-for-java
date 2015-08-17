@@ -16,11 +16,8 @@ package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.utils.ConnectionStringSyntaxException;
-
 import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
-
 import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
-
 import java.net.URISyntaxException;
 import java.util.Map;
 
@@ -31,7 +28,6 @@ public class Exports implements Builder.Exports {
         registry.add(WrapContract.class, WrapRestProxy.class);
         registry.add(WrapTokenManager.class);
         registry.add(WrapFilter.class);
-        registry.add(SasFilter.class);
 
         registry.add(new Builder.Factory<ServiceBusConnectionSettings>() {
 
@@ -50,11 +46,7 @@ public class Exports implements Builder.Exports {
                             (String) getPropertyIfExists(profile, properties,
                                     ServiceBusConfiguration.WRAP_NAME),
                             (String) getPropertyIfExists(profile, properties,
-                                    ServiceBusConfiguration.WRAP_PASSWORD),
-                            (String) getPropertyIfExists(profile, properties,
-                                    ServiceBusConfiguration.SAS_KEY_NAME),
-                            (String) getPropertyIfExists(profile, properties,
-                                    ServiceBusConfiguration.SAS_KEY));
+                                    ServiceBusConfiguration.WRAP_PASSWORD));
                 } catch (ConnectionStringSyntaxException e) {
                     throw new RuntimeException(e.getMessage(), e);
                 } catch (URISyntaxException e) {

@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,7 +58,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     */
     public ManagementCertificateListResponse() {
         super();
-        this.setSubscriptionCertificates(new LazyArrayList<ManagementCertificateListResponse.SubscriptionCertificate>());
+        this.setSubscriptionCertificates(new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>());
     }
     
     /**

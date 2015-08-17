@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -205,14 +204,13 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -281,57 +279,53 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         if (parameters.getExtensionEndpoints() != null) {
-            Element endpointsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Endpoints");
-            extensionImageElement.appendChild(endpointsElement);
+            Element extensionEndpointsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionEndpoints");
+            extensionImageElement.appendChild(extensionEndpointsElement);
             
             if (parameters.getExtensionEndpoints().getInputEndpoints() != null) {
-                if (parameters.getExtensionEndpoints().getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInputEndpoints()).isInitialized()) {
-                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                    for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
-                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                        
-                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                        inputEndpointElement.appendChild(nameElement);
-                        
-                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                        inputEndpointElement.appendChild(protocolElement);
-                        
-                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                        inputEndpointElement.appendChild(portElement);
-                        
-                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                        inputEndpointElement.appendChild(localPortElement);
-                    }
-                    endpointsElement.appendChild(inputEndpointsSequenceElement);
+                Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
+                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                    inputEndpointsSequenceElement.appendChild(inputEndpointElement);
+                    
+                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                    inputEndpointElement.appendChild(nameElement);
+                    
+                    Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                    inputEndpointElement.appendChild(protocolElement);
+                    
+                    Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                    inputEndpointElement.appendChild(portElement);
+                    
+                    Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                    inputEndpointElement.appendChild(localPortElement);
                 }
+                extensionEndpointsElement.appendChild(inputEndpointsSequenceElement);
             }
             
             if (parameters.getExtensionEndpoints().getInternalEndpoints() != null) {
-                if (parameters.getExtensionEndpoints().getInternalEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInternalEndpoints()).isInitialized()) {
-                    Element internalEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoints");
-                    for (ExtensionEndpointConfiguration.InternalEndpoint internalEndpointsItem : parameters.getExtensionEndpoints().getInternalEndpoints()) {
-                        Element internalEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoint");
-                        internalEndpointsSequenceElement.appendChild(internalEndpointElement);
-                        
-                        Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getName()));
-                        internalEndpointElement.appendChild(nameElement2);
-                        
-                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getProtocol()));
-                        internalEndpointElement.appendChild(protocolElement2);
-                        
-                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(internalEndpointsItem.getPort())));
-                        internalEndpointElement.appendChild(portElement2);
-                    }
-                    endpointsElement.appendChild(internalEndpointsSequenceElement);
+                Element internalEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoints");
+                for (ExtensionEndpointConfiguration.InternalEndpoint internalEndpointsItem : parameters.getExtensionEndpoints().getInternalEndpoints()) {
+                    Element internalEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoint");
+                    internalEndpointsSequenceElement.appendChild(internalEndpointElement);
+                    
+                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getName()));
+                    internalEndpointElement.appendChild(nameElement2);
+                    
+                    Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getProtocol()));
+                    internalEndpointElement.appendChild(protocolElement2);
+                    
+                    Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(internalEndpointsItem.getPort())));
+                    internalEndpointElement.appendChild(portElement2);
                 }
+                extensionEndpointsElement.appendChild(internalEndpointsSequenceElement);
             }
         }
         
@@ -404,12 +398,6 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             extensionImageElement.appendChild(sampleConfigElement);
         }
         
-        if (parameters.isReplicationCompleted() != null) {
-            Element replicationCompletedElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
-            replicationCompletedElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isReplicationCompleted()).toLowerCase()));
-            extensionImageElement.appendChild(replicationCompletedElement);
-        }
-        
         if (parameters.getEula() != null) {
             Element eulaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Eula");
             eulaElement.appendChild(requestDoc.createTextNode(parameters.getEula().toString()));
@@ -438,18 +426,6 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             Element disallowMajorVersionUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
             disallowMajorVersionUpgradeElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isDisallowMajorVersionUpgrade()).toLowerCase()));
             extensionImageElement.appendChild(disallowMajorVersionUpgradeElement);
-        }
-        
-        if (parameters.getSupportedOS() != null) {
-            Element supportedOSElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SupportedOS");
-            supportedOSElement.appendChild(requestDoc.createTextNode(parameters.getSupportedOS()));
-            extensionImageElement.appendChild(supportedOSElement);
-        }
-        
-        if (parameters.getCompanyName() != null) {
-            Element companyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CompanyName");
-            companyNameElement.appendChild(requestDoc.createTextNode(parameters.getCompanyName()));
-            extensionImageElement.appendChild(companyNameElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -591,14 +567,13 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -755,14 +730,13 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -831,57 +805,53 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         if (parameters.getExtensionEndpoints() != null) {
-            Element endpointsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Endpoints");
-            extensionImageElement.appendChild(endpointsElement);
+            Element extensionEndpointsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionEndpoints");
+            extensionImageElement.appendChild(extensionEndpointsElement);
             
             if (parameters.getExtensionEndpoints().getInputEndpoints() != null) {
-                if (parameters.getExtensionEndpoints().getInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInputEndpoints()).isInitialized()) {
-                    Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                    for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
-                        Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                        inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                        
-                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                        inputEndpointElement.appendChild(nameElement);
-                        
-                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                        inputEndpointElement.appendChild(protocolElement);
-                        
-                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                        inputEndpointElement.appendChild(portElement);
-                        
-                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                        inputEndpointElement.appendChild(localPortElement);
-                    }
-                    endpointsElement.appendChild(inputEndpointsSequenceElement);
+                Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
+                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                    inputEndpointsSequenceElement.appendChild(inputEndpointElement);
+                    
+                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                    inputEndpointElement.appendChild(nameElement);
+                    
+                    Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                    inputEndpointElement.appendChild(protocolElement);
+                    
+                    Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                    inputEndpointElement.appendChild(portElement);
+                    
+                    Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                    inputEndpointElement.appendChild(localPortElement);
                 }
+                extensionEndpointsElement.appendChild(inputEndpointsSequenceElement);
             }
             
             if (parameters.getExtensionEndpoints().getInternalEndpoints() != null) {
-                if (parameters.getExtensionEndpoints().getInternalEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInternalEndpoints()).isInitialized()) {
-                    Element internalEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoints");
-                    for (ExtensionEndpointConfiguration.InternalEndpoint internalEndpointsItem : parameters.getExtensionEndpoints().getInternalEndpoints()) {
-                        Element internalEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoint");
-                        internalEndpointsSequenceElement.appendChild(internalEndpointElement);
-                        
-                        Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getName()));
-                        internalEndpointElement.appendChild(nameElement2);
-                        
-                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getProtocol()));
-                        internalEndpointElement.appendChild(protocolElement2);
-                        
-                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(internalEndpointsItem.getPort())));
-                        internalEndpointElement.appendChild(portElement2);
-                    }
-                    endpointsElement.appendChild(internalEndpointsSequenceElement);
+                Element internalEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoints");
+                for (ExtensionEndpointConfiguration.InternalEndpoint internalEndpointsItem : parameters.getExtensionEndpoints().getInternalEndpoints()) {
+                    Element internalEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InternalEndpoint");
+                    internalEndpointsSequenceElement.appendChild(internalEndpointElement);
+                    
+                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getName()));
+                    internalEndpointElement.appendChild(nameElement2);
+                    
+                    Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                    protocolElement2.appendChild(requestDoc.createTextNode(internalEndpointsItem.getProtocol()));
+                    internalEndpointElement.appendChild(protocolElement2);
+                    
+                    Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(internalEndpointsItem.getPort())));
+                    internalEndpointElement.appendChild(portElement2);
                 }
+                extensionEndpointsElement.appendChild(internalEndpointsSequenceElement);
             }
         }
         
@@ -954,12 +924,6 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             extensionImageElement.appendChild(sampleConfigElement);
         }
         
-        if (parameters.isReplicationCompleted() != null) {
-            Element replicationCompletedElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
-            replicationCompletedElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isReplicationCompleted()).toLowerCase()));
-            extensionImageElement.appendChild(replicationCompletedElement);
-        }
-        
         if (parameters.getEula() != null) {
             Element eulaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Eula");
             eulaElement.appendChild(requestDoc.createTextNode(parameters.getEula().toString()));
@@ -988,18 +952,6 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             Element disallowMajorVersionUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
             disallowMajorVersionUpgradeElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isDisallowMajorVersionUpgrade()).toLowerCase()));
             extensionImageElement.appendChild(disallowMajorVersionUpgradeElement);
-        }
-        
-        if (parameters.getSupportedOS() != null) {
-            Element supportedOSElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SupportedOS");
-            supportedOSElement.appendChild(requestDoc.createTextNode(parameters.getSupportedOS()));
-            extensionImageElement.appendChild(supportedOSElement);
-        }
-        
-        if (parameters.getCompanyName() != null) {
-            Element companyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CompanyName");
-            companyNameElement.appendChild(requestDoc.createTextNode(parameters.getCompanyName()));
-            extensionImageElement.appendChild(companyNameElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);

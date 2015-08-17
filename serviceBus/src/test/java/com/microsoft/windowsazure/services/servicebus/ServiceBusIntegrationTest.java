@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -70,7 +70,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
             .setPeekLock().setTimeout(5);
 
     private String createLongString(int length) {
-        String result = "";
+        String result = new String();
         for (int i = 0; i < length; i++) {
             result = result + "a";
         }
@@ -266,6 +266,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createTopic(new TopicInfo(topicName)).getValue();
         service.createSubscription(topicName, new SubscriptionInfo(
                 subscriptionName));
+        Long expectedActiveMessageCount = 1L;
         Long expectedDeadLetterMessageCount = 0L;
         Long expectedScheduledMessageCount = 0L;
         Long expectedTransferMessageCount = 0L;
@@ -487,7 +488,6 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    @Ignore("Ignore due to server side failure")
     public void receiveQueueForwardToTopicMessageSuccess() throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveQueueForwardToTopicMessageSuccessSource";
@@ -1104,7 +1104,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertEquals(2, result.getItems().size());
         RuleInfo rule0 = result.getItems().get(0);
         RuleInfo rule1 = result.getItems().get(1);
-        if (rule0.getName().equals("MyRule2")) {
+        if (rule0.getName() == "MyRule2") {
             RuleInfo swap = rule1;
             rule1 = rule0;
             rule0 = swap;

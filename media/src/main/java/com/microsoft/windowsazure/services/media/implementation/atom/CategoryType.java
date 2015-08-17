@@ -42,7 +42,26 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for categoryType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="categoryType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;attribute name="term" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="scheme" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="label" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "categoryType")

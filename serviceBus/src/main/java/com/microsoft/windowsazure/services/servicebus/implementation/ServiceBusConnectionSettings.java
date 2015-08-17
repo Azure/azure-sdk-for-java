@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,12 +32,9 @@ class ServiceBusConnectionSettings {
     private String wrapUri;
     private String wrapName;
     private String wrapPassword;
-    private String sharedAccessKeyName;
-    private String sharedAccessKey;
 
     public ServiceBusConnectionSettings(String connectionString, String uri,
-            String wrapUri, String wrapName, String wrapPassword,
-            String sharedAccessKeyName, String sharedAccessKey)
+            String wrapUri, String wrapName, String wrapPassword)
             throws ConnectionStringSyntaxException, URISyntaxException {
         if (connectionString != null) {
             parseConnectionString(connectionString);
@@ -46,8 +43,6 @@ class ServiceBusConnectionSettings {
             this.wrapUri = wrapUri;
             this.wrapName = wrapName;
             this.wrapPassword = wrapPassword;
-            this.sharedAccessKey = sharedAccessKey;
-            this.sharedAccessKeyName = sharedAccessKeyName;
         }
     }
 
@@ -67,18 +62,6 @@ class ServiceBusConnectionSettings {
         return wrapPassword;
     }
 
-    public String getSharedAccessKeyName() {
-        return sharedAccessKeyName;
-    }
-
-    public String getSharedAccessKey() {
-        return sharedAccessKey;
-    }
-
-    public boolean isSasAuthentication() {
-        return sharedAccessKeyName != null && sharedAccessKey != null;
-    }
-
     private boolean parseConnectionString(String connectionString)
             throws URISyntaxException, ConnectionStringSyntaxException {
         ServiceBusConnectionString cs = new ServiceBusConnectionString(
@@ -87,8 +70,6 @@ class ServiceBusConnectionSettings {
         setWrapUri(cs);
         wrapName = cs.getSharedSecretIssuer();
         wrapPassword = cs.getSharedSecretValue();
-        sharedAccessKeyName = cs.getSharedAccessKeyName();
-        sharedAccessKey = cs.getSharedAccessKey();
         return true;
     }
 

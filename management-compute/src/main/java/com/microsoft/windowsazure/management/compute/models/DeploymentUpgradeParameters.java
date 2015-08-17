@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -34,8 +33,7 @@ public class DeploymentUpgradeParameters {
     private String configuration;
     
     /**
-    * Required. The service configuration file for the deployment. The client
-    * library does the base-64 encoding from the plain text input.
+    * Required. The service configuration file for the deployment.
     * @return The Configuration value.
     */
     public String getConfiguration() {
@@ -43,8 +41,7 @@ public class DeploymentUpgradeParameters {
     }
     
     /**
-    * Required. The service configuration file for the deployment. The client
-    * library does the base-64 encoding from the plain text input.
+    * Required. The service configuration file for the deployment.
     * @param configurationValue The Configuration value.
     */
     public void setConfiguration(final String configurationValue) {
@@ -238,6 +235,6 @@ public class DeploymentUpgradeParameters {
     *
     */
     public DeploymentUpgradeParameters() {
-        this.setExtendedProperties(new LazyHashMap<String, String>());
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

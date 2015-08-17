@@ -17,10 +17,8 @@ package com.microsoft.windowsazure.management;
 
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -41,49 +39,35 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     
     @BeforeClass
     public static void setup() throws Exception {
-        createService();
+        createService();        
         cleanup();
         
-        setupTest(AffinityGroupOperationsTests.class.getSimpleName());
         getLocation();
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
-        createParameters.setName(affinityGroupName1);
+        createParameters.setName(affinityGroupName1);        
         createParameters.setLocation(smLocation);
         createParameters.setLabel(affinityGrouplabel1);
         createParameters.setDescription(affinityGroupDescription1);
 
         managementClient.getAffinityGroupsOperations().create(createParameters);
-        resetTest(AffinityGroupOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest(AffinityGroupOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         try {
-            AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
-            ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
-            for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist) { 
-                if (affinitygroup.getName().contains("testAffinityGroup")) {
+        	 AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
+        	 ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
+        	 for (AffinityGroupListResponse.AffinityGroup affinitygroup : affinityGrouplist) { 
+            	 if (affinitygroup.getName().contains("testAffinityGroup")) {
                     managementClient.getAffinityGroupsOperations().delete(affinitygroup.getName());
-                }
-            }
+            	 }
+        	 }
         }
         catch (ServiceException e) {
             e.printStackTrace();
         }
-        resetTest(AffinityGroupOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-    
     @Test
     public void createAffinityGroup() throws Exception {
         // Arrange
@@ -123,35 +107,35 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     @Test
     public void listAffinityGroupsSuccess() throws Exception {
         // Arrange  
-        AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
-        ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
-        Assert.assertNotNull(affinityGrouplist);        
+    	 AffinityGroupListResponse affinityGroupListResponse = managementClient.getAffinityGroupsOperations().list();
+    	 ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGrouplist = affinityGroupListResponse.getAffinityGroups();
+         Assert.assertNotNull(affinityGrouplist);        
     }
     
     @Test
     public void updateAffinityGroupSuccess() throws Exception {
-        // Arrange 
-        String expectedAffinityGroupName = "testAffinityGroupUpdateSuccess";
-        String expectedAffinityGroupLabel = "testAffinityGroupUpdateSuccessLabel";
-        String expectedUpdatedAffinityGroupLabel = "testAffinityGroupUpdatedSuccessLabel";           
-        String expectedDescription = "updateAffinityGroupSuccess";
-
-        AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
-        createParameters.setName(expectedAffinityGroupName);
-        createParameters.setLocation(smLocation);
-        createParameters.setLabel(expectedAffinityGroupLabel );
-
-        // Act
-        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters); 
-        Assert.assertEquals(201, operationResponse.getStatusCode());
-
-        AffinityGroupUpdateParameters updateParameters = new AffinityGroupUpdateParameters();      
-        updateParameters.setLabel(expectedUpdatedAffinityGroupLabel);
-        updateParameters.setDescription(expectedDescription);
-        OperationResponse updateoperationResponse = managementClient.getAffinityGroupsOperations().update(expectedAffinityGroupName, updateParameters);
-
-        // Assert
-        Assert.assertEquals(200, updateoperationResponse.getStatusCode());
-        Assert.assertNotNull(updateoperationResponse.getRequestId());
+	        // Arrange 
+	    	String expectedAffinityGroupName = "testAffinityGroupUpdateSuccess";
+	        String expectedAffinityGroupLabel = "testAffinityGroupUpdateSuccessLabel";
+	        String expectedUpdatedAffinityGroupLabel = "testAffinityGroupUpdatedSuccessLabel";	       
+	        String expectedDescription = "updateAffinityGroupSuccess";
+	         
+		    AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
+		    createParameters.setName(expectedAffinityGroupName);
+		    createParameters.setLocation(smLocation);
+		    createParameters.setLabel(expectedAffinityGroupLabel );
+	        
+	        // Act
+	        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters); 
+	        Assert.assertEquals(201, operationResponse.getStatusCode());
+	        
+	        AffinityGroupUpdateParameters updateParameters = new AffinityGroupUpdateParameters();      
+	        updateParameters.setLabel(expectedUpdatedAffinityGroupLabel);
+	        updateParameters.setDescription(expectedDescription);
+	        OperationResponse updateoperationResponse = managementClient.getAffinityGroupsOperations().update(expectedAffinityGroupName, updateParameters);
+	        
+	        // Assert
+	        Assert.assertEquals(200, updateoperationResponse.getStatusCode());
+	        Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
 }

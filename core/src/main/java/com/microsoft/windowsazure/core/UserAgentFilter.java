@@ -75,13 +75,13 @@ public class UserAgentFilter implements ServiceRequestFilter {
      * @return the version from resources
      */
     private String getVersionFromResources() {
-        String version = null;
+        String version = "unknown";
         Properties properties = new Properties();
         try {
             InputStream inputStream = getClass()
                     .getClassLoader()
                     .getResourceAsStream(
-                            "META-INF/maven/com.microsoft.azure/azure-core/pom.properties");
+                            "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api-core/pom.properties");
             if (inputStream != null) {
                 properties.load(inputStream);
                 version = properties.getProperty("version");

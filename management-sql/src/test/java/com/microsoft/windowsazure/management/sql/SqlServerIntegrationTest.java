@@ -19,16 +19,13 @@ import com.microsoft.windowsazure.management.sql.models.Server;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
-
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.*;
 import org.xml.sax.SAXException;
-
 import static org.junit.Assert.*;
 
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -41,15 +38,12 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     public static void setup() throws Exception {
         createService();
         createManagementClient();       
-        setupTest(SqlServerIntegrationTest.class.getSimpleName());
         getLocation();
         serverOperations = sqlManagementClient.getServersOperations();
-        resetTest(SqlServerIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        setupTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         for (String serverName : serverToBeRemoved) {
             try {
                 serverOperations.delete(serverName);
@@ -69,19 +63,8 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
                 Thread.sleep(100);
             }
         }
-        resetTest(SqlServerIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-    
     @Test
     public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         //arrange 

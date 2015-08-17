@@ -146,5 +146,11 @@ public class JobRecurrenceSchedule {
     *
     */
     public JobRecurrenceSchedule() {
+        this.setDays(new ArrayList<JobScheduleDay>());
+        this.setHours(new ArrayList<Integer>());
+        this.setMinutes(new ArrayList<Integer>());
+        this.setMonthDays(new ArrayList<Integer>());
+        this.setMonthlyOccurrences(new ArrayList<JobScheduleMonthlyOccurrence>());
+        this.setMonths(new ArrayList<Integer>());
     }
 }

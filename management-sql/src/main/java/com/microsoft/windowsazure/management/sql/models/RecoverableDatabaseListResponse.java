@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +57,7 @@ public class RecoverableDatabaseListResponse extends OperationResponse implement
     */
     public RecoverableDatabaseListResponse() {
         super();
-        this.setDatabases(new LazyArrayList<RecoverableDatabase>());
+        this.setDatabases(new ArrayList<RecoverableDatabase>());
     }
     
     /**

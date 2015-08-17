@@ -170,17 +170,6 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.networks;
     }
     
-    private NetworkSecurityGroupOperations networkSecurityGroups;
-    
-    /**
-    * The Network Management API includes operations for managing the Network
-    * Security Groups for your subscription.
-    * @return The NetworkSecurityGroupsOperations value.
-    */
-    public NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations() {
-        return this.networkSecurityGroups;
-    }
-    
     private ReservedIPOperations reservedIPs;
     
     /**
@@ -190,17 +179,6 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     */
     public ReservedIPOperations getReservedIPsOperations() {
         return this.reservedIPs;
-    }
-    
-    private RouteOperations routes;
-    
-    /**
-    * The Network Management API includes operations for managing the routes
-    * for your subscription.
-    * @return The RoutesOperations value.
-    */
-    public RouteOperations getRoutesOperations() {
-        return this.routes;
     }
     
     private StaticIPOperations staticIPs;
@@ -225,11 +203,9 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
         this.gateways = new GatewayOperationsImpl(this);
         this.networks = new NetworkOperationsImpl(this);
-        this.networkSecurityGroups = new NetworkSecurityGroupOperationsImpl(this);
         this.reservedIPs = new ReservedIPOperationsImpl(this);
-        this.routes = new RouteOperationsImpl(this);
         this.staticIPs = new StaticIPOperationsImpl(this);
-        this.apiVersion = "2014-10-01";
+        this.apiVersion = "2014-05-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -262,6 +238,7 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         } else {
             this.baseUri = baseUri;
         }
+        this.credentials = credentials;
     }
     
     /**
@@ -317,38 +294,6 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     */
     protected NetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
-    }
-    
-    /**
-    * Parse enum values for type LocalNetworkConnectionType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
-        if ("IPsec".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.IPSecurity;
-        }
-        if ("Dedicated".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.Dedicated;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type LocalNetworkConnectionType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
-        if (value == LocalNetworkConnectionType.IPSecurity) {
-            return "IPsec";
-        }
-        if (value == LocalNetworkConnectionType.Dedicated) {
-            return "Dedicated";
-        }
-        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -439,13 +384,12 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -534,5 +478,37 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
+    }
+    
+    /**
+    * Parse enum values for type LocalNetworkConnectionType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
+        if ("IPsec".equalsIgnoreCase(value)) {
+            return LocalNetworkConnectionType.IPSecurity;
+        }
+        if ("Dedicated".equalsIgnoreCase(value)) {
+            return LocalNetworkConnectionType.Dedicated;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type LocalNetworkConnectionType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
+        if (value == LocalNetworkConnectionType.IPSecurity) {
+            return "IPsec";
+        }
+        if (value == LocalNetworkConnectionType.Dedicated) {
+            return "Dedicated";
+        }
+        throw new IllegalArgumentException("value");
     }
 }

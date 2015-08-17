@@ -23,22 +23,22 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
 * The List Available Extensions operation response.
 */
-public class HostedServiceListAvailableExtensionsResponse extends OperationResponse implements Iterable<ExtensionImage> {
-    private ArrayList<ExtensionImage> extensionImages;
+public class HostedServiceListAvailableExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListAvailableExtensionsResponse.ExtensionImage> {
+    private ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImages;
     
     /**
     * Optional. The extensions that are available to add to your cloud service.
     * @return The ExtensionImages value.
     */
-    public ArrayList<ExtensionImage> getExtensionImages() {
+    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages() {
         return this.extensionImages;
     }
     
@@ -46,7 +46,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     * Optional. The extensions that are available to add to your cloud service.
     * @param extensionImagesValue The ExtensionImages value.
     */
-    public void setExtensionImages(final ArrayList<ExtensionImage> extensionImagesValue) {
+    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue) {
         this.extensionImages = extensionImagesValue;
     }
     
@@ -57,14 +57,392 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     */
     public HostedServiceListAvailableExtensionsResponse() {
         super();
-        this.setExtensionImages(new LazyArrayList<ExtensionImage>());
+        this.setExtensionImages(new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>());
     }
     
     /**
     * Gets the sequence of ExtensionImages.
     *
     */
-    public Iterator<ExtensionImage> iterator() {
+    public Iterator<HostedServiceListAvailableExtensionsResponse.ExtensionImage> iterator() {
         return this.getExtensionImages().iterator();
+    }
+    
+    /**
+    * An extension available to add to your cloud service.
+    */
+    public static class ExtensionImage {
+        private Boolean blockRoleUponFailure;
+        
+        /**
+        * Optional. Indicates whether this version of extension blocks the role
+        * upon failure.
+        * @return The BlockRoleUponFailure value.
+        */
+        public Boolean isBlockRoleUponFailure() {
+            return this.blockRoleUponFailure;
+        }
+        
+        /**
+        * Optional. Indicates whether this version of extension blocks the role
+        * upon failure.
+        * @param blockRoleUponFailureValue The BlockRoleUponFailure value.
+        */
+        public void setBlockRoleUponFailure(final Boolean blockRoleUponFailureValue) {
+            this.blockRoleUponFailure = blockRoleUponFailureValue;
+        }
+        
+        private String description;
+        
+        /**
+        * Optional. The description of the extension.
+        * @return The Description value.
+        */
+        public String getDescription() {
+            return this.description;
+        }
+        
+        /**
+        * Optional. The description of the extension.
+        * @param descriptionValue The Description value.
+        */
+        public void setDescription(final String descriptionValue) {
+            this.description = descriptionValue;
+        }
+        
+        private URI eula;
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Azure, at the time of extension creation or update.
+        * @return The Eula value.
+        */
+        public URI getEula() {
+            return this.eula;
+        }
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Azure, at the time of extension creation or update.
+        * @param eulaValue The Eula value.
+        */
+        public void setEula(final URI eulaValue) {
+            this.eula = eulaValue;
+        }
+        
+        private URI homepageUri;
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
+        * @return The HomepageUri value.
+        */
+        public URI getHomepageUri() {
+            return this.homepageUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
+        * @param homepageUriValue The HomepageUri value.
+        */
+        public void setHomepageUri(final URI homepageUriValue) {
+            this.homepageUri = homepageUriValue;
+        }
+        
+        private String hostingResources;
+        
+        /**
+        * Optional. The type of resource that supports the extension. This
+        * value can be WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @return The HostingResources value.
+        */
+        public String getHostingResources() {
+            return this.hostingResources;
+        }
+        
+        /**
+        * Optional. The type of resource that supports the extension. This
+        * value can be WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @param hostingResourcesValue The HostingResources value.
+        */
+        public void setHostingResources(final String hostingResourcesValue) {
+            this.hostingResources = hostingResourcesValue;
+        }
+        
+        private Boolean isInternalExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @return The IsInternalExtension value.
+        */
+        public Boolean isInternalExtension() {
+            return this.isInternalExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension is
+        * internal or public.
+        * @param isInternalExtensionValue The IsInternalExtension value.
+        */
+        public void setIsInternalExtension(final Boolean isInternalExtensionValue) {
+            this.isInternalExtension = isInternalExtensionValue;
+        }
+        
+        private Boolean isJsonExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based configuration.
+        * @return The IsJsonExtension value.
+        */
+        public Boolean isJsonExtension() {
+            return this.isJsonExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based configuration.
+        * @param isJsonExtensionValue The IsJsonExtension value.
+        */
+        public void setIsJsonExtension(final Boolean isJsonExtensionValue) {
+            this.isJsonExtension = isJsonExtensionValue;
+        }
+        
+        private String label;
+        
+        /**
+        * Optional. The label that is used to identify the extension.
+        * @return The Label value.
+        */
+        public String getLabel() {
+            return this.label;
+        }
+        
+        /**
+        * Optional. The label that is used to identify the extension.
+        * @param labelValue The Label value.
+        */
+        public void setLabel(final String labelValue) {
+            this.label = labelValue;
+        }
+        
+        private URI privacyUri;
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
+        * @return The PrivacyUri value.
+        */
+        public URI getPrivacyUri() {
+            return this.privacyUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Azure, at the time of extension
+        * creation or update.
+        * @param privacyUriValue The PrivacyUri value.
+        */
+        public void setPrivacyUri(final URI privacyUriValue) {
+            this.privacyUri = privacyUriValue;
+        }
+        
+        private String privateConfigurationSchema;
+        
+        /**
+        * Optional. The schema of the private configuration.
+        * @return The PrivateConfigurationSchema value.
+        */
+        public String getPrivateConfigurationSchema() {
+            return this.privateConfigurationSchema;
+        }
+        
+        /**
+        * Optional. The schema of the private configuration.
+        * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
+        * value.
+        */
+        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue) {
+            this.privateConfigurationSchema = privateConfigurationSchemaValue;
+        }
+        
+        private String providerNamespace;
+        
+        /**
+        * Optional. The provider namespace of the extension. The provider
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @return The ProviderNamespace value.
+        */
+        public String getProviderNamespace() {
+            return this.providerNamespace;
+        }
+        
+        /**
+        * Optional. The provider namespace of the extension. The provider
+        * namespace for Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @param providerNamespaceValue The ProviderNamespace value.
+        */
+        public void setProviderNamespace(final String providerNamespaceValue) {
+            this.providerNamespace = providerNamespaceValue;
+        }
+        
+        private String publicConfigurationSchema;
+        
+        /**
+        * Optional. The schema of the public configuration.
+        * @return The PublicConfigurationSchema value.
+        */
+        public String getPublicConfigurationSchema() {
+            return this.publicConfigurationSchema;
+        }
+        
+        /**
+        * Optional. The schema of the public configuration.
+        * @param publicConfigurationSchemaValue The PublicConfigurationSchema
+        * value.
+        */
+        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue) {
+            this.publicConfigurationSchema = publicConfigurationSchemaValue;
+        }
+        
+        private Boolean replicationCompleted;
+        
+        /**
+        * Optional. Indicates whether this version of extension has been
+        * replicated to all regions or not. If true, then the given extension
+        * version can be used in creating or updating deployments. Otherwise,
+        * the given extension version might cause failure in creating or
+        * updating deployments. The typical time is 20 minutes for a
+        * newly-registered or newly-updated extension to replicate completely
+        * by Azure.
+        * @return The ReplicationCompleted value.
+        */
+        public Boolean isReplicationCompleted() {
+            return this.replicationCompleted;
+        }
+        
+        /**
+        * Optional. Indicates whether this version of extension has been
+        * replicated to all regions or not. If true, then the given extension
+        * version can be used in creating or updating deployments. Otherwise,
+        * the given extension version might cause failure in creating or
+        * updating deployments. The typical time is 20 minutes for a
+        * newly-registered or newly-updated extension to replicate completely
+        * by Azure.
+        * @param replicationCompletedValue The ReplicationCompleted value.
+        */
+        public void setReplicationCompleted(final Boolean replicationCompletedValue) {
+            this.replicationCompleted = replicationCompletedValue;
+        }
+        
+        private String sampleConfig;
+        
+        /**
+        * Optional. A sample configuration file for the resource extension.
+        * @return The SampleConfig value.
+        */
+        public String getSampleConfig() {
+            return this.sampleConfig;
+        }
+        
+        /**
+        * Optional. A sample configuration file for the resource extension.
+        * @param sampleConfigValue The SampleConfig value.
+        */
+        public void setSampleConfig(final String sampleConfigValue) {
+            this.sampleConfig = sampleConfigValue;
+        }
+        
+        private String thumbprintAlgorithm;
+        
+        /**
+        * Optional. The thumbprint algorithm of the certificate that is used
+        * for encryption.
+        * @return The ThumbprintAlgorithm value.
+        */
+        public String getThumbprintAlgorithm() {
+            return this.thumbprintAlgorithm;
+        }
+        
+        /**
+        * Optional. The thumbprint algorithm of the certificate that is used
+        * for encryption.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
+        */
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
+        }
+        
+        private String type;
+        
+        /**
+        * Required. The type of the extension.
+        * @return The Type value.
+        */
+        public String getType() {
+            return this.type;
+        }
+        
+        /**
+        * Required. The type of the extension.
+        * @param typeValue The Type value.
+        */
+        public void setType(final String typeValue) {
+            this.type = typeValue;
+        }
+        
+        private String version;
+        
+        /**
+        * Optional. The version of the extension.
+        * @return The Version value.
+        */
+        public String getVersion() {
+            return this.version;
+        }
+        
+        /**
+        * Optional. The version of the extension.
+        * @param versionValue The Version value.
+        */
+        public void setVersion(final String versionValue) {
+            this.version = versionValue;
+        }
+        
+        /**
+        * Initializes a new instance of the ExtensionImage class.
+        *
+        */
+        public ExtensionImage() {
+        }
+        
+        /**
+        * Initializes a new instance of the ExtensionImage class with required
+        * arguments.
+        *
+        */
+        public ExtensionImage(String type) {
+            if (type == null) {
+                throw new NullPointerException("type");
+            }
+            this.setType(type);
+        }
     }
 }

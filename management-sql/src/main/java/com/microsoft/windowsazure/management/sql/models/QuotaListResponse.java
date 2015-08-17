@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ public class QuotaListResponse extends OperationResponse implements Iterable<Quo
     */
     public QuotaListResponse() {
         super();
-        this.setQuotas(new LazyArrayList<Quota>());
+        this.setQuotas(new ArrayList<Quota>());
     }
     
     /**

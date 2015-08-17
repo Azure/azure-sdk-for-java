@@ -23,10 +23,60 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import java.util.ArrayList;
+
 /**
 * Parameters supplied to the Create Web Site operation.
 */
 public class WebSiteCreateParameters {
+    private WebSiteComputeMode computeMode;
+    
+    /**
+    * Optional. The compute mode for the web site. This value should be Shared
+    * for the Free or Paid Shared offerings or Dedicated for the Standard
+    * offering. The default value is Shared. If you set ComputeMode to
+    * Dedicated, you must specify a value for the ServerFarm element.
+    * @return The ComputeMode value.
+    */
+    public WebSiteComputeMode getComputeMode() {
+        return this.computeMode;
+    }
+    
+    /**
+    * Optional. The compute mode for the web site. This value should be Shared
+    * for the Free or Paid Shared offerings or Dedicated for the Standard
+    * offering. The default value is Shared. If you set ComputeMode to
+    * Dedicated, you must specify a value for the ServerFarm element.
+    * @param computeModeValue The ComputeMode value.
+    */
+    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
+        this.computeMode = computeModeValue;
+    }
+    
+    private ArrayList<String> hostNames;
+    
+    /**
+    * Optional. The fully qualified domain name for web site. Only one host
+    * name can be specified in the azurewebsites.net domain. The host name
+    * should match the name of the web site. Custom domains can only be
+    * specified for Shared or Standard web sites.
+    * @return The HostNames value.
+    */
+    public ArrayList<String> getHostNames() {
+        return this.hostNames;
+    }
+    
+    /**
+    * Optional. The fully qualified domain name for web site. Only one host
+    * name can be specified in the azurewebsites.net domain. The host name
+    * should match the name of the web site. Custom domains can only be
+    * specified for Shared or Standard web sites.
+    * @param hostNamesValue The HostNames value.
+    */
+    public void setHostNames(final ArrayList<String> hostNamesValue) {
+        this.hostNames = hostNamesValue;
+    }
+    
     private String name;
     
     /**
@@ -50,8 +100,8 @@ public class WebSiteCreateParameters {
     private String serverFarm;
     
     /**
-    * Required. The name of the Server Farm (Web Hosting Plan) associated with
-    * this web site. This is a required value. Server Farm must already exist.
+    * Optional. The name of the Server Farm associated with this web site. This
+    * is a required value for Standard mode.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -59,12 +109,38 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Required. The name of the Server Farm (Web Hosting Plan) associated with
-    * this web site. This is a required value. Server Farm must already exist.
+    * Optional. The name of the Server Farm associated with this web site. This
+    * is a required value for Standard mode.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
         this.serverFarm = serverFarmValue;
+    }
+    
+    private WebSiteMode siteMode;
+    
+    /**
+    * Optional. The web site mode. This value is Limited for the Free offering
+    * and Basic for the Paid and Shared offerings. The default value is
+    * Limited. Note: Standard mode does not use the SiteMode setting; it uses
+    * the ComputeMode setting. For more information, see Upgrade or Downgrade
+    * a Web Site.
+    * @return The SiteMode value.
+    */
+    public WebSiteMode getSiteMode() {
+        return this.siteMode;
+    }
+    
+    /**
+    * Optional. The web site mode. This value is Limited for the Free offering
+    * and Basic for the Paid and Shared offerings. The default value is
+    * Limited. Note: Standard mode does not use the SiteMode setting; it uses
+    * the ComputeMode setting. For more information, see Upgrade or Downgrade
+    * a Web Site.
+    * @param siteModeValue The SiteMode value.
+    */
+    public void setSiteMode(final WebSiteMode siteModeValue) {
+        this.siteMode = siteModeValue;
     }
     
     private WebSiteCreateParameters.WebSpaceDetails webSpace;
@@ -85,29 +161,47 @@ public class WebSiteCreateParameters {
         this.webSpace = webSpaceValue;
     }
     
+    private String webSpaceName;
+    
+    /**
+    * Required. The name of the web space.
+    * @return The WebSpaceName value.
+    */
+    public String getWebSpaceName() {
+        return this.webSpaceName;
+    }
+    
+    /**
+    * Required. The name of the web space.
+    * @param webSpaceNameValue The WebSpaceName value.
+    */
+    public void setWebSpaceName(final String webSpaceNameValue) {
+        this.webSpaceName = webSpaceNameValue;
+    }
+    
     /**
     * Initializes a new instance of the WebSiteCreateParameters class.
     *
     */
     public WebSiteCreateParameters() {
+        this.setHostNames(new ArrayList<String>());
     }
     
     /**
     * Initializes a new instance of the WebSiteCreateParameters class with
     * required arguments.
     *
-    * @param name The name.
-    * @param serverFarm The server farm.
     */
-    public WebSiteCreateParameters(String name, String serverFarm) {
+    public WebSiteCreateParameters(String name, String webSpaceName) {
+        this();
         if (name == null) {
             throw new NullPointerException("name");
         }
-        if (serverFarm == null) {
-            throw new NullPointerException("serverFarm");
+        if (webSpaceName == null) {
+            throw new NullPointerException("webSpaceName");
         }
         this.setName(name);
-        this.setServerFarm(serverFarm);
+        this.setWebSpaceName(webSpaceName);
     }
     
     /**
@@ -181,9 +275,6 @@ public class WebSiteCreateParameters {
         * Initializes a new instance of the WebSpaceDetails class with required
         * arguments.
         *
-        * @param geoRegion The geo region.
-        * @param name The name.
-        * @param plan The plan.
         */
         public WebSpaceDetails(String geoRegion, String name, String plan) {
             if (geoRegion == null) {

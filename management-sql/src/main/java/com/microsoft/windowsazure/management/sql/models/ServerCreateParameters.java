@@ -119,9 +119,6 @@ public class ServerCreateParameters {
     * Initializes a new instance of the ServerCreateParameters class with
     * required arguments.
     *
-    * @param administratorUserName The administrator user name.
-    * @param administratorPassword The administrator password.
-    * @param location The location.
     */
     public ServerCreateParameters(String administratorUserName, String administratorPassword, String location) {
         if (administratorUserName == null) {

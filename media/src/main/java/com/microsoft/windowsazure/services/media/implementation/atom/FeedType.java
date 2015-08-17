@@ -48,7 +48,39 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for feedType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="feedType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;choice maxOccurs="unbounded" minOccurs="3">
+ *         &lt;element name="author" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="category" type="{http://www.w3.org/2005/Atom}categoryType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="contributor" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="generator" type="{http://www.w3.org/2005/Atom}generatorType" minOccurs="0"/>
+ *         &lt;element name="icon" type="{http://www.w3.org/2005/Atom}iconType" minOccurs="0"/>
+ *         &lt;element name="id" type="{http://www.w3.org/2005/Atom}idType"/>
+ *         &lt;element name="link" type="{http://www.w3.org/2005/Atom}linkType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="logo" type="{http://www.w3.org/2005/Atom}logoType" minOccurs="0"/>
+ *         &lt;element name="rights" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
+ *         &lt;element name="subtitle" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
+ *         &lt;element name="title" type="{http://www.w3.org/2005/Atom}textType"/>
+ *         &lt;element name="updated" type="{http://www.w3.org/2005/Atom}dateTimeType"/>
+ *         &lt;element name="entry" type="{http://www.w3.org/2005/Atom}entryType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;any namespace='##other' maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/choice>
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "feedType", propOrder = { "feedChildren" })

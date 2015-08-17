@@ -133,8 +133,6 @@ public class RestoreDatabaseOperationCreateParameters {
     * Initializes a new instance of the
     * RestoreDatabaseOperationCreateParameters class with required arguments.
     *
-    * @param sourceDatabaseName The source database name.
-    * @param targetDatabaseName The target database name.
     */
     public RestoreDatabaseOperationCreateParameters(String sourceDatabaseName, String targetDatabaseName) {
         if (sourceDatabaseName == null) {

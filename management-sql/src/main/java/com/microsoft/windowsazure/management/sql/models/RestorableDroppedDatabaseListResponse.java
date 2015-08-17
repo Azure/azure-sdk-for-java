@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,8 +34,8 @@ public class RestorableDroppedDatabaseListResponse extends OperationResponse imp
     private ArrayList<RestorableDroppedDatabase> databases;
     
     /**
-    * Optional. Gets or sets the collection of restorable dropped databases
-    * that has been returned from a List Restorable Dropped Databases request.
+    * Optional. Gets the collection of restorable dropped databases that has
+    * been returned from a List Restorable Dropped Databases request.
     * @return The Databases value.
     */
     public ArrayList<RestorableDroppedDatabase> getDatabases() {
@@ -44,8 +43,8 @@ public class RestorableDroppedDatabaseListResponse extends OperationResponse imp
     }
     
     /**
-    * Optional. Gets or sets the collection of restorable dropped databases
-    * that has been returned from a List Restorable Dropped Databases request.
+    * Optional. Gets the collection of restorable dropped databases that has
+    * been returned from a List Restorable Dropped Databases request.
     * @param databasesValue The Databases value.
     */
     public void setDatabases(final ArrayList<RestorableDroppedDatabase> databasesValue) {
@@ -59,7 +58,7 @@ public class RestorableDroppedDatabaseListResponse extends OperationResponse imp
     */
     public RestorableDroppedDatabaseListResponse() {
         super();
-        this.setDatabases(new LazyArrayList<RestorableDroppedDatabase>());
+        this.setDatabases(new ArrayList<RestorableDroppedDatabase>());
     }
     
     /**

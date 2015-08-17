@@ -75,7 +75,6 @@ public class ExtensionLocalResourceConfiguration {
     * Initializes a new instance of the ExtensionLocalResourceConfiguration
     * class with required arguments.
     *
-    * @param name The name.
     */
     public ExtensionLocalResourceConfiguration(String name) {
         if (name == null) {

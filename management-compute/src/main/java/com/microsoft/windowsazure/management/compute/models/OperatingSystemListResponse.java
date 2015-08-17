@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     */
     public OperatingSystemListResponse() {
         super();
-        this.setOperatingSystems(new LazyArrayList<OperatingSystemListResponse.OperatingSystem>());
+        this.setOperatingSystems(new ArrayList<OperatingSystemListResponse.OperatingSystem>());
     }
     
     /**

@@ -96,9 +96,6 @@ public class FirewallRuleUpdateParameters {
     * Initializes a new instance of the FirewallRuleUpdateParameters class with
     * required arguments.
     *
-    * @param name The name.
-    * @param startIPAddress The start IP address.
-    * @param endIPAddress The end IP address.
     */
     public FirewallRuleUpdateParameters(String name, InetAddress startIPAddress, InetAddress endIPAddress) {
         if (name == null) {

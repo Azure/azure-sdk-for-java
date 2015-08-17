@@ -47,7 +47,7 @@ public class Exports implements Builder.Exports {
                 if (properties
                         .containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS)) {
                     CloudCredentials cloudCredentials = (CloudCredentials) properties
-                            .get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
+							.get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
                     cloudCredentials.applyConfig(profile, properties);
                 }
 

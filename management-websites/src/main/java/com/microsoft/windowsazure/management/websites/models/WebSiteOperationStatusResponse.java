@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -189,7 +188,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
     */
     public WebSiteOperationStatusResponse() {
         super();
-        this.setErrors(new LazyArrayList<WebSiteOperationStatusResponse.Error>());
+        this.setErrors(new ArrayList<WebSiteOperationStatusResponse.Error>());
     }
     
     /**
@@ -309,7 +308,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse {
         *
         */
         public Error() {
-            this.setParameters(new LazyArrayList<String>());
+            this.setParameters(new ArrayList<String>());
         }
     }
 }

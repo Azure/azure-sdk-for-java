@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -54,6 +53,6 @@ public class DeploymentDeleteRoleInstanceParameters {
     *
     */
     public DeploymentDeleteRoleInstanceParameters() {
-        this.setName(new LazyArrayList<String>());
+        this.setName(new ArrayList<String>());
     }
 }

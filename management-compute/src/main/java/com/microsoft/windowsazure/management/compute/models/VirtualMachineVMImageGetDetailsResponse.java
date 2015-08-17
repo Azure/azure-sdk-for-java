@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -572,8 +571,8 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     */
     public VirtualMachineVMImageGetDetailsResponse() {
         super();
-        this.setDataDiskConfigurations(new LazyArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
-        this.setReplicationProgress(new LazyArrayList<VirtualMachineVMImageGetDetailsResponse.ReplicationProgressElement>());
+        this.setDataDiskConfigurations(new ArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
+        this.setReplicationProgress(new ArrayList<VirtualMachineVMImageGetDetailsResponse.ReplicationProgressElement>());
     }
     
     /**

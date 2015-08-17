@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
     */
     public VirtualMachineOSImageListResponse() {
         super();
-        this.setImages(new LazyArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>());
+        this.setImages(new ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>());
     }
     
     /**
@@ -177,24 +176,6 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         */
         public void setImageFamily(final String imageFamilyValue) {
             this.imageFamily = imageFamilyValue;
-        }
-        
-        private String iOType;
-        
-        /**
-        * Optional. Gets or sets the IO type.
-        * @return The IOType value.
-        */
-        public String getIOType() {
-            return this.iOType;
-        }
-        
-        /**
-        * Optional. Gets or sets the IO type.
-        * @param iOTypeValue The IOType value.
-        */
-        public void setIOType(final String iOTypeValue) {
-            this.iOType = iOTypeValue;
         }
         
         private Boolean isPremium;
@@ -471,26 +452,6 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         */
         public void setRecommendedVMSize(final String recommendedVMSizeValue) {
             this.recommendedVMSize = recommendedVMSizeValue;
-        }
-        
-        private Boolean showInGui;
-        
-        /**
-        * Optional. Indicates whether the image should be shown in the Azure
-        * portal.
-        * @return The ShowInGui value.
-        */
-        public Boolean isShowInGui() {
-            return this.showInGui;
-        }
-        
-        /**
-        * Optional. Indicates whether the image should be shown in the Azure
-        * portal.
-        * @param showInGuiValue The ShowInGui value.
-        */
-        public void setShowInGui(final Boolean showInGuiValue) {
-            this.showInGui = showInGuiValue;
         }
         
         private URI smallIconUri;

@@ -126,7 +126,6 @@ public class ExtensionCertificateConfiguration {
     * Initializes a new instance of the ExtensionCertificateConfiguration class
     * with required arguments.
     *
-    * @param storeLocation The store location.
     */
     public ExtensionCertificateConfiguration(String storeLocation) {
         if (storeLocation == null) {

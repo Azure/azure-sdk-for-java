@@ -56,7 +56,6 @@ public class DeploymentUpdateStatusParameters {
     * Initializes a new instance of the DeploymentUpdateStatusParameters class
     * with required arguments.
     *
-    * @param status The status.
     */
     public DeploymentUpdateStatusParameters(UpdatedDeploymentStatus status) {
         this.setStatus(status);

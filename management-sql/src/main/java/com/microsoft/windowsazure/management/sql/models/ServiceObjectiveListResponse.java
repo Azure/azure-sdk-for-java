@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,7 +58,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     */
     public ServiceObjectiveListResponse() {
         super();
-        this.setServiceObjectives(new LazyArrayList<ServiceObjective>());
+        this.setServiceObjectives(new ArrayList<ServiceObjective>());
     }
     
     /**

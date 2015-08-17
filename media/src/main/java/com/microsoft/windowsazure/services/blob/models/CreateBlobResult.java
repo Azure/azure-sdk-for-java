@@ -18,7 +18,11 @@ import java.util.Date;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Create
- * Blob operation.
+ * Blob operation. This is returned by calls to implementations of
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createPageBlob(String, String, long, CreateBlobOptions)}
+ * and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)}
+ * .
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179451.aspx">Put

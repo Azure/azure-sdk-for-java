@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -165,13 +164,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -282,13 +280,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -398,13 +395,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -630,13 +626,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -743,13 +738,6 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                         logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                         oSDiskConfigurationInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                     }
-                    
-                    Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSDiskConfigurationElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                    if (iOTypeElement != null) {
-                        String iOTypeInstance;
-                        iOTypeInstance = iOTypeElement.getTextContent();
-                        oSDiskConfigurationInstance.setIOType(iOTypeInstance);
-                    }
                 }
                 
                 Element dataDiskConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(vMImageDetailsElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
@@ -792,13 +780,6 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                             int logicalDiskSizeInGBInstance2;
                             logicalDiskSizeInGBInstance2 = DatatypeConverter.parseInt(logicalDiskSizeInGBElement2.getTextContent());
                             dataDiskConfigurationInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance2);
-                        }
-                        
-                        Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(dataDiskConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                        if (iOTypeElement2 != null) {
-                            String iOTypeInstance2;
-                            iOTypeInstance2 = iOTypeElement2.getTextContent();
-                            dataDiskConfigurationInstance.setIOType(iOTypeInstance2);
                         }
                     }
                 }
@@ -1053,13 +1034,12 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1171,13 +1151,6 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                             logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                             oSDiskConfigurationInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                         }
-                        
-                        Element iOTypeElement = XmlUtility.getElementByTagNameNS(oSDiskConfigurationElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                        if (iOTypeElement != null) {
-                            String iOTypeInstance;
-                            iOTypeInstance = iOTypeElement.getTextContent();
-                            oSDiskConfigurationInstance.setIOType(iOTypeInstance);
-                        }
                     }
                     
                     Element dataDiskConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(vMImagesElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
@@ -1220,13 +1193,6 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
                                 int logicalDiskSizeInGBInstance2;
                                 logicalDiskSizeInGBInstance2 = DatatypeConverter.parseInt(logicalDiskSizeInGBElement2.getTextContent());
                                 dataDiskConfigurationInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance2);
-                            }
-                            
-                            Element iOTypeElement2 = XmlUtility.getElementByTagNameNS(dataDiskConfigurationsElement, "http://schemas.microsoft.com/windowsazure", "IOType");
-                            if (iOTypeElement2 != null) {
-                                String iOTypeInstance2;
-                                iOTypeInstance2 = iOTypeElement2.getTextContent();
-                                dataDiskConfigurationInstance.setIOType(iOTypeInstance2);
                             }
                         }
                     }
@@ -1456,14 +1422,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1475,15 +1440,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         requestDoc.appendChild(replicationInputElement);
         
         if (parameters.getTargetLocations() != null) {
-            if (parameters.getTargetLocations() instanceof LazyCollection == false || ((LazyCollection) parameters.getTargetLocations()).isInitialized()) {
-                Element targetLocationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetLocations");
-                for (String targetLocationsItem : parameters.getTargetLocations()) {
-                    Element targetLocationsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Region");
-                    targetLocationsItemElement.appendChild(requestDoc.createTextNode(targetLocationsItem));
-                    targetLocationsSequenceElement.appendChild(targetLocationsItemElement);
-                }
-                replicationInputElement.appendChild(targetLocationsSequenceElement);
+            Element targetLocationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetLocations");
+            for (String targetLocationsItem : parameters.getTargetLocations()) {
+                Element targetLocationsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Region");
+                targetLocationsItemElement.appendChild(requestDoc.createTextNode(targetLocationsItem));
+                targetLocationsSequenceElement.appendChild(targetLocationsItemElement);
             }
+            replicationInputElement.appendChild(targetLocationsSequenceElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -1880,14 +1843,13 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2014-05-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1914,32 +1876,30 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
         }
         
         if (parameters.getDataDiskConfigurations() != null) {
-            if (parameters.getDataDiskConfigurations() instanceof LazyCollection == false || ((LazyCollection) parameters.getDataDiskConfigurations()).isInitialized()) {
-                Element dataDiskConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
-                for (DataDiskConfigurationUpdateParameters dataDiskConfigurationsItem : parameters.getDataDiskConfigurations()) {
-                    Element dataDiskConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration");
-                    dataDiskConfigurationsSequenceElement.appendChild(dataDiskConfigurationElement);
-                    
-                    if (dataDiskConfigurationsItem.getName() != null) {
-                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement.appendChild(requestDoc.createTextNode(dataDiskConfigurationsItem.getName()));
-                        dataDiskConfigurationElement.appendChild(nameElement);
-                    }
-                    
-                    if (dataDiskConfigurationsItem.getHostCaching() != null) {
-                        Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                        hostCachingElement2.appendChild(requestDoc.createTextNode(dataDiskConfigurationsItem.getHostCaching()));
-                        dataDiskConfigurationElement.appendChild(hostCachingElement2);
-                    }
-                    
-                    if (dataDiskConfigurationsItem.getLogicalUnitNumber() != null) {
-                        Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                        lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataDiskConfigurationsItem.getLogicalUnitNumber())));
-                        dataDiskConfigurationElement.appendChild(lunElement);
-                    }
+            Element dataDiskConfigurationsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
+            for (DataDiskConfigurationUpdateParameters dataDiskConfigurationsItem : parameters.getDataDiskConfigurations()) {
+                Element dataDiskConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration");
+                dataDiskConfigurationsSequenceElement.appendChild(dataDiskConfigurationElement);
+                
+                if (dataDiskConfigurationsItem.getName() != null) {
+                    Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement.appendChild(requestDoc.createTextNode(dataDiskConfigurationsItem.getName()));
+                    dataDiskConfigurationElement.appendChild(nameElement);
                 }
-                vMImageElement.appendChild(dataDiskConfigurationsSequenceElement);
+                
+                if (dataDiskConfigurationsItem.getHostCaching() != null) {
+                    Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
+                    hostCachingElement2.appendChild(requestDoc.createTextNode(dataDiskConfigurationsItem.getHostCaching()));
+                    dataDiskConfigurationElement.appendChild(hostCachingElement2);
+                }
+                
+                if (dataDiskConfigurationsItem.getLogicalUnitNumber() != null) {
+                    Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
+                    lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataDiskConfigurationsItem.getLogicalUnitNumber())));
+                    dataDiskConfigurationElement.appendChild(lunElement);
+                }
             }
+            vMImageElement.appendChild(dataDiskConfigurationsSequenceElement);
         }
         
         if (parameters.getDescription() != null) {

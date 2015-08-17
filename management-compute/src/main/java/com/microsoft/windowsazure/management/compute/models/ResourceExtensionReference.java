@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -159,6 +158,6 @@ public class ResourceExtensionReference {
     *
     */
     public ResourceExtensionReference() {
-        this.setResourceExtensionParameterValues(new LazyArrayList<ResourceExtensionParameterValue>());
+        this.setResourceExtensionParameterValues(new ArrayList<ResourceExtensionParameterValue>());
     }
 }

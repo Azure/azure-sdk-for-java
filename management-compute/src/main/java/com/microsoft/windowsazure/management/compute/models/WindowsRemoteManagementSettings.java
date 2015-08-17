@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +55,6 @@ public class WindowsRemoteManagementSettings {
     *
     */
     public WindowsRemoteManagementSettings() {
-        this.setListeners(new LazyArrayList<WindowsRemoteManagementListener>());
+        this.setListeners(new ArrayList<WindowsRemoteManagementListener>());
     }
 }

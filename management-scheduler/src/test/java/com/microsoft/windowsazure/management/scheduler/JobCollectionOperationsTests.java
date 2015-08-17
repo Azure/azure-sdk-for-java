@@ -29,10 +29,8 @@ import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -45,27 +43,21 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
     public static void setup() throws Exception {
         cloudServiceName = testJobCollectionPrefix + "jobcls" + randomString(5);
         jobCollectionName = testJobCollectionPrefix + "jobcl" + randomString(7);
-        addRegexRule(testJobCollectionPrefix + "jobcls[a-z]{5}");
-        addRegexRule(testJobCollectionPrefix + "jobcl[a-z]{7}");
 
         createManagementClient();
-        createCloudServiceManagementService();
-        createSchedulerManagementService();
-        
-        setupTest(JobCollectionOperationsTests.class.getSimpleName());
-        
         getLocation();
+
+        createCloudServiceManagementService();
         createCloudService();
+
+        createSchedulerManagementService();
         createJobCollection();
-        resetTest(JobCollectionOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {
-        setupTest(JobCollectionOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+    public static void cleanup() {
         cleanJobCollection();
         cleanCloudService();
-        resetTest(JobCollectionOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void cleanJobCollection() {
@@ -134,16 +126,6 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         Assert.assertNotNull(operationResponse.getRequestId());
     }
 
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
-    }
-    
     @Test
     public void listCloudServiceSuccess() throws Exception {
         //Act
@@ -168,7 +150,6 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void checkAvailabilitySuccess() throws Exception {
         String checkJobCollectionName = testJobCollectionPrefix + "chk"+randomString(8);
-        addRegexRule(testJobCollectionPrefix + "chk[a-z]{8}");
 
         //Act
         JobCollectionCheckNameAvailabilityResponse checkNameAvailabilityResponse = schedulerManagementClient.getJobCollectionsOperations().checkNameAvailability(cloudServiceName, checkJobCollectionName);

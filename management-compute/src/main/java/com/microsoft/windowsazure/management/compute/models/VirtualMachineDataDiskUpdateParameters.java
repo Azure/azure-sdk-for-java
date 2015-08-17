@@ -185,8 +185,6 @@ public class VirtualMachineDataDiskUpdateParameters {
     * Initializes a new instance of the VirtualMachineDataDiskUpdateParameters
     * class with required arguments.
     *
-    * @param hostCaching The host caching.
-    * @param mediaLinkUri The media link uri.
     */
     public VirtualMachineDataDiskUpdateParameters(String hostCaching, URI mediaLinkUri) {
         if (hostCaching == null) {

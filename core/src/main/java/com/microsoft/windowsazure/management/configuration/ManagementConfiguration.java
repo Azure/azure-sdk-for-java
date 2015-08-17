@@ -65,12 +65,6 @@ public final class ManagementConfiguration {
      * 
      */
     public static final String URI = "management.uri";
-    
-    /**
-     * Defines the if the tests are run mocked.
-     * 
-     */
-    public static final String AZURE_TEST_MODE = "test.mode";
 
     /**
      * Defines the subscription ID of the Windows Azure account.
@@ -139,7 +133,7 @@ public final class ManagementConfiguration {
      * Creates a service management configuration using specified URI, and
      * subscription ID.
      *
-     * @param uri
+     * @param URI
      *            A <code>URI</code> object that represents URI of the service
      *            end point.
      * @param subscriptionId

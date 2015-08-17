@@ -17,11 +17,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <version>0.7.0</version>
+    <version>0.6.0</version>
     <artifactId>azure-bom</artifactId>
   </parent>
 
-  <artifactId>azure</artifactId>
+  <artifactId>azure-parent</artifactId>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK Parent</name>
@@ -92,24 +92,9 @@
         <version>1.1.1</version>
       </dependency>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-storage</artifactId>
-        <version>1.2.0</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit-dep</artifactId>
-        <version>4.11</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.2.3</version>
+        <groupId>com.microsoft.windowsazure.storage</groupId>
+        <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
+        <version>1.0.0</version>
       </dependency>
 
       <!-- Test dependencies -->
@@ -131,6 +116,7 @@
         <version>1.46</version>
         <scope>test</scope>
       </dependency>
+
       <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-java</artifactId>
@@ -144,15 +130,9 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>1.3.2</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>1.47</version>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -267,19 +247,6 @@
                     <ignore></ignore>
                   </action>
                 </pluginExecution>
-                <pluginExecution>
-                	<pluginExecutionFilter>
-                		<groupId>org.apache.maven.plugins</groupId>
-                		<artifactId>maven-checkstyle-plugin</artifactId>
-                		<versionRange>[2.11,)</versionRange>
-                		<goals>
-                			<goal>check</goal>
-                		</goals>
-                	</pluginExecutionFilter>
-                	<action>
-                		<ignore></ignore>
-                	</action>
-                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
@@ -323,6 +290,7 @@
   </reporting>
   <modules>
     <module>../core</module>
+    <module>../core-test</module> 
     <module>../management</module>
     <module>../management-compute</module>
     <module>../management-media</module>

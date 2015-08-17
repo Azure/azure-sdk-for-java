@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +56,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     */
     public AffinityGroupListResponse() {
         super();
-        this.setAffinityGroups(new LazyArrayList<AffinityGroupListResponse.AffinityGroup>());
+        this.setAffinityGroups(new ArrayList<AffinityGroupListResponse.AffinityGroup>());
     }
     
     /**
@@ -213,7 +212,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         *
         */
         public AffinityGroup() {
-            this.setCapabilities(new LazyArrayList<String>());
+            this.setCapabilities(new ArrayList<String>());
         }
     }
 }

@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -146,7 +145,7 @@ public class ServiceObjective extends SqlModelCommon {
     */
     public ServiceObjective() {
         super();
-        this.setDimensionSettings(new LazyArrayList<ServiceObjective.DimensionSettingResponse>());
+        this.setDimensionSettings(new ArrayList<ServiceObjective.DimensionSettingResponse>());
     }
     
     /**

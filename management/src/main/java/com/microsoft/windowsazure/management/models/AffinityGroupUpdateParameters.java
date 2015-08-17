@@ -78,7 +78,6 @@ public class AffinityGroupUpdateParameters {
     * Initializes a new instance of the AffinityGroupUpdateParameters class
     * with required arguments.
     *
-    * @param label The affinity group label.
     */
     public AffinityGroupUpdateParameters(String label) {
         if (label == null) {

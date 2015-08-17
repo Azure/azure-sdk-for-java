@@ -59,7 +59,6 @@ public class ServerChangeAdministratorPasswordParameters {
     * ServerChangeAdministratorPasswordParameters class with required
     * arguments.
     *
-    * @param newPassword The new password.
     */
     public ServerChangeAdministratorPasswordParameters(String newPassword) {
         if (newPassword == null) {

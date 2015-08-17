@@ -31,10 +31,8 @@ import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.*;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -66,7 +64,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //create management service for accessing management operation
         createManagementClient();
         
-        setupTest(VirtualMachineOperationsTests.class.getSimpleName());
         hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
@@ -75,27 +72,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
-        resetTest(VirtualMachineOperationsTests.class.getSimpleName());
     }
 
     @AfterClass   
-    public static void cleanup() throws Exception {
-        setupTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+    public static void cleanup() {
         cleanHostedService();
         cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
-        resetTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
-    }
-    
-    @Before
-    public void beforeTest() throws Exception {
-        setupTest();
-    }
-    
-    @After
-    public void afterTest() throws Exception {
-        resetTest();
     }
     
     private OSVirtualHardDisk createOSVirtualHardDisk(String osVHarddiskName, String operatingSystemName, URI mediaLinkUriValue, String sourceImageName)
@@ -517,9 +501,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         
         try {
-            if (!IS_MOCKED) {
-                Thread.sleep(3*60*1000);
-            }
+            Thread.sleep(3*60*1000);
         } catch (InterruptedException e) {
         }
     }

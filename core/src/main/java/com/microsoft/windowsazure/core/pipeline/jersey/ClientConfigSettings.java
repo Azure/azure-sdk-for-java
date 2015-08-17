@@ -72,10 +72,10 @@ public class ClientConfigSettings {
     }
 
     /**
-     * Update the given client object with the appropriate settings from
+     * Update the given {@link client} object with the appropriate settings from
      * configuration.
      * 
-     * @param client The client.
+     * @param client
      */
     public void applyConfig(Client client) {
         if (shouldLog) {

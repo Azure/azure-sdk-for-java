@@ -155,6 +155,7 @@ public class MediaServicesManagementClientImpl extends ServiceClient<MediaServic
         } else {
             this.baseUri = baseUri;
         }
+        this.credentials = credentials;
     }
     
     /**

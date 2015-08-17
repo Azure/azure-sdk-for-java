@@ -75,8 +75,6 @@ public class StorageAccountRegenerateKeysParameters {
     * Initializes a new instance of the StorageAccountRegenerateKeysParameters
     * class with required arguments.
     *
-    * @param name The storage account name.
-    * @param keyType The key type.
     */
     public StorageAccountRegenerateKeysParameters(String name, StorageKeyType keyType) {
         if (name == null) {

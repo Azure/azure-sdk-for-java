@@ -89,42 +89,42 @@ within your project you can also have them installed by the Java package manager
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management-compute</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management-network</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management-sql</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management-storage</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-management-websites</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
@@ -138,7 +138,7 @@ within your project you can also have them installed by the Java package manager
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>0.7.0</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml

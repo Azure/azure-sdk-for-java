@@ -96,9 +96,6 @@ public class WebSiteDeleteParameters {
     * Initializes a new instance of the WebSiteDeleteParameters class with
     * required arguments.
     *
-    * @param deleteEmptyServerFarm The delete empty server farm.
-    * @param deleteMetrics Delete metrics.
-    * @param deleteAllSlots Delete all slots.
     */
     public WebSiteDeleteParameters(boolean deleteEmptyServerFarm, boolean deleteMetrics, boolean deleteAllSlots) {
         this.setDeleteEmptyServerFarm(deleteEmptyServerFarm);

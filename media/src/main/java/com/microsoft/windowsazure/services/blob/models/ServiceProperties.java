@@ -19,7 +19,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Represents the Blob service properties that can be set on a storage account,
- * including Windows Azure Storage Analytics.
+ * including Windows Azure Storage Analytics. This class is used by the
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getServiceProperties()} method to return the service
+ * property values set on the storage account, and by the
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setServiceProperties(ServiceProperties)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setServiceProperties(ServiceProperties, BlobServiceOptions)}
+ * methods to set the values of the service properties.
  */
 @XmlRootElement(name = "StorageServiceProperties")
 public class ServiceProperties {

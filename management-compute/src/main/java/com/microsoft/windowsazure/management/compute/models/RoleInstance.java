@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -247,24 +246,6 @@ public class RoleInstance {
         this.iPAddress = iPAddressValue;
     }
     
-    private ArrayList<NetworkInterfaceInstance> networkInterfaces;
-    
-    /**
-    * Optional.
-    * @return The NetworkInterfaces value.
-    */
-    public ArrayList<NetworkInterfaceInstance> getNetworkInterfaces() {
-        return this.networkInterfaces;
-    }
-    
-    /**
-    * Optional.
-    * @param networkInterfacesValue The NetworkInterfaces value.
-    */
-    public void setNetworkInterfaces(final ArrayList<NetworkInterfaceInstance> networkInterfacesValue) {
-        this.networkInterfaces = networkInterfacesValue;
-    }
-    
     private RoleInstancePowerState powerState;
     
     /**
@@ -370,10 +351,9 @@ public class RoleInstance {
     *
     */
     public RoleInstance() {
-        this.setInstanceEndpoints(new LazyArrayList<InstanceEndpoint>());
-        this.setNetworkInterfaces(new LazyArrayList<NetworkInterfaceInstance>());
-        this.setPublicIPs(new LazyArrayList<RoleInstance.PublicIP>());
-        this.setResourceExtensionStatusList(new LazyArrayList<ResourceExtensionStatus>());
+        this.setInstanceEndpoints(new ArrayList<InstanceEndpoint>());
+        this.setPublicIPs(new ArrayList<RoleInstance.PublicIP>());
+        this.setResourceExtensionStatusList(new ArrayList<ResourceExtensionStatus>());
     }
     
     /**
@@ -398,24 +378,6 @@ public class RoleInstance {
         */
         public void setAddress(final InetAddress addressValue) {
             this.address = addressValue;
-        }
-        
-        private Integer idleTimeoutInMinutes;
-        
-        /**
-        * Optional. The idle timeout in minutes for this Public IP.
-        * @return The IdleTimeoutInMinutes value.
-        */
-        public Integer getIdleTimeoutInMinutes() {
-            return this.idleTimeoutInMinutes;
-        }
-        
-        /**
-        * Optional. The idle timeout in minutes for this Public IP.
-        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
-        */
-        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
-            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
         }
         
         private String name;

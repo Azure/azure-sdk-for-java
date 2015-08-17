@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.management.sql;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -37,19 +36,16 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     public static void setup() throws Exception {
         createService();
         createManagementClient();
-        createStorageService();
-        setupTest(DacOperationsIntegrationTest.class.getSimpleName());
         getLocation();       
+        createStorageService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         dacOperations = sqlManagementClient.getDacOperations();
         storageAccount = createStorageAccount(testStorageAccountPrefix+randomString(10));
-        resetTest(DacOperationsIntegrationTest.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {
-        setupTest(DacOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
+    public static void cleanup() {
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             try {
@@ -75,8 +71,6 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
             storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
         } catch (IOException e) {
         } catch (ServiceException e) {
-        } finally {
-            resetTest(DacOperationsIntegrationTest.class.getSimpleName() + CLEANUP_SUFFIX);
         }
     }
 
@@ -113,6 +107,6 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
         // act 
         DacExportParameters dacExportParameters = new DacExportParameters();
         dacExportParameters.setBlobCredentials(blobCredentialsValue);
-        dacOperations.exportDatabase(serverName, dacExportParameters);
+        dacOperations.export(serverName, dacExportParameters);
     }
 }

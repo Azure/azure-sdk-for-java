@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -290,14 +289,13 @@ public class VirtualMachineVMImageUpdateParameters {
     *
     */
     public VirtualMachineVMImageUpdateParameters() {
-        this.setDataDiskConfigurations(new LazyArrayList<DataDiskConfigurationUpdateParameters>());
+        this.setDataDiskConfigurations(new ArrayList<DataDiskConfigurationUpdateParameters>());
     }
     
     /**
     * Initializes a new instance of the VirtualMachineVMImageUpdateParameters
     * class with required arguments.
     *
-    * @param label The label.
     */
     public VirtualMachineVMImageUpdateParameters(String label) {
         this();

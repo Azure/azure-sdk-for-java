@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +73,7 @@ public class CloudServiceGetResponse extends OperationResponse {
     */
     public CloudServiceGetResponse() {
         super();
-        this.setResources(new LazyArrayList<CloudServiceGetResponse.Resource>());
+        this.setResources(new ArrayList<CloudServiceGetResponse.Resource>());
     }
     
     /**
@@ -274,7 +272,7 @@ public class CloudServiceGetResponse extends OperationResponse {
         *
         */
         public Resource() {
-            this.setOutputItems(new LazyHashMap<String, String>());
+            this.setOutputItems(new HashMap<String, String>());
         }
     }
 }

@@ -124,10 +124,6 @@ public class AffinityGroupCreateParameters {
     * Initializes a new instance of the AffinityGroupCreateParameters class
     * with required arguments.
     *
-    * @param name The affinity group name.
-    * @param label The affinity group label.
-    * @param location The affinity group location.
-    *
     */
     public AffinityGroupCreateParameters(String name, String label, String location) {
         if (name == null) {

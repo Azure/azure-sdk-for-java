@@ -145,6 +145,56 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void getServicePropertiesWorks() throws Exception {
+        // Arrange
+
+        // Don't run this test with emulator, as v1.6 doesn't support this
+        // method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
+
+        // Act
+        ServiceProperties props = service.getServiceProperties().getValue();
+
+        // Assert
+        assertNotNull(props);
+        assertNotNull(props.getLogging());
+        assertNotNull(props.getLogging().getRetentionPolicy());
+        assertNotNull(props.getLogging().getVersion());
+        assertNotNull(props.getMetrics().getRetentionPolicy());
+        assertNotNull(props.getMetrics().getVersion());
+    }
+
+    @Test
+    public void setServicePropertiesWorks() throws Exception {
+        // Arrange
+
+        // Don't run this test with emulator, as v1.6 doesn't support this
+        // method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
+
+        // Act
+        ServiceProperties props = service.getServiceProperties().getValue();
+
+        props.getLogging().setRead(true);
+        service.setServiceProperties(props);
+
+        props = service.getServiceProperties().getValue();
+
+        // Assert
+        assertNotNull(props);
+        assertNotNull(props.getLogging());
+        assertNotNull(props.getLogging().getRetentionPolicy());
+        assertNotNull(props.getLogging().getVersion());
+        assertTrue(props.getLogging().isRead());
+        assertNotNull(props.getMetrics().getRetentionPolicy());
+        assertNotNull(props.getMetrics().getVersion());
+    }
+
+    @Test
     public void createQueueWorks() throws Exception {
         // Arrange
 

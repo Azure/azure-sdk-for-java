@@ -205,8 +205,6 @@ public class VirtualMachineDataDiskCreateParameters {
     * Initializes a new instance of the VirtualMachineDataDiskCreateParameters
     * class with required arguments.
     *
-    * @param hostCaching The host caching.
-    * @param mediaLinkUri The media link uri.
     */
     public VirtualMachineDataDiskCreateParameters(String hostCaching, URI mediaLinkUri) {
         if (hostCaching == null) {

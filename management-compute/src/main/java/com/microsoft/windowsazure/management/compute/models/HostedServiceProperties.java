@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -197,26 +196,6 @@ public class HostedServiceProperties {
         this.location = locationValue;
     }
     
-    private String reverseDnsFqdn;
-    
-    /**
-    * Optional. Dns address to which the cloud service's IP address resolves
-    * when queried using a reverse Dns query.
-    * @return The ReverseDnsFqdn value.
-    */
-    public String getReverseDnsFqdn() {
-        return this.reverseDnsFqdn;
-    }
-    
-    /**
-    * Optional. Dns address to which the cloud service's IP address resolves
-    * when queried using a reverse Dns query.
-    * @param reverseDnsFqdnValue The ReverseDnsFqdn value.
-    */
-    public void setReverseDnsFqdn(final String reverseDnsFqdnValue) {
-        this.reverseDnsFqdn = reverseDnsFqdnValue;
-    }
-    
     private HostedServiceStatus status;
     
     /**
@@ -240,6 +219,6 @@ public class HostedServiceProperties {
     *
     */
     public HostedServiceProperties() {
-        this.setExtendedProperties(new LazyHashMap<String, String>());
+        this.setExtendedProperties(new HashMap<String, String>());
     }
 }

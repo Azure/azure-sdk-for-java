@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -222,17 +221,15 @@ public class VirtualMachineUpdateParameters {
     *
     */
     public VirtualMachineUpdateParameters() {
-        this.setConfigurationSets(new LazyArrayList<ConfigurationSet>());
-        this.setDataVirtualHardDisks(new LazyArrayList<DataVirtualHardDisk>());
-        this.setResourceExtensionReferences(new LazyArrayList<ResourceExtensionReference>());
+        this.setConfigurationSets(new ArrayList<ConfigurationSet>());
+        this.setDataVirtualHardDisks(new ArrayList<DataVirtualHardDisk>());
+        this.setResourceExtensionReferences(new ArrayList<ResourceExtensionReference>());
     }
     
     /**
     * Initializes a new instance of the VirtualMachineUpdateParameters class
     * with required arguments.
     *
-    * @param roleName The role name.
-    * @param oSVirtualHardDisk The OS Virtual Hard Disk.
     */
     public VirtualMachineUpdateParameters(String roleName, OSVirtualHardDisk oSVirtualHardDisk) {
         this();

@@ -23,7 +23,6 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     */
     public StorageAccountListResponse() {
         super();
-        this.setStorageAccounts(new LazyArrayList<StorageAccount>());
+        this.setStorageAccounts(new ArrayList<StorageAccount>());
     }
     
     /**

@@ -122,44 +122,6 @@ public class DatabaseCopy extends SqlModelCommon {
         this.isLocalDatabaseReplicationTarget = isLocalDatabaseReplicationTargetValue;
     }
     
-    private boolean isOfflineSecondary;
-    
-    /**
-    * Optional. Gets a value indicating whether it is an offline secondary copy.
-    * @return The IsOfflineSecondary value.
-    */
-    public boolean isOfflineSecondary() {
-        return this.isOfflineSecondary;
-    }
-    
-    /**
-    * Optional. Gets a value indicating whether it is an offline secondary copy.
-    * @param isOfflineSecondaryValue The IsOfflineSecondary value.
-    */
-    public void setIsOfflineSecondary(final boolean isOfflineSecondaryValue) {
-        this.isOfflineSecondary = isOfflineSecondaryValue;
-    }
-    
-    private boolean isTerminationAllowed;
-    
-    /**
-    * Optional. Gets a value indicating whether forced termination of this
-    * continuous copy is allowed.
-    * @return The IsTerminationAllowed value.
-    */
-    public boolean isTerminationAllowed() {
-        return this.isTerminationAllowed;
-    }
-    
-    /**
-    * Optional. Gets a value indicating whether forced termination of this
-    * continuous copy is allowed.
-    * @param isTerminationAllowedValue The IsTerminationAllowed value.
-    */
-    public void setIsTerminationAllowed(final boolean isTerminationAllowedValue) {
-        this.isTerminationAllowed = isTerminationAllowedValue;
-    }
-    
     private int localDatabaseId;
     
     /**

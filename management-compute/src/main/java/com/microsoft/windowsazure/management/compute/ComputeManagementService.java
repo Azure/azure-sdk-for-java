@@ -63,7 +63,6 @@ public final class ComputeManagementService {
      * Creates an instance of the <code>ComputeManagementClient</code> API using
      * the specified configuration.
      *
-     * @param profile The profile.
      * @param config A <code>Configuration</code> object that represents the
      * configuration for the service management.
      * @return An instance of the <code>ComputeManagementClient</code> API.
